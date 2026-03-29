@@ -69,124 +69,154 @@ const handleFirestoreError = (error: unknown, operationType: OperationType | str
   throw new Error(JSON.stringify(errInfo));
 };
 
-// Helper for backend API calls
-const apiFetch = async (endpoint: string, options?: RequestInit) => {
-  const res = await fetch(endpoint, options);
-  if (!res.ok) {
-    const error = await res.json().catch(() => ({}));
-    throw new Error(error.error || `API Error: ${res.statusText}`);
-  }
-  return res.json();
-};
-
 // --- Blogs ---
 export const getBlogs = (callback: (blogs: Blog[]) => void) => {
-  const fetchBlogs = () => apiFetch('/api/blogs').then(callback).catch(e => console.error('getBlogs error', e));
-  fetchBlogs();
-  const interval = setInterval(fetchBlogs, 5000);
-  return () => clearInterval(interval);
+  const q = query(collection(db, 'blogs'), orderBy('createdAt', 'desc'));
+  return onSnapshot(q, (snapshot) => {
+    const blogs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Blog));
+    callback(blogs);
+  }, (error) => handleFirestoreError(error, OperationType.GET, 'blogs'));
 };
 
 export const addBlog = async (blog: any) => {
-  const res = await apiFetch('/api/blogs', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(blog)
-  });
-  return res.id;
+  try {
+    const docRef = await addDoc(collection(db, 'blogs'), {
+      ...blog,
+      createdAt: Timestamp.now(),
+      updatedAt: Timestamp.now()
+    });
+    return docRef.id;
+  } catch (error) {
+    handleFirestoreError(error, OperationType.CREATE, 'blogs');
+  }
 };
 
 export const updateBlog = async (id: string, blogData: any) => {
-  await apiFetch(`/api/blogs/${id}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(blogData)
-  });
+  try {
+    await updateDoc(doc(db, 'blogs', id), {
+      ...blogData,
+      updatedAt: Timestamp.now()
+    });
+  } catch (error) {
+    handleFirestoreError(error, OperationType.UPDATE, 'blogs');
+  }
 };
 
 export const deleteBlog = async (id: string) => {
-  await apiFetch(`/api/blogs/${id}`, { method: 'DELETE' });
+  try {
+    await deleteDoc(doc(db, 'blogs', id));
+  } catch (error) {
+    handleFirestoreError(error, OperationType.DELETE, 'blogs');
+  }
 };
 
 // --- Cards ---
 export const getCardsAdmin = (callback: (cards: Card[]) => void) => {
-  const fetchCards = () => apiFetch('/api/cards').then(callback).catch(e => console.error('getCardsAdmin error', e));
-  fetchCards();
-  const interval = setInterval(fetchCards, 5000);
-  return () => clearInterval(interval);
+  const q = query(collection(db, 'cards'), orderBy('name', 'asc'));
+  return onSnapshot(q, (snapshot) => {
+    const cards = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Card));
+    callback(cards);
+  }, (error) => handleFirestoreError(error, OperationType.GET, 'cards'));
 };
 
 export const getCards = (callback: (cards: Card[]) => void) => {
-  const fetchCards = () => apiFetch('/api/cards').then((cards: Card[]) => {
+  const q = query(collection(db, 'cards'), orderBy('createdAt', 'desc'));
+  return onSnapshot(q, (snapshot) => {
+    const cards = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Card));
     const publishedCards = cards.filter(card => card.status === 'published' || !card.status);
     callback(publishedCards);
-  }).catch(e => console.error('getCards error', e));
-  fetchCards();
-  const interval = setInterval(fetchCards, 5000);
-  return () => clearInterval(interval);
+  }, (error) => handleFirestoreError(error, OperationType.GET, 'cards'));
 };
 
 export const addCard = async (card: any) => {
-  const res = await apiFetch('/api/cards', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(card)
-  });
-  return res.id;
+  try {
+    const docRef = await addDoc(collection(db, 'cards'), {
+      ...card,
+      createdAt: Timestamp.now(),
+      updatedAt: Timestamp.now()
+    });
+    return docRef.id;
+  } catch (error) {
+    handleFirestoreError(error, OperationType.CREATE, 'cards');
+  }
 };
 
 export const updateCard = async (id: string, cardData: any) => {
-  await apiFetch(`/api/cards/${id}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(cardData)
-  });
+  try {
+    await updateDoc(doc(db, 'cards', id), {
+      ...cardData,
+      updatedAt: Timestamp.now()
+    });
+  } catch (error) {
+    handleFirestoreError(error, OperationType.UPDATE, 'cards');
+  }
 };
 
 export const deleteCard = async (id: string) => {
-  await apiFetch(`/api/cards/${id}`, { method: 'DELETE' });
+  try {
+    await deleteDoc(doc(db, 'cards', id));
+  } catch (error) {
+    handleFirestoreError(error, OperationType.DELETE, 'cards');
+  }
 };
 
 // --- Waitlist ---
 export const getWaitlist = (callback: (entries: WaitlistEntry[]) => void) => {
-  const fetchWaitlist = () => apiFetch('/api/waitlist').then(callback).catch(e => console.error('getWaitlist error', e));
-  fetchWaitlist();
-  const interval = setInterval(fetchWaitlist, 5000);
-  return () => clearInterval(interval);
+  const q = query(collection(db, 'waitlist'), orderBy('createdAt', 'desc'));
+  return onSnapshot(q, (snapshot) => {
+    const entries = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as WaitlistEntry));
+    callback(entries);
+  }, (error) => handleFirestoreError(error, OperationType.GET, 'waitlist'));
 };
 
 export const joinWaitlist = async (entry: { name: string, email: string, phone?: string, role?: string, category?: string, company?: string }) => {
-  const res = await apiFetch('/api/waitlist', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(entry)
-  });
-  return res.id;
+  try {
+    const docRef = await addDoc(collection(db, 'waitlist'), {
+      ...entry,
+      createdAt: Timestamp.now()
+    });
+    return docRef.id;
+  } catch (error) {
+    handleFirestoreError(error, OperationType.CREATE, 'waitlist');
+  }
 };
 
 export const deleteWaitlistEntry = async (id: string) => {
-  await apiFetch(`/api/waitlist/${id}`, { method: 'DELETE' });
+  try {
+    await deleteDoc(doc(db, 'waitlist', id));
+  } catch (error) {
+    handleFirestoreError(error, OperationType.DELETE, 'waitlist');
+  }
 };
 
 // --- Newsletters ---
 export const getNewsletters = (callback: (entries: NewsletterEntry[]) => void) => {
-  const fetchNewsletters = () => apiFetch('/api/newsletters').then(callback).catch(e => console.error('getNewsletters error', e));
-  fetchNewsletters();
-  const interval = setInterval(fetchNewsletters, 5000);
-  return () => clearInterval(interval);
+  const q = query(collection(db, 'newsletters'), orderBy('subscribedAt', 'desc'));
+  return onSnapshot(q, (snapshot) => {
+    const entries = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as NewsletterEntry));
+    callback(entries);
+  }, (error) => handleFirestoreError(error, OperationType.GET, 'newsletters'));
 };
 
 export const subscribeNewsletter = async (email: string) => {
-  const res = await apiFetch('/api/newsletters', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email })
-  });
-  return res.id;
+  try {
+    const docRef = await addDoc(collection(db, 'newsletters'), {
+      email,
+      status: 'active',
+      subscribedAt: Timestamp.now()
+    });
+    return docRef.id;
+  } catch (error) {
+    handleFirestoreError(error, OperationType.CREATE, 'newsletters');
+  }
 };
 
 export const deleteNewsletterEntry = async (id: string) => {
-  await apiFetch(`/api/newsletters/${id}`, { method: 'DELETE' });
+  try {
+    await deleteDoc(doc(db, 'newsletters', id));
+  } catch (error) {
+    handleFirestoreError(error, OperationType.DELETE, 'newsletters');
+  }
 };
 
 // --- Admin Check ---
