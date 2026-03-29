@@ -1,14 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
-  db, 
   auth, 
   googleProvider, 
   storage, 
-  handleFirestoreError, 
-  OperationType 
+  Timestamp
 } from '../firebase';
 import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
-import { collection, query, orderBy, onSnapshot, addDoc, updateDoc, deleteDoc, doc, Timestamp, getDocs } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { 
   LayoutDashboard, 
@@ -33,7 +30,12 @@ import {
   AlertCircle,
   Zap
 } from 'lucide-react';
-import { getBlogs, getCards, checkIfAdmin } from '../services/firebaseService';
+import { 
+  getBlogs, addBlog, updateBlog, deleteBlog,
+  getCardsAdmin, addCard, updateCard, deleteCard,
+  getWaitlist, deleteWaitlistEntry,
+  checkIfAdmin 
+} from '../services/firebaseService';
 import { Blog, Card, WaitlistEntry } from '../types';
 
 const AdminDashboard: React.FC = () => {
@@ -109,22 +111,13 @@ const AdminDashboard: React.FC = () => {
     if (!isAdmin) return;
 
     // Subscribe to Blogs
-    const blogsQuery = query(collection(db, 'blogs'), orderBy('createdAt', 'desc'));
-    const unsubscribeBlogs = onSnapshot(blogsQuery, (snapshot) => {
-      setBlogs(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Blog)));
-    });
+    const unsubscribeBlogs = getBlogs((fetched) => setBlogs(fetched));
 
     // Subscribe to Cards
-    const cardsQuery = query(collection(db, 'cards'), orderBy('name', 'asc'));
-    const unsubscribeCards = onSnapshot(cardsQuery, (snapshot) => {
-      setCards(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Card)));
-    });
+    const unsubscribeCards = getCardsAdmin((fetched) => setCards(fetched));
 
     // Subscribe to Waitlist
-    const waitlistQuery = query(collection(db, 'waitlist'), orderBy('createdAt', 'desc'));
-    const unsubscribeWaitlist = onSnapshot(waitlistQuery, (snapshot) => {
-      setWaitlist(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as WaitlistEntry)));
-    });
+    const unsubscribeWaitlist = getWaitlist((fetched) => setWaitlist(fetched));
 
     return () => {
       unsubscribeBlogs();
@@ -204,20 +197,13 @@ const AdminDashboard: React.FC = () => {
       
       const blogData = {
         ...blogForm,
-        slug: finalSlug,
-        updatedAt: Timestamp.now()
+        slug: finalSlug
       };
 
       if (editingItem) {
-        await updateDoc(doc(db, 'blogs', editingItem.id), {
-          ...blogData,
-          createdAt: editingItem.createdAt || Timestamp.now()
-        });
+        await updateBlog(editingItem.id, blogData);
       } else {
-        await addDoc(collection(db, 'blogs'), {
-          ...blogData,
-          createdAt: Timestamp.now()
-        });
+        await addBlog(blogData);
       }
       setIsModalOpen(false);
       setEditingItem(null);
@@ -226,7 +212,6 @@ const AdminDashboard: React.FC = () => {
     } catch (error: any) {
       const errorMessage = error.message || "Failed to save blog post.";
       setError(errorMessage);
-      handleFirestoreError(error, editingItem ? OperationType.UPDATE : OperationType.CREATE, 'blogs');
     } finally {
       setSaving(false);
     }
@@ -237,20 +222,13 @@ const AdminDashboard: React.FC = () => {
     setSaving(true);
     try {
       const cardData = {
-        ...cardForm,
-        updatedAt: Timestamp.now()
+        ...cardForm
       };
 
       if (editingItem) {
-        await updateDoc(doc(db, 'cards', editingItem.id), {
-          ...cardData,
-          createdAt: editingItem.createdAt || Timestamp.now()
-        });
+        await updateCard(editingItem.id, cardData);
       } else {
-        await addDoc(collection(db, 'cards'), {
-          ...cardData,
-          createdAt: Timestamp.now()
-        });
+        await addCard(cardData);
       }
       setIsModalOpen(false);
       setEditingItem(null);
@@ -259,7 +237,6 @@ const AdminDashboard: React.FC = () => {
     } catch (error: any) {
       const errorMessage = error.message || "Failed to save card.";
       setError(errorMessage);
-      handleFirestoreError(error, editingItem ? OperationType.UPDATE : OperationType.CREATE, 'cards');
     } finally {
       setSaving(false);
     }
@@ -269,11 +246,15 @@ const AdminDashboard: React.FC = () => {
     if (!itemToDelete) return;
     
     try {
-      await deleteDoc(doc(db, itemToDelete.collection, itemToDelete.id));
+      if (itemToDelete.collection === 'blogs') await deleteBlog(itemToDelete.id);
+      else if (itemToDelete.collection === 'cards') await deleteCard(itemToDelete.id);
+      else if (itemToDelete.collection === 'waitlist') await deleteWaitlistEntry(itemToDelete.id);
+      
       setIsDeleteModalOpen(false);
       setItemToDelete(null);
-    } catch (error) {
-      handleFirestoreError(error, OperationType.DELETE, itemToDelete.collection);
+    } catch (error: any) {
+      setError(error.message || "Failed to delete item.");
+      setIsDeleteModalOpen(false);
     }
   };
 
@@ -291,37 +272,7 @@ const AdminDashboard: React.FC = () => {
   }
 
   const fixData = async () => {
-    setSaving(true);
-    try {
-      const blogsSnap = await getDocs(collection(db, 'blogs'));
-      for (const d of blogsSnap.docs) {
-        const data = d.data();
-        if (!data.createdAt || !data.updatedAt || !data.status) {
-          await updateDoc(doc(db, 'blogs', d.id), {
-            createdAt: data.createdAt || Timestamp.now(),
-            updatedAt: data.updatedAt || Timestamp.now(),
-            status: data.status || 'published'
-          });
-        }
-      }
-
-      const cardsSnap = await getDocs(collection(db, 'cards'));
-      for (const d of cardsSnap.docs) {
-        const data = d.data();
-        if (!data.createdAt || !data.updatedAt || !data.status) {
-          await updateDoc(doc(db, 'cards', d.id), {
-            createdAt: data.createdAt || Timestamp.now(),
-            updatedAt: data.updatedAt || Timestamp.now(),
-            status: data.status || 'published'
-          });
-        }
-      }
-      alert('Data fixed successfully!');
-    } catch (error: any) {
-      setError("Failed to fix data: " + error.message);
-    } finally {
-      setSaving(false);
-    }
+    alert('Fix Data feature requires backend API and has been deprecated for direct Firebase usage.');
   };
 
   if (!user) {

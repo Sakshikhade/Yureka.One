@@ -3,7 +3,7 @@ import ImageWithLoader from './ImageWithLoader';
 import { ArrowUpRight, Calendar, User, ArrowRight } from 'lucide-react';
 import { getBlogs } from '../services/firebaseService';
 import { Blog } from '../types';
-import { Timestamp } from 'firebase/firestore';
+import { Timestamp } from '../firebase';
 
 interface FadeInSectionProps {
   children: React.ReactNode;

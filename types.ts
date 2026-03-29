@@ -80,3 +80,10 @@ export interface Testimonial {
   date: string;
   likes: number;
 }
+
+export interface NewsletterEntry {
+  id?: string;
+  email: string;
+  status: 'active' | 'unsubscribed';
+  subscribedAt?: any;
+}

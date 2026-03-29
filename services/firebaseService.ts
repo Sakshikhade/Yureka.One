@@ -15,7 +15,7 @@ import {
   deleteDoc,
   where
 } from '../firebase';
-import { Blog, Card } from '../types';
+import { Blog, Card, WaitlistEntry, NewsletterEntry } from '../types';
 
 export enum OperationType {
   CREATE = 'create',
@@ -69,84 +69,139 @@ const handleFirestoreError = (error: unknown, operationType: OperationType | str
   throw new Error(JSON.stringify(errInfo));
 };
 
+// Helper for backend API calls
+const apiFetch = async (endpoint: string, options?: RequestInit) => {
+  const res = await fetch(endpoint, options);
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({}));
+    throw new Error(error.error || `API Error: ${res.statusText}`);
+  }
+  return res.json();
+};
+
 // --- Blogs ---
 export const getBlogs = (callback: (blogs: Blog[]) => void) => {
-  const q = query(collection(db, 'blogs'), orderBy('createdAt', 'desc'));
-  return onSnapshot(q, (snapshot) => {
-    const blogs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Blog));
-    // Filter by status on the frontend to avoid index requirements for now
-    const publishedBlogs = blogs.filter(blog => blog.status === 'published' || !blog.status);
-    callback(publishedBlogs);
-  }, (error) => handleFirestoreError(error, OperationType.GET, 'blogs'));
+  const fetchBlogs = () => apiFetch('/api/blogs').then(callback).catch(e => console.error('getBlogs error', e));
+  fetchBlogs();
+  const interval = setInterval(fetchBlogs, 5000);
+  return () => clearInterval(interval);
 };
 
 export const addBlog = async (blog: any) => {
-  try {
-    const docRef = await addDoc(collection(db, 'blogs'), {
-      ...blog,
-      createdAt: Timestamp.now(),
-      updatedAt: Timestamp.now()
-    });
-    return docRef.id;
-  } catch (error) {
-    handleFirestoreError(error, OperationType.CREATE, 'blogs');
-  }
+  const res = await apiFetch('/api/blogs', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(blog)
+  });
+  return res.id;
+};
+
+export const updateBlog = async (id: string, blogData: any) => {
+  await apiFetch(`/api/blogs/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(blogData)
+  });
+};
+
+export const deleteBlog = async (id: string) => {
+  await apiFetch(`/api/blogs/${id}`, { method: 'DELETE' });
 };
 
 // --- Cards ---
+export const getCardsAdmin = (callback: (cards: Card[]) => void) => {
+  const fetchCards = () => apiFetch('/api/cards').then(callback).catch(e => console.error('getCardsAdmin error', e));
+  fetchCards();
+  const interval = setInterval(fetchCards, 5000);
+  return () => clearInterval(interval);
+};
+
 export const getCards = (callback: (cards: Card[]) => void) => {
-  const q = query(collection(db, 'cards'), orderBy('createdAt', 'desc'));
-  return onSnapshot(q, (snapshot) => {
-    const cards = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Card));
-    // Filter by status on the frontend
+  const fetchCards = () => apiFetch('/api/cards').then((cards: Card[]) => {
     const publishedCards = cards.filter(card => card.status === 'published' || !card.status);
     callback(publishedCards);
-  }, (error) => handleFirestoreError(error, OperationType.GET, 'cards'));
+  }).catch(e => console.error('getCards error', e));
+  fetchCards();
+  const interval = setInterval(fetchCards, 5000);
+  return () => clearInterval(interval);
 };
 
 export const addCard = async (card: any) => {
-  try {
-    const docRef = await addDoc(collection(db, 'cards'), {
-      ...card,
-      createdAt: Timestamp.now(),
-      updatedAt: Timestamp.now()
-    });
-    return docRef.id;
-  } catch (error) {
-    handleFirestoreError(error, OperationType.CREATE, 'cards');
-  }
+  const res = await apiFetch('/api/cards', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(card)
+  });
+  return res.id;
+};
+
+export const updateCard = async (id: string, cardData: any) => {
+  await apiFetch(`/api/cards/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(cardData)
+  });
+};
+
+export const deleteCard = async (id: string) => {
+  await apiFetch(`/api/cards/${id}`, { method: 'DELETE' });
 };
 
 // --- Waitlist ---
-export const joinWaitlist = async (entry: { name: string, email: string, phone?: string }) => {
-  try {
-    const docRef = await addDoc(collection(db, 'waitlist'), {
-      ...entry,
-      joinedAt: Timestamp.now()
-    });
-    return docRef.id;
-  } catch (error) {
-    handleFirestoreError(error, 'create', 'waitlist');
-  }
+export const getWaitlist = (callback: (entries: WaitlistEntry[]) => void) => {
+  const fetchWaitlist = () => apiFetch('/api/waitlist').then(callback).catch(e => console.error('getWaitlist error', e));
+  fetchWaitlist();
+  const interval = setInterval(fetchWaitlist, 5000);
+  return () => clearInterval(interval);
+};
+
+export const joinWaitlist = async (entry: { name: string, email: string, phone?: string, role?: string, category?: string, company?: string }) => {
+  const res = await apiFetch('/api/waitlist', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(entry)
+  });
+  return res.id;
+};
+
+export const deleteWaitlistEntry = async (id: string) => {
+  await apiFetch(`/api/waitlist/${id}`, { method: 'DELETE' });
+};
+
+// --- Newsletters ---
+export const getNewsletters = (callback: (entries: NewsletterEntry[]) => void) => {
+  const fetchNewsletters = () => apiFetch('/api/newsletters').then(callback).catch(e => console.error('getNewsletters error', e));
+  fetchNewsletters();
+  const interval = setInterval(fetchNewsletters, 5000);
+  return () => clearInterval(interval);
+};
+
+export const subscribeNewsletter = async (email: string) => {
+  const res = await apiFetch('/api/newsletters', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email })
+  });
+  return res.id;
+};
+
+export const deleteNewsletterEntry = async (id: string) => {
+  await apiFetch(`/api/newsletters/${id}`, { method: 'DELETE' });
 };
 
 // --- Admin Check ---
 export const checkIfAdmin = async (uid: string) => {
-  // 1. Check if user is the default admin by email first (fastest, doesn't need Firestore)
   const currentUser = auth.currentUser;
   if (currentUser && currentUser.email === "toanweshbiswas@gmail.com" && currentUser.emailVerified) {
     return true;
   }
-
   try {
-    // 2. Check if user is in the users collection as admin
     const userDoc = await getDoc(doc(db, 'users', uid));
     if (userDoc.exists() && userDoc.data().role === 'admin') {
       return true;
     }
     return false;
   } catch (error) {
-    // If we can't check Firestore (e.g. permission denied), we already checked the email above
     return false;
   }
 };
