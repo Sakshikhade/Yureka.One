@@ -123,12 +123,14 @@ service cloud.firestore {
 
     match /cards/{cardId} {
       allow read: if true; // Cards are public
-      allow create, update, delete: if isAdmin() && isValidCard(request.resource.data);
+      allow create, update: if isAdmin() && isValidCard(request.resource.data);
+      allow delete: if isAdmin();
     }
 
     match /blogs/{blogId} {
       allow read: if true; // Blogs are public
-      allow create, update, delete: if isAdmin() && isValidBlog(request.resource.data);
+      allow create, update: if isAdmin();
+      allow delete: if isAdmin();
     }
 
     match /waitlist/{waitlistId} {
