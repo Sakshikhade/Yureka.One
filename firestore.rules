@@ -86,22 +86,20 @@ service cloud.firestore {
     // ===============================================================
 
     function isValidCard(data) {
-      return hasRequiredFields(['name', 'bank', 'rewards', 'fee', 'image', 'category']) &&
+      return hasRequiredFields(['name', 'bank', 'image', 'category']) &&
              data.name is string && data.name.size() > 0 && data.name.size() < 100 &&
              data.bank is string && data.bank.size() > 0 && data.bank.size() < 100 &&
-             data.rewards is string && data.rewards.size() > 0 && data.rewards.size() < 500 &&
-             data.fee is string && data.fee.size() > 0 && data.fee.size() < 100 &&
              isValidUrl(data.image) &&
              data.category is string && data.category.size() > 0 && data.category.size() < 50;
     }
 
     function isValidBlog(data) {
-      return hasRequiredFields(['title', 'excerpt', 'category', 'author', 'date', 'image']) &&
+      return hasRequiredFields(['title', 'excerpt', 'content', 'category', 'author', 'image']) &&
              data.title is string && data.title.size() > 0 && data.title.size() < 200 &&
              data.excerpt is string && data.excerpt.size() > 0 && data.excerpt.size() < 1000 &&
+             data.content is string && data.content.size() > 0 &&
              data.category is string && data.category.size() > 0 && data.category.size() < 50 &&
              data.author is string && data.author.size() > 0 && data.author.size() < 100 &&
-             data.date is string && data.date.size() > 0 && data.date.size() < 50 &&
              isValidUrl(data.image);
     }
 

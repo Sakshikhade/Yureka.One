@@ -8,14 +8,22 @@
         "id": { "type": "string", "description": "Unique identifier for the card." },
         "name": { "type": "string", "description": "The name of the credit card." },
         "bank": { "type": "string", "description": "The issuing bank." },
-        "rewards": { "type": "string", "description": "The primary rewards offered by the card." },
-        "fee": { "type": "string", "description": "The annual fee for the card." },
+        "issuer": { "type": "string", "description": "The card issuer (Visa/Mastercard)." },
+        "type": { "type": "string", "description": "The type of card (Rewards/Cashback/etc)." },
         "image": { "type": "string", "description": "URL to the card's image." },
-        "category": { "type": "string", "description": "The category of the card (e.g., Travel, Dining)." },
-        "isFeatured": { "type": "boolean", "description": "Whether the card is featured on the home page." },
+        "rating": { "type": "number", "description": "The card's rating." },
+        "benefits": { "type": "array", "items": { "type": "string" }, "description": "List of benefits." },
+        "annualFee": { "type": "string", "description": "The annual fee." },
+        "joiningFee": { "type": "string", "description": "The joining fee." },
+        "bestFor": { "type": "string", "description": "What the card is best for." },
+        "category": { "type": "string", "description": "The category of the card." },
+        "color": { "type": "string", "description": "The UI color gradient for the card." },
+        "rewardsRate": { "type": "string", "description": "The rewards rate." },
+        "projectedSavings": { "type": "string", "description": "Estimated annual savings." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "The time the card was created." },
         "updatedAt": { "type": "string", "format": "date-time", "description": "The last time the card was updated." }
       },
-      "required": ["name", "bank", "rewards", "fee", "image", "category"]
+      "required": ["name", "bank", "image", "category"]
     },
     "Blog": {
       "title": "Blog Post",
@@ -24,15 +32,18 @@
       "properties": {
         "id": { "type": "string", "description": "Unique identifier for the blog post." },
         "title": { "type": "string", "description": "The title of the blog post." },
+        "slug": { "type": "string", "description": "The URL slug for the blog post." },
         "excerpt": { "type": "string", "description": "A short summary of the blog post." },
+        "content": { "type": "string", "description": "The full content of the blog post in Markdown." },
         "category": { "type": "string", "description": "The category of the blog post." },
         "author": { "type": "string", "description": "The author of the blog post." },
-        "date": { "type": "string", "description": "The publication date." },
         "image": { "type": "string", "description": "URL to the blog post's image." },
+        "readTime": { "type": "string", "description": "Estimated reading time." },
         "featured": { "type": "boolean", "description": "Whether the blog post is featured." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "The time the blog post was created." },
         "updatedAt": { "type": "string", "format": "date-time", "description": "The last time the blog post was updated." }
       },
-      "required": ["title", "excerpt", "category", "author", "date", "image"]
+      "required": ["title", "excerpt", "content", "category", "author", "image"]
     },
     "Waitlist": {
       "title": "Waitlist Entry",

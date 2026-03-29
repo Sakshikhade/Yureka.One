@@ -128,7 +128,7 @@ const faqData = [
 // --- Main Layout ---
 const FAQ: React.FC = () => {
   return (
-    <section className="py-24 bg-cream border-b border-black/10 relative overflow-hidden">
+    <section className="py-16 md:py-24 bg-cream border-b border-black/10 relative overflow-hidden">
          {/* Background Texture for Glassmorphism Context */}
          <div className="absolute inset-0 pointer-events-none opacity-30" 
               style={{ backgroundImage: 'radial-gradient(#1A5F54 0.5px, transparent 0.5px)', backgroundSize: '20px 20px' }}>
@@ -141,15 +141,15 @@ const FAQ: React.FC = () => {
                  {/* Left Column: Sticky Header with SEO Keywords */}
                  <div className="lg:col-span-5 lg:sticky lg:top-32">
                      <div className="text-left mb-8">
-                        <span className="block text-teal text-xs font-bold uppercase tracking-[0.3em] mb-4 animate-fade-in-up">Help & Support</span>
-                        <h2 className="text-5xl md:text-7xl font-serif font-bold text-ink mb-4 leading-[0.9] animate-fade-in-up">
-                            Frequently Asked <br/> Questions
+                        <span className="block text-teal text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] mb-4 animate-fade-in-up">Help & Support</span>
+                        <h2 className="text-4xl md:text-7xl font-serif font-bold text-ink mb-4 leading-[0.9] animate-fade-in-up">
+                            Frequently Asked <br className="hidden md:block" /> Questions
                         </h2>
-                        <h3 className="text-5xl md:text-7xl font-serif font-bold text-ink leading-[0.9] animate-fade-in-up delay-100">
+                        <h3 className="text-4xl md:text-7xl font-serif font-bold text-ink leading-[0.9] animate-fade-in-up delay-100">
                             We've <span className="text-teal">Got Answers.</span>
                         </h3>
                      </div>
-                     <p className="text-lg text-ink/70 font-serif italic max-w-md animate-fade-in-up delay-200">
+                     <p className="text-base md:text-lg text-ink/70 font-serif italic max-w-md animate-fade-in-up delay-200">
                          Everything you need to know about AI-driven card matching, our zero-fee policy, and the Jupyter.credit ecosystem.
                      </p>
                  </div>

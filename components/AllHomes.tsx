@@ -3,6 +3,7 @@ import { ArrowUpRight, ChevronDown, Check, Zap, CreditCard as CardIcon, Gift, Sh
 import ImageWithLoader from './ImageWithLoader';
 import { getCards } from '../services/firebaseService';
 import { Card } from '../types';
+import { featuredCards } from '../data';
 
 // --- Filter Components ---
 
@@ -84,7 +85,7 @@ const AllHomes: React.FC = () => {
 
   useEffect(() => {
     const unsubscribe = getCards((fetchedCards) => {
-        setCardsList(fetchedCards);
+        setCardsList(fetchedCards.length > 0 ? fetchedCards : featuredCards as Card[]);
         setIsLoading(false);
     });
     return () => unsubscribe();
@@ -142,10 +143,10 @@ const AllHomes: React.FC = () => {
        </div>
 
        {/* Sticky Filter Bar - Floating Glass Island Style */}
-       <div className="sticky top-28 z-40 mb-12 flex justify-center pointer-events-none">
-            <div className="bg-white/90 backdrop-blur-md border border-black/10 rounded-full px-2 py-2 flex justify-center items-center gap-2 flex-wrap shadow-xl pointer-events-auto max-w-full overflow-x-auto no-scrollbar">
-                <div className="flex items-center px-4 shrink-0">
-                    <span className="text-xs font-serif italic text-ink/50">Filter:</span>
+       <div className="sticky top-20 md:top-28 z-40 mb-8 md:mb-12 flex justify-center pointer-events-none">
+            <div className="bg-white/90 backdrop-blur-md border border-black/10 rounded-2xl md:rounded-full px-2 py-2 flex flex-wrap justify-center items-center gap-2 shadow-xl pointer-events-auto max-w-full overflow-x-auto no-scrollbar">
+                <div className="flex items-center px-2 md:px-4 shrink-0">
+                    <span className="text-[10px] md:text-xs font-serif italic text-ink/50">Filter:</span>
                 </div>
                 <div className="h-6 w-px bg-ink/10 hidden md:block shrink-0"></div>
                 <FilterPill label="Issuer" value={issuer} options={issuers} onChange={setIssuer} />
@@ -158,8 +159,8 @@ const AllHomes: React.FC = () => {
             </div>
        </div>
 
-       <div className="flex justify-between items-end mb-8 px-2 pb-2 border-b border-ink/10">
-            <h2 className="text-ink text-lg font-serif italic">Displaying {filteredCards.length} Credit Cards</h2>
+       <div className="flex justify-between items-end mb-6 md:mb-8 px-2 pb-2 border-b border-ink/10">
+            <h2 className="text-ink text-sm md:text-lg font-serif italic">Displaying {filteredCards.length} Credit Cards</h2>
        </div>
 
        {filteredCards.length > 0 ? (

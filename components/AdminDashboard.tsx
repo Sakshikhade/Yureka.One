@@ -1,7 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { db, auth, googleProvider, storage } from '../firebase';
+import { 
+  db, 
+  auth, 
+  googleProvider, 
+  storage, 
+  handleFirestoreError, 
+  OperationType 
+} from '../firebase';
 import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
-import { collection, query, orderBy, onSnapshot, addDoc, updateDoc, deleteDoc, doc, Timestamp } from 'firebase/firestore';
+import { collection, query, orderBy, onSnapshot, addDoc, updateDoc, deleteDoc, doc, Timestamp, getDocs } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { 
   LayoutDashboard, 
@@ -23,7 +30,8 @@ import {
   Image as ImageIcon,
   ExternalLink,
   Settings,
-  AlertCircle
+  AlertCircle,
+  Zap
 } from 'lucide-react';
 import { getBlogs, getCards, checkIfAdmin } from '../services/firebaseService';
 import { Blog, Card, WaitlistEntry } from '../types';
@@ -45,6 +53,8 @@ const AdminDashboard: React.FC = () => {
   const [itemToDelete, setItemToDelete] = useState<{collection: string, id: string} | null>(null);
   const [editingItem, setEditingItem] = useState<any>(null);
   const [uploading, setUploading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   // Blog Form State
@@ -57,7 +67,8 @@ const AdminDashboard: React.FC = () => {
     category: 'Credit Cards',
     image: 'https://picsum.photos/seed/blog/800/600',
     readTime: '5 min read',
-    featured: false
+    featured: false,
+    status: 'published' as 'draft' | 'published'
   });
 
   // Card Form State
@@ -75,7 +86,8 @@ const AdminDashboard: React.FC = () => {
     category: 'Shopping',
     color: 'from-blue-600 to-indigo-700',
     rewardsRate: '5%',
-    projectedSavings: '₹12,000/yr'
+    projectedSavings: '₹12,000/yr',
+    status: 'published' as 'draft' | 'published'
   });
 
   useEffect(() => {
@@ -145,20 +157,40 @@ const AdminDashboard: React.FC = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    // Instant local preview
+    const localUrl = URL.createObjectURL(file);
+    setPreviewUrl(localUrl);
+    
+    // Optimistically update form image for immediate visual feedback
+    if (type === 'blogs') {
+      setBlogForm(prev => ({ ...prev, image: localUrl }));
+    } else {
+      setCardForm(prev => ({ ...prev, image: localUrl }));
+    }
+
     setUploading(true);
     try {
       const storageRef = ref(storage, `${type}/${Date.now()}_${file.name}`);
       await uploadBytes(storageRef, file);
       const url = await getDownloadURL(storageRef);
       
+      // Update with the real URL from Firebase Storage
       if (type === 'blogs') {
         setBlogForm(prev => ({ ...prev, image: url }));
       } else {
         setCardForm(prev => ({ ...prev, image: url }));
       }
+      setPreviewUrl(url);
     } catch (error) {
       console.error("Error uploading file", error);
       setError("Failed to upload image. Please try again.");
+      // Rollback preview and form image if upload fails
+      setPreviewUrl(null);
+      if (type === 'blogs') {
+        setBlogForm(prev => ({ ...prev, image: editingItem?.image || 'https://picsum.photos/seed/blog/800/600' }));
+      } else {
+        setCardForm(prev => ({ ...prev, image: editingItem?.image || 'https://picsum.photos/seed/card/400/250' }));
+      }
     } finally {
       setUploading(false);
     }
@@ -166,51 +198,70 @@ const AdminDashboard: React.FC = () => {
 
   const handleSaveBlog = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSaving(true);
     try {
       const finalSlug = blogForm.slug || blogForm.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
       
+      const blogData = {
+        ...blogForm,
+        slug: finalSlug,
+        updatedAt: Timestamp.now()
+      };
+
       if (editingItem) {
         await updateDoc(doc(db, 'blogs', editingItem.id), {
-          ...blogForm,
-          slug: finalSlug,
-          updatedAt: Timestamp.now()
+          ...blogData,
+          createdAt: editingItem.createdAt || Timestamp.now()
         });
       } else {
         await addDoc(collection(db, 'blogs'), {
-          ...blogForm,
-          slug: finalSlug,
-          createdAt: Timestamp.now(),
-          updatedAt: Timestamp.now()
+          ...blogData,
+          createdAt: Timestamp.now()
         });
       }
       setIsModalOpen(false);
       setEditingItem(null);
-      setBlogForm({ title: '', slug: '', excerpt: '', content: '', author: '', category: 'Credit Cards', image: 'https://picsum.photos/seed/blog/800/600', readTime: '5 min read', featured: false });
-    } catch (error) {
-      console.error("Error saving blog", error);
+      setPreviewUrl(null);
+      setBlogForm({ title: '', slug: '', excerpt: '', content: '', author: '', category: 'Credit Cards', image: 'https://picsum.photos/seed/blog/800/600', readTime: '5 min read', featured: false, status: 'published' as 'draft' | 'published' });
+    } catch (error: any) {
+      const errorMessage = error.message || "Failed to save blog post.";
+      setError(errorMessage);
+      handleFirestoreError(error, editingItem ? OperationType.UPDATE : OperationType.CREATE, 'blogs');
+    } finally {
+      setSaving(false);
     }
   };
 
   const handleSaveCard = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSaving(true);
     try {
+      const cardData = {
+        ...cardForm,
+        updatedAt: Timestamp.now()
+      };
+
       if (editingItem) {
         await updateDoc(doc(db, 'cards', editingItem.id), {
-          ...cardForm,
-          updatedAt: Timestamp.now()
+          ...cardData,
+          createdAt: editingItem.createdAt || Timestamp.now()
         });
       } else {
         await addDoc(collection(db, 'cards'), {
-          ...cardForm,
-          createdAt: Timestamp.now(),
-          updatedAt: Timestamp.now()
+          ...cardData,
+          createdAt: Timestamp.now()
         });
       }
       setIsModalOpen(false);
       setEditingItem(null);
-      setCardForm({ name: '', bank: '', issuer: '', type: 'Rewards', image: 'https://picsum.photos/seed/card/400/250', rating: 4.5, benefits: [''], annualFee: '₹0', joiningFee: '₹0', bestFor: 'Shopping', category: 'Shopping', color: 'from-blue-600 to-indigo-700', rewardsRate: '5%', projectedSavings: '₹12,000/yr' });
-    } catch (error) {
-      console.error("Error saving card", error);
+      setPreviewUrl(null);
+      setCardForm({ name: '', bank: '', issuer: '', type: 'Rewards', image: 'https://picsum.photos/seed/card/400/250', rating: 4.5, benefits: [''], annualFee: '₹0', joiningFee: '₹0', bestFor: 'Shopping', category: 'Shopping', color: 'from-blue-600 to-indigo-700', rewardsRate: '5%', projectedSavings: '₹12,000/yr', status: 'published' as 'draft' | 'published' });
+    } catch (error: any) {
+      const errorMessage = error.message || "Failed to save card.";
+      setError(errorMessage);
+      handleFirestoreError(error, editingItem ? OperationType.UPDATE : OperationType.CREATE, 'cards');
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -222,7 +273,7 @@ const AdminDashboard: React.FC = () => {
       setIsDeleteModalOpen(false);
       setItemToDelete(null);
     } catch (error) {
-      console.error("Error deleting item", error);
+      handleFirestoreError(error, OperationType.DELETE, itemToDelete.collection);
     }
   };
 
@@ -238,6 +289,40 @@ const AdminDashboard: React.FC = () => {
       </div>
     );
   }
+
+  const fixData = async () => {
+    setSaving(true);
+    try {
+      const blogsSnap = await getDocs(collection(db, 'blogs'));
+      for (const d of blogsSnap.docs) {
+        const data = d.data();
+        if (!data.createdAt || !data.updatedAt || !data.status) {
+          await updateDoc(doc(db, 'blogs', d.id), {
+            createdAt: data.createdAt || Timestamp.now(),
+            updatedAt: data.updatedAt || Timestamp.now(),
+            status: data.status || 'published'
+          });
+        }
+      }
+
+      const cardsSnap = await getDocs(collection(db, 'cards'));
+      for (const d of cardsSnap.docs) {
+        const data = d.data();
+        if (!data.createdAt || !data.updatedAt || !data.status) {
+          await updateDoc(doc(db, 'cards', d.id), {
+            createdAt: data.createdAt || Timestamp.now(),
+            updatedAt: data.updatedAt || Timestamp.now(),
+            status: data.status || 'published'
+          });
+        }
+      }
+      alert('Data fixed successfully!');
+    } catch (error: any) {
+      setError("Failed to fix data: " + error.message);
+    } finally {
+      setSaving(false);
+    }
+  };
 
   if (!user) {
     return (
@@ -360,17 +445,32 @@ const AdminDashboard: React.FC = () => {
             <h1 className="text-3xl font-serif font-bold text-black capitalize">{activeTab}</h1>
             <p className="text-black/40 text-sm">Manage your application {activeTab} here.</p>
           </div>
-          {activeTab !== 'waitlist' && (
+          <div className="flex items-center gap-4">
             <button 
-              onClick={() => {
-                setEditingItem(null);
-                setIsModalOpen(true);
-              }}
-              className="bg-black text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-clay transition-colors shadow-lg"
+              onClick={fixData}
+              disabled={saving}
+              className="px-4 py-2 bg-amber-100 text-amber-700 rounded-lg text-xs font-bold uppercase tracking-widest hover:bg-amber-200 transition-colors flex items-center gap-2"
             >
-              <Plus size={20} /> Add New {activeTab === 'blogs' ? 'Post' : 'Card'}
+              <Zap size={14} />
+              Fix Data Sync
             </button>
-          )}
+            {activeTab !== 'waitlist' && (
+              <button 
+                onClick={() => {
+                  setEditingItem(null);
+                  if (activeTab === 'blogs') {
+                    setBlogForm({ title: '', slug: '', excerpt: '', content: '', author: '', category: 'Credit Cards', image: 'https://picsum.photos/seed/blog/800/600', readTime: '5 min read', featured: false, status: 'published' as 'draft' | 'published' });
+                  } else {
+                    setCardForm({ name: '', bank: '', issuer: '', type: 'Rewards', image: 'https://picsum.photos/seed/card/400/250', rating: 4.5, benefits: [''], annualFee: '₹0', joiningFee: '₹0', bestFor: 'Shopping', category: 'Shopping', color: 'from-blue-600 to-indigo-700', rewardsRate: '5%', projectedSavings: '₹12,000/yr', status: 'published' as 'draft' | 'published' });
+                  }
+                  setIsModalOpen(true);
+                }}
+                className="bg-black text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-clay transition-colors shadow-lg"
+              >
+                <Plus size={20} /> Add New {activeTab === 'blogs' ? 'Post' : 'Card'}
+              </button>
+            )}
+          </div>
         </header>
 
         {/* Content Area */}
@@ -408,7 +508,8 @@ const AdminDashboard: React.FC = () => {
                             category: blog.category,
                             image: blog.image,
                             readTime: blog.readTime,
-                            featured: blog.featured || false
+                            featured: blog.featured || false,
+                            status: blog.status || 'published'
                           });
                           setIsModalOpen(true);
                         }}
@@ -465,7 +566,8 @@ const AdminDashboard: React.FC = () => {
                             category: card.category || 'Shopping',
                             color: card.color,
                             rewardsRate: card.rewardsRate || '5%',
-                            projectedSavings: card.projectedSavings || '₹12,000/yr'
+                            projectedSavings: card.projectedSavings || '₹12,000/yr',
+                            status: card.status || 'published'
                           });
                           setIsModalOpen(true);
                         }}
@@ -558,12 +660,30 @@ const AdminDashboard: React.FC = () => {
               <h2 className="text-2xl font-serif font-bold">
                 {editingItem ? 'Edit' : 'Add New'} {activeTab === 'blogs' ? 'Blog Post' : 'Card'}
               </h2>
-              <button onClick={() => setIsModalOpen(false)} className="text-black/40 hover:text-black transition-colors">
+              <button 
+                onClick={() => {
+                  setIsModalOpen(false);
+                  setPreviewUrl(null);
+                  setError(null);
+                }} 
+                className="text-black/40 hover:text-black transition-colors"
+              >
                 <X size={24} />
               </button>
             </div>
 
             <div className="p-6 overflow-y-auto">
+              {error && (
+                <div className="mb-6 p-4 bg-red-50 text-red-600 text-sm rounded-xl border border-red-100 flex items-start gap-3">
+                  <X className="mt-0.5 flex-shrink-0" size={16} />
+                  <div>
+                    <p className="font-bold mb-1">Error Saving Data</p>
+                    <p className="opacity-80">{error}</p>
+                    <p className="mt-2 text-[10px] uppercase tracking-widest font-bold">Please check all fields and try again.</p>
+                  </div>
+                </div>
+              )}
+
               {activeTab === 'blogs' ? (
                 <form onSubmit={handleSaveBlog} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -625,15 +745,28 @@ const AdminDashboard: React.FC = () => {
                           </select>
                         </div>
                       </div>
-                      <div className="flex items-center gap-4 p-4 bg-black/5 rounded-xl">
-                        <input 
-                          type="checkbox" 
-                          id="featured"
-                          checked={blogForm.featured}
-                          onChange={e => setBlogForm({...blogForm, featured: e.target.checked})}
-                          className="w-5 h-5 accent-teal"
-                        />
-                        <label htmlFor="featured" className="text-sm font-bold text-black/60 cursor-pointer">Featured Post (Main Story)</label>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Publish Status</label>
+                          <select 
+                            value={blogForm.status}
+                            onChange={e => setBlogForm({...blogForm, status: e.target.value as 'draft' | 'published'})}
+                            className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+                          >
+                            <option value="published">Published</option>
+                            <option value="draft">Draft</option>
+                          </select>
+                        </div>
+                        <div className="flex items-center gap-4 p-4 bg-black/5 rounded-xl h-[56px] mt-6">
+                          <input 
+                            type="checkbox" 
+                            id="featured"
+                            checked={blogForm.featured}
+                            onChange={e => setBlogForm({...blogForm, featured: e.target.checked})}
+                            className="w-5 h-5 accent-teal"
+                          />
+                          <label htmlFor="featured" className="text-sm font-bold text-black/60 cursor-pointer">Featured Post</label>
+                        </div>
                       </div>
                     </div>
 
@@ -702,11 +835,11 @@ const AdminDashboard: React.FC = () => {
                   <div className="flex justify-end pt-4 border-t border-black/5">
                     <button 
                       type="submit" 
-                      disabled={uploading}
+                      disabled={uploading || saving}
                       className="bg-teal text-white px-10 py-4 rounded-xl font-bold hover:bg-teal/90 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                     >
-                      {uploading ? <Loader2 className="animate-spin" size={20} /> : <Check size={20} />}
-                      Save Blog Post
+                      {(uploading || saving) ? <Loader2 className="animate-spin" size={20} /> : <Check size={20} />}
+                      {saving ? 'Saving...' : 'Save Blog Post'}
                     </button>
                   </div>
                 </form>
@@ -784,6 +917,19 @@ const AdminDashboard: React.FC = () => {
                             onChange={e => setCardForm({...cardForm, joiningFee: e.target.value})}
                             className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
                           />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Publish Status</label>
+                          <select 
+                            value={cardForm.status}
+                            onChange={e => setCardForm({...cardForm, status: e.target.value as 'draft' | 'published'})}
+                            className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+                          >
+                            <option value="published">Published</option>
+                            <option value="draft">Draft</option>
+                          </select>
                         </div>
                       </div>
                     </div>

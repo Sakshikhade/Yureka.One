@@ -31,7 +31,7 @@ const Hero: React.FC = () => {
                 
                 {/* Masthead - Brand Name */}
                 <div className="flex-1 text-center px-4 mb-4 md:mb-0">
-                    <h1 className="text-4xl md:text-6xl lg:text-8xl font-serif font-black tracking-tighter leading-none text-ink">
+                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-serif font-black tracking-tighter leading-none text-ink">
                         Jupyter Times
                     </h1>
                 </div>
@@ -50,7 +50,7 @@ const Hero: React.FC = () => {
             </div>
 
             {/* Date Line & Key Value Props */}
-            <div className="w-full border-b border-ink/10 py-2 mb-16 grid grid-cols-1 md:grid-cols-3 items-center opacity-0 animate-fade-in-up delay-100 px-2 gap-y-2 md:gap-y-0">
+            <div className="w-full border-b border-ink/10 py-2 mb-8 md:mb-16 grid grid-cols-1 md:grid-cols-3 items-center opacity-0 animate-fade-in-up delay-100 px-2 gap-y-2 md:gap-y-0">
                 <div className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-ink/60 flex gap-4 justify-center md:justify-start">
                     <span>Bengaluru, India</span>
                     <span className="hidden lg:inline">|</span>
@@ -60,32 +60,33 @@ const Hero: React.FC = () => {
                     {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                 </div>
                 <div className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-ink/60 text-center md:text-right">
-                    ₹15K+ Projected Rewards • Free Forever
+                    <span className="md:hidden">₹15K+ Rewards • Free</span>
+                    <span className="hidden md:inline">₹15K+ Projected Rewards • Free Forever</span>
                 </div>
             </div>
 
             {/* --- MAIN HEADLINE SECTION (H2 for SEO) --- */}
-            <div className="w-full text-center mb-12 opacity-0 animate-fade-in-up delay-200">
-                <div className="flex justify-center items-center gap-4 mb-6">
-                     <div className="h-px bg-clay w-8 md:w-16"></div>
-                     <span className="text-clay font-mono font-bold text-xs uppercase tracking-[0.3em]">Smart Card Finder</span>
-                     <div className="h-px bg-clay w-8 md:w-16"></div>
+            <div className="w-full text-center mb-8 md:mb-12 opacity-0 animate-fade-in-up delay-200 px-4">
+                <div className="flex justify-center items-center gap-4 mb-4 md:mb-6">
+                     <div className="h-px bg-clay w-6 md:w-16"></div>
+                     <span className="text-clay font-mono font-bold text-[10px] md:text-xs uppercase tracking-[0.3em]">Smart Card Finder</span>
+                     <div className="h-px bg-clay w-6 md:w-16"></div>
                 </div>
-                <h2 className="text-4xl md:text-6xl lg:text-7xl leading-[0.9] font-serif font-medium text-ink uppercase tracking-tighter mix-blend-difference transform scale-y-105">
+                <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl leading-[0.9] font-serif font-medium text-ink uppercase tracking-tighter mix-blend-difference transform scale-y-105">
                     Stop Guessing. <br className="hidden md:block" /> <span className="italic font-light">Start Saving.</span>
                 </h2>
-                <h3 className="text-xl md:text-2xl lg:text-3xl font-sans font-light text-ink/60 mt-6 md:mt-8 max-w-2xl mx-auto leading-relaxed">
+                <h3 className="text-lg md:text-2xl lg:text-3xl font-sans font-light text-ink/60 mt-4 md:mt-8 max-w-2xl mx-auto leading-relaxed">
                     We check <span className="font-bold text-ink">200+ credit cards</span> to find the one that saves you the most money.
                 </h3>
                 
-                <div className="mt-10 flex flex-col md:flex-row items-center justify-center gap-4">
-                    <Link to="/ai-magic" className="group relative px-8 py-3 bg-ink text-white overflow-hidden rounded-full">
+                <div className="mt-8 md:mt-10 flex flex-col md:flex-row items-center justify-center gap-4">
+                    <Link to="/ai-magic" className="group relative px-8 py-3 bg-ink text-white overflow-hidden rounded-full w-full md:w-auto">
                         <div className="absolute inset-0 w-full h-full bg-teal/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
-                        <span className="relative z-10 font-bold text-xs uppercase tracking-[0.2em] flex items-center gap-2">
+                        <span className="relative z-10 font-bold text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-2">
                             <Sparkles size={14} /> Find My Card
                         </span>
                     </Link>
-                    <span className="text-xs font-mono text-ink/40 uppercase tracking-widest">
+                    <span className="text-[10px] md:text-xs font-mono text-ink/40 uppercase tracking-widest">
                         Takes 30 seconds
                     </span>
                 </div>
@@ -129,11 +130,11 @@ const Hero: React.FC = () => {
                 </div>
 
                 {/* Center: Hero Images (The "Photo") */}
-                <div className="lg:col-span-6 relative flex justify-center items-center pt-10 pb-10 lg:px-10 min-h-[500px]">
-                     <div className="relative w-full max-w-md aspect-[4/5]">
+                <div className="lg:col-span-6 relative flex justify-center items-center pt-6 pb-10 lg:px-10 min-h-[400px] md:min-h-[500px]">
+                     <div className="relative w-full max-w-[280px] sm:max-w-md aspect-[4/5]">
                         {/* Image 1 */}
                         <div className="absolute top-0 left-0 w-[85%] z-20 opacity-0 animate-fade-in-up delay-[400ms]">
-                           <div className="bg-paper p-3 pb-10 shadow-xl rotate-[-2deg] transition-all duration-700 hover:rotate-0 hover:z-30 hover:scale-105 border border-ink/10">
+                           <div className="bg-paper p-2 md:p-3 pb-6 md:pb-10 shadow-xl rotate-[-2deg] transition-all duration-700 hover:rotate-0 hover:z-30 hover:scale-105 border border-ink/10">
                                 <div className="aspect-[4/5] bg-gray-200 grayscale hover:grayscale-0 transition-all duration-500 overflow-hidden border border-ink/5 sepia-[0.1]">
                                      <ImageWithLoader 
                                         src="https://images.unsplash.com/photo-1556742044-3c52d6e88c62?auto=format&fit=crop&q=80&w=800" 
@@ -141,9 +142,9 @@ const Hero: React.FC = () => {
                                         alt="Modern credit card payment experience"
                                      />
                                 </div>
-                                <div className="mt-4 flex justify-between items-end px-1">
-                                    <p className="text-ink font-serif italic text-sm">Fig A. Simple Rewards</p>
-                                    <span className="text-[10px] font-bold text-ink/40 uppercase tracking-widest">Pg 1</span>
+                                <div className="mt-2 md:mt-4 flex justify-between items-end px-1">
+                                    <p className="text-ink font-serif italic text-[10px] md:text-sm">Fig A. Simple Rewards</p>
+                                    <span className="text-[8px] md:text-[10px] font-bold text-ink/40 uppercase tracking-widest">Pg 1</span>
                                 </div>
                            </div>
                         </div>
@@ -167,9 +168,9 @@ const Hero: React.FC = () => {
                 </div>
 
                 {/* Right Column: CTAs / Index */}
-                <div className="lg:col-span-3 border-l border-ink/10 pl-6 pt-8 flex flex-col justify-between opacity-0 animate-fade-in-up delay-[600ms]">
+                <div className="lg:col-span-3 border-l-0 lg:border-l border-ink/10 pl-0 lg:pl-6 pt-8 flex flex-col justify-between opacity-0 animate-fade-in-up delay-[600ms]">
                      <div>
-                        <h4 className="font-bold text-xs uppercase tracking-[0.2em] mb-8 text-ink/40 border-b border-ink/10 pb-2">In This Issue</h4>
+                        <h4 className="font-bold text-xs uppercase tracking-[0.2em] mb-4 md:mb-8 text-ink/40 border-b border-ink/10 pb-2">In This Issue</h4>
                         <ul className="space-y-0">
                             {[
                                 { title: "AI Magic", page: "03", link: "/ai-magic", desc: "Conversational Matching" },
@@ -178,12 +179,12 @@ const Hero: React.FC = () => {
                                 { title: "Manifesto", page: "12", link: "/manifesto", desc: "Our Vision" }
                             ].map((item, i) => (
                                 <li key={i} className="border-b border-ink/10 last:border-0">
-                                    <Link to={item.link} className="flex justify-between items-start py-4 group cursor-pointer hover:bg-ink/5 px-2 -mx-2 transition-colors">
+                                    <Link to={item.link} className="flex justify-between items-start py-3 md:py-4 group cursor-pointer hover:bg-ink/5 px-2 -mx-2 transition-colors">
                                         <div>
-                                            <span className="block font-serif text-xl text-ink group-hover:text-teal transition-colors mb-1">{item.title}</span>
-                                            <span className="block text-[10px] uppercase tracking-wider text-ink/50">{item.desc}</span>
+                                            <span className="block font-serif text-lg md:text-xl text-ink group-hover:text-teal transition-colors mb-1">{item.title}</span>
+                                            <span className="block text-[9px] md:text-[10px] uppercase tracking-wider text-ink/50">{item.desc}</span>
                                         </div>
-                                        <span className="font-mono text-sm text-ink/30 font-bold">Pg.{item.page}</span>
+                                        <span className="font-mono text-xs md:text-sm text-ink/30 font-bold">Pg.{item.page}</span>
                                     </Link>
                                 </li>
                             ))}

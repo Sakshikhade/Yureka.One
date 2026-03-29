@@ -25,6 +25,7 @@ import WaitlistPage from './components/WaitlistPage';
 import AdminDashboard from './components/AdminDashboard';
 import { getCards } from './services/firebaseService';
 import { Card } from './types';
+import { featuredCards } from './data';
 import { Sparkles } from 'lucide-react';
 
 const ScrollToTop = () => {
@@ -54,11 +55,11 @@ const MainPage = ({ cards }: { cards: Card[] }) => (
 const AppContent: React.FC = () => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
-  const [cards, setCards] = React.useState<Card[]>([]);
+  const [cards, setCards] = React.useState<Card[]>(featuredCards);
 
   React.useEffect(() => {
     const unsubscribe = getCards((fetchedCards) => {
-      setCards(fetchedCards);
+      setCards(fetchedCards.length > 0 ? fetchedCards : featuredCards);
     });
     return () => unsubscribe();
   }, []);

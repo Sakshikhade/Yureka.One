@@ -3,12 +3,14 @@ import { Card } from '../types';
 import { CreditCard as CardIcon, ArrowUpRight, Sparkles, Zap, MousePointer2 } from 'lucide-react';
 import ImageWithLoader from './ImageWithLoader';
 import { Link } from 'react-router-dom';
+import { featuredCards } from '../data';
 
 interface ShowcaseCarouselProps {
-  cards: Card[];
+  cards: any[];
 }
 
-const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards }) => {
+const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp }) => {
+  const cards = cardsProp.length > 0 ? cardsProp : featuredCards;
   const containerRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
   const ctaRef = useRef<HTMLDivElement>(null);
@@ -82,7 +84,7 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards }) => {
   }, [cards.length]);
 
   return (
-    <section ref={containerRef} className="relative bg-cream h-[350vh] border-t border-ink/10">
+    <section ref={containerRef} className="relative bg-cream h-[350vh] border-t border-ink/10 z-10">
       
       <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center p-2 md:p-6 lg:p-8">
         
@@ -117,7 +119,7 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards }) => {
 
                     {/* Middle Column: Cards */}
                     <div className="col-span-1 h-full relative flex items-center justify-center pointer-events-none">
-                        <div className="relative w-[85vw] h-[60vh] max-h-[600px] max-w-[400px] perspective-1000 pointer-events-auto mt-16 lg:mt-0">
+                        <div className="relative w-[75vw] sm:w-[85vw] h-[50vh] sm:h-[60vh] max-h-[600px] max-w-[400px] perspective-1000 pointer-events-auto mt-12 sm:mt-16 lg:mt-0">
                             {cards.map((card, i) => (
                                 <div
                                     key={card.id}
@@ -126,41 +128,41 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards }) => {
                                     style={{ transform: 'translate3d(100%, 0, 0)', opacity: 0 }}
                                 >
                                     {/* Card Design: Gallery Frame Style */}
-                                    <div className="w-full h-full bg-[#F5F5F0] p-3 pb-8 shadow-2xl border border-ink/10 flex flex-col relative group transition-all duration-300">
+                                    <div className="w-full h-full bg-[#F5F5F0] p-2 sm:p-3 pb-6 sm:pb-8 shadow-2xl border border-ink/10 flex flex-col relative group transition-all duration-300">
                                         
                                         {/* Image Area with 'Mat' */}
-                                        <div className="h-[65%] relative overflow-hidden bg-[#F0F0F0] border-4 border-paper shadow-sm grayscale group-hover:grayscale-0 transition-all duration-700">
+                                        <div className="h-[60%] sm:h-[65%] relative overflow-hidden bg-[#F0F0F0] border-2 sm:border-4 border-paper shadow-sm grayscale group-hover:grayscale-0 transition-all duration-700">
                                             <ImageWithLoader 
                                                 src={card.image} 
                                                 alt={card.name} 
                                                 className="w-full h-full object-cover"
                                             />
                                             {/* Floating Glass Badge */}
-                                            <div className="absolute top-4 right-4 glass-panel backdrop-blur-md text-ink px-3 py-1 text-[9px] font-bold uppercase tracking-widest rounded-full shadow-sm">
+                                            <div className="absolute top-2 sm:top-4 right-2 sm:right-4 glass-panel backdrop-blur-md text-ink px-2 sm:px-3 py-0.5 sm:py-1 text-[7px] sm:text-[9px] font-bold uppercase tracking-widest rounded-full shadow-sm">
                                                 {card.issuer}
                                             </div>
                                         </div>
                                         
                                         {/* Content Area */}
-                                        <div className="flex-1 pt-6 px-2 flex flex-col justify-between">
+                                        <div className="flex-1 pt-3 sm:pt-6 px-1 sm:px-2 flex flex-col justify-between">
                                             <div>
-                                                <div className="flex justify-between items-baseline mb-3 border-b border-ink/10 pb-3">
-                                                    <h3 className="text-2xl font-serif text-ink leading-none">{card.name}</h3>
-                                                    <span className="text-[10px] font-bold text-ink/40 uppercase tracking-widest">No. {i + 1}</span>
+                                                <div className="flex justify-between items-baseline mb-2 sm:mb-3 border-b border-ink/10 pb-2 sm:pb-3">
+                                                    <h3 className="text-xl sm:text-2xl font-serif text-ink leading-none">{card.name}</h3>
+                                                    <span className="text-[8px] sm:text-[10px] font-bold text-ink/40 uppercase tracking-widest">No. {i + 1}</span>
                                                 </div>
-                                                <div className="flex justify-between items-center text-ink/60 text-[10px] font-bold uppercase tracking-widest mt-2">
-                                                    <span className="flex items-center gap-1.5"><Sparkles size={12} /> {card.rewardsRate} Rewards</span>
-                                                    <span className="flex items-center gap-1.5"><Zap size={12} /> {card.category}</span>
+                                                <div className="flex justify-between items-center text-ink/60 text-[8px] sm:text-[10px] font-bold uppercase tracking-widest mt-1 sm:mt-2">
+                                                    <span className="flex items-center gap-1 sm:gap-1.5"><Sparkles size={10} /> {card.rewardsRate}</span>
+                                                    <span className="flex items-center gap-1 sm:gap-1.5"><Zap size={10} /> {card.category}</span>
                                                 </div>
                                             </div>
-
+ 
                                             <div className="flex items-end justify-between mt-auto">
                                                 <div>
-                                                    <p className="text-xs text-ink/40 font-bold uppercase tracking-widest mb-1">Yearly Savings</p>
-                                                    <p className="text-3xl font-serif text-ink tracking-tight">{card.projectedSavings}</p>
+                                                    <p className="text-[8px] sm:text-xs text-ink/40 font-bold uppercase tracking-widest mb-0.5 sm:mb-1">Savings</p>
+                                                    <p className="text-2xl sm:text-3xl font-serif text-ink tracking-tight">{card.projectedSavings}</p>
                                                 </div>
-                                                <button className="w-12 h-12 border border-ink/10 text-ink flex items-center justify-center hover:bg-ink hover:text-white transition-colors rounded-full">
-                                                    <ArrowUpRight size={18} />
+                                                <button className="w-8 h-8 sm:w-12 sm:h-12 border border-ink/10 text-ink flex items-center justify-center hover:bg-ink hover:text-white transition-colors rounded-full">
+                                                    <ArrowUpRight size={14} className="sm:w-[18px] sm:h-[18px]" />
                                                 </button>
                                             </div>
                                         </div>
@@ -174,19 +176,19 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards }) => {
                     <div className="col-span-1 h-full relative flex items-center justify-center lg:justify-start lg:pl-20 pointer-events-none">
                         <div 
                             ref={ctaRef}
-                            className="relative pointer-events-auto hidden lg:block"
+                            className="relative pointer-events-auto"
                             style={{ opacity: 0, transform: 'translate3d(100%, 0, 0)' }}
                         >
                             <Link to="/cards" className="group block">
-                                <div className="w-[340px] h-[480px] bg-clay border border-ink/10 relative overflow-hidden flex flex-col items-center justify-center text-center p-10 transition-all duration-300 shadow-2xl">
-                                    <div className="absolute inset-0 border-[12px] border-double border-black/10 pointer-events-none"></div>
+                                <div className="w-[280px] sm:w-[340px] h-[400px] sm:h-[480px] bg-clay border border-ink/10 relative overflow-hidden flex flex-col items-center justify-center text-center p-6 sm:p-10 transition-all duration-300 shadow-2xl">
+                                    <div className="absolute inset-0 border-[8px] sm:border-[12px] border-double border-black/10 pointer-events-none"></div>
                                     <div className="relative z-10 flex flex-col items-center">
-                                        <div className="w-16 h-16 bg-ink text-white rounded-full flex items-center justify-center mb-6 shadow-xl group-hover:scale-110 transition-transform duration-500">
-                                            <MousePointer2 size={24} />
+                                        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-ink text-white rounded-full flex items-center justify-center mb-4 sm:mb-6 shadow-xl group-hover:scale-110 transition-transform duration-500">
+                                            <MousePointer2 size={20} className="sm:w-[24px] sm:h-[24px]" />
                                         </div>
-                                        <h3 className="text-xl font-serif text-ink mb-2 italic">Start</h3>
-                                        <p className="text-2xl font-bold text-ink tracking-tighter leading-none mb-8 uppercase">Find<br/>My Card</p>
-                                        <div className="bg-ink text-white px-6 py-3 font-bold uppercase tracking-widest text-xs group-hover:bg-paper group-hover:text-ink transition-colors rounded-sm">
+                                        <h3 className="text-lg sm:text-xl font-serif text-ink mb-1 sm:mb-2 italic">Start</h3>
+                                        <p className="text-xl sm:text-2xl font-bold text-ink tracking-tighter leading-none mb-6 sm:mb-8 uppercase">Find<br/>My Card</p>
+                                        <div className="bg-ink text-white px-4 sm:px-6 py-2 sm:py-3 font-bold uppercase tracking-widest text-[10px] sm:text-xs group-hover:bg-paper group-hover:text-ink transition-colors rounded-sm">
                                             View All Cards
                                         </div>
                                     </div>

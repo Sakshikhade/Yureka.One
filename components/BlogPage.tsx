@@ -3,6 +3,7 @@ import ImageWithLoader from './ImageWithLoader';
 import { ArrowUpRight, Calendar, User, ArrowRight } from 'lucide-react';
 import { getBlogs } from '../services/firebaseService';
 import { Blog } from '../types';
+import { Timestamp } from 'firebase/firestore';
 
 interface FadeInSectionProps {
   children: React.ReactNode;
@@ -40,62 +41,76 @@ const FadeInSection: React.FC<FadeInSectionProps> = ({ children, delay = 0, clas
   );
 };
 
-const blogs = [
+const blogs: Blog[] = [
     {
-        id: 1,
+        id: "1",
         title: "The UPI Cashback Revolution: Why your bank is hiding it",
         excerpt: "UPI is the backbone of India's economy, but are you getting the rewards you deserve? Here is how to stack cashback on every scan.",
         category: "Fintech",
         author: "Riya S.",
         date: "Oct 12, 2026",
         image: "https://images.unsplash.com/photo-1556742044-3c52d6e88c62?auto=format&fit=crop&q=80&w=1600",
-        featured: true
+        featured: true,
+        content: "Full content here..."
     },
     {
-        id: 2,
+        id: "2",
         title: "How AI Finds Your Perfect Card in 60 Seconds",
         excerpt: "Stop scrolling through endless PDF terms. Our AI engine scans 200+ cards to find your match based on your real spending habits.",
         category: "Technology",
         author: "Ankit M.",
         date: "Oct 08, 2026",
         image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=800",
-        featured: false
+        featured: false,
+        content: "Full content here..."
     },
     {
-        id: 3,
+        id: "3",
         title: "The Voucher Hub: Stacking Rewards like a Pro",
         excerpt: "Did you know you can get 8% off on top of your card rewards? We built a hub for that. Here is the strategy.",
         category: "Savings",
         author: "Team Jupyter",
         date: "Sep 28, 2026",
         image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=800",
-        featured: false
+        featured: false,
+        content: "Full content here..."
     },
     {
-        id: 4,
+        id: "4",
         title: "Investing in Credit: Why your score is your best asset",
         excerpt: "Data-backed analysis on why a high credit score is more valuable than a high savings balance in 2026.",
         category: "Finance",
         author: "Varun K.",
         date: "Sep 15, 2026",
         image: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&q=80&w=800",
-        featured: false
+        featured: false,
+        content: "Full content here..."
     },
     {
-        id: 5,
+        id: "5",
         title: "NPA Settlement: Clearing the path to financial freedom",
         excerpt: "Debt happens. Here is how our AI-driven negotiation tool helps you settle bad debt and rebuild your credit history.",
         category: "Policy",
         author: "Simran J.",
         date: "Aug 30, 2026",
         image: "https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?auto=format&fit=crop&q=80&w=800",
-        featured: false
+        featured: false,
+        content: "Full content here..."
     }
 ];
 
 const BlogPage: React.FC = () => {
     const [blogsList, setBlogsList] = useState<Blog[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+
+    const formatDate = (blog: Blog) => {
+        if (blog.date) return blog.date;
+        if (blog.createdAt) {
+            const date = blog.createdAt instanceof Timestamp ? blog.createdAt.toDate() : new Date(blog.createdAt);
+            return date.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+        }
+        return 'N/A';
+    };
 
     useEffect(() => {
         const unsubscribe = getBlogs((fetchedBlogs) => {
@@ -105,8 +120,9 @@ const BlogPage: React.FC = () => {
         return () => unsubscribe();
     }, []);
 
-    const featuredPost = blogsList.find(b => b.featured);
-    const regularPosts = blogsList.filter(b => !b.featured);
+    const blogsToDisplay = blogsList.length > 0 ? blogsList : blogs;
+    const featuredPost = blogsToDisplay.find(b => b.featured) || blogsToDisplay[0];
+    const regularPosts = blogsToDisplay.filter(b => b.id !== featuredPost?.id);
 
     if (isLoading) {
         return (
@@ -161,7 +177,7 @@ const BlogPage: React.FC = () => {
                                     <div className="max-w-3xl">
                                         <div className="flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-teal mb-6">
                                             <span className="bg-teal/10 px-3 py-1 rounded-full">{featuredPost.category}</span>
-                                            <span className="text-black/40">{featuredPost.date}</span>
+                                            <span className="text-black/40">{formatDate(featuredPost)}</span>
                                         </div>
                                         <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold leading-[1.1] mb-6 group-hover:text-clay transition-colors text-black tracking-tight">{featuredPost.title}</h2>
                                         <p className="text-xl text-black/60 font-serif leading-relaxed mb-8 line-clamp-3">{featuredPost.excerpt}</p>
@@ -199,7 +215,7 @@ const BlogPage: React.FC = () => {
                                             <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-widest text-teal mb-3">
                                                 <span>{post.category}</span>
                                                 <span className="w-1 h-1 bg-black/20 rounded-full"></span>
-                                                <span className="text-black/40">{post.date}</span>
+                                                <span className="text-black/40">{formatDate(post)}</span>
                                             </div>
                                             <h3 className="text-2xl font-serif leading-tight mb-4 group-hover:text-clay transition-colors text-black line-clamp-2">{post.title}</h3>
                                             <div className="flex items-center gap-2 text-black font-bold text-[10px] uppercase tracking-widest group-hover:gap-4 transition-all opacity-60 group-hover:opacity-100">

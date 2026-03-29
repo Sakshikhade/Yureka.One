@@ -44,7 +44,7 @@ const Stats: React.FC = () => {
   const { ref, isInView } = useInView(0.1);
 
   return (
-    <section className="py-24 md:py-32 bg-cream px-4 md:px-8 border-y border-ink/10 relative">
+    <section className="py-16 md:py-32 bg-cream px-4 md:px-8 border-y border-ink/10 relative">
       {/* Background Grid Pattern for Financial Look */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.03]" 
            style={{ 
@@ -56,19 +56,19 @@ const Stats: React.FC = () => {
       <div className="max-w-[1440px] mx-auto relative z-10" ref={ref}>
         
         {/* Header - Financial Section Style */}
-        <div className="border-b-4 border-double border-ink/10 mb-12 pb-6">
-             <div className="flex flex-col md:flex-row justify-between items-end gap-6">
+        <div className="border-b-4 border-double border-ink/10 mb-8 md:mb-12 pb-6">
+             <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
                 <div className={`transition-all duration-1000 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-                    <div className="flex items-center gap-3 mb-6">
+                    <div className="flex items-center gap-3 mb-4 md:mb-6">
                         <div className="w-1.5 h-1.5 bg-teal rounded-full animate-pulse"></div>
-                        <h2 className="text-xs font-mono font-bold tracking-[0.3em] uppercase text-ink/60">Our Numbers</h2>
+                        <h2 className="text-[10px] md:text-xs font-mono font-bold tracking-[0.3em] uppercase text-ink/60">Our Numbers</h2>
                     </div>
-                    <h3 className="text-3xl md:text-4xl font-serif leading-none text-ink tracking-tight">
+                    <h3 className="text-2xl md:text-4xl font-serif leading-none text-ink tracking-tight">
                         Why Use <br/><span className="italic text-ink/50">Us?</span>
                     </h3>
                 </div>
-                <div className="hidden md:block text-right transition-all duration-1000 delay-200 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}">
-                    <p className="text-ink/60 text-lg max-w-sm font-serif italic border-l-2 border-teal pl-4">
+                <div className="md:text-right transition-all duration-1000 delay-200 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}">
+                    <p className="text-ink/60 text-base md:text-lg max-w-sm font-serif italic border-l-2 border-teal pl-4">
                         "Banks make money when you're confused. We help you understand and save."
                     </p>
                 </div>

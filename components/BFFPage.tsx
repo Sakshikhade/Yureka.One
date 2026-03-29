@@ -26,53 +26,53 @@ const BFFPage: React.FC = () => {
     <div className="min-h-screen bg-cream pt-32 pb-20 px-4 md:px-8 relative font-sans text-black overflow-x-hidden">
         
         {/* HEADER */}
-        <div className="max-w-[1440px] mx-auto mb-24 border-b border-black/10 pb-12">
+        <div className="max-w-[1440px] mx-auto mb-16 md:mb-24 border-b border-black/10 pb-8 md:pb-12">
             <FadeInSection>
-                <div className="flex justify-between items-end">
-                    <h1 className="text-5xl md:text-7xl font-serif leading-[0.8] tracking-tighter text-black">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+                    <h1 className="text-4xl sm:text-5xl md:text-7xl font-serif leading-[0.8] tracking-tighter text-black">
                         Get More Value<span className="text-clay">.</span>
                     </h1>
-                    <div className="hidden md:block text-right mb-4">
-                        <p className="font-bold uppercase tracking-widest text-xs mb-2 text-black/60">Fact</p>
-                        <p className="font-serif italic text-xl text-black">Optimization &gt; Loyalty.</p>
+                    <div className="text-left md:text-right mb-0 md:mb-4">
+                        <p className="font-bold uppercase tracking-widest text-[10px] md:text-xs mb-1 md:mb-2 text-black/60">Fact</p>
+                        <p className="font-serif italic text-lg md:text-xl text-black">Optimization &gt; Loyalty.</p>
                     </div>
                 </div>
             </FadeInSection>
         </div>
 
         {/* REWARDS SECTION */}
-        <section className="max-w-[1440px] mx-auto mb-32">
+        <section className="max-w-[1440px] mx-auto mb-20 md:mb-32">
              <div className="grid grid-cols-1 md:grid-cols-12 gap-0 border border-black/10 bg-white shadow-xl">
                 
                 {/* Main Feature */}
-                <div className="col-span-1 md:col-span-8 p-10 md:p-16 border-b md:border-b-0 md:border-r border-black/10 relative">
-                    <span className="absolute top-8 left-8 text-xs font-bold uppercase tracking-[0.3em] text-clay">Why Compare?</span>
-                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif mt-8 mb-6 leading-[0.9] text-black tracking-tight">
+                <div className="col-span-1 md:col-span-8 p-8 md:p-16 border-b md:border-b-0 md:border-r border-black/10 relative">
+                    <span className="absolute top-6 left-6 md:top-8 md:left-8 text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] text-clay">Why Compare?</span>
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif mt-6 md:mt-8 mb-4 md:mb-6 leading-[0.9] text-black tracking-tight">
                         The Right Card Saves You <br/> 
                         <span className="italic font-light opacity-50">₹15,000.</span>
                     </h2>
-                    <p className="text-base md:text-lg font-sans font-light max-w-lg leading-relaxed text-black/80">
+                    <p className="text-sm md:text-lg font-sans font-light max-w-lg leading-relaxed text-black/80">
                         Most people lose money by using the wrong card. We make sure you always use the best one.
                     </p>
-                    <div className="mt-10 inline-block bg-black text-white px-6 py-3 text-xs font-bold uppercase tracking-widest rounded-sm">
+                    <div className="mt-8 md:mt-10 inline-block bg-black text-white px-5 py-2.5 md:px-6 md:py-3 text-[10px] md:text-xs font-bold uppercase tracking-widest rounded-sm">
                         You Save: ₹15,000/yr
                     </div>
                 </div>
 
                 {/* Sidebar Features */}
                 <div className="col-span-1 md:col-span-4 bg-[#F5F5F0]">
-                    <div className="p-12 border-b border-black/10 h-1/2 flex flex-col justify-between hover:bg-clay hover:text-white transition-colors group">
-                        <Gift size={32} className="mb-4 text-black group-hover:text-white" />
+                    <div className="p-8 md:p-12 border-b border-black/10 flex flex-col justify-between hover:bg-clay hover:text-white transition-colors group min-h-[200px] md:h-1/2">
+                        <Gift size={28} className="mb-4 text-black group-hover:text-white md:w-8 md:h-8" />
                         <div>
-                            <h3 className="text-3xl font-serif mb-2 text-black group-hover:text-white">Discount Vouchers</h3>
-                            <p className="opacity-60 text-sm leading-relaxed text-black group-hover:text-white">Get up to 8% off brand vouchers. Use them with your card rewards.</p>
+                            <h3 className="text-2xl md:text-3xl font-serif mb-2 text-black group-hover:text-white">Discount Vouchers</h3>
+                            <p className="opacity-60 text-xs md:text-sm leading-relaxed text-black group-hover:text-white">Get up to 8% off brand vouchers. Use them with your card rewards.</p>
                         </div>
                     </div>
-                    <div className="p-12 h-1/2 flex flex-col justify-between hover:bg-black hover:text-white transition-colors group">
-                        <Sparkles size={32} className="mb-4 text-black group-hover:text-white" />
+                    <div className="p-8 md:p-12 flex flex-col justify-between hover:bg-black hover:text-white transition-colors group min-h-[200px] md:h-1/2">
+                        <Sparkles size={28} className="mb-4 text-black group-hover:text-white md:w-8 md:h-8" />
                         <div>
-                            <h3 className="text-3xl font-serif mb-2 text-black group-hover:text-white">Smart AI</h3>
-                            <p className="opacity-60 text-sm leading-relaxed text-black group-hover:text-white">Chat with our AI to find the perfect card for your spending.</p>
+                            <h3 className="text-2xl md:text-3xl font-serif mb-2 text-black group-hover:text-white">Smart AI</h3>
+                            <p className="opacity-60 text-xs md:text-sm leading-relaxed text-black group-hover:text-white">Chat with our AI to find the perfect card for your spending.</p>
                         </div>
                     </div>
                 </div>
@@ -86,22 +86,22 @@ const BFFPage: React.FC = () => {
         </div>
 
         {/* PARTNER GRID */}
-        <section className="max-w-[1440px] mx-auto pb-24">
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                 <div className="bg-black text-white p-12 md:p-16 flex flex-col justify-between min-h-[400px]">
+        <section className="max-w-[1440px] mx-auto pb-16 md:pb-24">
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                 <div className="bg-black text-white p-10 md:p-16 flex flex-col justify-between min-h-[300px] md:min-h-[400px]">
                      <div>
-                         <h3 className="text-3xl font-serif mb-4">Card API <br/><span className="text-[#00C48C]">Card API</span></h3>
-                         <p className="text-white/50 text-xl max-w-sm">Add our card finder to your website.</p>
+                         <h3 className="text-2xl md:text-3xl font-serif mb-4">Card API <br/><span className="text-[#00C48C]">Card API</span></h3>
+                         <p className="text-white/50 text-lg md:text-xl max-w-sm">Add our card finder to your website.</p>
                      </div>
-                     <div className="w-full h-px bg-white/20 mt-12"></div>
+                     <div className="w-full h-px bg-white/20 mt-8 md:mt-12"></div>
                  </div>
                  
-                 <div className="bg-white border border-black/10 p-12 md:p-16 flex flex-col justify-between min-h-[400px]">
+                 <div className="bg-white border border-black/10 p-10 md:p-16 flex flex-col justify-between min-h-[300px] md:min-h-[400px]">
                      <div>
-                         <h3 className="text-3xl font-serif mb-4 text-black">Debt Help <br/><span className="text-blue-600">Debt Help</span></h3>
-                         <p className="text-black/50 text-xl max-w-sm">Help your users clear their debt.</p>
+                         <h3 className="text-2xl md:text-3xl font-serif mb-4 text-black">Debt Help <br/><span className="text-blue-600">Debt Help</span></h3>
+                         <p className="text-black/50 text-lg md:text-xl max-w-sm">Help your users clear their debt.</p>
                      </div>
-                     <div className="w-full h-px bg-black/10 mt-12"></div>
+                     <div className="w-full h-px bg-black/10 mt-8 md:mt-12"></div>
                  </div>
              </div>
         </section>

@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect, useImperativeHandle, forwardRef } from 'react';
-import { CreditCard } from '../types';
+import { OSFeature } from '../types';
 import { MapPin, BedDouble, Copy, ArrowRight, ArrowUpRight, CreditCard as CardIcon } from 'lucide-react';
 import ImageWithLoader from './ImageWithLoader';
 import { Link } from 'react-router-dom';
@@ -10,7 +10,7 @@ export interface HomeCarouselHandle {
 
 interface HomeCarouselProps {
   id?: string;
-  cards: CreditCard[];
+  cards: OSFeature[];
   title: string;
   subtitle: string;
   className?: string;
@@ -55,7 +55,7 @@ const HomeCarousel = forwardRef<HomeCarouselHandle, HomeCarouselProps>(({
           localProgress = Math.max(0, Math.min(1, localProgress));
           const ease = easeOutQuart(localProgress);
 
-          const startX = 120; 
+          const startX = window.innerWidth < 768 ? 100 : 120; 
           const currentX = startX * (1 - ease);
           const targetRotation = rotations[index % rotations.length];
           const currentRotation = ease * targetRotation;
@@ -63,7 +63,7 @@ const HomeCarousel = forwardRef<HomeCarouselHandle, HomeCarouselProps>(({
           const opacity = localProgress > 0.01 ? 1 : 0;
           const visibility = scrollProgress < myStart ? 'hidden' : 'visible';
 
-          cardEl.style.transform = `translate3d(${currentX}vw, 0, 0) rotate(${currentRotation}deg)`;
+          cardEl.style.transform = `translate3d(${currentX}${window.innerWidth < 768 ? '%' : 'vw'}, 0, 0) rotate(${currentRotation}deg)`;
           cardEl.style.opacity = opacity.toString();
           cardEl.style.visibility = visibility;
       });
@@ -74,12 +74,12 @@ const HomeCarousel = forwardRef<HomeCarouselHandle, HomeCarouselProps>(({
           let localProgress = (scrollProgress - start) / (end - start);
           localProgress = Math.max(0, Math.min(1, localProgress));
           const ease = easeOutQuart(localProgress);
-          const startX = 80; 
+          const startX = window.innerWidth < 768 ? 100 : 80; 
           const currentX = startX * (1 - ease);
           const opacity = localProgress > 0.05 ? 1 : 0;
           const visibility = scrollProgress < start ? 'hidden' : 'visible';
 
-          ctaRef.current.style.transform = `translate3d(${currentX}vw, 0, 0)`;
+          ctaRef.current.style.transform = `translate3d(${currentX}${window.innerWidth < 768 ? '%' : 'vw'}, 0, 0)`;
           ctaRef.current.style.opacity = opacity.toString();
           ctaRef.current.style.visibility = visibility;
       }
@@ -116,7 +116,8 @@ const HomeCarousel = forwardRef<HomeCarouselHandle, HomeCarouselProps>(({
               p = Math.max(0, Math.min(1, p));
               const ease = easeOutQuart(p);
               
-              cardEl.style.transform = `translate3d(${120 * (1 - ease)}vw, 0, 0) rotate(${ease * rotations[index % rotations.length]}deg)`;
+              const startX = window.innerWidth < 768 ? 100 : 120;
+              cardEl.style.transform = `translate3d(${startX * (1 - ease)}${window.innerWidth < 768 ? '%' : 'vw'}, 0, 0) rotate(${ease * rotations[index % rotations.length]}deg)`;
               cardEl.style.opacity = p > 0.01 ? '1' : '0';
               cardEl.style.visibility = progress < myStart ? 'hidden' : 'visible';
           });
@@ -126,7 +127,8 @@ const HomeCarousel = forwardRef<HomeCarouselHandle, HomeCarouselProps>(({
                let p = (progress - start) / (end - start);
                p = Math.max(0, Math.min(1, p));
                const ease = easeOutQuart(p);
-               ctaRef.current.style.transform = `translate3d(${80 * (1 - ease)}vw, 0, 0)`;
+               const startX = window.innerWidth < 768 ? 100 : 80;
+               ctaRef.current.style.transform = `translate3d(${startX * (1 - ease)}${window.innerWidth < 768 ? '%' : 'vw'}, 0, 0)`;
                ctaRef.current.style.opacity = p > 0.05 ? '1' : '0';
                ctaRef.current.style.visibility = progress < start ? 'hidden' : 'visible';
           }
@@ -146,16 +148,16 @@ const HomeCarousel = forwardRef<HomeCarouselHandle, HomeCarouselProps>(({
         <div className="absolute top-0 left-1/4 bottom-0 w-px bg-ink/10 hidden md:block z-0"></div>
         <div className="absolute top-0 right-1/4 bottom-0 w-px bg-ink/10 hidden md:block z-0"></div>
 
-        <div className="relative z-10 w-full h-full grid grid-cols-1 md:grid-cols-12 h-full">
-            <div className="absolute top-8 left-0 right-0 z-20 flex flex-col items-center text-center px-6 md:static md:col-span-4 md:flex md:justify-center md:px-12 lg:px-16 md:text-left md:items-start md:z-auto">
+        <div className="relative z-10 w-full h-full grid grid-cols-1 md:grid-cols-12">
+            <div className="absolute top-4 sm:top-8 left-0 right-0 z-20 flex flex-col items-center text-center px-6 md:static md:col-span-4 md:flex md:justify-center md:px-12 lg:px-16 md:text-left md:items-start md:z-auto">
                     {/* Glass Island Effect for Content Block */}
-                    <div className="relative glass-panel p-8 rounded-2xl shadow-xl md:p-10 border border-ink/5">
-                        <span className="block text-teal text-xs font-bold uppercase tracking-[0.3em] mb-4">Feature Story</span>
-                        <h2 className="text-2xl md:text-3xl lg:text-4xl leading-[0.9] mb-4 font-serif text-ink">
+                    <div className="relative glass-panel p-6 sm:p-8 rounded-2xl shadow-xl md:p-10 border border-ink/5 max-w-[90vw] sm:max-w-none">
+                        <span className="block text-teal text-[10px] sm:text-xs font-bold uppercase tracking-[0.3em] mb-2 sm:mb-4">Feature Story</span>
+                        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl leading-[0.9] mb-2 sm:mb-4 font-serif text-ink">
                             {title.split(',')[0]}<br />
                             <span className="font-light italic text-ink/60">{title.split(',')[1] || ''}</span>
                         </h2>
-                        <p className="text-sm md:text-base text-ink/60 font-mono max-w-sm leading-relaxed mb-8 mx-auto md:mx-0 pl-1">
+                        <p className="text-[11px] sm:text-sm md:text-base text-ink/60 font-mono max-w-sm leading-relaxed mb-4 sm:mb-8 mx-auto md:mx-0 pl-1">
                             {subtitle}
                         </p>
                         
@@ -166,8 +168,8 @@ const HomeCarousel = forwardRef<HomeCarouselHandle, HomeCarouselProps>(({
                     </div>
             </div>
 
-            <div className="col-span-1 md:col-span-4 relative flex items-center justify-center perspective-1000 mt-24 md:mt-0">
-                <div className="relative w-[80vw] h-[50vh] max-h-[500px] max-w-[340px] md:w-[340px] md:h-[500px] lg:w-[400px] lg:h-[580px]">
+            <div className="col-span-1 md:col-span-4 relative flex items-center justify-center perspective-1000 mt-16 sm:mt-24 md:mt-0">
+                <div className="relative w-[75vw] h-[45vh] sm:w-[80vw] sm:h-[50vh] max-h-[500px] max-w-[340px] md:w-[340px] md:h-[500px] lg:w-[400px] lg:h-[580px]">
                     {cards.map((card, index) => (
                         <div 
                             key={card.id}
@@ -223,10 +225,10 @@ const HomeCarousel = forwardRef<HomeCarouselHandle, HomeCarouselProps>(({
                 </div>
             </div>
 
-            <div className="absolute bottom-24 left-0 right-0 md:static md:col-span-4 flex items-center justify-center pointer-events-none md:pointer-events-auto">
+            <div className="absolute bottom-16 sm:bottom-24 left-0 right-0 md:static md:col-span-4 flex items-center justify-center pointer-events-none md:pointer-events-auto">
                 <div 
                     ref={ctaRef}
-                    className="w-[260px] h-[340px] md:w-[320px] md:h-[400px] will-change-transform pointer-events-auto"
+                    className="w-[220px] h-[300px] sm:w-[260px] sm:h-[340px] md:w-[320px] md:h-[400px] will-change-transform pointer-events-auto"
                     style={{ 
                         transform: 'translate3d(100vw, 0, 0)',
                         opacity: 0,
@@ -234,15 +236,15 @@ const HomeCarousel = forwardRef<HomeCarouselHandle, HomeCarouselProps>(({
                         zIndex: 50
                     }}
                 >
-                        <Link to="/explorer" className="block w-full h-full group">
-                        <div className="w-full h-full bg-clay flex flex-col items-center justify-center p-8 text-center shadow-[10px_10px_0px_rgba(0,0,0,0.1)] border border-black/20 transition-all duration-300 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none">
+                        <Link to="/cards" className="block w-full h-full group">
+                        <div className="w-full h-full bg-clay flex flex-col items-center justify-center p-6 sm:p-8 text-center shadow-[10px_10px_0px_rgba(0,0,0,0.1)] border border-black/20 transition-all duration-300 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none">
                             <div className="relative z-10">
-                                <div className="w-16 h-16 bg-white text-black rounded-full flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform duration-300 shadow-md">
-                                    <ArrowRight size={24} />
+                                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white text-black rounded-full flex items-center justify-center mb-4 sm:mb-6 mx-auto group-hover:scale-110 transition-transform duration-300 shadow-md">
+                                    <ArrowRight size={20} className="sm:w-[24px] sm:h-[24px]" />
                                 </div>
-                                <h3 className="text-xl font-serif text-white mb-2 italic">Browse</h3>
-                                <h3 className="text-2xl font-bold text-white tracking-tight mb-6 uppercase">The<br/>Catalog</h3>
-                                <span className="inline-block px-6 py-2 border border-white text-white text-[10px] font-bold tracking-widest uppercase hover:bg-white hover:text-clay transition-colors">
+                                <h3 className="text-lg sm:text-xl font-serif text-white mb-1 sm:mb-2 italic">Browse</h3>
+                                <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight mb-4 sm:mb-6 uppercase">The<br/>Catalog</h3>
+                                <span className="inline-block px-4 sm:px-6 py-1.5 sm:py-2 border border-white text-white text-[9px] sm:text-[10px] font-bold tracking-widest uppercase hover:bg-white hover:text-clay transition-colors">
                                     View Index
                                 </span>
                             </div>

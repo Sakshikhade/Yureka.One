@@ -12,6 +12,7 @@ export interface Blog {
   createdAt?: any;
   updatedAt?: any;
   readTime?: string;
+  status?: 'draft' | 'published';
 }
 
 export interface Card {
@@ -33,6 +34,7 @@ export interface Card {
   features?: string[];
   createdAt?: any;
   updatedAt?: any;
+  status?: 'draft' | 'published';
 }
 
 export interface WaitlistEntry {
@@ -47,7 +49,7 @@ export interface WaitlistEntry {
   createdAt?: any;
 }
 
-export interface CreditCard {
+export interface OSFeature {
   id: string;
   name: string;
   issuer: string;

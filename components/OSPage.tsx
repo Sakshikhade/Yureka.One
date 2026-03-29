@@ -1,20 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 import HomeCarousel, { HomeCarouselHandle } from './HomeCarousel';
-import { CreditCard } from '../types';
+import { OSFeature } from '../types';
 
-const userFeatures: CreditCard[] = [
+const userFeatures: OSFeature[] = [
     { id: 'u1', name: 'Yureka AI', issuer: 'Core Tech', rewardsRate: 'Instant Match', projectedSavings: '₹15k/yr', features: ['Chat to match', 'Checks 200+ cards', 'Honest suggestions'], category: 'AI', annualFee: 'Free', image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=800', bestFor: 'Everyone' },
     { id: 'u2', name: 'Yureka+', issuer: 'Extension', rewardsRate: 'Better Checkout', projectedSavings: '₹5k/yr', features: ['Browser extension', 'Card suggestions', 'Best rewards auto-applied'], category: 'Utility', annualFee: 'Free', image: 'https://images.unsplash.com/photo-1586717791821-3f44a563eb4c?auto=format&fit=crop&q=80&w=800', bestFor: 'Shoppers' },
     { id: 'u3', name: 'Voucher Hub', issuer: 'Savings', rewardsRate: '8% Off', projectedSavings: '₹10k/yr', features: ['Discount vouchers', 'Combine with rewards', 'Instant delivery'], category: 'Rewards', annualFee: 'Free', image: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&q=80&w=800', bestFor: 'Deal Hunters' },
 ];
 
-const partnerFeatures: CreditCard[] = [
+const partnerFeatures: OSFeature[] = [
     { id: 'p1', name: 'NPA Settlement', issuer: 'Relief', rewardsRate: 'Clear Debt', projectedSavings: 'Variable', features: ['Negotiated settlements', 'Clear debt fast', 'Improve credit score'], category: 'Finance', annualFee: 'Free', image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80&w=800', bestFor: 'Debt Relief' },
     { id: 'p2', name: 'Bill Pay', issuer: 'Payments', rewardsRate: '1% Back', projectedSavings: '₹2k/yr', features: ['Manage all bills', 'Pay card bills', 'Auto reminders'], category: 'Utility', annualFee: 'Free', image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=800', bestFor: 'Utility' },
     { id: 'p3', name: 'VIP Access', issuer: 'Elite', rewardsRate: 'VIP', projectedSavings: 'Priceless', features: ['Early access', 'Exclusive offers', 'VIP support'], category: 'Premium', annualFee: 'Free', image: 'https://images.unsplash.com/photo-1512351735139-ce01f731c7e6?auto=format&fit=crop&q=80&w=800', bestFor: 'Early Adopters' },
 ];
 
-const ecosystemFeatures: CreditCard[] = [
+const ecosystemFeatures: OSFeature[] = [
     { id: 'e1', name: 'Card API', issuer: 'Devs', rewardsRate: 'Easy', projectedSavings: 'N/A', features: ['Add card matching', 'Live reward data', 'Secure setup'], category: 'API', annualFee: 'Free', image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800', bestFor: 'Developers' },
     { id: 'e2', name: 'Insights', issuer: 'Data', rewardsRate: 'Detailed', projectedSavings: 'N/A', features: ['Spending analysis', 'Tips to save', 'Market reports'], category: 'Data', annualFee: 'Free', image: 'https://images.unsplash.com/photo-1551288049-bbbda536339a?auto=format&fit=crop&q=80&w=800', bestFor: 'Analysts' },
     { id: 'e3', name: 'Security+', issuer: 'Trust', rewardsRate: 'Secure', projectedSavings: 'N/A', features: ['Bank-level security', 'Private data', 'Face/Touch ID'], category: 'Security', annualFee: 'Free', image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800', bestFor: 'Privacy' },
@@ -23,15 +23,15 @@ const ecosystemFeatures: CreditCard[] = [
 const SecondaryNavbar = ({ activeSection, scrollTo }: { activeSection: string, scrollTo: (section: string) => void }) => {
   return (
     <div 
-        className={`fixed bottom-12 left-0 right-0 z-[85] flex justify-center pointer-events-none`}
+        className={`fixed bottom-16 sm:bottom-12 left-0 right-0 z-[85] flex justify-center pointer-events-none px-4`}
     >
-        <div className={`pointer-events-auto glass-panel rounded-full p-2 flex items-center gap-1 shadow-2xl`}>
+        <div className={`pointer-events-auto glass-panel rounded-full p-1.5 sm:p-2 flex items-center gap-1 shadow-2xl overflow-x-auto no-scrollbar max-w-full`}>
             {['users', 'partners', 'ecosystem'].map((sec) => (
                 <button 
                     key={sec}
                     onClick={() => scrollTo(sec)} 
                     className={`
-                        px-6 py-3 text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-300 rounded-full
+                        px-4 sm:px-6 py-2 sm:py-3 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-300 rounded-full whitespace-nowrap
                         ${activeSection === sec ? 'bg-ink text-white shadow-lg' : 'bg-transparent text-ink/40 hover:text-ink hover:bg-white/50'}
                     `}
                 >

@@ -1,9 +1,9 @@
 import React, { useRef } from 'react';
-import { CreditCard } from '../types';
+import { OSFeature } from '../types';
 import { Map, ChevronLeft, ChevronRight, Bell, ArrowUpRight } from 'lucide-react';
 import ImageWithLoader from './ImageWithLoader';
 
-const upcomingCards: CreditCard[] = [
+const upcomingCards: OSFeature[] = [
   { 
     id: 'cs1', 
     name: 'Jupyter Black', 

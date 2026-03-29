@@ -15,12 +15,54 @@ import {
   deleteDoc,
   where
 } from '../firebase';
+import { Blog, Card } from '../types';
+
+export enum OperationType {
+  CREATE = 'create',
+  UPDATE = 'update',
+  DELETE = 'delete',
+  LIST = 'list',
+  GET = 'get',
+  WRITE = 'write',
+}
+
+interface FirestoreErrorInfo {
+  error: string;
+  operationType: OperationType;
+  path: string | null;
+  authInfo: {
+    userId: string | undefined;
+    email: string | null | undefined;
+    emailVerified: boolean | undefined;
+    isAnonymous: boolean | undefined;
+    tenantId: string | null | undefined;
+    providerInfo: {
+      providerId: string;
+      displayName: string | null;
+      email: string | null;
+      photoUrl: string | null;
+    }[];
+  }
+}
 
 // Helper to handle Firestore errors as per guidelines
-const handleFirestoreError = (error: unknown, operationType: string, path: string | null) => {
-  const errInfo = {
+const handleFirestoreError = (error: unknown, operationType: OperationType | string, path: string | null) => {
+  const errInfo: FirestoreErrorInfo = {
     error: error instanceof Error ? error.message : String(error),
-    operationType,
+    authInfo: {
+      userId: auth.currentUser?.uid,
+      email: auth.currentUser?.email,
+      emailVerified: auth.currentUser?.emailVerified,
+      isAnonymous: auth.currentUser?.isAnonymous,
+      tenantId: auth.currentUser?.tenantId,
+      providerInfo: auth.currentUser?.providerData.map(provider => ({
+        providerId: provider.providerId,
+        displayName: provider.displayName,
+        email: provider.email,
+        photoUrl: provider.photoURL
+      })) || []
+    },
+    operationType: operationType as OperationType,
     path
   };
   console.error('Firestore Error: ', JSON.stringify(errInfo));
@@ -28,44 +70,50 @@ const handleFirestoreError = (error: unknown, operationType: string, path: strin
 };
 
 // --- Blogs ---
-export const getBlogs = (callback: (blogs: any[]) => void) => {
-  const q = query(collection(db, 'blogs'), orderBy('date', 'desc'));
+export const getBlogs = (callback: (blogs: Blog[]) => void) => {
+  const q = query(collection(db, 'blogs'), orderBy('createdAt', 'desc'));
   return onSnapshot(q, (snapshot) => {
-    const blogs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    callback(blogs);
-  }, (error) => handleFirestoreError(error, 'get', 'blogs'));
+    const blogs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Blog));
+    // Filter by status on the frontend to avoid index requirements for now
+    const publishedBlogs = blogs.filter(blog => blog.status === 'published' || !blog.status);
+    callback(publishedBlogs);
+  }, (error) => handleFirestoreError(error, OperationType.GET, 'blogs'));
 };
 
 export const addBlog = async (blog: any) => {
   try {
     const docRef = await addDoc(collection(db, 'blogs'), {
       ...blog,
+      createdAt: Timestamp.now(),
       updatedAt: Timestamp.now()
     });
     return docRef.id;
   } catch (error) {
-    handleFirestoreError(error, 'create', 'blogs');
+    handleFirestoreError(error, OperationType.CREATE, 'blogs');
   }
 };
 
 // --- Cards ---
-export const getCards = (callback: (cards: any[]) => void) => {
-  const q = query(collection(db, 'cards'), orderBy('name', 'asc'));
+export const getCards = (callback: (cards: Card[]) => void) => {
+  const q = query(collection(db, 'cards'), orderBy('createdAt', 'desc'));
   return onSnapshot(q, (snapshot) => {
-    const cards = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    callback(cards);
-  }, (error) => handleFirestoreError(error, 'get', 'cards'));
+    const cards = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Card));
+    // Filter by status on the frontend
+    const publishedCards = cards.filter(card => card.status === 'published' || !card.status);
+    callback(publishedCards);
+  }, (error) => handleFirestoreError(error, OperationType.GET, 'cards'));
 };
 
 export const addCard = async (card: any) => {
   try {
     const docRef = await addDoc(collection(db, 'cards'), {
       ...card,
+      createdAt: Timestamp.now(),
       updatedAt: Timestamp.now()
     });
     return docRef.id;
   } catch (error) {
-    handleFirestoreError(error, 'create', 'cards');
+    handleFirestoreError(error, OperationType.CREATE, 'cards');
   }
 };
 
