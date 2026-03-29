@@ -1,0 +1,206 @@
+import React, { useRef, useEffect } from 'react';
+import { CreditCard } from '../types';
+import { CreditCard as CardIcon, ArrowUpRight, Sparkles, Zap, MousePointer2 } from 'lucide-react';
+import ImageWithLoader from './ImageWithLoader';
+import { Link } from 'react-router-dom';
+
+interface ShowcaseCarouselProps {
+  cards: CreditCard[];
+}
+
+const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const ctaRef = useRef<HTMLDivElement>(null);
+
+  const rotations = [-2, 1, -1.5, 2, -0.5];
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!containerRef.current) return;
+
+      const container = containerRef.current;
+      const { top, height } = container.getBoundingClientRect();
+      
+      const start = 0; 
+      const end = height - window.innerHeight;
+      const currentScroll = -top;
+
+      let progress = currentScroll / end;
+      progress = Math.max(0, Math.min(1, progress));
+
+      const easeOutCubic = (x: number): number => 1 - Math.pow(1 - x, 3);
+      const totalCards = cards.length;
+      const cardsPhaseEnd = 0.8;
+      const step = cardsPhaseEnd / totalCards;
+
+      cards.forEach((_, i) => {
+          const card = cardsRef.current[i];
+          if (!card) return;
+
+          const cardStart = i * step;
+          const cardEnd = cardStart + step;
+          let entryProgress = (progress - cardStart) / step;
+          entryProgress = Math.max(0, Math.min(1, entryProgress));
+          const ease = easeOutCubic(entryProgress);
+
+          const startX = 180; 
+          const currentX = startX * (1 - ease);
+          const targetRotation = rotations[i % rotations.length];
+          const currentRotation = targetRotation * ease;
+          const buriedAmount = Math.max(0, (progress - cardEnd) / step);
+          const scale = 1.0 - (buriedAmount * 0.05);
+          const brightness = 1 - (buriedAmount * 0.1); 
+
+          card.style.transform = `translate3d(${currentX}%, 0, 0) rotate(${currentRotation}deg) scale(${scale})`;
+          card.style.opacity = entryProgress > 0.05 ? '1' : '0';
+          card.style.filter = `brightness(${brightness})`;
+          card.style.zIndex = (i + 1).toString();
+      });
+
+      if (ctaRef.current) {
+          const ctaStart = 0.75;
+          const ctaEnd = 1.0;
+          let ctaP = (progress - ctaStart) / (ctaEnd - ctaStart);
+          ctaP = Math.max(0, Math.min(1, ctaP));
+          const ctaEase = easeOutCubic(ctaP);
+          const startX = 150; 
+          const x = startX * (1 - ctaEase);
+          ctaRef.current.style.transform = `translate3d(${x}%, 0, 0)`;
+          ctaRef.current.style.opacity = ctaEase.toString();
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll);
+    handleScroll();
+
+    return () => {
+        window.removeEventListener('scroll', handleScroll);
+        window.removeEventListener('resize', handleScroll);
+    };
+  }, [cards.length]);
+
+  return (
+    <section ref={containerRef} className="relative bg-cream h-[350vh] border-t border-ink/10">
+      
+      <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center p-2 md:p-6 lg:p-8">
+        
+        <div className="relative w-full h-full max-w-[1700px] border border-ink/10 bg-paper flex flex-col shadow-xl">
+            
+            <div className="absolute top-0 bottom-0 left-[33%] w-px bg-ink/5 hidden lg:block z-0"></div>
+            <div className="absolute top-0 bottom-0 right-[33%] w-px bg-ink/5 hidden lg:block z-0"></div>
+
+            <div className="w-full h-full relative z-10">
+                <div className="grid grid-cols-1 lg:grid-cols-3 h-full">
+
+                    {/* Left Column: Copy */}
+                    <div className="col-span-1 h-full flex flex-col justify-center px-8 md:px-16 relative z-20 pointer-events-none">
+                        <div className="pointer-events-auto">
+                            <span className="block text-teal text-xs font-bold uppercase tracking-[0.3em] mb-6">
+                                How It Works
+                            </span>
+                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-ink mb-6 leading-[0.9] tracking-tight">
+                                We Compare <br/>
+                                <span className="italic font-light text-ink/50">For You.</span>
+                            </h2>
+                            <p className="text-ink/70 text-sm md:text-base font-sans leading-relaxed mb-10 border-l border-ink/20 pl-6 max-w-sm">
+                                We don't just list cards. We compare 200+ options to find the best one for you.
+                            </p>
+                            
+                            <div className="flex items-center gap-4 text-xs font-bold tracking-[0.2em] uppercase text-ink/30">
+                                <div className="w-12 h-px bg-ink/20"></div>
+                                Scroll to Explore
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Middle Column: Cards */}
+                    <div className="col-span-1 h-full relative flex items-center justify-center pointer-events-none">
+                        <div className="relative w-[85vw] h-[60vh] max-h-[600px] max-w-[400px] perspective-1000 pointer-events-auto mt-16 lg:mt-0">
+                            {cards.map((card, i) => (
+                                <div
+                                    key={card.id}
+                                    ref={el => { cardsRef.current[i] = el; }}
+                                    className="absolute inset-0 w-full h-full will-change-transform"
+                                    style={{ transform: 'translate3d(100%, 0, 0)', opacity: 0 }}
+                                >
+                                    {/* Card Design: Gallery Frame Style */}
+                                    <div className="w-full h-full bg-[#F5F5F0] p-3 pb-8 shadow-2xl border border-ink/10 flex flex-col relative group transition-all duration-300">
+                                        
+                                        {/* Image Area with 'Mat' */}
+                                        <div className="h-[65%] relative overflow-hidden bg-[#F0F0F0] border-4 border-paper shadow-sm grayscale group-hover:grayscale-0 transition-all duration-700">
+                                            <ImageWithLoader 
+                                                src={card.image} 
+                                                alt={card.name} 
+                                                className="w-full h-full object-cover"
+                                            />
+                                            {/* Floating Glass Badge */}
+                                            <div className="absolute top-4 right-4 glass-panel backdrop-blur-md text-ink px-3 py-1 text-[9px] font-bold uppercase tracking-widest rounded-full shadow-sm">
+                                                {card.issuer}
+                                            </div>
+                                        </div>
+                                        
+                                        {/* Content Area */}
+                                        <div className="flex-1 pt-6 px-2 flex flex-col justify-between">
+                                            <div>
+                                                <div className="flex justify-between items-baseline mb-3 border-b border-ink/10 pb-3">
+                                                    <h3 className="text-2xl font-serif text-ink leading-none">{card.name}</h3>
+                                                    <span className="text-[10px] font-bold text-ink/40 uppercase tracking-widest">No. {i + 1}</span>
+                                                </div>
+                                                <div className="flex justify-between items-center text-ink/60 text-[10px] font-bold uppercase tracking-widest mt-2">
+                                                    <span className="flex items-center gap-1.5"><Sparkles size={12} /> {card.rewardsRate} Rewards</span>
+                                                    <span className="flex items-center gap-1.5"><Zap size={12} /> {card.category}</span>
+                                                </div>
+                                            </div>
+
+                                            <div className="flex items-end justify-between mt-auto">
+                                                <div>
+                                                    <p className="text-xs text-ink/40 font-bold uppercase tracking-widest mb-1">Yearly Savings</p>
+                                                    <p className="text-3xl font-serif text-ink tracking-tight">{card.projectedSavings}</p>
+                                                </div>
+                                                <button className="w-12 h-12 border border-ink/10 text-ink flex items-center justify-center hover:bg-ink hover:text-white transition-colors rounded-full">
+                                                    <ArrowUpRight size={18} />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Right Column: CTA */}
+                    <div className="col-span-1 h-full relative flex items-center justify-center lg:justify-start lg:pl-20 pointer-events-none">
+                        <div 
+                            ref={ctaRef}
+                            className="relative pointer-events-auto hidden lg:block"
+                            style={{ opacity: 0, transform: 'translate3d(100%, 0, 0)' }}
+                        >
+                            <Link to="/explorer" className="group block">
+                                <div className="w-[340px] h-[480px] bg-clay border border-ink/10 relative overflow-hidden flex flex-col items-center justify-center text-center p-10 transition-all duration-300 shadow-2xl">
+                                    <div className="absolute inset-0 border-[12px] border-double border-black/10 pointer-events-none"></div>
+                                    <div className="relative z-10 flex flex-col items-center">
+                                        <div className="w-16 h-16 bg-ink text-white rounded-full flex items-center justify-center mb-6 shadow-xl group-hover:scale-110 transition-transform duration-500">
+                                            <MousePointer2 size={24} />
+                                        </div>
+                                        <h3 className="text-xl font-serif text-ink mb-2 italic">Start</h3>
+                                        <p className="text-2xl font-bold text-ink tracking-tighter leading-none mb-8 uppercase">Find<br/>My Card</p>
+                                        <div className="bg-ink text-white px-6 py-3 font-bold uppercase tracking-widest text-xs group-hover:bg-paper group-hover:text-ink transition-colors rounded-sm">
+                                            View All Cards
+                                        </div>
+                                    </div>
+                                </div>
+                            </Link>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default ShowcaseCarousel;

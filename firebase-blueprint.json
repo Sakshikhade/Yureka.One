@@ -1,0 +1,65 @@
+{
+  "entities": {
+    "Card": {
+      "title": "Credit Card",
+      "description": "A credit card entity with rewards and features.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier for the card." },
+        "name": { "type": "string", "description": "The name of the credit card." },
+        "bank": { "type": "string", "description": "The issuing bank." },
+        "rewards": { "type": "string", "description": "The primary rewards offered by the card." },
+        "fee": { "type": "string", "description": "The annual fee for the card." },
+        "image": { "type": "string", "description": "URL to the card's image." },
+        "category": { "type": "string", "description": "The category of the card (e.g., Travel, Dining)." },
+        "isFeatured": { "type": "boolean", "description": "Whether the card is featured on the home page." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "The last time the card was updated." }
+      },
+      "required": ["name", "bank", "rewards", "fee", "image", "category"]
+    },
+    "Blog": {
+      "title": "Blog Post",
+      "description": "A blog post entity for the credit journal.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier for the blog post." },
+        "title": { "type": "string", "description": "The title of the blog post." },
+        "excerpt": { "type": "string", "description": "A short summary of the blog post." },
+        "category": { "type": "string", "description": "The category of the blog post." },
+        "author": { "type": "string", "description": "The author of the blog post." },
+        "date": { "type": "string", "description": "The publication date." },
+        "image": { "type": "string", "description": "URL to the blog post's image." },
+        "featured": { "type": "boolean", "description": "Whether the blog post is featured." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "The last time the blog post was updated." }
+      },
+      "required": ["title", "excerpt", "category", "author", "date", "image"]
+    },
+    "Waitlist": {
+      "title": "Waitlist Entry",
+      "description": "A user who has joined the VIP waitlist.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique identifier for the waitlist entry." },
+        "email": { "type": "string", "format": "email", "description": "The user's email address." },
+        "name": { "type": "string", "description": "The user's name." },
+        "phone": { "type": "string", "description": "The user's phone number." },
+        "joinedAt": { "type": "string", "format": "date-time", "description": "The time the user joined the waitlist." }
+      },
+      "required": ["email", "name", "joinedAt"]
+    }
+  },
+  "firestore": {
+    "/cards/{cardId}": {
+      "schema": "Card",
+      "description": "Collection of credit cards."
+    },
+    "/blogs/{blogId}": {
+      "schema": "Blog",
+      "description": "Collection of blog posts."
+    },
+    "/waitlist/{waitlistId}": {
+      "schema": "Waitlist",
+      "description": "Collection of VIP waitlist entries."
+    }
+  }
+}
