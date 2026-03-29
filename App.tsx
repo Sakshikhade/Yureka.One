@@ -23,7 +23,8 @@ import BlogPage from './components/BlogPage';
 import Security from './components/Security';
 import WaitlistPage from './components/WaitlistPage';
 import AdminDashboard from './components/AdminDashboard';
-import { featuredCards } from './data';
+import { getCards } from './services/firebaseService';
+import { Card } from './types';
 import { Sparkles } from 'lucide-react';
 
 const ScrollToTop = () => {
@@ -34,11 +35,11 @@ const ScrollToTop = () => {
   return null;
 }
 
-const MainPage = () => (
+const MainPage = ({ cards }: { cards: Card[] }) => (
   <>
     <Hero />
     <TextReveal />
-    <ShowcaseCarousel cards={featuredCards} />
+    <ShowcaseCarousel cards={cards} />
     <Stats />
     <Marquee />
     <Security />
@@ -51,54 +52,69 @@ const MainPage = () => (
 );
 
 const AppContent: React.FC = () => {
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith('/admin');
+  const [cards, setCards] = React.useState<Card[]>([]);
+
+  React.useEffect(() => {
+    const unsubscribe = getCards((fetchedCards) => {
+      setCards(fetchedCards);
+    });
+    return () => unsubscribe();
+  }, []);
+
   return (
-    <div className="min-h-screen bg-cream font-sans text-ink relative pt-10">
+    <div className={`min-h-screen bg-cream font-sans text-ink relative ${isAdminRoute ? 'pt-0' : 'pt-10'}`}>
       {/* Global Texture Overlays */}
       <div className="paper-texture" />
       <div className="vignette-overlay" />
 
       <ScrollToTop />
-      <TopBanner />
-      <Navbar />
+      {!isAdminRoute && <TopBanner />}
+      {!isAdminRoute && <Navbar />}
       
-      <main className="relative z-10">
+      <main className={`relative z-10 ${isAdminRoute ? 'pt-0' : ''}`}>
         <Routes>
-           <Route path="/" element={<MainPage />} />
+           <Route path="/" element={<MainPage cards={cards} />} />
            
-           {/* New Slugs */}
-           <Route path="/explorer" element={<AllHomes />} />
-           <Route path="/ai" element={<OSPage />} />
-           <Route path="/matrix" element={<BFFPage />} />
-           <Route path="/story" element={<OurStory />} />
+           {/* New Slugs matching Header */}
+           <Route path="/cards" element={<AllHomes />} />
+           <Route path="/ai-magic" element={<OSPage />} />
+           <Route path="/rewards" element={<BFFPage />} />
+           <Route path="/manifesto" element={<OurStory />} />
            <Route path="/jobs" element={<CareersPage />} />
            <Route path="/blogs" element={<BlogPage />} />
-           <Route path="/vip" element={<WaitlistPage />} />
+           <Route path="/join-waitlist" element={<WaitlistPage />} />
            <Route path="/admin" element={<AdminDashboard />} />
 
            {/* Redirects for old slugs */}
-           <Route path="/cards" element={<Navigate to="/explorer" replace />} />
-           <Route path="/ai-magic" element={<Navigate to="/ai" replace />} />
-           <Route path="/rewards" element={<Navigate to="/matrix" replace />} />
-           <Route path="/manifesto" element={<Navigate to="/story" replace />} />
-           <Route path="/careers" element={<Navigate to="/jobs" replace />} />
+           <Route path="/explorer" element={<Navigate to="/cards" replace />} />
+           <Route path="/ai" element={<Navigate to="/ai-magic" replace />} />
+           <Route path="/matrix" element={<Navigate to="/rewards" replace />} />
+           <Route path="/story" element={<Navigate to="/manifesto" replace />} />
+           <Route path="/jobs-old" element={<Navigate to="/jobs" replace />} />
            <Route path="/journal" element={<Navigate to="/blogs" replace />} />
-           <Route path="/join-waitlist" element={<Navigate to="/vip" replace />} />
+           <Route path="/vip" element={<Navigate to="/join-waitlist" replace />} />
 
-           <Route path="*" element={<MainPage />} />
+           <Route path="*" element={<MainPage cards={cards} />} />
         </Routes>
       </main>
 
-      <Footer />
-      <BottomBanner />
+      {!isAdminRoute && <Footer />}
+      {!isAdminRoute && <BottomBanner />}
 
       {/* Floating AI Button */}
-      <Link 
-        to="/ai"
-        className="fixed bottom-14 right-6 z-[70] bg-clay text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform cursor-pointer border border-white/20"
-        aria-label="Chat with Jupyter AI"
-      >
-        <Sparkles size={28} />
-      </Link>
+      {!isAdminRoute && (
+        <Link 
+          to="/ai-magic"
+          className="fixed bottom-14 right-6 z-[70] bg-clay text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform cursor-pointer border border-white/20"
+          aria-label="Chat with Jupyter AI"
+        >
+          <button className="cursor-pointer">
+            <Sparkles size={28} />
+          </button>
+        </Link>
+      )}
     </div>
   );
 };

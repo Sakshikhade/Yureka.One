@@ -193,11 +193,21 @@ const AllHomes: React.FC = () => {
                                 <span className="flex items-center gap-1.5"><Gift size={12} /> {card.rewardsRate}</span>
                             </div>
 
-                            <div className="flex items-center gap-2 w-full mb-4">
-                                <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${card.annualFee === '₹0' || card.annualFee === 'Free' || card.annualFee.toLowerCase().includes('lifetime free') ? 'bg-teal' : 'bg-ink/40'}`}></div>
-                                <span className={`text-xs font-bold uppercase tracking-widest truncate ${card.annualFee === '₹0' || card.annualFee === 'Free' || card.annualFee.toLowerCase().includes('lifetime free') ? 'text-teal' : 'text-ink/40'}`}>
-                                    Annual Fee: {card.annualFee}
-                                </span>
+                            <div className="flex flex-col gap-2 w-full mb-4">
+                                <div className="flex items-center gap-2">
+                                    <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${card.annualFee === '₹0' || card.annualFee === 'Free' || card.annualFee.toLowerCase().includes('lifetime free') ? 'bg-teal' : 'bg-ink/40'}`}></div>
+                                    <span className={`text-xs font-bold uppercase tracking-widest truncate ${card.annualFee === '₹0' || card.annualFee === 'Free' || card.annualFee.toLowerCase().includes('lifetime free') ? 'text-teal' : 'text-ink/40'}`}>
+                                        Annual Fee: {card.annualFee}
+                                    </span>
+                                </div>
+                                {card.joiningFee && card.joiningFee !== '₹0' && (
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-1.5 h-1.5 rounded-full shrink-0 bg-ink/20"></div>
+                                        <span className="text-[10px] font-bold uppercase tracking-widest truncate text-ink/40">
+                                            Joining Fee: {card.joiningFee}
+                                        </span>
+                                    </div>
+                                )}
                             </div>
                         </div>
 

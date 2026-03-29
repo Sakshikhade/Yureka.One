@@ -60,9 +60,9 @@ const Navbar: React.FC = () => {
             `}>
                 <div className="flex items-center gap-6">
                     {[
-                        { name: 'Cards', path: '/explorer' },
-                        { name: 'Manifesto', path: '/story' },
-                        { name: 'Rewards', path: '/matrix' },
+                        { name: 'Cards', path: '/cards' },
+                        { name: 'Manifesto', path: '/manifesto' },
+                        { name: 'Rewards', path: '/rewards' },
                         { name: 'Blogs', path: '/blogs' }
                     ].map((item) => (
                         <Link 
@@ -81,13 +81,13 @@ const Navbar: React.FC = () => {
                 <div className="h-4 w-px bg-ink/20"></div>
 
                 <div className="flex items-center gap-4">
-                     <Link to="/ai" className={`
+                     <Link to="/ai-magic" className={`
                         text-ink font-serif italic text-lg hover:text-clay transition-colors
                      `}>
                         Jupyter AI Magic
                      </Link>
                     
-                    <Link to="/vip" className={`
+                    <Link to="/join-waitlist" className={`
                         bg-clay hover:bg-teal text-white text-xs font-bold uppercase tracking-widest px-6 py-3
                         flex items-center gap-2 group transition-all duration-500 rounded-full
                     `}>
@@ -133,11 +133,11 @@ const Navbar: React.FC = () => {
               
               <nav className="flex flex-col gap-6">
                 {[
-                    { name: 'Card Explorer', path: '/explorer', desc: 'Curated Matches' },
-                    { name: 'Manifesto', path: '/story', desc: 'Our Mission' },
-                    { name: 'Rewards', path: '/matrix', desc: 'Voucher Savings' },
+                    { name: 'Card Explorer', path: '/cards', desc: 'Curated Matches' },
+                    { name: 'Manifesto', path: '/manifesto', desc: 'Our Mission' },
+                    { name: 'Rewards', path: '/rewards', desc: 'Voucher Savings' },
                     { name: 'Blogs', path: '/blogs', desc: 'Credit Insights' },
-                    { name: 'Jupyter AI', path: '/ai', desc: 'AI Matching' }
+                    { name: 'Jupyter AI', path: '/ai-magic', desc: 'AI Matching' }
                 ].map((item) => (
                     <Link 
                         key={item.name}
@@ -152,7 +152,7 @@ const Navbar: React.FC = () => {
                 
                 <div className="h-px bg-ink/10 my-6 w-full"></div>
                 
-                <Link to="/vip" onClick={() => setIsMobileMenuOpen(false)} className="w-full py-4 border border-ink text-ink hover:bg-ink hover:text-white font-bold uppercase tracking-widest text-xs flex items-center justify-center gap-2 transition-all rounded-lg">
+                <Link to="/join-waitlist" onClick={() => setIsMobileMenuOpen(false)} className="w-full py-4 border border-ink text-ink hover:bg-ink hover:text-white font-bold uppercase tracking-widest text-xs flex items-center justify-center gap-2 transition-all rounded-lg">
                     Join VIP Waitlist
                 </Link>
               </nav>

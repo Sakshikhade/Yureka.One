@@ -1,11 +1,11 @@
 import React, { useRef, useEffect } from 'react';
-import { CreditCard } from '../types';
+import { Card } from '../types';
 import { CreditCard as CardIcon, ArrowUpRight, Sparkles, Zap, MousePointer2 } from 'lucide-react';
 import ImageWithLoader from './ImageWithLoader';
 import { Link } from 'react-router-dom';
 
 interface ShowcaseCarouselProps {
-  cards: CreditCard[];
+  cards: Card[];
 }
 
 const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards }) => {
@@ -177,7 +177,7 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards }) => {
                             className="relative pointer-events-auto hidden lg:block"
                             style={{ opacity: 0, transform: 'translate3d(100%, 0, 0)' }}
                         >
-                            <Link to="/explorer" className="group block">
+                            <Link to="/cards" className="group block">
                                 <div className="w-[340px] h-[480px] bg-clay border border-ink/10 relative overflow-hidden flex flex-col items-center justify-center text-center p-10 transition-all duration-300 shadow-2xl">
                                     <div className="absolute inset-0 border-[12px] border-double border-black/10 pointer-events-none"></div>
                                     <div className="relative z-10 flex flex-col items-center">

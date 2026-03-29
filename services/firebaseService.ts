@@ -84,22 +84,21 @@ export const joinWaitlist = async (entry: { name: string, email: string, phone?:
 
 // --- Admin Check ---
 export const checkIfAdmin = async (uid: string) => {
+  // 1. Check if user is the default admin by email first (fastest, doesn't need Firestore)
+  const currentUser = auth.currentUser;
+  if (currentUser && currentUser.email === "toanweshbiswas@gmail.com" && currentUser.emailVerified) {
+    return true;
+  }
+
   try {
-    // Check if user is in the users collection as admin
+    // 2. Check if user is in the users collection as admin
     const userDoc = await getDoc(doc(db, 'users', uid));
     if (userDoc.exists() && userDoc.data().role === 'admin') {
       return true;
     }
-    
-    // Check if user is the default admin by email
-    const currentUser = auth.currentUser;
-    if (currentUser && currentUser.email === "toanweshbiswas@gmail.com" && currentUser.emailVerified) {
-      return true;
-    }
-
     return false;
   } catch (error) {
-    // If we can't check, assume not admin (rules will block anyway)
+    // If we can't check Firestore (e.g. permission denied), we already checked the email above
     return false;
   }
 };

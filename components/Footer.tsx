@@ -39,10 +39,10 @@ const Footer: React.FC = () => {
               <div className="pl-8 border-r border-black/10 min-h-[200px]">
                   <h4 className="font-bold text-xs uppercase tracking-[0.2em] mb-8 text-black/40">Explore</h4>
                   <ul className="space-y-4">
-                      <li><Link to="/explorer" className="hover:text-teal font-serif text-base transition-colors">Card Explorer</Link></li>
-                      <li><Link to="/ai" className="hover:text-teal font-serif text-base transition-colors">Jupyter AI Magic</Link></li>
-                      <li><Link to="/matrix" className="hover:text-teal font-serif text-base transition-colors">Reward Matrix</Link></li>
-                      <li><Link to="/story" className="hover:text-teal font-serif text-base transition-colors">Our Manifesto</Link></li>
+                      <li><Link to="/cards" className="hover:text-teal font-serif text-base transition-colors">Card Explorer</Link></li>
+                      <li><Link to="/ai-magic" className="hover:text-teal font-serif text-base transition-colors">Jupyter AI Magic</Link></li>
+                      <li><Link to="/rewards" className="hover:text-teal font-serif text-base transition-colors">Reward Matrix</Link></li>
+                      <li><Link to="/manifesto" className="hover:text-teal font-serif text-base transition-colors">Our Manifesto</Link></li>
                   </ul>
               </div>
 
@@ -53,7 +53,7 @@ const Footer: React.FC = () => {
                       <li><Link to="/blogs" className="hover:text-teal font-serif text-base transition-colors">Blogs</Link></li>
                       <li><Link to="/jobs" className="hover:text-teal font-serif text-base transition-colors">Careers at Jupyter</Link></li>
                       <li><a href="#" className="hover:text-teal font-serif text-base transition-colors">Press & Media</a></li>
-                      <li><Link to="/vip" className="hover:text-teal font-serif text-base transition-colors">Apply for VIP Access</Link></li>
+                      <li><Link to="/join-waitlist" className="hover:text-teal font-serif text-base transition-colors">Apply for VIP Access</Link></li>
                       <li><Link to="/admin" className="hover:text-teal font-serif text-base transition-colors opacity-30 hover:opacity-100">Admin Dashboard</Link></li>
                   </ul>
               </div>

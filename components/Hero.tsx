@@ -79,7 +79,7 @@ const Hero: React.FC = () => {
                 </h3>
                 
                 <div className="mt-10 flex flex-col md:flex-row items-center justify-center gap-4">
-                    <Link to="/ai" className="group relative px-8 py-3 bg-ink text-white overflow-hidden rounded-full">
+                    <Link to="/ai-magic" className="group relative px-8 py-3 bg-ink text-white overflow-hidden rounded-full">
                         <div className="absolute inset-0 w-full h-full bg-teal/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
                         <span className="relative z-10 font-bold text-xs uppercase tracking-[0.2em] flex items-center gap-2">
                             <Sparkles size={14} /> Find My Card
@@ -172,10 +172,10 @@ const Hero: React.FC = () => {
                         <h4 className="font-bold text-xs uppercase tracking-[0.2em] mb-8 text-ink/40 border-b border-ink/10 pb-2">In This Issue</h4>
                         <ul className="space-y-0">
                             {[
-                                { title: "AI Magic", page: "03", link: "/ai", desc: "Conversational Matching" },
-                                { title: "Voucher Savings", page: "05", link: "/matrix", desc: "8% Off Flipkart" },
-                                { title: "Card Explorer", page: "08", link: "/explorer", desc: "Top Market Picks" },
-                                { title: "Manifesto", page: "12", link: "/story", desc: "Our Vision" }
+                                { title: "AI Magic", page: "03", link: "/ai-magic", desc: "Conversational Matching" },
+                                { title: "Voucher Savings", page: "05", link: "/rewards", desc: "8% Off Flipkart" },
+                                { title: "Card Explorer", page: "08", link: "/cards", desc: "Top Market Picks" },
+                                { title: "Manifesto", page: "12", link: "/manifesto", desc: "Our Vision" }
                             ].map((item, i) => (
                                 <li key={i} className="border-b border-ink/10 last:border-0">
                                     <Link to={item.link} className="flex justify-between items-start py-4 group cursor-pointer hover:bg-ink/5 px-2 -mx-2 transition-colors">
@@ -194,7 +194,7 @@ const Hero: React.FC = () => {
                          <div className="border border-ink/20 p-6 text-center bg-paper shadow-lg relative">
                              <div className="absolute inset-0 bg-ink/5 pointer-events-none mix-blend-multiply"></div>
                              <h4 className="font-serif text-xl italic mb-4 text-ink relative z-10">"The smart way to use credit cards."</h4>
-                             <Link to="/vip" className="block w-full bg-clay hover:bg-teal text-white text-center py-4 font-bold uppercase tracking-widest text-xs transition-all shadow-[4px_4px_0px_0px_rgba(36,36,36,0.15)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] relative z-10">
+                             <Link to="/join-waitlist" className="block w-full bg-clay hover:bg-teal text-white text-center py-4 font-bold uppercase tracking-widest text-xs transition-all shadow-[4px_4px_0px_0px_rgba(36,36,36,0.15)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] relative z-10">
                                  Join VIP Waitlist
                              </Link>
                              <p className="text-center text-[10px] text-ink/40 mt-3 uppercase tracking-widest relative z-10">
