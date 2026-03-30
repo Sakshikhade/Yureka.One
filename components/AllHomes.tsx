@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { ArrowUpRight, ChevronDown, Check, Zap, CreditCard as CardIcon, Gift, ShieldCheck, Plane } from 'lucide-react';
 import ImageWithLoader from './ImageWithLoader';
-import { getCards } from '../services/firebaseService';
+import { getCards } from '../services/supabaseService';
 import { Card } from '../types';
 import { featuredCards } from '../data';
 

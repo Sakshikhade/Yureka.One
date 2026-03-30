@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ImageWithLoader from './ImageWithLoader';
 import { ArrowUpRight, Calendar, User, ArrowRight } from 'lucide-react';
-import { getBlogs } from '../services/firebaseService';
+import { getBlogs } from '../services/supabaseService';
 import { Blog } from '../types';
-import { Timestamp } from '../firebase';
 
 interface FadeInSectionProps {
   children: React.ReactNode;
@@ -105,8 +104,8 @@ const BlogPage: React.FC = () => {
 
     const formatDate = (blog: Blog) => {
         if (blog.date) return blog.date;
-        if (blog.createdAt) {
-            const date = blog.createdAt instanceof Timestamp ? blog.createdAt.toDate() : new Date(blog.createdAt);
+        if (blog.created_at) {
+            const date = new Date(blog.created_at);
             return date.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
         }
         return 'N/A';

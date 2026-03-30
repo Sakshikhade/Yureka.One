@@ -1,12 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-  auth, 
-  googleProvider, 
-  storage, 
-  Timestamp
-} from '../firebase';
-import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { supabase } from '../supabase';
 import { 
   LayoutDashboard, 
   CreditCard, 
@@ -35,7 +28,7 @@ import {
   getCardsAdmin, addCard, updateCard, deleteCard,
   getWaitlist, deleteWaitlistEntry,
   checkIfAdmin 
-} from '../services/firebaseService';
+} from '../services/supabaseService';
 import { Blog, Card, WaitlistEntry } from '../types';
 
 const AdminDashboard: React.FC = () => {
@@ -93,10 +86,11 @@ const AdminDashboard: React.FC = () => {
   });
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      const user = session?.user || null;
       setUser(user);
       if (user) {
-        const adminStatus = await checkIfAdmin(user.uid);
+        const adminStatus = await checkIfAdmin(user.id, user.email);
         setIsAdmin(adminStatus);
       } else {
         setIsAdmin(false);
@@ -104,7 +98,7 @@ const AdminDashboard: React.FC = () => {
       setLoading(false);
     });
 
-    return () => unsubscribe();
+    return () => subscription.unsubscribe();
   }, []);
 
   useEffect(() => {
@@ -129,21 +123,19 @@ const AdminDashboard: React.FC = () => {
   const handleLogin = async () => {
     setError(null);
     try {
-      await signInWithPopup(auth, googleProvider);
+      const { error } = await supabase.auth.signInWithOAuth({ 
+        provider: 'google', 
+        options: { redirectTo: window.location.origin + '/admin' } 
+      });
+      if (error) throw error;
     } catch (err: any) {
       console.error("Login failed", err);
-      if (err.code === 'auth/unauthorized-domain') {
-        setError("This domain is not authorized in Firebase. Please add 'yurekamoney.netlify.app' to Authorized Domains in Firebase Console.");
-      } else if (err.code === 'auth/popup-blocked') {
-        setError("Sign-in popup was blocked by your browser. Please allow popups for this site.");
-      } else {
-        setError(err.message || "An error occurred during sign-in.");
-      }
+      setError(err.message || "An error occurred during sign-in.");
     }
   };
 
   const handleLogout = async () => {
-    await signOut(auth);
+    await supabase.auth.signOut();
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: 'blogs' | 'cards') => {
@@ -163,11 +155,13 @@ const AdminDashboard: React.FC = () => {
 
     setUploading(true);
     try {
-      const storageRef = ref(storage, `${type}/${Date.now()}_${file.name}`);
-      await uploadBytes(storageRef, file);
-      const url = await getDownloadURL(storageRef);
+      const { data, error } = await supabase.storage.from('media').upload(`${type}/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`, file);
+      if (error) throw error;
       
-      // Update with the real URL from Firebase Storage
+      const { data: publicUrlData } = supabase.storage.from('media').getPublicUrl(data.path);
+      const url = publicUrlData.publicUrl;
+      
+      // Update with the real URL from Supabase Storage
       if (type === 'blogs') {
         setBlogForm(prev => ({ ...prev, image: url }));
       } else {
@@ -304,15 +298,15 @@ const AdminDashboard: React.FC = () => {
             <div className="text-left space-y-3">
               <div className="flex gap-3">
                 <div className="w-5 h-5 bg-teal/10 text-teal rounded-full flex-shrink-0 flex items-center justify-center text-[10px] font-bold">1</div>
-                <p className="text-xs text-black/60">Go to <a href="https://console.firebase.google.com" target="_blank" rel="noreferrer" className="text-teal underline">Firebase Console</a></p>
+                <p className="text-xs text-black/60">Go to <a href="https://supabase.com/dashboard" target="_blank" rel="noreferrer" className="text-teal underline">Supabase Dashboard</a></p>
               </div>
               <div className="flex gap-3">
                 <div className="w-5 h-5 bg-teal/10 text-teal rounded-full flex-shrink-0 flex items-center justify-center text-[10px] font-bold">2</div>
-                <p className="text-xs text-black/60">Authentication &gt; Settings &gt; Authorized domains</p>
+                <p className="text-xs text-black/60">Authentication &gt; URL Configuration</p>
               </div>
               <div className="flex gap-3">
                 <div className="w-5 h-5 bg-teal/10 text-teal rounded-full flex-shrink-0 flex items-center justify-center text-[10px] font-bold">3</div>
-                <p className="text-xs text-black/60">Add <code className="bg-black/5 px-1 rounded">yurekamoney.netlify.app</code></p>
+                <p className="text-xs text-black/60">Add <code className="bg-black/5 px-1 rounded">yurekamoney.netlify.app</code> to Redirect URLs</p>
               </div>
             </div>
           </div>
@@ -374,9 +368,9 @@ const AdminDashboard: React.FC = () => {
 
         <div className="p-4 border-t border-black/5">
           <div className="flex items-center gap-3 mb-4 px-2">
-            <img src={user.photoURL} alt="" className="w-8 h-8 rounded-full" />
+            <img src={user.user_metadata?.avatar_url || "https://picsum.photos/40/40"} alt="" className="w-8 h-8 rounded-full" />
             <div className="overflow-hidden">
-              <p className="text-xs font-bold truncate">{user.displayName}</p>
+              <p className="text-xs font-bold truncate">{user.user_metadata?.full_name || 'Admin'}</p>
               <p className="text-[10px] text-black/40 truncate">{user.email}</p>
             </div>
           </div>
@@ -454,7 +448,7 @@ const AdminDashboard: React.FC = () => {
                     <td className="px-6 py-4 text-sm text-black/60">{blog.category}</td>
                     <td className="px-6 py-4 text-sm text-black/60">{blog.author}</td>
                     <td className="px-6 py-4 text-sm text-black/60">
-                      {blog.createdAt instanceof Timestamp ? blog.createdAt.toDate().toLocaleDateString() : 'N/A'}
+                      {blog.created_at ? new Date(blog.created_at).toLocaleDateString() : 'N/A'}
                     </td>
                     <td className="px-6 py-4 text-right space-x-2">
                       <button 
@@ -574,7 +568,7 @@ const AdminDashboard: React.FC = () => {
                       {entry.role === 'user' ? `Category: ${entry.category}` : `Company: ${entry.company}`}
                     </td>
                     <td className="px-6 py-4 text-sm text-black/60">
-                      {entry.createdAt instanceof Timestamp ? entry.createdAt.toDate().toLocaleDateString() : 'N/A'}
+                      {entry.created_at ? new Date(entry.created_at).toLocaleDateString() : 'N/A'}
                     </td>
                   </tr>
                 ))}

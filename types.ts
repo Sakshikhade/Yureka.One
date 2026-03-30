@@ -9,8 +9,8 @@ export interface Blog {
   date?: string;
   featured?: boolean;
   slug?: string;
-  createdAt?: any;
-  updatedAt?: any;
+  created_at?: string;
+  updated_at?: string;
   readTime?: string;
   status?: 'draft' | 'published';
 }
@@ -32,8 +32,8 @@ export interface Card {
   category?: string;
   projectedSavings?: string;
   features?: string[];
-  createdAt?: any;
-  updatedAt?: any;
+  created_at?: string;
+  updated_at?: string;
   status?: 'draft' | 'published';
 }
 
@@ -45,8 +45,8 @@ export interface WaitlistEntry {
   role: 'user' | 'partner';
   category?: string;
   company?: string;
-  joinedAt?: any;
-  createdAt?: any;
+  joined_at?: string;
+  created_at?: string;
 }
 
 export interface OSFeature {
@@ -85,5 +85,6 @@ export interface NewsletterEntry {
   id?: string;
   email: string;
   status: 'active' | 'unsubscribed';
-  subscribedAt?: any;
+  subscribed_at?: string;
+  created_at?: string;
 }

@@ -23,7 +23,7 @@ import BlogPage from './components/BlogPage';
 import Security from './components/Security';
 import WaitlistPage from './components/WaitlistPage';
 import AdminDashboard from './components/AdminDashboard';
-import { getCards } from './services/firebaseService';
+import { getCards } from './services/supabaseService';
 import { Card } from './types';
 import { featuredCards } from './data';
 import { Sparkles } from 'lucide-react';

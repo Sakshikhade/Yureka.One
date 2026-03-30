@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, User, Building, Check, ArrowRight, Plus, Minus, LayoutGrid, Rocket, ShieldCheck, Gift, Sparkles, HelpCircle, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { joinWaitlist } from '../services/firebaseService';
+import { joinWaitlist } from '../services/supabaseService';
 
 interface FAQItemProps {
   icon: React.ElementType;
