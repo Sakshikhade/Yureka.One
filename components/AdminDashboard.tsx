@@ -425,6 +425,16 @@ const AdminDashboard: React.FC = () => {
         </header>
 
         {/* Content Area */}
+        {error && !isModalOpen && (
+          <div className="mb-8 p-4 bg-red-50 text-red-600 text-sm rounded-xl border border-red-100 flex items-start gap-3">
+            <AlertCircle className="mt-0.5 flex-shrink-0" size={16} />
+            <div>
+              <p className="font-bold mb-1">Action Failed</p>
+              <p className="opacity-80">{error}</p>
+              <button onClick={() => setError(null)} className="mt-2 text-xs font-bold underline hover:text-red-800">Dismiss</button>
+            </div>
+          </div>
+        )}
         <div className="bg-white rounded-2xl shadow-sm border border-black/5 overflow-hidden">
           {activeTab === 'blogs' && (
             <table className="w-full text-left">
