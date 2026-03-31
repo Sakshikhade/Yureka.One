@@ -266,7 +266,7 @@ const AdminDashboard: React.FC = () => {
   }
 
   const fixData = async () => {
-    alert('Fix Data feature requires backend API and has been deprecated for direct Firebase usage.');
+    alert('Fix Data feature requires backend API and has been deprecated for direct Supabase usage.');
   };
 
   if (!user) {
