@@ -422,10 +422,21 @@ const AdminDashboard: React.FC = () => {
         {error && !isModalOpen && (
           <div className="mb-8 p-4 bg-red-50 text-red-600 text-sm rounded-xl border border-red-100 flex items-start gap-3">
             <AlertCircle className="mt-0.5 flex-shrink-0" size={16} />
-            <div>
+            <div className="flex-1">
               <p className="font-bold mb-1">Action Failed</p>
               <p className="opacity-80">{error}</p>
-              <button onClick={() => setError(null)} className="mt-2 text-xs font-bold underline hover:text-red-800">Dismiss</button>
+              <div className="flex gap-4 mt-3">
+                <button onClick={() => setError(null)} className="text-xs font-bold underline hover:text-red-800">Dismiss</button>
+                <button 
+                  onClick={() => {
+                    const debugInfo = (window as any).lastSupabaseError;
+                    alert(debugInfo ? `DEBUG INFO:\n${JSON.stringify(debugInfo, null, 2)}` : "No detailed Supabase error captured yet. Try the action again.");
+                  }} 
+                  className="text-xs font-bold underline text-amber-600 hover:text-amber-800"
+                >
+                  Show Debug Info
+                </button>
+              </div>
             </div>
           </div>
         )}
