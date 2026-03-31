@@ -190,7 +190,7 @@ const BlogPage: React.FC = () => {
                                                 <span className="text-lg font-serif italic text-black">{featuredPost.author}</span>
                                             </div>
                                             <div className="ml-auto text-[10px] font-bold uppercase tracking-widest text-black/30 bg-black/5 px-3 py-1 rounded-full">
-                                                {featuredPost.readTime || '5 min'} read
+                                                {featuredPost.read_time || '5 min'} read
                                             </div>
                                         </div>
                                     </div>

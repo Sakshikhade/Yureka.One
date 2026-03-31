@@ -61,7 +61,7 @@ const AdminDashboard: React.FC = () => {
     author: '',
     category: 'Credit Cards',
     image: 'https://picsum.photos/seed/blog/800/600',
-    readTime: '5 min read',
+    read_time: '5 min read',
     featured: false,
     status: 'published' as 'draft' | 'published'
   });
@@ -75,13 +75,13 @@ const AdminDashboard: React.FC = () => {
     image: 'https://picsum.photos/seed/card/400/250',
     rating: 4.5,
     benefits: [''],
-    annualFee: '₹0',
-    joiningFee: '₹0',
-    bestFor: 'Shopping',
+    annual_fee: '₹0',
+    joining_fee: '₹0',
+    best_for: 'Shopping',
     category: 'Shopping',
     color: 'from-blue-600 to-indigo-700',
-    rewardsRate: '5%',
-    projectedSavings: '₹12,000/yr',
+    rewards_rate: '5%',
+    projected_savings: '₹12,000/yr',
     status: 'published' as 'draft' | 'published'
   });
 
@@ -202,7 +202,7 @@ const AdminDashboard: React.FC = () => {
       setIsModalOpen(false);
       setEditingItem(null);
       setPreviewUrl(null);
-      setBlogForm({ title: '', slug: '', excerpt: '', content: '', author: '', category: 'Credit Cards', image: 'https://picsum.photos/seed/blog/800/600', readTime: '5 min read', featured: false, status: 'published' as 'draft' | 'published' });
+      setBlogForm({ title: '', slug: '', excerpt: '', content: '', author: '', category: 'Credit Cards', image: 'https://picsum.photos/seed/blog/800/600', read_time: '5 min read', featured: false, status: 'published' as 'draft' | 'published' });
     } catch (error: any) {
       const errorMessage = error.message || "Failed to save blog post.";
       setError(errorMessage);
@@ -227,7 +227,7 @@ const AdminDashboard: React.FC = () => {
       setIsModalOpen(false);
       setEditingItem(null);
       setPreviewUrl(null);
-      setCardForm({ name: '', bank: '', issuer: '', type: 'Rewards', image: 'https://picsum.photos/seed/card/400/250', rating: 4.5, benefits: [''], annualFee: '₹0', joiningFee: '₹0', bestFor: 'Shopping', category: 'Shopping', color: 'from-blue-600 to-indigo-700', rewardsRate: '5%', projectedSavings: '₹12,000/yr', status: 'published' as 'draft' | 'published' });
+      setCardForm({ name: '', bank: '', issuer: '', type: 'Rewards', image: 'https://picsum.photos/seed/card/400/250', rating: 4.5, benefits: [''], annual_fee: '₹0', joining_fee: '₹0', best_for: 'Shopping', category: 'Shopping', color: 'from-blue-600 to-indigo-700', rewards_rate: '5%', projected_savings: '₹12,000/yr', status: 'published' as 'draft' | 'published' });
     } catch (error: any) {
       const errorMessage = error.message || "Failed to save card.";
       setError(errorMessage);
@@ -404,9 +404,9 @@ const AdminDashboard: React.FC = () => {
                 onClick={() => {
                   setEditingItem(null);
                   if (activeTab === 'blogs') {
-                    setBlogForm({ title: '', slug: '', excerpt: '', content: '', author: '', category: 'Credit Cards', image: 'https://picsum.photos/seed/blog/800/600', readTime: '5 min read', featured: false, status: 'published' as 'draft' | 'published' });
+                    setBlogForm({ title: '', slug: '', excerpt: '', content: '', author: '', category: 'Credit Cards', image: 'https://picsum.photos/seed/blog/800/600', read_time: '5 min read', featured: false, status: 'published' as 'draft' | 'published' });
                   } else {
-                    setCardForm({ name: '', bank: '', issuer: '', type: 'Rewards', image: 'https://picsum.photos/seed/card/400/250', rating: 4.5, benefits: [''], annualFee: '₹0', joiningFee: '₹0', bestFor: 'Shopping', category: 'Shopping', color: 'from-blue-600 to-indigo-700', rewardsRate: '5%', projectedSavings: '₹12,000/yr', status: 'published' as 'draft' | 'published' });
+                    setCardForm({ name: '', bank: '', issuer: '', type: 'Rewards', image: 'https://picsum.photos/seed/card/400/250', rating: 4.5, benefits: [''], annual_fee: '₹0', joining_fee: '₹0', best_for: 'Shopping', category: 'Shopping', color: 'from-blue-600 to-indigo-700', rewards_rate: '5%', projected_savings: '₹12,000/yr', status: 'published' as 'draft' | 'published' });
                   }
                   setIsModalOpen(true);
                 }}
@@ -462,7 +462,7 @@ const AdminDashboard: React.FC = () => {
                             author: blog.author,
                             category: blog.category,
                             image: blog.image,
-                            readTime: blog.readTime,
+                            read_time: blog.read_time || '5 min read',
                             featured: blog.featured || false,
                             status: blog.status || 'published'
                           });
@@ -502,7 +502,7 @@ const AdminDashboard: React.FC = () => {
                     <td className="px-6 py-4 font-bold text-sm">{card.name}</td>
                     <td className="px-6 py-4 text-sm text-black/60">{card.bank}</td>
                     <td className="px-6 py-4 text-sm text-black/60">{card.type}</td>
-                    <td className="px-6 py-4 text-sm text-black/60">{card.bestFor}</td>
+                    <td className="px-6 py-4 text-sm text-black/60">{card.best_for}</td>
                     <td className="px-6 py-4 text-right space-x-2">
                       <button 
                         onClick={() => {
@@ -515,13 +515,13 @@ const AdminDashboard: React.FC = () => {
                             image: card.image,
                             rating: card.rating,
                             benefits: card.benefits,
-                            annualFee: card.annualFee,
-                            joiningFee: card.joiningFee,
-                            bestFor: card.bestFor,
+                            annual_fee: card.annual_fee,
+                            joining_fee: card.joining_fee,
+                            best_for: card.best_for,
                             category: card.category || 'Shopping',
                             color: card.color,
-                            rewardsRate: card.rewardsRate || '5%',
-                            projectedSavings: card.projectedSavings || '₹12,000/yr',
+                            rewards_rate: card.rewards_rate || '5%',
+                            projected_savings: card.projected_savings || '₹12,000/yr',
                             status: card.status || 'published'
                           });
                           setIsModalOpen(true);
@@ -858,8 +858,8 @@ const AdminDashboard: React.FC = () => {
                           <input 
                             type="text" 
                             required
-                            value={cardForm.annualFee}
-                            onChange={e => setCardForm({...cardForm, annualFee: e.target.value})}
+                            value={cardForm.annual_fee}
+                            onChange={e => setCardForm({...cardForm, annual_fee: e.target.value})}
                             className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
                           />
                         </div>
@@ -868,8 +868,8 @@ const AdminDashboard: React.FC = () => {
                           <input 
                             type="text" 
                             required
-                            value={cardForm.joiningFee}
-                            onChange={e => setCardForm({...cardForm, joiningFee: e.target.value})}
+                            value={cardForm.joining_fee}
+                            onChange={e => setCardForm({...cardForm, joining_fee: e.target.value})}
                             className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
                           />
                         </div>
@@ -952,8 +952,8 @@ const AdminDashboard: React.FC = () => {
                       <input 
                         type="text" 
                         required
-                        value={cardForm.bestFor}
-                        onChange={e => setCardForm({...cardForm, bestFor: e.target.value})}
+                        value={cardForm.best_for}
+                        onChange={e => setCardForm({...cardForm, best_for: e.target.value})}
                         className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
                       />
                     </div>
@@ -965,8 +965,8 @@ const AdminDashboard: React.FC = () => {
                       <input 
                         type="text" 
                         required
-                        value={cardForm.rewardsRate}
-                        onChange={e => setCardForm({...cardForm, rewardsRate: e.target.value})}
+                        value={cardForm.rewards_rate}
+                        onChange={e => setCardForm({...cardForm, rewards_rate: e.target.value})}
                         className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
                       />
                     </div>
@@ -975,8 +975,8 @@ const AdminDashboard: React.FC = () => {
                       <input 
                         type="text" 
                         required
-                        value={cardForm.projectedSavings}
-                        onChange={e => setCardForm({...cardForm, projectedSavings: e.target.value})}
+                        value={cardForm.projected_savings}
+                        onChange={e => setCardForm({...cardForm, projected_savings: e.target.value})}
                         className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
                       />
                     </div>

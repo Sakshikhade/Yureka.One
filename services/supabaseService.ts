@@ -11,6 +11,10 @@ export enum OperationType {
 
 const handleSupabaseError = (error: any, operationType: string, table: string) => {
   console.error(`Supabase Error (${operationType} on ${table}):`, error);
+  // Log the full object for user to see in console
+  if (typeof window !== 'undefined') {
+    (window as any).lastSupabaseError = error;
+  }
   throw new Error(error.message || `Failed to ${operationType} ${table}`);
 };
 

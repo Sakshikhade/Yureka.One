@@ -11,7 +11,7 @@ export interface Blog {
   slug?: string;
   created_at?: string;
   updated_at?: string;
-  readTime?: string;
+  read_time?: string;
   status?: 'draft' | 'published';
 }
 
@@ -24,13 +24,13 @@ export interface Card {
   image: string;
   rating: number;
   benefits: string[];
-  annualFee: string;
-  joiningFee: string;
-  bestFor: string;
+  annual_fee: string;
+  joining_fee: string;
+  best_for: string;
   color: string;
-  rewardsRate?: string;
+  rewards_rate?: string;
   category?: string;
-  projectedSavings?: string;
+  projected_savings?: string;
   features?: string[];
   created_at?: string;
   updated_at?: string;
@@ -54,11 +54,11 @@ export interface OSFeature {
   name: string;
   issuer: string;
   image: string;
-  rewardsRate: string;
-  annualFee: string;
+  rewards_rate: string;
+  annual_fee: string;
   category: string;
-  bestFor: string;
-  projectedSavings?: string;
+  best_for: string;
+  projected_savings?: string;
   features?: string[];
   status?: 'available' | 'coming_soon';
 }

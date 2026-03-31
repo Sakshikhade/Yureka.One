@@ -103,10 +103,10 @@ const AllHomes: React.FC = () => {
         if (issuer !== 'All Issuers' && card.issuer !== issuer) return false;
         if (category !== 'Any Category' && card.category !== category) return false;
         
-        if (noAnnualFee && card.annualFee !== '₹0' && card.annualFee !== 'Free' && !card.annualFee.toLowerCase().includes('free')) return false;
+        if (noAnnualFee && card.annual_fee !== '₹0' && card.annual_fee !== 'Free' && !card.annual_fee.toLowerCase().includes('free')) return false;
         
         if (highRewards) {
-            const rate = parseFloat(card.rewardsRate.replace(/[^0-9.]/g, ''));
+            const rate = parseFloat(card.rewards_rate.replace(/[^0-9.]/g, ''));
             if (isNaN(rate) || rate < 5) return false;
         }
 
@@ -116,7 +116,7 @@ const AllHomes: React.FC = () => {
         }
 
         if (lifetimeFree) {
-            const isFree = card.annualFee.toLowerCase().includes('lifetime free') || card.annualFee === 'Free';
+            const isFree = card.annual_fee.toLowerCase().includes('lifetime free') || card.annual_fee === 'Free';
             if (!isFree) return false;
         }
 
@@ -191,21 +191,21 @@ const AllHomes: React.FC = () => {
                             
                             <div className="flex gap-4 text-ink/60 text-xs font-mono uppercase tracking-wider mb-6 border-b border-ink/10 pb-4">
                                 <span className="flex items-center gap-1.5"><CardIcon size={12} /> {card.category}</span>
-                                <span className="flex items-center gap-1.5"><Gift size={12} /> {card.rewardsRate}</span>
+                                <span className="flex items-center gap-1.5"><Gift size={12} /> {card.rewards_rate}</span>
                             </div>
 
                             <div className="flex flex-col gap-2 w-full mb-4">
                                 <div className="flex items-center gap-2">
-                                    <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${card.annualFee === '₹0' || card.annualFee === 'Free' || card.annualFee.toLowerCase().includes('lifetime free') ? 'bg-teal' : 'bg-ink/40'}`}></div>
-                                    <span className={`text-xs font-bold uppercase tracking-widest truncate ${card.annualFee === '₹0' || card.annualFee === 'Free' || card.annualFee.toLowerCase().includes('lifetime free') ? 'text-teal' : 'text-ink/40'}`}>
-                                        Annual Fee: {card.annualFee}
+                                    <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${card.annual_fee === '₹0' || card.annual_fee === 'Free' || card.annual_fee.toLowerCase().includes('lifetime free') ? 'bg-teal' : 'bg-ink/40'}`}></div>
+                                    <span className={`text-xs font-bold uppercase tracking-widest truncate ${card.annual_fee === '₹0' || card.annual_fee === 'Free' || card.annual_fee.toLowerCase().includes('lifetime free') ? 'text-teal' : 'text-ink/40'}`}>
+                                        Annual Fee: {card.annual_fee}
                                     </span>
                                 </div>
-                                {card.joiningFee && card.joiningFee !== '₹0' && (
+                                {card.joining_fee && card.joining_fee !== '₹0' && (
                                     <div className="flex items-center gap-2">
                                         <div className="w-1.5 h-1.5 rounded-full shrink-0 bg-ink/20"></div>
                                         <span className="text-[10px] font-bold uppercase tracking-widest truncate text-ink/40">
-                                            Joining Fee: {card.joiningFee}
+                                            Joining Fee: {card.joining_fee}
                                         </span>
                                     </div>
                                 )}
@@ -215,7 +215,7 @@ const AllHomes: React.FC = () => {
                         <div className="flex justify-between items-end pt-4 mt-auto">
                             <div>
                                 <p className="text-[10px] text-ink/30 font-bold uppercase tracking-widest mb-1">Projected Savings</p>
-                                <h4 className="text-2xl font-serif text-ink">{card.projectedSavings}</h4>
+                                <h4 className="text-2xl font-serif text-ink">{card.projected_savings}</h4>
                             </div>
                             <button className="border border-ink/20 hover:bg-black hover:text-white text-ink px-4 py-2 text-xs font-bold uppercase tracking-widest transition-colors flex items-center gap-2 rounded-sm shrink-0">
                                 Details <ArrowUpRight size={14} />
