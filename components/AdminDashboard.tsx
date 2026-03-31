@@ -266,7 +266,33 @@ const AdminDashboard: React.FC = () => {
   }
 
   const fixData = async () => {
-    alert('Fix Data feature requires backend API and has been deprecated for direct Supabase usage.');
+    setSaving(true);
+    setError(null);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        throw new Error("No active Supabase session found. Please try logging out and back in.");
+      }
+      
+      console.log("Diagnostic - Session User:", session.user.email);
+      console.log("Diagnostic - Session Role:", session.user.role);
+
+      // Test 1: Check if blogs table is readable
+      const { error: blogError } = await supabase.from('blogs').select('id').limit(1);
+      if (blogError) throw new Error(`Database Error: Cannot read 'blogs' table. ${blogError.message}`);
+
+      // Test 2: Check if cards table is readable
+      const { error: cardError } = await supabase.from('cards').select('id').limit(1);
+      if (cardError) throw new Error(`Database Error: Cannot read 'cards' table. ${cardError.message}`);
+
+      alert("🎉 System Health Check Passed!\n\n1. Authentication: OK\n2. Database Connection: OK\n3. Table Visibility: OK\n\nIf you still can't SAVE, please run the 'Final Backend Fix' SQL script I provided.");
+    } catch (err: any) {
+      console.error("Diagnostic Failed", err);
+      setError(`Diagnostic Failed: ${err.message}`);
+      (window as any).lastSupabaseError = err;
+    } finally {
+      setSaving(false);
+    }
   };
 
   if (!user) {
