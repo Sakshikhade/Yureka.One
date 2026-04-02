@@ -90,7 +90,7 @@ const CardExplorer: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen bg-[#F8FAFC] pt-24 pb-20">
+        <div className="min-h-screen bg-cream pt-24 pb-20 overflow-x-hidden font-serif">
             {/* --- TOP CATEGORY GRID (SCREENSHOT 1) --- */}
             <div className="max-w-[1440px] mx-auto px-6 mb-12">
                 <div className="flex gap-4 overflow-x-auto no-scrollbar pb-4 -mx-2 px-2">
@@ -98,12 +98,12 @@ const CardExplorer: React.FC = () => {
                         <button 
                             key={i}
                             onClick={() => toggleCategory(cat.name)}
-                            className={`flex flex-col items-center justify-center min-w-[120px] p-6 bg-white rounded-3xl shadow-sm hover:shadow-md transition-all border-2 ${selectedCategories.includes(cat.name) ? 'border-blue-500 bg-blue-50' : 'border-transparent'}`}
+                            className={`flex flex-col items-center justify-center min-w-[120px] p-6 bg-white/40 backdrop-blur-sm rounded-3xl shadow-sm hover:shadow-md transition-all border-2 ${selectedCategories.includes(cat.name) ? 'border-clay/40 bg-white/60' : 'border-transparent'}`}
                         >
-                            <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-3">
-                                {React.cloneElement(cat.icon as React.ReactElement<any>, { size: 32, className: 'text-blue-500' })}
+                            <div className="w-16 h-16 bg-cream/80 rounded-2xl flex items-center justify-center mb-3 shadow-inner">
+                                {React.cloneElement(cat.icon as React.ReactElement<any>, { size: 32, className: 'text-clay/80' })}
                             </div>
-                            <span className="text-xs font-bold text-gray-800 whitespace-nowrap">{cat.name}</span>
+                            <span className="text-[10px] font-bold text-ink/70 uppercase tracking-widest whitespace-nowrap">{cat.name}</span>
                         </button>
                     ))}
                 </div>
@@ -112,32 +112,32 @@ const CardExplorer: React.FC = () => {
             <div className="max-w-[1440px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
                 
                 {/* --- SIDEBAR FILTERS (SCREENSHOT 2 & 3) --- */}
-                <div className="hidden lg:block lg:col-span-3 space-y-8 bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-fit sticky top-32">
-                    <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-xl font-bold text-gray-900">Filter</h2>
+                <div className="hidden lg:block lg:col-span-3 space-y-8 bg-white/40 backdrop-blur-md p-8 rounded-3xl shadow-sm border border-ink/5 h-fit sticky top-32">
+                    <div className="flex justify-between items-center mb-10">
+                        <h2 className="text-3xl font-serif tracking-tighter text-ink italic">Filter</h2>
                         <button 
                             onClick={() => { setSelectedBanks([]); setSelectedCategories([]); }}
-                            className="text-blue-600 text-sm font-semibold hover:underline"
+                            className="text-clay text-[10px] font-bold uppercase tracking-[0.2em] hover:opacity-70 transition-opacity"
                         >Clear All</button>
                     </div>
 
                     {/* Bank Name Filter */}
-                    <div>
-                        <h3 className="text-base font-bold text-gray-700 mb-6 uppercase tracking-wider">Bank Name</h3>
-                        <div className="space-y-4 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
+                    <div className="space-y-6">
+                        <h3 className="text-[10px] font-bold text-ink/30 uppercase tracking-[0.4em] mb-4">Bank Name</h3>
+                        <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
                             {banks.map(bank => (
                                 <label key={bank} className="flex items-center justify-between group cursor-pointer">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-8 h-8 rounded-full bg-gray-50 border border-gray-100 flex items-center justify-center font-bold text-[10px] text-blue-600">
+                                        <div className="w-8 h-8 rounded-full bg-cream border border-ink/5 flex items-center justify-center font-bold text-[10px] text-clay/60 group-hover:bg-white group-hover:border-clay/20 transition-all">
                                             {bank[0]}
                                         </div>
-                                        <span className="text-sm font-medium text-gray-600 group-hover:text-blue-600 transition-colors uppercase">{bank}</span>
+                                        <span className="text-sm font-medium text-ink/60 group-hover:text-ink transition-colors uppercase tracking-widest">{bank}</span>
                                     </div>
                                     <input 
                                         type="checkbox" 
                                         checked={selectedBanks.includes(bank)}
                                         onChange={() => toggleBank(bank)}
-                                        className="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                                        className="w-4 h-4 rounded border-ink/10 text-clay focus:ring-clay cursor-pointer bg-cream"
                                     />
                                 </label>
                             ))}
@@ -145,127 +145,132 @@ const CardExplorer: React.FC = () => {
                     </div>
 
                     {/* Categories Filter */}
-                    <div className="pt-8 border-t border-gray-100">
-                        <h3 className="text-base font-bold text-gray-700 mb-6 uppercase tracking-wider">Categories</h3>
+                    <div className="pt-10 border-t border-ink/5">
+                        <h3 className="text-[10px] font-bold text-ink/30 uppercase tracking-[0.4em] mb-4">Categories</h3>
                         <div className="space-y-4">
                             {categories.slice(0, 6).map(cat => (
                                 <label key={cat.name} className="flex items-center justify-between group cursor-pointer">
                                     <div className="flex items-center gap-3">
-                                        <div className="text-gray-400 group-hover:text-blue-500 transition-colors">
-                                            {React.cloneElement(cat.icon as React.ReactElement<any>, { size: 18 })}
+                                        <div className="text-ink/20 group-hover:text-clay/60 transition-colors">
+                                            {React.cloneElement(cat.icon as React.ReactElement<any>, { size: 16 })}
                                         </div>
-                                        <span className="text-sm font-medium text-gray-600 group-hover:text-blue-600 transition-colors uppercase">{cat.name}</span>
+                                        <span className="text-sm font-medium text-ink/60 group-hover:text-ink transition-colors uppercase tracking-widest">{cat.name}</span>
                                     </div>
                                     <input 
                                         type="checkbox" 
                                         checked={selectedCategories.includes(cat.name)}
                                         onChange={() => toggleCategory(cat.name)}
-                                        className="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                                        className="w-4 h-4 rounded border-ink/10 text-clay focus:ring-clay cursor-pointer bg-cream"
                                     />
                                 </label>
                             ))}
-                            <button className="text-blue-600 text-sm font-bold mt-4 hover:underline">View More</button>
+                            <button className="text-clay text-[9px] font-bold uppercase tracking-widest mt-6 hover:opacity-70 transition-opacity">+ View More Options</button>
                         </div>
                     </div>
                 </div>
 
                 {/* --- CARD RESULTS (SCREENSHOT 4) --- */}
-                <div className="lg:col-span-9 space-y-6">
+                <div className="lg:col-span-9 space-y-12">
                     {/* Search Bar Mobile */}
-                    <div className="lg:hidden mb-6 flex gap-4">
+                    <div className="lg:hidden mb-8 flex gap-4">
                          <div className="relative flex-1">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-ink/30" size={16} />
                             <input 
-                                type="text" placeholder="Search cards..." 
-                                className="w-full pl-10 pr-4 py-3 bg-white rounded-xl border border-gray-200 outline-none focus:ring-2 focus:ring-blue-500"
+                                type="text" placeholder="Search curated cards..." 
+                                className="w-full pl-12 pr-6 py-4 bg-white/40 backdrop-blur-sm rounded-2xl border border-ink/5 outline-none focus:border-clay/30 transition-all font-serif italic text-ink"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
                          </div>
                          <button 
                             onClick={() => setIsMobileFilterOpen(true)}
-                            className="bg-white p-3 rounded-xl border border-gray-200"
+                            className="bg-white/40 backdrop-blur-sm p-4 rounded-2xl border border-ink/5"
                         >
-                             <FilterIcon size={20} className="text-gray-600" />
+                             <FilterIcon size={18} className="text-ink/60" />
                          </button>
                     </div>
 
                     {filteredCards.map((card) => (
-                        <div key={card.id} className="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden group hover:shadow-xl transition-all duration-500">
-                            {/* Main Info Section */}
-                            <div className="p-6 md:p-8 flex flex-col md:flex-row gap-8">
-                                {/* Card Image */}
-                                <div className="w-full md:w-[280px] shrink-0">
-                                    <div className="relative aspect-[1.58/1] rounded-xl overflow-hidden shadow-2xl group-hover:scale-[1.02] transition-transform duration-500">
-                                        <ImageWithLoader 
-                                            src={card.image} 
-                                            alt={card.name} 
-                                            className="w-full h-full object-cover"
-                                        />
+                        <div key={card.id} className="relative group">
+                            {/* Glass background layer */}
+                            <div className="absolute inset-0 bg-white/60 blur-[2px] rounded-[2.5rem] -m-1 group-hover:m-[-1.25rem] transition-all duration-700 opacity-40"></div>
+                            
+                            <div className="relative bg-white/80 backdrop-blur-xl rounded-[2.5rem] shadow-sm border border-ink/5 overflow-hidden group hover:shadow-2xl transition-all duration-700">
+                                {/* Main Info Section */}
+                                <div className="p-8 md:p-12 flex flex-col md:flex-row gap-12">
+                                    {/* Card Image */}
+                                    <div className="w-full md:w-[320px] shrink-0">
+                                        <div className="relative aspect-[1.58/1] rounded-2xl overflow-hidden shadow-2xl group-hover:scale-[1.05] transition-transform duration-1000 border border-ink/5">
+                                            <ImageWithLoader 
+                                                src={card.image} 
+                                                alt={card.name} 
+                                                className="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-1000"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {/* Content Center */}
+                                    <div className="flex-1 space-y-6">
+                                        <div className="flex flex-wrap gap-2">
+                                            {card.tags?.map((tag, i) => (
+                                                <div key={i} className="flex items-center gap-1.5 bg-ink/5 px-4 py-1.5 rounded-full group/tag cursor-pointer hover:bg-clay hover:text-white transition-all duration-500">
+                                                    <div className="w-1 h-1 rounded-full bg-clay group-hover/tag:bg-white transition-colors"></div>
+                                                    <span className="text-[9px] font-bold uppercase tracking-[0.2em]">{tag}</span>
+                                                    <Info size={9} className="opacity-40 ml-1" />
+                                                </div>
+                                            )) || (
+                                                <div className="flex items-center gap-1.5 bg-ink/5 px-4 py-1.5 rounded-full">
+                                                    <span className="text-[9px] font-bold uppercase tracking-[0.2em]">{card.category}</span>
+                                                </div>
+                                            )}
+                                        </div>
+                                        <h2 className="text-3xl md:text-5xl font-serif italic tracking-tighter text-ink leading-none group-hover:text-clay transition-colors duration-700">
+                                            {card.name}
+                                        </h2>
+                                        <div className="flex items-center gap-3 text-ink/40">
+                                            <Landmark size={14} className="opacity-60" />
+                                            <span className="text-[10px] font-bold uppercase tracking-[0.4em]">{card.issuer || card.bank}</span>
+                                        </div>
+                                    </div>
+
+                                    {/* Actions Right */}
+                                    <div className="w-full md:w-56 flex flex-col gap-4 justify-start pt-4">
+                                        <button className="w-full bg-ink text-white font-bold py-4 rounded-full flex items-center justify-center gap-3 transition-all shadow-xl hover:bg-clay active:scale-95 text-[10px] uppercase tracking-[0.3em]">
+                                            Read more <ArrowRight size={14} className="opacity-60" />
+                                        </button>
+                                        <button className="w-full bg-white border border-ink/10 hover:border-clay/30 text-ink font-bold py-4 rounded-full flex items-center justify-center gap-3 transition-all active:scale-95 text-[10px] uppercase tracking-[0.3em]">
+                                            Ask AI <MessageSquareShare size={14} className="text-clay" />
+                                        </button>
+                                        <button className="text-ink/30 text-[8px] uppercase font-bold tracking-[0.4em] text-center hover:text-clay transition-colors mt-4">
+                                            Report data discrepancy
+                                        </button>
                                     </div>
                                 </div>
 
-                                {/* Content Center */}
-                                <div className="flex-1 space-y-4">
-                                    <div className="flex flex-wrap gap-3">
-                                        {card.tags?.map((tag, i) => (
-                                            <div key={i} className="flex items-center gap-1 bg-blue-50/50 px-3 py-1 rounded-full group cursor-pointer hover:bg-blue-100 transition-colors">
-                                                <div className="w-1.5 h-1.5 rounded-full bg-blue-400"></div>
-                                                <span className="text-[10px] font-bold text-blue-600 uppercase tracking-widest">{tag}</span>
-                                                <Info size={10} className="text-blue-300 ml-1" />
-                                            </div>
-                                        )) || (
-                                            <div className="flex items-center gap-1 bg-blue-50/50 px-3 py-1 rounded-full">
-                                                <span className="text-[10px] font-bold text-blue-600 uppercase tracking-widest">{card.category}</span>
-                                            </div>
-                                        )}
+                                {/* Stats Row Bottom */}
+                                <div className="bg-cream/40 px-8 md:px-16 py-10 grid grid-cols-2 md:grid-cols-5 gap-8 border-t border-ink/5 overflow-x-auto no-scrollbar">
+                                    <div className="space-y-2">
+                                        <p className="text-ink/20 text-[8px] font-bold uppercase tracking-[0.5em]">Intro Offer</p>
+                                        <p className="text-sm font-medium text-ink leading-tight italic line-clamp-2">{card.intro_offer || 'N/A'}</p>
                                     </div>
-                                    <h2 className="text-2xl md:text-3xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
-                                        {card.name}
-                                    </h2>
-                                    <div className="flex items-center gap-2 text-gray-400">
-                                        <Landmark size={16} />
-                                        <span className="text-sm font-medium">{card.issuer || card.bank}</span>
+                                    <div className="space-y-2">
+                                        <p className="text-ink/20 text-[8px] font-bold uppercase tracking-[0.5em]">Annual Fees</p>
+                                        <p className="text-sm font-medium text-ink italic">{card.annual_fee} <span className="text-[10px] opacity-40 font-sans font-bold">+ GST</span></p>
                                     </div>
-                                </div>
-
-                                {/* Actions Right */}
-                                <div className="w-full md:w-48 flex flex-col gap-3 justify-start pt-2">
-                                    <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all shadow-md active:scale-95">
-                                        Read more <ArrowRight size={18} />
-                                    </button>
-                                    <button className="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all active:scale-95">
-                                        Ask AI <MessageSquareShare size={18} className="text-orange-400" />
-                                    </button>
-                                    <button className="text-gray-400 text-[10px] uppercase font-bold tracking-widest text-center hover:text-red-400 transition-colors mt-2">
-                                        Report data issue
-                                    </button>
-                                </div>
-                            </div>
-
-                            {/* Stats Row Bottom */}
-                            <div className="bg-[#F0F7FF] px-6 md:px-10 py-6 grid grid-cols-2 md:grid-cols-5 gap-6 border-t border-blue-50 overflow-x-auto no-scrollbar">
-                                <div className="space-y-1">
-                                    <p className="text-gray-400 text-[10px] font-bold uppercase tracking-widest">Intro Offer</p>
-                                    <p className="text-sm font-bold text-gray-900 line-clamp-1">{card.intro_offer || 'N/A'}</p>
-                                </div>
-                                <div className="space-y-1">
-                                    <p className="text-gray-400 text-[10px] font-bold uppercase tracking-widest">Annual Fees</p>
-                                    <p className="text-sm font-bold text-gray-900">{card.annual_fee} <span className="text-[10px] text-gray-400">+ GST</span></p>
-                                </div>
-                                <div className="space-y-1">
-                                    <p className="text-gray-400 text-[10px] font-bold uppercase tracking-widest">Joining Fees</p>
-                                    <p className="text-sm font-bold text-gray-900">{card.joining_fee || card.annual_fee} <span className="text-[10px] text-gray-400">+ GST</span></p>
-                                </div>
-                                <div className="space-y-1">
-                                    <p className="text-gray-400 text-[10px] font-bold uppercase tracking-widest">Reward Rate</p>
-                                    <p className="text-sm font-bold text-gray-900">{card.rewards_rate || '2% → 30%'}</p>
-                                </div>
-                                <div className="space-y-1">
-                                    <p className="text-gray-400 text-[10px] font-bold uppercase tracking-widest">Rating</p>
-                                    <div className="flex items-center gap-1.5">
-                                        <p className="text-sm font-bold text-gray-900">{card.rating?.toFixed(1) || '4.0'}</p>
-                                        <Star size={14} className="fill-yellow-400 text-yellow-400" />
+                                    <div className="space-y-2">
+                                        <p className="text-ink/20 text-[8px] font-bold uppercase tracking-[0.5em]">Joining Fees</p>
+                                        <p className="text-sm font-medium text-ink italic">{card.joining_fee || card.annual_fee} <span className="text-[10px] opacity-40 font-sans font-bold">+ GST</span></p>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <p className="text-ink/20 text-[8px] font-bold uppercase tracking-[0.5em]">Reward Rate</p>
+                                        <p className="text-sm font-medium text-clay italic">{card.rewards_rate || '2% → 30%'}</p>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <p className="text-ink/20 text-[8px] font-bold uppercase tracking-[0.5em]">Rating</p>
+                                        <div className="flex items-center gap-2">
+                                            <p className="text-sm font-medium text-ink italic">{card.rating?.toFixed(1) || '4.0'}</p>
+                                            <Star size={12} className="fill-clay/40 text-clay/40" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -273,14 +278,14 @@ const CardExplorer: React.FC = () => {
                     ))}
 
                     {filteredCards.length === 0 && (
-                        <div className="text-center py-20 bg-white rounded-3xl border-2 border-dashed border-gray-100">
-                             <AlertCircle size={48} className="text-gray-200 mx-auto mb-4" />
-                             <h3 className="text-xl font-bold text-gray-900">No cards found</h3>
-                             <p className="text-gray-500 mt-2">Try adjusting your filters or search terms.</p>
+                        <div className="text-center py-32 bg-white/40 backdrop-blur-sm rounded-[3rem] border-2 border-dashed border-ink/10">
+                             <AlertCircle size={48} className="text-ink/10 mx-auto mb-6" />
+                             <h3 className="text-3xl font-serif italic text-ink/30tracking-tighter">No matching instruments</h3>
+                             <p className="text-ink/40 mt-4 font-medium italic">Adjust filters to discover new rewards.</p>
                              <button 
                                 onClick={() => { setSelectedBanks([]); setSelectedCategories([]); setSearchQuery(''); }}
-                                className="mt-6 text-blue-600 font-bold hover:underline"
-                            >Clear all filters</button>
+                                className="mt-10 text-clay font-bold uppercase tracking-[0.3em] text-[10px] hover:opacity-70 transition-opacity border-b-2 border-clay/20 pb-1"
+                            >Clear All Constraints</button>
                         </div>
                     )}
                 </div>
@@ -288,40 +293,40 @@ const CardExplorer: React.FC = () => {
 
             {/* Mobile Filter Modal */}
             {isMobileFilterOpen && (
-                <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm lg:hidden animate-fade-in">
-                    <div className="absolute right-0 top-0 h-full w-[85%] bg-white p-6 shadow-2xl animate-slide-left overflow-y-auto">
-                        <div className="flex justify-between items-center mb-8">
-                            <h2 className="text-2xl font-bold">Filters</h2>
-                            <button onClick={() => setIsMobileFilterOpen(false)} className="p-2 hover:bg-gray-100 rounded-full">
-                                <X size={24} />
+                <div className="fixed inset-0 z-50 bg-ink/60 backdrop-blur-md lg:hidden animate-fade-in">
+                    <div className="absolute right-0 top-0 h-full w-[90%] bg-cream p-10 shadow-[0_0_100px_rgba(0,0,0,0.5)] animate-slide-left overflow-y-auto">
+                        <div className="flex justify-between items-center mb-12">
+                            <h2 className="text-4xl font-serif italic tracking-tighter">Filters</h2>
+                            <button onClick={() => setIsMobileFilterOpen(false)} className="p-3 hover:bg-ink/5 rounded-full transition-colors">
+                                <X size={24} className="text-ink/40" />
                             </button>
                         </div>
                         {/* Repeat sidebar content for mobile */}
-                        <div className="space-y-8">
-                             <div className="flex justify-between items-center">
-                                <span className="text-gray-500 font-medium">Select Filters</span>
-                                <button onClick={() => { setSelectedBanks([]); setSelectedCategories([]); }} className="text-blue-600 font-bold">Reset</button>
+                        <div className="space-y-12">
+                             <div className="flex justify-between items-center border-b border-ink/5 pb-4">
+                                <span className="text-ink/40 font-bold uppercase tracking-[0.2em] text-[10px]">Refine Catalog</span>
+                                <button onClick={() => { setSelectedBanks([]); setSelectedCategories([]); }} className="text-clay font-bold uppercase tracking-[0.2em] text-[10px]">Reset All</button>
                              </div>
                              <div>
-                                <h3 className="font-bold text-gray-900 mb-4">Banks</h3>
-                                <div className="grid grid-cols-2 gap-3">
+                                <h3 className="font-serif italic text-2xl text-ink mb-6">Banks</h3>
+                                <div className="grid grid-cols-2 gap-4">
                                     {banks.map(bank => (
                                         <button 
                                             key={bank}
                                             onClick={() => toggleBank(bank)}
-                                            className={`py-3 px-4 rounded-xl border text-xs font-bold transition-all ${selectedBanks.includes(bank) ? 'bg-blue-600 border-blue-600 text-white shadow-lg' : 'bg-gray-50 border-gray-100 text-gray-500'}`}
+                                            className={`py-4 px-6 rounded-2xl border text-[10px] font-bold uppercase tracking-widest transition-all ${selectedBanks.includes(bank) ? 'bg-clay border-clay text-white shadow-xl scale-[1.02]' : 'bg-white border-ink/5 text-ink/40 hover:border-ink/10'}`}
                                         >
                                             {bank}
                                         </button>
                                     ))}
                                 </div>
                              </div>
-                             {/* ... other mobile filters ... */}
+                             
                              <button 
                                 onClick={() => setIsMobileFilterOpen(false)}
-                                className="w-full bg-blue-600 text-white font-bold py-4 rounded-xl shadow-xl mt-8"
+                                className="w-full bg-ink text-white font-bold py-5 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] mt-12 uppercase tracking-[0.3em] text-[10px]"
                             >
-                                Show Results ({filteredCards.length})
+                                Reveal Results ({filteredCards.length})
                             </button>
                         </div>
                     </div>
