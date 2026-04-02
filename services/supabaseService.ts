@@ -306,3 +306,18 @@ export const deleteUser = async (userId: string) => {
     .eq('id', userId);
   if (error) throw error;
 };
+
+// --- Audit Logs ---
+export const getAuditLogs = async (): Promise<any[]> => {
+  const { data, error } = await supabase
+    .from('audit_logs')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(100);
+    
+  if (error) {
+    console.error('Error fetching audit logs:', error);
+    throw error;
+  }
+  return data;
+};
