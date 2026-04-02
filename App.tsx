@@ -51,7 +51,10 @@ const LoadingScreen = () => (
 
 const MainPage = ({ cards }: { cards: Card[] }) => (
   <>
-    <SEO title="Home | AI-Driven Credit Card Matching" />
+    <SEO 
+      title="Yureka | AI-Driven Credit Card Intelligence" 
+      description="Maximize every spend with India's most advanced AI credit card optimizer. Match with 200+ cards and unlock elite rewards instantly."
+    />
     <Hero />
     <TextReveal />
     <ShowcaseCarousel cards={cards} />
@@ -92,36 +95,51 @@ const AppContent: React.FC = () => {
                <Route path="/" element={<MainPage cards={cards} />} />
                
                <Route path="/cards" element={
-                 <>
-                   <SEO title="Card Explorer" description="Compare and match from 200+ credit cards in India with our AI engine." />
+                  <>
+                    <SEO 
+                      title="Card Explorer | Precision Matching Engine" 
+                      description="Deep-dive into 200+ credit cards. Filter by rewards, lounge access, and lifestyle perks to find your high-performance financial partner."
+                    />
                    <CardExplorer />
                  </>
                } />
                
                <Route path="/cards/:id" element={
-                 <>
-                   <SEO title="Instrument Detail" description="Deep dive into reward structures and lifestyle perks." />
+                  <>
+                    <SEO 
+                      title="Instrument Specification" 
+                      description="Detailed rewards analysis, annual fee breakdowns, and elite perk evaluations for your next credit instrument."
+                    />
                    <CardDetail />
                  </>
                } />
                
                <Route path="/ai-magic" element={
-                 <>
-                   <SEO title="AI Magic" description="Unlock the power of conversational AI for your financial optimization." />
+                  <>
+                    <SEO 
+                      title="AI Neural Core | Financial Optimization" 
+                      description="The future of conversational finance. Harness our neural engine to architect your perfect reward ecosystem."
+                    />
                    <ComingSoon />
                  </>
                } />
                
                <Route path="/rewards" element={
-                 <>
-                   <SEO title="Reward Matrix" description="Visualize and optimize your reward ecosystem." />
+                  <>
+                    <SEO 
+                      title="The Reward Matrix | Network Analysis" 
+                      description="Visualize your earnings potential. Map your spending habits across India's top reward networks with precision."
+                    />
                    <RewardsPage />
                  </>
                } />
                
                <Route path="/manifesto" element={
-                 <>
-                   <SEO title="Our Manifesto" description="Why we are building a more transparent financial future." />
+                  <>
+                    <SEO 
+                      title="The Yureka Manifesto | Our Vision" 
+                      description="Why transparency matters. Join us in building a future where financial data serves the individual first."
+                    />
                    <OurStory />
                  </>
                } />
@@ -129,22 +147,31 @@ const AppContent: React.FC = () => {
                <Route path="/jobs" element={<CareersPage />} />
                
                <Route path="/blogs" element={
-                 <>
-                   <SEO title="Journal" description="Expert insights on credit, finance, and optimization." />
+                  <>
+                    <SEO 
+                      title="The Journal | Financial Strategy & Lore" 
+                      description="Expert dispatches on credit policy, reward loopholes, and the strategy of high-end financial management."
+                    />
                    <BlogPage />
                  </>
                } />
                
                <Route path="/blogs/:slug" element={
-                 <>
-                   <SEO title="Journal Detail" description="In-depth analysis of credit policy and financial strategy." />
+                  <>
+                    <SEO 
+                      title="Registry Entry | Financial Insight" 
+                      description="Detailed deep-dives into credit strategy and editorial analysis from the Yureka investigative team."
+                    />
                    <BlogDetail />
                  </>
                } />
                
                <Route path="/join-waitlist" element={
-                 <>
-                   <SEO title="VIP Waitlist" description="Secure your spot in the future of credit card mastery." />
+                  <>
+                    <SEO 
+                      title="The Registry | Secure Your Access" 
+                      description="Join the elite waitlist for early access to the Yureka Neural Engine and exclusive reward strategies."
+                    />
                    <WaitlistPage />
                  </>
                } />

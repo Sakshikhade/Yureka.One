@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://yureka.money/sitemap.xml
+
+# Admin
+Disallow: /admin
+Disallow: /admin/*
