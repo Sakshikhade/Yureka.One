@@ -104,16 +104,27 @@ const AdminDashboard: React.FC = () => {
         // Fetch role for UI filtering
         try {
           const { data } = await supabase.from('users').select('role').eq('email', user.email).single();
-          const role = data?.role || 'user';
+          const fetchedRole = data?.role || 'user';
+          
+          // CRITICAL: Always allow the super admin
+          const isOwner = user.email === 'toanweshbiswas@gmail.com';
+          const role = isOwner ? 'admin' : fetchedRole;
+          
           setUserRole(role);
-          setIsAdmin(['admin', 'editor', 'writer'].includes(role));
+          setIsAdmin(isOwner || ['admin', 'editor', 'writer'].includes(role));
           
           // Set intelligent default tab
           if (role === 'writer') setActiveTab('blogs');
           if (role === 'editor' && activeTab === 'settings') setActiveTab('blogs');
         } catch (err) {
           console.error("Role fetch error:", err);
-          setIsAdmin(false);
+          // Even on error, bypass for owner
+          if (user.email === 'toanweshbiswas@gmail.com') {
+            setIsAdmin(true);
+            setUserRole('admin');
+          } else {
+            setIsAdmin(false);
+          }
         }
       } else {
         setIsAdmin(false);
