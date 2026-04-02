@@ -13,8 +13,7 @@ import ComingSoon from './components/ComingSoon';
 import SocialProof from './components/SocialProof';
 import FAQ from './components/FAQ';
 import Footer from './components/Footer';
-import AllHomes from './components/CardExplorer';
-import OSPage from './components/OSPage';
+import CardExplorer from './components/CardExplorer';
 import OurStory from './components/OurStory';
 import CareersPage from './components/CareersPage';
 import BlogPage from './components/JournalPage';
@@ -77,8 +76,8 @@ const AppContent: React.FC = () => {
            <Route path="/" element={<MainPage cards={cards} />} />
            
            {/* New Slugs matching Header */}
-           <Route path="/cards" element={<AllHomes />} />
-           <Route path="/ai-magic" element={<OSPage />} />
+           <Route path="/cards" element={<CardExplorer />} />
+           <Route path="/ai-magic" element={<ComingSoon />} />
            <Route path="/rewards" element={<RewardsPage />} />
            <Route path="/manifesto" element={<OurStory />} />
            <Route path="/jobs" element={<CareersPage />} />
@@ -105,9 +104,9 @@ const AppContent: React.FC = () => {
       {/* Floating AI Button */}
       {!isAdminRoute && (
         <Link 
-          to="/ai-magic"
+          to="/join-waitlist"
           className="fixed bottom-14 right-6 z-[70] bg-clay text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform cursor-pointer border border-white/20"
-          aria-label="Chat with Yureka AI"
+          aria-label="Join VIP Waitlist"
         >
           <button className="cursor-pointer">
             <Sparkles size={28} />
