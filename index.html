@@ -34,6 +34,7 @@
       html {
         scroll-behavior: smooth;
         background-color: #F2EFE9;
+        -webkit-tap-highlight-color: transparent;
       }
       body {
         font-family: 'DM Sans', sans-serif;
@@ -42,8 +43,23 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         overflow-x: hidden;
+        user-select: none; /* Security: Disable text selection */
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+      }
+
+      /* Allow selection on form inputs/textareas only */
+      input, textarea, [contenteditable="true"] {
+        user-select: text !important;
+        -webkit-user-select: text !important;
       }
       
+      /* Security: Print Protection */
+      @media print {
+        body { display: none !important; }
+      }
+
       /* Global Paper Grain Texture */
       .paper-texture {
         position: fixed;
@@ -73,7 +89,7 @@
 
       /* Glass/Vellum Island Effect - Optimized for Readability */
       .glass-panel {
-        background: rgba(255, 255, 255, 0.75); /* Increased opacity for better text contrast */
+        background: rgba(255, 255, 255, 0.75); 
         backdrop-filter: blur(20px) saturate(180%);
         -webkit-backdrop-filter: blur(20px) saturate(180%);
         border: 1px solid rgba(255, 255, 255, 0.5); 
@@ -90,15 +106,15 @@
         font-family: 'UnifrakturMaguntia', serif;
       }
 
-      /* Custom Selection Color */
+      /* Custom Selection Color (for inputs) */
       ::selection {
-        background: #047857; /* Updated to Green */
+        background: #047857; 
         color: white;
       }
 
       /* Editorial Scrollbar */
       ::-webkit-scrollbar {
-        width: 8px;
+        width: 6px;
       }
       ::-webkit-scrollbar-track {
         background: #F2EFE9; 
@@ -138,15 +154,52 @@
       }
     </style>
     <script>
+      // Security: Disable Right Click
+      document.addEventListener('contextmenu', event => event.preventDefault());
+
+      // Security: Disable Keyboard Shortucts for DevTools
+      document.addEventListener('keydown', e => {
+        // Disable F12
+        if (e.keyCode === 123) {
+          e.preventDefault();
+          return false;
+        }
+        // Disable Ctrl+Shift+I (Inspect)
+        if (e.ctrlKey && e.shiftKey && e.keyCode === 73) {
+          e.preventDefault();
+          return false;
+        }
+        // Disable Ctrl+Shift+J (Console)
+        if (e.ctrlKey && e.shiftKey && e.keyCode === 74) {
+          e.preventDefault();
+          return false;
+        }
+        // Disable Ctrl+Shift+C (Element selector)
+        if (e.ctrlKey && e.shiftKey && e.keyCode === 67) {
+          e.preventDefault();
+          return false;
+        }
+        // Disable Ctrl+U (View Source)
+        if (e.ctrlKey && e.keyCode === 85) {
+          e.preventDefault();
+          return false;
+        }
+        // Disable Ctrl+S (Save Page)
+        if (e.ctrlKey && e.keyCode === 83) {
+          e.preventDefault();
+          return false;
+        }
+      });
+
       tailwind.config = {
         theme: {
           extend: {
             colors: {
-              cream: '#F2EFE9', /* Warmer, deeper newsprint */
-              paper: '#FCFBF8', /* Off-white for cards, not pure white */
-              ink: '#242424',   /* Soft Black */
-              clay: '#047857',  /* Updated to Emerald Green (was #C84B31) */
-              teal: '#1A5F54',  /* Darker, academic Green */
+              cream: '#F2EFE9', 
+              paper: '#FCFBF8', 
+              ink: '#242424',   
+              clay: '#047857',  
+              teal: '#1A5F54',  
             },
             fontFamily: {
               sans: ['DM Sans', 'sans-serif'],

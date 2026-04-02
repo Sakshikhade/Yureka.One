@@ -1,25 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
-
-const useInView = (threshold = 0.2) => {
-  const [isInView, setIsInView] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsInView(true);
-          observer.disconnect();
-        }
-      },
-      { threshold }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, [threshold]);
-
-  return { ref, isInView };
-};
+import React, { useEffect, useState } from 'react';
+import { motion } from 'motion/react';
 
 const Counter: React.FC<{ end: number; duration?: number; trigger: boolean; prefix?: string; suffix?: string }> = ({ end, duration = 2000, trigger, prefix = '', suffix = '' }) => {
   const [count, setCount] = useState(0);
@@ -29,8 +9,8 @@ const Counter: React.FC<{ end: number; duration?: number; trigger: boolean; pref
       const animate = (currentTime: number) => {
         if (!startTime) startTime = currentTime;
         const progress = Math.min((currentTime - startTime) / duration, 1);
-        const ease = 1 - Math.pow(1 - progress, 4);
-        setCount(ease * end);
+        const easeValue = 1 - Math.pow(1 - progress, 4);
+        setCount(easeValue * end);
         if (progress < 1) requestAnimationFrame(animate);
       };
       requestAnimationFrame(animate);
@@ -41,10 +21,29 @@ const Counter: React.FC<{ end: number; duration?: number; trigger: boolean; pref
 };
 
 const Stats: React.FC = () => {
-  const { ref, isInView } = useInView(0.1);
+  const [hasAnimated, setHasAnimated] = useState(false);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.8 }
+    }
+  };
 
   return (
-    <section className="py-16 md:py-32 bg-cream px-4 md:px-8 border-y border-ink/10 relative">
+    <section className="py-16 md:py-32 bg-cream px-4 md:px-8 border-y border-ink/10 relative overflow-hidden">
       {/* Background Grid Pattern for Financial Look */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.03]" 
            style={{ 
@@ -53,89 +52,105 @@ const Stats: React.FC = () => {
            }}>
       </div>
 
-      <div className="max-w-[1440px] mx-auto relative z-10" ref={ref}>
+      <div className="max-w-[1440px] mx-auto relative z-10 text-ink">
         
         {/* Header - Financial Section Style */}
         <div className="border-b-4 border-double border-ink/10 mb-8 md:mb-12 pb-6">
-             <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
-                <div className={`transition-all duration-1000 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+             <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 text-ink">
+                <motion.div 
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                    variants={itemVariants}
+                >
                     <div className="flex items-center gap-3 mb-4 md:mb-6">
-                        <div className="w-1.5 h-1.5 bg-teal rounded-full animate-pulse"></div>
+                        <div className="w-1.5 h-1.5 bg-clay rounded-full animate-pulse"></div>
                         <h2 className="text-[10px] md:text-xs font-mono font-bold tracking-[0.3em] uppercase text-ink/60">Our Numbers</h2>
                     </div>
-                    <h3 className="text-2xl md:text-4xl font-serif leading-none text-ink tracking-tight">
-                        Why Use <br/><span className="italic text-ink/50">Us?</span>
+                    <h3 className="text-3xl md:text-5xl font-serif leading-none text-ink tracking-tight uppercase">
+                        Why Use <br/><span className="italic font-light text-ink/50">Us?</span>
                     </h3>
-                </div>
-                <div className="md:text-right transition-all duration-1000 delay-200 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}">
-                    <p className="text-ink/60 text-base md:text-lg max-w-sm font-serif italic border-l-2 border-teal pl-4">
-                        "Banks make money when you're confused. We help you understand and save."
+                </motion.div>
+                <motion.div 
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true }}
+                    variants={itemVariants}
+                    transition={{ delay: 0.2 }}
+                    className="md:text-right"
+                >
+                    <p className="text-ink/60 text-base md:text-lg max-w-sm font-serif italic border-l-2 md:border-l-0 md:border-r-2 border-clay pl-4 md:pl-0 md:pr-4">
+                        "Banks make money when you're confused. <br className="hidden lg:block" /> We help you understand and save."
                     </p>
-                </div>
+                </motion.div>
             </div>
         </div>
 
         {/* Newspaper Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 border border-ink/10 bg-paper">
+        <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            onViewportEnter={() => setHasAnimated(true)}
+            variants={containerVariants}
+            className="grid grid-cols-1 md:grid-cols-3 border border-ink/10 bg-paper"
+        >
             
             {/* Stat 1 */}
-            <div className={`
-                col-span-1 p-8 md:p-12 border-b md:border-b-0 md:border-r border-ink/10 relative group
-                transition-all duration-1000 delay-300
-                ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
-            `}>
-                <div className="flex justify-between items-start mb-8">
-                     <span className="text-xs font-bold uppercase tracking-widest text-teal border border-teal/30 px-3 py-1.5 bg-teal/5 rounded-sm">Cards</span>
-                     <span className="text-xs font-mono text-ink/30">DAT.01</span>
+            <motion.div variants={itemVariants} className="col-span-1 p-8 md:p-12 border-b md:border-b-0 md:border-r border-ink/10 relative group hover:bg-ink/[0.02] transition-colors">
+                <div className="flex justify-between items-start mb-8 text-ink">
+                     <span className="text-[10px] font-bold uppercase tracking-widest text-clay border border-clay/30 px-3 py-1.5 bg-clay/5 rounded-sm">Cards</span>
+                     <span className="text-[10px] font-mono text-ink/30">DAT.01</span>
                 </div>
-                <div className="text-4xl md:text-6xl text-ink mb-4 tracking-tighter leading-none font-serif">
-                    <Counter end={248} suffix="" trigger={isInView} />
+                <div className="text-5xl md:text-7xl text-ink mb-4 tracking-tighter leading-none font-serif">
+                    <Counter end={248} suffix="" trigger={hasAnimated} />
                 </div>
-                <h4 className="text-sm font-bold uppercase tracking-widest text-ink mb-3 border-t border-ink/10 pt-4 inline-block w-full">Cards Checked</h4>
+                <h4 className="text-xs font-bold uppercase tracking-widest text-ink mb-3 border-t border-ink/10 pt-4 flex justify-between items-center w-full">
+                    <span>Cards Scanned</span>
+                    <span className="text-[10px] lowercase font-normal italic opacity-40">Live Feed</span>
+                </h4>
                 <p className="text-ink/70 text-sm font-sans leading-relaxed max-w-xs">
-                    We check fees and rewards for over 248 credit cards.
+                    We check fees and rewards for over 200+ credit cards across all major Indian banks. No bias, just data.
                 </p>
-            </div>
+            </motion.div>
 
             {/* Stat 2 */}
-            <div className={`
-                col-span-1 p-8 md:p-12 border-b md:border-b-0 md:border-r border-ink/10 relative group
-                transition-all duration-1000 delay-400
-                ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
-            `}>
-                <div className="flex justify-between items-start mb-8">
-                     <span className="text-xs font-bold uppercase tracking-widest text-ink border border-ink/30 px-3 py-1.5 rounded-sm">Accuracy</span>
-                     <span className="text-xs font-mono text-ink/30">ALG.02</span>
+            <motion.div variants={itemVariants} className="col-span-1 p-8 md:p-12 border-b md:border-b-0 md:border-r border-ink/10 relative group hover:bg-ink/[0.02] transition-colors">
+                <div className="flex justify-between items-start mb-8 text-ink">
+                     <span className="text-[10px] font-bold uppercase tracking-widest text-ink border border-ink/30 px-3 py-1.5 rounded-sm">Accuracy</span>
+                     <span className="text-[10px] font-mono text-ink/30">ALG.02</span>
                 </div>
-                <div className="text-4xl md:text-6xl text-ink mb-4 tracking-tighter leading-none font-serif">
-                    <Counter end={100} prefix="" suffix="%" trigger={isInView} />
+                <div className="text-5xl md:text-7xl text-ink mb-4 tracking-tighter leading-none font-serif">
+                    <Counter end={100} prefix="" suffix="%" trigger={hasAnimated} />
                 </div>
-                <h4 className="text-sm font-bold uppercase tracking-widest text-ink mb-3 border-t border-ink/10 pt-4 inline-block w-full">Perfect Matches</h4>
+                <h4 className="text-xs font-bold uppercase tracking-widest text-ink mb-3 border-t border-ink/10 pt-4 flex justify-between items-center w-full">
+                    <span>Precision Matching</span>
+                    <span className="text-[10px] lowercase font-normal italic opacity-40">AI-Verified</span>
+                </h4>
                 <p className="text-ink/70 text-sm font-sans leading-relaxed max-w-xs">
-                    We look at 50+ details to make sure the card fits your life.
+                    We look at 50+ spending patterns to make sure the card fits your unique lifestyle perfectly.
                 </p>
-            </div>
+            </motion.div>
 
             {/* Stat 3 */}
-            <div className={`
-                col-span-1 p-8 md:p-12 relative group
-                transition-all duration-1000 delay-500
-                ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
-            `}>
-                <div className="flex justify-between items-start mb-8">
-                     <span className="text-xs font-bold uppercase tracking-widest text-clay border border-clay/30 px-3 py-1.5 bg-clay/5 rounded-sm">Savings</span>
-                     <span className="text-xs font-mono text-ink/30">RES.03</span>
+            <motion.div variants={itemVariants} className="col-span-1 p-8 md:p-12 relative group hover:bg-ink/[0.02] transition-colors">
+                <div className="flex justify-between items-start mb-8 text-ink">
+                     <span className="text-[10px] font-bold uppercase tracking-widest text-clay border border-clay/30 px-3 py-1.5 bg-clay/5 rounded-sm">Savings</span>
+                     <span className="text-[10px] font-mono text-ink/30">RES.03</span>
                 </div>
-                <div className="text-4xl md:text-6xl text-ink mb-4 tracking-tighter leading-none font-serif">
-                    <Counter end={15} prefix="₹" suffix="k" trigger={isInView} />
+                <div className="text-5xl md:text-7xl text-ink mb-4 tracking-tighter leading-none font-serif">
+                    <Counter end={15} prefix="₹" suffix="k" trigger={hasAnimated} />
                 </div>
-                <h4 className="text-sm font-bold uppercase tracking-widest text-ink mb-3 border-t border-ink/10 pt-4 inline-block w-full">Extra Money</h4>
+                <h4 className="text-xs font-bold uppercase tracking-widest text-ink mb-3 border-t border-ink/10 pt-4 flex justify-between items-center w-full">
+                    <span>Average Savings</span>
+                    <span className="text-[10px] lowercase font-normal italic opacity-40">Pro-Rated</span>
+                </h4>
                 <p className="text-ink/70 text-sm font-sans leading-relaxed max-w-xs">
-                    Our users save an average of ₹15,000 a year by switching to the right card.
+                    Users save an average of ₹15,000 per year by optimizing their voucher and reward strategies with us.
                 </p>
-            </div>
+            </motion.div>
 
-        </div>
+        </motion.div>
       </div>
     </section>
   );

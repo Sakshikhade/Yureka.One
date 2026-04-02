@@ -211,7 +211,7 @@ const HomeCarousel = forwardRef<HomeCarouselHandle, HomeCarouselProps>(({
                                                 Rewards Rate
                                             </p>
                                             <h4 className="text-xl font-medium text-ink tracking-tight">
-                                                {card.rewardsRate}
+                                                {card.rewards_rate}
                                             </h4>
                                         </div>
                                         <div className="w-8 h-8 bg-ink/5 border border-ink/10 text-ink flex items-center justify-center hover:bg-ink hover:text-white transition-colors">

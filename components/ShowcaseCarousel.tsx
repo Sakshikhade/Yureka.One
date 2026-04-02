@@ -1,9 +1,9 @@
-import React, { useRef, useEffect } from 'react';
-import { Card } from '../types';
+import React, { useRef } from 'react';
 import { CreditCard as CardIcon, ArrowUpRight, Sparkles, Zap, MousePointer2 } from 'lucide-react';
 import ImageWithLoader from './ImageWithLoader';
 import { Link } from 'react-router-dom';
 import { featuredCards } from '../data';
+import { motion, useScroll, useTransform, useSpring } from 'motion/react';
 
 interface ShowcaseCarouselProps {
   cards: any[];
@@ -12,79 +12,20 @@ interface ShowcaseCarouselProps {
 const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp }) => {
   const cards = cardsProp.length > 0 ? cardsProp : featuredCards;
   const containerRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const ctaRef = useRef<HTMLDivElement>(null);
 
-  const rotations = [-2, 1, -1.5, 2, -0.5];
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!containerRef.current) return;
-
-      const container = containerRef.current;
-      const { top, height } = container.getBoundingClientRect();
-      
-      const start = 0; 
-      const end = height - window.innerHeight;
-      const currentScroll = -top;
-
-      let progress = currentScroll / end;
-      progress = Math.max(0, Math.min(1, progress));
-
-      const easeOutCubic = (x: number): number => 1 - Math.pow(1 - x, 3);
-      const totalCards = cards.length;
-      const cardsPhaseEnd = 0.8;
-      const step = cardsPhaseEnd / totalCards;
-
-      cards.forEach((_, i) => {
-          const card = cardsRef.current[i];
-          if (!card) return;
-
-          const cardStart = i * step;
-          const cardEnd = cardStart + step;
-          let entryProgress = (progress - cardStart) / step;
-          entryProgress = Math.max(0, Math.min(1, entryProgress));
-          const ease = easeOutCubic(entryProgress);
-
-          const startX = 180; 
-          const currentX = startX * (1 - ease);
-          const targetRotation = rotations[i % rotations.length];
-          const currentRotation = targetRotation * ease;
-          const buriedAmount = Math.max(0, (progress - cardEnd) / step);
-          const scale = 1.0 - (buriedAmount * 0.05);
-          const brightness = 1 - (buriedAmount * 0.1); 
-
-          card.style.transform = `translate3d(${currentX}%, 0, 0) rotate(${currentRotation}deg) scale(${scale})`;
-          card.style.opacity = entryProgress > 0.05 ? '1' : '0';
-          card.style.filter = `brightness(${brightness})`;
-          card.style.zIndex = (i + 1).toString();
-      });
-
-      if (ctaRef.current) {
-          const ctaStart = 0.75;
-          const ctaEnd = 1.0;
-          let ctaP = (progress - ctaStart) / (ctaEnd - ctaStart);
-          ctaP = Math.max(0, Math.min(1, ctaP));
-          const ctaEase = easeOutCubic(ctaP);
-          const startX = 150; 
-          const x = startX * (1 - ctaEase);
-          ctaRef.current.style.transform = `translate3d(${x}%, 0, 0)`;
-          ctaRef.current.style.opacity = ctaEase.toString();
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', handleScroll);
-    handleScroll();
-
-    return () => {
-        window.removeEventListener('scroll', handleScroll);
-        window.removeEventListener('resize', handleScroll);
-    };
-  }, [cards.length]);
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
 
   return (
-    <section ref={containerRef} className="relative bg-cream h-[350vh] border-t border-ink/10 z-10">
+    <section ref={containerRef} className="relative bg-cream h-[400vh] border-t border-ink/10 z-10">
       
       <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center p-2 md:p-6 lg:p-8">
         
@@ -93,108 +34,136 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp })
             <div className="absolute top-0 bottom-0 left-[33%] w-px bg-ink/5 hidden lg:block z-0"></div>
             <div className="absolute top-0 bottom-0 right-[33%] w-px bg-ink/5 hidden lg:block z-0"></div>
 
-            <div className="w-full h-full relative z-10">
+            <div className="w-full h-full relative z-10 text-ink">
                 <div className="grid grid-cols-1 lg:grid-cols-3 h-full">
 
                     {/* Left Column: Copy */}
                     <div className="col-span-1 h-full flex flex-col justify-center px-8 md:px-16 relative z-20 pointer-events-none">
-                        <div className="pointer-events-auto">
-                            <span className="block text-teal text-xs font-bold uppercase tracking-[0.3em] mb-6">
+                        <motion.div 
+                          initial={{ opacity: 0, x: -20 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.8 }}
+                          className="pointer-events-auto"
+                        >
+                            <span className="block text-clay text-xs font-bold uppercase tracking-[0.3em] mb-6">
                                 How It Works
                             </span>
-                            <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif text-ink mb-6 leading-[0.9] tracking-tight">
+                            <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif text-ink mb-6 leading-[0.9] tracking-tight uppercase">
                                 We Compare <br/>
                                 <span className="italic font-light text-ink/50">For You.</span>
                             </h2>
-                            <p className="text-ink/70 text-[10px] sm:text-sm md:text-base font-sans leading-relaxed mb-6 sm:mb-10 border-l border-ink/20 pl-4 sm:pl-6 max-w-[200px] sm:max-w-sm">
-                                We don't just list cards. We compare 200+ options to find the best one for you.
+                            <p className="text-ink/70 text-sm md:text-base font-sans leading-relaxed mb-10 border-l border-clay pl-6 max-w-sm">
+                                We don't just list cards. We scan 200+ options across all Indian banks to find the one that fits your life perfectly.
                             </p>
                             
-                            <div className="flex items-center gap-4 text-xs font-bold tracking-[0.2em] uppercase text-ink/30">
-                                <div className="w-12 h-px bg-ink/20"></div>
-                                Scroll to Explore
+                            <div className="flex items-center gap-4 text-[10px] font-bold tracking-[0.2em] uppercase text-ink/30">
+                                <motion.div 
+                                  animate={{ scaleX: [1, 1.5, 1] }} 
+                                  transition={{ repeat: Infinity, duration: 2 }}
+                                  className="w-12 h-px bg-clay"
+                                />
+                                Scroll down
                             </div>
-                        </div>
+                        </motion.div>
                     </div>
 
-                    {/* Middle Column: Cards */}
+                    {/* Middle Column: Cards Container */}
                     <div className="col-span-1 h-full relative flex items-center justify-center pointer-events-none">
-                        <div className="relative w-[75vw] sm:w-[85vw] h-[50vh] sm:h-[60vh] max-h-[600px] max-w-[400px] perspective-1000 pointer-events-auto mt-12 sm:mt-16 lg:mt-0">
-                            {cards.map((card, i) => (
-                                <div
-                                    key={card.id}
-                                    ref={el => { cardsRef.current[i] = el; }}
-                                    className="absolute inset-0 w-full h-full will-change-transform"
-                                    style={{ transform: 'translate3d(100%, 0, 0)', opacity: 0 }}
-                                >
-                                    {/* Card Design: Gallery Frame Style */}
-                                    <div className="w-full h-full bg-[#F5F5F0] p-2 sm:p-3 pb-6 sm:pb-8 shadow-2xl border border-ink/10 flex flex-col relative group transition-all duration-300">
-                                        
-                                        {/* Image Area with 'Mat' */}
-                                        <div className="h-[60%] sm:h-[65%] relative overflow-hidden bg-[#F0F0F0] border-2 sm:border-4 border-paper shadow-sm grayscale group-hover:grayscale-0 transition-all duration-700">
-                                            <ImageWithLoader 
-                                                src={card.image} 
-                                                alt={card.name} 
-                                                className="w-full h-full object-cover"
-                                            />
-                                            {/* Floating Glass Badge */}
-                                            <div className="absolute top-2 sm:top-4 right-2 sm:right-4 glass-panel backdrop-blur-md text-ink px-2 sm:px-3 py-0.5 sm:py-1 text-[7px] sm:text-[9px] font-bold uppercase tracking-widest rounded-full shadow-sm">
-                                                {card.issuer}
-                                            </div>
-                                        </div>
-                                        
-                                        {/* Content Area */}
-                                        <div className="flex-1 pt-3 sm:pt-6 px-1 sm:px-2 flex flex-col justify-between">
-                                            <div>
-                                                <div className="flex justify-between items-baseline mb-2 sm:mb-3 border-b border-ink/10 pb-2 sm:pb-3">
-                                                    <h3 className="text-xl sm:text-2xl font-serif text-ink leading-none">{card.name}</h3>
-                                                    <span className="text-[8px] sm:text-[10px] font-bold text-ink/40 uppercase tracking-widest">No. {i + 1}</span>
-                                                </div>
-                                                <div className="flex justify-between items-center text-ink/60 text-[8px] sm:text-[10px] font-bold uppercase tracking-widest mt-1 sm:mt-2">
-                                                    <span className="flex items-center gap-1 sm:gap-1.5"><Sparkles size={10} /> {card.rewardsRate}</span>
-                                                    <span className="flex items-center gap-1 sm:gap-1.5"><Zap size={10} /> {card.category}</span>
+                        <div className="relative w-[85vw] h-[60vh] max-h-[600px] max-w-[420px] pointer-events-auto mt-12 lg:mt-0">
+                            {cards.map((card, i) => {
+                                // Calculate entry/exit ranges
+                                const total = cards.length;
+                                const phaseSize = 0.8 / total;
+                                const start = i * phaseSize;
+                                const end = (i + 1) * phaseSize;
+                                
+                                // Transforms based on scroll
+                                const x = useTransform(smoothProgress, [start, start + phaseSize / 2], [300, 0]);
+                                const opacity = useTransform(smoothProgress, [start, start + 0.05, end, end + 0.05], [0, 1, 1, 0]);
+                                const scale = useTransform(smoothProgress, [end, end + phaseSize], [1, 0.95]);
+                                const rotate = useTransform(smoothProgress, [start, end], [i % 2 === 0 ? -2 : 2, i % 2 === 0 ? 2 : -2]);
+                                const brightness = useTransform(smoothProgress, [end, end + phaseSize], [1, 0.8]);
+
+                                return (
+                                    <motion.div
+                                        key={card.id}
+                                        style={{ x, opacity, scale, rotate, filter: `brightness(${brightness})`, zIndex: i }}
+                                        className="absolute inset-0 w-full h-full"
+                                    >
+                                        <div className="w-full h-full bg-paper p-3 pb-8 shadow-2xl border border-ink/10 flex flex-col relative group transition-colors hover:border-clay/50">
+                                            
+                                            {/* Image Area */}
+                                            <div className="h-[65%] relative overflow-hidden bg-cream/50 border-4 border-paper shadow-inner grayscale group-hover:grayscale-0 transition-all duration-700">
+                                                <ImageWithLoader 
+                                                    src={card.image} 
+                                                    alt={card.name} 
+                                                    className="w-full h-full object-cover"
+                                                />
+                                                <div className="absolute top-4 right-4 glass-panel backdrop-blur-md text-ink px-3 py-1 text-[9px] font-bold uppercase tracking-widest rounded-full shadow-lg border border-white/20">
+                                                    {card.issuer}
                                                 </div>
                                             </div>
- 
-                                            <div className="flex items-end justify-between mt-auto">
+                                            
+                                            {/* Content Area */}
+                                            <div className="flex-1 pt-6 px-2 flex flex-col justify-between">
                                                 <div>
-                                                    <p className="text-[8px] sm:text-xs text-ink/40 font-bold uppercase tracking-widest mb-0.5 sm:mb-1">Savings</p>
-                                                    <p className="text-2xl sm:text-3xl font-serif text-ink tracking-tight">{card.projectedSavings}</p>
+                                                    <div className="flex justify-between items-baseline mb-3 border-b border-ink/10 pb-3">
+                                                        <h3 className="text-2xl font-serif text-ink leading-none">{card.name}</h3>
+                                                        <span className="text-[10px] font-bold text-ink/30 uppercase tracking-widest">RANK {i + 1}</span>
+                                                    </div>
+                                                    <div className="flex justify-between items-center text-ink/60 text-[10px] font-bold uppercase tracking-widest mt-2 font-mono">
+                                                        <span className="flex items-center gap-1.5"><Sparkles size={12} className="text-clay" /> {card.rewardsRate}</span>
+                                                        <span className="flex items-center gap-1.5"><Zap size={12} className="text-clay" /> {card.category}</span>
+                                                    </div>
                                                 </div>
-                                                <button className="w-8 h-8 sm:w-12 sm:h-12 border border-ink/10 text-ink flex items-center justify-center hover:bg-ink hover:text-white transition-colors rounded-full">
-                                                    <ArrowUpRight size={14} className="sm:w-[18px] sm:h-[18px]" />
-                                                </button>
+     
+                                                <div className="flex items-end justify-between mt-auto">
+                                                    <div>
+                                                        <p className="text-[10px] text-ink/40 font-bold uppercase tracking-widest mb-1 font-mono">Est. Savings</p>
+                                                        <p className="text-3xl font-serif text-ink tracking-tight uppercase">{card.projectedSavings}</p>
+                                                    </div>
+                                                    <Link to="/ai-magic" className="w-12 h-12 border border-ink/10 text-ink flex items-center justify-center hover:bg-ink hover:text-white transition-all rounded-full shadow-md hover:shadow-xl hover:-translate-y-1">
+                                                        <ArrowUpRight size={18} />
+                                                    </Link>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            ))}
+                                    </motion.div>
+                                );
+                            })}
                         </div>
                     </div>
 
                     {/* Right Column: CTA */}
                     <div className="col-span-1 h-full relative flex items-center justify-center lg:justify-start lg:pl-20 pointer-events-none">
-                        <div 
-                            ref={ctaRef}
+                        <motion.div 
+                            style={{ 
+                                x: useTransform(smoothProgress, [0.8, 0.95], [200, 0]),
+                                opacity: useTransform(smoothProgress, [0.8, 0.9], [0, 1])
+                            }}
                             className="relative pointer-events-auto"
-                            style={{ opacity: 0, transform: 'translate3d(100%, 0, 0)' }}
                         >
                             <Link to="/cards" className="group block">
-                                <div className="w-[280px] sm:w-[340px] h-[400px] sm:h-[480px] bg-clay border border-ink/10 relative overflow-hidden flex flex-col items-center justify-center text-center p-6 sm:p-10 transition-all duration-300 shadow-2xl">
-                                    <div className="absolute inset-0 border-[8px] sm:border-[12px] border-double border-black/10 pointer-events-none"></div>
+                                <div className="w-[320px] h-[480px] bg-clay/5 border border-clay/20 relative overflow-hidden flex flex-col items-center justify-center text-center p-10 transition-all duration-300 shadow-2xl hover:bg-clay/10">
+                                    <div className="absolute inset-0 border-[12px] border-double border-clay/10 pointer-events-none"></div>
                                     <div className="relative z-10 flex flex-col items-center">
-                                        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-ink text-white rounded-full flex items-center justify-center mb-4 sm:mb-6 shadow-xl group-hover:scale-110 transition-transform duration-500">
-                                            <MousePointer2 size={20} className="sm:w-[24px] sm:h-[24px]" />
-                                        </div>
-                                        <h3 className="text-lg sm:text-xl font-serif text-ink mb-1 sm:mb-2 italic">Start</h3>
-                                        <p className="text-xl sm:text-2xl font-bold text-ink tracking-tighter leading-none mb-6 sm:mb-8 uppercase">Find<br/>My Card</p>
-                                        <div className="bg-ink text-white px-4 sm:px-6 py-2 sm:py-3 font-bold uppercase tracking-widest text-[10px] sm:text-xs group-hover:bg-paper group-hover:text-ink transition-colors rounded-sm">
+                                        <motion.div 
+                                          animate={{ y: [0, -10, 0] }}
+                                          transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+                                          className="w-16 h-16 bg-ink text-white rounded-full flex items-center justify-center mb-6 shadow-2xl group-hover:scale-110 transition-transform duration-500"
+                                        >
+                                            <MousePointer2 size={24} className="text-clay" />
+                                        </motion.div>
+                                        <h3 className="text-xl font-serif text-ink mb-2 italic">Discovery</h3>
+                                        <p className="text-3xl font-bold text-ink tracking-tighter leading-none mb-8 uppercase">Explore <br/>Market</p>
+                                        <div className="bg-ink text-white px-8 py-3.5 font-bold uppercase tracking-widest text-xs group-hover:bg-clay group-hover:text-white transition-colors rounded-full shadow-xl">
                                             View All Cards
                                         </div>
                                     </div>
                                 </div>
                             </Link>
-                        </div>
+                        </motion.div>
                     </div>
 
                 </div>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Plus, Minus, LayoutGrid, Rocket, ShieldCheck, Gift, HelpCircle } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 
 // --- Level 3: Individual Question & Answer ---
 interface FAQQuestionProps {
@@ -11,7 +12,7 @@ const FAQQuestion: React.FC<FAQQuestionProps> = ({ question, answer }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border border-black/5 rounded-xl mb-3 overflow-hidden bg-white/40 hover:bg-white/60 transition-colors duration-300">
+    <div className="border border-clay/10 rounded-xl mb-3 overflow-hidden bg-white/40 hover:bg-white/60 transition-colors duration-300">
       <button 
         onClick={(e) => {
             e.stopPropagation();
@@ -20,18 +21,28 @@ const FAQQuestion: React.FC<FAQQuestionProps> = ({ question, answer }) => {
         className="w-full flex items-center justify-between p-4 text-left group"
         aria-expanded={isOpen}
       >
-        <span className="font-sans font-medium text-ink pr-4 text-base md:text-lg group-hover:text-teal transition-colors">{question}</span>
-        <div className={`text-teal transition-transform duration-300 shrink-0 ${isOpen ? 'rotate-180' : 'rotate-0'}`}>
+        <span className="font-sans font-medium text-ink pr-4 text-base md:text-lg group-hover:text-clay transition-colors uppercase tracking-tight">{question}</span>
+        <motion.div 
+          animate={{ rotate: isOpen ? 180 : 0 }}
+          className="text-clay shrink-0"
+        >
            {isOpen ? <Minus size={20} /> : <Plus size={20} />}
-        </div>
+        </motion.div>
       </button>
-      <div 
-        className={`overflow-hidden transition-all duration-500 ease-in-out ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}`}
-      >
-        <div className="px-4 pb-6 pt-0 text-sm md:text-base text-ink/70 font-serif leading-relaxed max-w-[90%]">
-            {answer}
-        </div>
-      </div>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+          >
+            <div className="px-4 pb-6 pt-0 text-sm md:text-base text-ink/70 font-serif leading-relaxed max-w-[95%]">
+                {answer}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
@@ -41,13 +52,20 @@ interface FAQCategoryProps {
   icon: any;
   title: string;
   questions: { q: string; a: string }[];
+  index: number;
 }
 
-const FAQCategory: React.FC<FAQCategoryProps> = ({ icon: Icon, title, questions }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const FAQCategory: React.FC<FAQCategoryProps> = ({ icon: Icon, title, questions, index }) => {
+  const [isOpen, setIsOpen] = useState(index === 0);
 
   return (
-    <div className={`glass-panel rounded-3xl transition-all duration-500 overflow-hidden mb-6 ${isOpen ? 'shadow-xl ring-1 ring-teal/20' : 'shadow-sm hover:shadow-md'}`}>
+    <motion.div 
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.1, duration: 0.8 }}
+      className={`glass-panel rounded-3xl transition-all duration-500 overflow-hidden mb-6 ${isOpen ? 'shadow-2xl ring-1 ring-clay/20 bg-white/60' : 'shadow-sm hover:shadow-md'}`}
+    >
       
       {/* Category Header */}
       <button 
@@ -56,27 +74,37 @@ const FAQCategory: React.FC<FAQCategoryProps> = ({ icon: Icon, title, questions 
         aria-expanded={isOpen}
       >
         <div className="flex items-center gap-6">
-           <div className={`w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shrink-0 ${isOpen ? 'bg-teal text-white' : 'bg-teal/10 text-teal'}`}>
+           <div className={`w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shrink-0 ${isOpen ? 'bg-ink text-white' : 'bg-clay/10 text-clay'}`}>
                <Icon size={24} strokeWidth={1.5} />
            </div>
-           <span className="font-serif font-bold text-xl md:text-2xl text-ink">{title}</span>
+           <span className="font-serif font-bold text-xl md:text-2xl text-ink uppercase tracking-tighter">{title}</span>
         </div>
-        <div className={`text-teal transition-transform duration-300 ${isOpen ? 'rotate-180' : 'rotate-0'}`}>
+        <motion.div 
+          animate={{ rotate: isOpen ? 180 : 0 }}
+          className="text-clay"
+        >
            {isOpen ? <Minus size={28} /> : <Plus size={28} />}
-        </div>
+        </motion.div>
       </button>
       
       {/* Questions List */}
-      <div 
-        className={`overflow-hidden transition-all duration-700 ease-in-out ${isOpen ? 'max-h-[1200px] opacity-100' : 'max-h-0 opacity-0'}`}
-      >
-        <div className="p-6 md:p-8 pt-0">
-             {questions.map((q, idx) => (
-                 <FAQQuestion key={idx} question={q.q} answer={q.a} />
-             ))}
-        </div>
-      </div>
-    </div>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div 
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+          >
+            <div className="p-6 md:p-8 pt-0">
+                 {questions.map((q, idx) => (
+                     <FAQQuestion key={idx} question={q.q} answer={q.a} />
+                 ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 };
 
@@ -128,37 +156,50 @@ const faqData = [
 // --- Main Layout ---
 const FAQ: React.FC = () => {
   return (
-    <section className="py-16 md:py-24 bg-cream border-b border-black/10 relative overflow-hidden">
+    <section className="py-16 md:py-32 bg-cream border-b border-black/10 relative overflow-hidden">
          {/* Background Texture for Glassmorphism Context */}
-         <div className="absolute inset-0 pointer-events-none opacity-30" 
+         <div className="absolute inset-0 pointer-events-none opacity-[0.05]" 
               style={{ backgroundImage: 'radial-gradient(#1A5F54 0.5px, transparent 0.5px)', backgroundSize: '20px 20px' }}>
          </div>
 
-         <div className="max-w-[1440px] mx-auto px-6 relative z-10">
+         <div className="max-w-[1440px] mx-auto px-6 relative z-10 text-ink">
              
              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-start">
                  
                  {/* Left Column: Sticky Header with SEO Keywords */}
                  <div className="lg:col-span-5 lg:sticky lg:top-32">
-                     <div className="text-left mb-8">
-                        <span className="block text-teal text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] mb-4 animate-fade-in-up">Help & Support</span>
-                        <h2 className="text-4xl md:text-7xl font-serif font-bold text-ink mb-4 leading-[0.9] animate-fade-in-up">
-                            Frequently Asked <br className="hidden md:block" /> Questions
+                     <motion.div 
+                        initial={{ opacity: 0, x: -30 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8 }}
+                        className="text-left mb-8"
+                     >
+                        <span className="block text-clay text-[10px] md:text-xs font-bold uppercase tracking-[0.4em] mb-6">Help & Support</span>
+                        <h2 className="text-5xl md:text-8xl font-serif font-bold text-ink mb-6 leading-[0.8] tracking-tighter uppercase">
+                            Common <br className="hidden md:block" /> Questions
                         </h2>
-                        <h3 className="text-4xl md:text-7xl font-serif font-bold text-ink leading-[0.9] animate-fade-in-up delay-100">
-                            We've <span className="text-teal">Got Answers.</span>
+                        <h3 className="text-4xl md:text-7xl font-serif font-bold text-ink leading-[0.9] tracking-tighter uppercase opacity-30 italic">
+                            Deciphered.
                         </h3>
-                     </div>
-                     <p className="text-base md:text-lg text-ink/70 font-serif italic max-w-md animate-fade-in-up delay-200">
-                         Everything you need to know about AI-driven card matching, our zero-fee policy, and the Yureka.money ecosystem.
-                     </p>
+                     </motion.div>
+                     <motion.p 
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 0.7 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.4, duration: 1 }}
+                        className="text-base md:text-lg text-ink font-serif italic max-w-md border-l-2 border-clay pl-6"
+                     >
+                         Navigating the world of credit rewards shouldn't be a mystery. We've clarified the most common queries about the Yureka.money matching engine.
+                     </motion.p>
                  </div>
 
                  {/* Right Column: Glassmorphism Accordions */}
-                 <div className="lg:col-span-7 w-full animate-fade-in-up delay-300">
+                 <div className="lg:col-span-7 w-full">
                      {faqData.map((category, idx) => (
                           <FAQCategory 
                             key={idx} 
+                            index={idx}
                             icon={category.icon} 
                             title={category.title} 
                             questions={category.questions} 

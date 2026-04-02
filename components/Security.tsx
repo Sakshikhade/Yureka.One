@@ -1,103 +1,100 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { Lock, FileText, Fingerprint } from 'lucide-react';
+import React, { useRef, useState } from 'react';
+import { Lock, Fingerprint } from 'lucide-react';
+import { motion, useMotionValue, useSpring, useInView } from 'motion/react';
 
 const Security: React.FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
-    const [cursor, setCursor] = useState({ x: -100, y: -100 });
     const [isHovered, setIsHovered] = useState(false);
+    const isInView = useInView(containerRef, { once: true, margin: "-100px" });
 
-    useEffect(() => {
-        const handleMouseMove = (e: MouseEvent) => {
-            if (containerRef.current) {
-                const rect = containerRef.current.getBoundingClientRect();
-                setCursor({
-                    x: e.clientX - rect.left,
-                    y: e.clientY - rect.top,
-                });
-            }
-        };
+    const mouseX = useMotionValue(0);
+    const mouseY = useMotionValue(0);
 
-        const current = containerRef.current;
-        if (current) {
-            current.addEventListener('mousemove', handleMouseMove);
-            current.addEventListener('mouseenter', () => setIsHovered(true));
-            current.addEventListener('mouseleave', () => setIsHovered(false));
-        }
+    const springConfig = { damping: 25, stiffness: 150 };
+    const springX = useSpring(mouseX, springConfig);
+    const springY = useSpring(mouseY, springConfig);
 
-        return () => {
-            if (current) {
-                current.removeEventListener('mousemove', handleMouseMove);
-                current.removeEventListener('mouseenter', () => setIsHovered(true));
-                current.removeEventListener('mouseleave', () => setIsHovered(false));
-            }
-        };
-    }, []);
+    const handleMouseMove = (e: React.MouseEvent) => {
+        if (!containerRef.current) return;
+        const rect = containerRef.current.getBoundingClientRect();
+        mouseX.set(e.clientX - rect.left);
+        mouseY.set(e.clientY - rect.top);
+    };
 
     return (
-        <section className="py-32 bg-cream border-t border-black/10 relative flex items-center justify-center">
+        <section className="py-32 bg-cream border-t border-black/10 relative flex items-center justify-center overflow-hidden">
             
-            <div className="max-w-4xl mx-auto w-full px-6">
+            <div className="max-w-4xl mx-auto w-full px-6 text-ink">
                 
                 {/* Confidential Stamp Header */}
-                <div className="flex justify-between items-end border-b-2 border-black mb-12 pb-4">
+                <motion.div 
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={isInView ? { opacity: 1, x: 0 } : {}}
+                    transition={{ duration: 0.8 }}
+                    className="flex justify-between items-end border-b-2 border-ink mb-12 pb-4"
+                >
                     <div>
-                        <div className="flex items-center gap-2 text-teal mb-2">
+                        <div className="flex items-center gap-2 text-clay mb-2">
                              <Lock size={16} />
-                             <span className="text-xs font-bold uppercase tracking-[0.2em]">Privacy Protocol</span>
+                             <span className="text-xs font-bold uppercase tracking-[0.3em]">Privacy Protocol</span>
                         </div>
-                        <h2 className="text-5xl font-serif text-black">Confidential</h2>
+                        <h2 className="text-5xl md:text-6xl font-serif text-ink uppercase tracking-tighter">Confidential</h2>
                     </div>
                     <div className="hidden md:block text-right">
-                         <p className="text-xs font-mono text-black/40 uppercase tracking-widest">Doc. No. 884-X</p>
-                         <p className="text-xs font-mono text-black/40 uppercase tracking-widest">Encryption: AES-256</p>
+                         <p className="text-[10px] font-mono text-ink/40 uppercase tracking-widest">Doc. Ref: YR-884-X</p>
+                         <p className="text-[10px] font-mono text-ink/40 uppercase tracking-widest leading-none">Security: Triple-Layer AES</p>
                     </div>
-                </div>
+                </motion.div>
 
-                <div 
+                <motion.div 
                     ref={containerRef}
-                    className="relative border border-black/10 bg-white p-12 md:p-20 text-center cursor-crosshair group overflow-hidden shadow-sm"
+                    initial={{ opacity: 0, scale: 0.98 }}
+                    animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                    transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                    onMouseMove={handleMouseMove}
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                    className="relative border border-ink/10 bg-paper p-12 md:p-24 text-center cursor-crosshair group overflow-hidden shadow-2xl"
                 >
-                    <div className="absolute top-4 right-4 opacity-10">
-                        <Fingerprint size={64} className="text-black" />
+                    <div className="absolute top-8 right-8 opacity-5">
+                        <Fingerprint size={120} className="text-ink" />
                     </div>
 
                     {/* Masked Content (Dimmed) */}
-                    <div className="relative z-10 opacity-30 blur-[2px] transition-all duration-300 group-hover:opacity-10 group-hover:blur-sm text-black">
-                        <h3 className="text-3xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tighter leading-none mb-6">
+                    <div className="relative z-10 opacity-20 blur-[3px] transition-all duration-700 group-hover:opacity-10 group-hover:blur-md text-ink">
+                        <h3 className="text-4xl md:text-6xl lg:text-7xl font-bold uppercase tracking-tighter leading-[0.8] mb-8">
                             Your Financial Data <br/> Is None Of Our Business.
                         </h3>
-                        <p className="font-serif text-xl italic max-w-xl mx-auto text-black/70">
+                        <p className="font-serif text-xl md:text-2xl italic max-w-xl mx-auto text-ink/70">
                             We use bank-grade encryption for every match. We do not sell, share, or monetize your spending patterns. 
                         </p>
                     </div>
 
-                    {/* Torch Reveal Layer (Black text on White Background) */}
-                    <div 
-                        className="absolute inset-0 bg-black text-white flex items-center justify-center pointer-events-none z-20"
+                    {/* Torch Reveal Layer */}
+                    <motion.div 
+                        className="absolute inset-0 bg-ink text-white flex items-center justify-center pointer-events-none z-20"
                         style={{
-                            clipPath: isHovered 
-                                ? `circle(180px at ${cursor.x}px ${cursor.y}px)` 
-                                : 'circle(0px at 0px 0px)',
-                            transition: 'clip-path 0.05s linear' // Faster transition for snappier feel
+                            clipPath: `circle(${isHovered ? '220px' : '0px'} at ${springX}px ${springY}px)`,
+                            WebkitClipPath: `circle(${isHovered ? '220px' : '0px'} at ${springX}px ${springY}px)`
                         }}
                     >
                          <div className="p-12 md:p-20 text-center">
-                            <h3 className="text-3xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tighter leading-none mb-6">
+                            <h3 className="text-4xl md:text-6xl lg:text-7xl font-bold uppercase tracking-tighter leading-[0.8] mb-8">
                                 Your Financial Data <br/> Is None Of Our Business.
                             </h3>
-                            <p className="font-serif text-xl italic max-w-xl mx-auto opacity-80">
+                            <p className="font-serif text-xl md:text-2xl italic max-w-xl mx-auto opacity-80">
                                 We use bank-grade encryption for every match. We do not sell, share, or monetize your spending patterns. 
                             </p>
-                            <div className="mt-8 inline-block border border-white px-4 py-2 text-[10px] font-bold uppercase tracking-widest">
-                                Verified Secure
+                            <div className="mt-10 inline-block border border-white/30 bg-white/5 backdrop-blur-sm px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.3em] rounded-full">
+                                Verified Secure Protocol
                             </div>
                          </div>
-                    </div>
+                    </motion.div>
                     
                     {/* Grid Pattern Overlay */}
-                    <div className="absolute inset-0 opacity-[0.05] pointer-events-none border-[0.5px] border-black/5" style={{ backgroundSize: '40px 40px', backgroundImage: 'linear-gradient(to right, #000 1px, transparent 1px), linear-gradient(to bottom, #000 1px, transparent 1px)' }}></div>
+                    <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundSize: '40px 40px', backgroundImage: 'linear-gradient(to right, #000 1px, transparent 1px), linear-gradient(to bottom, #000 1px, transparent 1px)' }}></div>
 
-                </div>
+                </motion.div>
             </div>
         </section>
     );
