@@ -106,7 +106,7 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp })
                                 We Compare <br/>
                                 <span className="italic font-light text-ink/50">For You.</span>
                             </h2>
-                            <p className="text-ink/70 text-sm md:text-base font-sans leading-relaxed mb-10 border-l border-ink/20 pl-6 max-w-sm">
+                            <p className="text-ink/70 text-[10px] sm:text-sm md:text-base font-sans leading-relaxed mb-6 sm:mb-10 border-l border-ink/20 pl-4 sm:pl-6 max-w-[200px] sm:max-w-sm">
                                 We don't just list cards. We compare 200+ options to find the best one for you.
                             </p>
                             

@@ -30,8 +30,8 @@ const Hero: React.FC = () => {
                 </div>
                 
                 {/* Masthead - Brand Name */}
-                <div className="flex-1 text-center px-4 mb-4 md:mb-0">
-                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-serif font-black tracking-tighter leading-none text-ink">
+                <div className="flex-1 text-center px-2 md:px-4 mb-4 md:mb-0">
+                    <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-8xl font-serif font-black tracking-tighter leading-none text-ink">
                         Yureka Times
                     </h1>
                 </div>

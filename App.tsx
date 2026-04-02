@@ -20,6 +20,7 @@ import CareersPage from './components/CareersPage';
 import BlogPage from './components/BlogPage';
 import Security from './components/Security';
 import WaitlistPage from './components/WaitlistPage';
+import RewardsPage from './components/RewardsPage';
 import AdminDashboard from './components/AdminDashboard';
 import { getCards } from './services/supabaseService';
 import { Card } from './types';
@@ -78,6 +79,7 @@ const AppContent: React.FC = () => {
            {/* New Slugs matching Header */}
            <Route path="/cards" element={<AllHomes />} />
            <Route path="/ai-magic" element={<OSPage />} />
+           <Route path="/rewards" element={<RewardsPage />} />
            <Route path="/manifesto" element={<OurStory />} />
            <Route path="/jobs" element={<CareersPage />} />
            <Route path="/blogs" element={<BlogPage />} />

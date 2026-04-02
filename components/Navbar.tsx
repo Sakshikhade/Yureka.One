@@ -35,7 +35,7 @@ const Navbar: React.FC = () => {
                 flex items-center justify-between
                 transition-all duration-700 cubic-bezier(0.25, 0.8, 0.25, 1)
                 ${isScrolled 
-                    ? 'w-[92%] md:w-[85%] lg:w-[75%] max-w-6xl pointer-events-auto px-6 py-3 glass-panel rounded-full shadow-xl border border-ink/5' 
+                    ? 'w-[94%] md:w-[90%] lg:w-[80%] max-w-7xl pointer-events-auto px-4 md:px-8 py-2 glass-panel rounded-full shadow-2xl border border-ink/5' 
                     : 'w-[96%] max-w-[1440px] bg-transparent border-b border-ink/10 px-0 py-6 rounded-none shadow-none border-x-0 border-t-0'
                 }
             `}
@@ -80,19 +80,19 @@ const Navbar: React.FC = () => {
 
                 <div className="h-4 w-px bg-ink/20"></div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 lg:gap-6">
                      <Link to="/ai-magic" className={`
-                        text-ink font-serif italic text-lg hover:text-clay transition-colors
+                        text-ink font-serif italic text-base lg:text-lg hover:text-clay transition-colors whitespace-nowrap
                      `}>
                         Yureka AI Magic
                      </Link>
                     
                     <Link to="/join-waitlist" className={`
-                        bg-clay hover:bg-teal text-white text-xs font-bold uppercase tracking-widest px-6 py-3
-                        flex items-center gap-2 group transition-all duration-500 rounded-full
+                        bg-clay hover:bg-teal text-white text-[10px] lg:text-xs font-bold uppercase tracking-widest px-5 lg:px-7 py-2.5 lg:py-3
+                        flex items-center gap-2 group transition-all duration-500 rounded-full shrink-0 shadow-md hover:shadow-lg hover:-translate-y-0.5
                     `}>
                         <span>Join VIP Waitlist</span>
-                        <ArrowRight size={14} className="text-white group-hover:translate-x-0.5 transition-transform" />
+                        <ArrowRight size={14} className="text-white group-hover:translate-x-1 transition-transform" />
                     </Link>
                 </div>
             </div>
