@@ -308,6 +308,9 @@ const AdminDashboard: React.FC = () => {
     setError(null);
     try {
       if (editingItem) {
+        if (editingItem.email === 'toanweshbiswas@gmail.com' && teamForm.role !== 'admin') {
+          throw new Error("The platform owner must remain an Admin.");
+        }
         await updateUserRole(editingItem.id, teamForm.role);
       } else {
         await inviteTeamMember(teamForm.email, teamForm.role);
@@ -329,10 +332,26 @@ const AdminDashboard: React.FC = () => {
   const handleDelete = async () => {
     if (!itemToDelete) return;
     
+    // Safety check: Prevent deleting the platform owner
+    if (itemToDelete.collection === 'users') {
+      const userToDelete = team.find(u => u.id === itemToDelete.id);
+      if (userToDelete?.email === 'toanweshbiswas@gmail.com') {
+        setError("The platform owner cannot be removed.");
+        setIsDeleteModalOpen(false);
+        return;
+      }
+    }
+    
     try {
       if (itemToDelete.collection === 'blogs') await deleteBlog(itemToDelete.id);
       else if (itemToDelete.collection === 'cards') await deleteCard(itemToDelete.id);
       else if (itemToDelete.collection === 'waitlist') await deleteWaitlistEntry(itemToDelete.id);
+      else if (itemToDelete.collection === 'users') {
+        await deleteUser(itemToDelete.id);
+        // Refresh team list
+        const members = await getTeamMembers();
+        setTeam(members);
+      }
       
       setIsDeleteModalOpen(false);
       setItemToDelete(null);
