@@ -1,23 +1,18 @@
 import { supabase } from '../supabase';
 import { Blog, Card, WaitlistEntry, NewsletterEntry } from '../types';
 
-export enum OperationType {
-  CREATE = 'create',
-  UPDATE = 'update',
-  DELETE = 'delete',
-  LIST = 'list',
-  GET = 'get',
-}
-
-const handleApiError = async (response: Response, operationType: string, table: string) => {
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
-    console.error(`API Error (${operationType} on ${table}):`, errorData);
-    if (typeof window !== 'undefined') {
-      (window as any).lastSupabaseError = errorData;
+// Helper for cleaning objects for Supabase (removing undefined/null)
+const cleanData = (obj: any) => {
+  const cleaned = { ...obj };
+  Object.keys(cleaned).forEach(key => {
+    if (cleaned[key] === undefined) delete cleaned[key];
+    // Convert benefits array to Postgres format if needed
+    if (key === 'benefits' && Array.isArray(cleaned[key])) {
+      // Ensure it's a valid string array
+      cleaned[key] = cleaned[key].filter((b: string) => b && b.trim() !== '');
     }
-    throw new Error(errorData.error || `Failed to ${operationType} ${table}`);
-  }
+  });
+  return cleaned;
 };
 
 // --- Blogs ---
@@ -37,27 +32,42 @@ export const getBlogs = (callback: (blogs: Blog[]) => void) => {
   };
   fetchBlogs();
   
-  const subscription = supabase.channel('blogs_changes')
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'blogs' }, () => fetchBlogs())
+  const channel = supabase.channel('blogs-realtime')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'blogs' }, (payload) => {
+      console.log('Real-time blog change:', payload.eventType);
+      fetchBlogs();
+    })
     .subscribe();
     
-  return () => { supabase.removeChannel(subscription); };
+  return () => { supabase.removeChannel(channel); };
 };
 
 export const addBlog = async (blog: any) => {
-  const { data, error } = await supabase.from('blogs').insert([blog]).select();
-  if (error) throw error;
+  console.log('Adding Blog:', blog);
+  const { data, error } = await supabase.from('blogs').insert([cleanData(blog)]).select();
+  if (error) {
+    console.error('Supabase Blog Insert Error:', error);
+    throw error;
+  }
   return data[0].id;
 };
 
 export const updateBlog = async (id: string, blogData: any) => {
-  const { error } = await supabase.from('blogs').update(blogData).eq('id', id);
-  if (error) throw error;
+  console.log('Updating Blog:', id, blogData);
+  const { error } = await supabase.from('blogs').update(cleanData(blogData)).eq('id', id);
+  if (error) {
+    console.error('Supabase Blog Update Error:', error);
+    throw error;
+  }
 };
 
 export const deleteBlog = async (id: string) => {
+  console.log('Deleting Blog:', id);
   const { error } = await supabase.from('blogs').delete().eq('id', id);
-  if (error) throw error;
+  if (error) {
+    console.error('Supabase Blog Delete Error:', error);
+    throw error;
+  }
 };
 
 // --- Cards ---
@@ -72,16 +82,19 @@ export const getCardsAdmin = (callback: (cards: Card[]) => void) => {
       if (error) throw error;
       callback(data as Card[]);
     } catch (error) {
-      console.error('Error fetching cards:', error);
+      console.error('Error fetching cards admin:', error);
     }
   };
   fetchCards();
   
-  const subscription = supabase.channel('cards_admin_changes')
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'cards' }, () => fetchCards())
+  const channel = supabase.channel('cards-admin-realtime')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'cards' }, (payload) => {
+      console.log('Real-time card change:', payload.eventType);
+      fetchCards();
+    })
     .subscribe();
     
-  return () => { supabase.removeChannel(subscription); };
+  return () => { supabase.removeChannel(channel); };
 };
 
 export const getCards = (callback: (cards: Card[]) => void) => {
@@ -90,38 +103,50 @@ export const getCards = (callback: (cards: Card[]) => void) => {
       const { data, error } = await supabase
         .from('cards')
         .select('*')
+        .eq('status', 'published')
         .order('created_at', { ascending: false });
       
       if (error) throw error;
-      const publishedCards = (data as any[]).filter(card => card.status === 'published' || !card.status);
-      callback(publishedCards as Card[]);
+      callback(data as Card[]);
     } catch (error) {
-      console.error('Error fetching cards:', error);
+      console.error('Error fetching cards public:', error);
     }
   };
   fetchCards();
   
-  const subscription = supabase.channel('cards_changes')
+  const channel = supabase.channel('cards-public-realtime')
     .on('postgres_changes', { event: '*', schema: 'public', table: 'cards' }, () => fetchCards())
     .subscribe();
     
-  return () => { supabase.removeChannel(subscription); };
+  return () => { supabase.removeChannel(channel); };
 };
 
 export const addCard = async (card: any) => {
-  const { data, error } = await supabase.from('cards').insert([card]).select();
-  if (error) throw error;
+  console.log('Adding Card:', card);
+  const { data, error } = await supabase.from('cards').insert([cleanData(card)]).select();
+  if (error) {
+    console.error('Supabase Card Insert Error:', error);
+    throw error;
+  }
   return data[0].id;
 };
 
 export const updateCard = async (id: string, cardData: any) => {
-  const { error } = await supabase.from('cards').update(cardData).eq('id', id);
-  if (error) throw error;
+  console.log('Updating Card:', id, cardData);
+  const { error } = await supabase.from('cards').update(cleanData(cardData)).eq('id', id);
+  if (error) {
+    console.error('Supabase Card Update Error:', error);
+    throw error;
+  }
 };
 
 export const deleteCard = async (id: string) => {
+  console.log('Deleting Card:', id);
   const { error } = await supabase.from('cards').delete().eq('id', id);
-  if (error) throw error;
+  if (error) {
+    console.error('Supabase Card Delete Error:', error);
+    throw error;
+  }
 };
 
 // --- Waitlist ---
@@ -141,16 +166,20 @@ export const getWaitlist = (callback: (entries: WaitlistEntry[]) => void) => {
   };
   fetchWaitlist();
   
-  const subscription = supabase.channel('waitlist_changes')
+  const channel = supabase.channel('waitlist-realtime')
     .on('postgres_changes', { event: '*', schema: 'public', table: 'waitlist' }, () => fetchWaitlist())
     .subscribe();
     
-  return () => { supabase.removeChannel(subscription); };
+  return () => { supabase.removeChannel(channel); };
 };
 
-export const joinWaitlist = async (entry: { name: string, email: string, phone?: string, role?: string, category?: string, company?: string }) => {
-  const { data, error } = await supabase.from('waitlist').insert([entry]).select();
-  if (error) throw error;
+export const joinWaitlist = async (entry: any) => {
+  console.log('Waitlist Join:', entry);
+  const { data, error } = await supabase.from('waitlist').insert([cleanData(entry)]).select();
+  if (error) {
+    console.error('Supabase Waitlist Insert Error:', error);
+    throw error;
+  }
   return data[0].id;
 };
 
@@ -166,7 +195,7 @@ export const getNewsletters = (callback: (entries: NewsletterEntry[]) => void) =
       const { data, error } = await supabase
         .from('newsletters')
         .select('*')
-        .order('subscribed_at', { ascending: false });
+        .order('created_at', { ascending: false });
       
       if (error) throw error;
       callback(data as NewsletterEntry[]);
@@ -176,11 +205,11 @@ export const getNewsletters = (callback: (entries: NewsletterEntry[]) => void) =
   };
   fetchNewsletters();
   
-  const subscription = supabase.channel('newsletters_changes')
+  const channel = supabase.channel('newsletters-realtime')
     .on('postgres_changes', { event: '*', schema: 'public', table: 'newsletters' }, () => fetchNewsletters())
     .subscribe();
     
-  return () => { supabase.removeChannel(subscription); };
+  return () => { supabase.removeChannel(channel); };
 };
 
 export const subscribeNewsletter = async (email: string) => {
@@ -196,9 +225,8 @@ export const deleteNewsletterEntry = async (id: string) => {
 
 // --- Admin Check ---
 export const checkIfAdmin = async (userId: string | undefined, userEmail: string | undefined) => {
-  if (userEmail === "toanweshbiswas@gmail.com") {
-    return true;
-  }
+  // Hardcoded master admin
+  if (userEmail === "toanweshbiswas@gmail.com") return true;
   if (!userId) return false;
   
   try {

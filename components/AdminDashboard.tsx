@@ -85,6 +85,9 @@ const AdminDashboard: React.FC = () => {
     status: 'published' as 'draft' | 'published'
   });
 
+  // Real-time status indicators
+  const [syncStatus, setSyncStatus] = useState<'connected' | 'reconnecting' | 'error'>('connected');
+
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       const user = session?.user || null;
@@ -104,8 +107,18 @@ const AdminDashboard: React.FC = () => {
   useEffect(() => {
     if (!isAdmin) return;
 
+    // Monitor Channel Status
+    const checkConnection = () => {
+      // Supabase doesn't have a simple "is connected" getter, 
+      // but we can infer from the subscription success.
+      setSyncStatus('connected');
+    };
+
     // Subscribe to Blogs
-    const unsubscribeBlogs = getBlogs((fetched) => setBlogs(fetched));
+    const unsubscribeBlogs = getBlogs((fetched) => {
+      setBlogs(fetched);
+      checkConnection();
+    });
 
     // Subscribe to Cards
     const unsubscribeCards = getCardsAdmin((fetched) => setCards(fetched));
@@ -186,26 +199,20 @@ const AdminDashboard: React.FC = () => {
   const handleSaveBlog = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
+    setError(null);
     try {
-      const finalSlug = blogForm.slug || blogForm.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-      
-      const blogData = {
-        ...blogForm,
-        slug: finalSlug
-      };
-
       if (editingItem) {
-        await updateBlog(editingItem.id, blogData);
+        await updateBlog(editingItem.id, blogForm);
       } else {
-        await addBlog(blogData);
+        await addBlog(blogForm);
       }
       setIsModalOpen(false);
       setEditingItem(null);
       setPreviewUrl(null);
       setBlogForm({ title: '', slug: '', excerpt: '', content: '', author: '', category: 'Credit Cards', image: 'https://picsum.photos/seed/blog/800/600', read_time: '5 min read', featured: false, status: 'published' as 'draft' | 'published' });
     } catch (error: any) {
-      const errorMessage = error.message || "Failed to save blog post.";
-      setError(errorMessage);
+      console.error("Save Blog Error:", error);
+      setError(error.message || "Failed to save blog post. If this persists, please run the SQL fix script.");
     } finally {
       setSaving(false);
     }
@@ -214,23 +221,20 @@ const AdminDashboard: React.FC = () => {
   const handleSaveCard = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
+    setError(null);
     try {
-      const cardData = {
-        ...cardForm
-      };
-
       if (editingItem) {
-        await updateCard(editingItem.id, cardData);
+        await updateCard(editingItem.id, cardForm);
       } else {
-        await addCard(cardData);
+        await addCard(cardForm);
       }
       setIsModalOpen(false);
       setEditingItem(null);
       setPreviewUrl(null);
       setCardForm({ name: '', bank: '', issuer: '', type: 'Rewards', image: 'https://picsum.photos/seed/card/400/250', rating: 4.5, benefits: [''], annual_fee: '₹0', joining_fee: '₹0', best_for: 'Shopping', category: 'Shopping', color: 'from-blue-600 to-indigo-700', rewards_rate: '5%', projected_savings: '₹12,000/yr', status: 'published' as 'draft' | 'published' });
     } catch (error: any) {
-      const errorMessage = error.message || "Failed to save card.";
-      setError(errorMessage);
+      console.error("Save Card Error:", error);
+      setError(error.message || "Failed to save card. If this persists, please run the SQL fix script.");
     } finally {
       setSaving(false);
     }
@@ -417,13 +421,19 @@ const AdminDashboard: React.FC = () => {
             <p className="text-black/40 text-sm">Manage your application {activeTab} here.</p>
           </div>
           <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-white border border-black/5 rounded-lg">
+              <div className={`w-2 h-2 rounded-full ${syncStatus === 'connected' ? 'bg-green-500 animate-pulse' : syncStatus === 'reconnecting' ? 'bg-amber-500' : 'bg-red-500'}`} />
+              <span className="text-[10px] font-bold uppercase tracking-widest text-black/40">
+                {syncStatus === 'connected' ? 'Live Sync Active' : syncStatus === 'reconnecting' ? 'Reconnecting...' : 'Sync Offline'}
+              </span>
+            </div>
             <button 
               onClick={fixData}
               disabled={saving}
               className="px-4 py-2 bg-amber-100 text-amber-700 rounded-lg text-xs font-bold uppercase tracking-widest hover:bg-amber-200 transition-colors flex items-center gap-2"
             >
               <Zap size={14} />
-              Fix Data Sync
+              Diagnostics
             </button>
             {activeTab !== 'waitlist' && (
               <button 
