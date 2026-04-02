@@ -252,17 +252,18 @@ export const deleteNewsletterEntry = async (id: string) => {
 export const checkIfAdmin = async (userId: string | undefined, userEmail: string | undefined) => {
   // Hardcoded master admin
   if (userEmail === "toanweshbiswas@gmail.com") return true;
-  if (!userId) return false;
+  if (!userEmail) return false;
   
   try {
     const { data, error } = await supabase
       .from('users')
       .select('role')
-      .eq('id', userId)
+      .eq('email', userEmail)
       .single();
     
     if (error || !data) return false;
-    return data.role === 'admin';
+    // Allow dashboard access for all team roles
+    return ['admin', 'editor', 'writer'].includes(data.role);
   } catch (error) {
     console.error('Error checking admin status:', error);
     return false;

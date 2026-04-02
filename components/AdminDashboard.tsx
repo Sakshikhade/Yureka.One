@@ -33,6 +33,7 @@ import { Blog, Card, WaitlistEntry } from '../types';
 
 const AdminDashboard: React.FC = () => {
   const [user, setUser] = useState<any>(null);
+  const [userRole, setUserRole] = useState<string>('user');
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'blogs' | 'cards' | 'waitlist' | 'settings'>('blogs');
@@ -100,10 +101,23 @@ const AdminDashboard: React.FC = () => {
       const user = session?.user || null;
       setUser(user);
       if (user) {
-        const adminStatus = await checkIfAdmin(user.id, user.email);
-        setIsAdmin(adminStatus);
+        // Fetch role for UI filtering
+        try {
+          const { data } = await supabase.from('users').select('role').eq('email', user.email).single();
+          const role = data?.role || 'user';
+          setUserRole(role);
+          setIsAdmin(['admin', 'editor', 'writer'].includes(role));
+          
+          // Set intelligent default tab
+          if (role === 'writer') setActiveTab('blogs');
+          if (role === 'editor' && activeTab === 'settings') setActiveTab('blogs');
+        } catch (err) {
+          console.error("Role fetch error:", err);
+          setIsAdmin(false);
+        }
       } else {
         setIsAdmin(false);
+        setUserRole('user');
       }
       setLoading(false);
     });
@@ -421,30 +435,43 @@ const AdminDashboard: React.FC = () => {
         </div>
 
         <nav className="flex-1 p-4 space-y-2">
+          {/* Blogs - All team members */}
           <button 
             onClick={() => setActiveTab('blogs')}
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${activeTab === 'blogs' ? 'bg-teal/10 text-teal font-bold' : 'text-black/60 hover:bg-black/5'}`}
           >
             <FileText size={20} /> Blogs
           </button>
-          <button 
-            onClick={() => setActiveTab('cards')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${activeTab === 'cards' ? 'bg-teal/10 text-teal font-bold' : 'text-black/60 hover:bg-black/5'}`}
-          >
-            <CreditCard size={20} /> Cards
-          </button>
-          <button 
-            onClick={() => setActiveTab('waitlist')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${activeTab === 'waitlist' ? 'bg-teal/10 text-teal font-bold' : 'text-black/60 hover:bg-black/5'}`}
-          >
-            <Users size={20} /> Waitlist
-          </button>
-          <button 
-            onClick={() => setActiveTab('settings')}
-            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${activeTab === 'settings' ? 'bg-teal/10 text-teal font-bold' : 'text-black/60 hover:bg-black/5'}`}
-          >
-            <Settings size={20} /> Settings
-          </button>
+
+          {/* Cards - Admin & Editor */}
+          {['admin', 'editor'].includes(userRole) && (
+            <button 
+              onClick={() => setActiveTab('cards')}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${activeTab === 'cards' ? 'bg-teal/10 text-teal font-bold' : 'text-black/60 hover:bg-black/5'}`}
+            >
+              <CreditCard size={20} /> Cards
+            </button>
+          )}
+
+          {/* Waitlist - Admin only */}
+          {userRole === 'admin' && (
+            <button 
+              onClick={() => setActiveTab('waitlist')}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${activeTab === 'waitlist' ? 'bg-teal/10 text-teal font-bold' : 'text-black/60 hover:bg-black/5'}`}
+            >
+              <Users size={20} /> Waitlist
+            </button>
+          )}
+
+          {/* Settings - Admin only */}
+          {userRole === 'admin' && (
+            <button 
+              onClick={() => setActiveTab('settings')}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${activeTab === 'settings' ? 'bg-teal/10 text-teal font-bold' : 'text-black/60 hover:bg-black/5'}`}
+            >
+              <Settings size={20} /> Team Settings
+            </button>
+          )}
         </nav>
 
         <div className="p-4 border-t border-black/5">
