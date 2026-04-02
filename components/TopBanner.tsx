@@ -17,7 +17,7 @@ const TopBanner: React.FC = () => {
                     Latest
                 </span>
                 <span className="text-sm font-serif italic text-white px-4">
-                    "Stop letting banks hold your rewards. With Jupyter, earn 15% more."
+                    "Stop letting banks hold your rewards. With Yureka, earn 15% more."
                 </span>
                 <span className="text-xs font-medium text-white/60 px-4 uppercase tracking-wider">
                     Market Update: Credit Spends ▲ 12.4%

@@ -1,8 +1,8 @@
 import React from 'react';
 
 const messages = [
-  "Jupyter AI: Your conversational card match.",
-  "Jupyter+: Chrome extension for checkout savings.",
+  "Yureka AI: Your conversational card match.",
+  "Yureka+: Chrome extension for checkout savings.",
   "Voucher Hub: Save 2-10% on 500+ brands.",
   "NPA Settlement: Expert debt resolution help.",
   "Bill Pay: One-tap utility payments.",

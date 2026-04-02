@@ -8,7 +8,6 @@ import ShowcaseCarousel from './components/ShowcaseCarousel';
 import TextReveal from './components/TextReveal';
 import Stats from './components/Stats';
 import Marquee from './components/Marquee';
-import Neighborhoods from './components/Neighborhoods';
 import Community from './components/Community';
 import ComingSoon from './components/ComingSoon';
 import SocialProof from './components/SocialProof';
@@ -16,7 +15,6 @@ import FAQ from './components/FAQ';
 import Footer from './components/Footer';
 import AllHomes from './components/AllHomes';
 import OSPage from './components/OSPage';
-import BFFPage from './components/BFFPage';
 import OurStory from './components/OurStory';
 import CareersPage from './components/CareersPage';
 import BlogPage from './components/BlogPage';
@@ -44,7 +42,6 @@ const MainPage = ({ cards }: { cards: Card[] }) => (
     <Stats />
     <Marquee />
     <Security />
-    <Neighborhoods />
     <Community />
     <ComingSoon />
     <SocialProof />
@@ -81,7 +78,6 @@ const AppContent: React.FC = () => {
            {/* New Slugs matching Header */}
            <Route path="/cards" element={<AllHomes />} />
            <Route path="/ai-magic" element={<OSPage />} />
-           <Route path="/rewards" element={<BFFPage />} />
            <Route path="/manifesto" element={<OurStory />} />
            <Route path="/jobs" element={<CareersPage />} />
            <Route path="/blogs" element={<BlogPage />} />
@@ -109,7 +105,7 @@ const AppContent: React.FC = () => {
         <Link 
           to="/ai-magic"
           className="fixed bottom-14 right-6 z-[70] bg-clay text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform cursor-pointer border border-white/20"
-          aria-label="Chat with Jupyter AI"
+          aria-label="Chat with Yureka AI"
         >
           <button className="cursor-pointer">
             <Sparkles size={28} />

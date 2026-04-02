@@ -83,36 +83,36 @@ const FAQCategory: React.FC<FAQCategoryProps> = ({ icon: Icon, title, questions 
 // --- Data (SEO Optimized for "People Also Ask") ---
 const faqData = [
     {
-        title: "About Jupyter.credit",
+        title: "About Yureka.money",
         icon: LayoutGrid,
         questions: [
-            { q: "How is Jupyter.credit different from other card comparison sites?", a: "Jupyter.credit is not just a comparison site. We are an AI-driven matching engine. We analyze 200+ cards in real-time based on your specific spending patterns, salary, and lifestyle to find the one that maximizes your rewards. No ads, no bias, just the best card for you." },
-            { q: "Is Jupyter.credit really free?", a: "Yes, completely. We do not charge users for our matching service or our Chrome extension. We earn a small fee from banks when you successfully apply for a card through our platform, allowing us to keep the service free for you." },
-            { q: "What is the 'Jupyter AI'?", a: "Jupyter AI is our conversational assistant that helps you navigate the complex world of credit cards. You can ask it questions like 'Which card gives me the most cashback on Swiggy?' or 'Is the Axis Magnus worth the annual fee for my spends?'" }
+            { q: "How is Yureka.money different from other card comparison sites?", a: "Yureka.money is not just a comparison site. We are an AI-driven matching engine. We analyze 200+ cards in real-time based on your specific spending patterns, salary, and lifestyle to find the one that maximizes your rewards. No ads, no bias, just the best card for you." },
+            { q: "Is Yureka.money really free?", a: "Yes, completely. We do not charge users for our matching service or our Chrome extension. We earn a small fee from banks when you successfully apply for a card through our platform, allowing us to keep the service free for you." },
+            { q: "What is 'Yureka AI'?", a: "Yureka AI is our conversational assistant that helps you navigate the complex world of credit cards. You can ask it questions like 'Which card gives me the most cashback on Swiggy?' or 'Is the Axis Magnus worth the annual fee for my spends?'" }
         ]
     },
     {
         title: "The Matching Process",
         icon: Rocket,
         questions: [
-            { q: "How accurate are the reward projections?", a: "Our projections are based on real-world spending data and the latest reward structures of 200+ cards. While individual results may vary, our average user sees a ₹15,000 increase in annual rewards by switching to their Jupyter-matched card." },
+            { q: "How accurate are the reward projections?", a: "Our projections are based on real-world spending data and the latest reward structures of 200+ cards. While individual results may vary, our average user sees a ₹15,000 increase in annual rewards by switching to their Yureka-matched card." },
             { q: "Do I need to share my bank statements?", a: "No. You can manually input your average monthly spends across categories like groceries, travel, and dining. Our AI uses this to calculate the best match without needing access to your private bank data." }
         ]
     },
     {
-        title: "Jupyter+ Chrome Extension",
+        title: "Yureka+ Chrome Extension",
         icon: ShieldCheck,
         questions: [
-            { q: "What does the Jupyter+ extension do?", a: "Jupyter+ sits in your browser and automatically suggests the best card to use at checkout on sites like Amazon, Flipkart, and Myntra. It ensures you never miss out on a 5% or 10% discount again." },
-            { q: "Is the extension safe to use?", a: "Absolutely. Jupyter+ does not see your card numbers or CVV. it only identifies the merchant you are shopping at and cross-references it with your card portfolio to suggest the best one for rewards." }
+            { q: "What does the Yureka+ extension do?", a: "Yureka+ sits in your browser and automatically suggests the best card to use at checkout on sites like Amazon, Flipkart, and Myntra. It ensures you never miss out on a 5% or 10% discount again." },
+            { q: "Is the extension safe to use?", a: "Absolutely. Yureka+ does not see your card numbers or CVV. it only identifies the merchant you are shopping at and cross-references it with your card portfolio to suggest the best one for rewards." }
         ]
     },
     {
         title: "Rewards & Savings",
         icon: Gift,
         questions: [
-            { q: "What is the Voucher Hub?", a: "The Voucher Hub is a feature within Jupyter where you can buy discounted gift cards for 500+ brands. It's an easy way to save an extra 2-10% on your regular spends, on top of your credit card rewards." },
-            { q: "How do I track my rewards?", a: "The Jupyter app provides a unified dashboard where you can see the projected and actual rewards earned across all your cards, helping you stay on top of your financial goals." }
+            { q: "What is the Voucher Hub?", a: "The Voucher Hub is a feature within Yureka where you can buy discounted gift cards for 500+ brands. It's an easy way to save an extra 2-10% on your regular spends, on top of your credit card rewards." },
+            { q: "How do I track my rewards?", a: "The Yureka app provides a unified dashboard where you can see the projected and actual rewards earned across all your cards, helping you stay on top of your financial goals." }
         ]
     },
     {
@@ -120,7 +120,7 @@ const faqData = [
         icon: HelpCircle,
         questions: [
             { q: "What is NPA Settlement help?", a: "If you are struggling with credit card debt, our experts can help you negotiate a settlement with banks. We aim to help you clear your dues and rebuild your credit score over time." },
-            { q: "How do I contact Jupyter support?", a: "You can reach us 24/7 via the 'AI Magic' chat in the app or email us at support@jupyter.credit. Our team is always here to help you optimize your credit life." }
+            { q: "How do I contact Yureka support?", a: "You can reach us 24/7 via the 'AI Magic' chat in the app or email us at support@yureka.money. Our team is always here to help you optimize your credit life." }
         ]
     }
 ];
@@ -150,7 +150,7 @@ const FAQ: React.FC = () => {
                         </h3>
                      </div>
                      <p className="text-base md:text-lg text-ink/70 font-serif italic max-w-md animate-fade-in-up delay-200">
-                         Everything you need to know about AI-driven card matching, our zero-fee policy, and the Jupyter.credit ecosystem.
+                         Everything you need to know about AI-driven card matching, our zero-fee policy, and the Yureka.money ecosystem.
                      </p>
                  </div>
 

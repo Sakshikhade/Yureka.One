@@ -6,13 +6,13 @@ import ImageWithLoader from './ImageWithLoader';
 const upcomingCards: OSFeature[] = [
   { 
     id: 'cs1', 
-    name: 'Jupyter Black', 
-    issuer: 'Jupyter', 
+    name: 'Yureka Black', 
+    issuer: 'Yureka', 
     image: 'https://images.unsplash.com/photo-1613243555988-441166d4d6fd?auto=format&fit=crop&q=80&w=600', 
-    rewardsRate: 'Waitlist', 
-    annualFee: 'Invite Only', 
+    rewards_rate: 'Waitlist', 
+    annual_fee: 'Invite Only', 
     category: 'Ultra Premium', 
-    bestFor: 'Founders & CXOs', 
+    best_for: 'Founders & CXOs', 
     status: 'coming_soon' 
   },
   { 
@@ -20,10 +20,10 @@ const upcomingCards: OSFeature[] = [
     name: 'Metal X', 
     issuer: 'Partner Bank', 
     image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&q=80&w=600', 
-    rewardsRate: 'Waitlist', 
-    annualFee: '₹5,000', 
+    rewards_rate: 'Waitlist', 
+    annual_fee: '₹5,000', 
     category: 'Travel', 
-    bestFor: 'Global Nomads', 
+    best_for: 'Global Nomads', 
     status: 'coming_soon' 
   },
   { 
@@ -31,10 +31,10 @@ const upcomingCards: OSFeature[] = [
     name: 'Zero FX', 
     issuer: 'Fintech Co', 
     image: 'https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?auto=format&fit=crop&q=80&w=600', 
-    rewardsRate: 'Waitlist', 
-    annualFee: 'Lifetime Free', 
+    rewards_rate: 'Waitlist', 
+    annual_fee: 'Lifetime Free', 
     category: 'International', 
-    bestFor: 'Students & Travelers', 
+    best_for: 'Students & Travelers', 
     status: 'coming_soon' 
   },
 ];
@@ -111,7 +111,7 @@ const ComingSoon: React.FC = () => {
                         <div className="mt-auto flex justify-between items-center border-t border-black/10 pt-4">
                             <div className="flex gap-2 md:gap-4 text-xs md:text-sm font-bold uppercase tracking-widest text-black/50">
                                 <span>{card.category}</span>
-                                <span>{card.annualFee}</span>
+                                <span>{card.annual_fee}</span>
                             </div>
                             <button className="text-[10px] md:text-xs font-bold uppercase tracking-widest border border-black px-3 py-1.5 md:px-4 md:py-2 hover:bg-black hover:text-white transition-colors">
                                 Notify Me

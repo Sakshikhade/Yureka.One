@@ -44,8 +44,8 @@ const faqs = [
     { 
         category: "General", 
         icon: LayoutGrid, 
-        question: "What is Jupyter.credit?",
-        answer: "Jupyter.credit is an AI-driven credit card platform. We help you find the perfect card from 200+ options based on your spending, salary, and lifestyle. No ads, no fees." 
+        question: "What is Yureka.money?",
+        answer: "Yureka.money is an AI-driven credit card platform. We help you find the perfect card from 200+ options based on your spending, salary, and lifestyle. No ads, no fees." 
     },
     { 
         category: "Getting Started", 
@@ -62,20 +62,20 @@ const faqs = [
     { 
         category: "Rewards", 
         icon: Gift, 
-        question: "How much can I save with Jupyter?",
-        answer: "The average user earns ₹15,000 more in rewards per year by switching to their Jupyter-matched card. Some users save up to ₹30,000!" 
+        question: "How much can I save with Yureka?",
+        answer: "The average user earns ₹15,000 more in rewards per year by switching to their Yureka-matched card. Some users save up to ₹30,000!" 
     },
     { 
         category: "AI Magic", 
         icon: Sparkles, 
-        question: "What is Jupyter AI?",
-        answer: "Jupyter AI is our conversational assistant that helps you find the best card and provides personalized financial advice based on your goals." 
+        question: "What is Yureka AI?",
+        answer: "Yureka AI is our conversational assistant that helps you find the best card and provides personalized financial advice based on your goals." 
     },
     { 
         category: "Support", 
         icon: HelpCircle, 
         question: "How do I contact support?",
-        answer: "You can reach us 24/7 via the 'AI Magic' chat in the app or email us at support@jupyter.credit." 
+        answer: "You can reach us 24/7 via the 'AI Magic' chat in the app or email us at support@yureka.money." 
     }
 ];
 

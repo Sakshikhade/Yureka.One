@@ -10,9 +10,9 @@ const Footer: React.FC = () => {
       <div className="max-w-[1440px] mx-auto px-6 mb-12 md:mb-20 border-b border-black/10 pb-12 md:pb-20">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12">
               <div className="lg:col-span-8">
-                  <span className="block text-teal text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] mb-4 md:mb-6">Jupyter.credit • AI-Driven Credit Card Platform</span>
+                  <span className="block text-teal text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] mb-4 md:mb-6">Yureka.money • AI-Driven Credit Card Platform</span>
                   <h2 className="text-3xl md:text-5xl lg:text-6xl font-serif leading-[0.9] tracking-tighter mb-4 md:mb-6">
-                      Jupyter<span className="text-teal">.</span>
+                      Yureka<span className="text-teal">.</span>
                   </h2>
                   <p className="text-base md:text-xl font-serif italic text-black/60 max-w-2xl leading-relaxed">
                       "Why settle for a card when you can optimize your wealth? AI-matched rewards, zero fees, and financial freedom."
@@ -40,7 +40,7 @@ const Footer: React.FC = () => {
                   <h4 className="font-bold text-[10px] md:text-xs uppercase tracking-[0.2em] mb-4 md:mb-8 text-black/40">Explore</h4>
                   <ul className="space-y-3 md:space-y-4">
                       <li><Link to="/cards" className="hover:text-teal font-serif text-sm md:text-base transition-colors">Card Explorer</Link></li>
-                      <li><Link to="/ai-magic" className="hover:text-teal font-serif text-sm md:text-base transition-colors">Jupyter AI Magic</Link></li>
+                      <li><Link to="/ai-magic" className="hover:text-teal font-serif text-sm md:text-base transition-colors">Yureka AI Magic</Link></li>
                       <li><Link to="/rewards" className="hover:text-teal font-serif text-sm md:text-base transition-colors">Reward Matrix</Link></li>
                       <li><Link to="/manifesto" className="hover:text-teal font-serif text-sm md:text-base transition-colors">Our Manifesto</Link></li>
                   </ul>
@@ -51,7 +51,7 @@ const Footer: React.FC = () => {
                   <h4 className="font-bold text-[10px] md:text-xs uppercase tracking-[0.2em] mb-4 md:mb-8 text-black/40">Resources</h4>
                   <ul className="space-y-3 md:space-y-4">
                       <li><Link to="/blogs" className="hover:text-teal font-serif text-sm md:text-base transition-colors">Blogs</Link></li>
-                      <li><Link to="/jobs" className="hover:text-teal font-serif text-sm md:text-base transition-colors">Careers at Jupyter</Link></li>
+                      <li><Link to="/jobs" className="hover:text-teal font-serif text-sm md:text-base transition-colors">Careers at Yureka</Link></li>
                       <li><a href="#" className="hover:text-teal font-serif text-sm md:text-base transition-colors">Press & Media</a></li>
                       <li><Link to="/join-waitlist" className="hover:text-teal font-serif text-sm md:text-base transition-colors">Apply for VIP Access</Link></li>
                       <li><Link to="/admin" className="hover:text-teal font-serif text-sm md:text-base transition-colors opacity-30 hover:opacity-100">Admin Dashboard</Link></li>
@@ -74,11 +74,11 @@ const Footer: React.FC = () => {
                   <h4 className="font-bold text-[10px] md:text-xs uppercase tracking-[0.2em] mb-4 md:mb-8 text-black/40">Contact Bureau</h4>
                   <div className="mb-6 md:mb-8">
                       <p className="text-[10px] uppercase tracking-wider text-black/50 mb-1">User Support (Pan-India)</p>
-                      <a href="mailto:support@jupyter.credit" className="text-lg md:text-xl font-serif hover:text-teal transition-colors">support@jupyter.credit</a>
+                      <a href="mailto:support@yureka.money" className="text-lg md:text-xl font-serif hover:text-teal transition-colors">support@yureka.money</a>
                   </div>
                   <div className="mb-6 md:mb-8">
                       <p className="text-[10px] uppercase tracking-wider text-black/50 mb-1">Partnerships</p>
-                      <a href="mailto:partners@jupyter.credit" className="text-lg md:text-xl font-serif hover:text-teal transition-colors">partners@jupyter.credit</a>
+                      <a href="mailto:partners@yureka.money" className="text-lg md:text-xl font-serif hover:text-teal transition-colors">partners@yureka.money</a>
                   </div>
                   <div className="flex gap-3 md:gap-4">
                         {[Instagram, Linkedin, Twitter, Facebook].map((Icon, i) => (
@@ -95,7 +95,7 @@ const Footer: React.FC = () => {
       {/* Bottom Bar */}
       <div className="max-w-[1440px] mx-auto px-6">
           <div className="border-t border-black/10 pt-8 flex flex-col md:flex-row justify-between items-center text-black/30 text-[10px] md:text-xs font-mono uppercase tracking-widest text-center md:text-left">
-              <p>© 2026 Jupyter Technologies Pvt Ltd. All Rights Reserved.</p>
+              <p>© 2026 Yureka Technologies Pvt Ltd. All Rights Reserved.</p>
               <p className="mt-4 md:mt-0">Made in India</p>
           </div>
       </div>

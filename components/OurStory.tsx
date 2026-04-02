@@ -48,13 +48,13 @@ const OurStory: React.FC = () => {
         {/* Header Strip */}
         <div className="px-6 pt-6 pb-2">
             <div className="flex flex-col md:flex-row justify-between items-center text-[10px] md:text-xs font-bold uppercase tracking-widest text-black/60 border-b border-black pb-2 mb-1">
-                <span>www.jupyter.credit</span>
+                <span>www.yureka.money</span>
                 <span>{new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
                 <span>Price: Free</span>
             </div>
             {/* Masthead */}
             <div className="py-2 text-center relative">
-                <h1 className="font-blackletter text-4xl md:text-6xl lg:text-[5rem] leading-none text-black">Jupyter.credit</h1>
+                <h1 className="font-blackletter text-4xl md:text-6xl lg:text-[5rem] leading-none text-black">Yureka.money</h1>
             </div>
             {/* Categories */}
             <div className="border-t-2 border-b border-black py-1.5 flex justify-center flex-wrap gap-4 md:gap-8 text-[10px] md:text-xs font-bold uppercase tracking-[0.15em] text-black">
@@ -82,7 +82,7 @@ const OurStory: React.FC = () => {
                     Credit cards are confusing. There are hidden fees and biased advice. We built this to make things clear and honest.
                 </p>
                 <div className="mt-8 border-t border-black/10 pt-4">
-                     <h5 className="font-bold text-xs uppercase mb-1">Jupyter.credit</h5>
+                     <h5 className="font-bold text-xs uppercase mb-1">Yureka.money</h5>
                      <p className="text-xs text-black/60">Founded 2026</p>
                 </div>
             </div>
@@ -148,7 +148,7 @@ const OurStory: React.FC = () => {
                 </div>
 
                 <div className="mb-8">
-                     <h3 className="font-serif text-2xl font-bold leading-tight mb-3">Jupyter+: Better Shopping</h3>
+                     <h3 className="font-serif text-2xl font-bold leading-tight mb-3">Yureka+: Better Shopping</h3>
                      <p className="font-serif text-sm leading-relaxed text-black/80 mb-4">
                          Our browser extension helps you save money when you shop online.
                      </p>

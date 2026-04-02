@@ -45,7 +45,7 @@ const Navbar: React.FC = () => {
                 flex flex-col relative z-10 group cursor-pointer mr-8
             `}>
                 <Link to="/" className="font-serif font-black tracking-tighter text-lg md:text-xl text-ink leading-none hover:opacity-80 transition-opacity flex items-baseline">
-                    Jupyter<span className="text-teal">.</span>credit
+                    Yureka<span className="text-teal">.</span>money
                 </Link>
                 {!isScrolled && (
                      <span className="hidden md:block text-[10px] uppercase tracking-[0.3em] text-ink/40 mt-1 font-sans">
@@ -84,7 +84,7 @@ const Navbar: React.FC = () => {
                      <Link to="/ai-magic" className={`
                         text-ink font-serif italic text-lg hover:text-clay transition-colors
                      `}>
-                        Jupyter AI Magic
+                        Yureka AI Magic
                      </Link>
                     
                     <Link to="/join-waitlist" className={`
@@ -137,7 +137,7 @@ const Navbar: React.FC = () => {
                     { name: 'Manifesto', path: '/manifesto', desc: 'Our Mission' },
                     { name: 'Rewards', path: '/rewards', desc: 'Voucher Savings' },
                     { name: 'Blogs', path: '/blogs', desc: 'Credit Insights' },
-                    { name: 'Jupyter AI', path: '/ai-magic', desc: 'AI Matching' }
+                    { name: 'Yureka AI', path: '/ai-magic', desc: 'AI Matching' }
                 ].map((item) => (
                     <Link 
                         key={item.name}

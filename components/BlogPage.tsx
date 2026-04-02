@@ -68,7 +68,7 @@ const blogs: Blog[] = [
         title: "The Voucher Hub: Stacking Rewards like a Pro",
         excerpt: "Did you know you can get 8% off on top of your card rewards? We built a hub for that. Here is the strategy.",
         category: "Savings",
-        author: "Team Jupyter",
+        author: "Team Yureka",
         date: "Sep 28, 2026",
         image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=800",
         featured: false,

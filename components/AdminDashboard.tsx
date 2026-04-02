@@ -366,7 +366,7 @@ const AdminDashboard: React.FC = () => {
         <div className="p-6 border-b border-black/5">
           <div className="flex items-center gap-2 mb-2">
             <div className="w-8 h-8 bg-teal rounded-lg flex items-center justify-center text-white font-bold">J</div>
-            <span className="font-bold text-xl tracking-tight">Jupyter Admin</span>
+            <span className="font-bold text-xl tracking-tight">Yureka Admin</span>
           </div>
           <p className="text-[10px] uppercase font-bold text-black/40 tracking-widest">Management Console</p>
         </div>

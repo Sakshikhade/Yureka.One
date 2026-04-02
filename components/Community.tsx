@@ -19,7 +19,7 @@ const reviews: Review[] = [
     company: 'Swiggy',
     companyLogo: 'https://upload.wikimedia.org/wikipedia/en/1/12/Swiggy_logo.svg',
     image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    quote: "I thought I knew credit cards, but Jupyter found a hidden gem that saves me ₹20k/year on flights.",
+    quote: "I thought I knew credit cards, but Yureka found a hidden gem that saves me ₹20k/year on flights.",
     author: "Paras",
     rotation: -2
   },
