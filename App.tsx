@@ -1,30 +1,33 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, useLocation, Link, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import TopBanner from './components/TopBanner';
 import BottomBanner from './components/BottomBanner';
-import Hero from './components/Hero';
-import ShowcaseCarousel from './components/ShowcaseCarousel';
-import TextReveal from './components/TextReveal';
-import Stats from './components/Stats';
-import Marquee from './components/Marquee';
-import Community from './components/Community';
-import ComingSoon from './components/ComingSoon';
-import SocialProof from './components/SocialProof';
-import FAQ from './components/FAQ';
 import Footer from './components/Footer';
-import CardExplorer from './components/CardExplorer';
-import OurStory from './components/OurStory';
-import CareersPage from './components/CareersPage';
-import BlogPage from './components/JournalPage';
-import Security from './components/Security';
-import WaitlistPage from './components/WaitlistPage';
-import RewardsPage from './components/RewardsPage';
-import AdminDashboard from './components/AdminDashboard';
+import SEO from './components/SEO';
 import { getCards } from './services/supabaseService';
 import { Card } from './types';
 import { featuredCards } from './data';
-import { Sparkles } from 'lucide-react';
+import { Sparkles, Loader2 } from 'lucide-react';
+
+// Lazy Loaded Pages
+const Hero = lazy(() => import('./components/Hero'));
+const TextReveal = lazy(() => import('./components/TextReveal'));
+const ShowcaseCarousel = lazy(() => import('./components/ShowcaseCarousel'));
+const Stats = lazy(() => import('./components/Stats'));
+const Marquee = lazy(() => import('./components/Marquee'));
+const Community = lazy(() => import('./components/Community'));
+const ComingSoon = lazy(() => import('./components/ComingSoon'));
+const SocialProof = lazy(() => import('./components/SocialProof'));
+const FAQ = lazy(() => import('./components/FAQ'));
+const CardExplorer = lazy(() => import('./components/CardExplorer'));
+const OurStory = lazy(() => import('./components/OurStory'));
+const CareersPage = lazy(() => import('./components/CareersPage'));
+const BlogPage = lazy(() => import('./components/JournalPage'));
+const Security = lazy(() => import('./components/Security'));
+const WaitlistPage = lazy(() => import('./components/WaitlistPage'));
+const RewardsPage = lazy(() => import('./components/RewardsPage'));
+const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -34,8 +37,19 @@ const ScrollToTop = () => {
   return null;
 }
 
+const LoadingScreen = () => (
+    <div className="fixed inset-0 z-[100] bg-cream flex flex-col items-center justify-center font-serif italic text-ink animate-fade-in">
+        <div className="flex items-center gap-4 mb-4">
+            <Loader2 className="animate-spin text-clay" size={32} />
+            <span className="text-2xl tracking-tighter">Yureka.money</span>
+        </div>
+        <p className="text-ink/40 text-xs font-bold uppercase tracking-[0.4em]">Optimizing your experience</p>
+    </div>
+);
+
 const MainPage = ({ cards }: { cards: Card[] }) => (
   <>
+    <SEO title="Home | AI-Driven Credit Card Matching" />
     <Hero />
     <TextReveal />
     <ShowcaseCarousel cards={cards} />
@@ -63,7 +77,6 @@ const AppContent: React.FC = () => {
 
   return (
     <div className={`min-h-screen bg-cream font-sans text-ink relative ${isAdminRoute ? 'pt-0' : 'pt-10'}`}>
-      {/* Global Texture Overlays */}
       <div className="paper-texture" />
       <div className="vignette-overlay" />
 
@@ -72,36 +85,73 @@ const AppContent: React.FC = () => {
       {!isAdminRoute && <Navbar />}
       
       <main className={`relative z-10 ${isAdminRoute ? 'pt-0' : ''}`}>
-        <Routes>
-           <Route path="/" element={<MainPage cards={cards} />} />
-           
-           {/* New Slugs matching Header */}
-           <Route path="/cards" element={<CardExplorer />} />
-           <Route path="/ai-magic" element={<ComingSoon />} />
-           <Route path="/rewards" element={<RewardsPage />} />
-           <Route path="/manifesto" element={<OurStory />} />
-           <Route path="/jobs" element={<CareersPage />} />
-           <Route path="/blogs" element={<BlogPage />} />
-           <Route path="/join-waitlist" element={<WaitlistPage />} />
-           <Route path="/admin" element={<AdminDashboard />} />
+        <Suspense fallback={<LoadingScreen />}>
+            <Routes>
+               <Route path="/" element={<MainPage cards={cards} />} />
+               
+               <Route path="/cards" element={
+                 <>
+                   <SEO title="Card Explorer" description="Compare and match from 200+ credit cards in India with our AI engine." />
+                   <CardExplorer />
+                 </>
+               } />
+               
+               <Route path="/ai-magic" element={
+                 <>
+                   <SEO title="AI Magic" description="Unlock the power of conversational AI for your financial optimization." />
+                   <ComingSoon />
+                 </>
+               } />
+               
+               <Route path="/rewards" element={
+                 <>
+                   <SEO title="Reward Matrix" description="Visualize and optimize your reward ecosystem." />
+                   <RewardsPage />
+                 </>
+               } />
+               
+               <Route path="/manifesto" element={
+                 <>
+                   <SEO title="Our Manifesto" description="Why we are building a more transparent financial future." />
+                   <OurStory />
+                 </>
+               } />
+               
+               <Route path="/jobs" element={<CareersPage />} />
+               
+               <Route path="/blogs" element={
+                 <>
+                   <SEO title="Journal" description="Expert insights on credit, finance, and optimization." />
+                   <BlogPage />
+                 </>
+               } />
+               
+               <Route path="/join-waitlist" element={
+                 <>
+                   <SEO title="VIP Waitlist" description="Secure your spot in the future of credit card mastery." />
+                   <WaitlistPage />
+                 </>
+               } />
+               
+               <Route path="/admin" element={<AdminDashboard />} />
 
-           {/* Redirects for old slugs */}
-           <Route path="/explorer" element={<Navigate to="/cards" replace />} />
-           <Route path="/ai" element={<Navigate to="/ai-magic" replace />} />
-           <Route path="/matrix" element={<Navigate to="/rewards" replace />} />
-           <Route path="/story" element={<Navigate to="/manifesto" replace />} />
-           <Route path="/jobs-old" element={<Navigate to="/jobs" replace />} />
-           <Route path="/journal" element={<Navigate to="/blogs" replace />} />
-           <Route path="/vip" element={<Navigate to="/join-waitlist" replace />} />
+               {/* Redirects */}
+               <Route path="/explorer" element={<Navigate to="/cards" replace />} />
+               <Route path="/ai" element={<Navigate to="/ai-magic" replace />} />
+               <Route path="/matrix" element={<Navigate to="/rewards" replace />} />
+               <Route path="/story" element={<Navigate to="/manifesto" replace />} />
+               <Route path="/jobs-old" element={<Navigate to="/jobs" replace />} />
+               <Route path="/journal" element={<Navigate to="/blogs" replace />} />
+               <Route path="/vip" element={<Navigate to="/join-waitlist" replace />} />
 
-           <Route path="*" element={<MainPage cards={cards} />} />
-        </Routes>
+               <Route path="*" element={<MainPage cards={cards} />} />
+            </Routes>
+        </Suspense>
       </main>
 
       {!isAdminRoute && <Footer />}
       {!isAdminRoute && <BottomBanner />}
 
-      {/* Floating AI Button */}
       {!isAdminRoute && (
         <Link 
           to="/join-waitlist"
