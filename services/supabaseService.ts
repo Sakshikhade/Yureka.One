@@ -16,7 +16,7 @@ const cleanData = (obj: any) => {
 };
 
 // --- Blogs ---
-export const getBlogs = (callback: (blogs: Blog[]) => void) => {
+export const getBlogs = (callback: (blogs: Blog[]) => void, onError?: (error: string) => void) => {
   const fetchBlogs = async () => {
     try {
       const { data, error } = await supabase
@@ -26,8 +26,9 @@ export const getBlogs = (callback: (blogs: Blog[]) => void) => {
       
       if (error) throw error;
       callback(data as Blog[]);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching blogs:', error);
+      if (onError) onError(error.message || 'Failed to fetch blogs');
     }
   };
   fetchBlogs();
@@ -61,6 +62,17 @@ export const updateBlog = async (id: string, blogData: any) => {
   }
 };
 
+export const getBlogBySlug = async (slug: string): Promise<Blog | null> => {
+  try {
+    const { data, error } = await supabase.from('blogs').select('*').eq('slug', slug).single();
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.error('getBlogBySlug Error:', error);
+    return null;
+  }
+};
+
 export const deleteBlog = async (id: string) => {
   console.log('Deleting Blog:', id);
   const { error } = await supabase.from('blogs').delete().eq('id', id);
@@ -71,7 +83,7 @@ export const deleteBlog = async (id: string) => {
 };
 
 // --- Cards ---
-export const getCardsAdmin = (callback: (cards: Card[]) => void) => {
+export const getCardsAdmin = (callback: (cards: Card[]) => void, onError?: (error: string) => void) => {
   const fetchCards = async () => {
     try {
       const { data, error } = await supabase
@@ -81,8 +93,9 @@ export const getCardsAdmin = (callback: (cards: Card[]) => void) => {
       
       if (error) throw error;
       callback(data as Card[]);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching cards admin:', error);
+      if (onError) onError(error.message || 'Failed to fetch cards');
     }
   };
   fetchCards();
@@ -97,7 +110,7 @@ export const getCardsAdmin = (callback: (cards: Card[]) => void) => {
   return () => { supabase.removeChannel(channel); };
 };
 
-export const getCards = (callback: (cards: Card[]) => void) => {
+export const getCards = (callback: (cards: Card[]) => void, onError?: (error: string) => void) => {
   const fetchCards = async () => {
     try {
       const { data, error } = await supabase
@@ -108,8 +121,9 @@ export const getCards = (callback: (cards: Card[]) => void) => {
       
       if (error) throw error;
       callback(data as Card[]);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching cards public:', error);
+      if (onError) onError(error.message || 'Failed to fetch cards');
     }
   };
   fetchCards();
@@ -137,6 +151,17 @@ export const updateCard = async (id: string, cardData: any) => {
   if (error) {
     console.error('Supabase Card Update Error:', error);
     throw error;
+  }
+};
+
+export const getCardById = async (id: string): Promise<Card | null> => {
+  try {
+    const { data, error } = await supabase.from('cards').select('*').eq('id', id).single();
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.error('getCardById Error:', error);
+    return null;
   }
 };
 
@@ -242,4 +267,41 @@ export const checkIfAdmin = async (userId: string | undefined, userEmail: string
     console.error('Error checking admin status:', error);
     return false;
   }
+};
+
+// --- Team Management ---
+export const getTeamMembers = async (): Promise<any[]> => {
+  const { data, error } = await supabase
+    .from('users')
+    .select('*')
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  return data;
+};
+
+export const inviteTeamMember = async (email: string, role: string) => {
+  // In a real app, this might send an email or handle auth. 
+  // For now, we just add the record to allow them access when they sign in.
+  const { data, error } = await supabase
+    .from('users')
+    .insert([{ email, role, full_name: email.split('@')[0] }])
+    .select();
+  if (error) throw error;
+  return data[0];
+};
+
+export const updateUserRole = async (userId: string, role: string) => {
+  const { error } = await supabase
+    .from('users')
+    .update({ role })
+    .eq('id', userId);
+  if (error) throw error;
+};
+
+export const deleteUser = async (userId: string) => {
+  const { error } = await supabase
+    .from('users')
+    .delete()
+    .eq('id', userId);
+  if (error) throw error;
 };

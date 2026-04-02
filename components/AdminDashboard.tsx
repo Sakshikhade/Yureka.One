@@ -27,7 +27,7 @@ import {
   getBlogs, addBlog, updateBlog, deleteBlog,
   getCardsAdmin, addCard, updateCard, deleteCard,
   getWaitlist, deleteWaitlistEntry,
-  checkIfAdmin 
+  checkIfAdmin, getTeamMembers, inviteTeamMember, updateUserRole, deleteUser
 } from '../services/supabaseService';
 import { Blog, Card, WaitlistEntry } from '../types';
 
@@ -35,13 +35,14 @@ const AdminDashboard: React.FC = () => {
   const [user, setUser] = useState<any>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'blogs' | 'cards' | 'waitlist'>('blogs');
+  const [activeTab, setActiveTab] = useState<'blogs' | 'cards' | 'waitlist' | 'settings'>('blogs');
   
   const [error, setError] = useState<string | null>(null);
   
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [cards, setCards] = useState<Card[]>([]);
   const [waitlist, setWaitlist] = useState<WaitlistEntry[]>([]);
+  const [team, setTeam] = useState<any[]>([]);
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -83,6 +84,12 @@ const AdminDashboard: React.FC = () => {
     rewards_rate: '5%',
     projected_savings: '₹12,000/yr',
     status: 'published' as 'draft' | 'published'
+  });
+  
+  // Team Form State
+  const [teamForm, setTeamForm] = useState({
+    email: '',
+    role: 'writer'
   });
 
   // Real-time status indicators
@@ -132,6 +139,20 @@ const AdminDashboard: React.FC = () => {
       unsubscribeWaitlist();
     };
   }, [isAdmin]);
+
+  useEffect(() => {
+    if (activeTab === 'settings' && isAdmin) {
+      const fetchTeam = async () => {
+        try {
+          const members = await getTeamMembers();
+          setTeam(members);
+        } catch (err) {
+          console.error("Failed to fetch team:", err);
+        }
+      };
+      fetchTeam();
+    }
+  }, [activeTab, isAdmin]);
 
   const handleLogin = async () => {
     setError(null);
@@ -235,6 +256,30 @@ const AdminDashboard: React.FC = () => {
     } catch (error: any) {
       console.error("Save Card Error:", error);
       setError(error.message || "Failed to save card. If this persists, please run the SQL fix script.");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleSaveTeam = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSaving(true);
+    setError(null);
+    try {
+      if (editingItem) {
+        await updateUserRole(editingItem.id, teamForm.role);
+      } else {
+        await inviteTeamMember(teamForm.email, teamForm.role);
+      }
+      setIsModalOpen(false);
+      setEditingItem(null);
+      setTeamForm({ email: '', role: 'writer' });
+      // Refresh team list
+      const members = await getTeamMembers();
+      setTeam(members);
+    } catch (error: any) {
+      console.error("Save Team Error:", error);
+      setError(error.message || "Failed to manage team member.");
     } finally {
       setSaving(false);
     }
@@ -393,6 +438,12 @@ const AdminDashboard: React.FC = () => {
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${activeTab === 'waitlist' ? 'bg-teal/10 text-teal font-bold' : 'text-black/60 hover:bg-black/5'}`}
           >
             <Users size={20} /> Waitlist
+          </button>
+          <button 
+            onClick={() => setActiveTab('settings')}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${activeTab === 'settings' ? 'bg-teal/10 text-teal font-bold' : 'text-black/60 hover:bg-black/5'}`}
+          >
+            <Settings size={20} /> Settings
           </button>
         </nav>
 
@@ -622,6 +673,76 @@ const AdminDashboard: React.FC = () => {
               </tbody>
             </table>
           )}
+
+          {activeTab === 'settings' && (
+            <div className="p-8">
+              <div className="flex justify-between items-center mb-8">
+                <div>
+                  <h3 className="text-xl font-serif font-bold mb-1">Team Management</h3>
+                  <p className="text-black/40 text-xs">Manage administrative access and contributing writers.</p>
+                </div>
+                <button 
+                  onClick={() => {
+                    setEditingItem(null);
+                    setTeamForm({ email: '', role: 'writer' });
+                    setIsModalOpen(true);
+                  }}
+                  className="bg-black text-white px-6 py-2 rounded-xl text-xs font-bold uppercase tracking-widest flex items-center gap-2"
+                >
+                  <Plus size={16} /> Add Member
+                </button>
+              </div>
+
+              <table className="w-full text-left">
+                <thead className="bg-black/5 text-[10px] uppercase font-bold tracking-widest text-black/40">
+                  <tr>
+                    <th className="px-6 py-4">Full Name</th>
+                    <th className="px-6 py-4">Email</th>
+                    <th className="px-6 py-4">Role</th>
+                    <th className="px-6 py-4 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-black/5">
+                  {team.map(member => (
+                    <tr key={member.id} className="hover:bg-black/[0.01] transition-colors">
+                      <td className="px-6 py-4 font-bold text-sm">{member.full_name || 'N/A'}</td>
+                      <td className="px-6 py-4 text-sm text-black/60">{member.email}</td>
+                      <td className="px-6 py-4">
+                        <span className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${member.role === 'admin' ? 'bg-red-100 text-red-600' : member.role === 'editor' ? 'bg-blue-100 text-blue-600' : 'bg-green-100 text-green-600'}`}>
+                          {member.role}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-right space-x-2">
+                        <button 
+                          onClick={() => {
+                            setEditingItem(member);
+                            setTeamForm({ email: member.email, role: member.role });
+                            setIsModalOpen(true);
+                          }}
+                          className="p-2 text-teal hover:bg-teal/10 rounded-lg transition-colors"
+                        >
+                          <Edit2 size={18} />
+                        </button>
+                        <button 
+                          onClick={() => confirmDelete('users', member.id)}
+                          className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                  {team.length === 0 && (
+                    <tr>
+                      <td colSpan={4} className="px-6 py-12 text-center text-black/40 italic font-serif">
+                        No team members found. Team functionality requires 'users' table setup.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </main>
 
@@ -660,7 +781,7 @@ const AdminDashboard: React.FC = () => {
           <div className="relative bg-white w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
             <div className="p-6 border-b border-black/5 flex justify-between items-center">
               <h2 className="text-2xl font-serif font-bold">
-                {editingItem ? 'Edit' : 'Add New'} {activeTab === 'blogs' ? 'Blog Post' : 'Card'}
+                {editingItem ? 'Edit' : 'Add New'} {activeTab === 'blogs' ? 'Blog Post' : activeTab === 'cards' ? 'Card' : 'Team Member'}
               </h2>
               <button 
                 onClick={() => {
@@ -845,8 +966,9 @@ const AdminDashboard: React.FC = () => {
                     </button>
                   </div>
                 </form>
-              ) : (
+              ) : activeTab === 'cards' ? (
                 <form onSubmit={handleSaveCard} className="space-y-6">
+                  {/* ... Card Form Content ... */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-4">
                       <div className="grid grid-cols-2 gap-4">
@@ -1042,11 +1164,57 @@ const AdminDashboard: React.FC = () => {
                   <div className="flex justify-end pt-4 border-t border-black/5">
                     <button 
                       type="submit" 
-                      disabled={uploading}
+                      disabled={uploading || saving}
                       className="bg-teal text-white px-10 py-4 rounded-xl font-bold hover:bg-teal/90 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                     >
-                      {uploading ? <Loader2 className="animate-spin" size={20} /> : <Check size={20} />}
+                      {(uploading || saving) ? <Loader2 className="animate-spin" size={20} /> : <Check size={20} />}
                       Save Card
+                    </button>
+                  </div>
+                </form>
+              ) : (
+                <form onSubmit={handleSaveTeam} className="space-y-6">
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Email Address</label>
+                    <input 
+                      type="email" 
+                      required
+                      disabled={!!editingItem}
+                      value={teamForm.email}
+                      onChange={e => setTeamForm({...teamForm, email: e.target.value})}
+                      className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all disabled:opacity-50"
+                      placeholder="e.g. writer@yureka.money"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Administrative Role</label>
+                    <select 
+                      value={teamForm.role}
+                      onChange={e => setTeamForm({...teamForm, role: e.target.value})}
+                      className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+                    >
+                      <option value="writer">Blog Writer (Write/Edit Blogs Only)</option>
+                      <option value="editor">Editor (Cards & Blogs)</option>
+                      <option value="admin">Admin (Full Access)</option>
+                    </select>
+                  </div>
+                  
+                  <div className="bg-amber-50 p-4 rounded-xl border border-amber-100 flex gap-3 text-amber-700 text-xs leading-relaxed">
+                    <AlertCircle size={18} className="shrink-0" />
+                    <p>
+                      Adding a team member allows them to sign in via Google. 
+                      Permissions are enforced based on the designated role via Supabase RLS.
+                    </p>
+                  </div>
+
+                  <div className="flex justify-end pt-4 border-t border-black/5">
+                    <button 
+                      type="submit" 
+                      disabled={saving}
+                      className="bg-teal text-white px-10 py-4 rounded-xl font-bold hover:bg-teal/90 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                    >
+                      {saving ? <Loader2 className="animate-spin" size={20} /> : <Check size={20} />}
+                      {editingItem ? 'Update Role' : 'Invite Member'}
                     </button>
                   </div>
                 </form>

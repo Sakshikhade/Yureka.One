@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowUpRight, ArrowRight, Bookmark, Share2, Clock, Calendar } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import ImageWithLoader from './ImageWithLoader';
 import { getBlogs } from '../services/supabaseService';
 import { Blog } from '../types';
@@ -7,10 +8,16 @@ import { Blog } from '../types';
 const JournalPage: React.FC = () => {
     const [blogsList, setBlogsList] = useState<Blog[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const unsubscribe = getBlogs((fetchedBlogs) => {
             setBlogsList(fetchedBlogs);
+            setIsLoading(false);
+            setError(null);
+        }, (err) => {
+            console.error("Blogs Fetch Error:", err);
+            setError(err);
             setIsLoading(false);
         });
         return () => unsubscribe();
@@ -49,7 +56,37 @@ const JournalPage: React.FC = () => {
     if (isLoading) {
         return (
             <div className="min-h-screen bg-cream flex items-center justify-center">
-                <div className="text-3xl font-serif italic animate-pulse text-ink/40">Loading Journal...</div>
+                <div className="flex flex-col items-center gap-6">
+                    <div className="w-16 h-16 border-4 border-ink/10 border-t-clay rounded-full animate-spin"></div>
+                    <div className="text-3xl font-serif italic text-ink/40">Loading Journal...</div>
+                </div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="min-h-screen bg-cream flex items-center justify-center p-6">
+                <div className="max-w-md w-full bg-white p-12 rounded-[3rem] shadow-2xl border border-ink/5 text-center">
+                    <div className="w-20 h-20 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-8">
+                        <Calendar className="w-10 h-10 text-red-400" />
+                    </div>
+                    <h2 className="text-4xl font-serif italic mb-6 tracking-tight">The Pulse is Offline</h2>
+                    <p className="text-ink/60 mb-10 leading-relaxed font-serif">
+                        Our editorial servers are currently unreachable. This is likely due to a security policy update in our database.
+                    </p>
+                    <div className="bg-ink/5 p-5 rounded-2xl mb-10 text-left border border-ink/5">
+                        <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-ink/30 mb-2">Technical Insight</p>
+                        <p className="text-xs font-mono text-ink/60 break-words leading-tight">{error}</p>
+                    </div>
+                    <button 
+                        onClick={() => window.location.reload()}
+                        className="w-full bg-ink text-white py-5 rounded-full font-bold uppercase tracking-[0.3em] text-[10px] hover:bg-clay transition-all shadow-lg active:scale-95"
+                    >
+                        Force Reconnect
+                    </button>
+                    <p className="mt-8 text-[9px] font-bold uppercase tracking-[0.4em] text-ink/20">Ref: RLS_RECURSION_01</p>
+                </div>
             </div>
         );
     }
@@ -107,9 +144,9 @@ const JournalPage: React.FC = () => {
                                     </div>
                                     <div className="text-[10px] font-bold uppercase tracking-widest text-ink">{featured.author}</div>
                                 </div>
-                                <button className="text-clay hover:text-ink transition-colors flex items-center gap-2 text-xs font-bold uppercase tracking-widest">
+                                <Link to={`/blogs/${featured.slug}`} className="text-clay hover:text-ink transition-colors flex items-center gap-2 text-xs font-bold uppercase tracking-widest cursor-pointer">
                                     Read <ArrowRight size={14} />
-                                </button>
+                                </Link>
                             </div>
                         </div>
                     </section>
@@ -138,9 +175,11 @@ const JournalPage: React.FC = () => {
                                     <Clock size={12} className="text-ink/20" />
                                     <span className="text-[9px] font-bold uppercase tracking-widest text-ink/40">5 min read</span>
                                 </div>
-                                <button className="w-10 h-10 border border-ink/10 rounded-full flex items-center justify-center text-ink hover:bg-ink hover:text-white transition-all transform hover:rotate-45">
-                                    <ArrowUpRight size={14} />
-                                </button>
+                                <Link to={`/blogs/${post.slug}`}>
+                                    <button className="w-10 h-10 border border-ink/10 rounded-full flex items-center justify-center text-ink hover:bg-ink hover:text-white transition-all transform hover:rotate-45 cursor-pointer">
+                                        <ArrowUpRight size={14} />
+                                    </button>
+                                </Link>
                             </div>
                         </div>
                     ))}

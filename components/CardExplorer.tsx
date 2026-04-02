@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { 
     ArrowUpRight, Zap, ShieldCheck, Plane, Search, Filter as FilterIcon, 
     X, ChevronRight, Info, Star, MessageSquareShare, AlertCircle,
@@ -27,6 +28,7 @@ const CategoryIcon = ({ type }: { type: string }) => {
 
 const CardExplorer: React.FC = () => {
     const [cardsList, setCardsList] = useState<Card[]>([]);
+    const [error, setError] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedBanks, setSelectedBanks] = useState<string[]>([]);
@@ -44,6 +46,11 @@ const CardExplorer: React.FC = () => {
                 tags: ['TRAVEL', 'PREMIUM', 'LOUNGE ACCESS', 'DINING']
             }));
             setCardsList(fetchedCards.length > 0 ? fetchedCards : enrichedDefaults as Card[]);
+            setIsLoading(false);
+            setError(null);
+        }, (err) => {
+            console.error("Cards Fetch Error:", err);
+            setError(err);
             setIsLoading(false);
         });
         return () => unsubscribe();
@@ -84,7 +91,34 @@ const CardExplorer: React.FC = () => {
     if (isLoading) {
         return (
             <div className="min-h-screen bg-white flex items-center justify-center">
-                <div className="text-xl font-sans font-medium text-blue-600 animate-pulse">Loading Credit Card Explorer...</div>
+                <div className="flex flex-col items-center gap-4">
+                    <div className="w-12 h-12 border-4 border-clay border-t-transparent rounded-full animate-spin"></div>
+                    <div className="text-xl font-sans font-medium text-ink/60">Loading Credit Card Explorer...</div>
+                </div>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="min-h-screen bg-cream flex items-center justify-center p-6">
+                <div className="max-w-md w-full bg-white p-10 rounded-[2.5rem] shadow-xl border border-red-100 text-center">
+                    <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-6" />
+                    <h2 className="text-3xl font-serif italic mb-4">Connection Issue</h2>
+                    <p className="text-ink/60 mb-8 leading-relaxed">
+                        We're having trouble reaching the database. This usually means the Supabase RLS policies need a minor adjustment.
+                    </p>
+                    <div className="bg-red-50 p-4 rounded-2xl mb-8 text-left">
+                        <p className="text-[10px] font-bold uppercase tracking-widest text-red-400 mb-1">Error Detail</p>
+                        <p className="text-xs font-mono text-red-600 break-words">{error}</p>
+                    </div>
+                    <button 
+                        onClick={() => window.location.reload()}
+                        className="w-full bg-black text-white py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-clay transition-all"
+                    >
+                        Try Again
+                    </button>
+                </div>
             </div>
         );
     }
@@ -235,9 +269,11 @@ const CardExplorer: React.FC = () => {
 
                                     {/* Actions Right */}
                                     <div className="w-full md:w-56 flex flex-col gap-4 justify-start pt-4">
-                                        <button className="w-full bg-ink text-white font-bold py-4 rounded-full flex items-center justify-center gap-3 transition-all shadow-xl hover:bg-clay active:scale-95 text-[10px] uppercase tracking-[0.3em]">
-                                            Read more <ArrowRight size={14} className="opacity-60" />
-                                        </button>
+                                        <Link to={`/cards/${card.id}`} className="w-full">
+                                            <button className="w-full bg-ink text-white font-bold py-4 rounded-full flex items-center justify-center gap-3 transition-all shadow-xl hover:bg-clay active:scale-95 text-[10px] uppercase tracking-[0.3em] cursor-pointer">
+                                                Read more <ArrowRight size={14} className="opacity-60" />
+                                            </button>
+                                        </Link>
                                         <button className="w-full bg-white border border-ink/10 hover:border-clay/30 text-ink font-bold py-4 rounded-full flex items-center justify-center gap-3 transition-all active:scale-95 text-[10px] uppercase tracking-[0.3em]">
                                             Ask AI <MessageSquareShare size={14} className="text-clay" />
                                         </button>

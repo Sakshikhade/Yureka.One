@@ -28,6 +28,8 @@ const Security = lazy(() => import('./components/Security'));
 const WaitlistPage = lazy(() => import('./components/WaitlistPage'));
 const RewardsPage = lazy(() => import('./components/RewardsPage'));
 const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
+const CardDetail = lazy(() => import('./components/CardDetail'));
+const BlogDetail = lazy(() => import('./components/BlogDetail'));
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -96,6 +98,13 @@ const AppContent: React.FC = () => {
                  </>
                } />
                
+               <Route path="/cards/:id" element={
+                 <>
+                   <SEO title="Instrument Detail" description="Deep dive into reward structures and lifestyle perks." />
+                   <CardDetail />
+                 </>
+               } />
+               
                <Route path="/ai-magic" element={
                  <>
                    <SEO title="AI Magic" description="Unlock the power of conversational AI for your financial optimization." />
@@ -123,6 +132,13 @@ const AppContent: React.FC = () => {
                  <>
                    <SEO title="Journal" description="Expert insights on credit, finance, and optimization." />
                    <BlogPage />
+                 </>
+               } />
+               
+               <Route path="/blogs/:slug" element={
+                 <>
+                   <SEO title="Journal Detail" description="In-depth analysis of credit policy and financial strategy." />
+                   <BlogDetail />
                  </>
                } />
                
