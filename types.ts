@@ -31,7 +31,8 @@ export interface Card {
   rewards_rate?: string;
   category?: string;
   projected_savings?: string;
-  features?: string[];
+  intro_offer?: string;
+  tags?: string[];
   created_at?: string;
   updated_at?: string;
   status?: 'draft' | 'published';
