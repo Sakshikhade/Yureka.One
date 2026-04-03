@@ -26,6 +26,34 @@ const CategoryIcon = ({ type }: { type: string }) => {
     }
 };
 
+// ─── Shared master lists (synced with AdminDashboard) ───────────────────────
+const ALL_BANKS = [
+    'HDFC', 'SBI', 'ICICI', 'Axis', 'Kotak', 'Yes Bank', 'RBL', 'Amex',
+    'IndusInd', 'BOB', 'SC', 'Indian', 'PNB', 'IDFC', 'Canara', 'HSBC',
+    'DBS', 'IDBI', 'AU', 'Equitas', 'CSB', 'Federal', 'SBM', 'South Indian',
+    'Utkarsh Bank', 'Suryoday Bank', 'Union Bank', 'Unity SFB', 'DCB',
+    'Bank Of India', 'J&K Bank', 'CUB', 'Slice SFB', 'Dhanlaxmi Bank', 'Indian Overseas Bank'
+];
+
+const ALL_CATEGORIES = [
+    { name: 'Travel',            icon: <Plane /> },
+    { name: 'Hotels',            icon: <Hotel /> },
+    { name: 'Cashback',          icon: <Landmark /> },
+    { name: 'Brand Voucher',     icon: <ShoppingBag /> },
+    { name: 'Fuel',              icon: <Fuel /> },
+    { name: 'Catalogue Products',icon: <Briefcase /> },
+    { name: 'Travel Bookings',   icon: <Plane /> },
+    { name: 'Brand Wallet',      icon: <CreditCard /> },
+    { name: 'Experience',        icon: <Popcorn /> },
+    { name: 'Shopping',          icon: <ShoppingBag /> },
+    { name: 'Dining',            icon: <Coffee /> },
+    { name: 'Lounge Access',     icon: <Armchair /> },
+    { name: 'Lifetime Free',     icon: <CreditCard /> },
+    { name: 'Business',          icon: <Briefcase /> },
+    { name: 'UPI',               icon: <Smartphone /> },
+];
+// ─────────────────────────────────────────────────────────────────────────────
+
 const CardExplorer: React.FC = () => {
     const [cardsList, setCardsList] = useState<Card[]>([]);
     const [error, setError] = useState<string | null>(null);
@@ -34,6 +62,11 @@ const CardExplorer: React.FC = () => {
     const [selectedBanks, setSelectedBanks] = useState<string[]>([]);
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+    const [showAllBanks, setShowAllBanks] = useState(false);
+    const [showAllCategories, setShowAllCategories] = useState(false);
+
+    const BANKS_INITIAL_COUNT = 10;
+    const CATEGORIES_INITIAL_COUNT = 6;
 
     useEffect(() => {
         const unsubscribe = getCards((fetchedCards) => {
@@ -56,19 +89,10 @@ const CardExplorer: React.FC = () => {
         return () => unsubscribe();
     }, []);
 
-    const categories = [
-        { name: 'Travel', icon: <Plane /> },
-        { name: 'Shopping', icon: <ShoppingBag /> },
-        { name: 'Cashback', icon: <Landmark /> },
-        { name: 'Fuel', icon: <Fuel /> },
-        { name: 'Lifetime Free', icon: <CreditCard /> },
-        { name: 'Dining', icon: <Coffee /> },
-        { name: 'Business', icon: <Briefcase /> },
-        { name: 'Lounge Access', icon: <Armchair /> },
-        { name: 'UPI', icon: <Smartphone /> }
-    ];
-
-    const banks = ['HDFC', 'SBI', 'ICICI', 'Axis', 'Kotak', 'Yes Bank', 'RBL', 'Amex', 'IndusInd', 'BOB'];
+    const categories = ALL_CATEGORIES;
+    const banks = ALL_BANKS;
+    const visibleBanks = showAllBanks ? banks : banks.slice(0, BANKS_INITIAL_COUNT);
+    const visibleCategories = showAllCategories ? categories : categories.slice(0, CATEGORIES_INITIAL_COUNT);
 
     const filteredCards = useMemo(() => {
         return cardsList.filter(card => {
@@ -158,48 +182,63 @@ const CardExplorer: React.FC = () => {
                     {/* Bank Name Filter */}
                     <div className="space-y-6">
                         <h3 className="text-[10px] font-bold text-ink/30 uppercase tracking-[0.4em] mb-4">Bank Name</h3>
-                        <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
-                            {banks.map(bank => (
+                        <div className="space-y-4 pr-2">
+                            {visibleBanks.map(bank => (
                                 <label key={bank} className="flex items-center justify-between group cursor-pointer">
                                     <div className="flex items-center gap-3">
-                                        <div className="w-8 h-8 rounded-full bg-cream border border-ink/5 flex items-center justify-center font-bold text-[10px] text-clay/60 group-hover:bg-white group-hover:border-clay/20 transition-all">
+                                        <div className="w-8 h-8 rounded-full bg-cream border border-ink/5 flex items-center justify-center font-bold text-[10px] text-clay/60 group-hover:bg-white group-hover:border-clay/20 transition-all shrink-0">
                                             {bank[0]}
                                         </div>
-                                        <span className="text-sm font-medium text-ink/60 group-hover:text-ink transition-colors uppercase tracking-widest">{bank}</span>
+                                        <span className="text-sm font-medium text-ink/60 group-hover:text-ink transition-colors">{bank}</span>
                                     </div>
                                     <input 
                                         type="checkbox" 
                                         checked={selectedBanks.includes(bank)}
                                         onChange={() => toggleBank(bank)}
-                                        className="w-4 h-4 rounded border-ink/10 text-clay focus:ring-clay cursor-pointer bg-cream"
+                                        className="w-4 h-4 rounded border-ink/10 text-clay focus:ring-clay cursor-pointer bg-cream shrink-0"
                                     />
                                 </label>
                             ))}
                         </div>
+                        {banks.length > BANKS_INITIAL_COUNT && (
+                            <button
+                                onClick={() => setShowAllBanks(v => !v)}
+                                className="text-clay text-[9px] font-bold uppercase tracking-widest mt-2 hover:opacity-70 transition-opacity"
+                            >
+                                {showAllBanks ? '− View Less' : `+ View ${banks.length - BANKS_INITIAL_COUNT} More Banks`}
+                            </button>
+                        )}
                     </div>
 
                     {/* Categories Filter */}
                     <div className="pt-10 border-t border-ink/5">
                         <h3 className="text-[10px] font-bold text-ink/30 uppercase tracking-[0.4em] mb-4">Categories</h3>
                         <div className="space-y-4">
-                            {categories.slice(0, 6).map(cat => (
+                            {visibleCategories.map(cat => (
                                 <label key={cat.name} className="flex items-center justify-between group cursor-pointer">
                                     <div className="flex items-center gap-3">
-                                        <div className="text-ink/20 group-hover:text-clay/60 transition-colors">
+                                        <div className="text-ink/20 group-hover:text-clay/60 transition-colors shrink-0">
                                             {React.cloneElement(cat.icon as React.ReactElement<any>, { size: 16 })}
                                         </div>
-                                        <span className="text-sm font-medium text-ink/60 group-hover:text-ink transition-colors uppercase tracking-widest">{cat.name}</span>
+                                        <span className="text-sm font-medium text-ink/60 group-hover:text-ink transition-colors">{cat.name}</span>
                                     </div>
                                     <input 
                                         type="checkbox" 
                                         checked={selectedCategories.includes(cat.name)}
                                         onChange={() => toggleCategory(cat.name)}
-                                        className="w-4 h-4 rounded border-ink/10 text-clay focus:ring-clay cursor-pointer bg-cream"
+                                        className="w-4 h-4 rounded border-ink/10 text-clay focus:ring-clay cursor-pointer bg-cream shrink-0"
                                     />
                                 </label>
                             ))}
-                            <button className="text-clay text-[9px] font-bold uppercase tracking-widest mt-6 hover:opacity-70 transition-opacity">+ View More Options</button>
                         </div>
+                        {categories.length > CATEGORIES_INITIAL_COUNT && (
+                            <button
+                                onClick={() => setShowAllCategories(v => !v)}
+                                className="text-clay text-[9px] font-bold uppercase tracking-widest mt-6 hover:opacity-70 transition-opacity"
+                            >
+                                {showAllCategories ? '− View Less' : `+ View ${categories.length - CATEGORIES_INITIAL_COUNT} More Options`}
+                            </button>
+                        )}
                     </div>
                 </div>
 
@@ -345,17 +384,48 @@ const CardExplorer: React.FC = () => {
                              </div>
                              <div>
                                 <h3 className="font-serif italic text-2xl text-ink mb-6">Banks</h3>
-                                <div className="grid grid-cols-2 gap-4">
-                                    {banks.map(bank => (
+                                <div className="grid grid-cols-2 gap-3">
+                                    {(showAllBanks ? banks : banks.slice(0, BANKS_INITIAL_COUNT)).map(bank => (
                                         <button 
                                             key={bank}
                                             onClick={() => toggleBank(bank)}
-                                            className={`py-4 px-6 rounded-2xl border text-[10px] font-bold uppercase tracking-widest transition-all ${selectedBanks.includes(bank) ? 'bg-clay border-clay text-white shadow-xl scale-[1.02]' : 'bg-white border-ink/5 text-ink/40 hover:border-ink/10'}`}
+                                            className={`py-3 px-4 rounded-2xl border text-[10px] font-bold tracking-widest transition-all ${selectedBanks.includes(bank) ? 'bg-clay border-clay text-white shadow-xl scale-[1.02]' : 'bg-white border-ink/5 text-ink/40 hover:border-ink/10'}`}
                                         >
                                             {bank}
                                         </button>
                                     ))}
                                 </div>
+                                {banks.length > BANKS_INITIAL_COUNT && (
+                                    <button
+                                        onClick={() => setShowAllBanks(v => !v)}
+                                        className="text-clay text-[9px] font-bold uppercase tracking-widest mt-4 hover:opacity-70 transition-opacity"
+                                    >
+                                        {showAllBanks ? '− View Less' : `+ View ${banks.length - BANKS_INITIAL_COUNT} More`}
+                                    </button>
+                                )}
+                             </div>
+
+                             <div>
+                                <h3 className="font-serif italic text-2xl text-ink mb-6">Categories</h3>
+                                <div className="grid grid-cols-2 gap-3">
+                                    {(showAllCategories ? categories : categories.slice(0, CATEGORIES_INITIAL_COUNT)).map(cat => (
+                                        <button 
+                                            key={cat.name}
+                                            onClick={() => toggleCategory(cat.name)}
+                                            className={`py-3 px-4 rounded-2xl border text-[10px] font-bold tracking-widest text-left transition-all ${selectedCategories.includes(cat.name) ? 'bg-clay border-clay text-white shadow-xl scale-[1.02]' : 'bg-white border-ink/5 text-ink/40 hover:border-ink/10'}`}
+                                        >
+                                            {cat.name}
+                                        </button>
+                                    ))}
+                                </div>
+                                {categories.length > CATEGORIES_INITIAL_COUNT && (
+                                    <button
+                                        onClick={() => setShowAllCategories(v => !v)}
+                                        className="text-clay text-[9px] font-bold uppercase tracking-widest mt-4 hover:opacity-70 transition-opacity"
+                                    >
+                                        {showAllCategories ? '− View Less' : `+ View ${categories.length - CATEGORIES_INITIAL_COUNT} More`}
+                                    </button>
+                                )}
                              </div>
                              
                              <button 

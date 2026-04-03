@@ -32,6 +32,22 @@ import {
 } from '../services/supabaseService';
 import { Blog, Card, WaitlistEntry } from '../types';
 
+// ─── Shared master lists (kept in sync with CardExplorer) ─────────────────────
+const ADMIN_BANKS = [
+  'HDFC', 'SBI', 'ICICI', 'Axis', 'Kotak', 'Yes Bank', 'RBL', 'Amex',
+  'IndusInd', 'BOB', 'SC', 'Indian', 'PNB', 'IDFC', 'Canara', 'HSBC',
+  'DBS', 'IDBI', 'AU', 'Equitas', 'CSB', 'Federal', 'SBM', 'South Indian',
+  'Utkarsh Bank', 'Suryoday Bank', 'Union Bank', 'Unity SFB', 'DCB',
+  'Bank Of India', 'J&K Bank', 'CUB', 'Slice SFB', 'Dhanlaxmi Bank', 'Indian Overseas Bank'
+];
+
+const ADMIN_CATEGORIES = [
+  'Travel', 'Hotels', 'Cashback', 'Brand Voucher', 'Fuel',
+  'Catalogue Products', 'Travel Bookings', 'Brand Wallet', 'Experience',
+  'Shopping', 'Dining', 'Lounge Access', 'Lifetime Free', 'Business', 'UPI'
+];
+// ──────────────────────────────────────────────────────────────────────────────
+
 const AdminDashboard: React.FC = () => {
   const [user, setUser] = useState<any>(null);
   const [userRole, setUserRole] = useState<string>('user');
@@ -1098,7 +1114,6 @@ const AdminDashboard: React.FC = () => {
                 </form>
               ) : activeTab === 'cards' ? (
                 <form onSubmit={handleSaveCard} className="space-y-6">
-                  {/* ... Card Form Content ... */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-4">
                       <div className="grid grid-cols-2 gap-4">
@@ -1114,13 +1129,17 @@ const AdminDashboard: React.FC = () => {
                         </div>
                         <div>
                           <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Bank</label>
-                          <input 
-                            type="text" 
+                          <select
                             required
                             value={cardForm.bank}
-                            onChange={e => setCardForm({...cardForm, bank: e.target.value})}
+                            onChange={e => setCardForm({...cardForm, bank: e.target.value, issuer: e.target.value})}
                             className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
-                          />
+                          >
+                            <option value="">— Select Bank —</option>
+                            {ADMIN_BANKS.map(b => (
+                              <option key={b} value={b}>{b}</option>
+                            ))}
+                          </select>
                         </div>
                       </div>
                       <div className="grid grid-cols-2 gap-4">
@@ -1135,19 +1154,15 @@ const AdminDashboard: React.FC = () => {
                           />
                         </div>
                         <div>
-                          <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Category Dropdown</label>
+                          <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Category</label>
                           <select 
                             value={cardForm.category}
                             onChange={e => setCardForm({...cardForm, category: e.target.value})}
                             className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
                           >
-                            <option>Shopping</option>
-                            <option>Travel</option>
-                            <option>Cashback</option>
-                            <option>Dining</option>
-                            <option>Fuel</option>
-                            <option>Luxury</option>
-                            <option>Premium</option>
+                            {ADMIN_CATEGORIES.map(cat => (
+                              <option key={cat} value={cat}>{cat}</option>
+                            ))}
                           </select>
                         </div>
                       </div>
@@ -1248,13 +1263,15 @@ const AdminDashboard: React.FC = () => {
                     </div>
                     <div>
                       <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Best For</label>
-                      <input 
-                        type="text" 
-                        required
-                        value={cardForm.best_for}
-                        onChange={e => setCardForm({...cardForm, best_for: e.target.value})}
-                        className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
-                      />
+                      <select
+                         value={cardForm.best_for}
+                         onChange={e => setCardForm({...cardForm, best_for: e.target.value})}
+                         className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+                       >
+                         {ADMIN_CATEGORIES.map(cat => (
+                           <option key={cat} value={cat}>{cat}</option>
+                         ))}
+                       </select>
                     </div>
                   </div>
 
