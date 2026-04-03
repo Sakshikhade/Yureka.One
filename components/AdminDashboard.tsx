@@ -22,12 +22,7 @@ import {
   Settings,
   AlertCircle,
   Zap,
-  History,
-  MoreHorizontal,
-  Code as CodeIcon,
-  Play as PlayIcon,
-  Video as VideoIcon,
-  Camera as CameraIcon
+  History
 } from 'lucide-react';
 import { 
   getBlogs, addBlog, updateBlog, deleteBlog,
@@ -70,8 +65,6 @@ const AdminDashboard: React.FC = () => {
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [isEditorSettingsOpen, setIsEditorSettingsOpen] = useState(false);
-  const [isFloatingMenuOpen, setIsFloatingMenuOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<{collection: string, id: string} | null>(null);
   const [editingItem, setEditingItem] = useState<any>(null);
   const [uploading, setUploading] = useState(false);
@@ -1029,219 +1022,165 @@ const AdminDashboard: React.FC = () => {
               )}
 
               {activeTab === 'blogs' ? (
-                <div className="relative min-h-[600px] bg-white rounded-xl pb-32">
-                  {/* Editor Header / Publish Settings Toggle */}
-                  <div className="sticky top-0 z-10 flex justify-end p-4 bg-white/80 backdrop-blur-sm">
-                    <button 
-                      onClick={() => setIsEditorSettingsOpen(!isEditorSettingsOpen)}
-                      className="flex items-center gap-2 px-6 py-2.5 bg-teal/10 text-teal rounded-full font-black text-[10px] uppercase tracking-widest hover:bg-teal/20 transition-all border border-teal/5"
-                    >
-                      {isEditorSettingsOpen ? <X size={14} /> : <Settings size={14} />}
-                      {isEditorSettingsOpen ? 'Close Settings' : 'Publish Settings'}
-                    </button>
-
-                    {/* Settings Overlay */}
-                    {isEditorSettingsOpen && (
-                      <div className="absolute top-16 right-4 w-80 bg-white border border-black/5 shadow-2xl rounded-2xl p-6 z-20 animate-in fade-in slide-in-from-top-4 duration-200">
-                        <h4 className="text-[10px] font-black uppercase tracking-widest mb-6 flex items-center gap-2 text-black/40">
-                          <Zap size={14} /> Metadata & SEO
-                        </h4>
-                        
-                        <div className="space-y-5">
-                          <div className="space-y-2">
-                            <label className="block text-[9px] font-black uppercase tracking-widest text-black/30">Category</label>
-                            <select 
-                              value={blogForm.category}
-                              onChange={e => setBlogForm({...blogForm, category: e.target.value})}
-                              className="w-full bg-black/5 border-none rounded-xl p-3 text-sm focus:ring-1 focus:ring-teal outline-none transition-all font-bold"
-                            >
-                              <option>Credit Cards</option>
-                              <option>Finance</option>
-                              <option>Lifestyle</option>
-                              <option>Technology</option>
-                              <option>Savings</option>
-                              <option>Fintech</option>
-                            </select>
-                          </div>
-
-                          <div className="space-y-2">
-                            <label className="block text-[9px] font-black uppercase tracking-widest text-black/30">Slug</label>
-                            <div className="flex gap-1">
-                              <input 
-                                type="text" 
-                                value={blogForm.slug}
-                                onChange={e => setBlogForm({...blogForm, slug: e.target.value})}
-                                className="flex-1 bg-black/5 border-none rounded-xl p-3 text-sm focus:ring-1 focus:ring-teal outline-none transition-all font-mono"
-                                placeholder="url-suffix"
-                              />
-                              <button 
-                                onClick={() => setBlogForm({...blogForm, slug: blogForm.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')})}
-                                className="p-3 bg-black/5 rounded-xl hover:bg-black/10 text-black/40"
-                                title="Generate from Title"
-                              >
-                                <Zap size={14} />
-                              </button>
-                            </div>
-                          </div>
-
-                          <div className="space-y-2">
-                            <label className="block text-[9px] font-black uppercase tracking-widest text-black/30">Author</label>
-                            <input 
-                              type="text" 
-                              value={blogForm.author}
-                              onChange={e => setBlogForm({...blogForm, author: e.target.value})}
-                              className="w-full bg-black/5 border-none rounded-xl p-3 text-sm focus:ring-1 focus:ring-teal outline-none transition-all font-bold"
-                            />
-                          </div>
-
-                          <div className="p-4 bg-teal/5 rounded-2xl border border-teal/10">
-                            <label className="block text-[9px] font-black uppercase tracking-widest text-teal/40 mb-3 text-center">Cover Image</label>
-                            <div className="relative aspect-video rounded-xl overflow-hidden bg-white mb-3 shadow-sm border border-teal/5">
-                              {blogForm.image ? (
-                                <img src={blogForm.image} alt="Cover" className="w-full h-full object-cover" />
-                              ) : (
-                                <div className="w-full h-full flex items-center justify-center text-teal/20"><ImageIcon size={32} /></div>
-                              )}
-                              <button 
-                                onClick={() => fileInputRef.current?.click()}
-                                className="absolute inset-0 bg-black/40 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center text-white"
-                              >
-                                <Upload size={18} />
-                              </button>
-                            </div>
-                            <input 
-                              type="text" 
-                              value={blogForm.image}
-                              onChange={e => setBlogForm({...blogForm, image: e.target.value})}
-                              className="w-full bg-transparent border-b border-teal/20 text-[10px] py-1 outline-none font-mono text-teal text-center"
-                              placeholder="Or paste URL here"
-                            />
-                          </div>
-
-                          <div className="flex items-center gap-3 px-1">
-                            <div 
-                              onClick={() => setBlogForm({...blogForm, featured: !blogForm.featured})}
-                              className={`w-10 h-5 rounded-full transition-all cursor-pointer flex items-center p-1 ${blogForm.featured ? 'bg-teal' : 'bg-black/10'}`}
-                            >
-                              <div className={`w-3 h-3 bg-white rounded-full transition-all transform ${blogForm.featured ? 'translate-x-5' : 'translate-x-0'}`} />
-                            </div>
-                            <label className="text-[10px] font-black uppercase tracking-widest text-black/60 cursor-pointer">Featured Story</label>
-                          </div>
-
-                          <div className="space-y-2 pt-2">
-                             <label className="block text-[9px] font-black uppercase tracking-widest text-black/30">Publish Status</label>
-                             <div className="flex bg-black/5 p-1 rounded-xl">
-                                {(['draft', 'published'] as const).map(s => (
-                                  <button
-                                    key={s}
-                                    onClick={() => setBlogForm({...blogForm, status: s})}
-                                    className={`flex-1 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all ${blogForm.status === s ? 'bg-white text-teal shadow-sm' : 'text-black/30 hover:text-black/50'}`}
-                                  >
-                                    {s}
-                                  </button>
-                                ))}
-                             </div>
-                          </div>
+                <form onSubmit={handleSaveBlog} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Title</label>
+                        <input 
+                          type="text" 
+                          required
+                          value={blogForm.title}
+                          onChange={e => setBlogForm({...blogForm, title: e.target.value})}
+                          className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Slug (URL Configuration)</label>
+                        <div className="flex gap-2">
+                          <input 
+                            type="text" 
+                            placeholder="auto-generated-from-title"
+                            value={blogForm.slug}
+                            onChange={e => setBlogForm({...blogForm, slug: e.target.value})}
+                            className="flex-1 bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+                          />
+                          <button 
+                            type="button"
+                            onClick={() => setBlogForm({...blogForm, slug: blogForm.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')})}
+                            className="px-4 bg-black/5 rounded-xl hover:bg-black/10 transition-colors"
+                            title="Regenerate slug"
+                          >
+                            <Settings size={18} />
+                          </button>
                         </div>
                       </div>
-                    )}
-                  </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Author</label>
+                          <input 
+                            type="text" 
+                            required
+                            value={blogForm.author}
+                            onChange={e => setBlogForm({...blogForm, author: e.target.value})}
+                            className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Category</label>
+                          <select 
+                            value={blogForm.category}
+                            onChange={e => setBlogForm({...blogForm, category: e.target.value})}
+                            className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+                          >
+                            <option>Credit Cards</option>
+                            <option>Finance</option>
+                            <option>Lifestyle</option>
+                            <option>Technology</option>
+                            <option>Savings</option>
+                            <option>Fintech</option>
+                          </select>
+                        </div>
+                      </div>
 
-                  {/* Main Writing Canvas */}
-                  <div className="max-w-3xl mx-auto px-6 mt-10">
-                    {/* Floating Menu Trigger */}
-                    <div className="absolute left-4 md:left-10 lg:left-20 xl:left-40 mt-1.5 h-10 flex items-center">
-                      <div className="relative flex items-center">
-                        <button 
-                          onClick={() => setIsFloatingMenuOpen(!isFloatingMenuOpen)}
-                          className={`w-10 h-10 flex items-center justify-center border rounded-full transition-all duration-300 shadow-sm bg-white ${isFloatingMenuOpen ? 'border-teal rotate-45 text-teal' : 'border-black/10 text-black/20 hover:border-black/40 hover:text-black/40'}`}
-                        >
-                          <Plus size={24} strokeWidth={1.5} />
-                        </button>
-                        
-                        {isFloatingMenuOpen && (
-                          <div className="absolute left-14 flex items-center gap-1.5 p-1.5 bg-white border border-black/5 rounded-full shadow-2xl animate-in slide-in-from-left-4 duration-300">
-                             <button 
-                               onClick={() => fileInputRef.current?.click()}
-                               className="w-9 h-9 flex items-center justify-center text-teal-600 hover:bg-teal-50 rounded-full transition-all hover:scale-110" 
-                               title="Upload Image"
-                             >
-                               <ImageIcon size={18} />
-                             </button>
-                             <button className="w-9 h-9 flex items-center justify-center text-teal-600 hover:bg-teal-50 rounded-full transition-all hover:scale-110" title="Search Unsplash">
-                               <CameraIcon size={18} />
-                             </button>
-                             <button className="w-9 h-9 flex items-center justify-center text-teal-600 hover:bg-teal-50 rounded-full transition-all hover:scale-110" title="Add Video">
-                               <VideoIcon size={18} />
-                             </button>
-                             <button className="w-9 h-9 flex items-center justify-center text-teal-600 hover:bg-teal-50 rounded-full transition-all hover:scale-110" title="Add Embed">
-                               <ExternalLink size={18} />
-                             </button>
-                             <button className="w-9 h-9 flex items-center justify-center text-teal-600 hover:bg-teal-50 rounded-full transition-all hover:scale-110" title="Code Block">
-                               <CodeIcon size={18} />
-                             </button>
-                             <button className="w-9 h-9 flex items-center justify-center text-teal-600 hover:bg-teal-50 rounded-full transition-all hover:scale-110" title="Add Separator">
-                               <MoreHorizontal size={18} />
-                             </button>
-                          </div>
-                        )}
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Publish Status</label>
+                          <select 
+                            value={blogForm.status}
+                            onChange={e => setBlogForm({...blogForm, status: e.target.value as 'draft' | 'published'})}
+                            className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+                          >
+                            <option value="published">Published</option>
+                            <option value="draft">Draft</option>
+                          </select>
+                        </div>
+                        <div className="flex items-center gap-4 p-4 bg-black/5 rounded-xl h-[56px] mt-6">
+                          <input 
+                            type="checkbox" 
+                            id="featured"
+                            checked={blogForm.featured}
+                            onChange={e => setBlogForm({...blogForm, featured: e.target.checked})}
+                            className="w-5 h-5 accent-teal"
+                          />
+                          <label htmlFor="featured" className="text-sm font-bold text-black/60 cursor-pointer">Featured Post</label>
+                        </div>
                       </div>
                     </div>
 
-                    {/* Title */}
-                    <textarea 
-                      placeholder="Title"
-                      value={blogForm.title}
-                      onChange={e => {
-                        setBlogForm({...blogForm, title: e.target.value});
-                        e.target.style.height = 'auto';
-                        e.target.style.height = e.target.scrollHeight + 'px';
-                      }}
-                      className="w-full text-5xl font-black border-none outline-none resize-none bg-transparent placeholder:text-black/5 leading-tight mb-4 tracking-tight"
-                      rows={1}
-                    />
-
-                    {/* Excerpt */}
-                    <textarea 
-                      placeholder="Tell a brief summary..."
-                      value={blogForm.excerpt}
-                      onChange={e => {
-                        setBlogForm({...blogForm, excerpt: e.target.value});
-                        e.target.style.height = 'auto';
-                        e.target.style.height = e.target.scrollHeight + 'px';
-                      }}
-                      className="w-full text-2xl text-black/40 border-none outline-none resize-none bg-transparent placeholder:text-black/5 leading-relaxed mb-12"
-                      rows={1}
-                    />
-
-                    {/* Body */}
-                    <textarea 
-                      placeholder="Tell your story..."
-                      value={blogForm.content}
-                      onChange={e => {
-                        setBlogForm({...blogForm, content: e.target.value});
-                        e.target.style.height = 'auto';
-                        e.target.style.height = e.target.scrollHeight + 'px';
-                      }}
-                      className="w-full text-xl border-none outline-none resize-none bg-transparent placeholder:text-black/5 leading-relaxed min-h-[500px]"
-                    />
+                    <div className="space-y-4">
+                      <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Cover Image</label>
+                      <div className="relative aspect-video rounded-xl overflow-hidden bg-black/5 border-2 border-dashed border-black/10 group">
+                        {blogForm.image ? (
+                          <img src={blogForm.image} alt="Preview" className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="absolute inset-0 flex flex-col items-center justify-center text-black/20">
+                            <ImageIcon size={48} />
+                            <p className="text-xs font-bold uppercase tracking-widest mt-2">No Image Selected</p>
+                          </div>
+                        )}
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
+                          <button 
+                            type="button"
+                            onClick={() => fileInputRef.current?.click()}
+                            className="bg-white text-black p-3 rounded-full hover:scale-110 transition-transform"
+                          >
+                            <Upload size={20} />
+                          </button>
+                        </div>
+                      </div>
+                      <input 
+                        type="file" 
+                        ref={fileInputRef}
+                        onChange={(e) => handleFileUpload(e, 'blogs')}
+                        className="hidden" 
+                        accept="image/*"
+                      />
+                      <input 
+                        type="text" 
+                        placeholder="Or enter image URL"
+                        value={blogForm.image}
+                        onChange={e => setBlogForm({...blogForm, image: e.target.value})}
+                        className="w-full bg-black/5 border-none rounded-xl p-3 text-xs focus:ring-2 focus:ring-teal outline-none transition-all"
+                      />
+                      {uploading && (
+                        <div className="flex items-center gap-2 text-teal text-xs font-bold">
+                          <Loader2 size={14} className="animate-spin" /> Uploading...
+                        </div>
+                      )}
+                    </div>
                   </div>
 
-                  {/* Submission Footer */}
-                  <div className="fixed bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-white via-white/80 to-transparent flex justify-center pointer-events-none z-10">
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Excerpt</label>
+                    <textarea 
+                      required
+                      value={blogForm.excerpt}
+                      onChange={e => setBlogForm({...blogForm, excerpt: e.target.value})}
+                      className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all h-24"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Content (Markdown)</label>
+                    <textarea 
+                      required
+                      value={blogForm.content}
+                      onChange={e => setBlogForm({...blogForm, content: e.target.value})}
+                      className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all h-64 font-mono text-sm"
+                    />
+                  </div>
+                  
+                  <div className="flex justify-end pt-4 border-t border-black/5">
                     <button 
-                      onClick={handleSaveBlog}
-                      disabled={saving || !blogForm.title || !blogForm.content}
-                      className="pointer-events-auto px-16 py-4 bg-black text-white rounded-full font-black uppercase tracking-[0.2em] shadow-2xl hover:bg-teal hover:scale-105 active:scale-95 transition-all text-xs disabled:opacity-30 disabled:grayscale"
+                      type="submit" 
+                      disabled={uploading || saving}
+                      className="bg-teal text-white px-10 py-4 rounded-xl font-bold hover:bg-teal/90 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                     >
-                      {saving ? (
-                        <div className="flex items-center gap-2">
-                          <Loader2 size={16} className="animate-spin" /> Saving...
-                        </div>
-                      ) : editingItem ? 'Update Story' : 'Publish Story'}
+                      {(uploading || saving) ? <Loader2 className="animate-spin" size={20} /> : <Check size={20} />}
+                      {saving ? 'Saving...' : 'Save Blog Post'}
                     </button>
                   </div>
-                </div>
+                </form>
               ) : activeTab === 'cards' ? (
                 <form onSubmit={handleSaveCard} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
