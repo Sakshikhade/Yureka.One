@@ -165,7 +165,7 @@ const AdminDashboard: React.FC = () => {
           const fetchedRole = data?.role || 'user';
           
           // CRITICAL: Always allow the super admin
-          const isOwner = user.email === 'toanweshbiswas@gmail.com';
+          const isOwner = ['toanweshbiswas@gmail.com', 'buildwithjupyter.network@gmail.com'].includes(user.email);
           const role = isOwner ? 'admin' : fetchedRole;
           
           setUserRole(role);
@@ -177,7 +177,7 @@ const AdminDashboard: React.FC = () => {
         } catch (err) {
           console.error("Role fetch error:", err);
           // Even on error, bypass for owner
-          if (user.email === 'toanweshbiswas@gmail.com') {
+          if (['toanweshbiswas@gmail.com', 'buildwithjupyter.network@gmail.com'].includes(user.email)) {
             setIsAdmin(true);
             setUserRole('admin');
           } else {
@@ -366,12 +366,31 @@ const AdminDashboard: React.FC = () => {
     setError(null);
     try {
       if (editingItem) {
-        if (editingItem.email === 'toanweshbiswas@gmail.com' && teamForm.role !== 'admin') {
-          throw new Error("The platform owner must remain an Admin.");
+        if (['toanweshbiswas@gmail.com', 'buildwithjupyter.network@gmail.com'].includes(editingItem.email) && teamForm.role !== 'admin') {
+          throw new Error("Super admins must remain Admins.");
         }
         await updateUserRole(editingItem.id, teamForm.role);
       } else {
         await inviteTeamMember(teamForm.email, teamForm.role);
+        
+        // Trigger onboarding email via backend API
+        const namePart = teamForm.email.split('@')[0].split('.')[0];
+        const firstName = namePart.charAt(0).toUpperCase() + namePart.slice(1);
+        
+        try {
+          await fetch('/api/notify-team-member', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email: teamForm.email,
+              role: teamForm.role,
+              firstName: firstName
+            })
+          });
+        } catch (emailErr) {
+          console.warn("Onboarding email notification failed to send:", emailErr);
+          // We continue because the team member was successfully invited in Supabase
+        }
       }
       setIsModalOpen(false);
       setEditingItem(null);
@@ -393,8 +412,8 @@ const AdminDashboard: React.FC = () => {
     // Safety check: Prevent deleting the platform owner
     if (itemToDelete.collection === 'users') {
       const userToDelete = team.find(u => u.id === itemToDelete.id);
-      if (userToDelete?.email === 'toanweshbiswas@gmail.com') {
-        setError("The platform owner cannot be removed.");
+      if (['toanweshbiswas@gmail.com', 'buildwithjupyter.network@gmail.com'].includes(userToDelete?.email)) {
+        setError("Super admins cannot be removed.");
         setIsDeleteModalOpen(false);
         return;
       }

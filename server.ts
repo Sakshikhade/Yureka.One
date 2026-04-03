@@ -119,7 +119,7 @@ async function startServer() {
   app.get("/api/auth/admin-check", async (req, res) => {
     const { userId, email } = req.query;
     
-    if (email === "toanweshbiswas@gmail.com") {
+    if (["toanweshbiswas@gmail.com", "buildwithjupyter.network@gmail.com"].includes(email as string)) {
       return res.json({ isAdmin: true });
     }
     if (!userId) return res.json({ isAdmin: false });
@@ -128,8 +128,53 @@ async function startServer() {
       const { data, error } = await supabase.from('users').select('role').eq('id', userId as string).single();
       if (error || !data) return res.json({ isAdmin: false });
       return res.json({ isAdmin: data.role === 'admin' });
-    } catch (error) {
+    } catch (err) {
       return res.json({ isAdmin: false });
+    }
+  });
+
+  // Email Notification API
+  app.post("/api/notify-team-member", async (req, res) => {
+    const { email, role, firstName } = req.body;
+    const { GMAIL_USER, GMAIL_APP_PASSWORD } = process.env;
+
+    if (!GMAIL_USER || !GMAIL_APP_PASSWORD) {
+        console.warn("Email credentials missing in .env");
+        return res.status(500).json({ error: "Email configuration missing on server" });
+    }
+
+    const nodemailer = await import("nodemailer");
+    const transporter = nodemailer.default.createTransport({
+      service: 'gmail',
+      auth: {
+        user: GMAIL_USER,
+        pass: GMAIL_APP_PASSWORD
+      }
+    });
+
+    const portalLink = "https://yurekamoney.netlify.app/admin";
+    const mailOptions = {
+      from: `"Yureka Money" <${GMAIL_USER}>`,
+      to: email,
+      subject: "Welcome to Yureka Money Admin Dashboard",
+      text: `Hi ${firstName || 'there'},\n\nAnwesh has added you as ${role}, to yureka.money, you can access the same using ${portalLink}, make sure due to nature of security you will get automatically logged out of the admin dashboard within 60 seconds of inactivity`,
+      html: `
+        <div style="font-family: sans-serif; padding: 20px; color: #333;">
+          <p>Hi ${firstName || 'there'},</p>
+          <p>Anwesh has added you as <strong>${role}</strong>, to <a href="https://yurekamoney.netlify.app">yurekamoney.netlify.app</a>.</p>
+          <p>You can access the portal here: <a href="${portalLink}">${portalLink}</a></p>
+          <p style="color: #666; font-size: 0.9em;">Important: For security purposes, you will be automatically logged out of the admin dashboard after 60 seconds of inactivity.</p>
+          <p>Welcome aboard!</p>
+        </div>
+      `
+    };
+
+    try {
+      await transporter.sendMail(mailOptions);
+      res.json({ success: true });
+    } catch (error: any) {
+      console.error("Email send error:", error);
+      res.status(500).json({ error: error.message });
     }
   });
 
