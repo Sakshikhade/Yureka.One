@@ -76,7 +76,7 @@ const AdminDashboard: React.FC = () => {
   useEffect(() => {
     if (!user || !isAdmin) return;
 
-    const INACTIVITY_TIMEOUT = 60 * 1000; // 60 seconds
+    const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minutes
 
     const resetTimer = () => {
       if (inactivityTimerRef.current) {
@@ -84,7 +84,7 @@ const AdminDashboard: React.FC = () => {
       }
       inactivityTimerRef.current = setTimeout(() => {
         handleLogout();
-        alert("Security Session Expired: You have been logged out due to 60 seconds of inactivity.");
+        alert("Security Session Expired: You have been logged out due to 15 minutes of inactivity.");
       }, INACTIVITY_TIMEOUT);
     };
 
