@@ -1035,44 +1035,7 @@ const AdminDashboard: React.FC = () => {
                           </select>
                         </div>
                       </div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2 flex items-center justify-between">
-                                Slug 
-                                <button type="button" onClick={() => {
-                                    const gen = generateSlug(cardForm.name, cardForm.bank);
-                                    setCardForm({...cardForm, slug: gen});
-                                }} className="text-[9px] text-teal hover:underline">Auto-Generate</button>
-                            </label>
-                            <input 
-                                type="text" 
-                                placeholder="e.g. hdfc-infinia-hdfc"
-                                value={cardForm.slug || ''}
-                                onChange={e => setCardForm({...cardForm, slug: e.target.value})}
-                                className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
-                            />
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
-                            <div>
-                              <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Rating</label>
-                              <input 
-                                type="number" step="0.1" min="0" max="5" required
-                                value={cardForm.rating}
-                                onChange={e => setCardForm({...cardForm, rating: parseFloat(e.target.value)})}
-                                className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
-                              />
-                            </div>
-                            <div>
-                              <label className="block text-xs font-bold uppercase tracking-widest text-teal mb-2">Elite Rating (out of 5)</label>
-                              <input 
-                                type="number" step="0.1" min="0" max="5" required
-                                value={cardForm.elite_rating}
-                                onChange={e => setCardForm({...cardForm, elite_rating: parseFloat(e.target.value)})}
-                                className="w-full bg-teal/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all text-teal font-bold"
-                              />
-                            </div>
-                        </div>
-                      </div>
+
                       <div className="grid grid-cols-2 gap-4">
                         <div>
                           <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Publish Status</label>
@@ -1199,6 +1162,44 @@ const AdminDashboard: React.FC = () => {
                               <option key={b} value={b}>{b}</option>
                             ))}
                           </select>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2 flex items-center justify-between">
+                                Slug 
+                                <button type="button" onClick={() => {
+                                    const gen = generateSlug(cardForm.name, cardForm.bank);
+                                    setCardForm({...cardForm, slug: gen});
+                                }} className="text-[9px] text-teal hover:underline">Auto-Generate</button>
+                            </label>
+                            <input 
+                                type="text" 
+                                placeholder="e.g. hdfc-infinia-hdfc"
+                                value={cardForm.slug || ''}
+                                onChange={e => setCardForm({...cardForm, slug: e.target.value})}
+                                className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+                            />
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div>
+                              <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Rating</label>
+                              <input 
+                                type="number" step="0.1" min="0" max="5" required
+                                value={cardForm.rating}
+                                onChange={e => setCardForm({...cardForm, rating: parseFloat(e.target.value)})}
+                                className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-xs font-bold uppercase tracking-widest text-teal mb-2">Elite Rating (out of 5)</label>
+                              <input 
+                                type="number" step="0.1" min="0" max="5" required
+                                value={cardForm.elite_rating}
+                                onChange={e => setCardForm({...cardForm, elite_rating: parseFloat(e.target.value)})}
+                                className="w-full bg-teal/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all text-teal font-bold"
+                              />
+                            </div>
                         </div>
                       </div>
                       <div className="grid grid-cols-2 gap-4">
