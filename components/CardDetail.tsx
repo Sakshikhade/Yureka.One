@@ -58,9 +58,15 @@ const CardDetail: React.FC = () => {
                         <a href="#benefits" className="text-[10px] font-bold uppercase tracking-widest text-ink/60 hover:text-ink">Benefits</a>
                         <a href="#fees" className="text-[10px] font-bold uppercase tracking-widest text-ink/60 hover:text-ink">Fees</a>
                     </div>
-                    <button className="bg-ink text-white px-6 py-2 rounded-full font-bold uppercase tracking-widest text-[9px] hover:bg-clay transition-colors shadow-lg">
-                        Apply Now
-                    </button>
+                    {card.apply_link ? (
+                        <a href={card.apply_link} target="_blank" rel="noopener noreferrer" className="bg-ink text-white px-6 py-2 rounded-full font-bold uppercase tracking-widest text-[9px] hover:bg-clay transition-colors shadow-lg block">
+                            Apply Now
+                        </a>
+                    ) : (
+                        <button className="bg-ink text-white px-6 py-2 rounded-full font-bold uppercase tracking-widest text-[9px] hover:bg-clay transition-colors shadow-lg">
+                            Apply Now
+                        </button>
+                    )}
                 </div>
             </div>
 
@@ -117,9 +123,15 @@ const CardDetail: React.FC = () => {
                         </div>
 
                         <div className="flex flex-wrap gap-4 pt-10">
-                            <button className="bg-ink text-white px-10 py-5 rounded-full font-bold flex items-center justify-center gap-4 transition-all shadow-xl hover:bg-clay text-[10px] uppercase tracking-[0.3em]">
-                                Apply Now <ArrowRight size={16} />
-                            </button>
+                            {card.apply_link ? (
+                                <a href={card.apply_link} target="_blank" rel="noopener noreferrer" className="bg-ink text-white px-10 py-5 rounded-full font-bold flex items-center justify-center gap-4 transition-all shadow-xl hover:bg-clay text-[10px] uppercase tracking-[0.3em]">
+                                    Apply Now <ArrowRight size={16} />
+                                </a>
+                            ) : (
+                                <button className="bg-ink text-white px-10 py-5 rounded-full font-bold flex items-center justify-center gap-4 transition-all shadow-xl hover:bg-clay text-[10px] uppercase tracking-[0.3em]">
+                                    Apply Now <ArrowRight size={16} />
+                                </button>
+                            )}
                             <button className="bg-white border border-ink/10 text-ink px-10 py-5 rounded-full font-bold flex items-center justify-center gap-4 transition-all hover:bg-ink group text-[10px] uppercase tracking-[0.3em] hover:text-white">
                                 Ask Yureka AI <MessageSquareShare size={16} className="text-clay group-hover:text-white" />
                             </button>

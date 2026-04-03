@@ -38,6 +38,7 @@ export interface Card {
   verdict?: string;
   slug?: string;
   categories?: string[];
+  apply_link?: string;
   created_at?: string;
   updated_at?: string;
   status?: 'draft' | 'published';

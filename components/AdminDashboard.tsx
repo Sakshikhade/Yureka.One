@@ -104,6 +104,7 @@ const AdminDashboard: React.FC = () => {
     benefit_items: [{ heading: '', subheading: '' }],
     verdict: '',
     slug: '',
+    apply_link: '',
     annual_fee: '₹0',
     joining_fee: '₹0',
     best_for: 'Shopping',
@@ -1262,16 +1263,28 @@ const AdminDashboard: React.FC = () => {
                         </div>
                       </div>
 
-                      <div>
-                        <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Publish Status</label>
-                        <select 
-                          value={cardForm.status}
-                          onChange={e => setCardForm({...cardForm, status: e.target.value as 'draft' | 'published'})}
-                          className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
-                        >
-                          <option value="published">Published</option>
-                          <option value="draft">Draft</option>
-                        </select>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Publish Status</label>
+                          <select 
+                            value={cardForm.status}
+                            onChange={e => setCardForm({...cardForm, status: e.target.value as 'draft' | 'published'})}
+                            className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+                          >
+                            <option value="published">Published</option>
+                            <option value="draft">Draft</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Apply Link (Optional)</label>
+                          <input 
+                            type="url" 
+                            placeholder="https://..."
+                            value={cardForm.apply_link || ''}
+                            onChange={e => setCardForm({...cardForm, apply_link: e.target.value})}
+                            className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+                          />
+                        </div>
                       </div>
                     </div>
 
