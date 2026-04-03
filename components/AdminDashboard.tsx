@@ -71,6 +71,33 @@ const AdminDashboard: React.FC = () => {
   const [saving, setSaving] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const inactivityTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    if (!user || !isAdmin) return;
+
+    const INACTIVITY_TIMEOUT = 60 * 1000; // 60 seconds
+
+    const resetTimer = () => {
+      if (inactivityTimerRef.current) {
+        clearTimeout(inactivityTimerRef.current);
+      }
+      inactivityTimerRef.current = setTimeout(() => {
+        handleLogout();
+        alert("Security Session Expired: You have been logged out due to 60 seconds of inactivity.");
+      }, INACTIVITY_TIMEOUT);
+    };
+
+    const events = ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart'];
+    
+    resetTimer();
+    events.forEach(event => window.addEventListener(event, resetTimer));
+
+    return () => {
+      if (inactivityTimerRef.current) clearTimeout(inactivityTimerRef.current);
+      events.forEach(event => window.removeEventListener(event, resetTimer));
+    };
+  }, [user, isAdmin]);
   
   // Blog Form State
   const [blogForm, setBlogForm] = useState({
