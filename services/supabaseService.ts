@@ -11,6 +11,10 @@ const cleanData = (obj: any) => {
       // Ensure it's a valid string array
       cleaned[key] = cleaned[key].filter((b: string) => b && b.trim() !== '');
     }
+    // Handle benefit_items array of objects
+    if (key === 'benefit_items' && Array.isArray(cleaned[key])) {
+      cleaned[key] = cleaned[key].filter(b => b.heading?.trim() !== '');
+    }
   });
   return cleaned;
 };
@@ -161,6 +165,22 @@ export const getCardById = async (id: string): Promise<Card | null> => {
     return data;
   } catch (error) {
     console.error('getCardById Error:', error);
+    return null;
+  }
+};
+
+export const getCardBySlug = async (slugOrId: string): Promise<Card | null> => {
+  try {
+    // Try slug first
+    let result = await supabase.from('cards').select('*').eq('slug', slugOrId).single();
+    if (!result.error && result.data) return result.data;
+    
+    // Fallback to id
+    result = await supabase.from('cards').select('*').eq('id', slugOrId).single();
+    if (result.error) throw result.error;
+    return result.data;
+  } catch (error) {
+    console.error('getCardBySlug Error:', error);
     return null;
   }
 };

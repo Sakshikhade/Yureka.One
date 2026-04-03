@@ -5,24 +5,24 @@ import {
     Zap, Info, ExternalLink, ShieldCheck, CreditCard, Landmark,
     ArrowRight, Bookmark, Clock, Sparkles
 } from 'lucide-react';
-import { getCardById } from '../services/supabaseService';
+import { getCardBySlug } from '../services/supabaseService';
 import { Card } from '../types';
 import ImageWithLoader from './ImageWithLoader';
 
 const CardDetail: React.FC = () => {
-    const { id } = useParams<{ id: string }>();
+    const { slug } = useParams<{ slug: string }>();
     const [card, setCard] = useState<Card | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        if (!id) return;
+        if (!slug) return;
         const fetchCard = async () => {
-            const data = await getCardById(id);
+            const data = await getCardBySlug(slug);
             setCard(data);
             setIsLoading(false);
         };
         fetchCard();
-    }, [id]);
+    }, [slug]);
 
     if (isLoading) {
         return (
@@ -85,7 +85,7 @@ const CardDetail: React.FC = () => {
                                 </div>
                                 <div>
                                     <p className="text-[8px] font-bold text-ink/40 uppercase tracking-widest">Elite Rating</p>
-                                    <p className="text-2xl font-serif italic text-ink">{card.rating?.toFixed(1) || '4.5'}/5.0</p>
+                                    <p className="text-2xl font-serif italic text-ink">{card.elite_rating?.toFixed(1) || card.rating?.toFixed(1) || '4.5'}/5.0</p>
                                 </div>
                             </div>
                         </div>
@@ -140,15 +140,27 @@ const CardDetail: React.FC = () => {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1px bg-ink/10 border border-ink/10 rounded-[3rem] overflow-hidden shadow-2xl">
-                        {card.benefits?.map((benefit, idx) => (
-                            <div key={idx} className="bg-white p-12 hover:bg-cream/40 transition-colors group">
-                                <div className="w-12 h-12 bg-cream rounded-2xl flex items-center justify-center mb-8 border border-ink/5 group-hover:scale-110 transition-transform">
-                                    <CheckCircle2 className="text-clay" size={24} />
+                        {card.benefit_items && card.benefit_items.length > 0 && card.benefit_items[0].heading ? (
+                            card.benefit_items.map((benefit, idx) => (
+                                <div key={idx} className="bg-white p-12 hover:bg-cream/40 transition-colors group">
+                                    <div className="w-12 h-12 bg-cream rounded-2xl flex items-center justify-center mb-8 border border-ink/5 group-hover:scale-110 transition-transform">
+                                        <CheckCircle2 className="text-clay" size={24} />
+                                    </div>
+                                    <h3 className="text-xl font-serif text-ink leading-tight mb-4">{benefit.heading}</h3>
+                                    <p className="text-sm text-ink/40 font-medium italic">{benefit.subheading || 'Premium lifestyle benefit included in the standard portfolio.'}</p>
                                 </div>
-                                <h3 className="text-xl font-serif text-ink leading-tight mb-4">{benefit}</h3>
-                                <p className="text-sm text-ink/40 font-medium italic">Premium lifestyle benefit included in the standard portfolio.</p>
-                            </div>
-                        )) || (
+                            ))
+                        ) : card.benefits && card.benefits.length > 0 && card.benefits[0] ? (
+                            card.benefits.map((benefit, idx) => (
+                                <div key={idx} className="bg-white p-12 hover:bg-cream/40 transition-colors group">
+                                    <div className="w-12 h-12 bg-cream rounded-2xl flex items-center justify-center mb-8 border border-ink/5 group-hover:scale-110 transition-transform">
+                                        <CheckCircle2 className="text-clay" size={24} />
+                                    </div>
+                                    <h3 className="text-xl font-serif text-ink leading-tight mb-4">{benefit}</h3>
+                                    <p className="text-sm text-ink/40 font-medium italic">Premium lifestyle benefit included in the standard portfolio.</p>
+                                </div>
+                            ))
+                        ) : (
                             <div className="col-span-full py-32 text-center bg-white">
                                 <Info className="mx-auto text-ink/10 mb-6" size={48} />
                                 <p className="text-ink/40 font-serif italic">Benefit breakdown currently under audit.</p>
@@ -169,7 +181,7 @@ const CardDetail: React.FC = () => {
                                 The <span className="text-white/40">Verdict</span>
                             </h2>
                             <p className="text-xl md:text-2xl font-serif text-white/60 leading-relaxed italic border-l-4 border-clay pl-8">
-                                "The {card.name} remains a cornerstone of the {card.issuer} ecosystem. While the {card.annual_fee} fee is significant, the projected savings of {card.projected_savings} creates an undeniable value proposition for high-spend portfolios."
+                                "{card.verdict || `The ${card.name} remains a cornerstone of the ${card.issuer || card.bank} ecosystem. While the ${card.annual_fee} fee is significant, the projected savings of ${card.projected_savings || '₹12,000/yr'} creates an undeniable value proposition for high-spend portfolios.`}"
                             </p>
                             <div className="flex items-center gap-6 pt-10">
                                 <div className="flex -space-x-4">

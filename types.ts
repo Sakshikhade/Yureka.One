@@ -33,6 +33,11 @@ export interface Card {
   projected_savings?: string;
   intro_offer?: string;
   tags?: string[];
+  elite_rating?: number;
+  benefit_items?: { heading: string; subheading: string }[];
+  verdict?: string;
+  slug?: string;
+  categories?: string[];
   created_at?: string;
   updated_at?: string;
   status?: 'draft' | 'published';

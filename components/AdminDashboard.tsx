@@ -86,24 +86,36 @@ const AdminDashboard: React.FC = () => {
     status: 'published' as 'draft' | 'published'
   });
 
+  // Helper to generate a slug
+  const generateSlug = (name: string, bank: string) => {
+      return `${name}-${bank}`.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  };
+
   // Card Form State
-  const [cardForm, setCardForm] = useState({
+  const defaultCardForm = {
     name: '',
     bank: '',
     issuer: '',
     type: 'Rewards',
     image: 'https://picsum.photos/seed/card/400/250',
     rating: 4.5,
+    elite_rating: 4.5,
     benefits: [''],
+    benefit_items: [{ heading: '', subheading: '' }],
+    verdict: '',
+    slug: '',
     annual_fee: '₹0',
     joining_fee: '₹0',
     best_for: 'Shopping',
     category: 'Shopping',
+    categories: [] as string[],
     color: 'from-blue-600 to-indigo-700',
     rewards_rate: '5%',
     projected_savings: '₹12,000/yr',
     status: 'published' as 'draft' | 'published'
-  });
+  };
+
+  const [cardForm, setCardForm] = useState(defaultCardForm);
   
   // Team Form State
   const [teamForm, setTeamForm] = useState({
@@ -309,7 +321,7 @@ const AdminDashboard: React.FC = () => {
       setIsModalOpen(false);
       setEditingItem(null);
       setPreviewUrl(null);
-      setCardForm({ name: '', bank: '', issuer: '', type: 'Rewards', image: 'https://picsum.photos/seed/card/400/250', rating: 4.5, benefits: [''], annual_fee: '₹0', joining_fee: '₹0', best_for: 'Shopping', category: 'Shopping', color: 'from-blue-600 to-indigo-700', rewards_rate: '5%', projected_savings: '₹12,000/yr', status: 'published' as 'draft' | 'published' });
+      setCardForm(defaultCardForm);
     } catch (error: any) {
       console.error("Save Card Error:", error);
       setError(error.message || "Failed to save card. If this persists, please run the SQL fix script.");
@@ -592,7 +604,8 @@ const AdminDashboard: React.FC = () => {
                   if (activeTab === 'blogs') {
                     setBlogForm({ title: '', slug: '', excerpt: '', content: '', author: '', category: 'Credit Cards', image: 'https://picsum.photos/seed/blog/800/600', read_time: '5 min read', featured: false, status: 'published' as 'draft' | 'published' });
                   } else {
-                    setCardForm({ name: '', bank: '', issuer: '', type: 'Rewards', image: 'https://picsum.photos/seed/card/400/250', rating: 4.5, benefits: [''], annual_fee: '₹0', joining_fee: '₹0', best_for: 'Shopping', category: 'Shopping', color: 'from-blue-600 to-indigo-700', rewards_rate: '5%', projected_savings: '₹12,000/yr', status: 'published' as 'draft' | 'published' });
+                    setCardForm(defaultCardForm);
+                    setIsModalOpen(true);
                   }
                   setIsModalOpen(true);
                 }}
@@ -705,17 +718,23 @@ const AdminDashboard: React.FC = () => {
                         onClick={() => {
                           setEditingItem(card);
                           setCardForm({
+                            ...defaultCardForm,
                             name: card.name,
                             bank: card.bank,
                             issuer: card.issuer || '',
                             type: card.type,
                             image: card.image,
                             rating: card.rating,
-                            benefits: card.benefits,
+                            elite_rating: card.elite_rating || card.rating || 4.5,
+                            benefits: card.benefits || [''],
+                            benefit_items: card.benefit_items && card.benefit_items.length > 0 ? card.benefit_items : [{ heading: '', subheading: '' }],
+                            verdict: card.verdict || '',
+                            slug: card.slug || '',
                             annual_fee: card.annual_fee,
                             joining_fee: card.joining_fee,
                             best_for: card.best_for,
                             category: card.category || 'Shopping',
+                            categories: card.categories || (card.category ? [card.category] : []),
                             color: card.color,
                             rewards_rate: card.rewards_rate || '5%',
                             projected_savings: card.projected_savings || '₹12,000/yr',
@@ -1014,6 +1033,44 @@ const AdminDashboard: React.FC = () => {
                           </select>
                         </div>
                       </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2 flex items-center justify-between">
+                                Slug 
+                                <button type="button" onClick={() => {
+                                    const gen = generateSlug(cardForm.name, cardForm.bank);
+                                    setCardForm({...cardForm, slug: gen});
+                                }} className="text-[9px] text-teal hover:underline">Auto-Generate</button>
+                            </label>
+                            <input 
+                                type="text" 
+                                placeholder="e.g. hdfc-infinia-hdfc"
+                                value={cardForm.slug || ''}
+                                onChange={e => setCardForm({...cardForm, slug: e.target.value})}
+                                className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+                            />
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div>
+                              <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Rating</label>
+                              <input 
+                                type="number" step="0.1" min="0" max="5" required
+                                value={cardForm.rating}
+                                onChange={e => setCardForm({...cardForm, rating: parseFloat(e.target.value)})}
+                                className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-xs font-bold uppercase tracking-widest text-teal mb-2">Elite Rating</label>
+                              <input 
+                                type="number" step="0.1" min="0" max="5" required
+                                value={cardForm.elite_rating}
+                                onChange={e => setCardForm({...cardForm, elite_rating: parseFloat(e.target.value)})}
+                                className="w-full bg-teal/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all text-teal font-bold"
+                              />
+                            </div>
+                        </div>
+                      </div>
                       <div className="grid grid-cols-2 gap-4">
                         <div>
                           <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Publish Status</label>
@@ -1154,16 +1211,30 @@ const AdminDashboard: React.FC = () => {
                           />
                         </div>
                         <div>
-                          <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Category</label>
-                          <select 
-                            value={cardForm.category}
-                            onChange={e => setCardForm({...cardForm, category: e.target.value})}
-                            className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
-                          >
+                          <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Categories</label>
+                          <div className="w-full bg-black/5 border-none rounded-xl p-4 h-[120px] overflow-y-auto space-y-2">
                             {ADMIN_CATEGORIES.map(cat => (
-                              <option key={cat} value={cat}>{cat}</option>
+                              <label key={cat} className="flex items-center gap-3 cursor-pointer">
+                                <input 
+                                  type="checkbox" 
+                                  checked={cardForm.categories.includes(cat)}
+                                  onChange={e => {
+                                      const newCategories = e.target.checked 
+                                        ? [...cardForm.categories, cat] 
+                                        : cardForm.categories.filter(c => c !== cat);
+                                      // Keep category synced for legacy compat
+                                      setCardForm({
+                                          ...cardForm, 
+                                          categories: newCategories,
+                                          category: newCategories.length ? newCategories[0] : ''
+                                      });
+                                  }}
+                                  className="w-4 h-4 rounded border-black/10 text-teal focus:ring-teal"
+                                />
+                                <span className="text-sm text-black/60">{cat}</span>
+                              </label>
                             ))}
-                          </select>
+                          </div>
                         </div>
                       </div>
                       <div className="grid grid-cols-2 gap-4">
@@ -1299,13 +1370,52 @@ const AdminDashboard: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Benefits (Comma separated)</label>
-                    <textarea 
-                      required
-                      value={cardForm.benefits.join(', ')}
-                      onChange={e => setCardForm({...cardForm, benefits: e.target.value.split(',').map(s => s.trim())})}
-                      className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all h-24"
-                    />
+                    <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2 mt-6">Structured Benefits</label>
+                    <div className="space-y-4">
+                        {cardForm.benefit_items.map((benefit, idx) => (
+                          <div key={idx} className="flex items-start gap-4 bg-black/5 p-4 rounded-xl">
+                            <div className="flex-1 space-y-4">
+                                <input 
+                                  type="text" placeholder="Benefit Heading (e.g. Free Lounge Access)" required
+                                  value={benefit.heading}
+                                  onChange={e => {
+                                      const newItems = [...cardForm.benefit_items];
+                                      newItems[idx].heading = e.target.value;
+                                      setCardForm({...cardForm, benefit_items: newItems, benefits: newItems.map(i => i.heading)});
+                                  }}
+                                  className="w-full bg-white border-none rounded-lg p-3 text-sm focus:ring-2 focus:ring-teal outline-none"
+                                />
+                                <input 
+                                  type="text" placeholder="Benefit Subheading (e.g. Premium lifestyle benefit included...)" required
+                                  value={benefit.subheading}
+                                  onChange={e => {
+                                      const newItems = [...cardForm.benefit_items];
+                                      newItems[idx].subheading = e.target.value;
+                                      setCardForm({...cardForm, benefit_items: newItems});
+                                  }}
+                                  className="w-full bg-transparent border border-black/10 rounded-lg p-3 text-sm focus:ring-2 focus:ring-teal outline-none"
+                                />
+                            </div>
+                            <button type="button" onClick={() => {
+                                const newItems = cardForm.benefit_items.filter((_, i) => i !== idx);
+                                setCardForm({...cardForm, benefit_items: newItems, benefits: newItems.map(i => i.heading)});
+                            }} className="text-red-500 hover:bg-red-50 p-2 rounded-lg mt-2">✕</button>
+                          </div>
+                        ))}
+                        <button type="button" onClick={() => {
+                            setCardForm({...cardForm, benefit_items: [...cardForm.benefit_items, {heading: '', subheading: ''}]});
+                        }} className="text-teal font-bold text-xs uppercase tracking-widest hover:underline">+ Add Benefit Row</button>
+                    </div>
+
+                    <div className="mt-8">
+                        <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Editorial Verdict</label>
+                        <textarea 
+                          placeholder="The KIWI remains a cornerstone of the ecosystem..."
+                          value={cardForm.verdict || ''}
+                          onChange={e => setCardForm({...cardForm, verdict: e.target.value})}
+                          className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all h-32"
+                        />
+                    </div>
                   </div>
                   
                   <div className="flex justify-end pt-4 border-t border-black/5">

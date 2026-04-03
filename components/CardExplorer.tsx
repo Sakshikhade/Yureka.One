@@ -54,6 +54,11 @@ const ALL_CATEGORIES = [
 ];
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Helper to generate a slug in case one isn't present
+const generateSlug = (name: string, bank: string) => {
+    return `${name}-${bank}`.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+};
+
 const CardExplorer: React.FC = () => {
     const [cardsList, setCardsList] = useState<Card[]>([]);
     const [error, setError] = useState<string | null>(null);
@@ -64,21 +69,15 @@ const CardExplorer: React.FC = () => {
     const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
     const [showAllBanks, setShowAllBanks] = useState(false);
     const [showAllCategories, setShowAllCategories] = useState(false);
+    const [showAllPillCategories, setShowAllPillCategories] = useState(false);
 
     const BANKS_INITIAL_COUNT = 10;
     const CATEGORIES_INITIAL_COUNT = 6;
+    const PILL_CATEGORIES_INITIAL_COUNT = 9;
 
     useEffect(() => {
         const unsubscribe = getCards((fetchedCards) => {
-            // Enriching default featuredCards if Supabase is empty with mock data for missing fields
-            const enrichedDefaults = featuredCards.map(c => ({
-                ...c,
-                intro_offer: c.name.includes('Atlas') ? '2.5K Edge Miles' : c.name.includes('Infinia') ? '12.5K Reward Point, Club Marriott Member...' : '₹12.5K voucher of Luxe / Postcard Hotels / ...',
-                joining_fee: c.annual_fee,
-                rating: 4.5 + Math.random() * 0.4,
-                tags: ['TRAVEL', 'PREMIUM', 'LOUNGE ACCESS', 'DINING']
-            }));
-            setCardsList(fetchedCards.length > 0 ? fetchedCards : enrichedDefaults as Card[]);
+            setCardsList(fetchedCards);
             setIsLoading(false);
             setError(null);
         }, (err) => {
@@ -93,6 +92,7 @@ const CardExplorer: React.FC = () => {
     const banks = ALL_BANKS;
     const visibleBanks = showAllBanks ? banks : banks.slice(0, BANKS_INITIAL_COUNT);
     const visibleCategories = showAllCategories ? categories : categories.slice(0, CATEGORIES_INITIAL_COUNT);
+    const visiblePillCategories = showAllPillCategories ? categories : categories.slice(0, PILL_CATEGORIES_INITIAL_COUNT);
 
     const filteredCards = useMemo(() => {
         return cardsList.filter(card => {
@@ -263,7 +263,9 @@ const CardExplorer: React.FC = () => {
                          </button>
                     </div>
 
-                    {filteredCards.map((card) => (
+                    {filteredCards.map((card) => {
+                        const cardSlug = card.slug || generateSlug(card.name, card.issuer);
+                        return (
                         <div key={card.id} className="relative group">
                             {/* Glass background layer */}
                             <div className="absolute inset-0 bg-white/60 blur-[2px] rounded-[2.5rem] -m-1 group-hover:m-[-1.25rem] transition-all duration-700 opacity-40"></div>
@@ -350,7 +352,8 @@ const CardExplorer: React.FC = () => {
                                 </div>
                             </div>
                         </div>
-                    ))}
+                        );
+                    })}
 
                     {filteredCards.length === 0 && (
                         <div className="text-center py-32 bg-white/40 backdrop-blur-sm rounded-[3rem] border-2 border-dashed border-ink/10">
