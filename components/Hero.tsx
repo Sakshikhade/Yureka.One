@@ -126,7 +126,7 @@ const Hero: React.FC = () => {
                     whileInView={fadeInUp.whileInView}
                     viewport={fadeInUp.viewport}
                     transition={{ ...fadeInUp.transition, delay: 0.3 }}
-                    className="lg:col-span-3 lg:border-r border-ink/10 lg:pr-6 pt-8 hidden lg:block"
+                    className="md:col-span-1 lg:col-span-3 lg:border-r border-ink/10 lg:pr-6 pt-8 hidden md:block"
                 >
                      <div className="flex items-center gap-2 mb-6">
                         <span className="text-4xl font-serif leading-none text-ink">J</span>
@@ -161,7 +161,7 @@ const Hero: React.FC = () => {
                 </motion.div>
 
                 {/* Center: Hero Images (The "Photo") */}
-                <div className="lg:col-span-6 relative flex justify-center items-center pt-6 pb-10 lg:px-10 min-h-[400px] md:min-h-[500px]">
+                <div className="md:col-span-1 lg:col-span-6 relative flex justify-center items-center pt-6 pb-10 lg:px-10 min-h-[400px] md:min-h-[500px] border-b md:border-b-0 lg:border-r border-ink/10">
                      <div className="relative w-full max-w-[280px] sm:max-w-md aspect-[4/5]">
                         {/* Image 1 */}
                         <motion.div 
@@ -216,7 +216,7 @@ const Hero: React.FC = () => {
                     whileInView={fadeInUp.whileInView}
                     viewport={fadeInUp.viewport}
                     transition={{ ...fadeInUp.transition, delay: 0.6 }}
-                    className="lg:col-span-3 border-l-0 lg:border-l border-ink/10 pl-0 lg:pl-6 pt-8 flex flex-col justify-between"
+                    className="md:col-span-2 lg:col-span-3 border-t lg:border-t-0 lg:border-l border-ink/10 pl-0 lg:pl-6 pt-8 flex flex-col justify-between"
                 >
                      <div>
                         <h4 className="font-bold text-xs uppercase tracking-[0.2em] mb-4 md:mb-8 text-ink/40 border-b border-ink/10 pb-2">In This Issue</h4>

@@ -25,7 +25,16 @@ import {
   History,
   Clock,
   RotateCcw,
-  Pause
+  Pause,
+  Menu,
+  X as CloseIcon,
+  CheckCircle,
+  PauseCircle,
+  XCircle,
+  Filter as FilterIcon,
+  Check as CheckIcon,
+  X as XIcon,
+  Clock as ClockIcon
 } from 'lucide-react';
 import { 
   getBlogs, addBlog, updateBlog, deleteBlog,
@@ -149,6 +158,7 @@ const AdminDashboard: React.FC = () => {
   };
 
   const [cardForm, setCardForm] = useState(defaultCardForm);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   
   // Team Form State
   const [teamForm, setTeamForm] = useState({
@@ -563,9 +573,34 @@ const AdminDashboard: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] flex">
+    <div className="min-h-screen bg-[#F8F9FA] flex flex-col lg:flex-row relative overflow-x-hidden">
+      {/* Mobile Header */}
+      <header className="lg:hidden bg-white border-b border-black/5 p-4 flex justify-between items-center sticky top-0 z-30">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-teal rounded-lg flex items-center justify-center text-white font-bold">J</div>
+          <span className="font-bold text-lg tracking-tight">Yureka Admin</span>
+        </div>
+        <button 
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          className="p-2 hover:bg-black/5 rounded-lg transition-colors"
+        >
+          {isSidebarOpen ? <CloseIcon size={24} /> : <Menu size={24} />}
+        </button>
+      </header>
+
+      {/* Sidebar Overlay */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 lg:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className="w-64 bg-white border-r border-black/5 flex flex-col fixed h-full z-20">
+      <aside className={`
+        w-64 bg-white border-r border-black/5 flex flex-col fixed lg:sticky top-0 h-screen z-50 transition-transform duration-300 ease-in-out
+        ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+      `}>
         <div className="p-6 border-b border-black/5">
           <div className="flex items-center gap-2 mb-2">
             <div className="w-8 h-8 bg-teal rounded-lg flex items-center justify-center text-white font-bold">J</div>
@@ -577,7 +612,7 @@ const AdminDashboard: React.FC = () => {
         <nav className="flex-1 p-4 space-y-2">
           {/* Blogs - All team members */}
           <button 
-            onClick={() => setActiveTab('blogs')}
+            onClick={() => { setActiveTab('blogs'); setIsSidebarOpen(false); }}
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${activeTab === 'blogs' ? 'bg-teal/10 text-teal font-bold' : 'text-black/60 hover:bg-black/5'}`}
           >
             <FileText size={20} /> Blogs
@@ -586,7 +621,7 @@ const AdminDashboard: React.FC = () => {
           {/* Cards - Admin & Editor */}
           {['admin', 'editor'].includes(userRole) && (
             <button 
-              onClick={() => setActiveTab('cards')}
+              onClick={() => { setActiveTab('cards'); setIsSidebarOpen(false); }}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${activeTab === 'cards' ? 'bg-teal/10 text-teal font-bold' : 'text-black/60 hover:bg-black/5'}`}
             >
               <CreditCard size={20} /> Cards
@@ -596,7 +631,7 @@ const AdminDashboard: React.FC = () => {
           {/* Waitlist - Admin only */}
           {userRole === 'admin' && (
             <button 
-              onClick={() => setActiveTab('waitlist')}
+              onClick={() => { setActiveTab('waitlist'); setIsSidebarOpen(false); }}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${activeTab === 'waitlist' ? 'bg-teal/10 text-teal font-bold' : 'text-black/60 hover:bg-black/5'}`}
             >
               <Users size={20} /> Waitlist
@@ -606,7 +641,7 @@ const AdminDashboard: React.FC = () => {
           {/* Settings - Admin only */}
           {userRole === 'admin' && (
             <button 
-              onClick={() => setActiveTab('settings')}
+              onClick={() => { setActiveTab('settings'); setIsSidebarOpen(false); }}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${activeTab === 'settings' ? 'bg-teal/10 text-teal font-bold' : 'text-black/60 hover:bg-black/5'}`}
             >
               <Settings size={20} /> Team Settings
@@ -616,7 +651,7 @@ const AdminDashboard: React.FC = () => {
           {/* Activity Logs - Admin only */}
           {userRole === 'admin' && (
             <button 
-              onClick={() => setActiveTab('logs')}
+              onClick={() => { setActiveTab('logs'); setIsSidebarOpen(false); }}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${activeTab === 'logs' ? 'bg-teal/10 text-teal font-bold' : 'text-black/60 hover:bg-black/5'}`}
             >
               <History size={20} /> Activity Log
@@ -642,8 +677,8 @@ const AdminDashboard: React.FC = () => {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 ml-64 p-8">
-        <header className="flex justify-between items-center mb-8">
+      <main className="flex-1 p-4 md:p-8 min-w-0">
+        <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
           <div>
             <h1 className="text-3xl font-serif font-bold text-black capitalize">{activeTab}</h1>
             <p className="text-black/40 text-sm">Manage your application {activeTab} here.</p>
@@ -671,7 +706,6 @@ const AdminDashboard: React.FC = () => {
                     setBlogForm({ title: '', slug: '', excerpt: '', content: '', author: '', category: 'Credit Cards', image: 'https://picsum.photos/seed/blog/800/600', read_time: '5 min read', featured: false, status: 'published' as 'draft' | 'published', scheduled_at: '' });
                   } else {
                     setCardForm(defaultCardForm);
-                    setIsModalOpen(true);
                   }
                   setIsModalOpen(true);
                 }}
@@ -705,144 +739,149 @@ const AdminDashboard: React.FC = () => {
             </div>
           </div>
         )}
+
         <div className="bg-white rounded-2xl shadow-sm border border-black/5 overflow-hidden">
           {activeTab === 'blogs' && (
-            <table className="w-full text-left">
-              <thead className="bg-black/5 text-[10px] uppercase font-bold tracking-widest text-black/40">
-                <tr>
-                  <th className="px-6 py-4">Title</th>
-                  <th className="px-6 py-4">Category</th>
-                  <th className="px-6 py-4">Author</th>
-                  <th className="px-6 py-4">Date</th>
-                  <th className="px-6 py-4 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-black/5">
-                {blogs.map(blog => (
-                  <tr key={blog.id} className="hover:bg-black/[0.01] transition-colors">
-                    <td className="px-6 py-4 font-bold text-sm">{blog.title}</td>
-                    <td className="px-6 py-4 text-sm text-black/60">{blog.category}</td>
-                    <td className="px-6 py-4 text-sm text-black/60">{blog.author}</td>
-                    <td className="px-6 py-4 text-sm text-black/60">
-                      {blog.scheduled_at && new Date(blog.scheduled_at) > new Date() ? (
-                        <span className="flex items-center gap-1.5 text-amber-600 font-bold uppercase tracking-widest text-[9px]">
-                          <Clock size={10} /> Scheduled: {new Date(blog.scheduled_at).toLocaleDateString()}
-                        </span>
-                      ) : blog.created_at ? (
-                        new Date(blog.created_at).toLocaleDateString()
-                      ) : (
-                        'N/A'
-                      )}
-                    </td>
-                    <td className="px-6 py-4 text-right space-x-2">
-                      <button 
-                        onClick={() => {
-                          setEditingItem(blog);
-                          setBlogForm({
-                            title: blog.title,
-                            slug: blog.slug || '',
-                            excerpt: blog.excerpt,
-                            content: blog.content,
-                            author: blog.author,
-                            category: blog.category,
-                            image: blog.image,
-                            read_time: blog.read_time || '5 min read',
-                            featured: blog.featured || false,
-                            status: blog.status || 'published',
-                            scheduled_at: blog.scheduled_at || ''
-                          });
-                          setIsModalOpen(true);
-                        }}
-                        className="p-2 text-teal hover:bg-teal/10 rounded-lg transition-colors"
-                      >
-                        <Edit2 size={18} />
-                      </button>
-                      <button 
-                        onClick={() => confirmDelete('blogs', blog.id!)}
-                        className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </td>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left min-w-[800px]">
+                <thead className="bg-black/5 text-[10px] uppercase font-bold tracking-widest text-black/40">
+                  <tr>
+                    <th className="px-6 py-4">Title</th>
+                    <th className="px-6 py-4">Category</th>
+                    <th className="px-6 py-4">Author</th>
+                    <th className="px-6 py-4">Date</th>
+                    <th className="px-6 py-4 text-right">Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-black/5">
+                  {blogs.map(blog => (
+                    <tr key={blog.id} className="hover:bg-black/[0.01] transition-colors">
+                      <td className="px-6 py-4 font-bold text-sm">{blog.title}</td>
+                      <td className="px-6 py-4 text-sm text-black/60">{blog.category}</td>
+                      <td className="px-6 py-4 text-sm text-black/60">{blog.author}</td>
+                      <td className="px-6 py-4 text-sm text-black/60">
+                        {blog.scheduled_at && new Date(blog.scheduled_at) > new Date() ? (
+                          <span className="flex items-center gap-1.5 text-amber-600 font-bold uppercase tracking-widest text-[9px]">
+                            <Clock size={10} /> Scheduled: {new Date(blog.scheduled_at).toLocaleDateString()}
+                          </span>
+                        ) : blog.created_at ? (
+                          new Date(blog.created_at).toLocaleDateString()
+                        ) : (
+                          'N/A'
+                        )}
+                      </td>
+                      <td className="px-6 py-4 text-right space-x-2">
+                        <button 
+                          onClick={() => {
+                            setEditingItem(blog);
+                            setBlogForm({
+                              title: blog.title,
+                              slug: blog.slug || '',
+                              excerpt: blog.excerpt,
+                              content: blog.content,
+                              author: blog.author,
+                              category: blog.category,
+                              image: blog.image,
+                              read_time: blog.read_time || '5 min read',
+                              featured: blog.featured || false,
+                              status: blog.status || 'published',
+                              scheduled_at: blog.scheduled_at || ''
+                            });
+                            setIsModalOpen(true);
+                          }}
+                          className="p-2 text-teal hover:bg-teal/10 rounded-lg transition-colors"
+                        >
+                          <Edit2 size={18} />
+                        </button>
+                        <button 
+                          onClick={() => confirmDelete('blogs', blog.id!)}
+                          className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
 
           {activeTab === 'cards' && (
-            <table className="w-full text-left">
-              <thead className="bg-black/5 text-[10px] uppercase font-bold tracking-widest text-black/40">
-                <tr>
-                  <th className="px-6 py-4">Card Name</th>
-                  <th className="px-6 py-4">Bank</th>
-                  <th className="px-6 py-4">Type</th>
-                  <th className="px-6 py-4">Best For</th>
-                  <th className="px-6 py-4 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-black/5">
-                {cards.map(card => (
-                  <tr key={card.id} className="hover:bg-black/[0.01] transition-colors">
-                    <td className="px-6 py-4 font-bold text-sm">{card.name}</td>
-                    <td className="px-6 py-4 text-sm text-black/60">{card.bank}</td>
-                    <td className="px-6 py-4 text-sm text-black/60">{card.type}</td>
-                    <td className="px-6 py-4 text-sm text-black/60">{card.best_for}</td>
-                    <td className="px-6 py-4 text-right space-x-2">
-                      <button 
-                        onClick={() => {
-                          setEditingItem(card);
-                          setCardForm({
-                            ...defaultCardForm,
-                            name: card.name,
-                            bank: card.bank,
-                            issuer: card.issuer || '',
-                            type: card.type,
-                            image: card.image,
-                            rating: card.rating,
-                            elite_rating: card.elite_rating || card.rating || 4.5,
-                            benefits: card.benefits || [''],
-                            benefit_items: card.benefit_items && card.benefit_items.length > 0 ? card.benefit_items : [{ heading: '', subheading: '' }],
-                            verdict: card.verdict || '',
-                            slug: card.slug || '',
-                            annual_fee: card.annual_fee,
-                            joining_fee: card.joining_fee,
-                            best_for: card.best_for,
-                            category: card.category || 'Shopping',
-                            categories: card.categories || (card.category ? [card.category] : []),
-                            color: card.color,
-                            rewards_rate: card.rewards_rate || '5%',
-                            projected_savings: card.projected_savings || '₹12,000/yr',
-                            status: card.status || 'published'
-                          });
-                          setIsModalOpen(true);
-                        }}
-                        className="p-2 text-teal hover:bg-teal/10 rounded-lg transition-colors"
-                      >
-                        <Edit2 size={18} />
-                      </button>
-                      <button 
-                        onClick={() => confirmDelete('cards', card.id!)}
-                        className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                      >
-                        <Trash2 size={18} />
-                      </button>
-                    </td>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left min-w-[1000px]">
+                <thead className="bg-black/5 text-[10px] uppercase font-bold tracking-widest text-black/40">
+                  <tr>
+                    <th className="px-6 py-4">Card Name</th>
+                    <th className="px-6 py-4">Bank</th>
+                    <th className="px-6 py-4">Type</th>
+                    <th className="px-6 py-4">Best For</th>
+                    <th className="px-6 py-4 text-right">Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-black/5">
+                  {cards.map(card => (
+                    <tr key={card.id} className="hover:bg-black/[0.01] transition-colors">
+                      <td className="px-6 py-4 font-bold text-sm">{card.name}</td>
+                      <td className="px-6 py-4 text-sm text-black/60">{card.bank}</td>
+                      <td className="px-6 py-4 text-sm text-black/60">{card.type}</td>
+                      <td className="px-6 py-4 text-sm text-black/60">{card.best_for}</td>
+                      <td className="px-6 py-4 text-right space-x-2">
+                        <button 
+                          onClick={() => {
+                            setEditingItem(card);
+                            setCardForm({
+                              ...defaultCardForm,
+                              name: card.name,
+                              bank: card.bank,
+                              issuer: card.issuer || '',
+                              type: card.type,
+                              image: card.image,
+                              rating: card.rating,
+                              elite_rating: card.elite_rating || card.rating || 4.5,
+                              benefits: card.benefits || [''],
+                              benefit_items: card.benefit_items && card.benefit_items.length > 0 ? card.benefit_items : [{ heading: '', subheading: '' }],
+                              verdict: card.verdict || '',
+                              slug: card.slug || '',
+                              annual_fee: card.annual_fee,
+                              joining_fee: card.joining_fee,
+                              best_for: card.best_for,
+                              category: card.category || 'Shopping',
+                              categories: card.categories || (card.category ? [card.category] : []),
+                              color: card.color,
+                              rewards_rate: card.rewards_rate || '5%',
+                              projected_savings: card.projected_savings || '₹12,000/yr',
+                              status: card.status || 'published'
+                            });
+                            setIsModalOpen(true);
+                          }}
+                          className="p-2 text-teal hover:bg-teal/10 rounded-lg transition-colors"
+                        >
+                          <Edit2 size={18} />
+                        </button>
+                        <button 
+                          onClick={() => confirmDelete('cards', card.id!)}
+                          className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
 
           {activeTab === 'waitlist' && (
             <div className="space-y-6">
               {/* Status Tabs */}
-              <div className="flex items-center gap-1 bg-black/5 p-1 rounded-2xl w-fit">
+              <div className="flex items-center gap-1 bg-black/5 p-1 rounded-2xl w-fit overflow-x-auto max-w-full no-scrollbar">
                 {[
                   { id: 'pending', label: 'New Applicants', icon: Clock },
-                  { id: 'accepted', label: 'Accepted', icon: Check },
-                  { id: 'on_hold', label: 'On Hold', icon: Pause },
-                  { id: 'rejected', label: 'Rejected', icon: X },
+                  { id: 'accepted', label: 'Accepted', icon: CheckCircle },
+                  { id: 'on_hold', label: 'On Hold', icon: PauseCircle },
+                  { id: 'rejected', label: 'Rejected', icon: XCircle },
                   { id: 'all', label: 'All', icon: Filter }
                 ].map((tab) => {
                   const Icon = tab.icon;
@@ -854,7 +893,7 @@ const AdminDashboard: React.FC = () => {
                     <button
                       key={tab.id}
                       onClick={() => setWaitlistFilter(tab.id as any)}
-                      className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
+                      className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${
                         waitlistFilter === tab.id 
                           ? 'bg-white text-teal shadow-sm' 
                           : 'text-black/40 hover:text-black hover:bg-white/50'
@@ -873,7 +912,7 @@ const AdminDashboard: React.FC = () => {
               </div>
 
               <div className="overflow-x-auto">
-                <table className="w-full text-left border-separate border-spacing-y-2">
+                <table className="w-full text-left border-separate border-spacing-y-2 min-w-[900px]">
                   <thead className="bg-black/5 text-[10px] uppercase font-bold tracking-widest text-black/40">
                     <tr>
                       <th className="px-6 py-4">Name</th>
@@ -908,7 +947,7 @@ const AdminDashboard: React.FC = () => {
                                 title="Accept User"
                                 className={`p-2 rounded-lg transition-all ${entry.status === 'accepted' ? 'text-green-600 bg-green-50' : 'text-black/20 hover:text-green-600 hover:bg-green-50'}`}
                               >
-                                <Check size={18} />
+                                <CheckCircle size={18} />
                               </button>
                               <button 
                                 onClick={() => handleUpdateWaitlistStatus(entry.id!, 'on_hold')}
@@ -916,7 +955,7 @@ const AdminDashboard: React.FC = () => {
                                 title="Put on Hold"
                                 className={`p-2 rounded-lg transition-all ${entry.status === 'on_hold' ? 'text-amber-600 bg-amber-50' : 'text-black/20 hover:text-amber-600 hover:bg-amber-50'}`}
                               >
-                                <Pause size={18} />
+                                <PauseCircle size={18} />
                               </button>
                               <button 
                                 onClick={() => handleUpdateWaitlistStatus(entry.id!, 'rejected')}
@@ -924,7 +963,7 @@ const AdminDashboard: React.FC = () => {
                                 title="Reject User"
                                 className={`p-2 rounded-lg transition-all ${entry.status === 'rejected' ? 'text-red-600 bg-red-50' : 'text-black/20 hover:text-red-600 hover:bg-red-50'}`}
                               >
-                                <X size={18} />
+                                <XCircle size={18} />
                               </button>
                               <button 
                                 onClick={() => handleUpdateWaitlistStatus(entry.id!, 'pending')}
@@ -952,8 +991,8 @@ const AdminDashboard: React.FC = () => {
           )}
 
           {activeTab === 'settings' && (
-            <div className="p-8">
-              <div className="flex justify-between items-center mb-8">
+            <div className="p-4 md:p-8">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
                 <div>
                   <h3 className="text-xl font-serif font-bold mb-1">Team Management</h3>
                   <p className="text-black/40 text-xs">Manage administrative access and contributing writers.</p>
@@ -964,107 +1003,95 @@ const AdminDashboard: React.FC = () => {
                     setTeamForm({ email: '', role: 'writer' });
                     setIsModalOpen(true);
                   }}
-                  className="bg-black text-white px-6 py-2 rounded-xl text-xs font-bold uppercase tracking-widest flex items-center gap-2"
+                  className="w-full md:w-auto bg-black text-white px-6 py-2 rounded-xl text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2"
                 >
                   <Plus size={16} /> Add Member
                 </button>
               </div>
 
-              <table className="w-full text-left">
-                <thead className="bg-black/5 text-[10px] uppercase font-bold tracking-widest text-black/40">
-                  <tr>
-                    <th className="px-6 py-4">Full Name</th>
-                    <th className="px-6 py-4">Email</th>
-                    <th className="px-6 py-4">Role</th>
-                    <th className="px-6 py-4 text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-black/5">
-                  {team.map(member => (
-                    <tr key={member.id} className="hover:bg-black/[0.01] transition-colors">
-                      <td className="px-6 py-4 font-bold text-sm">{member.full_name || 'N/A'}</td>
-                      <td className="px-6 py-4 text-sm text-black/60">{member.email}</td>
-                      <td className="px-6 py-4">
-                        <span className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${member.role === 'admin' ? 'bg-red-100 text-red-600' : member.role === 'editor' ? 'bg-blue-100 text-blue-600' : 'bg-green-100 text-green-600'}`}>
-                          {member.role}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 text-right space-x-2">
-                        <button 
-                          onClick={() => {
-                            setEditingItem(member);
-                            setTeamForm({ email: member.email, role: member.role });
-                            setIsModalOpen(true);
-                          }}
-                          className="p-2 text-teal hover:bg-teal/10 rounded-lg transition-colors"
-                        >
-                          <Edit2 size={18} />
-                        </button>
-                        <button 
-                          onClick={() => confirmDelete('users', member.id)}
-                          className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                        >
-                          <Trash2 size={18} />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                  {team.length === 0 && (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left min-w-[700px]">
+                  <thead className="bg-black/5 text-[10px] uppercase font-bold tracking-widest text-black/40">
                     <tr>
-                      <td colSpan={4} className="px-6 py-12 text-center text-black/40 italic font-serif">
-                        No team members found. Team functionality requires 'users' table setup.
-                      </td>
+                      <th className="px-6 py-4">Full Name</th>
+                      <th className="px-6 py-4">Email</th>
+                      <th className="px-6 py-4">Role</th>
+                      <th className="px-6 py-4 text-right">Actions</th>
                     </tr>
-                  )}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="divide-y divide-black/5">
+                    {team.map(member => (
+                      <tr key={member.id} className="hover:bg-black/[0.01] transition-colors">
+                        <td className="px-6 py-4 font-bold text-sm">{member.full_name || 'N/A'}</td>
+                        <td className="px-6 py-4 text-sm text-black/60">{member.email}</td>
+                        <td className="px-6 py-4">
+                          <span className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${member.role === 'admin' ? 'bg-red-100 text-red-600' : member.role === 'editor' ? 'bg-blue-100 text-blue-600' : 'bg-green-100 text-green-600'}`}>
+                            {member.role}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 text-right space-x-2">
+                          <button 
+                            onClick={() => {
+                              setEditingItem(member);
+                              setTeamForm({ email: member.email, role: member.role });
+                              setIsModalOpen(true);
+                            }}
+                            className="p-2 text-teal hover:bg-teal/10 rounded-lg transition-colors"
+                          >
+                            <Edit2 size={18} />
+                          </button>
+                          <button 
+                            onClick={() => confirmDelete('users', member.id)}
+                            className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                          >
+                            <Trash2 size={18} />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
 
           {activeTab === 'logs' && (
-            <div className="p-8">
-              <div className="flex justify-between items-center mb-8">
-                <div>
-                  <h3 className="text-xl font-serif font-bold mb-1">System Activity Log</h3>
-                  <p className="text-black/40 text-xs">A transparent record of all changes made to the platform.</p>
-                </div>
+            <div className="p-4 md:p-8">
+              <div className="mb-8">
+                <h3 className="text-xl font-serif font-bold mb-1">System Activity Log</h3>
+                <p className="text-black/40 text-xs">A transparent record of all changes made to the platform.</p>
               </div>
 
-              <table className="w-full text-left">
-                <thead className="bg-black/5 text-[10px] uppercase font-bold tracking-widest text-black/40">
-                  <tr>
-                    <th className="px-6 py-4">Time</th>
-                    <th className="px-6 py-4">Member</th>
-                    <th className="px-6 py-4">Action</th>
-                    <th className="px-6 py-4">Target Type</th>
-                    <th className="px-6 py-4">Record Name</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-black/5">
-                  {logs.map(log => (
-                    <tr key={log.id} className="hover:bg-black/[0.01] transition-colors">
-                      <td className="px-6 py-4 text-xs text-black/40">
-                        {log.created_at ? new Date(log.created_at).toLocaleString() : 'N/A'}
-                      </td>
-                      <td className="px-6 py-4 font-bold text-sm">{log.user_email || 'System'}</td>
-                      <td className="px-6 py-4">
-                        <span className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${log.action === 'INSERT' ? 'bg-green-100 text-green-600' : log.action === 'UPDATE' ? 'bg-amber-100 text-amber-600' : 'bg-red-100 text-red-600'}`}>
-                          {log.action}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 text-sm text-black/60 capitalize">{log.table_name}</td>
-                      <td className="px-6 py-4 font-bold text-sm">{log.record_name || 'N/A'}</td>
-                    </tr>
-                  ))}
-                  {logs.length === 0 && (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left min-w-[800px]">
+                  <thead className="bg-black/5 text-[10px] uppercase font-bold tracking-widest text-black/40">
                     <tr>
-                      <td colSpan={5} className="px-6 py-12 text-center text-black/40 italic font-serif">
-                        No activity logs found. Try performing some changes.
-                      </td>
+                      <th className="px-6 py-4">Time</th>
+                      <th className="px-6 py-4">Member</th>
+                      <th className="px-6 py-4">Action</th>
+                      <th className="px-6 py-4">Target Type</th>
+                      <th className="px-6 py-4">Record Name</th>
                     </tr>
-                  )}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="divide-y divide-black/5">
+                    {logs.map(log => (
+                      <tr key={log.id} className="hover:bg-black/[0.01] transition-colors">
+                        <td className="px-6 py-4 text-xs text-black/40">
+                          {log.created_at ? new Date(log.created_at).toLocaleString() : 'N/A'}
+                        </td>
+                        <td className="px-6 py-4 font-bold text-sm">{log.user_email || 'System'}</td>
+                        <td className="px-6 py-4">
+                          <span className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${log.action === 'INSERT' ? 'bg-green-100 text-green-600' : log.action === 'UPDATE' ? 'bg-amber-100 text-amber-600' : 'bg-red-100 text-red-600'}`}>
+                            {log.action}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 text-sm text-black/60 capitalize">{log.table_name}</td>
+                        <td className="px-6 py-4 font-bold text-sm">{log.record_name || 'N/A'}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
         </div>
