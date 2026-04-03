@@ -52,6 +52,7 @@ export interface WaitlistEntry {
   role: 'user' | 'partner';
   category?: string;
   company?: string;
+  status: 'pending' | 'accepted' | 'rejected' | 'on_hold';
   joined_at?: string;
   created_at?: string;
 }

@@ -220,12 +220,21 @@ export const getWaitlist = (callback: (entries: WaitlistEntry[]) => void) => {
 
 export const joinWaitlist = async (entry: any) => {
   console.log('Waitlist Join:', entry);
-  const { data, error } = await supabase.from('waitlist').insert([cleanData(entry)]).select();
+  const dataToInsert = { ...cleanData(entry), status: entry.status || 'pending' };
+  const { data, error } = await supabase.from('waitlist').insert([dataToInsert]).select();
   if (error) {
     console.error('Supabase Waitlist Insert Error:', error);
     throw error;
   }
   return data[0].id;
+};
+
+export const updateWaitlistStatus = async (id: string, status: 'accepted' | 'rejected' | 'on_hold' | 'pending') => {
+  const { error } = await supabase.from('waitlist').update({ status }).eq('id', id);
+  if (error) {
+    console.error('Supabase Waitlist Status Update Error:', error);
+    throw error;
+  }
 };
 
 export const deleteWaitlistEntry = async (id: string) => {

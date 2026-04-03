@@ -22,12 +22,15 @@ import {
   Settings,
   AlertCircle,
   Zap,
-  History
+  History,
+  Clock,
+  RotateCcw,
+  Pause
 } from 'lucide-react';
 import { 
   getBlogs, addBlog, updateBlog, deleteBlog,
   getCardsAdmin, addCard, updateCard, deleteCard,
-  getWaitlist, deleteWaitlistEntry,
+  getWaitlist, deleteWaitlistEntry, updateWaitlistStatus,
   checkIfAdmin, getTeamMembers, inviteTeamMember, updateUserRole, deleteUser, getAuditLogs
 } from '../services/supabaseService';
 import { Blog, Card, WaitlistEntry } from '../types';
@@ -355,6 +358,18 @@ const AdminDashboard: React.FC = () => {
       console.error("Save Card Error:", error);
       setError(error.message || "Failed to save card. If this persists, please run the SQL fix script.");
       document.querySelector('#admin-modal-content')?.scrollTo({ top: 0, behavior: 'smooth' });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleUpdateWaitlistStatus = async (id: string, status: 'accepted' | 'rejected' | 'on_hold' | 'pending') => {
+    try {
+      setSaving(true);
+      await updateWaitlistStatus(id, status);
+      // Waitlist state will auto-update via realtime subscription in useEffect
+    } catch (err: any) {
+      setError(err.message || 'Failed to update status');
     } finally {
       setSaving(false);
     }
@@ -809,36 +824,98 @@ const AdminDashboard: React.FC = () => {
           )}
 
           {activeTab === 'waitlist' && (
-            <table className="w-full text-left">
-              <thead className="bg-black/5 text-[10px] uppercase font-bold tracking-widest text-black/40">
-                <tr>
-                  <th className="px-6 py-4">Name</th>
-                  <th className="px-6 py-4">Email</th>
-                  <th className="px-6 py-4">Role</th>
-                  <th className="px-6 py-4">Details</th>
-                  <th className="px-6 py-4">Date</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-black/5">
-                {waitlist.map(entry => (
-                  <tr key={entry.id} className="hover:bg-black/[0.01] transition-colors">
-                    <td className="px-6 py-4 font-bold text-sm">{entry.name}</td>
-                    <td className="px-6 py-4 text-sm text-black/60">{entry.email}</td>
-                    <td className="px-6 py-4">
-                      <span className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${entry.role === 'user' ? 'bg-blue-100 text-blue-600' : 'bg-purple-100 text-purple-600'}`}>
-                        {entry.role}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-sm text-black/60">
-                      {entry.role === 'user' ? `Category: ${entry.category}` : `Company: ${entry.company}`}
-                    </td>
-                    <td className="px-6 py-4 text-sm text-black/60">
-                      {entry.created_at ? new Date(entry.created_at).toLocaleDateString() : 'N/A'}
-                    </td>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-separate border-spacing-y-2">
+                <thead className="bg-black/5 text-[10px] uppercase font-bold tracking-widest text-black/40">
+                  <tr>
+                    <th className="px-6 py-4">Name</th>
+                    <th className="px-6 py-4">Email</th>
+                    <th className="px-6 py-4">Role</th>
+                    <th className="px-6 py-4">Details</th>
+                    <th className="px-6 py-4">Status</th>
+                    <th className="px-6 py-4">Date</th>
+                    <th className="px-6 py-4 text-right">Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-black/5">
+                  {waitlist.map(entry => (
+                    <tr key={entry.id} className="bg-white hover:bg-black/[0.01] transition-colors rounded-xl overflow-hidden">
+                      <td className="px-6 py-4">
+                        <div className="font-bold text-sm text-black">{entry.name}</div>
+                      </td>
+                      <td className="px-6 py-4 text-sm text-black/60">{entry.email}</td>
+                      <td className="px-6 py-4">
+                        <span className={`px-2 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${entry.role === 'user' ? 'bg-blue-50 text-blue-600' : 'bg-purple-50 text-purple-600'}`}>
+                          {entry.role}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-sm text-black/60 max-w-[200px] truncate">
+                        {entry.role === 'user' ? `Category: ${entry.category}` : `Company: ${entry.company}`}
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
+                          entry.status === 'accepted' ? 'bg-green-50 text-green-600' :
+                          entry.status === 'rejected' ? 'bg-red-50 text-red-600' :
+                          entry.status === 'on_hold' ? 'bg-amber-50 text-amber-600' :
+                          'bg-black/5 text-black/40'
+                        }`}>
+                          {entry.status === 'accepted' ? <Check size={10} /> : 
+                           entry.status === 'rejected' ? <X size={10} /> :
+                           entry.status === 'on_hold' ? <Pause size={10} /> : <Clock size={10} />}
+                          {entry.status || 'pending'}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-[10px] font-bold text-black/30">
+                        {entry.created_at ? new Date(entry.created_at).toLocaleDateString() : 'N/A'}
+                      </td>
+                      <td className="px-6 py-4 text-right">
+                        <div className="flex items-center justify-end gap-1">
+                          <button 
+                            onClick={() => handleUpdateWaitlistStatus(entry.id!, 'accepted')}
+                            disabled={entry.status === 'accepted'}
+                            title="Accept User"
+                            className={`p-2 rounded-lg transition-all ${entry.status === 'accepted' ? 'text-green-600 bg-green-50' : 'text-black/20 hover:text-green-600 hover:bg-green-50'}`}
+                          >
+                            <Check size={18} />
+                          </button>
+                          <button 
+                            onClick={() => handleUpdateWaitlistStatus(entry.id!, 'on_hold')}
+                            disabled={entry.status === 'on_hold'}
+                            title="Put on Hold"
+                            className={`p-2 rounded-lg transition-all ${entry.status === 'on_hold' ? 'text-amber-600 bg-amber-50' : 'text-black/20 hover:text-amber-600 hover:bg-amber-50'}`}
+                          >
+                            <Pause size={18} />
+                          </button>
+                          <button 
+                            onClick={() => handleUpdateWaitlistStatus(entry.id!, 'rejected')}
+                            disabled={entry.status === 'rejected'}
+                            title="Reject User"
+                            className={`p-2 rounded-lg transition-all ${entry.status === 'rejected' ? 'text-red-600 bg-red-50' : 'text-black/20 hover:text-red-600 hover:bg-red-50'}`}
+                          >
+                            <X size={18} />
+                          </button>
+                          <button 
+                            onClick={() => handleUpdateWaitlistStatus(entry.id!, 'pending')}
+                            disabled={!entry.status || entry.status === 'pending'}
+                            title="Reset to Pending"
+                            className="p-2 text-black/20 hover:text-black hover:bg-black/5 rounded-lg transition-all"
+                          >
+                            <RotateCcw size={16} />
+                          </button>
+                          <button 
+                            onClick={() => confirmDelete('waitlist', entry.id!)}
+                            title="Delete Entry"
+                            className="p-2 text-black/20 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                          >
+                            <Trash2 size={18} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
 
           {activeTab === 'settings' && (
