@@ -139,9 +139,15 @@ async function startServer() {
     const { GMAIL_USER, GMAIL_APP_PASSWORD } = process.env;
 
     if (!GMAIL_USER || !GMAIL_APP_PASSWORD) {
-        console.warn("Email credentials missing in .env");
+        console.error("Email configuration error: GMAIL_USER or GMAIL_APP_PASSWORD not found in environment.");
         return res.status(500).json({ error: "Email configuration missing on server" });
     }
+
+    if (!email) {
+        return res.status(400).json({ error: "Missing recipient email" });
+    }
+
+    console.log(`Attempting to send onboarding email to: ${email}`);
 
     const nodemailer = await import("nodemailer");
     const transporter = nodemailer.default.createTransport({
@@ -170,11 +176,12 @@ async function startServer() {
     };
 
     try {
-      await transporter.sendMail(mailOptions);
-      res.json({ success: true });
+      const info = await transporter.sendMail(mailOptions);
+      console.log("Email sent successfully:", info.messageId);
+      res.json({ success: true, messageId: info.messageId });
     } catch (error: any) {
-      console.error("Email send error:", error);
-      res.status(500).json({ error: error.message });
+      console.error("CRITICAL: Onboarding Email delivery failed:", error);
+      res.status(500).json({ error: error.message, code: error.code });
     }
   });
 
