@@ -13,6 +13,7 @@ export interface Blog {
   updated_at?: string;
   read_time?: string;
   status?: 'draft' | 'published';
+  scheduled_at?: string;
 }
 
 export interface Card {

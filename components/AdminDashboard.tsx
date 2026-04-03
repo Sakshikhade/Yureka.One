@@ -114,7 +114,8 @@ const AdminDashboard: React.FC = () => {
     image: 'https://picsum.photos/seed/blog/800/600',
     read_time: '5 min read',
     featured: false,
-    status: 'published' as 'draft' | 'published'
+    status: 'published' as 'draft' | 'published',
+    scheduled_at: ''
   });
 
   // Helper to generate a slug
@@ -331,7 +332,7 @@ const AdminDashboard: React.FC = () => {
       setIsModalOpen(false);
       setEditingItem(null);
       setPreviewUrl(null);
-      setBlogForm({ title: '', slug: '', excerpt: '', content: '', author: '', category: 'Credit Cards', image: 'https://picsum.photos/seed/blog/800/600', read_time: '5 min read', featured: false, status: 'published' as 'draft' | 'published' });
+      setBlogForm({ title: '', slug: '', excerpt: '', content: '', author: '', category: 'Credit Cards', image: 'https://picsum.photos/seed/blog/800/600', read_time: '5 min read', featured: false, status: 'published' as 'draft' | 'published', scheduled_at: '' });
     } catch (error: any) {
       console.error("Save Blog Error:", error);
       setError(error.message || "Failed to save blog post. If this persists, please run the SQL fix script.");
@@ -667,7 +668,7 @@ const AdminDashboard: React.FC = () => {
                 onClick={() => {
                   setEditingItem(null);
                   if (activeTab === 'blogs') {
-                    setBlogForm({ title: '', slug: '', excerpt: '', content: '', author: '', category: 'Credit Cards', image: 'https://picsum.photos/seed/blog/800/600', read_time: '5 min read', featured: false, status: 'published' as 'draft' | 'published' });
+                    setBlogForm({ title: '', slug: '', excerpt: '', content: '', author: '', category: 'Credit Cards', image: 'https://picsum.photos/seed/blog/800/600', read_time: '5 min read', featured: false, status: 'published' as 'draft' | 'published', scheduled_at: '' });
                   } else {
                     setCardForm(defaultCardForm);
                     setIsModalOpen(true);
@@ -723,7 +724,15 @@ const AdminDashboard: React.FC = () => {
                     <td className="px-6 py-4 text-sm text-black/60">{blog.category}</td>
                     <td className="px-6 py-4 text-sm text-black/60">{blog.author}</td>
                     <td className="px-6 py-4 text-sm text-black/60">
-                      {blog.created_at ? new Date(blog.created_at).toLocaleDateString() : 'N/A'}
+                      {blog.scheduled_at && new Date(blog.scheduled_at) > new Date() ? (
+                        <span className="flex items-center gap-1.5 text-amber-600 font-bold uppercase tracking-widest text-[9px]">
+                          <Clock size={10} /> Scheduled: {new Date(blog.scheduled_at).toLocaleDateString()}
+                        </span>
+                      ) : blog.created_at ? (
+                        new Date(blog.created_at).toLocaleDateString()
+                      ) : (
+                        'N/A'
+                      )}
                     </td>
                     <td className="px-6 py-4 text-right space-x-2">
                       <button 
@@ -739,7 +748,8 @@ const AdminDashboard: React.FC = () => {
                             image: blog.image,
                             read_time: blog.read_time || '5 min read',
                             featured: blog.featured || false,
-                            status: blog.status || 'published'
+                            status: blog.status || 'published',
+                            scheduled_at: blog.scheduled_at || ''
                           });
                           setIsModalOpen(true);
                         }}
@@ -1195,16 +1205,29 @@ const AdminDashboard: React.FC = () => {
                             <option value="draft">Draft</option>
                           </select>
                         </div>
-                        <div className="flex items-center gap-4 p-4 bg-black/5 rounded-xl h-[56px] mt-6">
+                        <div>
+                          <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2 flex items-center gap-2">
+                             <Clock size={12} /> Schedule Release
+                           </label>
                           <input 
-                            type="checkbox" 
-                            id="featured"
-                            checked={blogForm.featured}
-                            onChange={e => setBlogForm({...blogForm, featured: e.target.checked})}
-                            className="w-5 h-5 accent-teal"
+                            type="datetime-local" 
+                            value={blogForm.scheduled_at}
+                            onChange={e => setBlogForm({...blogForm, scheduled_at: e.target.value})}
+                            className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
                           />
-                          <label htmlFor="featured" className="text-sm font-bold text-black/60 cursor-pointer">Featured Post</label>
+                          <p className="text-[9px] text-black/40 mt-1 font-bold uppercase tracking-tight">Leave blank for immediate publication</p>
                         </div>
+                      </div>
+
+                      <div className="flex items-center gap-4 p-4 bg-black/5 rounded-xl h-[56px]">
+                        <input 
+                          type="checkbox" 
+                          id="featured"
+                          checked={blogForm.featured}
+                          onChange={e => setBlogForm({...blogForm, featured: e.target.checked})}
+                          className="w-5 h-5 accent-teal"
+                        />
+                        <label htmlFor="featured" className="text-sm font-bold text-black/60 cursor-pointer">Featured Post</label>
                       </div>
                     </div>
 

@@ -49,7 +49,14 @@ const JournalPage: React.FC = () => {
         }
     ];
 
-    const currentBlogs = blogsList.length > 0 ? blogsList : defaultBlogs;
+    const now = new Date().toISOString();
+    const currentBlogs = blogsList.length > 0 
+        ? blogsList.filter(b => 
+            b.status === 'published' && 
+            (!b.scheduled_at || b.scheduled_at <= now)
+          ) 
+        : defaultBlogs;
+        
     const featured = currentBlogs.find(b => b.featured) || currentBlogs[0];
     const regular = currentBlogs.filter(b => b.id !== featured?.id);
 
