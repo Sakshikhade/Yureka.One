@@ -303,6 +303,7 @@ const AdminDashboard: React.FC = () => {
     } catch (error: any) {
       console.error("Save Blog Error:", error);
       setError(error.message || "Failed to save blog post. If this persists, please run the SQL fix script.");
+      document.querySelector('.overflow-y-auto')?.scrollTo({ top: 0, behavior: 'smooth' });
     } finally {
       setSaving(false);
     }
@@ -325,6 +326,7 @@ const AdminDashboard: React.FC = () => {
     } catch (error: any) {
       console.error("Save Card Error:", error);
       setError(error.message || "Failed to save card. If this persists, please run the SQL fix script.");
+      document.querySelector('.overflow-y-auto')?.scrollTo({ top: 0, behavior: 'smooth' });
     } finally {
       setSaving(false);
     }
