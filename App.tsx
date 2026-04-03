@@ -104,7 +104,7 @@ const AppContent: React.FC = () => {
                  </>
                } />
                
-               <Route path="/cards/:id" element={
+               <Route path="/cards/:slug" element={
                   <>
                     <SEO 
                       title="Instrument Specification" 
