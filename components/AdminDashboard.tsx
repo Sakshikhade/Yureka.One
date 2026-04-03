@@ -303,7 +303,7 @@ const AdminDashboard: React.FC = () => {
     } catch (error: any) {
       console.error("Save Blog Error:", error);
       setError(error.message || "Failed to save blog post. If this persists, please run the SQL fix script.");
-      document.querySelector('.overflow-y-auto')?.scrollTo({ top: 0, behavior: 'smooth' });
+      document.querySelector('#admin-modal-content')?.scrollTo({ top: 0, behavior: 'smooth' });
     } finally {
       setSaving(false);
     }
@@ -326,7 +326,7 @@ const AdminDashboard: React.FC = () => {
     } catch (error: any) {
       console.error("Save Card Error:", error);
       setError(error.message || "Failed to save card. If this persists, please run the SQL fix script.");
-      document.querySelector('.overflow-y-auto')?.scrollTo({ top: 0, behavior: 'smooth' });
+      document.querySelector('#admin-modal-content')?.scrollTo({ top: 0, behavior: 'smooth' });
     } finally {
       setSaving(false);
     }
@@ -962,7 +962,7 @@ const AdminDashboard: React.FC = () => {
               </button>
             </div>
 
-            <div className="p-6 overflow-y-auto">
+            <div id="admin-modal-content" className="p-6 overflow-y-auto">
               {error && (
                 <div className="mb-6 p-4 bg-red-50 text-red-600 text-sm rounded-xl border border-red-100 flex items-start gap-3">
                   <X className="mt-0.5 flex-shrink-0" size={16} />
@@ -1164,45 +1164,25 @@ const AdminDashboard: React.FC = () => {
                           </select>
                         </div>
                       </div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2 flex items-center justify-between">
-                                Slug 
-                                <button type="button" onClick={() => {
-                                    const gen = generateSlug(cardForm.name, cardForm.bank);
-                                    setCardForm({...cardForm, slug: gen});
-                                }} className="text-[9px] text-teal hover:underline">Auto-Generate</button>
-                            </label>
-                            <input 
-                                type="text" 
-                                placeholder="e.g. hdfc-infinia-hdfc"
-                                value={cardForm.slug || ''}
-                                onChange={e => setCardForm({...cardForm, slug: e.target.value})}
-                                className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
-                            />
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
-                            <div>
-                              <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Rating</label>
-                              <input 
-                                type="number" step="0.1" min="0" max="5" required
-                                value={cardForm.rating}
-                                onChange={e => setCardForm({...cardForm, rating: parseFloat(e.target.value)})}
-                                className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
-                              />
-                            </div>
-                            <div>
-                              <label className="block text-xs font-bold uppercase tracking-widest text-teal mb-2">Elite Rating (out of 5)</label>
-                              <input 
-                                type="number" step="0.1" min="0" max="5" required
-                                value={cardForm.elite_rating}
-                                onChange={e => setCardForm({...cardForm, elite_rating: parseFloat(e.target.value)})}
-                                className="w-full bg-teal/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all text-teal font-bold"
-                              />
-                            </div>
-                        </div>
+
+                      <div>
+                          <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2 flex items-center justify-between">
+                              Slug 
+                              <button type="button" onClick={() => {
+                                  const gen = generateSlug(cardForm.name, cardForm.bank);
+                                  setCardForm({...cardForm, slug: gen});
+                              }} className="text-[9px] text-teal hover:underline">Auto-Generate</button>
+                          </label>
+                          <input 
+                              type="text" 
+                              placeholder="e.g. hdfc-infinia-hdfc"
+                              value={cardForm.slug || ''}
+                              onChange={e => setCardForm({...cardForm, slug: e.target.value})}
+                              className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+                          />
                       </div>
-                      <div className="grid grid-cols-2 gap-4">
+
+                      <div className="grid grid-cols-3 gap-4">
                         <div>
                           <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Issuer</label>
                           <input 
@@ -1214,10 +1194,30 @@ const AdminDashboard: React.FC = () => {
                           />
                         </div>
                         <div>
+                          <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Rating</label>
+                          <input 
+                            type="number" step="0.1" min="0" max="5" required
+                            value={cardForm.rating}
+                            onChange={e => setCardForm({...cardForm, rating: parseFloat(e.target.value)})}
+                            className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold uppercase tracking-widest text-teal mb-2">Elite (out of 5)</label>
+                          <input 
+                            type="number" step="0.1" min="0" max="5" required
+                            value={cardForm.elite_rating}
+                            onChange={e => setCardForm({...cardForm, elite_rating: parseFloat(e.target.value)})}
+                            className="w-full bg-teal/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all text-teal font-bold px-2 md:px-4"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
                           <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Categories</label>
-                          <div className="w-full bg-black/5 border-none rounded-xl p-4 h-[120px] overflow-y-auto space-y-2">
+                          <div className="w-full bg-black/5 border-none rounded-xl p-4 h-[120px] overflow-y-auto grid grid-cols-2 gap-2">
                             {ADMIN_CATEGORIES.map(cat => (
-                              <label key={cat} className="flex items-center gap-3 cursor-pointer">
+                              <label key={cat} className="flex items-center gap-3 cursor-pointer p-1">
                                 <input 
                                   type="checkbox" 
                                   checked={cardForm.categories.includes(cat)}
@@ -1225,21 +1225,20 @@ const AdminDashboard: React.FC = () => {
                                       const newCategories = e.target.checked 
                                         ? [...cardForm.categories, cat] 
                                         : cardForm.categories.filter(c => c !== cat);
-                                      // Keep category synced for legacy compat
                                       setCardForm({
                                           ...cardForm, 
                                           categories: newCategories,
                                           category: newCategories.length ? newCategories[0] : ''
                                       });
                                   }}
-                                  className="w-4 h-4 rounded border-black/10 text-teal focus:ring-teal"
+                                  className="w-4 h-4 rounded border-black/10 text-teal focus:ring-teal shrink-0"
                                 />
-                                <span className="text-sm text-black/60">{cat}</span>
+                                <span className="text-sm text-black/60 truncate">{cat}</span>
                               </label>
                             ))}
                           </div>
-                        </div>
                       </div>
+
                       <div className="grid grid-cols-2 gap-4">
                         <div>
                           <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Annual Fee</label>
@@ -1262,18 +1261,17 @@ const AdminDashboard: React.FC = () => {
                           />
                         </div>
                       </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Publish Status</label>
-                          <select 
-                            value={cardForm.status}
-                            onChange={e => setCardForm({...cardForm, status: e.target.value as 'draft' | 'published'})}
-                            className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
-                          >
-                            <option value="published">Published</option>
-                            <option value="draft">Draft</option>
-                          </select>
-                        </div>
+
+                      <div>
+                        <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Publish Status</label>
+                        <select 
+                          value={cardForm.status}
+                          onChange={e => setCardForm({...cardForm, status: e.target.value as 'draft' | 'published'})}
+                          className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+                        >
+                          <option value="published">Published</option>
+                          <option value="draft">Draft</option>
+                        </select>
                       </div>
                     </div>
 
