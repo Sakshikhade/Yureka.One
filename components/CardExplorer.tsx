@@ -310,7 +310,7 @@ const CardExplorer: React.FC = () => {
 
                                     {/* Actions Right */}
                                     <div className="w-full md:w-56 flex flex-col gap-4 justify-start pt-4">
-                                        <Link to={`/cards/${card.id}`} className="w-full">
+                                        <Link to={`/cards/${cardSlug}`} className="w-full">
                                             <button className="w-full bg-ink text-white font-bold py-4 rounded-full flex items-center justify-center gap-3 transition-all shadow-xl hover:bg-clay active:scale-95 text-[10px] uppercase tracking-[0.3em] cursor-pointer">
                                                 Read more <ArrowRight size={14} className="opacity-60" />
                                             </button>

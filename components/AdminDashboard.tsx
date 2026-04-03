@@ -1063,7 +1063,7 @@ const AdminDashboard: React.FC = () => {
                               />
                             </div>
                             <div>
-                              <label className="block text-xs font-bold uppercase tracking-widest text-teal mb-2">Elite Rating</label>
+                              <label className="block text-xs font-bold uppercase tracking-widest text-teal mb-2">Elite Rating (out of 5)</label>
                               <input 
                                 type="number" step="0.1" min="0" max="5" required
                                 value={cardForm.elite_rating}
