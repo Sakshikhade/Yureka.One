@@ -1137,8 +1137,9 @@ const AdminDashboard: React.FC = () => {
                 </form>
               ) : activeTab === 'cards' ? (
                 <form onSubmit={handleSaveCard} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {/* Left Column */}
+                    <div className="space-y-6">
                       <div className="grid grid-cols-2 gap-4">
                         <div>
                           <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Card Name</label>
@@ -1216,7 +1217,7 @@ const AdminDashboard: React.FC = () => {
 
                       <div>
                           <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Categories</label>
-                          <div className="w-full bg-black/5 border-none rounded-xl p-4 h-[120px] overflow-y-auto grid grid-cols-2 gap-2">
+                          <div className="w-full bg-black/5 border-none rounded-xl p-4 h-[240px] overflow-y-auto grid grid-cols-2 gap-2">
                             {ADMIN_CATEGORIES.map(cat => (
                               <label key={cat} className="flex items-center gap-3 cursor-pointer p-1">
                                 <input 
@@ -1238,6 +1239,51 @@ const AdminDashboard: React.FC = () => {
                               </label>
                             ))}
                           </div>
+                      </div>
+                    </div>
+
+                    {/* Right Column */}
+                    <div className="space-y-6">
+                      <div className="space-y-4">
+                        <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Card Image</label>
+                        <div className="relative aspect-[1.6/1] rounded-xl overflow-hidden bg-black/5 border-2 border-dashed border-black/10 group">
+                          {cardForm.image ? (
+                            <img src={cardForm.image} alt="Preview" className="w-full h-full object-contain p-4" />
+                          ) : (
+                            <div className="absolute inset-0 flex flex-col items-center justify-center text-black/20">
+                              <ImageIcon size={48} />
+                              <p className="text-xs font-bold uppercase tracking-widest mt-2">No Image Selected</p>
+                            </div>
+                          )}
+                          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
+                            <button 
+                              type="button"
+                              onClick={() => fileInputRef.current?.click()}
+                              className="bg-white text-black p-3 rounded-full hover:scale-110 transition-transform"
+                            >
+                              <Upload size={20} />
+                            </button>
+                          </div>
+                        </div>
+                        <input 
+                          type="file" 
+                          ref={fileInputRef}
+                          onChange={(e) => handleFileUpload(e, 'cards')}
+                          className="hidden" 
+                          accept="image/*"
+                        />
+                        <input 
+                          type="text" 
+                          placeholder="Or enter image URL"
+                          value={cardForm.image}
+                          onChange={e => setCardForm({...cardForm, image: e.target.value})}
+                          className="w-full bg-black/5 border-none rounded-xl p-3 text-xs focus:ring-2 focus:ring-teal outline-none transition-all"
+                        />
+                        {uploading && (
+                          <div className="flex items-center gap-2 text-teal text-xs font-bold">
+                            <Loader2 size={14} className="animate-spin" /> Uploading...
+                          </div>
+                        )}
                       </div>
 
                       <div className="grid grid-cols-2 gap-4">
@@ -1265,6 +1311,58 @@ const AdminDashboard: React.FC = () => {
 
                       <div className="grid grid-cols-2 gap-4">
                         <div>
+                          <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Rewards Rate</label>
+                          <input 
+                            type="text" 
+                            required
+                            value={cardForm.rewards_rate}
+                            onChange={e => setCardForm({...cardForm, rewards_rate: e.target.value})}
+                            className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Projected Savings</label>
+                          <input 
+                            type="text" 
+                            required
+                            value={cardForm.projected_savings}
+                            onChange={e => setCardForm({...cardForm, projected_savings: e.target.value})}
+                            className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Type</label>
+                          <select 
+                            value={cardForm.type}
+                            onChange={e => setCardForm({...cardForm, type: e.target.value})}
+                            className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+                          >
+                            <option>Rewards</option>
+                            <option>Travel</option>
+                            <option>Cashback</option>
+                            <option>Premium</option>
+                            <option>Fuel</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Best For</label>
+                          <select
+                            value={cardForm.best_for}
+                            onChange={e => setCardForm({...cardForm, best_for: e.target.value})}
+                            className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+                          >
+                            {ADMIN_CATEGORIES.map(cat => (
+                              <option key={cat} value={cat}>{cat}</option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
                           <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Publish Status</label>
                           <select 
                             value={cardForm.status}
@@ -1287,152 +1385,74 @@ const AdminDashboard: React.FC = () => {
                         </div>
                       </div>
                     </div>
-
-                    <div className="space-y-4">
-                      <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Card Image</label>
-                      <div className="relative aspect-[1.6/1] rounded-xl overflow-hidden bg-black/5 border-2 border-dashed border-black/10 group">
-                        {cardForm.image ? (
-                          <img src={cardForm.image} alt="Preview" className="w-full h-full object-contain p-4" />
-                        ) : (
-                          <div className="absolute inset-0 flex flex-col items-center justify-center text-black/20">
-                            <ImageIcon size={48} />
-                            <p className="text-xs font-bold uppercase tracking-widest mt-2">No Image Selected</p>
-                          </div>
-                        )}
-                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
-                          <button 
-                            type="button"
-                            onClick={() => fileInputRef.current?.click()}
-                            className="bg-white text-black p-3 rounded-full hover:scale-110 transition-transform"
-                          >
-                            <Upload size={20} />
-                          </button>
-                        </div>
-                      </div>
-                      <input 
-                        type="file" 
-                        ref={fileInputRef}
-                        onChange={(e) => handleFileUpload(e, 'cards')}
-                        className="hidden" 
-                        accept="image/*"
-                      />
-                      <input 
-                        type="text" 
-                        placeholder="Or enter image URL"
-                        value={cardForm.image}
-                        onChange={e => setCardForm({...cardForm, image: e.target.value})}
-                        className="w-full bg-black/5 border-none rounded-xl p-3 text-xs focus:ring-2 focus:ring-teal outline-none transition-all"
-                      />
-                      {uploading && (
-                        <div className="flex items-center gap-2 text-teal text-xs font-bold">
-                          <Loader2 size={14} className="animate-spin" /> Uploading...
-                        </div>
-                      )}
-                    </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  {/* Full Width Sections */}
+                  <div className="space-y-8 pt-8 border-t border-black/5">
                     <div>
-                      <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Type</label>
-                      <select 
-                        value={cardForm.type}
-                        onChange={e => setCardForm({...cardForm, type: e.target.value})}
-                        className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
-                      >
-                        <option>Rewards</option>
-                        <option>Travel</option>
-                        <option>Cashback</option>
-                        <option>Premium</option>
-                        <option>Fuel</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Best For</label>
-                      <select
-                         value={cardForm.best_for}
-                         onChange={e => setCardForm({...cardForm, best_for: e.target.value})}
-                         className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
-                       >
-                         {ADMIN_CATEGORIES.map(cat => (
-                           <option key={cat} value={cat}>{cat}</option>
-                         ))}
-                       </select>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Rewards Rate</label>
-                      <input 
-                        type="text" 
-                        required
-                        value={cardForm.rewards_rate}
-                        onChange={e => setCardForm({...cardForm, rewards_rate: e.target.value})}
-                        className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Projected Savings</label>
-                      <input 
-                        type="text" 
-                        required
-                        value={cardForm.projected_savings}
-                        onChange={e => setCardForm({...cardForm, projected_savings: e.target.value})}
-                        className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2 mt-6">Structured Benefits</label>
-                    <div className="space-y-4">
-                        {cardForm.benefit_items.map((benefit, idx) => (
-                          <div key={idx} className="flex items-start gap-4 bg-black/5 p-4 rounded-xl">
-                            <div className="flex-1 space-y-4">
-                                <input 
-                                  type="text" placeholder="Benefit Heading (e.g. Free Lounge Access)" required
-                                  value={benefit.heading}
-                                  onChange={e => {
-                                      const newItems = [...cardForm.benefit_items];
-                                      newItems[idx].heading = e.target.value;
-                                      setCardForm({...cardForm, benefit_items: newItems, benefits: newItems.map(i => i.heading)});
-                                  }}
-                                  className="w-full bg-white border-none rounded-lg p-3 text-sm focus:ring-2 focus:ring-teal outline-none"
-                                />
-                                <input 
-                                  type="text" placeholder="Benefit Subheading (e.g. Premium lifestyle benefit included...)" required
-                                  value={benefit.subheading}
-                                  onChange={e => {
-                                      const newItems = [...cardForm.benefit_items];
-                                      newItems[idx].subheading = e.target.value;
-                                      setCardForm({...cardForm, benefit_items: newItems});
-                                  }}
-                                  className="w-full bg-transparent border border-black/10 rounded-lg p-3 text-sm focus:ring-2 focus:ring-teal outline-none"
-                                />
+                      <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-4">Structured Benefits Portfolio</label>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {cardForm.benefit_items.map((benefit, idx) => (
+                            <div key={idx} className="flex items-start gap-4 bg-black/5 p-4 rounded-xl border border-black/5 relative group/item">
+                              <div className="flex-1 space-y-3">
+                                  <input 
+                                    type="text" placeholder="Benefit Heading (e.g. Free Lounge Access)" required
+                                    value={benefit.heading}
+                                    onChange={e => {
+                                        const newItems = [...cardForm.benefit_items];
+                                        newItems[idx].heading = e.target.value;
+                                        setCardForm({...cardForm, benefit_items: newItems, benefits: newItems.map(i => i.heading)});
+                                    }}
+                                    className="w-full bg-white border-none rounded-lg p-3 text-sm font-bold focus:ring-2 focus:ring-teal outline-none shadow-sm"
+                                  />
+                                  <input 
+                                    type="text" placeholder="Benefit Subheading (e.g. Premium lifestyle benefit included...)" required
+                                    value={benefit.subheading}
+                                    onChange={e => {
+                                        const newItems = [...cardForm.benefit_items];
+                                        newItems[idx].subheading = e.target.value;
+                                        setCardForm({...cardForm, benefit_items: newItems});
+                                    }}
+                                    className="w-full bg-transparent border border-black/10 rounded-lg p-3 text-xs focus:ring-2 focus:ring-teal outline-none"
+                                  />
+                              </div>
+                              <button 
+                                type="button" 
+                                onClick={() => {
+                                  const newItems = cardForm.benefit_items.filter((_, i) => i !== idx);
+                                  setCardForm({...cardForm, benefit_items: newItems, benefits: newItems.map(i => i.heading)});
+                                }} 
+                                className="text-red-500 hover:bg-red-50 p-2 rounded-lg opacity-0 group-hover/item:opacity-100 transition-opacity"
+                              >
+                                <Trash2 size={16} />
+                              </button>
                             </div>
-                            <button type="button" onClick={() => {
-                                const newItems = cardForm.benefit_items.filter((_, i) => i !== idx);
-                                setCardForm({...cardForm, benefit_items: newItems, benefits: newItems.map(i => i.heading)});
-                            }} className="text-red-500 hover:bg-red-50 p-2 rounded-lg mt-2">✕</button>
-                          </div>
-                        ))}
-                        <button type="button" onClick={() => {
-                            setCardForm({...cardForm, benefit_items: [...cardForm.benefit_items, {heading: '', subheading: ''}]});
-                        }} className="text-teal font-bold text-xs uppercase tracking-widest hover:underline">+ Add Benefit Row</button>
+                          ))}
+                          <button 
+                            type="button" 
+                            onClick={() => {
+                                setCardForm({...cardForm, benefit_items: [...cardForm.benefit_items, {heading: '', subheading: ''}]});
+                            }} 
+                            className="flex flex-col items-center justify-center border-2 border-dashed border-black/10 rounded-xl p-6 hover:border-teal/50 hover:bg-teal/5 transition-all group"
+                          >
+                              <Plus className="text-black/20 group-hover:text-teal mb-2" />
+                              <span className="text-teal font-bold text-[10px] uppercase tracking-widest">Add Benefit Row</span>
+                          </button>
+                      </div>
                     </div>
 
-                    <div className="mt-8">
+                    <div>
                         <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Editorial Verdict</label>
                         <textarea 
                           placeholder="The KIWI remains a cornerstone of the ecosystem..."
                           value={cardForm.verdict || ''}
                           onChange={e => setCardForm({...cardForm, verdict: e.target.value})}
-                          className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all h-32"
+                          className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all h-32 text-sm leading-relaxed"
                         />
                     </div>
                   </div>
                   
-                  <div className="flex justify-end pt-4 border-t border-black/5">
+                  <div className="flex justify-end pt-8 border-t border-black/5">
                     <button 
                       type="submit" 
                       disabled={uploading || saving}
