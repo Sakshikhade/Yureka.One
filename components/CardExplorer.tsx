@@ -85,7 +85,17 @@ const BANK_LOGOS: Record<string, string> = {
     'Federal': '/assets/banks/federal.png',
     'SBM': '/assets/banks/sbm.png',
     'South Indian': '/assets/banks/southindian.png',
-    'Utkarsh Bank': '/assets/banks/utkarsh.png'
+    'Utkarsh Bank': '/assets/banks/utkarsh.png',
+    'Suryoday Bank': '/assets/banks/suryoday.png',
+    'Union Bank': '/assets/banks/union.png',
+    'Unity SFB': '/assets/banks/unity.png',
+    'DCB': '/assets/banks/dcb.png',
+    'Bank Of India': '/assets/banks/boi.png',
+    'J&K Bank': '/assets/banks/jk.png',
+    'CUB': '/assets/banks/cub.png',
+    'Slice SFB': '/assets/banks/slice.png',
+    'Dhanlaxmi Bank': '/assets/banks/dhanlaxmi.png',
+    'Indian Overseas Bank': '/assets/banks/iob.png'
 };
 
 const CardExplorer: React.FC = () => {
