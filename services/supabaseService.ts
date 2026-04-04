@@ -1,5 +1,5 @@
 import { supabase } from '../supabase';
-import { Blog, Card, WaitlistEntry, NewsletterEntry } from '../types';
+import { Blog, Card, WaitlistEntry, NewsletterEntry, Review } from '../types';
 
 // Helper for cleaning objects for Supabase (removing undefined/null)
 const cleanData = (obj: any) => {
@@ -275,6 +275,84 @@ export const subscribeNewsletter = async (email: string) => {
 export const deleteNewsletterEntry = async (id: string) => {
   const { error } = await supabase.from('newsletters').delete().eq('id', id);
   if (error) throw error;
+};
+
+// --- Reviews ---
+export const getReviews = (callback: (reviews: Review[]) => void, onError?: (error: string) => void) => {
+  const fetchReviews = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('reviews')
+        .select('*')
+        .eq('status', 'published')
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      callback(data as Review[]);
+    } catch (error: any) {
+      console.error('Error fetching reviews:', error);
+      if (onError) onError(error.message || 'Failed to fetch reviews');
+    }
+  };
+  fetchReviews();
+  
+  const channel = supabase.channel('reviews-realtime')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'reviews' }, () => fetchReviews())
+    .subscribe();
+    
+  return () => { supabase.removeChannel(channel); };
+};
+
+export const getReviewsAdmin = (callback: (reviews: Review[]) => void, onError?: (error: string) => void) => {
+  const fetchReviews = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('reviews')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      callback(data as Review[]);
+    } catch (error: any) {
+      console.error('Error fetching reviews admin:', error);
+      if (onError) onError(error.message || 'Failed to fetch reviews');
+    }
+  };
+  fetchReviews();
+  
+  const channel = supabase.channel('reviews-admin-realtime')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'reviews' }, () => fetchReviews())
+    .subscribe();
+    
+  return () => { supabase.removeChannel(channel); };
+};
+
+export const addReview = async (review: any) => {
+  console.log('Adding Review:', review);
+  const { data, error } = await supabase.from('reviews').insert([cleanData(review)]).select();
+  if (error) {
+    console.error('Supabase Review Insert Error:', error);
+    throw error;
+  }
+  return data[0].id;
+};
+
+export const updateReview = async (id: string, reviewData: any) => {
+  console.log('Updating Review:', id, reviewData);
+  const { error } = await supabase.from('reviews').update(cleanData(reviewData)).eq('id', id);
+  if (error) {
+    console.error('Supabase Review Update Error:', error);
+    throw error;
+  }
+};
+
+export const deleteReview = async (id: string) => {
+  console.log('Deleting Review:', id);
+  const { error } = await supabase.from('reviews').delete().eq('id', id);
+  if (error) {
+    console.error('Supabase Review Delete Error:', error);
+    throw error;
+  }
 };
 
 // --- Admin Check ---

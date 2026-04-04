@@ -1,57 +1,43 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { getReviews } from '../services/supabaseService';
+import { Review } from '../types';
 
-interface Review {
-  id: number;
-  role: string;
-  company: string;
-  companyLogo: string;
-  image: string;
-  quote: string;
-  author: string;
-  rotation: number;
-  companyText?: string;
-}
-
-const reviews: Review[] = [
+const fallbackReviews: Review[] = [
   {
-    id: 1,
+    author: "Paras",
     role: 'Tech Lead',
     company: 'Swiggy',
-    companyLogo: 'https://upload.wikimedia.org/wikipedia/en/1/12/Swiggy_logo.svg',
+    company_logo: 'https://upload.wikimedia.org/wikipedia/en/1/12/Swiggy_logo.svg',
     image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     quote: "I thought I knew credit cards, but Yureka found a hidden gem that saves me ₹20k/year on flights.",
-    author: "Paras",
     rotation: -2
   },
   {
-    id: 2,
+    author: "Deepankar",
     role: 'Founder',
     company: 'D2C Brand',
-    companyLogo: 'https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg',
+    company_logo: 'https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg',
     image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     quote: "Finally, a platform that doesn't spam me. The AI chat felt like talking to a financial expert.",
-    author: "Deepankar",
     rotation: 1.5
   },
   {
-    id: 3,
+    author: "Riya",
     role: 'Freelance Designer',
     company: 'Self',
-    companyLogo: 'https://upload.wikimedia.org/wikipedia/en/7/7c/Cred_club_logo.png',
+    company_logo: 'https://upload.wikimedia.org/wikipedia/en/7/7c/Cred_club_logo.png',
     image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     quote: "The Chrome extension is a game changer. It automatically applies the best card for every transaction.",
-    author: "Riya",
     rotation: -1
   },
   {
-    id: 4,
+    author: "Karan",
     role: 'Marketing VP',
     company: 'Zepto',
-    companyLogo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Zepto_Logo.jpg/800px-Zepto_Logo.jpg', 
-    companyText: 'zepto', 
+    company_logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Zepto_Logo.jpg/800px-Zepto_Logo.jpg', 
+    company_text: 'zepto', 
     image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     quote: "I used the Voucher Hub to stack rewards on my new laptop. 18% savings total. Insane.",
-    author: "Karan",
     rotation: 2
   }
 ];
@@ -135,7 +121,7 @@ const DraggableCardPair: React.FC<DraggableCardPairProps> = ({ review, index, pr
   }, [isDragging]);
 
   const wrapperStyle: React.CSSProperties = {
-    transform: `translate3d(${dragPosition.x}px, ${dragPosition.y}px, 0) scale(${wrapperScale}) rotate(${review.rotation + (dragPosition.x * 0.05)}deg)`,
+    transform: `translate3d(${dragPosition.x}px, ${dragPosition.y}px, 0) scale(${wrapperScale}) rotate(${(review.rotation || 0) + (dragPosition.x * 0.05)}deg)`,
     zIndex: index + 10,
     cursor: isDragging ? 'grabbing' : (pairProgress > 0.9 ? 'grab' : 'default'),
     transition: isDragging ? 'none' : 'transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)'
@@ -171,7 +157,7 @@ const DraggableCardPair: React.FC<DraggableCardPairProps> = ({ review, index, pr
                  </div>
                  <div className="text-center pb-4">
                     <h3 className="text-lg font-serif text-black">{review.role}</h3>
-                    <p className="text-xs font-mono uppercase tracking-widest text-black/50 mt-1">{review.companyText || review.company}</p>
+                    <p className="text-xs font-mono uppercase tracking-widest text-black/50 mt-1">{review.company_text || review.company}</p>
                  </div>
             </div>
 
@@ -214,8 +200,14 @@ const DraggableCardPair: React.FC<DraggableCardPairProps> = ({ review, index, pr
 const Community: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [liveReviews, setLiveReviews] = useState<Review[]>([]);
 
   useEffect(() => {
+    // Real-time subscription and initial fetch
+    const unsubscribe = getReviews((data) => {
+      setLiveReviews(data.length > 0 ? data : fallbackReviews);
+    });
+
     const handleScroll = () => {
       if (!containerRef.current) return;
       const { top, height } = containerRef.current.getBoundingClientRect();
@@ -232,7 +224,10 @@ const Community: React.FC = () => {
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (typeof unsubscribe === 'function') unsubscribe();
+    };
   }, []);
   
   const textAnimEnd = 0.35;
@@ -287,13 +282,13 @@ const Community: React.FC = () => {
         </div>
 
         <div className="relative z-30 w-full h-full">
-            {reviews.map((review, index) => (
+            {liveReviews.map((review, index) => (
                 <DraggableCardPair 
-                    key={review.id}
+                    key={review.id || index}
                     review={review}
                     index={index}
                     progress={scrollProgress}
-                    totalCards={reviews.length}
+                    totalCards={liveReviews.length}
                 />
             ))}
         </div>

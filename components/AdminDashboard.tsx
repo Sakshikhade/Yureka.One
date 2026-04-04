@@ -40,9 +40,10 @@ import {
   getBlogs, addBlog, updateBlog, deleteBlog,
   getCardsAdmin, addCard, updateCard, deleteCard,
   getWaitlist, deleteWaitlistEntry, updateWaitlistStatus,
-  checkIfAdmin, getTeamMembers, inviteTeamMember, updateUserRole, deleteUser, getAuditLogs
+  checkIfAdmin, getTeamMembers, inviteTeamMember, updateUserRole, deleteUser, getAuditLogs,
+  getReviewsAdmin, addReview, updateReview, deleteReview
 } from '../services/supabaseService';
-import { Blog, Card, WaitlistEntry } from '../types';
+import { Blog, Card, WaitlistEntry, Review } from '../types';
 
 // ─── Shared master lists (kept in sync with CardExplorer) ─────────────────────
 const ADMIN_BANKS = [
@@ -65,13 +66,14 @@ const AdminDashboard: React.FC = () => {
   const [userRole, setUserRole] = useState<string>('user');
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'blogs' | 'cards' | 'waitlist' | 'settings' | 'logs'>('blogs');
+  const [activeTab, setActiveTab] = useState<'blogs' | 'cards' | 'waitlist' | 'settings' | 'logs' | 'reviews'>('blogs');
   
   const [error, setError] = useState<string | null>(null);
   
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [cards, setCards] = useState<Card[]>([]);
   const [waitlist, setWaitlist] = useState<WaitlistEntry[]>([]);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [team, setTeam] = useState<any[]>([]);
   const [logs, setLogs] = useState<any[]>([]);
   const [waitlistFilter, setWaitlistFilter] = useState<'pending' | 'accepted' | 'rejected' | 'on_hold' | 'all'>('pending');
@@ -165,6 +167,20 @@ const AdminDashboard: React.FC = () => {
     email: '',
     role: 'writer'
   });
+  
+  // Review Form State
+  const defaultReviewForm: Review = {
+    author: '',
+    role: '',
+    company: '',
+    company_logo: '',
+    company_text: '',
+    image: 'https://picsum.photos/seed/review/300/400',
+    quote: '',
+    rotation: 0,
+    status: 'published'
+  };
+  const [reviewForm, setReviewForm] = useState<Review>(defaultReviewForm);
 
   // Real-time status indicators
   const [syncStatus, setSyncStatus] = useState<'connected' | 'reconnecting' | 'error'>('connected');
@@ -231,10 +247,14 @@ const AdminDashboard: React.FC = () => {
     // Subscribe to Waitlist
     const unsubscribeWaitlist = getWaitlist((fetched) => setWaitlist(fetched));
 
+    // Subscribe to Reviews
+    const unsubscribeReviews = getReviewsAdmin((fetched) => setReviews(fetched));
+
     return () => {
       unsubscribeBlogs();
       unsubscribeCards();
       unsubscribeWaitlist();
+      unsubscribeReviews();
     };
   }, [isAdmin]);
 
@@ -284,7 +304,7 @@ const AdminDashboard: React.FC = () => {
     await supabase.auth.signOut();
   };
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: 'blogs' | 'cards') => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: 'blogs' | 'cards' | 'reviews') => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -295,8 +315,10 @@ const AdminDashboard: React.FC = () => {
     // Optimistically update form image for immediate visual feedback
     if (type === 'blogs') {
       setBlogForm(prev => ({ ...prev, image: localUrl }));
-    } else {
+    } else if (type === 'cards') {
       setCardForm(prev => ({ ...prev, image: localUrl }));
+    } else {
+       setReviewForm(prev => ({ ...prev, image: localUrl }));
     }
 
     setUploading(true);
@@ -310,8 +332,10 @@ const AdminDashboard: React.FC = () => {
       // Update with the real URL from Supabase Storage
       if (type === 'blogs') {
         setBlogForm(prev => ({ ...prev, image: url }));
-      } else {
+      } else if (type === 'cards') {
         setCardForm(prev => ({ ...prev, image: url }));
+      } else {
+        setReviewForm(prev => ({ ...prev, image: url }));
       }
       setPreviewUrl(url);
     } catch (error) {
@@ -321,8 +345,10 @@ const AdminDashboard: React.FC = () => {
       setPreviewUrl(null);
       if (type === 'blogs') {
         setBlogForm(prev => ({ ...prev, image: editingItem?.image || 'https://picsum.photos/seed/blog/800/600' }));
-      } else {
+      } else if (type === 'cards') {
         setCardForm(prev => ({ ...prev, image: editingItem?.image || 'https://picsum.photos/seed/card/400/250' }));
+      } else {
+        setReviewForm(prev => ({ ...prev, image: editingItem?.image || 'https://picsum.photos/seed/review/300/400' }));
       }
     } finally {
       setUploading(false);
@@ -369,6 +395,29 @@ const AdminDashboard: React.FC = () => {
     } catch (error: any) {
       console.error("Save Card Error:", error);
       setError(error.message || "Failed to save card. If this persists, please run the SQL fix script.");
+      document.querySelector('#admin-modal-content')?.scrollTo({ top: 0, behavior: 'smooth' });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleSaveReview = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSaving(true);
+    setError(null);
+    try {
+      if (editingItem) {
+        await updateReview(editingItem.id, reviewForm);
+      } else {
+        await addReview(reviewForm);
+      }
+      setIsModalOpen(false);
+      setEditingItem(null);
+      setPreviewUrl(null);
+      setReviewForm(defaultReviewForm);
+    } catch (error: any) {
+      console.error("Save Review Error:", error);
+      setError(error.message || "Failed to save review.");
       document.querySelector('#admin-modal-content')?.scrollTo({ top: 0, behavior: 'smooth' });
     } finally {
       setSaving(false);
@@ -450,6 +499,7 @@ const AdminDashboard: React.FC = () => {
       if (itemToDelete.collection === 'blogs') await deleteBlog(itemToDelete.id);
       else if (itemToDelete.collection === 'cards') await deleteCard(itemToDelete.id);
       else if (itemToDelete.collection === 'waitlist') await deleteWaitlistEntry(itemToDelete.id);
+      else if (itemToDelete.collection === 'reviews') await deleteReview(itemToDelete.id);
       else if (itemToDelete.collection === 'users') {
         await deleteUser(itemToDelete.id);
         // Refresh team list
@@ -617,6 +667,16 @@ const AdminDashboard: React.FC = () => {
           >
             <FileText size={20} /> Blogs
           </button>
+
+          {/* Reviews - All editors/admins */}
+          {['admin', 'editor'].includes(userRole) && (
+            <button 
+              onClick={() => { setActiveTab('reviews'); setIsSidebarOpen(false); }}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-colors ${activeTab === 'reviews' ? 'bg-teal/10 text-teal font-bold' : 'text-black/60 hover:bg-black/5'}`}
+            >
+              <Users size={20} /> Reviews
+            </button>
+          )}
 
           {/* Cards - Admin & Editor */}
           {['admin', 'editor'].includes(userRole) && (
@@ -861,6 +921,68 @@ const AdminDashboard: React.FC = () => {
                         </button>
                         <button 
                           onClick={() => confirmDelete('cards', card.id!)}
+                          className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+          {activeTab === 'reviews' && (
+            <div className="overflow-x-auto">
+              <table className="w-full text-left min-w-[800px]">
+                <thead className="bg-black/5 text-[10px] uppercase font-bold tracking-widest text-black/40">
+                  <tr>
+                    <th className="px-6 py-4">User</th>
+                    <th className="px-6 py-4">Designation</th>
+                    <th className="px-6 py-4">Company</th>
+                    <th className="px-6 py-4">Status</th>
+                    <th className="px-6 py-4 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-black/5">
+                  {reviews.map(review => (
+                    <tr key={review.id} className="hover:bg-black/[0.01] transition-colors">
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-3">
+                          <img src={review.image} alt="" className="w-8 h-8 rounded-full object-cover" />
+                          <span className="font-bold text-sm">{review.author}</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-sm text-black/60">{review.role}</td>
+                      <td className="px-6 py-4 text-sm text-black/60">{review.company}</td>
+                      <td className="px-6 py-4">
+                        <span className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${review.status === 'published' ? 'bg-green-100 text-green-600' : 'bg-amber-100 text-amber-600'}`}>
+                          {review.status}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-right space-x-2">
+                        <button 
+                          onClick={() => {
+                            setEditingItem(review);
+                            setReviewForm({
+                              author: review.author,
+                              role: review.role,
+                              company: review.company,
+                              company_logo: review.company_logo || '',
+                              company_text: review.company_text || '',
+                              image: review.image,
+                              quote: review.quote,
+                              rotation: review.rotation || 0,
+                              status: review.status || 'published'
+                            });
+                            setIsModalOpen(true);
+                          }}
+                          className="p-2 text-teal hover:bg-teal/10 rounded-lg transition-colors"
+                        >
+                          <Edit2 size={18} />
+                        </button>
+                        <button 
+                          onClick={() => confirmDelete('reviews', review.id!)}
                           className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
                         >
                           <Trash2 size={18} />
@@ -1132,7 +1254,7 @@ const AdminDashboard: React.FC = () => {
           <div className="relative bg-white w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
             <div className="p-6 border-b border-black/5 flex justify-between items-center">
               <h2 className="text-2xl font-serif font-bold">
-                {editingItem ? 'Edit' : 'Add New'} {activeTab === 'blogs' ? 'Blog Post' : activeTab === 'cards' ? 'Card' : 'Team Member'}
+                {editingItem ? 'Edit' : 'Add New'} {activeTab === 'blogs' ? 'Blog Post' : activeTab === 'cards' ? 'Card' : activeTab === 'reviews' ? 'Review' : 'Team Member'}
               </h2>
               <button 
                 onClick={() => {
@@ -1656,6 +1778,128 @@ const AdminDashboard: React.FC = () => {
                     >
                       {(uploading || saving) ? <Loader2 className="animate-spin" size={20} /> : <Check size={20} />}
                       Save Card
+                    </button>
+                  </div>
+                </form>
+              ) : activeTab === 'reviews' ? (
+                <form onSubmit={handleSaveReview} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {/* Portrait Upload */}
+                    <div className="space-y-4">
+                      <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">User Photo</label>
+                      <div className="relative aspect-[4/5] w-full max-w-[240px] mx-auto bg-black/5 rounded-xl overflow-hidden border-2 border-dashed border-black/10 group">
+                        {reviewForm.image ? (
+                          <img src={reviewForm.image} alt="Preview" className="w-full h-full object-cover grayscale" />
+                        ) : (
+                          <div className="absolute inset-0 flex flex-col items-center justify-center text-black/20">
+                            <ImageIcon size={48} />
+                            <p className="text-xs font-bold uppercase tracking-widest mt-2 text-center px-4">Upload Portrait</p>
+                          </div>
+                        )}
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                          <button 
+                            type="button"
+                            onClick={() => fileInputRef.current?.click()}
+                            className="bg-white text-black p-3 rounded-full hover:scale-110 transition-transform"
+                          >
+                            <Upload size={20} />
+                          </button>
+                        </div>
+                      </div>
+                      <input 
+                        type="file" 
+                        ref={fileInputRef}
+                        onChange={(e) => handleFileUpload(e, 'reviews')}
+                        className="hidden" 
+                        accept="image/*"
+                      />
+                      <input 
+                        type="text" 
+                        placeholder="Image URL"
+                        value={reviewForm.image}
+                        onChange={e => setReviewForm({...reviewForm, image: e.target.value})}
+                        className="w-full bg-black/5 border-none rounded-xl p-3 text-xs focus:ring-2 focus:ring-teal outline-none transition-all"
+                      />
+                    </div>
+
+                    {/* Details */}
+                    <div className="space-y-6">
+                      <div>
+                        <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">User Name</label>
+                        <input 
+                          type="text" 
+                          required
+                          value={reviewForm.author}
+                          onChange={e => setReviewForm({...reviewForm, author: e.target.value})}
+                          className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Designation</label>
+                        <input 
+                          type="text" 
+                          required
+                          placeholder="e.g. Marketing VP"
+                          value={reviewForm.role}
+                          onChange={e => setReviewForm({...reviewForm, role: e.target.value})}
+                          className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Company</label>
+                          <input 
+                            type="text" 
+                            required
+                            placeholder="e.g. Zepto"
+                            value={reviewForm.company}
+                            onChange={e => setReviewForm({...reviewForm, company: e.target.value})}
+                            className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Company Text (Optional)</label>
+                          <input 
+                            type="text" 
+                            placeholder="zepto"
+                            value={reviewForm.company_text || ''}
+                            onChange={e => setReviewForm({...reviewForm, company_text: e.target.value})}
+                            className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Status</label>
+                        <select 
+                          value={reviewForm.status}
+                          onChange={e => setReviewForm({...reviewForm, status: e.target.value as 'draft' | 'published'})}
+                          className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+                        >
+                          <option value="published">Published</option>
+                          <option value="draft">Draft</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Testimonial Quote</label>
+                    <textarea 
+                      required
+                      value={reviewForm.quote}
+                      onChange={e => setReviewForm({...reviewForm, quote: e.target.value})}
+                      className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all h-32 font-serif text-lg italic"
+                    />
+                  </div>
+
+                  <div className="flex justify-end pt-4 border-t border-black/5">
+                    <button 
+                      type="submit" 
+                      disabled={uploading || saving}
+                      className="bg-black text-white px-10 py-4 rounded-xl font-bold hover:bg-clay transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                    >
+                      {(uploading || saving) ? <Loader2 className="animate-spin" size={20} /> : <Check size={20} />}
+                      {saving ? 'Saving...' : 'Save Review'}
                     </button>
                   </div>
                 </form>

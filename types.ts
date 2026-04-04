@@ -90,6 +90,21 @@ export interface Testimonial {
   likes: number;
 }
 
+export interface Review {
+  id?: string;
+  author: string;
+  role: string;
+  company: string;
+  company_logo?: string;
+  company_text?: string;
+  image: string;
+  quote: string;
+  rotation?: number;
+  status?: 'draft' | 'published';
+  created_at?: string;
+  updated_at?: string;
+}
+
 export interface NewsletterEntry {
   id?: string;
   email: string;
