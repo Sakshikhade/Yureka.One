@@ -34,15 +34,15 @@ const Security: React.FC = () => {
                     className="flex justify-between items-end border-b-2 border-ink mb-12 pb-4"
                 >
                     <div>
-                        <div className="flex items-center gap-2 text-clay mb-2">
-                             <Lock size={16} />
-                             <span className="text-xs font-bold uppercase tracking-[0.3em]">Privacy Protocol</span>
+                        <div className="flex items-center gap-2 text-[#0e4d3a] mb-2">
+                             <Lock size={16} strokeWidth={2.5} />
+                             <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Privacy Protocol</span>
                         </div>
-                        <h2 className="text-5xl md:text-6xl font-serif text-ink uppercase tracking-tighter">Confidential</h2>
+                        <h2 className="text-6xl md:text-8xl font-serif text-ink uppercase tracking-tighter leading-[0.8]">Confidential</h2>
                     </div>
-                    <div className="hidden md:block text-right">
-                         <p className="text-[10px] font-mono text-ink/40 uppercase tracking-widest">Doc. Ref: YR-884-X</p>
-                         <p className="text-[10px] font-mono text-ink/40 uppercase tracking-widest leading-none">Security: Triple-Layer AES</p>
+                    <div className="hidden md:block text-right mb-1">
+                         <p className="text-[9px] font-bold text-ink/40 uppercase tracking-[0.3em] mb-1">Doc. Ref: YR-884-X</p>
+                         <p className="text-[9px] font-bold text-ink/40 uppercase tracking-[0.3em] leading-none">Security: Triple-Layer AES</p>
                     </div>
                 </motion.div>
 
@@ -54,45 +54,51 @@ const Security: React.FC = () => {
                     onMouseMove={handleMouseMove}
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
-                    className="relative border border-ink/10 bg-paper p-12 md:p-24 text-center cursor-crosshair group overflow-hidden shadow-2xl"
+                    className="relative border border-ink/10 bg-[#111111] p-12 md:p-32 text-center cursor-crosshair group overflow-hidden shadow-2xl rounded-sm"
                 >
-                    <div className="absolute top-8 right-8 opacity-5">
-                        <Fingerprint size={120} className="text-ink" />
+                    <div className="absolute top-12 right-12 opacity-[0.03]">
+                        <Fingerprint size={160} className="text-white" />
                     </div>
 
                     {/* Masked Content (Dimmed) */}
-                    <div className="relative z-10 opacity-20 blur-[3px] transition-all duration-700 group-hover:opacity-10 group-hover:blur-md text-ink">
-                        <h3 className="text-4xl md:text-6xl lg:text-7xl font-bold uppercase tracking-tighter leading-[0.8] mb-8">
+                    <div className="relative z-10 transition-all duration-700 opacity-90 group-hover:opacity-40 group-hover:blur-sm text-white">
+                        <h3 className="text-4xl md:text-6xl lg:text-7xl font-bold uppercase tracking-tighter leading-[0.9] mb-10 max-w-2xl mx-auto">
                             Your Financial Data <br/> Is None Of Our Business.
                         </h3>
-                        <p className="font-serif text-xl md:text-2xl italic max-w-xl mx-auto text-ink/70">
+                        <p className="font-serif text-xl md:text-2xl italic max-w-xl mx-auto text-white/60 leading-relaxed">
                             We use bank-grade encryption for every match. We do not sell, share, or monetize your spending patterns. 
                         </p>
+                        <div className="mt-12 inline-block border border-white/20 px-8 py-3 text-[9px] font-bold uppercase tracking-[0.4em] rounded-full text-white/40">
+                            Verified Secure Protocol
+                        </div>
                     </div>
 
                     {/* Torch Reveal Layer */}
                     <motion.div 
-                        className="absolute inset-0 bg-ink text-white flex items-center justify-center pointer-events-none z-20"
+                        className="absolute inset-0 bg-white text-ink flex items-center justify-center pointer-events-none z-20"
                         style={{
-                            clipPath: `circle(${isHovered ? '220px' : '0px'} at ${springX}px ${springY}px)`,
-                            WebkitClipPath: `circle(${isHovered ? '220px' : '0px'} at ${springX}px ${springY}px)`
+                            clipPath: `circle(${isHovered ? '240px' : '0px'} at ${springX}px ${springY}px)`,
+                            WebkitClipPath: `circle(${isHovered ? '240px' : '0px'} at ${springX}px ${springY}px)`
                         }}
                     >
                          <div className="p-12 md:p-20 text-center">
-                            <h3 className="text-4xl md:text-6xl lg:text-7xl font-bold uppercase tracking-tighter leading-[0.8] mb-8">
+                            <div className="mb-8 opacity-20">
+                                <Lock size={40} strokeWidth={1} />
+                            </div>
+                            <h3 className="text-4xl md:text-6xl lg:text-7xl font-bold uppercase tracking-tighter leading-[0.9] mb-10 max-w-2xl mx-auto">
                                 Your Financial Data <br/> Is None Of Our Business.
                             </h3>
-                            <p className="font-serif text-xl md:text-2xl italic max-w-xl mx-auto opacity-80">
+                            <p className="font-serif text-xl md:text-2xl italic max-w-xl mx-auto text-ink/80 leading-relaxed">
                                 We use bank-grade encryption for every match. We do not sell, share, or monetize your spending patterns. 
                             </p>
-                            <div className="mt-10 inline-block border border-white/30 bg-white/5 backdrop-blur-sm px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.3em] rounded-full">
+                            <div className="mt-12 inline-block bg-ink text-white px-8 py-3 text-[9px] font-bold uppercase tracking-[0.4em] rounded-full shadow-xl">
                                 Verified Secure Protocol
                             </div>
                          </div>
                     </motion.div>
                     
                     {/* Grid Pattern Overlay */}
-                    <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundSize: '40px 40px', backgroundImage: 'linear-gradient(to right, #000 1px, transparent 1px), linear-gradient(to bottom, #000 1px, transparent 1px)' }}></div>
+                    <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{ backgroundSize: '60px 60px', backgroundImage: 'linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px)' }}></div>
 
                 </motion.div>
             </div>
