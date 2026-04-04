@@ -69,6 +69,7 @@ const AdminDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'blogs' | 'cards' | 'waitlist' | 'settings' | 'logs' | 'reviews'>('blogs');
   
   const [error, setError] = useState<string | null>(null);
+  const [isSessionExpired, setIsSessionExpired] = useState(false);
   
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [cards, setCards] = useState<Card[]>([]);
@@ -98,8 +99,11 @@ const AdminDashboard: React.FC = () => {
         clearTimeout(inactivityTimerRef.current);
       }
       inactivityTimerRef.current = setTimeout(() => {
+        setIsSessionExpired(true);
         handleLogout();
-        alert("Security Session Expired: You have been logged out due to 15 minutes of inactivity.");
+        // Force immediate local logout state to lock the UI
+        setUser(null);
+        setIsAdmin(false);
       }, INACTIVITY_TIMEOUT);
     };
 
@@ -586,6 +590,33 @@ const AdminDashboard: React.FC = () => {
           >
             <LogIn size={20} /> Sign in with Google
           </button>
+
+          {isSessionExpired && (
+            <div className="fixed inset-0 z-[200] bg-cream/95 backdrop-blur-md flex items-center justify-center p-6 animate-fade-in">
+              <div className="max-w-md w-full bg-white p-12 rounded-[3rem] shadow-2xl border border-black/5 text-center relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-1 bg-amber-500" />
+                <div className="w-20 h-20 bg-amber-50 rounded-full flex items-center justify-center mx-auto mb-8">
+                  <Clock className="w-10 h-10 text-amber-500 animate-pulse" />
+                </div>
+                <h2 className="text-4xl font-serif italic mb-6 tracking-tight">Session Expired</h2>
+                <p className="text-black/60 mb-10 leading-relaxed font-serif">
+                  For your security, your administrative session has been terminated due to 15 minutes of inactivity.
+                </p>
+                <button 
+                  onClick={() => {
+                    setIsSessionExpired(false);
+                    handleLogin();
+                  }}
+                  className="w-full bg-black text-white py-5 rounded-full font-bold uppercase tracking-[0.3em] text-[10px] hover:bg-clay transition-all shadow-lg active:scale-95 flex items-center justify-center gap-3"
+                >
+                  <LogIn size={14} /> Re-authenticate
+                </button>
+                <div className="mt-8 pt-8 border-t border-black/5 flex justify-center">
+                  <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-black/20 italic">Yureka Security Protocol v2.4</p>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="mt-8 pt-6 border-t border-black/5">
             <p className="text-[10px] text-black/40 uppercase font-bold tracking-widest mb-4">Deployment Guide</p>
