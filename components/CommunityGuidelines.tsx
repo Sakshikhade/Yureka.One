@@ -39,7 +39,7 @@ const CommunityGuidelines: React.FC = () => {
                         Yureka.Money is more than a platform; it is an exclusive club of financial strategists, reward optimizers, and high-net-worth analysts. We demand a high standard of discourse. Our community is built on a foundation of mutual respect, tactical intelligence, and strict adherence to truth.
                     </p>
                     <p className="mt-6">
-                        By participating on the Yureka platform, whether in waitlist forums, user reviews, or interactions with the Savvy AI, you agree unequivocally to the following tenets of behavior.
+                        By participating on the Yureka platform, whether in waitlist forums, user reviews, or interactions with the Yureka AI, you agree unequivocally to the following tenets of behavior.
                     </p>
                 </section>
 
