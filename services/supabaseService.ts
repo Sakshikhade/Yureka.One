@@ -1,4 +1,4 @@
-import { supabase } from '../supabase';
+import { supabase, supabaseAdmin } from '../supabase';
 import { Blog, Card, WaitlistEntry, NewsletterEntry, Review } from '../types';
 
 // Helper for cleaning objects for Supabase (removing undefined/null)
@@ -77,7 +77,7 @@ export const getBlogsAdmin = (callback: (blogs: Blog[]) => void, onError?: (erro
 
 export const addBlog = async (blog: any) => {
   console.log('Adding Blog:', blog);
-  const { data, error } = await supabase.from('blogs').insert([cleanData(blog)]).select();
+  const { data, error } = await supabaseAdmin.from('blogs').insert([cleanData(blog)]).select();
   if (error) {
     console.error('Supabase Blog Insert Error:', error);
     throw error;
@@ -87,7 +87,7 @@ export const addBlog = async (blog: any) => {
 
 export const updateBlog = async (id: string, blogData: any) => {
   console.log('Updating Blog:', id, blogData);
-  const { error } = await supabase.from('blogs').update(cleanData(blogData)).eq('id', id);
+  const { error } = await supabaseAdmin.from('blogs').update(cleanData(blogData)).eq('id', id);
   if (error) {
     console.error('Supabase Blog Update Error:', error);
     throw error;
@@ -107,7 +107,7 @@ export const getBlogBySlug = async (slug: string): Promise<Blog | null> => {
 
 export const deleteBlog = async (id: string) => {
   console.log('Deleting Blog:', id);
-  const { error } = await supabase.from('blogs').delete().eq('id', id);
+  const { error } = await supabaseAdmin.from('blogs').delete().eq('id', id);
   if (error) {
     console.error('Supabase Blog Delete Error:', error);
     throw error;
@@ -169,7 +169,7 @@ export const getCards = (callback: (cards: Card[]) => void, onError?: (error: st
 
 export const addCard = async (card: any) => {
   console.log('Adding Card:', card);
-  const { data, error } = await supabase.from('cards').insert([cleanData(card)]).select();
+  const { data, error } = await supabaseAdmin.from('cards').insert([cleanData(card)]).select();
   if (error) {
     console.error('Supabase Card Insert Error:', error);
     throw error;
@@ -179,7 +179,7 @@ export const addCard = async (card: any) => {
 
 export const updateCard = async (id: string, cardData: any) => {
   console.log('Updating Card:', id, cardData);
-  const { error } = await supabase.from('cards').update(cleanData(cardData)).eq('id', id);
+  const { error } = await supabaseAdmin.from('cards').update(cleanData(cardData)).eq('id', id);
   if (error) {
     console.error('Supabase Card Update Error:', error);
     throw error;
@@ -215,7 +215,7 @@ export const getCardBySlug = async (slugOrId: string): Promise<Card | null> => {
 
 export const deleteCard = async (id: string) => {
   console.log('Deleting Card:', id);
-  const { error } = await supabase.from('cards').delete().eq('id', id);
+  const { error } = await supabaseAdmin.from('cards').delete().eq('id', id);
   if (error) {
     console.error('Supabase Card Delete Error:', error);
     throw error;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { supabase } from '../supabase';
+import { supabase, supabaseAdmin } from '../supabase';
 import { 
   LayoutDashboard, 
   CreditCard, 
@@ -332,22 +332,18 @@ const AdminDashboard: React.FC = () => {
     setUploading(true);
     setError(null);
     try {
-      // Auto-create the 'media' bucket if it doesn't exist
-      // This uses the authenticated admin session JWT which has sufficient permissions
-      const { data: buckets } = await supabase.storage.listBuckets();
+      // Use admin client for storage (service role bypasses storage RLS)
+      const { data: buckets } = await supabaseAdmin.storage.listBuckets();
       const hasMediaBucket = buckets?.some(b => b.name === 'media');
       if (!hasMediaBucket) {
-        const { error: bucketErr } = await supabase.storage.createBucket('media', { public: true });
-        if (bucketErr && !bucketErr.message.includes('already exists')) {
-          throw new Error(`Could not create storage bucket: ${bucketErr.message}`);
-        }
+        await supabaseAdmin.storage.createBucket('media', { public: true });
       }
 
       const path = `${type.startsWith('reviews') ? 'reviews' : type}/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
-      const { data, error } = await supabase.storage.from('media').upload(path, file);
+      const { data, error } = await supabaseAdmin.storage.from('media').upload(path, file);
       if (error) throw error;
 
-      const { data: publicUrlData } = supabase.storage.from('media').getPublicUrl(data.path);
+      const { data: publicUrlData } = await supabaseAdmin.storage.from('media').getPublicUrl(data.path);
       const url = publicUrlData.publicUrl;
 
       if (type === 'blogs') setBlogForm(prev => ({ ...prev, image: url }));
