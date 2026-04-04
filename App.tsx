@@ -33,6 +33,7 @@ const BlogDetail = lazy(() => import('./components/BlogDetail'));
 const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('./components/TermsOfService'));
 const CommunityGuidelines = lazy(() => import('./components/CommunityGuidelines'));
+const SecurityProtocolPage = lazy(() => import('./components/SecurityProtocolPage'));
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -189,6 +190,16 @@ const AppContent: React.FC = () => {
                       description="Rules of engagement for the highest quality financial club."
                     />
                    <CommunityGuidelines />
+                 </>
+               } />
+
+               <Route path="/security-protocol" element={
+                  <>
+                    <SEO 
+                      title="Security Protocol | Yureka.Money" 
+                      description="Bank-grade encryption and architectural security measures."
+                    />
+                   <SecurityProtocolPage />
                  </>
                } />
                
