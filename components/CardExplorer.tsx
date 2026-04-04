@@ -98,10 +98,11 @@ const BANK_LOGOS: Record<string, string> = {
     'Indian Overseas Bank': '/assets/banks/iob.png'
 };
 
+import { useSupabase } from './SupabaseProvider';
+import { SkeletonCard } from './SkeletonLoaders';
+
 const CardExplorer: React.FC = () => {
-    const [cardsList, setCardsList] = useState<Card[]>([]);
-    const [error, setError] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const { cards: cardsList, isLoading, syncStatus } = useSupabase();
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedBanks, setSelectedBanks] = useState<string[]>([]);
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -114,25 +115,6 @@ const CardExplorer: React.FC = () => {
     const BANKS_INITIAL_COUNT = 10;
     const CATEGORIES_INITIAL_COUNT = 6;
     const PILL_CATEGORIES_INITIAL_COUNT = 9;
-
-    const loadCards = () => {
-        setIsLoading(true);
-        setError(null);
-        return getCards((fetchedCards) => {
-            setCardsList(fetchedCards);
-            setIsLoading(false);
-            setError(null);
-        }, (err) => {
-            console.error("Cards Fetch Error:", err);
-            setError(err);
-            setIsLoading(false);
-        });
-    };
-
-    useEffect(() => {
-        const unsubscribe = loadCards();
-        return () => unsubscribe();
-    }, []);
 
     const categories = ALL_CATEGORIES;
     const banks = ALL_BANKS;
@@ -178,37 +160,14 @@ const CardExplorer: React.FC = () => {
         setSelectedCategories(prev => prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]);
     };
 
-    if (isLoading) {
+    if (isLoading && cardsList.length === 0) {
         return (
-            <div className="min-h-screen bg-white flex items-center justify-center">
-                <div className="flex flex-col items-center gap-4">
-                    <div className="w-12 h-12 border-4 border-clay border-t-transparent rounded-full animate-spin"></div>
-                    <div className="text-xl font-sans font-medium text-ink/60">Loading Credit Card Explorer...</div>
-                </div>
-            </div>
-        );
-    }
-
-    if (error && cardsList.length === 0) {
-        return (
-            <div className="min-h-screen bg-cream flex items-center justify-center p-6">
-                <div className="max-w-md w-full bg-white p-10 rounded-[2.5rem] shadow-xl border border-red-100 text-center">
-                    <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-6" />
-                    <h2 className="text-3xl font-serif italic mb-4">Connection Issue</h2>
-                    <p className="text-ink/60 mb-8 leading-relaxed">
-                        We're having trouble reaching our catalog. This might be a temporary connection issue.
-                    </p>
-                    <div className="bg-red-50 p-4 rounded-2xl mb-8 text-left">
-                        <p className="text-[10px] font-bold uppercase tracking-widest text-red-400 mb-1">Error Detail</p>
-                        <p className="text-xs font-mono text-red-600 break-words leading-tight">{error}</p>
+            <div className="min-h-screen bg-white pt-32 px-6">
+                <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <div className="lg:col-span-3 space-y-8"><div className="h-96 bg-slate-50 rounded-3xl animate-pulse" /></div>
+                    <div className="lg:col-span-9 grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <SkeletonCard /><SkeletonCard /><SkeletonCard /><SkeletonCard />
                     </div>
-                    <button 
-                        onClick={() => loadCards()}
-                        className="w-full bg-black text-white py-6 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-clay transition-all active:scale-95 shadow-lg"
-                    >
-                        Try Reconnecting
-                    </button>
-                    <p className="mt-8 text-[9px] font-bold uppercase tracking-[0.4em] text-ink/20 italic">Automated sequence recovery active</p>
                 </div>
             </div>
         );

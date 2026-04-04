@@ -1,33 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { ArrowUpRight, ArrowRight, Bookmark, Share2, Clock, Calendar } from 'lucide-react';
+import React from 'react';
+import { ArrowUpRight, ArrowRight, Clock, Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import ImageWithLoader from './ImageWithLoader';
-import { getBlogs } from '../services/supabaseService';
 import { Blog } from '../types';
+import { useSupabase } from './SupabaseProvider';
+import { SkeletonBlog } from './SkeletonLoaders';
 
 const JournalPage: React.FC = () => {
-    const [blogsList, setBlogsList] = useState<Blog[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-
-    const loadBlogs = () => {
-        setIsLoading(true);
-        setError(null);
-        return getBlogs((fetchedBlogs) => {
-            setBlogsList(fetchedBlogs);
-            setIsLoading(false);
-            setError(null);
-        }, (err) => {
-            console.error("Blogs Fetch Error:", err);
-            setError(err);
-            setIsLoading(false);
-        });
-    };
-
-    useEffect(() => {
-        const unsubscribe = loadBlogs();
-        return () => unsubscribe();
-    }, []);
+    const { blogs: blogsList, isLoading, syncStatus } = useSupabase();
 
     // Placeholder data if Supabase is empty
     const defaultBlogs: Blog[] = [
@@ -38,6 +18,7 @@ const JournalPage: React.FC = () => {
             category: "Fintech",
             author: "Riya S.",
             date: "Oct 12, 2026",
+            slug: "upi-cashback-revolution", // Added missing slug
             image: "https://images.unsplash.com/photo-1556742044-3c52d6e88c62?auto=format&fit=crop&q=80&w=1600",
             featured: true,
             content: "..."
@@ -49,6 +30,7 @@ const JournalPage: React.FC = () => {
             category: "Technology",
             author: "Ankit M.",
             date: "Oct 08, 2026",
+            slug: "ai-card-matching", // Added missing slug
             image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=800",
             featured: false,
             content: "..."
@@ -61,37 +43,12 @@ const JournalPage: React.FC = () => {
 
     if (isLoading && blogsList.length === 0) {
         return (
-            <div className="min-h-screen bg-cream flex items-center justify-center">
-                <div className="flex flex-col items-center gap-6">
-                    <div className="w-16 h-16 border-4 border-ink/10 border-t-clay rounded-full animate-spin"></div>
-                    <div className="text-3xl font-serif italic text-ink/40">Loading Journal...</div>
-                </div>
-            </div>
-        );
-    }
-
-    if (error && blogsList.length === 0) {
-        return (
-            <div className="min-h-screen bg-cream flex items-center justify-center p-6">
-                <div className="max-w-md w-full bg-white p-12 rounded-[3rem] shadow-2xl border border-ink/5 text-center">
-                    <div className="w-20 h-20 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-8">
-                        <Calendar className="w-10 h-10 text-red-400" />
-                    </div>
-                    <h2 className="text-4xl font-serif italic mb-6 tracking-tight">The Pulse is Offline</h2>
-                    <p className="text-ink/60 mb-10 leading-relaxed font-serif">
-                        Our editorial servers are currently unreachable. This might be a temporary network issue.
-                    </p>
-                    <div className="bg-ink/5 p-5 rounded-2xl mb-10 text-left border border-ink/5">
-                        <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-ink/30 mb-2">Technical Insight</p>
-                        <p className="text-xs font-mono text-ink/60 break-words leading-tight">{error}</p>
-                    </div>
-                    <button 
-                        onClick={() => loadBlogs()}
-                        className="w-full bg-ink text-white py-5 rounded-full font-bold uppercase tracking-[0.3em] text-[10px] hover:bg-clay transition-all shadow-lg active:scale-95"
-                    >
-                        Try Reconnecting
-                    </button>
-                    <p className="mt-8 text-[9px] font-bold uppercase tracking-[0.4em] text-ink/20">System-level recovery active</p>
+            <div className="min-h-screen bg-cream pt-32 px-6">
+                <div className="max-w-[1440px] mx-auto space-y-12">
+                   <div className="h-64 bg-slate-100 rounded-[3rem] animate-pulse" />
+                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <SkeletonBlog /><SkeletonBlog /><SkeletonBlog />
+                   </div>
                 </div>
             </div>
         );
