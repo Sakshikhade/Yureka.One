@@ -69,7 +69,7 @@ const Footer: React.FC = () => {
                     <h4 className="font-bold text-[10px] md:text-xs uppercase tracking-[0.2em] mb-4 md:mb-8 text-black/40">Legal & Privacy</h4>
                     <ul className="space-y-3 md:space-y-4">
                         <li><a href="#" className="hover:text-clay font-serif text-sm md:text-base transition-colors">Terms of Service</a></li>
-                        <li><a href="#" className="hover:text-clay font-serif text-sm md:text-base transition-colors">Privacy Policy</a></li>
+                        <li><Link to="/privacy-policy" className="hover:text-clay font-serif text-sm md:text-base transition-colors">Privacy Policy</Link></li>
                         <li><a href="#" className="hover:text-clay font-serif text-sm md:text-base transition-colors">Security Protocol</a></li>
                         <li><a href="#" className="hover:text-clay font-serif text-sm md:text-base transition-colors">Community Guidelines</a></li>
                     </ul>

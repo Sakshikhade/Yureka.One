@@ -30,6 +30,7 @@ const RewardsPage = lazy(() => import('./components/RewardsPage'));
 const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
 const CardDetail = lazy(() => import('./components/CardDetail'));
 const BlogDetail = lazy(() => import('./components/BlogDetail'));
+const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy'));
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -156,6 +157,16 @@ const AppContent: React.FC = () => {
                       description="Why transparency matters. Join us in building a future where financial data serves the individual first."
                     />
                    <OurStory />
+                 </>
+               } />
+               
+               <Route path="/privacy-policy" element={
+                  <>
+                    <SEO 
+                      title="Privacy Policy | Yureka.Money" 
+                      description="How we protect your financial data and comply with DPDP regulations."
+                    />
+                   <PrivacyPolicy />
                  </>
                } />
                
