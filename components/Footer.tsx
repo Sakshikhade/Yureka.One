@@ -71,7 +71,7 @@ const Footer: React.FC = () => {
                         <li><Link to="/terms-of-service" className="hover:text-clay font-serif text-sm md:text-base transition-colors">Terms of Service</Link></li>
                         <li><Link to="/privacy-policy" className="hover:text-clay font-serif text-sm md:text-base transition-colors">Privacy Policy</Link></li>
                         <li><a href="#" className="hover:text-clay font-serif text-sm md:text-base transition-colors">Security Protocol</a></li>
-                        <li><a href="#" className="hover:text-clay font-serif text-sm md:text-base transition-colors">Community Guidelines</a></li>
+                        <li><Link to="/community-guidelines" className="hover:text-clay font-serif text-sm md:text-base transition-colors">Community Guidelines</Link></li>
                     </ul>
                 </div>
 

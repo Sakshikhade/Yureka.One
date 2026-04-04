@@ -32,6 +32,7 @@ const CardDetail = lazy(() => import('./components/CardDetail'));
 const BlogDetail = lazy(() => import('./components/BlogDetail'));
 const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy'));
 const TermsOfService = lazy(() => import('./components/TermsOfService'));
+const CommunityGuidelines = lazy(() => import('./components/CommunityGuidelines'));
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -178,6 +179,16 @@ const AppContent: React.FC = () => {
                       description="Legal agreements and terms of usage for the Yureka.Money platform."
                     />
                    <TermsOfService />
+                 </>
+               } />
+
+               <Route path="/community-guidelines" element={
+                  <>
+                    <SEO 
+                      title="Community Guidelines | Yureka.Money" 
+                      description="Rules of engagement for the highest quality financial club."
+                    />
+                   <CommunityGuidelines />
                  </>
                } />
                
