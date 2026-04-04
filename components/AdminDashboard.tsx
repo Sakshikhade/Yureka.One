@@ -332,6 +332,17 @@ const AdminDashboard: React.FC = () => {
     setUploading(true);
     setError(null);
     try {
+      // Auto-create the 'media' bucket if it doesn't exist
+      // This uses the authenticated admin session JWT which has sufficient permissions
+      const { data: buckets } = await supabase.storage.listBuckets();
+      const hasMediaBucket = buckets?.some(b => b.name === 'media');
+      if (!hasMediaBucket) {
+        const { error: bucketErr } = await supabase.storage.createBucket('media', { public: true });
+        if (bucketErr && !bucketErr.message.includes('already exists')) {
+          throw new Error(`Could not create storage bucket: ${bucketErr.message}`);
+        }
+      }
+
       const path = `${type.startsWith('reviews') ? 'reviews' : type}/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
       const { data, error } = await supabase.storage.from('media').upload(path, file);
       if (error) throw error;
@@ -346,8 +357,7 @@ const AdminDashboard: React.FC = () => {
       setPreviewUrl(url);
     } catch (err: any) {
       console.error('Image upload failed:', err);
-      setError(`Image upload failed: ${err.message || 'Please run the SQL fix script and try again.'}`);
-      // Rollback form image on failure
+      setError(`Image upload failed: ${err.message || 'Please run the SQL fix script in your Supabase dashboard.'}`);
       setPreviewUrl(null);
       if (type === 'blogs') setBlogForm(prev => ({ ...prev, image: editingItem?.image || '' }));
       else if (type === 'cards') setCardForm(prev => ({ ...prev, image: editingItem?.image || '' }));
