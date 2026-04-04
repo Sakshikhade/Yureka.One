@@ -31,6 +31,7 @@ const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
 const CardDetail = lazy(() => import('./components/CardDetail'));
 const BlogDetail = lazy(() => import('./components/BlogDetail'));
 const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy'));
+const TermsOfService = lazy(() => import('./components/TermsOfService'));
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -167,6 +168,16 @@ const AppContent: React.FC = () => {
                       description="How we protect your financial data and comply with DPDP regulations."
                     />
                    <PrivacyPolicy />
+                 </>
+               } />
+
+               <Route path="/terms-of-service" element={
+                  <>
+                    <SEO 
+                      title="Terms of Service | Yureka.Money" 
+                      description="Legal agreements and terms of usage for the Yureka.Money platform."
+                    />
+                   <TermsOfService />
                  </>
                } />
                
