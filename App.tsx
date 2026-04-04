@@ -32,10 +32,17 @@ const CardDetail = lazy(() => import('./components/CardDetail'));
 const BlogDetail = lazy(() => import('./components/BlogDetail'));
 
 const ScrollToTop = () => {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
   React.useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+    if (!hash) {
+      window.scrollTo(0, 0);
+    } else {
+      const element = document.getElementById(hash.replace('#', ''));
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [pathname, hash]);
   return null;
 }
 
@@ -57,14 +64,14 @@ const MainPage = ({ cards }: { cards: Card[] }) => (
     />
     <Hero />
     <TextReveal />
-    <div id="showcase"><ShowcaseCarousel cards={cards} /></div>
-    <div id="stats"><Stats /></div>
+    <div id="showcase" className="scroll-mt-24"><ShowcaseCarousel cards={cards} /></div>
+    <div id="stats" className="scroll-mt-24"><Stats /></div>
     <Marquee />
-    <div id="security"><Security /></div>
-    <div id="reviews"><Community /></div>
+    <div id="security" className="scroll-mt-24"><Security /></div>
+    <div id="reviews" className="scroll-mt-24"><Community /></div>
     <ComingSoon />
     <SocialProof />
-    <div id="faq"><FAQ /></div>
+    <div id="faq" className="scroll-mt-24"><FAQ /></div>
   </>
 );
 
