@@ -33,16 +33,24 @@ const BlogDetail = lazy(() => import('./components/BlogDetail'));
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
+  
   React.useEffect(() => {
     if (!hash) {
       window.scrollTo(0, 0);
     } else {
-      const element = document.getElementById(hash.replace('#', ''));
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
+      const id = hash.replace('#', '');
+      const scrollWithRetry = (retryCount = 0) => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        } else if (retryCount < 20) { // Try for 2 seconds (20 * 100ms)
+          setTimeout(() => scrollWithRetry(retryCount + 1), 100);
+        }
+      };
+      scrollWithRetry();
     }
   }, [pathname, hash]);
+  
   return null;
 }
 
