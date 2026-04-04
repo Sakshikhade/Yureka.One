@@ -70,7 +70,22 @@ const BANK_LOGOS: Record<string, string> = {
     'RBL': '/assets/banks/rbl.png',
     'Amex': '/assets/banks/amex.png',
     'IndusInd': '/assets/banks/indusind.png',
-    'BOB': '/assets/banks/bob.png'
+    'BOB': '/assets/banks/bob.png',
+    'SC': '/assets/banks/sc.png',
+    'Indian': '/assets/banks/indian.png',
+    'PNB': '/assets/banks/pnb.png',
+    'IDFC': '/assets/banks/idfc.png',
+    'Canara': '/assets/banks/canara.png',
+    'HSBC': '/assets/banks/hsbc.png',
+    'DBS': '/assets/banks/dbs.png',
+    'IDBI': '/assets/banks/idbi.png',
+    'AU': '/assets/banks/au.png',
+    'Equitas': '/assets/banks/equitas.png',
+    'CSB': '/assets/banks/csb.png',
+    'Federal': '/assets/banks/federal.png',
+    'SBM': '/assets/banks/sbm.png',
+    'South Indian': '/assets/banks/southindian.png',
+    'Utkarsh Bank': '/assets/banks/utkarsh.png'
 };
 
 const CardExplorer: React.FC = () => {
