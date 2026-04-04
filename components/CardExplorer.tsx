@@ -386,14 +386,8 @@ const CardExplorer: React.FC = () => {
                                     className="relative group"
                                 >
                                     <motion.div 
-                                        whileHover={{ 
-                                            rotateY: 2, 
-                                            rotateX: -2,
-                                            scale: 1.01,
-                                            z: 50
-                                        }}
-                                        style={{ perspective: 1000 }}
-                                        className="relative bg-white rounded-[2.5rem] shadow-sm border border-ink/5 overflow-hidden group hover:shadow-[0_40px_80px_-20px_rgba(36,36,36,0.15)] transition-all duration-700"
+                                        whileHover={{ scale: 1.02 }}
+                                        className="relative bg-white rounded-[2.5rem] shadow-sm border border-ink/5 overflow-hidden group hover:shadow-[0_20px_60px_-15px_rgba(36,36,36,0.10)] transition-transform duration-300"
                                     >
                                         {/* Premium background gradient on hover */}
                                         <div className="absolute inset-0 bg-gradient-to-br from-paper via-transparent to-paper opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none"></div>

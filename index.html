@@ -62,42 +62,35 @@
         body { display: none !important; }
       }
 
-      /* Global Paper Grain Texture */
+      /* Global Paper Grain Texture - Optimized */
       .paper-texture {
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+        inset: 0;
         pointer-events: none;
         z-index: 9999;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
-        opacity: 0.6;
-        mix-blend-mode: multiply;
+        /* Lightweight base64 tile */
+        background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyBAMAAADsEZWCAAAAGFBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA75mMAAAACHRSTlMA1P////+/AE+3TToAAACgSURBVDjLjZPRDoQgDEVb8P//Y3dMvKxGZ+GDFGgvA+N2DqI1nK8v6220Z+bMTf133h51U92W3u3n/c3j9/2Q13f8+pP1rQfz0sP02B895O7RfnTof0P+e7Tv3x7pQ//o0d6/PRL7g0d7f/dov7899P8e2U/oR8gPdXvkHz+Q/2yPdKH+2SO/1D165H11jz6+oUffX9eH/Pujvdn9f/UBU2k3sKxT+mEAAAAASUVORK5CYII=");
+        opacity: 0.15;
+        background-repeat: repeat;
       }
 
-      /* Subtle Vignette for Physical Feel */
+      /* Vignette - Optimized */
       .vignette-overlay {
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+        inset: 0;
         pointer-events: none;
         z-index: 9998;
-        background: radial-gradient(circle at 50% 50%, rgba(242, 239, 233, 0) 60%, rgba(220, 215, 205, 0.4) 100%);
-        box-shadow: inset 0 0 80px rgba(0,0,0,0.02);
+        background: radial-gradient(circle at center, transparent 60%, rgba(200, 195, 185, 0.2) 100%);
       }
 
-      /* Glass/Vellum Island Effect - Optimized for Readability */
+      /* Glass/Vellum Island Effect - Hardware Accelerated */
       .glass-panel {
-        background: rgba(255, 255, 255, 0.75); 
-        backdrop-filter: blur(20px) saturate(180%);
-        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        background: rgba(255, 255, 255, 0.85); 
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
         border: 1px solid rgba(255, 255, 255, 0.5); 
-        box-shadow: 
-            0 8px 32px 0 rgba(31, 38, 135, 0.05),
-            inset 0 0 0 1px rgba(255, 255, 255, 0.2); 
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03); 
+        transform: translateZ(0);
       }
 
       h1, h2, h3, h4, h5, h6, .font-serif {
