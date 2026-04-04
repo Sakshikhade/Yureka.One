@@ -294,7 +294,7 @@ const CardExplorer: React.FC = () => {
                                     <div className="flex items-center gap-3">
                                         <div className="w-8 h-8 rounded-full bg-cream border border-ink/5 flex items-center justify-center overflow-hidden group-hover:border-clay/20 transition-all shrink-0">
                                             {BANK_LOGOS[bank] ? (
-                                                <img src={BANK_LOGOS[bank]} alt={bank} className="w-full h-full object-contain p-1" />
+                                                <img src={BANK_LOGOS[bank]} alt={bank} loading="lazy" className="w-full h-full object-contain p-1" />
                                             ) : (
                                                 <span className="font-bold text-[10px] text-clay/60">{bank[0]}</span>
                                             )}
@@ -561,7 +561,7 @@ const CardExplorer: React.FC = () => {
                                             className={`py-3 px-4 rounded-2xl border text-[10px] font-bold tracking-widest transition-all flex items-center justify-center gap-2 ${selectedBanks.includes(bank) ? 'bg-clay border-clay text-white shadow-xl scale-[1.02]' : 'bg-white border-ink/5 text-ink/40 hover:border-ink/10'}`}
                                         >
                                             {BANK_LOGOS[bank] && (
-                                                <img src={BANK_LOGOS[bank]} alt={bank} className={`w-4 h-4 object-contain ${selectedBanks.includes(bank) ? 'brightness-0 invert' : ''}`} />
+                                                <img src={BANK_LOGOS[bank]} alt={bank} loading="lazy" className={`w-4 h-4 object-contain ${selectedBanks.includes(bank) ? 'brightness-0 invert' : ''}`} />
                                             )}
                                             {bank}
                                         </button>

@@ -757,7 +757,7 @@ const AdminDashboard: React.FC = () => {
 
         <div className="p-4 border-t border-black/5">
           <div className="flex items-center gap-3 mb-4 px-2">
-            <img src={user.user_metadata?.avatar_url || "https://picsum.photos/40/40"} alt="" className="w-8 h-8 rounded-full" />
+            <img src={user.user_metadata?.avatar_url || "https://picsum.photos/40/40"} alt="" loading="lazy" className="w-8 h-8 rounded-full" />
             <div className="overflow-hidden">
               <p className="text-xs font-bold truncate">{user.user_metadata?.full_name || 'Admin'}</p>
               <p className="text-[10px] text-black/40 truncate">{user.email}</p>
@@ -987,7 +987,7 @@ const AdminDashboard: React.FC = () => {
                     <tr key={review.id} className="hover:bg-black/[0.01] transition-colors">
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <img src={review.image} alt="" className="w-8 h-8 rounded-full object-cover" />
+                          <img src={review.image} alt="" loading="lazy" className="w-8 h-8 rounded-full object-cover" />
                           <span className="font-bold text-sm">{review.author}</span>
                         </div>
                       </td>
@@ -1421,7 +1421,7 @@ const AdminDashboard: React.FC = () => {
                       <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Cover Image</label>
                       <div className="relative aspect-video rounded-xl overflow-hidden bg-black/5 border-2 border-dashed border-black/10 group">
                         {blogForm.image ? (
-                          <img src={blogForm.image} alt="Preview" className="w-full h-full object-cover" />
+                          <img src={blogForm.image} alt="Preview" loading="lazy" className="w-full h-full object-cover" />
                         ) : (
                           <div className="absolute inset-0 flex flex-col items-center justify-center text-black/20">
                             <ImageIcon size={48} />

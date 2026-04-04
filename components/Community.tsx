@@ -149,7 +149,8 @@ const DraggableCardPair: React.FC<DraggableCardPairProps> = ({ review, index, pr
                  <div className="w-full aspect-[4/5] bg-gray-200 overflow-hidden grayscale contrast-125 mb-4 border border-black/10">
                      <img 
                         src={review.image} 
-                        alt={review.role} 
+                        alt={review.role}
+                        loading="lazy" 
                         className="w-full h-full object-cover mix-blend-multiply" 
                         draggable={false}
                      />

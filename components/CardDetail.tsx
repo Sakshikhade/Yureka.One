@@ -208,7 +208,7 @@ const CardDetail: React.FC = () => {
                                 <div className="flex -space-x-4">
                                     {[1, 2, 3].map(i => (
                                         <div key={i} className="w-12 h-12 rounded-full border-2 border-ink bg-cream overflow-hidden">
-                                            <img src={`https://i.pravatar.cc/100?img=${i+10}`} alt="Analyst" />
+                                            <img src={`https://i.pravatar.cc/100?img=${i+10}`} alt="Analyst" loading="lazy" />
                                         </div>
                                     ))}
                                 </div>
