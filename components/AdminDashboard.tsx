@@ -37,7 +37,7 @@ import {
   Clock as ClockIcon
 } from 'lucide-react';
 import { 
-  getBlogs, addBlog, updateBlog, deleteBlog,
+  getBlogsAdmin, addBlog, updateBlog, deleteBlog,
   getCardsAdmin, addCard, updateCard, deleteCard,
   getWaitlist, deleteWaitlistEntry, updateWaitlistStatus,
   checkIfAdmin, getTeamMembers, inviteTeamMember, updateUserRole, deleteUser, getAuditLogs,
@@ -235,7 +235,7 @@ const AdminDashboard: React.FC = () => {
     };
 
     // Subscribe to Blogs
-    const unsubscribeBlogs = getBlogs((fetched) => {
+    const unsubscribeBlogs = getBlogsAdmin((fetched) => {
       setBlogs(fetched);
       checkConnection();
     });

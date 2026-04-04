@@ -6,9 +6,12 @@ const cleanData = (obj: any) => {
   const cleaned = { ...obj };
   Object.keys(cleaned).forEach(key => {
     if (cleaned[key] === undefined) delete cleaned[key];
+    // Convert empty strings to null for date fields
+    if (key === 'scheduled_at' && cleaned[key] === '') {
+      cleaned[key] = null;
+    }
     // Convert benefits array to Postgres format if needed
     if (key === 'benefits' && Array.isArray(cleaned[key])) {
-      // Ensure it's a valid string array
       cleaned[key] = cleaned[key].filter((b: string) => b && b.trim() !== '');
     }
     // Handle benefit_items array of objects
@@ -23,9 +26,13 @@ const cleanData = (obj: any) => {
 export const getBlogs = (callback: (blogs: Blog[]) => void, onError?: (error: string) => void) => {
   const fetchBlogs = async () => {
     try {
+      const now = new Date().toISOString();
       const { data, error } = await supabase
         .from('blogs')
         .select('*')
+        .eq('status', 'published')
+        // Filter for posts where scheduled_at is null OR scheduled_at <= now
+        .or(`scheduled_at.is.null,scheduled_at.lte.${now}`)
         .order('created_at', { ascending: false });
       
       if (error) throw error;
@@ -37,11 +44,32 @@ export const getBlogs = (callback: (blogs: Blog[]) => void, onError?: (error: st
   };
   fetchBlogs();
   
-  const channel = supabase.channel('blogs-realtime')
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'blogs' }, (payload) => {
-      console.log('Real-time blog change:', payload.eventType);
-      fetchBlogs();
-    })
+  const channel = supabase.channel('blogs-public-realtime')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'blogs' }, () => fetchBlogs())
+    .subscribe();
+    
+  return () => { supabase.removeChannel(channel); };
+};
+
+export const getBlogsAdmin = (callback: (blogs: Blog[]) => void, onError?: (error: string) => void) => {
+  const fetchBlogs = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('blogs')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      callback(data as Blog[]);
+    } catch (error: any) {
+      console.error('Error fetching blogs admin:', error);
+      if (onError) onError(error.message || 'Failed to fetch blogs admin');
+    }
+  };
+  fetchBlogs();
+  
+  const channel = supabase.channel('blogs-admin-realtime')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'blogs' }, () => fetchBlogs())
     .subscribe();
     
   return () => { supabase.removeChannel(channel); };
