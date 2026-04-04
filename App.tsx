@@ -57,14 +57,14 @@ const MainPage = ({ cards }: { cards: Card[] }) => (
     />
     <Hero />
     <TextReveal />
-    <ShowcaseCarousel cards={cards} />
-    <Stats />
+    <div id="showcase"><ShowcaseCarousel cards={cards} /></div>
+    <div id="stats"><Stats /></div>
     <Marquee />
-    <Security />
-    <Community />
+    <div id="security"><Security /></div>
+    <div id="reviews"><Community /></div>
     <ComingSoon />
     <SocialProof />
-    <FAQ />
+    <div id="faq"><FAQ /></div>
   </>
 );
 
