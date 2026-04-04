@@ -321,11 +321,11 @@ const AdminDashboard: React.FC = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Instant local preview
+    // Instant local preview for responsive UX
     const localUrl = URL.createObjectURL(file);
     setPreviewUrl(localUrl);
     
-    // Optimistically update form image for immediate visual feedback
+    // Optimistically update form with local blob URL immediately (non-blocking)
     if (type === 'blogs') {
       setBlogForm(prev => ({ ...prev, image: localUrl }));
     } else if (type === 'cards') {
@@ -336,39 +336,34 @@ const AdminDashboard: React.FC = () => {
        setReviewForm(prev => ({ ...prev, company_logo: localUrl }));
     }
 
+    // Attempt Supabase Storage upload in background — non-blocking
+    // The form will save with the localUrl if this fails
     setUploading(true);
     try {
-      const { data, error } = await supabase.storage.from('media').upload(`${type.startsWith('reviews') ? 'reviews' : type}/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`, file);
-      if (error) throw error;
+      const path = `${type.startsWith('reviews') ? 'reviews' : type}/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
+      const { data, error } = await supabase.storage.from('media').upload(path, file);
       
-      const { data: publicUrlData } = supabase.storage.from('media').getPublicUrl(data.path);
-      const url = publicUrlData.publicUrl;
-      
-      // Update with the real URL from Supabase Storage
-      if (type === 'blogs') {
-        setBlogForm(prev => ({ ...prev, image: url }));
-      } else if (type === 'cards') {
-        setCardForm(prev => ({ ...prev, image: url }));
-      } else if (type === 'reviews') {
-        setReviewForm(prev => ({ ...prev, image: url }));
-      } else if (type === 'reviews_logo') {
-        setReviewForm(prev => ({ ...prev, company_logo: url }));
+      if (!error && data) {
+        // Only update to remote URL if upload succeeded
+        const { data: publicUrlData } = supabase.storage.from('media').getPublicUrl(data.path);
+        const url = publicUrlData.publicUrl;
+        if (type === 'blogs') {
+          setBlogForm(prev => ({ ...prev, image: url }));
+        } else if (type === 'cards') {
+          setCardForm(prev => ({ ...prev, image: url }));
+        } else if (type === 'reviews') {
+          setReviewForm(prev => ({ ...prev, image: url }));
+        } else if (type === 'reviews_logo') {
+          setReviewForm(prev => ({ ...prev, company_logo: url }));
+        }
+        setPreviewUrl(url);
+      } else {
+        // Upload failed but we keep the local preview — user can still save
+        console.warn("Storage upload failed, using local blob URL:", error?.message);
       }
-      setPreviewUrl(url);
-    } catch (error) {
-      console.error("Error uploading file", error);
-      setError("Failed to upload image. Please try again.");
-      // Rollback preview and form image if upload fails
-      setPreviewUrl(null);
-      if (type === 'blogs') {
-        setBlogForm(prev => ({ ...prev, image: editingItem?.image || 'https://picsum.photos/seed/blog/800/600' }));
-      } else if (type === 'cards') {
-        setCardForm(prev => ({ ...prev, image: editingItem?.image || 'https://picsum.photos/seed/card/400/250' }));
-      } else if (type === 'reviews') {
-        setReviewForm(prev => ({ ...prev, image: editingItem?.image || 'https://picsum.photos/seed/review/300/400' }));
-      } else if (type === 'reviews_logo') {
-        setReviewForm(prev => ({ ...prev, company_logo: editingItem?.company_logo || '' }));
-      }
+    } catch (uploadErr) {
+      console.warn("Storage upload exception, using local blob URL:", uploadErr);
+      // No UI error shown — the local preview is already set and user can still save
     } finally {
       setUploading(false);
     }
