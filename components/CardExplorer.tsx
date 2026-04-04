@@ -65,7 +65,12 @@ const BANK_LOGOS: Record<string, string> = {
     'SBI': '/assets/banks/sbi.png',
     'Axis': '/assets/banks/axis.png',
     'ICICI': '/assets/banks/icici.png',
-    'Kotak': '/assets/banks/kotak.png'
+    'Kotak': '/assets/banks/kotak.png',
+    'Yes Bank': '/assets/banks/yesbank.png',
+    'RBL': '/assets/banks/rbl.png',
+    'Amex': '/assets/banks/amex.png',
+    'IndusInd': '/assets/banks/indusind.png',
+    'BOB': '/assets/banks/bob.png'
 };
 
 const CardExplorer: React.FC = () => {
