@@ -764,7 +764,7 @@ const AdminDashboard: React.FC = () => {
               <Zap size={14} />
               Diagnostics
             </button>
-            {activeTab !== 'waitlist' && (
+            {['blogs', 'cards', 'reviews'].includes(activeTab) && (
               <button 
                 onClick={() => {
                   setEditingItem(null);

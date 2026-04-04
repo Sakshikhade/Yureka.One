@@ -156,8 +156,8 @@ const DraggableCardPair: React.FC<DraggableCardPairProps> = ({ review, index, pr
                      />
                  </div>
                  <div className="text-center pb-4">
-                    <h3 className="text-lg font-serif text-black">{review.role}</h3>
-                    <p className="text-xs font-mono uppercase tracking-widest text-black/50 mt-1">{review.company_text || review.company}</p>
+                    <h3 className="text-xl font-serif font-bold text-black">{review.author}</h3>
+                    <p className="text-xs font-mono uppercase tracking-widest text-black/50 mt-1">{review.role}</p>
                  </div>
             </div>
 
@@ -188,7 +188,7 @@ const DraggableCardPair: React.FC<DraggableCardPairProps> = ({ review, index, pr
                  <div className="mt-auto pt-6 border-t border-black/10 w-full relative z-10">
                     <div className="flex items-center gap-2 justify-between w-full">
                         <span className="font-mono text-[10px] uppercase tracking-widest text-black/40">From the desk of</span>
-                        <span className="font-serif font-bold text-lg italic text-black">{review.author}</span>
+                        <span className="font-serif font-bold text-lg italic text-black">{review.company_text || review.company}</span>
                     </div>
                  </div>
             </div>
