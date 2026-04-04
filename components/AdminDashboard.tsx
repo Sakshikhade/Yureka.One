@@ -40,6 +40,8 @@ const ADMIN_CATEGORIES = [
   'Shopping', 'Dining', 'Lounge Access', 'Lifetime Free', 'Business', 'UPI'
 ];
 
+import { motion, AnimatePresence } from 'framer-motion';
+
 const AdminDashboard: React.FC = () => {
   const { syncStatus, isLoading, refreshAll } = useSupabase();
 
@@ -217,6 +219,24 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
+  const getAddAction = () => {
+    if (!['blogs', 'cards', 'reviews', 'settings'].includes(activeTab)) return undefined;
+    
+    return () => {
+      setEditingItem(null);
+      if (activeTab === 'blogs') setBlogForm({ ...blogForm, title: '', slug: '', excerpt: '', content: '' });
+      else if (activeTab === 'cards') setCardForm(defaultCardForm);
+      else if (activeTab === 'reviews') setReviewForm(defaultReviewForm);
+      else if (activeTab === 'settings') setTeamForm({ email: '', role: 'writer' });
+      setIsModalOpen(true);
+    };
+  };
+
+  const getAddLabel = () => {
+    if (activeTab === 'settings') return 'Invite Member';
+    return `Add ${activeTab.slice(0, -1)}`;
+  };
+
   if (loading) {
     return <div className="min-h-screen bg-cream flex items-center justify-center"><Loader2 className="animate-spin text-teal" size={48} /></div>;
   }
@@ -235,7 +255,7 @@ const AdminDashboard: React.FC = () => {
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-50/30">
+    <div className="flex min-h-screen bg-slate-50/50 selection:bg-teal/10">
       <AdminSidebar 
         user={user} userRole={userRole} activeTab={activeTab} isSidebarOpen={isSidebarOpen}
         onTabChange={setActiveTab} onLogout={handleLogout} onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -245,34 +265,30 @@ const AdminDashboard: React.FC = () => {
         <AdminHeader 
           user={user} activeTab={activeTab} 
           onLogout={handleLogout} onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} 
+          onAdd={getAddAction()}
+          addLabel={getAddLabel()}
         />
 
-        <main className="flex-1 p-4 md:p-8 pt-28">
-           <div className="max-w-7xl mx-auto space-y-8">
-              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div>
-                  <h2 className="text-3xl font-serif font-bold capitalize">{activeTab} Registry</h2>
-                  <p className="text-black/40 text-xs mt-1">Real-time management system for platform assets.</p>
-                </div>
-                {['blogs', 'cards', 'reviews'].includes(activeTab) && (
-                  <button 
-                    onClick={() => { setEditingItem(null); setBlogForm({ ...blogForm, title: '', slug: '', excerpt: '', content: '' }); setCardForm(defaultCardForm); setReviewForm(defaultReviewForm); setIsModalOpen(true); }}
-                    className="w-full md:w-auto bg-black text-white px-8 py-3 rounded-xl font-bold text-xs uppercase tracking-widest hover:bg-teal transition-all flex items-center justify-center gap-2 shadow-lg"
-                  >
-                    Add {activeTab.slice(0, -1)}
-                  </button>
-                )}
-              </div>
-
-              <div className="bg-white rounded-3xl border border-black/5 shadow-sm overflow-hidden min-h-[60vh]">
-                {activeTab === 'blogs' && <AdminBlogsTab onEdit={handleEdit} onDelete={confirmDelete} formatDateForInput={formatDateForInput} />}
-                {activeTab === 'cards' && <AdminCardsTab onEdit={handleEdit} onDelete={confirmDelete} />}
-                {activeTab === 'reviews' && <AdminReviewsTab onEdit={handleEdit} onDelete={confirmDelete} />}
-                {activeTab === 'waitlist' && <AdminWaitlistTab filter="pending" onFilterChange={() => {}} onUpdateStatus={updateWaitlistStatus} onDelete={confirmDelete} />}
-                {activeTab === 'settings' && <AdminSettingsTab onAddMember={() => { setEditingItem(null); setTeamForm({ email: '', role: 'writer' }); setIsModalOpen(true); }} onEditMember={handleEdit} onDeleteMember={(id) => confirmDelete('users', id)} />}
-                {activeTab === 'logs' && <AdminLogsTab />}
-              </div>
-           </div>
+        <main className="flex-1 p-4 md:p-10">
+            <div className="max-w-7xl mx-auto">
+              <AnimatePresence mode="wait">
+                <motion.div 
+                  key={activeTab}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                  className="bg-white rounded-[2.5rem] border border-black/5 shadow-2xl shadow-black/[0.02] overflow-hidden min-h-[70vh] flex flex-col"
+                >
+                  {activeTab === 'blogs' && <AdminBlogsTab onEdit={handleEdit} onDelete={confirmDelete} formatDateForInput={formatDateForInput} />}
+                  {activeTab === 'cards' && <AdminCardsTab onEdit={handleEdit} onDelete={confirmDelete} />}
+                  {activeTab === 'reviews' && <AdminReviewsTab onEdit={handleEdit} onDelete={confirmDelete} />}
+                  {activeTab === 'waitlist' && <AdminWaitlistTab filter="pending" onFilterChange={() => {}} onUpdateStatus={updateWaitlistStatus} onDelete={confirmDelete} />}
+                  {activeTab === 'settings' && <AdminSettingsTab onAddMember={() => getAddAction()?.()} onEditMember={handleEdit} onDeleteMember={(collection, id) => confirmDelete(collection, id)} />}
+                  {activeTab === 'logs' && <AdminLogsTab />}
+                </motion.div>
+              </AnimatePresence>
+            </div>
         </main>
       </div>
 
