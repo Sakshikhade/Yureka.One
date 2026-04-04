@@ -3,14 +3,80 @@ import { CreditCard as CardIcon, ArrowUpRight, Sparkles, Zap, MousePointer2 } fr
 import ImageWithLoader from './ImageWithLoader';
 import { Link } from 'react-router-dom';
 import { featuredCards } from '../data';
-import { motion, useScroll, useTransform, useSpring } from 'motion/react';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 
 interface ShowcaseCarouselProps {
   cards: any[];
 }
 
+interface ShowcaseCardProps {
+    card: any;
+    index: number;
+    total: number;
+    progress: any;
+}
+
+const ShowcaseCard: React.FC<ShowcaseCardProps> = ({ card, index, total, progress }) => {
+    const phaseSize = 0.8 / total;
+    const start = index * phaseSize;
+    const end = (index + 1) * phaseSize;
+    
+    const x = useTransform(progress, [start, start + phaseSize / 2], [300, 0]);
+    const opacity = useTransform(progress, [start, start + 0.05, end, end + 0.05], [0, 1, 1, 0]);
+    const scale = useTransform(progress, [end, end + phaseSize], [1, 0.95]);
+    const rotate = useTransform(progress, [start, end], [index % 2 === 0 ? -2 : 2, index % 2 === 0 ? 2 : -2]);
+    const brightness = useTransform(progress, [end, end + phaseSize], [1, 0.8]);
+
+    // Handle both snake_case (Supabase/new data) and camelCase (legacy/types)
+    const rewardsRate = card.rewards_rate || card.rewardsRate || 'N/A';
+    const projectedSavings = card.projected_savings || card.projectedSavings || '₹0/yr';
+
+    return (
+        <motion.div
+            style={{ x, opacity, scale, rotate, filter: `brightness(${brightness})`, zIndex: index }}
+            className="absolute inset-0 w-full h-full"
+        >
+            <div className="w-full h-full bg-paper p-3 pb-8 shadow-2xl border border-ink/10 flex flex-col relative group transition-colors hover:border-clay/50">
+                <div className="h-[65%] relative overflow-hidden bg-cream/50 border-4 border-paper shadow-inner grayscale group-hover:grayscale-0 transition-all duration-700">
+                    <ImageWithLoader 
+                        src={card.image} 
+                        alt={card.name} 
+                        className="w-full h-full object-cover"
+                    />
+                    <div className="absolute top-4 right-4 glass-panel backdrop-blur-md text-ink px-3 py-1 text-[9px] font-bold uppercase tracking-widest rounded-full shadow-lg border border-white/20">
+                        {card.issuer || card.bank}
+                    </div>
+                </div>
+                
+                <div className="flex-1 pt-6 px-2 flex flex-col justify-between">
+                    <div>
+                        <div className="flex justify-between items-baseline mb-3 border-b border-ink/10 pb-3">
+                            <h3 className="text-2xl font-serif text-ink leading-none">{card.name}</h3>
+                            <span className="text-[10px] font-bold text-ink/30 uppercase tracking-widest">RANK {index + 1}</span>
+                        </div>
+                        <div className="flex justify-between items-center text-ink/60 text-[10px] font-bold uppercase tracking-widest mt-2 font-mono">
+                            <span className="flex items-center gap-1.5"><Sparkles size={12} className="text-clay" /> {rewardsRate}</span>
+                            <span className="flex items-center gap-1.5"><Zap size={12} className="text-clay" /> {card.category || card.type}</span>
+                        </div>
+                    </div>
+
+                    <div className="flex items-end justify-between mt-auto">
+                        <div>
+                            <p className="text-[10px] text-ink/40 font-bold uppercase tracking-widest mb-1 font-mono">Est. Savings</p>
+                            <p className="text-3xl font-serif text-ink tracking-tight uppercase">{projectedSavings}</p>
+                        </div>
+                        <Link to="/join-waitlist" className="w-12 h-12 border border-ink/10 text-ink flex items-center justify-center hover:bg-ink hover:text-white transition-all rounded-full shadow-md hover:shadow-xl hover:-translate-y-1">
+                            <ArrowUpRight size={18} />
+                        </Link>
+                    </div>
+                </div>
+            </div>
+        </motion.div>
+    );
+};
+
 const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp }) => {
-  const cards = cardsProp.length > 0 ? cardsProp : featuredCards;
+  const cards = (cardsProp && cardsProp.length > 0) ? cardsProp : featuredCards;
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -71,67 +137,15 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp })
                     {/* Middle Column: Cards Container */}
                     <div className="col-span-1 h-full relative flex items-center justify-center pointer-events-none">
                         <div className="relative w-[85vw] h-[60vh] max-h-[600px] max-w-[420px] pointer-events-auto mt-12 lg:mt-0">
-                            {cards.map((card, i) => {
-                                // Calculate entry/exit ranges
-                                const total = cards.length;
-                                const phaseSize = 0.8 / total;
-                                const start = i * phaseSize;
-                                const end = (i + 1) * phaseSize;
-                                
-                                // Transforms based on scroll
-                                const x = useTransform(smoothProgress, [start, start + phaseSize / 2], [300, 0]);
-                                const opacity = useTransform(smoothProgress, [start, start + 0.05, end, end + 0.05], [0, 1, 1, 0]);
-                                const scale = useTransform(smoothProgress, [end, end + phaseSize], [1, 0.95]);
-                                const rotate = useTransform(smoothProgress, [start, end], [i % 2 === 0 ? -2 : 2, i % 2 === 0 ? 2 : -2]);
-                                const brightness = useTransform(smoothProgress, [end, end + phaseSize], [1, 0.8]);
-
-                                return (
-                                    <motion.div
-                                        key={card.id}
-                                        style={{ x, opacity, scale, rotate, filter: `brightness(${brightness})`, zIndex: i }}
-                                        className="absolute inset-0 w-full h-full"
-                                    >
-                                        <div className="w-full h-full bg-paper p-3 pb-8 shadow-2xl border border-ink/10 flex flex-col relative group transition-colors hover:border-clay/50">
-                                            
-                                            {/* Image Area */}
-                                            <div className="h-[65%] relative overflow-hidden bg-cream/50 border-4 border-paper shadow-inner grayscale group-hover:grayscale-0 transition-all duration-700">
-                                                <ImageWithLoader 
-                                                    src={card.image} 
-                                                    alt={card.name} 
-                                                    className="w-full h-full object-cover"
-                                                />
-                                                <div className="absolute top-4 right-4 glass-panel backdrop-blur-md text-ink px-3 py-1 text-[9px] font-bold uppercase tracking-widest rounded-full shadow-lg border border-white/20">
-                                                    {card.issuer}
-                                                </div>
-                                            </div>
-                                            
-                                            {/* Content Area */}
-                                            <div className="flex-1 pt-6 px-2 flex flex-col justify-between">
-                                                <div>
-                                                    <div className="flex justify-between items-baseline mb-3 border-b border-ink/10 pb-3">
-                                                        <h3 className="text-2xl font-serif text-ink leading-none">{card.name}</h3>
-                                                        <span className="text-[10px] font-bold text-ink/30 uppercase tracking-widest">RANK {i + 1}</span>
-                                                    </div>
-                                                    <div className="flex justify-between items-center text-ink/60 text-[10px] font-bold uppercase tracking-widest mt-2 font-mono">
-                                                        <span className="flex items-center gap-1.5"><Sparkles size={12} className="text-clay" /> {card.rewardsRate}</span>
-                                                        <span className="flex items-center gap-1.5"><Zap size={12} className="text-clay" /> {card.category}</span>
-                                                    </div>
-                                                </div>
-     
-                                                <div className="flex items-end justify-between mt-auto">
-                                                    <div>
-                                                        <p className="text-[10px] text-ink/40 font-bold uppercase tracking-widest mb-1 font-mono">Est. Savings</p>
-                                                        <p className="text-3xl font-serif text-ink tracking-tight uppercase">{card.projectedSavings}</p>
-                                                    </div>
-                                                    <Link to="/ai-magic" className="w-12 h-12 border border-ink/10 text-ink flex items-center justify-center hover:bg-ink hover:text-white transition-all rounded-full shadow-md hover:shadow-xl hover:-translate-y-1">
-                                                        <ArrowUpRight size={18} />
-                                                    </Link>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </motion.div>
-                                );
-                            })}
+                            {cards.map((card, i) => (
+                                <ShowcaseCard 
+                                    key={card.id || i}
+                                    card={card}
+                                    index={i}
+                                    total={cards.length}
+                                    progress={smoothProgress}
+                                />
+                            ))}
                         </div>
                     </div>
 

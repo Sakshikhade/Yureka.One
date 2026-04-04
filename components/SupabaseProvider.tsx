@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import { supabase } from '../supabase';
 import { Card, Blog, Review, WaitlistEntry } from '../types';
 import { featuredCards } from '../data';
@@ -41,38 +42,48 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [isLoading, setIsLoading] = useState(true);
   const [isAdminDataLoaded, setIsAdminDataLoaded] = useState(false);
 
-  // Determine if we are on an admin route to trigger admin data fetching
-  const isInternalAdminRoute = typeof window !== 'undefined' && window.location.pathname.startsWith('/admin');
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith('/admin');
+  const initialLoadTime = useRef(Date.now());
 
+  // Determine if we are on an admin route to trigger admin data fetching
   const refreshAll = useCallback(async () => {
-    // This can be used to manually force a full state refresh if real-time drops
     window.location.reload();
   }, []);
 
   useEffect(() => {
-    let cardSub: () => void;
-    let blogSub: () => void;
-    let reviewSub: () => void;
+    let cardSub: (() => void) | undefined;
+    let blogSub: (() => void) | undefined;
+    let reviewSub: (() => void) | undefined;
     
     // Admin specific subs
-    let adminCardSub: () => void;
-    let adminBlogSub: () => void;
-    let adminReviewSub: () => void;
-    let waitlistSub: () => void;
-    let teamSub: () => void;
-    let logsSub: () => void;
+    let adminCardSub: (() => void) | undefined;
+    let adminBlogSub: (() => void) | undefined;
+    let adminReviewSub: (() => void) | undefined;
+    let waitlistSub: (() => void) | undefined;
+    let teamSub: (() => void) | undefined;
+    let logsSub: (() => void) | undefined;
 
-    const initializePublicSubscriptions = () => {
+    // Safety timeout to ensure app transitions to loaded state even on slow network
+    const fallbackTimer = setTimeout(() => {
+      setIsLoading(false);
+    }, 5000);
+
+    const setupPublic = () => {
       cardSub = getCards(
-        (data) => { setCards(data.length > 0 ? data : featuredCards); setIsLoading(false); },
+        (data) => { 
+          setCards(data.length > 0 ? data : featuredCards); 
+          setIsLoading(false);
+          clearTimeout(fallbackTimer);
+        },
         () => setSyncStatus('error')
       );
       blogSub = getBlogs((data) => setBlogs(data), () => setSyncStatus('error'));
       reviewSub = getReviews((data) => setReviews(data), () => setSyncStatus('error'));
     };
 
-    const initializeAdminSubscriptions = () => {
-      if (!isInternalAdminRoute) return;
+    const setupAdmin = () => {
+      if (!isAdminRoute) return;
       
       setIsLoading(true);
       adminCardSub = getCardsAdmin((data) => setCards(data));
@@ -84,12 +95,14 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       
       setIsAdminDataLoaded(true);
       setIsLoading(false);
+      clearTimeout(fallbackTimer);
     };
 
-    initializePublicSubscriptions();
-    if (isInternalAdminRoute) initializeAdminSubscriptions();
+    setupPublic();
+    if (isAdminRoute) setupAdmin();
 
     return () => {
+      clearTimeout(fallbackTimer);
       if (cardSub) cardSub();
       if (blogSub) blogSub();
       if (reviewSub) reviewSub();
@@ -100,7 +113,7 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       if (teamSub) teamSub();
       if (logsSub) logsSub();
     };
-  }, [isInternalAdminRoute]);
+  }, [isAdminRoute]);
 
   return (
     <SupabaseContext.Provider value={{ 
