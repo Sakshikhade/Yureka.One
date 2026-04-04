@@ -62,6 +62,15 @@ const ADMIN_CATEGORIES = [
 // ──────────────────────────────────────────────────────────────────────────────
 
 const AdminDashboard: React.FC = () => {
+  // Helper to format ISO string to local datetime-local string
+  const formatDateForInput = (isoString?: string | null) => {
+    if (!isoString) return '';
+    const date = new Date(isoString);
+    const tzOffset = date.getTimezoneOffset() * 60000;
+    const localISOTime = (new Date(date.getTime() - tzOffset)).toISOString().slice(0, -1);
+    return localISOTime.slice(0, 16);
+  };
+
   const [user, setUser] = useState<any>(null);
   const [userRole, setUserRole] = useState<string>('user');
   const [isAdmin, setIsAdmin] = useState(false);
@@ -130,6 +139,7 @@ const AdminDashboard: React.FC = () => {
     read_time: '5 min read',
     featured: false,
     status: 'published' as 'draft' | 'published',
+    publishMode: 'now' as 'now' | 'later',
     scheduled_at: ''
   });
 
@@ -369,15 +379,30 @@ const AdminDashboard: React.FC = () => {
     setSaving(true);
     setError(null);
     try {
-      if (editingItem) {
-        await updateBlog(editingItem.id, blogForm);
+      const payload = { ...blogForm };
+      delete (payload as any).publishMode; // Remove UI-only state
+      
+      if (blogForm.publishMode === 'now') {
+        payload.status = 'published';
+        payload.scheduled_at = '';
       } else {
-        await addBlog(blogForm);
+        payload.status = 'published';
+        if (!payload.scheduled_at) {
+          throw new Error("Please select a date and time for the scheduled release.");
+        }
+        // Convert the local datetime from the input into an strict ISO 8601 string for Postgres
+        payload.scheduled_at = new Date(payload.scheduled_at).toISOString();
+      }
+
+      if (editingItem) {
+        await updateBlog(editingItem.id, payload);
+      } else {
+        await addBlog(payload);
       }
       setIsModalOpen(false);
       setEditingItem(null);
       setPreviewUrl(null);
-      setBlogForm({ title: '', slug: '', excerpt: '', content: '', author: '', category: 'Credit Cards', image: 'https://picsum.photos/seed/blog/800/600', read_time: '5 min read', featured: false, status: 'published' as 'draft' | 'published', scheduled_at: '' });
+      setBlogForm({ title: '', slug: '', excerpt: '', content: '', author: '', category: 'Credit Cards', image: 'https://picsum.photos/seed/blog/800/600', read_time: '5 min read', featured: false, status: 'published' as 'draft' | 'published', publishMode: 'now', scheduled_at: '' });
     } catch (error: any) {
       console.error("Save Blog Error:", error);
       setError(error.message || "Failed to save blog post. If this persists, please run the SQL fix script.");
@@ -799,7 +824,7 @@ const AdminDashboard: React.FC = () => {
                 onClick={() => {
                   setEditingItem(null);
                   if (activeTab === 'blogs') {
-                    setBlogForm({ title: '', slug: '', excerpt: '', content: '', author: '', category: 'Credit Cards', image: 'https://picsum.photos/seed/blog/800/600', read_time: '5 min read', featured: false, status: 'published' as 'draft' | 'published', scheduled_at: '' });
+                    setBlogForm({ title: '', slug: '', excerpt: '', content: '', author: '', category: 'Credit Cards', image: 'https://picsum.photos/seed/blog/800/600', read_time: '5 min read', featured: false, status: 'published' as 'draft' | 'published', publishMode: 'now', scheduled_at: '' });
                   } else if (activeTab === 'cards') {
                     setCardForm(defaultCardForm);
                   } else if (activeTab === 'reviews') {
@@ -883,7 +908,8 @@ const AdminDashboard: React.FC = () => {
                               read_time: blog.read_time || '5 min read',
                               featured: blog.featured || false,
                               status: blog.status || 'published',
-                              scheduled_at: blog.scheduled_at || ''
+                              publishMode: (blog.scheduled_at && new Date(blog.scheduled_at) > new Date()) ? 'later' : 'now',
+                              scheduled_at: (blog.scheduled_at && new Date(blog.scheduled_at) > new Date()) ? formatDateForInput(blog.scheduled_at) : ''
                             });
                             setIsModalOpen(true);
                           }}
@@ -1379,30 +1405,44 @@ const AdminDashboard: React.FC = () => {
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Publish Status</label>
-                          <select 
-                            value={blogForm.status}
-                            onChange={e => setBlogForm({...blogForm, status: e.target.value as 'draft' | 'published'})}
-                            className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+                      <div>
+                        <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Publishing Strategy</label>
+                        <div className="flex bg-black/5 rounded-xl p-1 mb-4">
+                          <button
+                            type="button"
+                            onClick={() => setBlogForm({ ...blogForm, publishMode: 'now' })}
+                            className={`flex-[1] py-3 text-sm font-bold rounded-lg transition-all ${blogForm.publishMode === 'now' ? 'bg-white text-teal shadow-sm' : 'text-black/40 hover:text-black/60'}`}
                           >
-                            <option value="published">Published</option>
-                            <option value="draft">Draft</option>
-                          </select>
+                            Post Now
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setBlogForm({ ...blogForm, publishMode: 'later' })}
+                            className={`flex-[1] flex items-center justify-center gap-2 py-3 text-sm font-bold rounded-lg transition-all ${blogForm.publishMode === 'later' ? 'bg-white text-teal shadow-sm' : 'text-black/40 hover:text-black/60'}`}
+                          >
+                            <Clock size={16} /> Schedule release
+                          </button>
                         </div>
-                        <div>
-                          <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2 flex items-center gap-2">
-                             <Clock size={12} /> Schedule Release
-                           </label>
-                          <input 
-                            type="datetime-local" 
-                            value={blogForm.scheduled_at}
-                            onChange={e => setBlogForm({...blogForm, scheduled_at: e.target.value})}
-                            className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
-                          />
-                          <p className="text-[9px] text-black/40 mt-1 font-bold uppercase tracking-tight">Leave blank for immediate publication</p>
-                        </div>
+                        
+                        {blogForm.publishMode === 'later' && (
+                          <div className="animate-fade-in">
+                            <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Release Date & Time (Local)</label>
+                            <input 
+                              type="datetime-local" 
+                              value={blogForm.scheduled_at}
+                              onChange={e => setBlogForm({...blogForm, scheduled_at: e.target.value})}
+                              className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all font-bold text-black"
+                              required={blogForm.publishMode === 'later'}
+                            />
+                            <p className="text-xs text-black/40 mt-2 font-serif italic">This post will remain hidden from the public until the exact time specified.</p>
+                          </div>
+                        )}
+                        
+                        {blogForm.publishMode === 'now' && (
+                          <div className="bg-teal/10 p-4 rounded-xl text-teal text-sm font-bold flex items-center justify-center gap-2 animate-fade-in">
+                            <Zap size={16} /> The post will go live immediately upon saving.
+                          </div>
+                        )}
                       </div>
 
                       <div className="flex items-center gap-4 p-4 bg-black/5 rounded-xl h-[56px]">
