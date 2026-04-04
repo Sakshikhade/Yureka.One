@@ -304,7 +304,7 @@ const AdminDashboard: React.FC = () => {
     await supabase.auth.signOut();
   };
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: 'blogs' | 'cards' | 'reviews') => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, type: 'blogs' | 'cards' | 'reviews' | 'reviews_logo') => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -317,13 +317,15 @@ const AdminDashboard: React.FC = () => {
       setBlogForm(prev => ({ ...prev, image: localUrl }));
     } else if (type === 'cards') {
       setCardForm(prev => ({ ...prev, image: localUrl }));
-    } else {
+    } else if (type === 'reviews') {
        setReviewForm(prev => ({ ...prev, image: localUrl }));
+    } else if (type === 'reviews_logo') {
+       setReviewForm(prev => ({ ...prev, company_logo: localUrl }));
     }
 
     setUploading(true);
     try {
-      const { data, error } = await supabase.storage.from('media').upload(`${type}/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`, file);
+      const { data, error } = await supabase.storage.from('media').upload(`${type.startsWith('reviews') ? 'reviews' : type}/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`, file);
       if (error) throw error;
       
       const { data: publicUrlData } = supabase.storage.from('media').getPublicUrl(data.path);
@@ -334,8 +336,10 @@ const AdminDashboard: React.FC = () => {
         setBlogForm(prev => ({ ...prev, image: url }));
       } else if (type === 'cards') {
         setCardForm(prev => ({ ...prev, image: url }));
-      } else {
+      } else if (type === 'reviews') {
         setReviewForm(prev => ({ ...prev, image: url }));
+      } else if (type === 'reviews_logo') {
+        setReviewForm(prev => ({ ...prev, company_logo: url }));
       }
       setPreviewUrl(url);
     } catch (error) {
@@ -347,8 +351,10 @@ const AdminDashboard: React.FC = () => {
         setBlogForm(prev => ({ ...prev, image: editingItem?.image || 'https://picsum.photos/seed/blog/800/600' }));
       } else if (type === 'cards') {
         setCardForm(prev => ({ ...prev, image: editingItem?.image || 'https://picsum.photos/seed/card/400/250' }));
-      } else {
+      } else if (type === 'reviews') {
         setReviewForm(prev => ({ ...prev, image: editingItem?.image || 'https://picsum.photos/seed/review/300/400' }));
+      } else if (type === 'reviews_logo') {
+        setReviewForm(prev => ({ ...prev, company_logo: editingItem?.company_logo || '' }));
       }
     } finally {
       setUploading(false);
@@ -764,14 +770,16 @@ const AdminDashboard: React.FC = () => {
                   setEditingItem(null);
                   if (activeTab === 'blogs') {
                     setBlogForm({ title: '', slug: '', excerpt: '', content: '', author: '', category: 'Credit Cards', image: 'https://picsum.photos/seed/blog/800/600', read_time: '5 min read', featured: false, status: 'published' as 'draft' | 'published', scheduled_at: '' });
-                  } else {
+                  } else if (activeTab === 'cards') {
                     setCardForm(defaultCardForm);
+                  } else if (activeTab === 'reviews') {
+                    setReviewForm(defaultReviewForm);
                   }
                   setIsModalOpen(true);
                 }}
                 className="bg-black text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-clay transition-colors shadow-lg"
               >
-                <Plus size={20} /> Add New {activeTab === 'blogs' ? 'Post' : 'Card'}
+                <Plus size={20} /> Add New {activeTab === 'blogs' ? 'Post' : activeTab === 'reviews' ? 'Review' : 'Card'}
               </button>
             )}
           </div>
@@ -1868,16 +1876,62 @@ const AdminDashboard: React.FC = () => {
                           />
                         </div>
                       </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Status</label>
+                          <select 
+                            value={reviewForm.status}
+                            onChange={e => setReviewForm({...reviewForm, status: e.target.value as 'draft' | 'published'})}
+                            className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+                          >
+                            <option value="published">Published</option>
+                            <option value="draft">Draft</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Rotation (°)</label>
+                          <input 
+                            type="number" 
+                            step="0.5"
+                            value={reviewForm.rotation}
+                            onChange={e => setReviewForm({...reviewForm, rotation: parseFloat(e.target.value)})}
+                            className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+                          />
+                        </div>
+                      </div>
                       <div>
-                        <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Status</label>
-                        <select 
-                          value={reviewForm.status}
-                          onChange={e => setReviewForm({...reviewForm, status: e.target.value as 'draft' | 'published'})}
-                          className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
-                        >
-                          <option value="published">Published</option>
-                          <option value="draft">Draft</option>
-                        </select>
+                        <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Company Logo</label>
+                        <div className="flex items-center gap-4">
+                           <div className="w-16 h-16 bg-black/5 rounded-lg overflow-hidden flex items-center justify-center border border-black/5 flex-shrink-0">
+                             {reviewForm.company_logo ? (
+                               <img src={reviewForm.company_logo} alt="Logo Preview" className="w-full h-full object-contain p-2" />
+                             ) : (
+                               <div className="text-black/10"><ImageIcon size={24} /></div>
+                             )}
+                           </div>
+                           <div className="flex-1 space-y-2">
+                             <input 
+                               type="text" 
+                               placeholder="Logo URL"
+                               value={reviewForm.company_logo}
+                               onChange={e => setReviewForm({...reviewForm, company_logo: e.target.value})}
+                               className="w-full bg-black/5 border-none rounded-xl p-3 text-xs focus:ring-2 focus:ring-teal outline-none transition-all"
+                             />
+                             <button 
+                               type="button"
+                               onClick={() => {
+                                 const input = document.createElement('input');
+                                 input.type = 'file';
+                                 input.accept = 'image/*';
+                                 input.onchange = (e) => handleFileUpload(e as any, 'reviews_logo');
+                                 input.click();
+                               }}
+                               className="text-[10px] font-bold uppercase tracking-widest text-teal hover:underline"
+                             >
+                               Upload Logo
+                             </button>
+                           </div>
+                        </div>
                       </div>
                     </div>
                   </div>
