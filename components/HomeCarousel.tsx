@@ -183,7 +183,7 @@ const HomeCarousel = forwardRef<HomeCarouselHandle, HomeCarouselProps>(({
                             }}
                         >
                             <div className="w-full h-full bg-white p-2 shadow-2xl border border-ink/10 relative transition-all duration-300 ease-out hover:scale-[1.01]">
-                                <div className="relative h-[60%] overflow-hidden grayscale hover:grayscale-0 transition-all duration-700 border-b border-ink/10">
+                                <div className="relative h-[60%] overflow-hidden border-b border-ink/10">
                                     <ImageWithLoader 
                                         src={card.image} 
                                         alt={card.name}

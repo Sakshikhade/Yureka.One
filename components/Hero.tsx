@@ -97,7 +97,7 @@ const Hero: React.FC = () => {
                      <span className="text-clay font-mono font-bold text-[10px] md:text-xs uppercase tracking-[0.3em]">Smart Card Finder</span>
                      <div className="h-px bg-clay w-6 md:w-16"></div>
                 </div>
-                <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[0.9] font-serif font-medium text-ink uppercase tracking-tighter mix-blend-difference transform scale-y-105">
+                <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[0.9] font-serif font-medium text-ink uppercase tracking-tighter transform scale-y-105">
                     Stop Guessing. <br className="hidden md:block" /> <span className="italic font-light">Start Saving.</span>
                 </h2>
                 <h3 className="text-lg md:text-2xl lg:text-3xl font-sans font-light text-ink/60 mt-4 md:mt-8 max-w-2xl mx-auto leading-relaxed">
@@ -172,7 +172,7 @@ const Hero: React.FC = () => {
                             className="absolute top-0 left-0 w-[85%] z-20"
                         >
                            <div className="bg-paper p-2 md:p-3 pb-6 md:pb-10 shadow-xl rotate-[-2deg] transition-all duration-700 hover:rotate-0 hover:z-30 hover:scale-105 border border-ink/10">
-                                <div className="aspect-[4/5] bg-gray-200 grayscale hover:grayscale-0 transition-all duration-500 overflow-hidden border border-ink/5 sepia-[0.1]">
+                                <div className="aspect-[4/5] bg-gray-200 transition-all duration-500 overflow-hidden border border-ink/5">
                                      <ImageWithLoader 
                                         src="https://images.unsplash.com/photo-1556742044-3c52d6e88c62?auto=format&fit=crop&q=80&w=800" 
                                         className="w-full h-full object-cover" 
@@ -195,7 +195,7 @@ const Hero: React.FC = () => {
                             className="absolute top-[25%] right-[-5%] w-[65%] z-10"
                         >
                            <div className="bg-[#EAE8E0] p-3 pb-8 shadow-lg rotate-[3deg] transition-all duration-700 hover:rotate-0 hover:z-30 hover:scale-105 border border-ink/10">
-                                <div className="aspect-square bg-gray-200 grayscale hover:grayscale-0 transition-all duration-500 overflow-hidden border border-ink/5 sepia-[0.1]">
+                                <div className="aspect-square bg-gray-200 transition-all duration-500 overflow-hidden border border-ink/5">
                                      <ImageWithLoader 
                                         src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=800" 
                                         className="w-full h-full object-cover" 
@@ -242,7 +242,7 @@ const Hero: React.FC = () => {
 
                      <div className="mt-12 mb-6">
                          <div className="border border-ink/20 p-6 text-center bg-paper shadow-lg relative">
-                             <div className="absolute inset-0 bg-ink/5 pointer-events-none mix-blend-multiply"></div>
+                             <div className="absolute inset-0 bg-ink/5 pointer-events-none"></div>
                              <h4 className="font-serif text-xl italic mb-4 text-ink relative z-10">"The smart way to use credit cards."</h4>
                              <Link to="/join-waitlist" className="block w-full bg-clay hover:bg-teal text-white text-center py-4 font-bold uppercase tracking-widest text-xs transition-all shadow-[4px_4px_0px_0px_rgba(36,36,36,0.15)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] relative z-10">
                                  Join VIP Waitlist
