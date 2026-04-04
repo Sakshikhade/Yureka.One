@@ -321,49 +321,38 @@ const AdminDashboard: React.FC = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Instant local preview for responsive UX
+    // Instant local preview
     const localUrl = URL.createObjectURL(file);
     setPreviewUrl(localUrl);
-    
-    // Optimistically update form with local blob URL immediately (non-blocking)
-    if (type === 'blogs') {
-      setBlogForm(prev => ({ ...prev, image: localUrl }));
-    } else if (type === 'cards') {
-      setCardForm(prev => ({ ...prev, image: localUrl }));
-    } else if (type === 'reviews') {
-       setReviewForm(prev => ({ ...prev, image: localUrl }));
-    } else if (type === 'reviews_logo') {
-       setReviewForm(prev => ({ ...prev, company_logo: localUrl }));
-    }
+    if (type === 'blogs') setBlogForm(prev => ({ ...prev, image: localUrl }));
+    else if (type === 'cards') setCardForm(prev => ({ ...prev, image: localUrl }));
+    else if (type === 'reviews') setReviewForm(prev => ({ ...prev, image: localUrl }));
+    else if (type === 'reviews_logo') setReviewForm(prev => ({ ...prev, company_logo: localUrl }));
 
-    // Attempt Supabase Storage upload in background — non-blocking
-    // The form will save with the localUrl if this fails
     setUploading(true);
+    setError(null);
     try {
       const path = `${type.startsWith('reviews') ? 'reviews' : type}/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
       const { data, error } = await supabase.storage.from('media').upload(path, file);
-      
-      if (!error && data) {
-        // Only update to remote URL if upload succeeded
-        const { data: publicUrlData } = supabase.storage.from('media').getPublicUrl(data.path);
-        const url = publicUrlData.publicUrl;
-        if (type === 'blogs') {
-          setBlogForm(prev => ({ ...prev, image: url }));
-        } else if (type === 'cards') {
-          setCardForm(prev => ({ ...prev, image: url }));
-        } else if (type === 'reviews') {
-          setReviewForm(prev => ({ ...prev, image: url }));
-        } else if (type === 'reviews_logo') {
-          setReviewForm(prev => ({ ...prev, company_logo: url }));
-        }
-        setPreviewUrl(url);
-      } else {
-        // Upload failed but we keep the local preview — user can still save
-        console.warn("Storage upload failed, using local blob URL:", error?.message);
-      }
-    } catch (uploadErr) {
-      console.warn("Storage upload exception, using local blob URL:", uploadErr);
-      // No UI error shown — the local preview is already set and user can still save
+      if (error) throw error;
+
+      const { data: publicUrlData } = supabase.storage.from('media').getPublicUrl(data.path);
+      const url = publicUrlData.publicUrl;
+
+      if (type === 'blogs') setBlogForm(prev => ({ ...prev, image: url }));
+      else if (type === 'cards') setCardForm(prev => ({ ...prev, image: url }));
+      else if (type === 'reviews') setReviewForm(prev => ({ ...prev, image: url }));
+      else if (type === 'reviews_logo') setReviewForm(prev => ({ ...prev, company_logo: url }));
+      setPreviewUrl(url);
+    } catch (err: any) {
+      console.error('Image upload failed:', err);
+      setError(`Image upload failed: ${err.message || 'Please run the SQL fix script and try again.'}`);
+      // Rollback form image on failure
+      setPreviewUrl(null);
+      if (type === 'blogs') setBlogForm(prev => ({ ...prev, image: editingItem?.image || '' }));
+      else if (type === 'cards') setCardForm(prev => ({ ...prev, image: editingItem?.image || '' }));
+      else if (type === 'reviews') setReviewForm(prev => ({ ...prev, image: editingItem?.image || '' }));
+      else if (type === 'reviews_logo') setReviewForm(prev => ({ ...prev, company_logo: editingItem?.company_logo || '' }));
     } finally {
       setUploading(false);
     }
@@ -1480,16 +1469,9 @@ const AdminDashboard: React.FC = () => {
                         className="hidden" 
                         accept="image/*"
                       />
-                      <input 
-                        type="text" 
-                        placeholder="Or enter image URL"
-                        value={blogForm.image}
-                        onChange={e => setBlogForm({...blogForm, image: e.target.value})}
-                        className="w-full bg-black/5 border-none rounded-xl p-3 text-xs focus:ring-2 focus:ring-teal outline-none transition-all"
-                      />
                       {uploading && (
-                        <div className="flex items-center gap-2 text-teal text-xs font-bold">
-                          <Loader2 size={14} className="animate-spin" /> Uploading...
+                        <div className="flex items-center gap-2 text-teal text-xs font-bold mt-2">
+                          <Loader2 size={14} className="animate-spin" /> Uploading image to storage...
                         </div>
                       )}
                     </div>
@@ -1662,16 +1644,9 @@ const AdminDashboard: React.FC = () => {
                           className="hidden" 
                           accept="image/*"
                         />
-                        <input 
-                          type="text" 
-                          placeholder="Or enter image URL"
-                          value={cardForm.image}
-                          onChange={e => setCardForm({...cardForm, image: e.target.value})}
-                          className="w-full bg-black/5 border-none rounded-xl p-3 text-xs focus:ring-2 focus:ring-teal outline-none transition-all"
-                        />
                         {uploading && (
-                          <div className="flex items-center gap-2 text-teal text-xs font-bold">
-                            <Loader2 size={14} className="animate-spin" /> Uploading...
+                          <div className="flex items-center gap-2 text-teal text-xs font-bold mt-2">
+                            <Loader2 size={14} className="animate-spin" /> Uploading image to storage...
                           </div>
                         )}
                       </div>
