@@ -1,6 +1,30 @@
 import { supabase, supabaseAdmin } from '../supabase';
 import { Blog, Card, WaitlistEntry, NewsletterEntry, Review } from '../types';
 
+/**
+ * Robust retry wrapper for Supabase fetches with exponential backoff.
+ * Helps prevent the "hard refresh" issue by automatically recovering from transient errors.
+ */
+const withRetry = async <T>(
+  fn: () => Promise<{ data: T | null; error: any }>,
+  retries = 3,
+  delay = 1000
+): Promise<T | null> => {
+  try {
+    const { data, error } = await fn();
+    if (error) throw error;
+    return data;
+  } catch (err) {
+    if (retries > 0) {
+      console.warn(`Fetch failed, retrying in ${delay}ms... (${retries} left)`, err);
+      await new Promise(resolve => setTimeout(resolve, delay));
+      return withRetry(fn, retries - 1, delay * 2);
+    }
+    console.error('All retry attempts failed:', err);
+    throw err;
+  }
+};
+
 // Helper for cleaning objects for Supabase (removing undefined/null)
 const cleanData = (obj: any) => {
   const cleaned = { ...obj };
@@ -27,16 +51,15 @@ export const getBlogs = (callback: (blogs: Blog[]) => void, onError?: (error: st
   const fetchBlogs = async () => {
     try {
       const now = new Date().toISOString();
-      const { data, error } = await supabase
-        .from('blogs')
-        .select('*')
-        .eq('status', 'published')
-        // Filter for posts where scheduled_at is null OR scheduled_at <= now
-        .or(`scheduled_at.is.null,scheduled_at.lte.${now}`)
-        .order('created_at', { ascending: false });
-      
-      if (error) throw error;
-      callback(data as Blog[]);
+      const data = await withRetry<Blog[]>(() => 
+        Promise.resolve(supabase
+          .from('blogs')
+          .select('*')
+          .eq('status', 'published')
+          .or(`scheduled_at.is.null,scheduled_at.lte.${now}`)
+          .order('created_at', { ascending: false }))
+      );
+      callback(data || []);
     } catch (error: any) {
       console.error('Error fetching blogs:', error);
       if (onError) onError(error.message || 'Failed to fetch blogs');
@@ -44,7 +67,9 @@ export const getBlogs = (callback: (blogs: Blog[]) => void, onError?: (error: st
   };
   fetchBlogs();
   
-  const channel = supabase.channel('blogs-public-realtime')
+  // Unique channel name per component instance to avoid conflicts
+  const channelId = `blogs-public-${Math.random().toString(36).substr(2, 9)}`;
+  const channel = supabase.channel(channelId)
     .on('postgres_changes', { event: '*', schema: 'public', table: 'blogs' }, () => fetchBlogs())
     .subscribe();
     
@@ -54,13 +79,13 @@ export const getBlogs = (callback: (blogs: Blog[]) => void, onError?: (error: st
 export const getBlogsAdmin = (callback: (blogs: Blog[]) => void, onError?: (error: string) => void) => {
   const fetchBlogs = async () => {
     try {
-      const { data, error } = await supabase
-        .from('blogs')
-        .select('*')
-        .order('created_at', { ascending: false });
-      
-      if (error) throw error;
-      callback(data as Blog[]);
+      const data = await withRetry<Blog[]>(() => 
+        Promise.resolve(supabase
+          .from('blogs')
+          .select('*')
+          .order('created_at', { ascending: false }))
+      );
+      callback(data || []);
     } catch (error: any) {
       console.error('Error fetching blogs admin:', error);
       if (onError) onError(error.message || 'Failed to fetch blogs admin');
@@ -68,7 +93,8 @@ export const getBlogsAdmin = (callback: (blogs: Blog[]) => void, onError?: (erro
   };
   fetchBlogs();
   
-  const channel = supabase.channel('blogs-admin-realtime')
+  const channelId = `blogs-admin-${Math.random().toString(36).substr(2, 9)}`;
+  const channel = supabase.channel(channelId)
     .on('postgres_changes', { event: '*', schema: 'public', table: 'blogs' }, () => fetchBlogs())
     .subscribe();
     
@@ -118,13 +144,13 @@ export const deleteBlog = async (id: string) => {
 export const getCardsAdmin = (callback: (cards: Card[]) => void, onError?: (error: string) => void) => {
   const fetchCards = async () => {
     try {
-      const { data, error } = await supabase
-        .from('cards')
-        .select('*')
-        .order('created_at', { ascending: false });
-      
-      if (error) throw error;
-      callback(data as Card[]);
+      const data = await withRetry<Card[]>(() => 
+        Promise.resolve(supabase
+          .from('cards')
+          .select('*')
+          .order('created_at', { ascending: false }))
+      );
+      callback(data || []);
     } catch (error: any) {
       console.error('Error fetching cards admin:', error);
       if (onError) onError(error.message || 'Failed to fetch cards');
@@ -132,7 +158,8 @@ export const getCardsAdmin = (callback: (cards: Card[]) => void, onError?: (erro
   };
   fetchCards();
   
-  const channel = supabase.channel('cards-admin-realtime')
+  const channelId = `cards-admin-${Math.random().toString(36).substr(2, 9)}`;
+  const channel = supabase.channel(channelId)
     .on('postgres_changes', { event: '*', schema: 'public', table: 'cards' }, (payload) => {
       console.log('Real-time card change:', payload.eventType);
       fetchCards();
@@ -145,14 +172,14 @@ export const getCardsAdmin = (callback: (cards: Card[]) => void, onError?: (erro
 export const getCards = (callback: (cards: Card[]) => void, onError?: (error: string) => void) => {
   const fetchCards = async () => {
     try {
-      const { data, error } = await supabase
-        .from('cards')
-        .select('*')
-        .eq('status', 'published')
-        .order('created_at', { ascending: false });
-      
-      if (error) throw error;
-      callback(data as Card[]);
+      const data = await withRetry<Card[]>(() => 
+        Promise.resolve(supabase
+          .from('cards')
+          .select('*')
+          .eq('status', 'published')
+          .order('created_at', { ascending: false }))
+      );
+      callback(data || []);
     } catch (error: any) {
       console.error('Error fetching cards public:', error);
       if (onError) onError(error.message || 'Failed to fetch cards');
@@ -160,7 +187,8 @@ export const getCards = (callback: (cards: Card[]) => void, onError?: (error: st
   };
   fetchCards();
   
-  const channel = supabase.channel('cards-public-realtime')
+  const channelId = `cards-public-${Math.random().toString(36).substr(2, 9)}`;
+  const channel = supabase.channel(channelId)
     .on('postgres_changes', { event: '*', schema: 'public', table: 'cards' }, () => fetchCards())
     .subscribe();
     
@@ -226,20 +254,21 @@ export const deleteCard = async (id: string) => {
 export const getWaitlist = (callback: (entries: WaitlistEntry[]) => void) => {
   const fetchWaitlist = async () => {
     try {
-      const { data, error } = await supabase
-        .from('waitlist')
-        .select('*')
-        .order('created_at', { ascending: false });
-      
-      if (error) throw error;
-      callback(data as WaitlistEntry[]);
+      const data = await withRetry<WaitlistEntry[]>(() => 
+        Promise.resolve(supabase
+          .from('waitlist')
+          .select('*')
+          .order('created_at', { ascending: false }))
+      );
+      callback(data || []);
     } catch (error) {
       console.error('Error fetching waitlist:', error);
     }
   };
   fetchWaitlist();
   
-  const channel = supabase.channel('waitlist-realtime')
+  const channelId = `waitlist-realtime-${Math.random().toString(36).substr(2, 9)}`;
+  const channel = supabase.channel(channelId)
     .on('postgres_changes', { event: '*', schema: 'public', table: 'waitlist' }, () => fetchWaitlist())
     .subscribe();
     
@@ -274,20 +303,21 @@ export const deleteWaitlistEntry = async (id: string) => {
 export const getNewsletters = (callback: (entries: NewsletterEntry[]) => void) => {
   const fetchNewsletters = async () => {
     try {
-      const { data, error } = await supabase
-        .from('newsletters')
-        .select('*')
-        .order('created_at', { ascending: false });
-      
-      if (error) throw error;
-      callback(data as NewsletterEntry[]);
+      const data = await withRetry<NewsletterEntry[]>(() => 
+        Promise.resolve(supabase
+          .from('newsletters')
+          .select('*')
+          .order('created_at', { ascending: false }))
+      );
+      callback(data || []);
     } catch (error) {
       console.error('Error fetching newsletters:', error);
     }
   };
   fetchNewsletters();
   
-  const channel = supabase.channel('newsletters-realtime')
+  const channelId = `newsletters-realtime-${Math.random().toString(36).substr(2, 9)}`;
+  const channel = supabase.channel(channelId)
     .on('postgres_changes', { event: '*', schema: 'public', table: 'newsletters' }, () => fetchNewsletters())
     .subscribe();
     
@@ -309,14 +339,14 @@ export const deleteNewsletterEntry = async (id: string) => {
 export const getReviews = (callback: (reviews: Review[]) => void, onError?: (error: string) => void) => {
   const fetchReviews = async () => {
     try {
-      const { data, error } = await supabase
-        .from('reviews')
-        .select('*')
-        .eq('status', 'published')
-        .order('created_at', { ascending: false });
-      
-      if (error) throw error;
-      callback(data as Review[]);
+      const data = await withRetry<Review[]>(() => 
+        Promise.resolve(supabase
+          .from('reviews')
+          .select('*')
+          .eq('status', 'published')
+          .order('created_at', { ascending: false }))
+      );
+      callback(data || []);
     } catch (error: any) {
       console.error('Error fetching reviews:', error);
       if (onError) onError(error.message || 'Failed to fetch reviews');
@@ -324,7 +354,8 @@ export const getReviews = (callback: (reviews: Review[]) => void, onError?: (err
   };
   fetchReviews();
   
-  const channel = supabase.channel('reviews-realtime')
+  const channelId = `reviews-public-${Math.random().toString(36).substr(2, 9)}`;
+  const channel = supabase.channel(channelId)
     .on('postgres_changes', { event: '*', schema: 'public', table: 'reviews' }, () => fetchReviews())
     .subscribe();
     
@@ -334,21 +365,22 @@ export const getReviews = (callback: (reviews: Review[]) => void, onError?: (err
 export const getReviewsAdmin = (callback: (reviews: Review[]) => void, onError?: (error: string) => void) => {
   const fetchReviews = async () => {
     try {
-      const { data, error } = await supabase
-        .from('reviews')
-        .select('*')
-        .order('created_at', { ascending: false });
-      
-      if (error) throw error;
-      callback(data as Review[]);
+      const data = await withRetry<Review[]>(() => 
+        Promise.resolve(supabase
+          .from('reviews')
+          .select('*')
+          .order('created_at', { ascending: false }))
+      );
+      callback(data || []);
     } catch (error: any) {
       console.error('Error fetching reviews admin:', error);
-      if (onError) onError(error.message || 'Failed to fetch reviews');
+      if (onError) onError(error.message || 'Failed to fetch reviews admin');
     }
   };
   fetchReviews();
   
-  const channel = supabase.channel('reviews-admin-realtime')
+  const channelId = `reviews-admin-${Math.random().toString(36).substr(2, 9)}`;
+  const channel = supabase.channel(channelId)
     .on('postgres_changes', { event: '*', schema: 'public', table: 'reviews' }, () => fetchReviews())
     .subscribe();
     
@@ -407,12 +439,13 @@ export const checkIfAdmin = async (userId: string | undefined, userEmail: string
 
 // --- Team Management ---
 export const getTeamMembers = async (): Promise<any[]> => {
-  const { data, error } = await supabase
-    .from('users')
-    .select('*')
-    .order('created_at', { ascending: false });
-  if (error) throw error;
-  return data;
+  const data = await withRetry<any[]>(() => 
+    Promise.resolve(supabase
+      .from('users')
+      .select('*')
+      .order('created_at', { ascending: false }))
+  );
+  return data || [];
 };
 
 export const inviteTeamMember = async (email: string, role: string) => {
@@ -444,15 +477,12 @@ export const deleteUser = async (userId: string) => {
 
 // --- Audit Logs ---
 export const getAuditLogs = async (): Promise<any[]> => {
-  const { data, error } = await supabase
-    .from('audit_logs')
-    .select('*')
-    .order('created_at', { ascending: false })
-    .limit(100);
-    
-  if (error) {
-    console.error('Error fetching audit logs:', error);
-    throw error;
-  }
-  return data;
+  const data = await withRetry<any[]>(() => 
+    Promise.resolve(supabase
+      .from('audit_logs')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(100))
+  );
+  return data || [];
 };

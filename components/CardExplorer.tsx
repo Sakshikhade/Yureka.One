@@ -115,8 +115,10 @@ const CardExplorer: React.FC = () => {
     const CATEGORIES_INITIAL_COUNT = 6;
     const PILL_CATEGORIES_INITIAL_COUNT = 9;
 
-    useEffect(() => {
-        const unsubscribe = getCards((fetchedCards) => {
+    const loadCards = () => {
+        setIsLoading(true);
+        setError(null);
+        return getCards((fetchedCards) => {
             setCardsList(fetchedCards);
             setIsLoading(false);
             setError(null);
@@ -125,6 +127,10 @@ const CardExplorer: React.FC = () => {
             setError(err);
             setIsLoading(false);
         });
+    };
+
+    useEffect(() => {
+        const unsubscribe = loadCards();
         return () => unsubscribe();
     }, []);
 
@@ -183,25 +189,26 @@ const CardExplorer: React.FC = () => {
         );
     }
 
-    if (error) {
+    if (error && cardsList.length === 0) {
         return (
             <div className="min-h-screen bg-cream flex items-center justify-center p-6">
                 <div className="max-w-md w-full bg-white p-10 rounded-[2.5rem] shadow-xl border border-red-100 text-center">
                     <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-6" />
                     <h2 className="text-3xl font-serif italic mb-4">Connection Issue</h2>
                     <p className="text-ink/60 mb-8 leading-relaxed">
-                        We're having trouble reaching the database. This usually means the Supabase RLS policies need a minor adjustment.
+                        We're having trouble reaching our catalog. This might be a temporary connection issue.
                     </p>
                     <div className="bg-red-50 p-4 rounded-2xl mb-8 text-left">
                         <p className="text-[10px] font-bold uppercase tracking-widest text-red-400 mb-1">Error Detail</p>
-                        <p className="text-xs font-mono text-red-600 break-words">{error}</p>
+                        <p className="text-xs font-mono text-red-600 break-words leading-tight">{error}</p>
                     </div>
                     <button 
-                        onClick={() => window.location.reload()}
-                        className="w-full bg-black text-white py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-clay transition-all"
+                        onClick={() => loadCards()}
+                        className="w-full bg-black text-white py-6 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-clay transition-all active:scale-95 shadow-lg"
                     >
-                        Try Again
+                        Try Reconnecting
                     </button>
+                    <p className="mt-8 text-[9px] font-bold uppercase tracking-[0.4em] text-ink/20 italic">Automated sequence recovery active</p>
                 </div>
             </div>
         );

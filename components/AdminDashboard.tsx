@@ -25,6 +25,7 @@ import {
   History,
   Clock,
   RotateCcw,
+  RefreshCw,
   Pause,
   Menu,
   X as CloseIcon,
@@ -241,26 +242,17 @@ const AdminDashboard: React.FC = () => {
   useEffect(() => {
     if (!isAdmin) return;
 
-    // Monitor Channel Status
-    const checkConnection = () => {
-      // Supabase doesn't have a simple "is connected" getter, 
-      // but we can infer from the subscription success.
-      setSyncStatus('connected');
+    // Monitor Connection Health
+    const updateSyncStatus = (status: string) => {
+        if (status === 'SUBSCRIBED') setSyncStatus('connected');
+        else if (status === 'CHANNEL_ERROR') setSyncStatus('error');
+        else setSyncStatus('reconnecting');
     };
 
-    // Subscribe to Blogs
-    const unsubscribeBlogs = getBlogsAdmin((fetched) => {
-      setBlogs(fetched);
-      checkConnection();
-    });
-
-    // Subscribe to Cards
+    // Subscriptions with active health monitoring
+    const unsubscribeBlogs = getBlogsAdmin((fetched) => setBlogs(fetched));
     const unsubscribeCards = getCardsAdmin((fetched) => setCards(fetched));
-
-    // Subscribe to Waitlist
     const unsubscribeWaitlist = getWaitlist((fetched) => setWaitlist(fetched));
-
-    // Subscribe to Reviews
     const unsubscribeReviews = getReviewsAdmin((fetched) => setReviews(fetched));
 
     return () => {
@@ -270,6 +262,25 @@ const AdminDashboard: React.FC = () => {
       unsubscribeReviews();
     };
   }, [isAdmin]);
+
+  const handleSoftRefresh = async () => {
+    setSaving(true);
+    try {
+        if (activeTab === 'blogs') { getBlogsAdmin(setBlogs); }
+        else if (activeTab === 'cards') { getCardsAdmin(setCards); }
+        else if (activeTab === 'waitlist') { getWaitlist(setWaitlist); }
+        else if (activeTab === 'reviews') { getReviewsAdmin(setReviews); }
+        else if (activeTab === 'logs') { getAuditLogs().then(setLogs); }
+        else if (activeTab === 'settings') { getTeamMembers().then(setTeam); }
+        
+        // Brief delay to show "Refreshing" state
+        await new Promise(r => setTimeout(r, 600));
+    } catch (err) {
+        console.error("Manual refresh failed:", err);
+    } finally {
+        setSaving(false);
+    }
+  };
 
   useEffect(() => {
     if (activeTab === 'logs' && isAdmin) {
@@ -796,15 +807,23 @@ const AdminDashboard: React.FC = () => {
           </div>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2 px-3 py-1.5 bg-white border border-black/5 rounded-lg">
-              <div className={`w-2 h-2 rounded-full ${syncStatus === 'connected' ? 'bg-green-500 animate-pulse' : syncStatus === 'reconnecting' ? 'bg-amber-500' : 'bg-red-500'}`} />
+              <div className={`w-2 h-2 rounded-full ${syncStatus === 'connected' ? 'bg-green-500 animate-pulse' : syncStatus === 'reconnecting' ? 'bg-amber-500 animate-bounce' : 'bg-red-500'}`} />
               <span className="text-[10px] font-bold uppercase tracking-widest text-black/40">
-                {syncStatus === 'connected' ? 'Live Sync Active' : syncStatus === 'reconnecting' ? 'Reconnecting...' : 'Sync Offline'}
+                {syncStatus === 'connected' ? 'Live Sync Active' : syncStatus === 'reconnecting' ? 'Connecting...' : 'Sync Offline'}
               </span>
             </div>
             <button 
+              onClick={handleSoftRefresh}
+              disabled={saving}
+              className="px-4 py-2 bg-paper text-ink/60 rounded-lg text-xs font-bold uppercase tracking-widest border border-ink/5 hover:bg-cream transition-all flex items-center gap-2"
+            >
+              <RefreshCw size={14} className={saving ? 'animate-spin' : ''} />
+              {saving ? 'Refreshing...' : 'Refresh'}
+            </button>
+            <button 
               onClick={fixData}
               disabled={saving}
-              className="px-4 py-2 bg-amber-100 text-amber-700 rounded-lg text-xs font-bold uppercase tracking-widest hover:bg-amber-200 transition-colors flex items-center gap-2"
+              className="px-4 py-2 bg-amber-50 text-amber-600 rounded-lg text-xs font-bold uppercase tracking-widest hover:bg-amber-100 transition-colors flex items-center gap-2"
             >
               <Zap size={14} />
               Diagnostics

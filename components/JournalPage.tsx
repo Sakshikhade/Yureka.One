@@ -10,8 +10,10 @@ const JournalPage: React.FC = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-        const unsubscribe = getBlogs((fetchedBlogs) => {
+    const loadBlogs = () => {
+        setIsLoading(true);
+        setError(null);
+        return getBlogs((fetchedBlogs) => {
             setBlogsList(fetchedBlogs);
             setIsLoading(false);
             setError(null);
@@ -20,6 +22,10 @@ const JournalPage: React.FC = () => {
             setError(err);
             setIsLoading(false);
         });
+    };
+
+    useEffect(() => {
+        const unsubscribe = loadBlogs();
         return () => unsubscribe();
     }, []);
 
@@ -53,7 +59,7 @@ const JournalPage: React.FC = () => {
     const featured = currentBlogs.find(b => b.featured) || currentBlogs[0];
     const regular = currentBlogs.filter(b => b.id !== featured?.id);
 
-    if (isLoading) {
+    if (isLoading && blogsList.length === 0) {
         return (
             <div className="min-h-screen bg-cream flex items-center justify-center">
                 <div className="flex flex-col items-center gap-6">
@@ -64,7 +70,7 @@ const JournalPage: React.FC = () => {
         );
     }
 
-    if (error) {
+    if (error && blogsList.length === 0) {
         return (
             <div className="min-h-screen bg-cream flex items-center justify-center p-6">
                 <div className="max-w-md w-full bg-white p-12 rounded-[3rem] shadow-2xl border border-ink/5 text-center">
@@ -73,19 +79,19 @@ const JournalPage: React.FC = () => {
                     </div>
                     <h2 className="text-4xl font-serif italic mb-6 tracking-tight">The Pulse is Offline</h2>
                     <p className="text-ink/60 mb-10 leading-relaxed font-serif">
-                        Our editorial servers are currently unreachable. This is likely due to a security policy update in our database.
+                        Our editorial servers are currently unreachable. This might be a temporary network issue.
                     </p>
                     <div className="bg-ink/5 p-5 rounded-2xl mb-10 text-left border border-ink/5">
                         <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-ink/30 mb-2">Technical Insight</p>
                         <p className="text-xs font-mono text-ink/60 break-words leading-tight">{error}</p>
                     </div>
                     <button 
-                        onClick={() => window.location.reload()}
+                        onClick={() => loadBlogs()}
                         className="w-full bg-ink text-white py-5 rounded-full font-bold uppercase tracking-[0.3em] text-[10px] hover:bg-clay transition-all shadow-lg active:scale-95"
                     >
-                        Force Reconnect
+                        Try Reconnecting
                     </button>
-                    <p className="mt-8 text-[9px] font-bold uppercase tracking-[0.4em] text-ink/20">Ref: RLS_RECURSION_01</p>
+                    <p className="mt-8 text-[9px] font-bold uppercase tracking-[0.4em] text-ink/20">System-level recovery active</p>
                 </div>
             </div>
         );
