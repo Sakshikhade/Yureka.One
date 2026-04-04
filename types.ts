@@ -96,7 +96,6 @@ export interface Review {
   role: string;
   company: string;
   company_logo?: string;
-  company_text?: string;
   image: string;
   quote: string;
   rotation?: number;

@@ -35,7 +35,6 @@ const fallbackReviews: Review[] = [
     role: 'Marketing VP',
     company: 'Zepto',
     company_logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Zepto_Logo.jpg/800px-Zepto_Logo.jpg', 
-    company_text: 'zepto', 
     image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     quote: "I used the Voucher Hub to stack rewards on my new laptop. 18% savings total. Insane.",
     rotation: 2
@@ -188,7 +187,7 @@ const DraggableCardPair: React.FC<DraggableCardPairProps> = ({ review, index, pr
                  <div className="mt-auto pt-6 border-t border-black/10 w-full relative z-10">
                     <div className="flex items-center gap-2 justify-between w-full">
                         <span className="font-mono text-[10px] uppercase tracking-widest text-black/40">From the desk of</span>
-                        <span className="font-serif font-bold text-lg italic text-black">{review.company_text || review.company}</span>
+                        <span className="font-serif font-bold text-lg italic text-black">{review.company}</span>
                     </div>
                  </div>
             </div>

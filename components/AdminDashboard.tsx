@@ -174,7 +174,6 @@ const AdminDashboard: React.FC = () => {
     role: '',
     company: '',
     company_logo: '',
-    company_text: '',
     image: 'https://picsum.photos/seed/review/300/400',
     quote: '',
     rotation: 0,
@@ -977,7 +976,6 @@ const AdminDashboard: React.FC = () => {
                               role: review.role,
                               company: review.company,
                               company_logo: review.company_logo || '',
-                              company_text: review.company_text || '',
                               image: review.image,
                               quote: review.quote,
                               rotation: review.rotation || 0,
@@ -1853,28 +1851,16 @@ const AdminDashboard: React.FC = () => {
                           className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
                         />
                       </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Company</label>
-                          <input 
-                            type="text" 
-                            required
-                            placeholder="e.g. Zepto"
-                            value={reviewForm.company}
-                            onChange={e => setReviewForm({...reviewForm, company: e.target.value})}
-                            className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Company Text (Optional)</label>
-                          <input 
-                            type="text" 
-                            placeholder="zepto"
-                            value={reviewForm.company_text || ''}
-                            onChange={e => setReviewForm({...reviewForm, company_text: e.target.value})}
-                            className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
-                          />
-                        </div>
+                      <div>
+                        <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Company</label>
+                        <input 
+                          type="text" 
+                          required
+                          placeholder="e.g. Zepto"
+                          value={reviewForm.company}
+                          onChange={e => setReviewForm({...reviewForm, company: e.target.value})}
+                          className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+                        />
                       </div>
                       <div className="grid grid-cols-2 gap-4">
                         <div>
@@ -1894,7 +1880,7 @@ const AdminDashboard: React.FC = () => {
                             type="number" 
                             step="0.5"
                             value={reviewForm.rotation}
-                            onChange={e => setReviewForm({...reviewForm, rotation: parseFloat(e.target.value)})}
+                            onChange={e => setReviewForm({...reviewForm, rotation: parseFloat(e.target.value) || 0})}
                             className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
                           />
                         </div>
