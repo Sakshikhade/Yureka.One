@@ -2,7 +2,7 @@ import React from 'react';
 import { Gift, Zap, ShieldCheck, ArrowRight, Star, Percent, Utensils, ShoppingBag } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-const RewardsPage: React.FC = () => {
+const YurekaOsPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-cream pt-32 pb-20">
       <div className="max-w-[1440px] mx-auto px-6">
@@ -13,10 +13,10 @@ const RewardsPage: React.FC = () => {
             <p className="text-[10px] font-bold tracking-[0.4em] uppercase text-teal">Maximize Every Rupee</p>
           </div>
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif tracking-tighter mb-8 text-black leading-none">
-            The <span className="italic font-light text-black/40">Rewards</span> Engine
+            Yureka <span className="italic font-light text-black/40">OS</span>
           </h1>
           <p className="text-xl md:text-2xl text-black/60 font-serif italic max-w-2xl mx-auto leading-relaxed">
-            Stop settling for generic points. Yureka aligns your cards with your lifestyle to unlock up to 15% in actual value.
+            Stop settling for generic points. Yureka OS is the central operational layer for your credit portfolio, aligning your cards with your lifestyle to unlock up to 15% in actual value.
           </p>
         </section>
 
@@ -100,4 +100,4 @@ const RewardsPage: React.FC = () => {
   );
 };
 
-export default RewardsPage;
+export default YurekaOsPage;

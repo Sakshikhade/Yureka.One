@@ -223,7 +223,7 @@ const Hero: React.FC = () => {
                         <ul className="space-y-0">
                             {[
                                 { title: "AI Magic", page: "03", link: "/ai-magic", desc: "Conversational Matching" },
-                                { title: "Voucher Savings", page: "05", link: "/rewards", desc: "8% Off Flipkart" },
+                                { title: "Yureka OS", page: "05", link: "/yureka-os", desc: "Financial Engine" },
                                 { title: "Card Explorer", page: "08", link: "/cards", desc: "Top Market Picks" },
                                 { title: "Manifesto", page: "12", link: "/manifesto", desc: "Our Vision" }
                             ].map((item, i) => (

@@ -25,7 +25,7 @@ const CareersPage = lazy(() => import('./components/CareersPage'));
 const BlogPage = lazy(() => import('./components/JournalPage'));
 const Security = lazy(() => import('./components/Security'));
 const WaitlistPage = lazy(() => import('./components/WaitlistPage'));
-const RewardsPage = lazy(() => import('./components/RewardsPage'));
+const YurekaOsPage = lazy(() => import('./components/YurekaOsPage'));
 const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
 const CardDetail = lazy(() => import('./components/CardDetail'));
 const BlogDetail = lazy(() => import('./components/BlogDetail'));
@@ -194,13 +194,13 @@ const AppContent: React.FC = () => {
            <Route path="/terms-of-service" element={<Suspense fallback={<div />}><TermsOfService /></Suspense>} />
            <Route path="/security-protocol" element={<Suspense fallback={<div />}><SecurityProtocolPage /></Suspense>} />
            <Route path="/community-guidelines" element={<Suspense fallback={<div />}><CommunityGuidelines /></Suspense>} />
-           <Route path="/rewards" element={<Suspense fallback={<div />}><RewardsPage /></Suspense>} />
+           <Route path="/yureka-os" element={<Suspense fallback={<div />}><YurekaOsPage /></Suspense>} />
            <Route path="/manifesto" element={<Suspense fallback={<div />}><OurStory /></Suspense>} />
            <Route path="/jobs" element={<Suspense fallback={<div />}><CareersPage /></Suspense>} />
 
            <Route path="/explorer" element={<Navigate to="/cards" replace />} />
            <Route path="/ai" element={<Navigate to="/ai-magic" replace />} />
-           <Route path="/matrix" element={<Navigate to="/rewards" replace />} />
+           <Route path="/matrix" element={<Navigate to="/yureka-os" replace />} />
            <Route path="/journal" element={<Navigate to="/blogs" replace />} />
            
            <Route path="*" element={<MainPage />} />

@@ -63,7 +63,7 @@ const Navbar: React.FC = () => {
                     {[
                         { name: 'Cards', path: '/cards' },
                         { name: 'Manifesto', path: '/manifesto' },
-                        { name: 'Rewards', path: '/rewards' },
+                        { name: 'Yureka OS', path: '/yureka-os' },
                         { name: 'Blogs', path: '/blogs' }
                     ].map((item) => (
                         <Link 
@@ -146,7 +146,7 @@ const Navbar: React.FC = () => {
                     {[
                         { name: 'Card Explorer', path: '/cards', desc: 'Curated Matches' },
                         { name: 'Manifesto', path: '/manifesto', desc: 'Our Mission' },
-                        { name: 'Rewards', path: '/rewards', desc: 'Voucher Savings' },
+                        { name: 'Yureka OS', path: '/yureka-os', desc: 'Financial Engine' },
                         { name: 'Blogs', path: '/blogs', desc: 'Credit Insights' },
                         { name: 'Yureka AI', path: '/ai-magic', desc: 'AI Matching' }
                     ].map((item, idx) => (
