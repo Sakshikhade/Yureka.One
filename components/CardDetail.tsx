@@ -8,6 +8,7 @@ import {
 import { getCardBySlug } from '../services/supabaseService';
 import { Card } from '../types';
 import ImageWithLoader from './ImageWithLoader';
+import { motion } from 'motion/react';
 
 const CardDetail: React.FC = () => {
     const { slug } = useParams<{ slug: string }>();
@@ -45,7 +46,7 @@ const CardDetail: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen bg-cream pt-24 md:pt-28 pb-32">
+        <div className="min-h-screen bg-[#FDFCF9] pt-24 md:pt-28 pb-32 font-serif overflow-x-hidden">
             {/* Sticky Sub-nav */}
             <div className="sticky top-[72px] md:top-[88px] z-40 bg-white/40 backdrop-blur-md border-b border-ink/5 px-6 py-4">
                 <div className="max-w-[1440px] mx-auto flex items-center justify-between">
@@ -75,14 +76,22 @@ const CardDetail: React.FC = () => {
                 <section id="overview" className="grid grid-cols-1 lg:grid-cols-2 gap-20 mb-32 items-center">
                     <div className="relative group">
                         {/* 3D-ish Card Presentation */}
-                        <div className="absolute inset-0 bg-ink/5 blur-3xl rounded-full scale-75 group-hover:scale-100 transition-transform duration-1000"></div>
-                        <div className="relative aspect-[1.58/1] rounded-3xl overflow-hidden shadow-2xl transform rotate-[-2deg] group-hover:rotate-0 transition-transform duration-1000 border border-ink/10">
+                        <div className="absolute inset-0 bg-clay/5 blur-[120px] rounded-full scale-125 group-hover:scale-150 transition-transform duration-1000 opacity-50"></div>
+                        <motion.div 
+                            whileHover={{ 
+                                rotateY: 5, 
+                                rotateX: -5,
+                                scale: 1.05
+                            }}
+                            style={{ perspective: 1500 }}
+                            className="relative aspect-[1.58/1] rounded-3xl overflow-hidden shadow-[0_50px_100px_-20px_rgba(36,36,36,0.25)] transition-all duration-700 border border-ink/5 bg-white"
+                        >
                             <ImageWithLoader 
                                 src={card.image} 
                                 alt={card.name} 
-                                className="w-full h-full object-cover"
+                                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                             />
-                        </div>
+                        </motion.div>
                         {/* Floating Badges */}
                         <div className="absolute -bottom-8 -right-8 bg-white p-6 rounded-3xl shadow-2xl border border-ink/5 animate-fade-in-up">
                             <div className="flex items-center gap-4">
