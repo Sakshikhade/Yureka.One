@@ -15,7 +15,7 @@ const TextReveal: React.FC = () => {
   const words = bodyText.split(" ");
 
   return (
-    <section ref={containerRef} className="relative bg-cream min-h-[150vh] z-20 flex items-start justify-center border-b border-black/10 text-ink">
+    <section ref={containerRef} className="relative bg-cream min-h-[100vh] md:min-h-[150vh] z-20 flex items-start justify-center border-b border-black/10 text-ink">
       <div className="sticky top-0 h-screen flex flex-col items-center justify-center px-6 md:px-12 max-w-[1200px] mx-auto w-full">
         <div className="w-full max-w-5xl border-l border-clay/30 pl-8 md:pl-16 py-12">
             <motion.div 

@@ -37,11 +37,11 @@ const ShowcaseCard: React.FC<ShowcaseCardProps> = ({ card, index, total, progres
             className="absolute inset-0 w-full h-full"
         >
             <div className="w-full h-full bg-paper p-3 pb-8 shadow-2xl border border-ink/10 flex flex-col relative group transition-colors hover:border-clay/50">
-                <div className="h-[65%] relative overflow-hidden bg-cream/50 border-4 border-paper shadow-inner grayscale group-hover:grayscale-0 transition-all duration-700">
+                <div className="h-[55%] md:h-[65%] relative overflow-hidden bg-cream/50 border-4 border-paper shadow-inner grayscale group-hover:grayscale-0 transition-all duration-700 flex items-center justify-center">
                     <ImageWithLoader 
                         src={card.image} 
                         alt={card.name} 
-                        className="w-full h-full object-cover"
+                        className="w-[90%] h-[90%] object-contain"
                     />
                     <div className="absolute top-4 right-4 glass-panel backdrop-blur-md text-ink px-3 py-1 text-[9px] font-bold uppercase tracking-widest rounded-full shadow-lg border border-white/20">
                         {card.issuer || card.bank}
@@ -101,10 +101,10 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp })
             <div className="absolute top-0 bottom-0 right-[33%] w-px bg-ink/5 hidden lg:block z-0"></div>
 
             <div className="w-full h-full relative z-10 text-ink">
-                <div className="grid grid-cols-1 lg:grid-cols-3 h-full">
+                <div className="flex flex-col lg:grid lg:grid-cols-3 h-full">
 
                     {/* Left Column: Copy */}
-                    <div className="col-span-1 h-full flex flex-col justify-center px-8 md:px-16 relative z-20 pointer-events-none">
+                    <div className="h-[25%] lg:h-full lg:col-span-1 flex flex-col justify-end lg:justify-center px-6 lg:px-16 pt-2 lg:pt-0 relative z-20 pointer-events-none mt-2 lg:mt-0">
                         <motion.div 
                           initial={{ opacity: 0, x: -20 }}
                           whileInView={{ opacity: 1, x: 0 }}
@@ -135,8 +135,8 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp })
                     </div>
 
                     {/* Middle Column: Cards Container */}
-                    <div className="col-span-1 h-full relative flex items-center justify-center pointer-events-none">
-                        <div className="relative w-[85vw] h-[60vh] max-h-[600px] max-w-[420px] pointer-events-auto mt-12 lg:mt-0">
+                    <div className="h-[55%] lg:h-full flex-1 lg:col-span-1 relative flex items-center justify-center pointer-events-none">
+                        <div className="relative w-[85vw] h-[100%] lg:h-[60vh] max-h-[480px] lg:max-h-[600px] max-w-[320px] lg:max-w-[420px] pointer-events-auto">
                             {cards.map((card, i) => (
                                 <ShowcaseCard 
                                     key={card.id || i}
@@ -150,29 +150,31 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp })
                     </div>
 
                     {/* Right Column: CTA */}
-                    <div className="col-span-1 h-full relative flex items-center justify-center lg:justify-start lg:pl-20 pointer-events-none">
+                    <div className="h-[20%] lg:h-full lg:col-span-1 relative flex items-center justify-center lg:justify-start lg:pl-20 pointer-events-none pb-4 lg:pb-0">
                         <motion.div 
                             style={{ 
                                 x: useTransform(smoothProgress, [0.8, 0.95], [200, 0]),
                                 opacity: useTransform(smoothProgress, [0.8, 0.9], [0, 1])
                             }}
-                            className="relative pointer-events-auto"
+                            className="relative pointer-events-auto h-full w-full flex items-center justify-center lg:block"
                         >
-                            <Link to="/cards" className="group block">
-                                <div className="w-[320px] h-[480px] bg-clay/5 border border-clay/20 relative overflow-hidden flex flex-col items-center justify-center text-center p-10 transition-all duration-300 shadow-2xl hover:bg-clay/10">
-                                    <div className="absolute inset-0 border-[12px] border-double border-clay/10 pointer-events-none"></div>
-                                    <div className="relative z-10 flex flex-col items-center">
+                            <Link to="/cards" className="group block w-[90%] max-w-[320px] lg:w-[320px]">
+                                <div className="w-full h-[120px] lg:h-[480px] bg-clay/5 border border-clay/20 relative overflow-hidden flex flex-row lg:flex-col items-center justify-center lg:justify-center text-center p-4 lg:p-10 transition-all duration-300 shadow-2xl hover:bg-clay/10 mx-auto">
+                                    <div className="absolute inset-0 border-[4px] lg:border-[12px] border-double border-clay/10 pointer-events-none"></div>
+                                    <div className="relative z-10 flex flex-row lg:flex-col items-center justify-between w-full h-full lg:h-auto">
                                         <motion.div 
                                           animate={{ y: [0, -10, 0] }}
                                           transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-                                          className="w-16 h-16 bg-ink text-white rounded-full flex items-center justify-center mb-6 shadow-2xl group-hover:scale-110 transition-transform duration-500"
+                                          className="w-12 h-12 lg:w-16 lg:h-16 bg-ink text-white rounded-full flex items-center justify-center mb-0 lg:mb-6 shadow-2xl group-hover:scale-110 transition-transform duration-500 shrink-0 mr-4 lg:mr-0"
                                         >
-                                            <MousePointer2 size={24} className="text-clay" />
+                                            <MousePointer2 size={18} className="text-clay lg:w-6 lg:h-6" />
                                         </motion.div>
-                                        <h3 className="text-xl font-serif text-ink mb-2 italic">Discovery</h3>
-                                        <p className="text-3xl font-bold text-ink tracking-tighter leading-none mb-8 uppercase">Explore <br/>Market</p>
-                                        <div className="bg-ink text-white px-8 py-3.5 font-bold uppercase tracking-widest text-xs group-hover:bg-clay group-hover:text-white transition-colors rounded-full shadow-xl">
-                                            View All Cards
+                                        <div className="flex flex-col items-start lg:items-center text-left lg:text-center flex-1 lg:flex-none">
+                                            <h3 className="text-sm lg:text-xl font-serif text-ink mb-1 lg:mb-2 italic">Discovery</h3>
+                                            <p className="text-lg lg:text-3xl font-bold text-ink tracking-tight leading-none lg:mb-8 uppercase">Explore <br className="hidden lg:block"/>Market</p>
+                                        </div>
+                                        <div className="bg-ink text-white px-4 py-2 lg:px-8 lg:py-3.5 font-bold uppercase tracking-widest text-[9px] lg:text-xs group-hover:bg-clay group-hover:text-white transition-colors rounded-full shadow-xl ml-4 lg:ml-0 shrink-0">
+                                            View Cards
                                         </div>
                                     </div>
                                 </div>

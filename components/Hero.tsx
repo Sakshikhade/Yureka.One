@@ -97,7 +97,7 @@ const Hero: React.FC = () => {
                      <span className="text-clay font-mono font-bold text-[10px] md:text-xs uppercase tracking-[0.3em]">Smart Card Finder</span>
                      <div className="h-px bg-clay w-6 md:w-16"></div>
                 </div>
-                <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[0.9] font-serif font-medium text-ink uppercase tracking-tighter transform scale-y-105">
+                <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[0.95] md:leading-[0.9] font-serif font-medium text-ink uppercase tracking-tighter transform scale-y-100 md:scale-y-105">
                     Stop Guessing. <br className="hidden md:block" /> <span className="italic font-light">Start Saving.</span>
                 </h2>
                 <h3 className="text-lg md:text-2xl lg:text-3xl font-sans font-light text-ink/60 mt-4 md:mt-8 max-w-2xl mx-auto leading-relaxed">
@@ -161,8 +161,8 @@ const Hero: React.FC = () => {
                 </motion.div>
 
                 {/* Center: Hero Images (The "Photo") */}
-                <div className="md:col-span-1 lg:col-span-6 relative flex justify-center items-center pt-6 pb-10 lg:px-10 min-h-[400px] md:min-h-[500px] border-b md:border-b-0 lg:border-r border-ink/10">
-                     <div className="relative w-full max-w-[280px] sm:max-w-md aspect-[4/5]">
+                <div className="md:col-span-1 lg:col-span-6 relative flex justify-center items-center pt-2 md:pt-6 pb-6 md:pb-10 lg:px-10 min-h-[350px] md:min-h-[500px] border-b md:border-b-0 lg:border-r border-ink/10 overflow-hidden">
+                     <div className="relative w-[90%] max-w-[280px] sm:max-w-md aspect-[4/5] md:aspect-auto md:h-[90%]">
                         {/* Image 1 */}
                         <motion.div 
                             initial={fadeInUp.initial}
@@ -192,7 +192,7 @@ const Hero: React.FC = () => {
                             whileInView={fadeInUp.whileInView}
                             viewport={fadeInUp.viewport}
                             transition={{ ...fadeInUp.transition, delay: 0.5 }}
-                            className="absolute top-[25%] right-[-5%] w-[65%] z-10"
+                            className="absolute top-[20%] right-0 w-[65%] z-10"
                         >
                            <div className="bg-[#EAE8E0] p-3 pb-8 shadow-lg rotate-[3deg] transition-all duration-700 hover:rotate-0 hover:z-30 hover:scale-105 border border-ink/10">
                                 <div className="aspect-square bg-gray-200 transition-all duration-500 overflow-hidden border border-ink/5">
