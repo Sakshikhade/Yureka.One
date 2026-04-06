@@ -48,7 +48,7 @@ const roles = [
 
 const CareersPage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-cream pt-32 pb-20 font-sans text-black overflow-x-hidden">
+    <div className="min-h-screen bg-cream pt-4 md:pt-8 pb-20 font-sans text-black overflow-x-hidden">
       
       <div className="max-w-[1440px] mx-auto px-6 relative z-10">
         

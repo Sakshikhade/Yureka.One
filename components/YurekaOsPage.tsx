@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const YurekaOsPage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-cream pt-32 pb-20">
+    <div className="min-h-screen bg-cream pt-4 md:pt-8 pb-20">
       <div className="max-w-[1440px] mx-auto px-6">
         
         {/* Hero Section */}

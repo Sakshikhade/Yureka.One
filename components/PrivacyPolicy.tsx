@@ -12,7 +12,7 @@ const PrivacyPolicy: React.FC = () => {
     return (
         <div className="bg-cream min-h-screen text-ink pb-32">
             {/* Header Section */}
-            <div className="pt-32 md:pt-48 pb-16 md:pb-24 border-b border-black/10 px-6">
+            <div className="pt-6 md:pt-16 pb-16 md:pb-24 border-b border-black/10 px-6">
                 <div className="max-w-4xl mx-auto">
                     <div className="flex items-center gap-2 text-clay mb-6">
                         <Shield size={18} strokeWidth={2.5} />

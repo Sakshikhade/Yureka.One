@@ -174,21 +174,21 @@ const CardExplorer: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen bg-[#FDFCF9] pt-16 pb-20 overflow-x-hidden font-serif">
+        <div className="min-h-screen bg-[#FDFCF9] pt-0 pb-20 overflow-x-hidden font-serif">
             {/* --- PAGE HERO (NEW) --- */}
-            <div className="max-w-[1440px] mx-auto px-6 pt-20 pb-16 border-b border-ink/10 mb-12">
+            <div className="max-w-[1440px] mx-auto px-6 pt-6 md:pt-12 pb-10 md:pb-16 border-b border-ink/10 mb-8 md:mb-12">
                 <div className="flex flex-col lg:flex-row justify-between items-end gap-8">
                     <div className="max-w-2xl">
                         <div className="flex items-center gap-3 mb-6">
                             <div className="w-2 h-2 bg-clay rounded-full animate-pulse"></div>
                             <span className="text-[10px] font-mono font-bold tracking-[0.5em] uppercase text-ink/40">The Curated Catalog</span>
                         </div>
-                        <h1 className="text-5xl md:text-8xl font-serif italic tracking-tighter leading-[0.85] text-ink mb-6">
+                        <h1 className="text-4xl md:text-8xl font-serif italic tracking-tighter leading-[0.9] md:leading-[0.85] text-ink mb-4 md:mb-6">
                             Precision <br />
                             <span className="text-clay">Instruments</span>
                         </h1>
-                        <p className="text-xl md:text-2xl text-ink/60 font-serif leading-tight max-w-md italic">
-                            A distilled index of the finest credit instruments globally. No bias. Just the data you need to optimize your wealth.
+                        <p className="text-base md:text-2xl text-ink/60 font-serif leading-tight max-w-md italic">
+                            A distilled index of the finest credit instruments. No bias. Just the data you need to optimize your wealth.
                         </p>
                     </div>
                     <div className="w-full lg:w-auto flex flex-col gap-4 items-end">
@@ -213,19 +213,19 @@ const CardExplorer: React.FC = () => {
 
             {/* --- TOP CATEGORY GRID --- */}
             <div className="max-w-[1440px] mx-auto px-6 mb-12">
-                <div className="flex gap-4 overflow-x-auto no-scrollbar pb-4 -mx-2 px-2">
+                <div className="flex gap-2 md:gap-4 overflow-x-auto no-scrollbar pb-2 md:pb-4 -mx-2 px-2">
                     {categories.map((cat, i) => {
                         const isSelected = selectedCategories.includes(cat.name);
                         return (
                             <button 
                                 key={i}
                                 onClick={() => toggleCategory(cat.name)}
-                                className={`flex flex-col items-center justify-center min-w-[140px] p-8 bg-white rounded-[2rem] shadow-sm hover:shadow-xl transition-all duration-500 border-2 ${isSelected ? 'border-clay/30 bg-paper' : 'border-ink/5'}`}
+                                className={`flex flex-col items-center justify-center min-w-[80px] md:min-w-[120px] p-3 md:p-6 bg-white rounded-2xl md:rounded-[2rem] shadow-sm hover:shadow-xl transition-all duration-500 border-2 shrink-0 ${isSelected ? 'border-clay/30 bg-paper' : 'border-ink/5'}`}
                             >
-                                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-4 transition-all duration-500 shadow-inner ${isSelected ? 'bg-clay text-white rotate-6' : 'bg-cream text-clay/60'}`}>
-                                    {React.cloneElement(cat.icon as React.ReactElement<any>, { size: 28 })}
+                                <div className={`w-9 h-9 md:w-12 md:h-12 rounded-xl md:rounded-2xl flex items-center justify-center mb-2 md:mb-3 transition-all duration-500 shadow-inner ${isSelected ? 'bg-clay text-white rotate-6' : 'bg-cream text-clay/60'}`}>
+                                    {React.cloneElement(cat.icon as React.ReactElement<any>, { size: 18 })}
                                 </div>
-                                <span className={`text-[10px] font-bold uppercase tracking-widest whitespace-nowrap transition-colors ${isSelected ? 'text-ink' : 'text-ink/40'}`}>
+                                <span className={`text-[9px] md:text-[10px] font-bold uppercase tracking-wider md:tracking-widest text-center leading-tight transition-colors ${isSelected ? 'text-ink' : 'text-ink/40'}`}>
                                     {cat.name}
                                 </span>
                             </button>
@@ -494,11 +494,13 @@ const CardExplorer: React.FC = () => {
 
             {/* Mobile Filter Modal */}
             {isMobileFilterOpen && (
-                <div className="fixed inset-0 z-50 bg-ink/60 backdrop-blur-md lg:hidden animate-fade-in">
-                    <div className="absolute right-0 top-0 h-full w-[90%] bg-cream p-10 shadow-[0_0_100px_rgba(0,0,0,0.5)] animate-slide-left overflow-y-auto">
-                        <div className="flex justify-between items-center mb-12">
+                <div className="fixed inset-0 z-[95] bg-ink/60 backdrop-blur-md lg:hidden">
+                    <div className="absolute right-0 top-0 h-full w-[90%] bg-cream pt-4 px-6 pb-10 shadow-[0_0_100px_rgba(0,0,0,0.5)] overflow-y-auto">
+                        {/* Spacer to clear TopBanner + Navbar */}
+                        <div className="h-14" />
+                        <div className="flex justify-between items-center mb-8">
                             <div className="space-y-1">
-                                <h2 className="text-4xl font-serif italic tracking-tighter leading-none">Filters</h2>
+                                <h2 className="text-3xl font-serif italic tracking-tighter leading-none">Filters</h2>
                                 <p className="text-[10px] font-bold uppercase tracking-widest text-ink/30">Refine your search</p>
                             </div>
                             <button onClick={() => setIsMobileFilterOpen(false)} className="w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-lg border border-ink/5 transition-transform active:scale-90">

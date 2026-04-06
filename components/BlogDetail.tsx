@@ -59,12 +59,12 @@ const BlogDetail: React.FC = () => {
         <div className="min-h-screen bg-cream pb-32 font-serif">
             {/* Reading Progress Bar */}
             <div 
-                className="fixed top-20 left-0 h-1 bg-clay z-50 transition-all duration-100" 
+                className="fixed top-[104px] md:top-20 left-0 h-1 bg-clay z-[85] transition-all duration-100" 
                 style={{ width: `${readingProgress}%` }}
             />
 
             {/* Top Navigation */}
-            <div className="sticky top-20 z-40 bg-white/40 backdrop-blur-md border-b border-ink/5 px-6 py-4">
+            <div className="sticky top-[104px] md:top-20 z-40 bg-white/80 backdrop-blur-md border-b border-ink/5 px-6 py-3 md:py-4">
                 <div className="max-w-[1000px] mx-auto flex items-center justify-between">
                     <Link to="/blogs" className="flex items-center gap-2 text-ink/40 hover:text-clay transition-colors group">
                         <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
@@ -77,7 +77,7 @@ const BlogDetail: React.FC = () => {
                 </div>
             </div>
 
-            <div className="max-w-[1000px] mx-auto px-6 pt-20">
+            <div className="max-w-[1000px] mx-auto px-6 pt-8 md:pt-16">
                 {/* Article Header */}
                 <header className="mb-16">
                     <div className="flex items-center gap-4 text-[10px] font-bold uppercase tracking-[0.4em] text-clay mb-8 font-sans">

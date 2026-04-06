@@ -89,7 +89,7 @@ const WaitlistPage: React.FC = () => {
 
   if (isSuccess) {
     return (
-        <div className="min-h-screen bg-cream pt-32 pb-20 px-6 flex flex-col items-center justify-center text-center font-serif">
+        <div className="min-h-screen bg-cream pt-4 md:pt-8 pb-20 px-6 flex flex-col items-center justify-center text-center font-serif">
             <div className="w-24 h-24 bg-clay text-white rounded-full flex items-center justify-center mb-10 shadow-2xl animate-pulse">
                 <Check size={48} strokeWidth={1.5} />
             </div>
@@ -105,7 +105,7 @@ const WaitlistPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-cream pt-32 pb-32 px-6 overflow-hidden font-serif selection:bg-clay/20">
+    <div className="min-h-screen bg-cream pt-4 md:pt-8 pb-32 px-6 overflow-hidden font-serif selection:bg-clay/20">
          
          {/* Minimalist Grid Pattern */}
          <div className="fixed inset-0 pointer-events-none opacity-[0.02]" 

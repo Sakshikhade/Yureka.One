@@ -46,9 +46,9 @@ const CardDetail: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen bg-[#FDFCF9] pt-24 md:pt-28 pb-32 font-serif overflow-x-hidden">
+        <div className="min-h-screen bg-[#FDFCF9] pt-4 md:pt-8 pb-32 font-serif overflow-x-hidden">
             {/* Sticky Sub-nav */}
-            <div className="sticky top-[72px] md:top-[88px] z-40 bg-white/40 backdrop-blur-md border-b border-ink/5 px-6 py-4">
+            <div className="sticky top-[104px] md:top-[88px] z-40 bg-white/80 backdrop-blur-md border-b border-ink/5 px-6 py-3 md:py-4">
                 <div className="max-w-[1440px] mx-auto flex items-center justify-between">
                     <Link to="/cards" className="flex items-center gap-2 text-ink/40 hover:text-clay transition-colors group">
                         <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />

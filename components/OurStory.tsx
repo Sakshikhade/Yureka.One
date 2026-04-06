@@ -40,7 +40,7 @@ const FadeInSection: React.FC<FadeInSectionProps> = ({ children, delay = 0, clas
 
 const OurStory: React.FC = () => {
   return (
-    <div className="min-h-screen bg-[#F2EFE9] pt-28 pb-20 font-sans text-[#1a1a1a] px-2 md:px-6">
+    <div className="min-h-screen bg-[#F2EFE9] pt-4 md:pt-8 pb-20 font-sans text-[#1a1a1a] px-2 md:px-6">
       
       {/* --- NEW HERO SECTION: LE MONDE STYLE --- */}
       <div className="max-w-[1280px] mx-auto overflow-hidden mb-12 animate-fade-in-up">
