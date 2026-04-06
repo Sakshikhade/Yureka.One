@@ -28,7 +28,7 @@ const Navbar: React.FC = () => {
             flex justify-center
             z-[90]
             transition-all duration-700 cubic-bezier(0.25, 0.8, 0.25, 1)
-            ${isScrolled ? 'top-2 md:top-6 pointer-events-none' : 'top-0 md:top-10'}
+            ${isScrolled ? 'top-12 md:top-14 pointer-events-none' : 'top-10'}
         `}
       >
         <div 
