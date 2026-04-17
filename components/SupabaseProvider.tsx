@@ -14,8 +14,10 @@ import {
   getTeamMembersAdmin,
   getAuditLogsAdmin
 } from '../services/supabaseService';
+import { SupabaseClient } from '@supabase/supabase-js';
 
 interface SupabaseContextType {
+  supabase: SupabaseClient;
   cards: Card[];
   blogs: Blog[];
   reviews: Review[];
@@ -117,6 +119,7 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   return (
     <SupabaseContext.Provider value={{ 
+      supabase,
       cards, blogs, reviews, waitlist, team, logs, 
       syncStatus, isLoading, isAdminDataLoaded, refreshAll 
     }}>
