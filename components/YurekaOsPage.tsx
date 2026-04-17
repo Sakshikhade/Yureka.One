@@ -37,16 +37,16 @@ const YurekaOsPage: React.FC = () => {
       <div className="max-w-[1440px] mx-auto px-6">
         
         {/* New Premium Hero Pattern */}
-        <section className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-32 min-h-[600px] mt-8">
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center mb-20 md:mb-32 min-h-[500px] md:min-h-[600px] mt-4 md:mt-8">
           {/* Visual Side */}
-          <div className="relative h-[600px] rounded-[2.5rem] overflow-hidden group shadow-2xl">
+          <div className="relative h-[400px] md:h-[600px] rounded-3xl md:rounded-[2.5rem] overflow-hidden group shadow-2xl">
             <img 
-              src="/brain/68ca9173-7e43-410f-bbc2-49d1ddffa54f/eiffel_tower_points_wonder_1776360719835.png" 
+              src="/assets/hero/eiffel-points.png" 
               alt="Unlock Wonders" 
               className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
             />
             {/* Gradient Overlay */}
-            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-10 md:p-14">
+            <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end p-8 md:p-14">
               <div className="flex gap-2 mb-6">
                 {[...Array(4)].map((_, i) => (
                   <div key={i} className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/20">
@@ -55,7 +55,7 @@ const YurekaOsPage: React.FC = () => {
                 ))}
                 <span className="text-white/70 text-[10px] uppercase tracking-widest flex items-center ml-2 border-l border-white/20 pl-4">Search across 10+ programs</span>
               </div>
-              <h2 className="text-5xl md:text-7xl font-sans font-bold text-white leading-[0.9] tracking-tighter">
+              <h2 className="text-4xl sm:text-5xl md:text-7xl font-sans font-bold text-white leading-[0.9] tracking-tighter">
                 Your Card can <br /> unlock wonders
               </h2>
               <p className="text-white/60 mt-4 text-xs tracking-widest uppercase font-bold">Join 5,000+ travelers maximizing their points</p>
