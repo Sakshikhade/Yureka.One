@@ -6,8 +6,9 @@ const TextReveal: React.FC = () => {
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start end", "end start"]
+    offset: ["start start", "end end"]
   });
+
 
   const headerText = "EDITORIAL • SECTION 01";
   const bodyText = "Your credit card dictates your rewards. That is why we scanned 200+ options to find the ones that actually deliver. Cashback on Swiggy, travel lounge access, and rewards that actually matter. Welcome to the financial upgrade you deserve.";
@@ -15,7 +16,8 @@ const TextReveal: React.FC = () => {
   const words = bodyText.split(" ");
 
   return (
-    <section ref={containerRef} className="relative bg-cream min-h-[100vh] md:min-h-[150vh] z-20 flex items-start justify-center border-b border-black/10 text-ink">
+    <section ref={containerRef} className="relative bg-cream h-[250vh] md:h-[300vh] z-20 flex items-start justify-center border-b border-black/10 text-ink">
+
       <div className="sticky top-0 h-screen flex flex-col items-center justify-center px-6 md:px-12 max-w-[1200px] mx-auto w-full">
         <div className="w-full max-w-5xl border-l border-clay/30 pl-8 md:pl-16 py-12">
             <motion.div 
@@ -32,10 +34,11 @@ const TextReveal: React.FC = () => {
 
             <div className="flex flex-wrap gap-x-3 gap-y-1 md:gap-x-4 md:gap-y-2 leading-tight">
             {words.map((word, i) => {
-                const start = i / words.length;
-                const end = start + 0.1;
+                const start = (i / words.length) * 0.7; // Finish all words by 70% of scroll
+                const end = start + 0.15;
                 // eslint-disable-next-line react-hooks/rules-of-hooks
                 const opacity = useTransform(scrollYProgress, [start, end], [0.1, 1]);
+
 
                 return (
                 <motion.span
@@ -50,16 +53,16 @@ const TextReveal: React.FC = () => {
             </div>
             
             <motion.div 
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 0.5 }}
-              viewport={{ once: true }}
-              transition={{ delay: 1, duration: 1 }}
+              style={{ 
+                opacity: useTransform(scrollYProgress, [0.8, 0.9], [0, 0.5]) 
+              }}
               className="mt-12"
             >
                 <p className="font-mono text-xs uppercase tracking-widest text-ink/60">
                     — The Editors
                 </p>
             </motion.div>
+
         </div>
       </div>
     </section>

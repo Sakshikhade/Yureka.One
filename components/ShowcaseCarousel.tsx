@@ -24,7 +24,8 @@ const ShowcaseCard: React.FC<ShowcaseCardProps> = ({ card, index, total, progres
     const x = useTransform(progress, [start, start + phaseSize / 2], [300, 0]);
     const opacity = useTransform(progress, [start, start + 0.05, end, end + 0.05], [0, 1, 1, 0]);
     const scale = useTransform(progress, [end, end + phaseSize], [1, 0.95]);
-    const rotate = useTransform(progress, [start, end], [index % 2 === 0 ? -2 : 2, index % 2 === 0 ? 2 : -2]);
+    const rotate = 0; // Everything in straight line as requested
+
     const brightness = useTransform(progress, [end, end + phaseSize], [1, 0.8]);
 
     // Handle both snake_case (Supabase/new data) and camelCase (legacy/types)
@@ -76,7 +77,11 @@ const ShowcaseCard: React.FC<ShowcaseCardProps> = ({ card, index, total, progres
 };
 
 const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp }) => {
-  const cards = (cardsProp && cardsProp.length > 0) ? cardsProp : featuredCards;
+  const cards = React.useMemo(() => {
+    const sourceCards = (cardsProp && cardsProp.length > 0) ? cardsProp : featuredCards;
+    return [...sourceCards].sort(() => 0.5 - Math.random()).slice(0, 3);
+  }, [cardsProp]);
+
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -150,16 +155,18 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp })
                     </div>
 
                     {/* Right Column: CTA */}
-                    <div className="h-[20%] lg:h-full lg:col-span-1 relative flex items-center justify-center lg:justify-start lg:pl-20 pointer-events-none pb-4 lg:pb-0">
+                    <div className="h-[20%] lg:h-full lg:col-span-1 relative flex items-center justify-center pointer-events-none pb-4 lg:pb-0">
+
                         <motion.div 
                             style={{ 
-                                x: useTransform(smoothProgress, [0.8, 0.95], [200, 0]),
+                                x: useTransform(smoothProgress, [0.8, 0.95], [100, 0]),
                                 opacity: useTransform(smoothProgress, [0.8, 0.9], [0, 1])
                             }}
-                            className="relative pointer-events-auto h-full w-full flex items-center justify-center lg:block"
+                            className="relative pointer-events-auto h-full w-full flex items-center justify-center"
                         >
-                            <Link to="/cards" className="group block w-[90%] max-w-[320px] lg:w-[320px]">
-                                <div className="w-full h-[120px] lg:h-[480px] bg-clay/5 border border-clay/20 relative overflow-hidden flex flex-row lg:flex-col items-center justify-center lg:justify-center text-center p-4 lg:p-10 transition-all duration-300 shadow-2xl hover:bg-clay/10 mx-auto">
+                            <Link to="/cards" className="group block w-[85vw] lg:w-full max-w-[320px] lg:max-w-[420px]">
+                                <div className="w-full h-[120px] lg:h-[60vh] max-h-[480px] lg:max-h-[600px] bg-clay/5 border border-clay/20 relative overflow-hidden flex flex-row lg:flex-col items-center justify-center lg:justify-center text-center p-4 lg:p-10 transition-all duration-300 shadow-2xl hover:bg-clay/10 mx-auto">
+
                                     <div className="absolute inset-0 border-[4px] lg:border-[12px] border-double border-clay/10 pointer-events-none"></div>
                                     <div className="relative z-10 flex flex-row lg:flex-col items-center justify-between w-full h-full lg:h-auto">
                                         <motion.div 
