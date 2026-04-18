@@ -34,6 +34,7 @@ const TermsOfService = lazy(() => import('./components/TermsOfService'));
 const CommunityGuidelines = lazy(() => import('./components/CommunityGuidelines'));
 const SecurityProtocolPage = lazy(() => import('./components/SecurityProtocolPage'));
 const RewardsTransferCalculator = lazy(() => import('./components/RewardsTransferCalculator'));
+const AIMagicPage = lazy(() => import('./components/AIMagicPage'));
 
 
 const ScrollToTop = () => {
@@ -200,6 +201,17 @@ const AppContent: React.FC = () => {
            <Route path="/manifesto" element={<Suspense fallback={<div />}><OurStory /></Suspense>} />
            <Route path="/jobs" element={<Suspense fallback={<div />}><CareersPage /></Suspense>} />
 
+           <Route path="/ai-magic" element={
+              <>
+                <SEO 
+                  title="Yureka AI Magic | Your AI Financial Co-Pilot" 
+                  description="From picking the perfect credit card to maximising every reward point — Yureka AI is your always-on, personalised financial intelligence layer."
+                />
+                <Suspense fallback={<div className="h-screen flex items-center justify-center"><Loader2 className="animate-spin text-clay" size={40} /></div>}>
+                  <AIMagicPage />
+                </Suspense>
+              </>
+           } />
            <Route path="/explorer" element={<Navigate to="/cards" replace />} />
            <Route path="/ai" element={<Navigate to="/ai-magic" replace />} />
            <Route path="/matrix" element={<Navigate to="/rewards-calculator" replace />} />

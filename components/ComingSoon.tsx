@@ -6,7 +6,7 @@ import ImageWithLoader from './ImageWithLoader';
 const upcomingCards: OSFeature[] = [
   { 
     id: 'cs1', 
-    name: 'Yureka Black', 
+    name: 'Yureka Extension', 
     issuer: 'Yureka', 
     image: 'https://images.unsplash.com/photo-1613243555988-441166d4d6fd?auto=format&fit=crop&q=80&w=600', 
     rewards_rate: 'Waitlist', 
@@ -17,7 +17,7 @@ const upcomingCards: OSFeature[] = [
   },
   { 
     id: 'cs2', 
-    name: 'Metal X', 
+    name: 'Reward X', 
     issuer: 'Partner Bank', 
     image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&q=80&w=600', 
     rewards_rate: 'Waitlist', 
@@ -28,7 +28,7 @@ const upcomingCards: OSFeature[] = [
   },
   { 
     id: 'cs3', 
-    name: 'Zero FX', 
+    name: 'YurekaAi', 
     issuer: 'Fintech Co', 
     image: 'https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?auto=format&fit=crop&q=80&w=600', 
     rewards_rate: 'Waitlist', 
