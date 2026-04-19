@@ -221,21 +221,30 @@ const AdminDashboard: React.FC = () => {
     setSaving(true);
     setError(null);
 
-    // Timeout safety: if it takes more than 15s, resume control
+    // Timeout safety: if it takes more than 8s, resume control
     const timeoutPromise = new Promise((_, reject) => 
-      setTimeout(() => reject(new Error("Operation timed out (15s). The data might still be saving in the background.")), 15000)
+      setTimeout(() => reject(new Error("Operation timed out (8s). The data might still be saving in the background.")), 8000)
     );
 
     try {
       const saveAction = async () => {
         if (activeTab === 'blogs') {
-          const { publishMode, ...blogData } = blogForm;
-          const payload = { ...blogData };
-          if (publishMode === 'later' && blogForm.scheduled_at) {
-            payload.scheduled_at = new Date(blogForm.scheduled_at).toISOString();
-          } else {
-            payload.scheduled_at = null;
-          }
+          // STRICT Payload Sanitization: Only send what the DB expects
+          const payload = {
+            title: blogForm.title,
+            slug: blogForm.slug || blogForm.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
+            excerpt: blogForm.excerpt,
+            content: blogForm.content,
+            author: blogForm.author,
+            category: blogForm.category,
+            image: blogForm.image,
+            status: 'published',
+            read_time: blogForm.read_time || '5 min read',
+            scheduled_at: (blogForm.publishMode === 'later' && blogForm.scheduled_at) 
+              ? new Date(blogForm.scheduled_at).toISOString() 
+              : null
+          };
+          
           editingItem ? await updateBlog(editingItem.id, payload) : await addBlog(payload);
         } else if (activeTab === 'cards') {
           const { color, ...cardData } = cardForm;
