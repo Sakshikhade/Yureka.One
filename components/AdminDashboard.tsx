@@ -135,8 +135,12 @@ const AdminDashboard: React.FC = () => {
 
   const handleLogout = async () => { await supabase.auth.signOut(); };
   const handleLogin = async () => {
-    // We use the explicit URL that is whitelisted in Supabase Dashboard
-    const productionUrl = 'https://yurekamoney.netlify.app/admin';
+    // Dynamically detect the correct production URL
+    const isCustomDomain = window.location.hostname === 'yureka.money';
+    const productionUrl = isCustomDomain 
+      ? 'https://yureka.money/admin' 
+      : 'https://yurekamoney.netlify.app/admin';
+    
     const devUrl = window.location.origin + '/admin';
     const isLocal = window.location.hostname === 'localhost';
 
@@ -147,6 +151,7 @@ const AdminDashboard: React.FC = () => {
       } 
     });
   };
+
 
 
   // --- CRUD Handlers ---
