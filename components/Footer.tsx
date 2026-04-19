@@ -18,8 +18,9 @@ const Footer: React.FC = () => {
                 initial={{ y: 0 }}
                 animate={{ y: [-15, 15, -15] }}
                 transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-                className="text-[8rem] md:text-[15rem] lg:text-[22rem] font-heading font-black tracking-tighter text-ink/[0.03] select-none blur-[2px] backdrop-blur-[1px] whitespace-nowrap leading-none"
+                className="text-[8rem] md:text-[15rem] lg:text-[22rem] font-heading font-black tracking-tighter text-ink/[0.08] select-none blur-[1px] backdrop-blur-[1px] whitespace-nowrap leading-none"
             >
+
 
                 YUREKA
             </motion.div>
