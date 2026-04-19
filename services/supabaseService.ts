@@ -5,7 +5,7 @@ import { Blog, Card, WaitlistEntry, NewsletterEntry, Review } from '../types';
  * Robust retry wrapper for Supabase fetches with exponential backoff.
  * Helps prevent the "hard refresh" issue by automatically recovering from transient errors.
  */
-const withRetry = async <T>(
+export const withRetry = async <T>(
   fn: () => Promise<{ data: T | null; error: any }>,
   retries = 3,
   delay = 1000
