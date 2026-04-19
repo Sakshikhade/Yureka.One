@@ -114,7 +114,7 @@ const OurStory: React.FC = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 border-t border-black/10 pt-6">
                     <div className="col-span-1">
-                        <h4 className="font-bold text-xs uppercase mb-2 flex items-center gap-2"><span className="w-2 h-2 bg-black"></span> AI Magic</h4>
+                        <h4 className="font-bold text-xs uppercase mb-2 flex items-center gap-2"><span className="w-2 h-2 bg-black"></span> Yureka AI</h4>
                         <p className="font-serif text-sm leading-tight text-black/80">
                             We scan 200+ cards in seconds to find your best match.
                         </p>
@@ -320,7 +320,7 @@ const OurStory: React.FC = () => {
         {/* 5. BOTTOM GRID (Categories) */}
         <div className="grid grid-cols-1 md:grid-cols-4 border-t border-black divide-y md:divide-y-0 md:divide-x divide-black/10">
             {[
-                { label: "AI Magic", title: "Smart Match", desc: "Our AI finds the best card for your spending habits." },
+                { label: "Yureka AI", title: "Smart Match", desc: "Our AI finds the best card for your spending habits." },
                 { label: "Rewards", title: "Vouchers", desc: "Get up to 8% off brand vouchers. Instant delivery." },
                 { label: "Financial", title: "Smart Money", desc: "Improve your credit score and access better financial products." },
                 { label: "Security", title: "Secure", desc: "Your data is safe with us. We don't share it." }

@@ -111,11 +111,11 @@ const FAQCategory: React.FC<FAQCategoryProps> = ({ icon: Icon, title, questions,
 // --- Data (SEO Optimized for "People Also Ask") ---
 const faqData = [
     {
-        title: "About Yureka.money",
+        title: "About Yureka AI",
         icon: LayoutGrid,
         questions: [
-            { q: "How is Yureka.money different from other card comparison sites?", a: "Yureka.money is not just a comparison site. We are an AI-driven matching engine. We analyze 200+ cards in real-time based on your specific spending patterns, salary, and lifestyle to find the one that maximizes your rewards. No ads, no bias, just the best card for you." },
-            { q: "Is Yureka.money really free?", a: "Yes, completely. We do not charge users for our matching service or our Chrome extension. We earn a small fee from banks when you successfully apply for a card through our platform, allowing us to keep the service free for you." },
+            { q: "How is Yureka AI different from other card comparison sites?", a: "Yureka AI is not just a comparison site. We are an AI-driven matching engine. We analyze 200+ cards in real-time based on your specific spending patterns, salary, and lifestyle to find the one that maximizes your rewards. No ads, no bias, just the best card for you." },
+            { q: "Is Yureka AI really free?", a: "Yes, completely. We do not charge users for our matching service or our Chrome extension. We earn a small fee from banks when you successfully apply for a card through our platform, allowing us to keep the service free for you." },
             { q: "What is 'Yureka AI'?", a: "Yureka AI is our conversational assistant that helps you navigate the complex world of credit cards. You can ask it questions like 'Which card gives me the most cashback on Swiggy?' or 'Is the Axis Magnus worth the annual fee for my spends?'" }
         ]
     },
@@ -148,7 +148,7 @@ const faqData = [
         icon: HelpCircle,
         questions: [
             { q: "What is NPA Settlement help?", a: "If you are struggling with credit card debt, our experts can help you negotiate a settlement with banks. We aim to help you clear your dues and rebuild your credit score over time." },
-            { q: "How do I contact Yureka support?", a: "You can reach us 24/7 via the 'AI Magic' chat in the app or email us at support@yureka.money. Our team is always here to help you optimize your credit life." }
+            { q: "How do I contact Yureka support?", a: "You can reach us 24/7 via the 'Yureka AI' chat in the app or email us at support@yureka.money. Our team is always here to help you optimize your credit life." }
         ]
     }
 ];

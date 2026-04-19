@@ -76,6 +76,7 @@ const AdminDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'blogs' | 'cards' | 'waitlist' | 'settings' | 'logs' | 'reviews'>(
     (localStorage.getItem('yureka_admin_tab') as any) || 'blogs'
   );
+  const [waitlistFilter, setWaitlistFilter] = useState<'pending' | 'accepted' | 'rejected' | 'on_hold' | 'all'>('pending');
 
   useEffect(() => {
     localStorage.setItem('yureka_admin_tab', activeTab);
@@ -278,6 +279,16 @@ const AdminDashboard: React.FC = () => {
               : await supabase.from('reviews').insert([reviewForm]);
             if (saveError) throw saveError;
           }
+          else if (activeTab === 'settings') {
+            const { error: saveError } = editingItem 
+              ? await supabase.from('users').update({ role: teamForm.role }).eq('id', editingItem.id)
+              : await supabase.from('users').insert([{ 
+                  email: teamForm.email, 
+                  role: teamForm.role, 
+                  full_name: teamForm.email.split('@')[0] 
+                }]);
+            if (saveError) throw saveError;
+          }
         })(),
         timeoutPromise
       ]);
@@ -289,7 +300,7 @@ const AdminDashboard: React.FC = () => {
           action: editingItem ? 'UPDATE' : 'INSERT',
           table_name: activeTab,
           record_id: editingItem?.id || 'new',
-          record_name: activeTab === 'blogs' ? blogForm.title : activeTab === 'cards' ? cardForm.name : activeTab === 'reviews' ? reviewForm.author : 'system'
+          record_name: activeTab === 'blogs' ? blogForm.title : activeTab === 'cards' ? cardForm.name : activeTab === 'reviews' ? reviewForm.author : activeTab === 'settings' ? teamForm.email : 'system'
         }]);
       } catch (logErr) {
         console.warn("Log failed silently", logErr);
@@ -386,7 +397,7 @@ If this persists, please:
                   {activeTab === 'blogs' && <AdminBlogsTab onEdit={handleEdit} onDelete={confirmDelete} formatDateForInput={formatDateForInput} />}
                   {activeTab === 'cards' && <AdminCardsTab onEdit={handleEdit} onDelete={confirmDelete} />}
                   {activeTab === 'reviews' && <AdminReviewsTab onEdit={handleEdit} onDelete={confirmDelete} />}
-                  {activeTab === 'waitlist' && <AdminWaitlistTab filter="pending" onFilterChange={() => {}} onUpdateStatus={updateWaitlistStatus} onDelete={confirmDelete} />}
+                  {activeTab === 'waitlist' && <AdminWaitlistTab filter={waitlistFilter} onFilterChange={setWaitlistFilter} onUpdateStatus={updateWaitlistStatus} onDelete={confirmDelete} />}
                   {activeTab === 'settings' && (
                     <AdminSettingsTab 
                       onAddMember={getAddAction()!} 
