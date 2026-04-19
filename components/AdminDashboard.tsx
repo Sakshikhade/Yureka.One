@@ -135,11 +135,19 @@ const AdminDashboard: React.FC = () => {
 
   const handleLogout = async () => { await supabase.auth.signOut(); };
   const handleLogin = async () => {
+    // We use the explicit URL that is whitelisted in Supabase Dashboard
+    const productionUrl = 'https://yurekamoney.netlify.app/admin';
+    const devUrl = window.location.origin + '/admin';
+    const isLocal = window.location.hostname === 'localhost';
+
     await supabase.auth.signInWithOAuth({ 
       provider: 'google', 
-      options: { redirectTo: window.location.origin + '/admin' } 
+      options: { 
+        redirectTo: isLocal ? devUrl : productionUrl 
+      } 
     });
   };
+
 
   // --- CRUD Handlers ---
   const handleEdit = (item: any) => {
