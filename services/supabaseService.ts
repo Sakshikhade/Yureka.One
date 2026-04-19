@@ -108,9 +108,11 @@ export const getBlogsAdmin = (callback: (blogs: Blog[]) => void, onError?: (erro
 };
 
 export const addBlog = async (blog: any) => {
-  const { data, error } = await supabase.from('blogs').insert([cleanData(blog)]).select();
-  if (error) throw error;
-  return data[0].id;
+  return await withRetry(async () => {
+    const { data, error } = await supabase.from('blogs').insert([cleanData(blog)]).select();
+    if (error) return { data: null, error };
+    return { data: data[0].id, error: null };
+  });
 };
 
 export const updateBlog = async (id: string, blogData: any) => {
@@ -187,9 +189,11 @@ export const getCards = (callback: (cards: Card[]) => void, onError?: (error: st
 };
 
 export const addCard = async (card: any) => {
-  const { data, error } = await supabase.from('cards').insert([cleanData(card)]).select();
-  if (error) throw error;
-  return data[0].id;
+  return await withRetry(async () => {
+    const { data, error } = await supabase.from('cards').insert([cleanData(card)]).select();
+    if (error) return { data: null, error };
+    return { data: data[0].id, error: null };
+  });
 };
 
 export const updateCard = async (id: string, cardData: any) => {
@@ -358,9 +362,11 @@ export const getReviewsAdmin = (callback: (reviews: Review[]) => void, onError?:
 };
 
 export const addReview = async (review: any) => {
-  const { data, error } = await supabase.from('reviews').insert([cleanData(review)]).select();
-  if (error) throw error;
-  return data[0].id;
+  return await withRetry(async () => {
+    const { data, error } = await supabase.from('reviews').insert([cleanData(review)]).select();
+    if (error) return { data: null, error };
+    return { data: data[0].id, error: null };
+  });
 };
 
 export const updateReview = async (id: string, reviewData: any) => {
@@ -405,12 +411,14 @@ export const getTeamMembers = async (): Promise<any[]> => {
 };
 
 export const inviteTeamMember = async (email: string, role: string) => {
-  const { data, error } = await supabase
-    .from('users')
-    .insert([{ email, role, full_name: email.split('@')[0] }])
-    .select();
-  if (error) throw error;
-  return data[0];
+  return await withRetry(async () => {
+    const { data, error } = await supabase
+      .from('users')
+      .insert([{ email, role, full_name: email.split('@')[0] }])
+      .select();
+    if (error) return { data: null, error };
+    return { data: data[0], error: null };
+  });
 };
 
 export const updateUserRole = async (userId: string, role: string) => {
