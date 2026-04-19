@@ -188,10 +188,10 @@ const AdminDashboard: React.FC = () => {
   const handleDeleteConfirm = async () => {
     if (!itemToDelete) return;
     try {
-      const { error: deleteError } = await supabase
-        .from(itemToDelete.collection)
-        .delete()
-        .eq('id', itemToDelete.id);
+      const { error: deleteError } = await withRetry(async () => {
+        const res = await supabase.from(itemToDelete.collection).delete().eq('id', itemToDelete.id);
+        return res;
+      });
 
       if (deleteError) throw deleteError;
 
@@ -242,40 +242,45 @@ const AdminDashboard: React.FC = () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       const userEmail = user?.email || 'admin@yureka.money';
-      if (activeTab === 'blogs') {
-        const timestampedSlug = blogForm.slug || `${blogForm.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}-${Math.random().toString(36).substring(7)}`;
-        
-        const payload = {
-          title: blogForm.title || 'Untitled Journal',
-          slug: editingItem ? blogForm.slug : timestampedSlug,
-          excerpt: blogForm.excerpt || '',
-          content: blogForm.content || '',
-          author: blogForm.author || 'Yureka Editorial',
-          category: blogForm.category || 'Credit Cards',
-          image: blogForm.image || 'https://picsum.photos/seed/blog/800/600',
-          status: 'published',
-          read_time: blogForm.read_time || '5 min read',
-          scheduled_at: (blogForm.publishMode === 'later' && blogForm.scheduled_at) ? new Date(blogForm.scheduled_at).toISOString() : null
-        };
 
-        const { error: saveError } = editingItem 
-          ? await supabase.from('blogs').update(payload).eq('id', editingItem.id)
-          : await supabase.from('blogs').insert([payload]);
+      // ENFORCE TIMEOUT ON SAVING
+      await Promise.race([
+        (async () => {
+          if (activeTab === 'blogs') {
+            const timestampedSlug = blogForm.slug || `${blogForm.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}-${Math.random().toString(36).substring(7)}`;
+            const payload = {
+              title: blogForm.title || 'Untitled Journal',
+              slug: editingItem ? blogForm.slug : timestampedSlug,
+              excerpt: blogForm.excerpt || '',
+              content: blogForm.content || '',
+              author: blogForm.author || 'Yureka Editorial',
+              category: blogForm.category || 'Credit Cards',
+              image: blogForm.image || 'https://picsum.photos/seed/blog/800/600',
+              status: 'published',
+              read_time: blogForm.read_time || '5 min read',
+              scheduled_at: (blogForm.publishMode === 'later' && blogForm.scheduled_at) ? new Date(blogForm.scheduled_at).toISOString() : null
+            };
+            const { error: saveError } = editingItem 
+              ? await supabase.from('blogs').update(payload).eq('id', editingItem.id)
+              : await supabase.from('blogs').insert([payload]);
+            if (saveError) throw saveError;
+          } 
+          else if (activeTab === 'cards') {
+            const { error: saveError } = editingItem 
+              ? await supabase.from('cards').update(cardForm).eq('id', editingItem.id)
+              : await supabase.from('cards').insert([cardForm]);
+            if (saveError) throw saveError;
+          }
+          else if (activeTab === 'reviews') {
+            const { error: saveError } = editingItem 
+              ? await supabase.from('reviews').update(reviewForm).eq('id', editingItem.id)
+              : await supabase.from('reviews').insert([reviewForm]);
+            if (saveError) throw saveError;
+          }
+        })(),
+        timeoutPromise
+      ]);
 
-        if (saveError) throw saveError;
-      } 
-      else if (activeTab === 'cards') {
-        const { error: saveError } = editingItem 
-          ? await supabase.from('cards').update(cardForm).eq('id', editingItem.id)
-          : await supabase.from('cards').insert([cardForm]);
-        if (saveError) throw saveError;
-      }
-      else if (activeTab === 'reviews') {
-        const { error: saveError } = editingItem 
-          ? await supabase.from('reviews').update(reviewForm).eq('id', editingItem.id)
-          : await supabase.from('reviews').insert([reviewForm]);
-        if (saveError) throw saveError;
-      }
       // LOG THE ACTION (Non-blocking but retried)
       try {
         await supabase.from('audit_logs').insert([{
