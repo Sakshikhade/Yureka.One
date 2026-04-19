@@ -105,7 +105,7 @@ const LiveChatDemo = () => {
   const [visibleMessages, setVisibleMessages] = useState<typeof DEMO_CHAT>([]);
   const [showTyping, setShowTyping] = useState(false);
   const [msgIndex, setMsgIndex] = useState(0);
-  const endRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (msgIndex >= DEMO_CHAT.length) return;
@@ -126,8 +126,15 @@ const LiveChatDemo = () => {
     return () => clearTimeout(timer);
   }, [msgIndex]);
 
+  const scrollRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({
+        top: scrollRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
   }, [visibleMessages, showTyping]);
 
   return (
@@ -152,7 +159,7 @@ const LiveChatDemo = () => {
       </div>
 
       {/* Chat Area */}
-      <div className="h-[380px] overflow-y-auto px-6 py-6 space-y-4 no-scrollbar">
+      <div ref={scrollRef} className="h-[380px] overflow-y-auto px-6 py-6 space-y-4 no-scrollbar">
         {/* Welcome state */}
         {visibleMessages.length === 0 && !showTyping && (
           <div className="flex flex-col items-center justify-center h-full gap-4 opacity-40">
@@ -200,7 +207,6 @@ const LiveChatDemo = () => {
             </motion.div>
           )}
         </AnimatePresence>
-        <div ref={endRef} />
       </div>
 
       {/* Input Bar */}
