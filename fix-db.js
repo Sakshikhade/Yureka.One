@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabase = createClient('https://rvqtlvgaqlgylipsaktm.supabase.co', 'sb_publishable_ifEDBOCmAz3ya4QU-M3L1g_eaAJL5fD');
+const supabase = createClient(process.env.VITE_SUPABASE_URL, process.env.VITE_SUPABASE_ANON_KEY);
 
 async function fix() {
   console.log("Checking buckets...");
