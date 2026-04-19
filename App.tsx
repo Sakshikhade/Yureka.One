@@ -29,6 +29,8 @@ const AIMagicPage = lazy(() => import('./components/AIMagicPage'));
 const CareersPage = lazy(() => import('./components/CareersPage'));
 const RewardsTransferCalculator = lazy(() => import('./components/RewardsTransferCalculator'));
 
+import { motion, AnimatePresence } from 'motion/react';
+
 // Optimized Scroll Management
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -53,12 +55,55 @@ const ScrollToTop = () => {
   return null;
 }
 
+const Preloader = () => {
+  const [isVisible, setIsVisible] = React.useState(true);
+  const location = useLocation();
+  const isAdmin = location.pathname.startsWith('/admin');
+
+  // Disable loader for Admin to keep it fast
+  useEffect(() => {
+    if (isAdmin) {
+      setIsVisible(false);
+      return;
+    }
+    const timer = setTimeout(() => setIsVisible(false), 2500);
+    return () => clearTimeout(timer);
+  }, [isAdmin]);
+
+  return (
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          initial={{ opacity: 1 }}
+          exit={{ 
+            opacity: 0,
+            transition: { duration: 0.8, ease: [0.65, 0, 0.35, 1] }
+          }}
+          className="fixed inset-0 z-[100] bg-cream flex items-center justify-center overflow-hidden"
+        >
+          <video 
+            autoPlay 
+            muted 
+            playsInline
+            loop={false}
+            className="w-48 h-48 md:w-64 md:h-64 object-contain"
+          >
+            <source src="/yurekaloader.mov" type="video/quicktime" />
+            <source src="/yurekaloader.mov" type="video/mp4" />
+          </video>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
+
 const AppContent: React.FC = () => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
 
   return (
     <div className={`min-h-screen bg-cream font-sans text-ink relative ${isAdminRoute ? 'pt-0' : 'pt-32 md:pt-40'}`}>
+      {!isAdminRoute && <Preloader />}
 
       <div className="paper-texture" />
       <div className="vignette-overlay" />
