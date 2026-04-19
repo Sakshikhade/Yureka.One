@@ -16,15 +16,15 @@ export const AdminLogsTab: React.FC = () => {
         <p className="text-black/40 text-xs">A transparent record of all changes made to the platform.</p>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full text-left min-w-[800px]">
-          <thead className="bg-black/5 text-[10px] uppercase font-bold tracking-widest text-black/40">
-            <tr>
-              <th className="px-6 py-4">Time</th>
-              <th className="px-6 py-4">Member</th>
-              <th className="px-6 py-4">Action</th>
-              <th className="px-6 py-4">Target Type</th>
-              <th className="px-6 py-4">Record Name</th>
+      <div className="overflow-x-auto overflow-y-auto max-h-[calc(100vh-20rem)] custom-scrollbar">
+        <table className="w-full text-left border-collapse min-w-[800px]">
+          <thead className="sticky top-0 z-20 shadow-sm">
+            <tr className="bg-black/5 text-[10px] uppercase font-bold tracking-widest text-black/40">
+              <th className="px-6 py-4 bg-slate-50">Time</th>
+              <th className="px-6 py-4 bg-slate-50">Member</th>
+              <th className="px-6 py-4 bg-slate-50">Action</th>
+              <th className="px-6 py-4 bg-slate-50">Target Type</th>
+              <th className="px-6 py-4 bg-slate-50">Record Name</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-black/5">

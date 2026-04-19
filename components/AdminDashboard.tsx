@@ -274,14 +274,23 @@ const AdminDashboard: React.FC = () => {
           : await supabase.from('reviews').insert([reviewForm]);
         if (saveError) throw saveError;
       }
-      else if (activeTab === 'settings') {
-         editingItem ? await updateUserRole(editingItem.id, teamForm.role) : await inviteTeamMember(teamForm.email, teamForm.role);
+      // LOG THE ACTION
+      try {
+        await supabase.from('audit_logs').insert([{
+          user_email: user?.email,
+          action: editingItem ? 'UPDATE' : 'INSERT',
+          table_name: activeTab,
+          record_id: editingItem?.id || 'new',
+          record_name: activeTab === 'blogs' ? blogForm.title : activeTab === 'cards' ? cardForm.name : activeTab === 'reviews' ? reviewForm.author : 'system'
+        }]);
+      } catch (logErr) {
+        console.error("Log failed", logErr);
       }
 
       // SUCCESS: VIOLENTLY CLOSE MODAL
       setIsModalOpen(false);
       setEditingItem(null);
-      setSaving(false); // Reset saving BEFORE anything else
+      setSaving(false);
       
       // Delay the refresh slightly to allow modal animation to complete
       setTimeout(() => {

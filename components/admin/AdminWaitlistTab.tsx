@@ -78,13 +78,13 @@ export const AdminWaitlistTab: React.FC<AdminWaitlistTabProps> = ({
 
       <div className="flex-1 overflow-x-auto">
         <table className="w-full text-left border-collapse min-w-[1000px]">
-          <thead>
-            <tr className="bg-slate-50/50 border-b border-black/5">
-              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40">Applicant Identity</th>
-              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40">Classification</th>
-              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40">Registration Context</th>
-              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40">Status</th>
-              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40 text-right">Administrative Actions</th>
+          <thead className="sticky top-0 z-20 shadow-sm">
+            <tr className="bg-slate-50 border-b border-black/5">
+              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40 bg-slate-50">Applicant Identity</th>
+              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40 bg-slate-50">Classification</th>
+              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40 bg-slate-50">Registration Context</th>
+              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40 bg-slate-50">Status</th>
+              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40 text-right bg-slate-50">Administrative Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-black/5">

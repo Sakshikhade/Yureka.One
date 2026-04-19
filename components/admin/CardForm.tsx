@@ -6,7 +6,9 @@ import {
   Image as ImageIcon,
   Check,
   Plus,
-  Trash2
+  Trash2,
+  Zap,
+  Sparkles
 } from 'lucide-react';
 
 interface CardFormProps {
