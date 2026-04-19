@@ -183,15 +183,24 @@ const AdminDashboard: React.FC = () => {
   const handleDeleteConfirm = async () => {
     if (!itemToDelete) return;
     try {
-      if (itemToDelete.collection === 'blogs') await deleteBlog(itemToDelete.id);
-      else if (itemToDelete.collection === 'cards') await deleteCard(itemToDelete.id);
-      else if (itemToDelete.collection === 'waitlist') await deleteWaitlistEntry(itemToDelete.id);
-      else if (itemToDelete.collection === 'reviews') await deleteReview(itemToDelete.id);
-      else if (itemToDelete.collection === 'users') await deleteUser(itemToDelete.id);
+      const { error: deleteError } = await supabase
+        .from(itemToDelete.collection)
+        .delete()
+        .eq('id', itemToDelete.id);
+
+      if (deleteError) throw deleteError;
+
       setIsDeleteModalOpen(false);
       setItemToDelete(null);
+      
+      // Instant refresh in the background
+      setTimeout(() => {
+        refreshAll().catch(console.error);
+      }, 50);
+
     } catch (err: any) {
-      setError(err.message || "Failed to delete item.");
+      console.error("CRITICAL DELETE FAILURE:", err);
+      alert(`Deletion Failed: ${err.message || "Unknown permissions error."}`);
     }
   };
 
