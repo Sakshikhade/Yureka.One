@@ -66,7 +66,10 @@ import { motion, AnimatePresence } from 'motion/react';
 
 
 const AdminDashboard: React.FC = () => {
-  const { syncStatus, isLoading, refreshAll } = useSupabase();
+  const { 
+    syncStatus, isLoading, refreshAll, 
+    setCards, setBlogs, setReviews, setWaitlist, setTeam 
+  } = useSupabase();
 
   // --- Auth & Role State ---
   const [user, setUser] = useState<any>(null);
@@ -99,6 +102,12 @@ const AdminDashboard: React.FC = () => {
   const [editingItem, setEditingItem] = useState<any>(null);
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [notification, setNotification] = useState<{ message: string, type: 'success' | 'error' } | null>(null);
+
+  const showNotification = (message: string, type: 'success' | 'error' = 'success') => {
+    setNotification({ message, type });
+    setTimeout(() => setNotification(null), 3000);
+  };
 
   // --- Helpers ---
   const formatDateForInput = (isoString?: string | null) => {
@@ -189,23 +198,66 @@ const AdminDashboard: React.FC = () => {
 
   const handleDeleteConfirm = async () => {
     if (!itemToDelete) return;
+    
+    // CAPTURE SNAPSHOT FOR ROLLBACK
+    let rollbackData: any[] = [];
+    const collection = itemToDelete.collection;
+    const id = itemToDelete.id;
+
+    // OPTIMISTIC UPDATE
+    if (collection === 'blogs') {
+      setBlogs(prev => { rollbackData = [...prev]; return prev.filter(i => i.id !== id); });
+    } else if (collection === 'cards') {
+      setCards(prev => { rollbackData = [...prev]; return prev.filter(i => i.id !== id); });
+    } else if (collection === 'reviews') {
+      setReviews(prev => { rollbackData = [...prev]; return prev.filter(i => i.id !== id); });
+    } else if (collection === 'users') {
+      setTeam(prev => { rollbackData = [...prev]; return prev.filter(i => i.id !== id); });
+    } else if (collection === 'waitlist') {
+      setWaitlist(prev => { rollbackData = [...prev]; return prev.filter(i => i.id !== id); });
+    }
+
+    setIsDeleteModalOpen(false);
+    
     try {
-      await withRetry(async () => {
-        const { error } = await supabase.from(itemToDelete.collection).delete().eq('id', itemToDelete.id);
+      const { data: { user } } = await supabase.auth.getUser();
+      const userEmail = user?.email || 'admin@yureka.money';
+
+      const deletePromise = withRetry(async () => {
+        const { error } = await supabase.from(collection).delete().eq('id', id).select();
         return { data: true, error };
       });
 
-      setIsDeleteModalOpen(false);
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error("Timeout")), 6000)
+      );
+
+      await Promise.race([deletePromise, timeoutPromise]);
+
+      // LOG THE DELETION (Non-blocking)
+      supabase.from('audit_logs').insert([{
+        user_email: userEmail,
+        action: 'DELETE',
+        table_name: collection,
+        record_id: id,
+        record_name: 'REMOVED_ITEM'
+      }]).then();
+
+      showNotification(`${collection.toUpperCase()} item deleted successfully.`);
       setItemToDelete(null);
-      
-      // Instant refresh in the background
-      setTimeout(() => {
-        refreshAll().catch(console.error);
-      }, 50);
 
     } catch (err: any) {
-      console.error("CRITICAL DELETE FAILURE:", err);
-      alert(`Deletion Failed: ${err.message || "Unknown permissions error."}`);
+      console.error("DELETE FAILURE:", err);
+      // ROLLBACK
+      if (collection === 'blogs') setBlogs(rollbackData);
+      else if (collection === 'cards') setCards(rollbackData);
+      else if (collection === 'reviews') setReviews(rollbackData);
+      else if (collection === 'users') setTeam(rollbackData);
+      else if (collection === 'waitlist') setWaitlist(rollbackData);
+
+      showNotification(`Failed to delete: ${err.message || "Permissions error"}`, 'error');
+      setIsDeleteModalOpen(false);
+      setItemToDelete(null);
     }
   };
 
@@ -244,86 +296,98 @@ const AdminDashboard: React.FC = () => {
       const userEmail = user?.email || 'admin@yureka.money';
 
       // ENFORCE TIMEOUT ON SAVING
-      await Promise.race([
-        (async () => {
-          if (activeTab === 'blogs') {
-            const timestampedSlug = blogForm.slug || `${blogForm.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}-${Math.random().toString(36).substring(7)}`;
-            const payload = {
-              title: blogForm.title || 'Untitled Journal',
-              slug: editingItem ? blogForm.slug : timestampedSlug,
-              excerpt: blogForm.excerpt || '',
-              content: blogForm.content || '',
-              author: blogForm.author || 'Yureka Editorial',
-              category: blogForm.category || 'Credit Cards',
-              image: blogForm.image || 'https://picsum.photos/seed/blog/800/600',
-              status: 'published',
-              read_time: blogForm.read_time || '5 min read',
-              scheduled_at: (blogForm.publishMode === 'later' && blogForm.scheduled_at) ? new Date(blogForm.scheduled_at).toISOString() : null
-            };
-            const { error: saveError } = editingItem 
-              ? await supabase.from('blogs').update(cleanData(payload)).eq('id', editingItem.id)
-              : await supabase.from('blogs').insert([cleanData(payload)]);
-            if (saveError) throw saveError;
-          } 
-          else if (activeTab === 'cards') {
-            const { error: saveError } = editingItem 
-              ? await supabase.from('cards').update(cleanData(cardForm)).eq('id', editingItem.id)
-              : await supabase.from('cards').insert([cleanData(cardForm)]);
-            if (saveError) throw saveError;
-          }
-          else if (activeTab === 'reviews') {
-            const { error: saveError } = editingItem 
-              ? await supabase.from('reviews').update(cleanData(reviewForm)).eq('id', editingItem.id)
-              : await supabase.from('reviews').insert([cleanData(reviewForm)]);
-            if (saveError) throw saveError;
-          }
-          else if (activeTab === 'settings') {
-            const { error: saveError } = editingItem 
-              ? await supabase.from('users').update({ role: teamForm.role }).eq('id', editingItem.id)
-              : await supabase.from('users').insert([{ 
-                  email: teamForm.email, 
-                  role: teamForm.role, 
-                  full_name: teamForm.email.split('@')[0] 
-                }]);
-            if (saveError) throw saveError;
-          }
-        })(),
-        timeoutPromise
-      ]);
+      const saveAction = (async () => {
+        let payload: any = {};
+        let collection = '';
 
-      // LOG THE ACTION (Non-blocking but retried)
-      try {
-        await supabase.from('audit_logs').insert([{
-          user_email: userEmail,
-          action: editingItem ? 'UPDATE' : 'INSERT',
-          table_name: activeTab,
-          record_id: editingItem?.id || 'new',
-          record_name: activeTab === 'blogs' ? blogForm.title : activeTab === 'cards' ? cardForm.name : activeTab === 'reviews' ? reviewForm.author : activeTab === 'settings' ? teamForm.email : 'system'
-        }]);
-      } catch (logErr) {
-        console.warn("Log failed silently", logErr);
-      }
+        if (activeTab === 'blogs') {
+          collection = 'blogs';
+          const timestampedSlug = blogForm.slug || `${blogForm.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}-${Math.random().toString(36).substring(7)}`;
+          payload = cleanData({
+            ...blogForm,
+            title: blogForm.title || 'Untitled Journal',
+            slug: editingItem ? blogForm.slug : timestampedSlug,
+            author: blogForm.author || 'Yureka Editorial',
+            category: blogForm.category || 'Credit Cards',
+            image: blogForm.image || 'https://picsum.photos/seed/blog/800/600',
+            status: 'published',
+            read_time: blogForm.read_time || '5 min read',
+            scheduled_at: (blogForm.publishMode === 'later' && blogForm.scheduled_at) ? new Date(blogForm.scheduled_at).toISOString() : null
+          });
+        } 
+        else if (activeTab === 'cards') {
+          collection = 'cards';
+          payload = cleanData(cardForm);
+        }
+        else if (activeTab === 'reviews') {
+          collection = 'reviews';
+          payload = cleanData(reviewForm);
+        }
+        else if (activeTab === 'settings') {
+          collection = 'users';
+          payload = editingItem 
+            ? { role: teamForm.role } 
+            : { email: teamForm.email, role: teamForm.role, full_name: teamForm.email.split('@')[0] };
+        }
 
-      // SUCCESS: VIOLENTLY CLOSE MODAL
+        // OPTIMISTIC UPDATE FOR EDITS
+        let rollbackData: any[] = [];
+        if (editingItem) {
+          if (collection === 'blogs') setBlogs(prev => { rollbackData = [...prev]; return prev.map(i => i.id === editingItem.id ? { ...i, ...payload } : i); });
+          else if (collection === 'cards') setCards(prev => { rollbackData = [...prev]; return prev.map(i => i.id === editingItem.id ? { ...i, ...payload } : i); });
+          else if (collection === 'reviews') setReviews(prev => { rollbackData = [...prev]; return prev.map(i => i.id === editingItem.id ? { ...i, ...payload } : i); });
+          else if (collection === 'users') setTeam(prev => { rollbackData = [...prev]; return prev.map(i => i.id === editingItem.id ? { ...i, ...payload } : i); });
+        }
+
+        const { data, error: saveError } = editingItem 
+          ? await supabase.from(collection).update(payload).eq('id', editingItem.id).select()
+          : await supabase.from(collection).insert([payload]).select();
+
+        if (saveError) {
+          // ROLLBACK ON ERROR
+          if (editingItem) {
+            if (collection === 'blogs') setBlogs(rollbackData);
+            else if (collection === 'cards') setCards(rollbackData);
+            else if (collection === 'reviews') setReviews(rollbackData);
+            else if (collection === 'users') setTeam(rollbackData);
+          }
+          throw saveError;
+        }
+
+        // FOR INSERTS, ADD TO LOCAL STATE
+        if (!editingItem && data) {
+           if (collection === 'blogs') setBlogs(prev => [data[0], ...prev]);
+           else if (collection === 'cards') setCards(prev => [data[0], ...prev]);
+           else if (collection === 'reviews') setReviews(prev => [data[0], ...prev]);
+           else if (collection === 'users') setTeam(prev => [data[0], ...prev]);
+        }
+
+        return data;
+      })();
+
+      const isUpdate = !!editingItem;
+      const recordId = editingItem?.id || 'new';
+      const recordName = activeTab === 'blogs' ? blogForm.title : (activeTab === 'cards' ? cardForm.name : (activeTab === 'reviews' ? reviewForm.author : teamForm.email));
+
+      await Promise.race([saveAction, timeoutPromise]);
+
+      showNotification(`${isUpdate ? 'Updated' : 'Created'} successfully!`);
       setIsModalOpen(false);
       setEditingItem(null);
-      setSaving(false);
-      
-      // Delay the refresh slightly to allow modal animation to complete
-      setTimeout(() => {
-        refreshAll().catch(console.error);
-      }, 100);
 
-    } catch (err: any) {
-      console.error("CRITICAL SAVE FAILURE:", err);
-      setSaving(false);
-      alert(`Publication Conflict: ${err.message || "Unknown error"}. 
-      
-If this persists, please:
-1. Run the latest SQL Script I provided.
-2. Check if the Title is a duplicate.`);
-    } finally {
+      // LOG THE ACTION (Fire and forget)
+      supabase.from('audit_logs').insert([{
+        user_email: userEmail,
+        action: isUpdate ? 'UPDATE' : 'INSERT',
+        table_name: activeTab,
+        record_id: recordId,
+        record_name: recordName
+      }]).then();
+
       // Ensure we are NEVER stuck in a loading state
+      setSaving(false);
+    } catch (err: any) {
+      setError(err.message);
       setSaving(false);
     }
   };
@@ -418,6 +482,41 @@ If this persists, please:
         setForms={{ setBlog: setBlogForm, setCard: setCardForm, setReview: setReviewForm, setTeam: setTeamForm }}
         helpers={{ banks: ADMIN_BANKS, categories: ADMIN_CATEGORIES, generateSlug, uploading, saving, error }}
       />
+
+      {/* PREMIUM TOAST NOTIFICATION */}
+      <AnimatePresence>
+        {notification && (
+          <motion.div
+            initial={{ opacity: 0, y: 30, scale: 0.9, filter: 'blur(10px)' }}
+            animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, scale: 0.8, filter: 'blur(10px)' }}
+            className={`fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] px-6 py-4 rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] backdrop-blur-3xl border flex items-center gap-5 min-w-[340px] max-w-[90vw] ${
+              notification.type === 'success' 
+                ? 'bg-ink/90 border-teal/20 text-white' 
+                : 'bg-red-600/90 border-red-400/20 text-white'
+            }`}
+          >
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center relative ${
+              notification.type === 'success' ? 'bg-teal/20 text-teal-300' : 'bg-white/20 text-white'
+            }`}>
+              {notification.type === 'success' && <div className="absolute inset-0 rounded-full border border-teal/40 animate-ping" />}
+              {notification.type === 'success' ? '✓' : '!'}
+            </div>
+            <div className="flex flex-col flex-1">
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] opacity-40 leading-none mb-1">
+                {notification.type === 'success' ? 'System Optimized' : 'Security Alert'}
+              </span>
+              <span className="text-sm font-bold tracking-tight leading-tight">{notification.message}</span>
+            </div>
+            <button 
+              onClick={() => setNotification(null)}
+              className="text-white/20 hover:text-white transition-colors"
+            >
+              ✕
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

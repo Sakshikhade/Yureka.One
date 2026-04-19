@@ -28,6 +28,11 @@ interface SupabaseContextType {
   isLoading: boolean;
   isAdminDataLoaded: boolean;
   refreshAll: () => Promise<void>;
+  setCards: React.Dispatch<React.SetStateAction<Card[]>>;
+  setBlogs: React.Dispatch<React.SetStateAction<Blog[]>>;
+  setReviews: React.Dispatch<React.SetStateAction<Review[]>>;
+  setWaitlist: React.Dispatch<React.SetStateAction<WaitlistEntry[]>>;
+  setTeam: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
 const SupabaseContext = createContext<SupabaseContextType | undefined>(undefined);
@@ -49,11 +54,27 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const initialLoadTime = useRef(Date.now());
 
   // Determine if we are on an admin route to trigger admin data fetching
+  // Force a manual re-sync by triggering the internal fetchers
   const refreshAll = useCallback(async () => {
-    // Real-time subscriptions handle this automatically. 
-    // We keep this as a no-op to prevent breaking dependent code.
-    console.log('⚡️ Background sync confirmed.');
-  }, []);
+    setIsLoading(true);
+    // These functions are defined inside useEffect, so we'll 
+    // actually just rely on the existing subscriptions which 
+    // handle this. But for a manual "Hard Sync", we'll 
+    // re-trigger the setupAdmin logic.
+    const setupAdmin = async () => {
+      if (!location.pathname.startsWith('/admin')) return;
+      getCardsAdmin((data) => setCards(data));
+      getBlogsAdmin((data) => setBlogs(data));
+      getReviewsAdmin((data) => setReviews(data));
+      getWaitlist((data) => setWaitlist(data));
+      getTeamMembersAdmin((data) => setTeam(data));
+      getAuditLogsAdmin((data) => setLogs(data));
+      setIsAdminDataLoaded(true);
+      setIsLoading(false);
+    };
+    await setupAdmin();
+    console.log('⚡️ Manual Cloud Resync Complete.');
+  }, [location.pathname]);
 
 
   useEffect(() => {
@@ -161,7 +182,8 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     <SupabaseContext.Provider value={{ 
       supabase,
       cards, blogs, reviews, waitlist, team, logs, 
-      syncStatus, isLoading, isAdminDataLoaded, refreshAll 
+      syncStatus, isLoading, isAdminDataLoaded, refreshAll,
+      setCards, setBlogs, setReviews, setWaitlist, setTeam
     }}>
       {children}
     </SupabaseContext.Provider>
