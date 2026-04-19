@@ -103,7 +103,22 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     setupPublic();
     if (isAdminRoute) setupAdmin();
 
+    // Clean URL hash after login
+    const cleanHash = () => {
+      if (window.location.hash) {
+        // Use replaceState to clear hash without reloading
+        window.history.replaceState(null, '', window.location.pathname + window.location.search);
+      }
+    };
+
+    // Check for hash on initial load or auth change
+    if (window.location.hash && (window.location.hash.includes('access_token') || window.location.hash === '#')) {
+      // Small timeout to let Supabase finish parsing the token
+      setTimeout(cleanHash, 500);
+    }
+
     return () => {
+
       clearTimeout(fallbackTimer);
       if (cardSub) cardSub();
       if (blogSub) blogSub();
