@@ -83,7 +83,10 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         },
         () => setSyncStatus('error')
       );
-      blogSub = getBlogs((data) => setBlogs(data), () => setSyncStatus('error'));
+      blogSub = getBlogs(
+        (data) => setBlogs(data.filter(b => b.id && b.title && b.title !== 'Untitled Journal')), 
+        () => setSyncStatus('error')
+      );
       reviewSub = getReviews((data) => setReviews(data), () => setSyncStatus('error'));
     };
 
