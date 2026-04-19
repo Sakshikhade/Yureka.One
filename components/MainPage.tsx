@@ -1,7 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import SEO from './SEO';
-import { useSupabase } from './SupabaseProvider';
-import SkeletonLoaders from './SkeletonLoaders';
+import { SupabaseProvider, useSupabase } from './SupabaseProvider';
+import { SkeletonCard, SkeletonHero } from './SkeletonLoaders';
 
 // Lazy load non-critical sections for performance
 const Hero = lazy(() => import('./Hero'));
@@ -14,8 +14,6 @@ const Community = lazy(() => import('./Community'));
 const ComingSoon = lazy(() => import('./ComingSoon'));
 const SocialProof = lazy(() => import('./SocialProof'));
 const FAQ = lazy(() => import('./FAQ'));
-
-const { SkeletonCard, SkeletonHero } = SkeletonLoaders;
 
 const MainPage: React.FC = () => {
   const { cards } = useSupabase();
