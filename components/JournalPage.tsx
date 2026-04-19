@@ -49,10 +49,17 @@ const JournalPage: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Featured Story */}
-                {featured && (
-                    <section id="featured-story" className="grid grid-cols-1 lg:grid-cols-12 gap-0 mb-32 border-2 border-ink overflow-hidden opacity-0 animate-fade-in-up delay-100 scroll-mt-32">
-
+                {/* Main Content Area */}
+                {currentBlogs.length === 0 ? (
+                  <div className="py-40 text-center border-2 border-dashed border-ink/10 rounded-[3rem]">
+                      <h3 className="text-2xl font-heading font-black text-ink/20 uppercase tracking-tighter text-center w-full">Editorial Archive Empty</h3>
+                      <p className="text-sm text-ink/40 font-sans mt-4">The next digital dispatch is being prepared for publication.</p>
+                  </div>
+                ) : (
+                  <>
+                    {/* Featured Story */}
+                    {featured && (
+                      <section id="featured-story" className="grid grid-cols-1 lg:grid-cols-12 gap-0 mb-32 border-2 border-ink overflow-hidden opacity-0 animate-fade-in-up delay-100 scroll-mt-32">
                         <div className="lg:col-span-8 relative aspect-[16/9] lg:aspect-auto min-h-[400px] overflow-hidden border-b-2 lg:border-b-0 lg:border-r-2 border-ink">
                             <ImageWithLoader 
                                 src={featured.image} 
@@ -67,67 +74,62 @@ const JournalPage: React.FC = () => {
                             <div className="flex items-center gap-4 text-[10px] font-bold uppercase tracking-widest text-ink/40 mb-8">
                                 <span>{featured.category}</span>
                                 <div className="w-1 h-1 bg-ink/20 rounded-full"></div>
-                                <span>{featured.date}</span>
+                                <span>{featured.date || new Date(featured.created_at || '').toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
                             </div>
                             <h2 className="text-4xl md:text-5xl font-heading font-black leading-[1.1] text-ink mb-8 tracking-tight uppercase">
                                 {featured.title}
                             </h2>
-
                             <p className="text-lg text-ink/60 font-sans font-medium leading-relaxed mb-12 border-l-4 border-clay pl-6">
                                 {featured.excerpt}
                             </p>
-
                             <div className="flex items-center justify-between pt-8 border-t border-ink/10">
                                 <div className="flex items-center gap-3">
                                     <div className="w-10 h-10 bg-ink text-white rounded-full flex items-center justify-center font-serif italic text-lg">
-                                        {featured.author[0]}
+                                        {featured.author ? featured.author[0] : 'Y'}
                                     </div>
-                                    <div className="text-[10px] font-bold uppercase tracking-widest text-ink">{featured.author}</div>
+                                    <div className="text-[10px] font-bold uppercase tracking-widest text-ink">{featured.author || 'Yureka Editor'}</div>
                                 </div>
                                 <Link to={`/blogs/${featured.slug}`} className="text-clay hover:text-ink transition-colors flex items-center gap-2 text-xs font-bold uppercase tracking-widest cursor-pointer">
                                     Read <ArrowRight size={14} />
                                 </Link>
                             </div>
                         </div>
-                    </section>
-                )}                {/* News Grid or Empty State */}
-                {currentBlogs.length > 0 ? (
-                  <div id="news-grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 border-l border-t border-ink/10 scroll-mt-32">
-                      {regular.map((post, idx) => (
-                          <div 
-                              key={post.id} 
-                              className="p-10 border-r border-b border-ink/10 hover:bg-white transition-colors group opacity-0 animate-fade-in-up"
-                              style={{ animationDelay: `${idx * 100 + 200}ms` }}
-                          >
-                              <div className="flex items-center justify-between text-[8px] font-bold uppercase tracking-widest text-ink/30 mb-8">
-                                  <span>{post.category}</span>
-                                  <span>{post.date || new Date(post.created_at || '').toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
-                              </div>
-                              <h3 className="text-2xl font-heading font-bold leading-tight text-ink mb-6 group-hover:text-clay transition-colors line-clamp-3 uppercase">
-                                  {post.title}
-                              </h3>
-                              <p className="text-sm text-ink/60 leading-relaxed font-sans mb-10 line-clamp-3">
-                                  {post.excerpt}
-                              </p>
-                              <div className="flex items-center justify-between mt-auto">
-                                  <div className="flex items-center gap-2">
-                                      <Clock size={12} className="text-ink/20" />
-                                      <span className="text-[9px] font-bold uppercase tracking-widest text-ink/40">{post.read_time || '5 min read'}</span>
-                                  </div>
-                                  <Link to={`/blogs/${post.slug}`}>
-                                      <button className="w-10 h-10 border border-ink/10 rounded-full flex items-center justify-center text-ink hover:bg-ink hover:text-white transition-all transform hover:rotate-45 cursor-pointer">
-                                          <ArrowUpRight size={14} />
-                                      </button>
-                                  </Link>
-                              </div>
-                          </div>
-                      ))}
-                  </div>
-                ) : (
-                  <div className="py-40 text-center border-2 border-dashed border-ink/10 rounded-[3rem]">
-                      <h3 className="text-2xl font-heading font-black text-ink/20 uppercase tracking-tighter">Editorial Bureau Under Maintenance</h3>
-                      <p className="text-sm text-ink/40 font-sans mt-4">The next digital dispatch is being prepared for publication.</p>
-                  </div>
+                      </section>
+                    )}
+
+                    {/* News Grid */}
+                    <div id="news-grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 border-l border-t border-ink/10 scroll-mt-32">
+                        {regular.map((post, idx) => (
+                            <div 
+                                key={post.id} 
+                                className="p-10 border-r border-b border-ink/10 hover:bg-white transition-colors group opacity-0 animate-fade-in-up"
+                                style={{ animationDelay: `${idx * 100 + 200}ms` }}
+                            >
+                                <div className="flex items-center justify-between text-[8px] font-bold uppercase tracking-widest text-ink/30 mb-8">
+                                    <span>{post.category}</span>
+                                    <span>{post.date || new Date(post.created_at || '').toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+                                </div>
+                                <h3 className="text-2xl font-heading font-bold leading-tight text-ink mb-6 group-hover:text-clay transition-colors line-clamp-3 uppercase">
+                                    {post.title}
+                                </h3>
+                                <p className="text-sm text-ink/60 leading-relaxed font-sans mb-10 line-clamp-3">
+                                    {post.excerpt}
+                                </p>
+                                <div className="flex items-center justify-between mt-auto">
+                                    <div className="flex items-center gap-2">
+                                        <Clock size={12} className="text-ink/20" />
+                                        <span className="text-[9px] font-bold uppercase tracking-widest text-ink/40">{post.read_time || '5 min read'}</span>
+                                    </div>
+                                    <Link to={`/blogs/${post.slug}`}>
+                                        <button className="w-10 h-10 border border-ink/10 rounded-full flex items-center justify-center text-ink hover:bg-ink hover:text-white transition-all transform hover:rotate-45 cursor-pointer">
+                                            <ArrowUpRight size={14} />
+                                        </button>
+                                    </Link>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                  </>
                 )}
 >
 
