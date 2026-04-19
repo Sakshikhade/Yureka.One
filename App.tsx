@@ -113,7 +113,14 @@ const AppContent: React.FC = () => {
       {!isAdminRoute && <Navbar />}
       
       <main className={`relative z-10 ${isAdminRoute ? 'pt-0' : ''}`}>
-        <Suspense fallback={<div className="h-screen flex items-center justify-center bg-cream"><Loader2 className="animate-spin text-clay" size={40} /></div>}>
+        <Suspense fallback={
+          <div className="fixed inset-0 z-[100] bg-cream flex items-center justify-center overflow-hidden">
+            <video autoPlay muted playsInline loop className="w-40 h-40 object-contain">
+              <source src="/yurekaloader.mov" type="video/quicktime" />
+              <source src="/yurekaloader.mov" type="video/mp4" />
+            </video>
+          </div>
+        }>
           <Routes>
             <Route path="/" element={<MainPage />} />
             
