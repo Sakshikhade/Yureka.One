@@ -69,23 +69,25 @@ export const BlogForm: React.FC<BlogFormProps> = ({
         newText = `${before}_${selected || 'italic text'}_${after}`;
         cursorOffset = selected ? 0 : 1;
         break;
-      case 'underline':
-        newText = `${before}<u>${selected || 'underlined text'}</u>${after}`;
-        cursorOffset = selected ? 0 : 3;
-        break;
       case 'link':
         const url = window.prompt('Enter URL:', 'https://');
         if (!url) return;
         newText = `${before}[${selected || 'link text'}](${url})${after}`;
-        break;
-      case 'h1':
-        newText = `${before}\n# ${selected || 'Heading 1'}\n${after}`;
         break;
       case 'h2':
         newText = `${before}\n## ${selected || 'Heading 2'}\n${after}`;
         break;
       case 'bullet':
         newText = `${before}\n- ${selected || 'List item'}\n${after}`;
+        break;
+      case 'number':
+        newText = `${before}\n1. ${selected || 'List item'}\n${after}`;
+        break;
+      case 'alpha':
+        newText = `${before}\nA. ${selected || 'List item'}\n${after}`;
+        break;
+      case 'roman':
+        newText = `${before}\nI. ${selected || 'List item'}\n${after}`;
         break;
     }
 
@@ -132,7 +134,25 @@ export const BlogForm: React.FC<BlogFormProps> = ({
         <div className="w-px h-4 bg-black/10 mx-1" />
         <button type="button" onClick={() => insertMarkdown(field, 'link')} className="p-2 hover:bg-white rounded-lg transition-colors text-black/60" title="Add Link"><LinkIcon size={14}/></button>
         <button type="button" onClick={() => insertMarkdown(field, 'h2')} className="p-2 hover:bg-white rounded-lg transition-colors text-black/60" title="Heading"><Type size={14}/></button>
-        <button type="button" onClick={() => insertMarkdown(field, 'bullet')} className="p-2 hover:bg-white rounded-lg transition-colors text-black/60" title="List"><List size={14}/></button>
+        
+        {/* Advanced List Dropdown */}
+        <div className="relative group">
+          <button type="button" className="p-2 hover:bg-white rounded-lg transition-colors text-black/60" title="Lists"><List size={14}/></button>
+          <div className="absolute top-full left-0 mt-1 hidden group-hover:flex flex-col bg-white border border-black/5 shadow-xl rounded-xl p-1 z-50 min-w-[120px]">
+            <button type="button" onClick={() => insertMarkdown(field, 'bullet')} className="flex items-center gap-2 px-3 py-2 hover:bg-slate-50 rounded-lg text-xs font-bold text-black/60">
+              <div className="w-1.5 h-1.5 rounded-full bg-black/40" /> Bullets
+            </button>
+            <button type="button" onClick={() => insertMarkdown(field, 'number')} className="flex items-center gap-2 px-3 py-2 hover:bg-slate-50 rounded-lg text-xs font-bold text-black/60">
+              <span className="w-4">1.</span> Numbered
+            </button>
+            <button type="button" onClick={() => insertMarkdown(field, 'alpha')} className="flex items-center gap-2 px-3 py-2 hover:bg-slate-50 rounded-lg text-xs font-bold text-black/60">
+              <span className="w-4">A.</span> Alpha
+            </button>
+            <button type="button" onClick={() => insertMarkdown(field, 'roman')} className="flex items-center gap-2 px-3 py-2 hover:bg-slate-50 rounded-lg text-xs font-bold text-black/60">
+              <span className="w-4">I.</span> Roman
+            </button>
+          </div>
+        </div>
       </div>
 
       <button 

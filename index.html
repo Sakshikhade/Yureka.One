@@ -210,6 +210,33 @@
       @keyframes shimmer {
         100% { transform: translateX(100%); }
       }
+      /* Editorial Manuscript Styles (Markdown) */
+      .prose-ink ul, .markdown-body ul {
+        list-style-type: disc !important;
+        padding-left: 1.5rem !important;
+        margin-top: 1rem !important;
+        margin-bottom: 1rem !important;
+      }
+      .prose-ink ol, .markdown-body ol {
+        list-style-type: decimal !important;
+        padding-left: 1.5rem !important;
+        margin-top: 1rem !important;
+        margin-bottom: 1rem !important;
+      }
+      .prose-ink li, .markdown-body li {
+        margin-bottom: 0.5rem !important;
+        display: list-item !important;
+        color: inherit;
+      }
+      .prose-ink h1, .prose-ink h2, .prose-ink h3 {
+        margin-top: 2rem !important;
+        margin-bottom: 1rem !important;
+        color: #242424 !important;
+      }
+      .prose-ink p {
+        margin-bottom: 1.5rem !important;
+        line-height: 1.8 !important;
+      }
     </style>
     <script>
       // Security: Disable Right Click
