@@ -45,7 +45,8 @@ const YurekaOsPage: React.FC = () => {
       <div className="relative z-10 max-w-[1400px] mx-auto px-6 pt-8 md:pt-12 pb-32">
 
         {/* Hyper-Premium Hero Section */}
-        <section className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center mb-40">
+        <section id="rewards-calculator" className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center mb-40 scroll-mt-32">
+
           
           {/* Visual Canvas */}
           <motion.div 

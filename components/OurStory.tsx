@@ -166,7 +166,8 @@ const OurStory: React.FC = () => {
       </div>
 
       {/* --- RESTORED GUARDIAN CONTENT (Transparent) --- */}
-      <div className="max-w-[1280px] mx-auto border-t border-black/10 overflow-hidden relative mb-20">
+      <div id="manifesto-content" className="max-w-[1280px] mx-auto border-t border-black/10 overflow-hidden relative mb-20 scroll-mt-32">
+
 
         {/* 1. TOP TEASERS */}
         <div className="grid grid-cols-2 md:grid-cols-4 border-b border-black/10">
@@ -342,6 +343,7 @@ const OurStory: React.FC = () => {
       <div className="max-w-[1280px] mx-auto px-6 mb-20 space-y-32">
         
          <section id="ai-match" className="scroll-mt-32">
+
             <FadeInSection>
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 border-t-4 border-black pt-12">
                     <div className="lg:col-span-4">
@@ -366,7 +368,7 @@ const OurStory: React.FC = () => {
             </FadeInSection>
         </section>
 
-         <section id="rewards" className="scroll-mt-32">
+         <section id="rewards-matrix" className="scroll-mt-32">
             <FadeInSection>
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 border-t-2 border-black/10 pt-12">
                     <div className="lg:col-span-7 border-r border-black/10 pr-12">
@@ -405,7 +407,7 @@ const OurStory: React.FC = () => {
         </section>
 
         {/* 3. RULES */}
-        <section id="rules" className="scroll-mt-32">
+        <section id="rules-audit" className="scroll-mt-32">
             <FadeInSection>
                 <div className="relative border-4 border-black p-8 md:p-16 overflow-hidden">
                     <div className="absolute top-0 right-0 p-4 font-blackletter text-6xl text-black/5 pointer-events-none">THE FINE PRINT</div>
@@ -440,7 +442,7 @@ const OurStory: React.FC = () => {
         </section>
 
         {/* 4. MONEY */}
-        <section id="money" className="scroll-mt-32">
+        <section id="financial-strategy" className="scroll-mt-32">
             <FadeInSection>
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 border-t-2 border-black/10 pt-12">
                      <div className="lg:col-span-5 order-2 lg:order-1">
@@ -470,7 +472,7 @@ const OurStory: React.FC = () => {
             </FadeInSection>
         </section>
 
-         <section id="tech" className="scroll-mt-32">
+         <section id="tech-stack" className="scroll-mt-32">
             <FadeInSection>
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 border-y-2 border-black py-16 bg-white shadow-2xl">
                     <div className="lg:col-span-12 text-center mb-8 px-6">

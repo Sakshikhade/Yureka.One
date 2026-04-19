@@ -59,7 +59,8 @@ const JournalPage: React.FC = () => {
             <div className="max-w-[1440px] mx-auto px-6">
                 
                 {/* Header - Editorial Style */}
-                <div className="text-center mb-24 opacity-0 animate-fade-in-up">
+                <div id="journal-header" className="text-center mb-24 opacity-0 animate-fade-in-up scroll-mt-32">
+
                     <div className="inline-block px-4 py-1 border-2 border-ink mb-8">
                         <p className="text-[10px] font-bold tracking-[0.5em] uppercase text-ink">Yureka Journal • Digital Edition</p>
                     </div>
@@ -78,7 +79,8 @@ const JournalPage: React.FC = () => {
 
                 {/* Featured Story */}
                 {featured && (
-                    <section className="grid grid-cols-1 lg:grid-cols-12 gap-0 mb-32 border-2 border-ink overflow-hidden opacity-0 animate-fade-in-up delay-100">
+                    <section id="featured-story" className="grid grid-cols-1 lg:grid-cols-12 gap-0 mb-32 border-2 border-ink overflow-hidden opacity-0 animate-fade-in-up delay-100 scroll-mt-32">
+
                         <div className="lg:col-span-8 relative aspect-[16/9] lg:aspect-auto min-h-[400px] overflow-hidden border-b-2 lg:border-b-0 lg:border-r-2 border-ink">
                             <ImageWithLoader 
                                 src={featured.image} 
@@ -119,7 +121,8 @@ const JournalPage: React.FC = () => {
                 )}
 
                 {/* News Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 border-l border-t border-ink/10">
+                <div id="news-grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 border-l border-t border-ink/10 scroll-mt-32">
+
                     {regular.map((post, idx) => (
                         <div 
                             key={post.id} 
@@ -152,7 +155,8 @@ const JournalPage: React.FC = () => {
                 </div>
 
                 {/* Newsletter Section - Newsprint Style */}
-                <section className="mt-40 p-12 md:p-24 bg-ink text-white relative overflow-hidden text-center rounded-[3rem] shadow-2xl">
+                <section id="newsletter" className="mt-40 p-12 md:p-24 bg-ink text-white relative overflow-hidden text-center rounded-[3rem] shadow-2xl scroll-mt-32">
+
                     <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
                     <div className="relative z-10 max-w-3xl mx-auto">
                         <span className="text-clay font-bold text-[10px] uppercase tracking-[0.5em] mb-8 block">Stay Ahead</span>

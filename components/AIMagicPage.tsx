@@ -234,7 +234,8 @@ const AIMagicPage: React.FC = () => {
       <div className="relative z-10 max-w-[1400px] mx-auto px-6 pt-12 pb-40">
 
         {/* HERO */}
-        <section className="text-center mb-28">
+        <section id="ai-hero" className="text-center mb-28 scroll-mt-32">
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -297,7 +298,8 @@ const AIMagicPage: React.FC = () => {
         </section>
 
         {/* LIVE DEMO */}
-        <section className="mb-40">
+        <section id="ai-demo" className="mb-40 scroll-mt-32">
+
           <div className="text-center mb-16">
             <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-teal mb-4">See it in action</p>
             <h2 className="text-4xl md:text-6xl font-sans font-black text-white tracking-tighter leading-tight">
@@ -339,7 +341,8 @@ const AIMagicPage: React.FC = () => {
         </section>
 
         {/* CAPABILITIES GRID */}
-        <section className="mb-40">
+        <section id="ai-capabilities" className="mb-40 scroll-mt-32">
+
           <div className="text-center mb-20">
             <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-clay mb-4">Full-spectrum Intelligence</p>
             <h2 className="text-4xl md:text-6xl font-sans font-black text-white tracking-tighter leading-tight">
@@ -375,7 +378,8 @@ const AIMagicPage: React.FC = () => {
         </section>
 
         {/* PERSONALISATION SECTION */}
-        <section className="mb-40">
+        <section id="ai-personalisation" className="mb-40 scroll-mt-32">
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -465,7 +469,8 @@ const AIMagicPage: React.FC = () => {
         </section>
 
         {/* REWARDX SECTION */}
-        <section className="mb-40">
+        <section id="rewardx" className="mb-40 scroll-mt-32">
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}

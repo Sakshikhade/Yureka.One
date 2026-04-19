@@ -12,7 +12,20 @@ const Footer: React.FC = () => {
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
       >
+        {/* Background Branding (Glassy & Floating) */}
+        <div className="absolute inset-x-0 bottom-20 flex items-center justify-center pointer-events-none overflow-hidden h-64 z-[-1]">
+            <motion.div
+                initial={{ y: 0 }}
+                animate={{ y: [-20, 20, -20] }}
+                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                className="text-[12rem] md:text-[25rem] lg:text-[35rem] font-heading font-black tracking-tighter text-ink/[0.03] select-none blur-[2px] backdrop-blur-[1px] whitespace-nowrap leading-none"
+            >
+                YUREKA
+            </motion.div>
+        </div>
+
         {/* Top Section: Branding & Slogan */}
+
         <div className="max-w-[1440px] mx-auto px-6 mb-12 md:mb-20 border-b border-black/10 pb-12 md:pb-20">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12">
                 <div className="lg:col-span-8">
