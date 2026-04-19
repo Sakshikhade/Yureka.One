@@ -16,10 +16,11 @@ const Footer: React.FC = () => {
         <div className="absolute inset-x-0 bottom-20 flex items-center justify-center pointer-events-none overflow-hidden h-64 z-[-1]">
             <motion.div
                 initial={{ y: 0 }}
-                animate={{ y: [-20, 20, -20] }}
-                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-                className="text-[12rem] md:text-[25rem] lg:text-[35rem] font-heading font-black tracking-tighter text-ink/[0.03] select-none blur-[2px] backdrop-blur-[1px] whitespace-nowrap leading-none"
+                animate={{ y: [-15, 15, -15] }}
+                transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+                className="text-[8rem] md:text-[15rem] lg:text-[22rem] font-heading font-black tracking-tighter text-ink/[0.03] select-none blur-[2px] backdrop-blur-[1px] whitespace-nowrap leading-none"
             >
+
                 YUREKA
             </motion.div>
         </div>
