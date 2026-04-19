@@ -109,7 +109,7 @@ const Hero: React.FC = () => {
 
                 
                 <div className="mt-8 md:mt-10 flex flex-col md:flex-row items-center justify-center gap-4">
-                    <Link to="/ai-magic" className="group relative px-10 py-4 bg-ink text-white overflow-hidden rounded-full w-full md:w-auto shadow-xl">
+                    <Link to="/yureka-ai" className="group relative px-10 py-4 bg-ink text-white overflow-hidden rounded-full w-full md:w-auto shadow-xl">
                         <div className="absolute inset-0 w-full h-full bg-clay/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
                         <span className="relative z-10 font-bold text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-2 text-white">
                             <Sparkles size={14} className="text-white" /> Find My Card
@@ -229,7 +229,7 @@ const Hero: React.FC = () => {
                         <h4 className="font-bold text-xs uppercase tracking-[0.2em] mb-4 md:mb-8 text-ink/40 border-b border-ink/10 pb-2">In This Issue</h4>
                         <ul className="space-y-0">
                             {[
-                                { title: "AI Magic", page: "03", link: "/ai-magic", desc: "Conversational Matching" },
+                                { title: "Yureka AI", page: "03", link: "/yureka-ai", desc: "Conversational Matching" },
                                 { title: "Yureka OS", page: "05", link: "/yureka-os", desc: "Financial Engine" },
                                 { title: "Card Explorer", page: "08", link: "/cards", desc: "Top Market Picks" },
                                 { title: "Manifesto", page: "12", link: "/manifesto", desc: "Our Vision" }

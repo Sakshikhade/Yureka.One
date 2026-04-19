@@ -26,7 +26,7 @@ async function generateSitemap() {
     '',
     '/cards',
     '/blogs',
-    '/ai-magic',
+    '/yureka-ai',
     '/rewards-calculator',
     '/manifesto',
     '/join-waitlist'

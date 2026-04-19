@@ -61,7 +61,7 @@ const Footer: React.FC = () => {
                     <h4 className="font-bold text-[10px] md:text-xs uppercase tracking-[0.2em] mb-4 md:mb-8 text-black/40">Explore</h4>
                     <ul className="space-y-3 md:space-y-4">
                         <li><Link to="/cards" className="hover:text-clay font-serif text-sm md:text-base transition-colors">Card Explorer</Link></li>
-                        <li><Link to="/ai-magic" className="hover:text-clay font-serif text-sm md:text-base transition-colors">Yureka AI Magic</Link></li>
+                        <li><Link to="/yureka-ai" className="hover:text-clay font-serif text-sm md:text-base transition-colors">Yureka AI</Link></li>
                         <li><Link to="/yureka-os" className="hover:text-clay font-serif text-sm md:text-base transition-colors">Yureka OS</Link></li>
                         <li><Link to="/manifesto" className="hover:text-clay font-serif text-sm md:text-base transition-colors">Our Manifesto</Link></li>
                     </ul>

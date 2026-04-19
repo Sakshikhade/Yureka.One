@@ -223,7 +223,7 @@ const LiveChatDemo = () => {
   );
 };
 
-const AIMagicPage: React.FC = () => {
+const YurekaAIPage: React.FC = () => {
   return (
     <div className="relative min-h-screen bg-cream overflow-x-hidden selection:bg-teal/10">
       {/* Background Glows */}
@@ -607,4 +607,4 @@ const AIMagicPage: React.FC = () => {
   );
 };
 
-export default AIMagicPage;
+export default YurekaAIPage;

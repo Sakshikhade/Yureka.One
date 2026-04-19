@@ -84,10 +84,10 @@ const Navbar: React.FC = () => {
                 <div className="h-4 w-px bg-ink/20"></div>
 
                 <div className="flex items-center gap-4 lg:gap-6">
-                      <Link to="/ai-magic" className={`
+                      <Link to="/yureka-ai" className={`
                         text-ink font-sans font-bold text-sm lg:text-base hover:text-clay transition-colors whitespace-nowrap uppercase tracking-widest
                       `}>
-                        Yureka AI Magic
+                        Yureka AI
                       </Link>
 
                     
@@ -152,7 +152,7 @@ const Navbar: React.FC = () => {
                         { name: 'Manifesto', path: '/manifesto', desc: 'Our Mission' },
                         { name: 'Yureka OS', path: '/yureka-os', desc: 'Financial Engine' },
                         { name: 'Blogs', path: '/blogs', desc: 'Credit Insights' },
-                        { name: 'Yureka AI', path: '/ai-magic', desc: 'AI Matching' }
+                        { name: 'Yureka AI', path: '/yureka-ai', desc: 'AI Matching' }
                     ].map((item, idx) => (
                         <motion.div
                           initial={{ opacity: 0, x: 20 }}

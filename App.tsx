@@ -25,7 +25,7 @@ const CommunityGuidelines = lazy(() => import('./components/CommunityGuidelines'
 const YurekaOsPage = lazy(() => import('./components/YurekaOsPage'));
 const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
 const WaitlistPage = lazy(() => import('./components/WaitlistPage'));
-const AIMagicPage = lazy(() => import('./components/AIMagicPage'));
+const YurekaAIPage = lazy(() => import('./components/YurekaAIPage'));
 const CareersPage = lazy(() => import('./components/CareersPage'));
 const RewardsTransferCalculator = lazy(() => import('./components/RewardsTransferCalculator'));
 
@@ -168,17 +168,18 @@ const AppContent: React.FC = () => {
             <Route path="/manifesto" element={<OurStory />} />
             <Route path="/jobs" element={<CareersPage />} />
 
-            <Route path="/ai-magic" element={
+            <Route path="/yureka-ai" element={
                <>
                  <SEO 
-                   title="Yureka AI Magic | Your AI Financial Co-Pilot" 
+                   title="Yureka AI | Your AI Financial Co-Pilot" 
                    description="From picking the perfect credit card to maximising every reward point."
                  />
-                 <AIMagicPage />
+                 <YurekaAIPage />
                </>
             } />
             <Route path="/explorer" element={<Navigate to="/cards" replace />} />
-            <Route path="/ai" element={<Navigate to="/ai-magic" replace />} />
+            <Route path="/ai-magic" element={<Navigate to="/yureka-ai" replace />} />
+            <Route path="/ai" element={<Navigate to="/yureka-ai" replace />} />
             <Route path="/matrix" element={<Navigate to="/rewards-calculator" replace />} />
             <Route path="/journal" element={<Navigate to="/blogs" replace />} />
             <Route path="/rewards-calculator" element={<RewardsTransferCalculator />} />
