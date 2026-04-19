@@ -6,16 +6,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  index-now-bing:
-    name: Ping Bing (IndexNow)
-    runs-on: ubuntu-latest
-    steps:
-      - name: IndexNow Action
-        uses: bojieyang/indexnow-action@v2
-        with:
-          sitemap-location: 'https://yureka.money/sitemap.xml'
-          key: ${{ secrets.INDEXNOW_KEY }}
-          endpoint: 'www.bing.com'
 
   google-indexing:
     name: Ping Google

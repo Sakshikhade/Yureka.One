@@ -43,8 +43,6 @@ Allow: /
 # STANDARD SEARCH ENGINES
 # Why: Standard visibility for global search discovery.
 # ---------------------------------------------------------
-User-agent: Bingbot
-Allow: /
 
 User-agent: *
 Allow: /
