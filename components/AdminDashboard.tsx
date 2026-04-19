@@ -37,10 +37,13 @@ const ADMIN_BANKS = [
 
 const ADMIN_CATEGORIES = [
   'Travel', 'Hotels', 'Cashback', 'Brand Voucher', 'Fuel',
-  'Shopping', 'Dining', 'Lounge Access', 'Lifetime Free', 'Business', 'UPI'
+  'Shopping', 'Dining', 'Lounge Access', 'Lifetime Free', 'Business', 'UPI',
+  'Travel Bookings', 'Catalogue Products', 'Experience'
 ];
 
-import { motion, AnimatePresence } from 'framer-motion';
+
+import { motion, AnimatePresence } from 'motion/react';
+
 
 const AdminDashboard: React.FC = () => {
   const { syncStatus, isLoading, refreshAll } = useSupabase();

@@ -2,7 +2,7 @@ import React from 'react';
 import { Blog } from '../../types';
 import { useSupabase } from '../SupabaseProvider';
 import { SkeletonTable } from '../SkeletonLoaders';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import { 
   Edit2, 
   Trash2, 

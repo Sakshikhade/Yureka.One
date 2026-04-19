@@ -3,7 +3,8 @@ import { CreditCard as CardIcon, ArrowUpRight, Sparkles, Zap, MousePointer2 } fr
 import ImageWithLoader from './ImageWithLoader';
 import { Link } from 'react-router-dom';
 import { featuredCards } from '../data';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'motion/react';
+
 
 interface ShowcaseCarouselProps {
   cards: any[];
@@ -25,8 +26,10 @@ const ShowcaseCard: React.FC<ShowcaseCardProps> = ({ card, index, total, progres
     const opacity = useTransform(progress, [start, start + 0.05, end, end + 0.05], [0, 1, 1, 0]);
     const scale = useTransform(progress, [end, end + phaseSize], [1, 0.95]);
     const rotate = 0; // Everything in straight line as requested
+    const pointerEvents = useTransform(opacity, [0, 0.1, 0.101], ['none', 'none', 'auto']);
 
     const brightness = useTransform(progress, [end, end + phaseSize], [1, 0.8]);
+
 
     // Handle both snake_case (Supabase/new data) and camelCase (legacy/types)
     const rewardsRate = card.rewards_rate || card.rewardsRate || 'N/A';
@@ -34,10 +37,15 @@ const ShowcaseCard: React.FC<ShowcaseCardProps> = ({ card, index, total, progres
 
     return (
         <motion.div
-            style={{ x, opacity, scale, rotate, filter: `brightness(${brightness})`, zIndex: index }}
+            style={{ 
+                x, opacity, scale, rotate, filter: `brightness(${brightness})`, zIndex: index,
+                pointerEvents 
+            }}
             className="absolute inset-0 w-full h-full"
         >
-            <div className="w-full h-full bg-paper p-3 pb-8 shadow-2xl border border-ink/10 flex flex-col relative group transition-colors hover:border-clay/50">
+            <div className="w-full h-full bg-paper p-3 pb-8 shadow-2xl border border-ink/10 flex flex-col relative group transition-colors hover:border-clay/50 pointer-events-auto">
+
+
                 <div className="h-[55%] md:h-[65%] relative overflow-hidden bg-cream/50 border-4 border-paper shadow-inner grayscale group-hover:grayscale-0 transition-all duration-700 flex items-center justify-center">
                     <ImageWithLoader 
                         src={card.image} 

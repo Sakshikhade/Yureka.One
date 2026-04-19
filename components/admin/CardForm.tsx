@@ -108,7 +108,35 @@ export const CardForm: React.FC<CardFormProps> = ({
               />
             </div>
           </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Primary Category</label>
+              <select
+                required
+                value={form.category}
+                onChange={e => setForm({...form, category: e.target.value})}
+                className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+              >
+                <option value="">— Select —</option>
+                {categories.map(c => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+                <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Rewards Rate</label>
+                <input 
+                    type="text" 
+                    placeholder="e.g. 5% or 10X"
+                    value={form.rewards_rate || ''}
+                    onChange={e => setForm({...form, rewards_rate: e.target.value})}
+                    className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+                />
+            </div>
+          </div>
         </div>
+
 
         <div className="space-y-6">
           <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Card Image</label>
@@ -141,7 +169,7 @@ export const CardForm: React.FC<CardFormProps> = ({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
           <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Annual Fee</label>
           <input type="text" required value={form.annual_fee} onChange={e => setForm({...form, annual_fee: e.target.value})} className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all" />
@@ -150,7 +178,36 @@ export const CardForm: React.FC<CardFormProps> = ({
           <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Joining Fee</label>
           <input type="text" required value={form.joining_fee} onChange={e => setForm({...form, joining_fee: e.target.value})} className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all" />
         </div>
+        <div>
+          <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Est. Savings</label>
+          <input type="text" placeholder="e.g. ₹15,000/yr" value={form.projected_savings} onChange={e => setForm({...form, projected_savings: e.target.value})} className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all" />
+        </div>
       </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+            <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Best For (Use Case)</label>
+            <input 
+              type="text" 
+              placeholder="e.g. Dining & Shopping"
+              value={form.best_for || ''}
+              onChange={e => setForm({...form, best_for: e.target.value})}
+              className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+            />
+        </div>
+        <div>
+            <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Redirection Link (Apply Link)</label>
+            <input 
+              type="url" 
+              placeholder="https://..."
+              value={form.apply_link || ''}
+              onChange={e => setForm({...form, apply_link: e.target.value})}
+              className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+            />
+        </div>
+      </div>
+
+
 
       <div className="space-y-8 pt-8 border-t border-black/5">
         <div>

@@ -11,7 +11,7 @@ import {
 import { WaitlistEntry } from '../../types';
 import { useSupabase } from '../SupabaseProvider';
 import { SkeletonTable } from '../SkeletonLoaders';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 
 interface AdminWaitlistTabProps {
   filter: 'pending' | 'accepted' | 'rejected' | 'on_hold' | 'all';
