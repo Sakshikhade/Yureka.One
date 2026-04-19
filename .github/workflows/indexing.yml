@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Google Indexing Action
-        uses: robingenz/action-google-indexing@v1
+        uses: robingenz/action-google-indexing@v1.0.2
         with:
-          sitemapUrl: 'https://yureka.money/sitemap.xml'
+          siteUrl: 'https://yureka.money'
           gcpServiceAccountKey: ${{ secrets.GCP_SA_KEY }}
