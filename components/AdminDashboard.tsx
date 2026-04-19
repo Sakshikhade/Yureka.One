@@ -53,7 +53,14 @@ const AdminDashboard: React.FC = () => {
   const [userRole, setUserRole] = useState<string>('user');
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'blogs' | 'cards' | 'waitlist' | 'settings' | 'logs' | 'reviews'>('blogs');
+  const [activeTab, setActiveTab] = useState<'blogs' | 'cards' | 'waitlist' | 'settings' | 'logs' | 'reviews'>(
+    (localStorage.getItem('yureka_admin_tab') as any) || 'blogs'
+  );
+
+  useEffect(() => {
+    localStorage.setItem('yureka_admin_tab', activeTab);
+  }, [activeTab]);
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -215,6 +222,8 @@ const AdminDashboard: React.FC = () => {
       }
       setIsModalOpen(false);
       setEditingItem(null);
+      await refreshAll();
+
     } catch (err: any) {
       setError(err.message || "Failed to save record.");
     } finally {

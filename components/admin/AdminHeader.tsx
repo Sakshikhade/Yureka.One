@@ -28,13 +28,14 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
 
   const getTabTitle = (tab: string) => {
     const titles: Record<string, string> = {
-      blogs: 'Blogs Registry',
-      cards: 'Card Market',
+      blogs: 'Blogs Management',
+      cards: 'Cards Inventory',
       reviews: 'User Reviews',
       waitlist: 'VIP Waitlist',
-      settings: 'Team & Security',
+      settings: 'Admin Controls',
       logs: 'Platform Audit Logs'
     };
+
     return titles[tab] || tab;
   };
 

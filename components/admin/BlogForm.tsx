@@ -7,8 +7,14 @@ import {
   Settings,
   Clock,
   Zap,
-  Check
+  Check,
+  Bold,
+  Italic,
+  Underline,
+  Link as LinkIcon,
+  Type
 } from 'lucide-react';
+
 
 interface BlogFormProps {
   form: any;
@@ -30,6 +36,68 @@ export const BlogForm: React.FC<BlogFormProps> = ({
   error
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const insertMarkdown = (field: 'content' | 'excerpt', type: string) => {
+    const textarea = document.getElementById(`blog-${field}`) as HTMLTextAreaElement;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = textarea.value;
+    const before = text.substring(0, start);
+    const selected = text.substring(start, end);
+    const after = text.substring(end);
+
+    let newText = text;
+    let cursorOffset = 0;
+
+    switch (type) {
+      case 'bold':
+        newText = `${before}**${selected || 'bold text'}**${after}`;
+        cursorOffset = selected ? 0 : 2;
+        break;
+      case 'italic':
+        newText = `${before}_${selected || 'italic text'}_${after}`;
+        cursorOffset = selected ? 0 : 1;
+        break;
+      case 'underline':
+        newText = `${before}<u>${selected || 'underlined text'}</u>${after}`;
+        cursorOffset = selected ? 0 : 3;
+        break;
+      case 'link':
+        newText = `${before}[${selected || 'link text'}](https://example.com)${after}`;
+        cursorOffset = selected ? 0 : 1;
+        break;
+      case 'h1':
+        newText = `${before}\n# ${selected || 'Heading 1'}\n${after}`;
+        break;
+      case 'h2':
+        newText = `${before}\n## ${selected || 'Heading 2'}\n${after}`;
+        break;
+    }
+
+    setForm({ ...form, [field]: newText });
+    
+    // Focus back and set cursor
+    setTimeout(() => {
+      textarea.focus();
+      const newCursorPos = start + (selected ? newText.length - text.length : cursorOffset);
+      textarea.setSelectionRange(newCursorPos, newCursorPos);
+    }, 0);
+  };
+
+  const Toolbar = ({ field }: { field: 'content' | 'excerpt' }) => (
+    <div className="flex items-center gap-1 mb-2 bg-black/5 p-1.5 rounded-lg border border-black/5 w-fit">
+      <button type="button" onClick={() => insertMarkdown(field, 'bold')} className="p-1.5 hover:bg-white rounded transition-colors" title="Bold"><Bold size={14}/></button>
+      <button type="button" onClick={() => insertMarkdown(field, 'italic')} className="p-1.5 hover:bg-white rounded transition-colors" title="Italic"><Italic size={14}/></button>
+      <button type="button" onClick={() => insertMarkdown(field, 'underline')} className="p-1.5 hover:bg-white rounded transition-colors" title="Underline"><Underline size={14}/></button>
+      <div className="w-px h-4 bg-black/10 mx-1" />
+      <button type="button" onClick={() => insertMarkdown(field, 'link')} className="p-1.5 hover:bg-white rounded transition-colors" title="Add Link"><LinkIcon size={14}/></button>
+      <button type="button" onClick={() => insertMarkdown(field, 'h1')} className="p-1.5 hover:bg-white rounded transition-colors" title="Heading 1"><Type size={14}/><span className="text-[8px] font-bold">1</span></button>
+      <button type="button" onClick={() => insertMarkdown(field, 'h2')} className="p-1.5 hover:bg-white rounded transition-colors" title="Heading 2"><Type size={14}/><span className="text-[8px] font-bold">2</span></button>
+    </div>
+  );
+
 
   return (
     <form onSubmit={onSubmit} className="space-y-6">
@@ -160,22 +228,27 @@ export const BlogForm: React.FC<BlogFormProps> = ({
 
       <div>
         <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Excerpt</label>
+        <Toolbar field="excerpt" />
         <textarea 
+          id="blog-excerpt"
           required
           value={form.excerpt}
           onChange={e => setForm({...form, excerpt: e.target.value})}
-          className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all h-24"
+          className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all h-24 text-sm"
         />
       </div>
       <div>
         <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Content (Markdown)</label>
+        <Toolbar field="content" />
         <textarea 
+          id="blog-content"
           required
           value={form.content}
           onChange={e => setForm({...form, content: e.target.value})}
-          className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all h-64 font-mono text-sm"
+          className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all h-64 font-mono text-sm leading-relaxed"
         />
       </div>
+
       
       <div className="flex justify-end pt-4 border-t border-black/5">
         <button 

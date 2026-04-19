@@ -29,13 +29,14 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
   onToggleSidebar
 }) => {
   const navItems = [
-    { id: 'blogs', label: 'Publication Archive', icon: FileText, roles: ['admin', 'editor', 'writer'] },
-    { id: 'reviews', label: 'Social Proofing', icon: Users, roles: ['admin', 'editor'] },
-    { id: 'cards', label: 'Financial Catalog', icon: CreditCard, roles: ['admin', 'editor'] },
-    { id: 'waitlist', label: 'Waitlist Queue', icon: Users, roles: ['admin'] },
-    { id: 'settings', label: 'Governance', icon: Settings, roles: ['admin'] },
+    { id: 'blogs', label: 'Blogs', icon: FileText, roles: ['admin', 'editor', 'writer'] },
+    { id: 'reviews', label: 'Reviews', icon: Users, roles: ['admin', 'editor'] },
+    { id: 'cards', label: 'Cards', icon: CreditCard, roles: ['admin', 'editor'] },
+    { id: 'waitlist', label: 'Waitlist', icon: Users, roles: ['admin'] },
+    { id: 'settings', label: 'Admin Controls', icon: Settings, roles: ['admin'] },
     { id: 'logs', label: 'Audit Trail', icon: History, roles: ['admin'] }
   ];
+
 
   const filteredNavItems = navItems.filter(item => item.roles.includes(userRole));
 
