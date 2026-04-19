@@ -229,15 +229,15 @@ const AdminDashboard: React.FC = () => {
     try {
       const saveAction = async () => {
         if (activeTab === 'blogs') {
-          // STRICT Payload Sanitization: Only send what the DB expects
+          // STRICT Payload Sanitization + Defaults
           const payload = {
-            title: blogForm.title,
-            slug: blogForm.slug || blogForm.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
-            excerpt: blogForm.excerpt,
-            content: blogForm.content,
-            author: blogForm.author,
-            category: blogForm.category,
-            image: blogForm.image,
+            title: blogForm.title || "Untitled Post",
+            slug: blogForm.slug || blogForm.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || `blog-${Date.now()}`,
+            excerpt: blogForm.excerpt || '',
+            content: blogForm.content || '',
+            author: blogForm.author || 'Yureka Team',
+            category: blogForm.category || 'Finance',
+            image: blogForm.image || 'https://picsum.photos/seed/blog/800/600',
             status: 'published',
             read_time: blogForm.read_time || '5 min read',
             scheduled_at: (blogForm.publishMode === 'later' && blogForm.scheduled_at) 
@@ -245,6 +245,8 @@ const AdminDashboard: React.FC = () => {
               : null
           };
           
+          if (!payload.title || !payload.content) throw new Error("Headline and Manuscript Body are required.");
+
           editingItem ? await updateBlog(editingItem.id, payload) : await addBlog(payload);
         } else if (activeTab === 'cards') {
           const { color, ...cardData } = cardForm;
@@ -270,7 +272,9 @@ const AdminDashboard: React.FC = () => {
 
     } catch (err: any) {
       console.error("Save error:", err);
-      setError(err.message || "Failed to save record.");
+      const errorMsg = err.message || "Failed to save record.";
+      setError(errorMsg);
+      alert(`Publication Failed: ${errorMsg}`);
     } finally {
       setSaving(false);
     }
