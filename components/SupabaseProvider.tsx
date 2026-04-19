@@ -90,15 +90,21 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       reviewSub = getReviews((data) => setReviews(data), () => setSyncStatus('error'));
     };
 
-    const setupAdmin = () => {
+    const setupAdmin = async () => {
       if (!isAdminRoute) return;
       
       setIsLoading(true);
+      // Staggered subscriptions to prevent auth-token collisions
       adminCardSub = getCardsAdmin((data) => setCards(data));
+      await new Promise(r => setTimeout(r, 200));
       adminBlogSub = getBlogsAdmin((data) => setBlogs(data));
+      await new Promise(r => setTimeout(r, 200));
       adminReviewSub = getReviewsAdmin((data) => setReviews(data));
+      await new Promise(r => setTimeout(r, 200));
       waitlistSub = getWaitlist((data) => setWaitlist(data));
+      await new Promise(r => setTimeout(r, 200));
       teamSub = getTeamMembersAdmin((data) => setTeam(data));
+      await new Promise(r => setTimeout(r, 200));
       logsSub = getAuditLogsAdmin((data) => setLogs(data));
       
       setIsAdminDataLoaded(true);

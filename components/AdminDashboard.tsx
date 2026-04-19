@@ -379,7 +379,13 @@ If this persists, please:
                   {activeTab === 'cards' && <AdminCardsTab onEdit={handleEdit} onDelete={confirmDelete} />}
                   {activeTab === 'reviews' && <AdminReviewsTab onEdit={handleEdit} onDelete={confirmDelete} />}
                   {activeTab === 'waitlist' && <AdminWaitlistTab filter="pending" onFilterChange={() => {}} onUpdateStatus={updateWaitlistStatus} onDelete={confirmDelete} />}
-                  {activeTab === 'settings' && <AdminSettingsTab onAddMember={() => getAddAction()?.()} onEditMember={handleEdit} onDeleteMember={(collection, id) => confirmDelete(collection, id)} />}
+                  {activeTab === 'settings' && (
+                    <AdminSettingsTab 
+                      onAddMember={getAddAction()!} 
+                      onEditMember={handleEdit} 
+                      onDeleteMember={confirmDelete} 
+                    />
+                  )}
                   {activeTab === 'logs' && <AdminLogsTab />}
                 </motion.div>
               </AnimatePresence>
