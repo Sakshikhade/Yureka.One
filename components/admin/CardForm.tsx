@@ -223,25 +223,25 @@ export const CardForm: React.FC<CardFormProps> = ({
         <div>
           <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-4">Benefits Portfolio</label>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {form.benefit_items.map((benefit: any, idx: number) => (
+              {(form.benefit_items || []).map((benefit: any, idx: number) => (
                 <div key={idx} className="flex items-start gap-4 bg-black/5 p-4 rounded-xl relative group/item">
                   <div className="flex-1 space-y-3">
                       <input 
                         type="text" placeholder="Heading" required
-                        value={benefit.heading}
+                        value={benefit?.heading || ''}
                         onChange={e => {
-                            const newItems = [...form.benefit_items];
-                            newItems[idx].heading = e.target.value;
-                            setForm({...form, benefit_items: newItems, benefits: newItems.map(i => i.heading)});
+                            const newItems = [...(form.benefit_items || [])];
+                            newItems[idx] = { ...newItems[idx], heading: e.target.value };
+                            setForm({...form, benefit_items: newItems, benefits: newItems.map(i => i.heading || '')});
                         }}
                         className="w-full bg-white border-none rounded-lg p-3 text-sm font-bold focus:ring-2 focus:ring-teal outline-none"
                       />
                       <input 
                         type="text" placeholder="Subheading" required
-                        value={benefit.subheading}
+                        value={benefit?.subheading || ''}
                         onChange={e => {
-                            const newItems = [...form.benefit_items];
-                            newItems[idx].subheading = e.target.value;
+                            const newItems = [...(form.benefit_items || [])];
+                            newItems[idx] = { ...newItems[idx], subheading: e.target.value };
                             setForm({...form, benefit_items: newItems});
                         }}
                         className="w-full bg-transparent border border-black/10 rounded-lg p-3 text-xs focus:ring-2 focus:ring-teal outline-none"
@@ -250,8 +250,8 @@ export const CardForm: React.FC<CardFormProps> = ({
                   <button 
                     type="button" 
                     onClick={() => {
-                      const newItems = form.benefit_items.filter((_: any, i: number) => i !== idx);
-                      setForm({...form, benefit_items: newItems, benefits: newItems.map((i: any) => i.heading)});
+                      const newItems = (form.benefit_items || []).filter((_: any, i: number) => i !== idx);
+                      setForm({...form, benefit_items: newItems, benefits: newItems.map((i: any) => i.heading || '')});
                     }} 
                     className="text-red-500 hover:bg-red-50 p-2 rounded-lg opacity-0 group-hover/item:opacity-100 transition-opacity"
                   >
@@ -261,7 +261,7 @@ export const CardForm: React.FC<CardFormProps> = ({
               ))}
               <button 
                 type="button" 
-                onClick={() => setForm({...form, benefit_items: [...form.benefit_items, {heading: '', subheading: ''}]})} 
+                onClick={() => setForm({...form, benefit_items: [...(form.benefit_items || []), {heading: '', subheading: ''}]})} 
                 className="flex flex-col items-center justify-center border-2 border-dashed border-black/10 rounded-xl p-6 hover:border-teal/50 transition-all group"
               >
                   <Plus className="text-black/20 group-hover:text-teal mb-2" />

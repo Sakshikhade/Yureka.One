@@ -40,7 +40,26 @@ const ADMIN_CATEGORIES = [
   'Shopping', 'Dining', 'Lounge Access', 'Lifetime Free', 'Business', 'UPI',
   'Travel Bookings', 'Catalogue Products', 'Experience'
 ];
+const DEFAULT_BLOG_FORM = {
+  title: '', slug: '', excerpt: '', content: '', author: '', category: 'Credit Cards',
+  image: 'https://picsum.photos/seed/blog/800/600', read_time: '5 min read',
+  featured: false, status: 'published', publishMode: 'now', scheduled_at: ''
+};
 
+const DEFAULT_CARD_FORM = {
+  name: '', bank: '', issuer: '', type: 'Rewards', image: 'https://picsum.photos/seed/card/400/250',
+  rating: 4.5, elite_rating: 4.5, benefits: [''], benefit_items: [{ heading: '', subheading: '' }],
+  verdict: '', slug: '', apply_link: '', annual_fee: '₹0', joining_fee: '₹0', intro_offer: '',
+  best_for: 'Shopping', category: 'Shopping', categories: [] as string[],
+  color: 'from-blue-600 to-indigo-700', rewards_rate: '5%', projected_savings: '₹12,000/yr', status: 'published'
+};
+
+const DEFAULT_REVIEW_FORM: Partial<Review> = {
+  author: '', role: '', company: '', company_logo: '', image: 'https://picsum.photos/seed/review/300/400',
+  quote: '', rotation: 0, status: 'published'
+};
+
+const DEFAULT_TEAM_FORM = { email: '', role: 'writer' };
 
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -66,28 +85,10 @@ const AdminDashboard: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   // --- Form States ---
-  const [blogForm, setBlogForm] = useState({
-    title: '', slug: '', excerpt: '', content: '', author: '', category: 'Credit Cards',
-    image: 'https://picsum.photos/seed/blog/800/600', read_time: '5 min read',
-    featured: false, status: 'published', publishMode: 'now', scheduled_at: ''
-  });
-
-  const defaultCardForm = {
-    name: '', bank: '', issuer: '', type: 'Rewards', image: 'https://picsum.photos/seed/card/400/250',
-    rating: 4.5, elite_rating: 4.5, benefits: [''], benefit_items: [{ heading: '', subheading: '' }],
-    verdict: '', slug: '', apply_link: '', annual_fee: '₹0', joining_fee: '₹0', intro_offer: '',
-    best_for: 'Shopping', category: 'Shopping', categories: [] as string[],
-    color: 'from-blue-600 to-indigo-700', rewards_rate: '5%', projected_savings: '₹12,000/yr', status: 'published'
-  };
-  const [cardForm, setCardForm] = useState(defaultCardForm);
-
-  const defaultReviewForm: Review = {
-    author: '', role: '', company: '', company_logo: '', image: 'https://picsum.photos/seed/review/300/400',
-    quote: '', rotation: 0, status: 'published'
-  };
-  const [reviewForm, setReviewForm] = useState<Review>(defaultReviewForm);
-
-  const [teamForm, setTeamForm] = useState({ email: '', role: 'writer' });
+  const [blogForm, setBlogForm] = useState(structuredClone(DEFAULT_BLOG_FORM));
+  const [cardForm, setCardForm] = useState(structuredClone(DEFAULT_CARD_FORM));
+  const [reviewForm, setReviewForm] = useState<Review>(structuredClone(DEFAULT_REVIEW_FORM) as Review);
+  const [teamForm, setTeamForm] = useState(structuredClone(DEFAULT_TEAM_FORM));
 
   // --- Modal States ---
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -165,9 +166,13 @@ const AdminDashboard: React.FC = () => {
         scheduled_at: formatDateForInput(item.scheduled_at)
       });
     } else if (activeTab === 'cards') {
-      setCardForm({ ...defaultCardForm, ...item });
+      setCardForm({ 
+        ...structuredClone(DEFAULT_CARD_FORM), 
+        ...item,
+        benefit_items: item.benefit_items || [{ heading: '', subheading: '' }]
+      });
     } else if (activeTab === 'reviews') {
-      setReviewForm({ ...defaultReviewForm, ...item });
+      setReviewForm({ ...structuredClone(DEFAULT_REVIEW_FORM), ...item });
     } else if (activeTab === 'settings') {
       setTeamForm({ email: item.email, role: item.role });
     }
@@ -303,10 +308,10 @@ If this persists, please:
     
     return () => {
        setEditingItem(null);
-      if (activeTab === 'blogs') setBlogForm({ ...blogForm, title: '', slug: '', excerpt: '', content: '' });
-      else if (activeTab === 'cards') setCardForm(defaultCardForm);
-      else if (activeTab === 'reviews') setReviewForm(defaultReviewForm);
-      else if (activeTab === 'settings') setTeamForm({ email: '', role: 'writer' });
+      if (activeTab === 'blogs') setBlogForm(structuredClone(DEFAULT_BLOG_FORM));
+      else if (activeTab === 'cards') setCardForm(structuredClone(DEFAULT_CARD_FORM));
+      else if (activeTab === 'reviews') setReviewForm(structuredClone(DEFAULT_REVIEW_FORM) as Review);
+      else if (activeTab === 'settings') setTeamForm(structuredClone(DEFAULT_TEAM_FORM));
       setError(null);
       setIsModalOpen(true);
     };
