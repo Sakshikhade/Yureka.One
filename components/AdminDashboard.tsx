@@ -219,14 +219,16 @@ const AdminDashboard: React.FC = () => {
     setSaving(true);
     try {
       if (activeTab === 'blogs') {
-        const payload = { ...blogForm };
-        if (blogForm.publishMode === 'later' && blogForm.scheduled_at) {
+        const { publishMode, ...blogData } = blogForm;
+        const payload = { ...blogData };
+        if (publishMode === 'later' && blogForm.scheduled_at) {
           payload.scheduled_at = new Date(blogForm.scheduled_at).toISOString();
         } else {
           payload.scheduled_at = null;
         }
         editingItem ? await updateBlog(editingItem.id, payload) : await addBlog(payload);
       } else if (activeTab === 'cards') {
+
         editingItem ? await updateCard(editingItem.id, cardForm) : await addCard(cardForm);
       } else if (activeTab === 'reviews') {
         editingItem ? await updateReview(editingItem.id, reviewForm) : await addReview(reviewForm);
