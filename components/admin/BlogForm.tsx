@@ -168,7 +168,7 @@ export const BlogForm: React.FC<BlogFormProps> = ({
 
 
   return (
-    <div className="max-w-5xl mx-auto space-y-12 pb-20">
+    <form onSubmit={onSubmit} className="max-w-5xl mx-auto space-y-12 pb-20">
       {/* 1. THE EDITORIAL HEADER */}
       <section className="space-y-8">
         <div className="flex flex-col md:flex-row gap-8 items-start">
@@ -329,6 +329,6 @@ export const BlogForm: React.FC<BlogFormProps> = ({
       </div>
 
       <input type="file" ref={fileInputRef} onChange={onFileUpload} className="hidden" accept="image/*" />
-    </div>
+    </form>
   );
 };
