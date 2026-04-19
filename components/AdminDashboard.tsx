@@ -59,6 +59,7 @@ const AdminDashboard: React.FC = () => {
 
   useEffect(() => {
     localStorage.setItem('yureka_admin_tab', activeTab);
+    setError(null);
   }, [activeTab]);
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -171,6 +172,7 @@ const AdminDashboard: React.FC = () => {
       setTeamForm({ email: item.email, role: item.role });
     }
     setIsModalOpen(true);
+    setError(null);
   };
 
   const confirmDelete = (collection: string, id: string) => {
@@ -217,6 +219,7 @@ const AdminDashboard: React.FC = () => {
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
+    setError(null);
     try {
       if (activeTab === 'blogs') {
         const { publishMode, ...blogData } = blogForm;
@@ -250,11 +253,12 @@ const AdminDashboard: React.FC = () => {
     if (!['blogs', 'cards', 'reviews', 'settings'].includes(activeTab)) return undefined;
     
     return () => {
-      setEditingItem(null);
+       setEditingItem(null);
       if (activeTab === 'blogs') setBlogForm({ ...blogForm, title: '', slug: '', excerpt: '', content: '' });
       else if (activeTab === 'cards') setCardForm(defaultCardForm);
       else if (activeTab === 'reviews') setReviewForm(defaultReviewForm);
       else if (activeTab === 'settings') setTeamForm({ email: '', role: 'writer' });
+      setError(null);
       setIsModalOpen(true);
     };
   };
