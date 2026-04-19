@@ -126,7 +126,7 @@ const LiveChatDemo = () => {
     return () => clearTimeout(timer);
   }, [msgIndex]);
 
-  const scrollRef = useRef<HTMLDivElement>(null);
+
 
   useEffect(() => {
     if (scrollRef.current) {
