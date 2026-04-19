@@ -138,23 +138,23 @@ const LiveChatDemo = () => {
   }, [visibleMessages, showTyping]);
 
   return (
-    <div className="relative bg-[#0D0F14] rounded-[2rem] overflow-hidden border border-white/5 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.6)]">
+    <div className="relative bg-white rounded-[2rem] overflow-hidden border border-black/5 shadow-2xl shadow-black/5">
       {/* Chrome Bar */}
-      <div className="flex items-center gap-2 px-6 py-4 border-b border-white/5 bg-white/[0.02]">
+      <div className="flex items-center gap-2 px-6 py-4 border-b border-black/5 bg-slate-50/50">
         <div className="flex gap-1.5">
           <div className="w-3 h-3 rounded-full bg-red-500/60" />
           <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
           <div className="w-3 h-3 rounded-full bg-green-500/60" />
         </div>
         <div className="flex-1 flex justify-center">
-          <div className="flex items-center gap-2 px-4 py-1 bg-white/5 rounded-full border border-white/10">
+          <div className="flex items-center gap-2 px-4 py-1 bg-black/5 rounded-full border border-black/5">
             <span className="w-1.5 h-1.5 rounded-full bg-teal animate-pulse" />
-            <span className="text-[10px] text-white/50 font-mono tracking-widest">Yureka AI · Live Session</span>
+            <span className="text-[10px] text-black/40 font-mono tracking-widest uppercase">Yureka AI · Live Session</span>
           </div>
         </div>
         <div className="flex items-center gap-2">
           <Sparkles size={14} className="text-clay" />
-          <span className="text-[10px] text-white/30 font-bold uppercase tracking-widest">v2 · Pro</span>
+          <span className="text-[10px] text-black/30 font-bold uppercase tracking-widest">v2 · Pro</span>
         </div>
       </div>
 
@@ -164,7 +164,7 @@ const LiveChatDemo = () => {
         {visibleMessages.length === 0 && !showTyping && (
           <div className="flex flex-col items-center justify-center h-full gap-4 opacity-40">
             <Brain size={40} className="text-teal" />
-            <p className="text-white/50 text-sm font-sans text-center">Your AI financial co-pilot is ready</p>
+            <p className="text-black/50 text-sm font-sans text-center">Your AI co-pilot is ready</p>
           </div>
         )}
 
@@ -177,13 +177,13 @@ const LiveChatDemo = () => {
               transition={{ duration: 0.35 }}
               className={`flex items-end gap-3 ${msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}
             >
-              <div className={`w-8 h-8 shrink-0 rounded-full flex items-center justify-center ${msg.role === 'ai' ? 'bg-teal/20' : 'bg-white/10'}`}>
-                {msg.role === 'ai' ? <Bot size={16} className="text-teal" /> : <User size={16} className="text-white/60" />}
+              <div className={`w-8 h-8 shrink-0 rounded-full flex items-center justify-center ${msg.role === 'ai' ? 'bg-teal/10' : 'bg-black/5'}`}>
+                {msg.role === 'ai' ? <Bot size={16} className="text-teal" /> : <User size={16} className="text-black/40" />}
               </div>
               <div className={`max-w-[75%] px-4 py-3 rounded-2xl text-sm leading-relaxed font-sans ${
                 msg.role === 'ai'
-                  ? 'bg-white/5 border border-white/8 text-white/80 rounded-bl-sm'
-                  : 'bg-clay text-white rounded-br-sm'
+                  ? 'bg-slate-50 border border-black/5 text-ink rounded-bl-sm'
+                  : 'bg-clay text-white rounded-br-sm shadow-lg shadow-clay/20'
               }`}>
                 {msg.role === 'ai' ? renderText(msg.text) : msg.text}
               </div>
@@ -198,10 +198,10 @@ const LiveChatDemo = () => {
               exit={{ opacity: 0 }}
               className="flex items-end gap-3"
             >
-              <div className="w-8 h-8 shrink-0 rounded-full bg-teal/20 flex items-center justify-center">
+              <div className="w-8 h-8 shrink-0 rounded-full bg-teal/10 flex items-center justify-center">
                 <Bot size={16} className="text-teal" />
               </div>
-              <div className="bg-white/5 border border-white/8 rounded-2xl rounded-bl-sm">
+              <div className="bg-slate-50 border border-black/5 rounded-2xl rounded-bl-sm">
                 <TypingIndicator />
               </div>
             </motion.div>
@@ -210,12 +210,12 @@ const LiveChatDemo = () => {
       </div>
 
       {/* Input Bar */}
-      <div className="flex items-center gap-3 px-6 py-4 border-t border-white/5 bg-white/[0.02]">
-        <div className="flex-1 flex items-center gap-3 px-4 py-2.5 bg-white/5 rounded-xl border border-white/10">
-          <MessageCircle size={16} className="text-white/30 shrink-0" />
-          <span className="text-white/20 text-sm font-sans">Ask anything about your cards…</span>
+      <div className="flex items-center gap-3 px-6 py-4 border-t border-black/5 bg-slate-50/50">
+        <div className="flex-1 flex items-center gap-3 px-4 py-2.5 bg-white rounded-xl border border-black/5">
+          <MessageCircle size={16} className="text-black/20 shrink-0" />
+          <span className="text-black/20 text-sm font-sans">Ask anything about your cards…</span>
         </div>
-        <button className="w-10 h-10 bg-clay rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-clay/30">
+        <button className="w-10 h-10 bg-clay rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-clay/20">
           <Send size={16} className="text-white" />
         </button>
       </div>
@@ -225,15 +225,14 @@ const LiveChatDemo = () => {
 
 const AIMagicPage: React.FC = () => {
   return (
-    <div className="relative min-h-screen bg-[#080A0F] overflow-x-hidden">
+    <div className="relative min-h-screen bg-cream overflow-x-hidden selection:bg-teal/10">
       {/* Background Glows */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-15%] left-[-10%] w-[50%] h-[50%] bg-teal/8 rounded-full blur-[140px]" />
-        <div className="absolute top-[30%] right-[-10%] w-[35%] h-[40%] bg-clay/8 rounded-full blur-[120px]" />
-        <div className="absolute bottom-[10%] left-[20%] w-[30%] h-[30%] bg-purple-600/6 rounded-full blur-[100px]" />
+        <div className="absolute top-[-15%] left-[-10%] w-[50%] h-[50%] bg-teal/5 rounded-full blur-[140px]" />
+        <div className="absolute top-[30%] right-[-10%] w-[35%] h-[40%] bg-clay/5 rounded-full blur-[120px]" />
         <div
-          className="absolute inset-0 opacity-[0.025]"
-          style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '48px 48px' }}
+          className="absolute inset-0 opacity-[0.4]"
+          style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, #000 0.5px, transparent 0)', backgroundSize: '48px 48px' }}
         />
       </div>
 
@@ -252,10 +251,10 @@ const AIMagicPage: React.FC = () => {
               <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-teal">Yureka AI · Personalised Intelligence</span>
             </div>
 
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-sans font-black tracking-tighter text-white leading-[0.9] mb-8 max-w-5xl mx-auto">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-sans font-black tracking-tighter text-ink leading-[0.9] mb-8 max-w-5xl mx-auto">
               Your financial life,{' '}
               <span className="relative">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal via-cyan-400 to-teal">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal to-cyan-600">
                   optimised
                 </span>
                 <span className="absolute -bottom-1 left-0 right-0 h-px bg-gradient-to-r from-teal/0 via-teal/60 to-teal/0" />
@@ -263,14 +262,14 @@ const AIMagicPage: React.FC = () => {
               {' '}by AI.
             </h1>
 
-            <p className="text-white/50 text-xl md:text-2xl font-sans max-w-3xl mx-auto leading-relaxed mb-12">
-              From deciding the perfect credit card to squeezing every rupee of reward — Yureka AI is your always-on financial co-pilot, customised entirely to you.
+            <p className="text-ink/60 text-xl md:text-2xl font-sans max-w-3xl mx-auto leading-relaxed mb-12">
+              From deciding the perfect credit card to squeezing every rupee of reward — Yureka AI is your always-on financial co-pilot.
             </p>
 
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Link
                 to="/join-waitlist"
-                className="group relative overflow-hidden bg-gradient-to-r from-teal to-cyan-500 text-white px-10 py-5 rounded-2xl font-bold uppercase tracking-widest text-xs flex items-center justify-center gap-3 shadow-2xl shadow-teal/30 hover:shadow-teal/50 transition-shadow"
+                className="group relative overflow-hidden bg-gradient-to-r from-clay to-clay/90 text-white px-10 py-5 rounded-2xl font-bold uppercase tracking-widest text-xs flex items-center justify-center gap-3 shadow-2xl shadow-clay/20 hover:shadow-clay/40 transition-shadow"
               >
                 <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
                 <Sparkles size={16} />
@@ -279,7 +278,7 @@ const AIMagicPage: React.FC = () => {
               </Link>
               <Link
                 to="/rewards-calculator"
-                className="px-10 py-5 rounded-2xl font-bold uppercase tracking-widest text-xs border border-white/10 text-white/70 hover:text-white hover:border-white/20 transition-all flex items-center justify-center gap-2"
+                className="px-10 py-5 rounded-2xl font-bold uppercase tracking-widest text-xs border border-ink/10 text-ink/70 hover:text-ink hover:border-ink/20 transition-all flex items-center justify-center gap-2"
               >
                 Try Rewards Calculator
               </Link>
@@ -294,13 +293,13 @@ const AIMagicPage: React.FC = () => {
             className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-20 max-w-3xl mx-auto"
           >
             {STATS.map((s) => (
-              <div key={s.label} className="flex flex-col items-center p-6 bg-white/[0.03] border border-white/5 rounded-2xl">
+              <div key={s.label} className="flex flex-col items-center p-6 bg-white border border-black/5 rounded-2xl shadow-xl shadow-black/[0.02]">
                 <s.icon size={20} className="text-teal mb-3 opacity-70" />
-                <div className="text-2xl font-black text-white tracking-tight mb-1">{s.value}</div>
-                <div className="text-[10px] text-white/40 font-bold uppercase tracking-widest text-center">{s.label}</div>
+                <div className="text-2xl font-black text-ink tracking-tight mb-1">{s.value}</div>
+                <div className="text-[10px] text-ink/40 font-bold uppercase tracking-widest text-center">{s.label}</div>
               </div>
             ))}
-          </motion.div>
+          </motion.div>stats row ends here
         </section>
 
         {/* LIVE DEMO */}
@@ -308,8 +307,8 @@ const AIMagicPage: React.FC = () => {
 
           <div className="text-center mb-16">
             <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-teal mb-4">See it in action</p>
-            <h2 className="text-4xl md:text-6xl font-sans font-black text-white tracking-tighter leading-tight">
-              Ask anything. <span className="text-white/30 italic font-light">Get precision.</span>
+            <h2 className="text-4xl md:text-6xl font-sans font-black text-ink tracking-tighter leading-tight">
+              Ask anything. <span className="text-ink/30 italic font-light">Get precision.</span>
             </h2>
           </div>
 
@@ -331,14 +330,14 @@ const AIMagicPage: React.FC = () => {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
-                  className="flex gap-4 p-5 bg-white/[0.03] border border-white/5 rounded-2xl hover:bg-white/[0.05] hover:border-white/10 transition-all group cursor-default"
+                  className="flex gap-4 p-5 bg-white border border-black/5 rounded-2xl hover:bg-slate-50 hover:border-black/10 transition-all group cursor-default shadow-sm"
                 >
                   <div className="w-10 h-10 bg-teal/10 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-teal/20 transition-colors">
                     <item.icon size={18} className="text-teal" />
                   </div>
                   <div>
-                    <div className="text-white font-bold text-sm mb-1">"{item.q}"</div>
-                    <div className="text-white/40 text-sm leading-relaxed">{item.a}</div>
+                    <div className="text-ink font-bold text-sm mb-1">"{item.q}"</div>
+                    <div className="text-ink/40 text-sm leading-relaxed">{item.a}</div>
                   </div>
                 </motion.div>
               ))}
@@ -351,8 +350,8 @@ const AIMagicPage: React.FC = () => {
 
           <div className="text-center mb-20">
             <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-clay mb-4">Full-spectrum Intelligence</p>
-            <h2 className="text-4xl md:text-6xl font-sans font-black text-white tracking-tighter leading-tight">
-              Every angle of your <br /><span className="text-white/30 italic font-light">financial life, covered.</span>
+            <h2 className="text-4xl md:text-6xl font-sans font-black text-ink tracking-tighter leading-tight">
+              Every angle of your <br /><span className="text-ink/30 italic font-light">financial life, covered.</span>
             </h2>
           </div>
 
@@ -366,15 +365,15 @@ const AIMagicPage: React.FC = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.08 }}
-                  className={`group p-8 rounded-[2rem] bg-white/[0.03] border border-white/[0.05] hover:border-white/[0.12] transition-all hover:shadow-xl ${c.glow}`}
+                  className={`group p-8 rounded-[2rem] bg-white border border-black/5 hover:border-black/10 transition-all hover:shadow-2xl shadow-black/5 shadow-xl`}
                 >
                   <div className={`w-12 h-12 ${c.bg} rounded-2xl flex items-center justify-center ${c.text} mb-6 group-hover:scale-110 transition-transform duration-500`}>
                     <cap.icon size={24} />
                   </div>
-                  <h3 className="text-xl font-black text-white mb-3 tracking-tight">{cap.title}</h3>
-                  <p className="text-white/40 text-sm leading-relaxed mb-6 min-h-[72px]">{cap.desc}</p>
-                  <div className={`flex items-center justify-between border-t border-white/5 pt-5`}>
-                    <span className="text-white/20 text-[10px] font-bold uppercase tracking-widest">AI Powered</span>
+                  <h3 className="text-xl font-black text-ink mb-3 tracking-tight">{cap.title}</h3>
+                  <p className="text-ink/40 text-sm leading-relaxed mb-6 min-h-[72px]">{cap.desc}</p>
+                  <div className={`flex items-center justify-between border-t border-black/5 pt-5`}>
+                    <span className="text-black/20 text-[10px] font-bold uppercase tracking-widest">AI Powered</span>
                     <span className={`${c.text} text-[10px] font-black uppercase tracking-widest`}>{cap.stat}</span>
                   </div>
                 </motion.div>
@@ -392,11 +391,11 @@ const AIMagicPage: React.FC = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-purple-400 mb-6">Profile-to-Profile Intelligence</p>
-              <h2 className="text-4xl md:text-5xl font-sans font-black text-white tracking-tighter leading-tight mb-8">
-                Not generic.<br /><span className="text-white/30 italic font-light">Yours specifically.</span>
+              <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-purple-600 mb-6">Profile-to-Profile Intelligence</p>
+              <h2 className="text-4xl md:text-5xl font-sans font-black text-ink tracking-tighter leading-tight mb-8">
+                Not generic.<br /><span className="text-ink/30 italic font-light">Yours specifically.</span>
               </h2>
-              <p className="text-white/50 text-xl leading-relaxed mb-10">
+              <p className="text-ink/60 text-xl leading-relaxed mb-10">
                 Yureka AI continuously learns from your transaction history, card portfolio, and lifestyle goals. Every recommendation gets sharper as it learns what matters to you.
               </p>
               <div className="space-y-4">
@@ -417,7 +416,7 @@ const AIMagicPage: React.FC = () => {
                     <div className="w-5 h-5 mt-0.5 rounded-full bg-teal/10 border border-teal/20 flex items-center justify-center shrink-0">
                       <Check size={12} className="text-teal" />
                     </div>
-                    <span className="text-white/60 text-sm leading-relaxed">{point}</span>
+                    <span className="text-ink/70 text-sm leading-relaxed">{point}</span>
                   </motion.div>
                 ))}
               </div>
@@ -428,13 +427,13 @@ const AIMagicPage: React.FC = () => {
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="bg-white/[0.03] border border-white/5 rounded-[2rem] p-8 space-y-6"
+              className="bg-white border border-black/5 rounded-[2rem] p-8 space-y-6 shadow-2xl shadow-black/5"
             >
-              <div className="flex items-center gap-4 pb-6 border-b border-white/5">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-teal to-cyan-500 flex items-center justify-center text-white font-black text-xl">A</div>
+              <div className="flex items-center gap-4 pb-6 border-b border-black/5">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-teal to-cyan-600 flex items-center justify-center text-white font-black text-xl">A</div>
                 <div>
-                  <div className="text-white font-bold">Aditya Sharma</div>
-                  <div className="text-white/40 text-xs font-mono">Yureka AI Profile · Level 4</div>
+                  <div className="text-ink font-bold">Aditya Sharma</div>
+                  <div className="text-ink/40 text-xs font-mono uppercase tracking-widest">Yureka AI Profile · Level 4</div>
                 </div>
                 <div className="ml-auto flex items-center gap-1.5 px-3 py-1.5 bg-teal/10 border border-teal/20 rounded-full">
                   <span className="w-1.5 h-1.5 rounded-full bg-teal animate-pulse" />
@@ -449,24 +448,24 @@ const AIMagicPage: React.FC = () => {
                   { label: 'Points Balance', val: '142,000', icon: Star },
                   { label: 'Optimal Rate', val: '4.2%', icon: Percent },
                 ].map(stat => (
-                  <div key={stat.label} className="p-4 bg-white/[0.03] rounded-2xl border border-white/5">
+                  <div key={stat.label} className="p-4 bg-slate-50 rounded-2xl border border-black/5">
                     <stat.icon size={16} className="text-teal/60 mb-2" />
-                    <div className="text-white font-black text-lg tracking-tight">{stat.val}</div>
-                    <div className="text-white/30 text-[10px] font-bold uppercase tracking-widest">{stat.label}</div>
+                    <div className="text-ink font-black text-lg tracking-tight">{stat.val}</div>
+                    <div className="text-ink/30 text-[10px] font-bold uppercase tracking-widest">{stat.label}</div>
                   </div>
                 ))}
               </div>
 
               <div className="space-y-3">
-                <div className="text-white/40 text-[10px] font-bold uppercase tracking-widest mb-3">Today's AI Alerts</div>
+                <div className="text-ink/40 text-[10px] font-bold uppercase tracking-widest mb-3">Today's AI Alerts</div>
                 {[
                   { msg: 'Use Axis Magnus for ₹12,000 Flipkart order → earn 4,800 pts (₹1,200 value)', type: 'teal' },
                   { msg: 'HDFC Infinia fee waiver: ₹8,000 more spend needed this month', type: 'clay' },
                   { msg: 'Transfer 50,000 Amex MR → Marriott Bonvoy before Jan 31 for best value', type: 'purple' },
                 ].map((alert, i) => (
-                  <div key={i} className="flex items-start gap-3 p-3 bg-white/[0.02] border border-white/5 rounded-xl">
-                    <div className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${alert.type === 'teal' ? 'bg-teal' : alert.type === 'clay' ? 'bg-clay' : 'bg-purple-400'}`} />
-                    <span className="text-white/50 text-xs leading-relaxed">{alert.msg}</span>
+                  <div key={i} className="flex items-start gap-3 p-3 bg-white border border-black/5 rounded-xl">
+                    <div className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${alert.type === 'teal' ? 'bg-teal' : alert.type === 'clay' ? 'bg-clay' : 'bg-purple-600'}`} />
+                    <span className="text-ink/60 text-xs leading-relaxed">{alert.msg}</span>
                   </div>
                 ))}
               </div>
@@ -481,21 +480,21 @@ const AIMagicPage: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="relative rounded-[3rem] overflow-hidden border border-orange-500/10 bg-gradient-to-br from-orange-950/40 via-[#0D0F14] to-[#0D0F14] p-10 md:p-20"
+            className="relative rounded-[3rem] overflow-hidden border border-orange-500/10 bg-white p-10 md:p-20 shadow-2xl shadow-black/5"
           >
             <div className="absolute top-0 right-0 w-96 h-96 bg-orange-500/5 rounded-full blur-[100px] pointer-events-none" />
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
               <div>
                 <div className="inline-flex items-center gap-2 px-4 py-2 mb-8 bg-orange-500/10 border border-orange-500/20 rounded-full">
-                  <ShoppingBag size={12} className="text-orange-400" />
-                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-orange-400">Built into Yureka AI</span>
+                  <ShoppingBag size={12} className="text-orange-600" />
+                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-orange-600">Built into Yureka AI</span>
                 </div>
-                <h2 className="text-4xl md:text-6xl font-sans font-black text-white tracking-tighter leading-tight mb-6">
-                  RewardX <br /><span className="text-orange-400">by Yureka</span>
+                <h2 className="text- ink 4xl md:text-6xl font-sans font-black text-ink tracking-tighter leading-tight mb-6">
+                  RewardX <br /><span className="text-orange-600">by Yureka</span>
                 </h2>
-                <p className="text-white/50 text-xl leading-relaxed mb-10">
-                  Shop smarter with AI-powered gift card stacking. Buy discounted gift cards for 500+ brands, then layer your credit card rewards on top. Average checkout saving: <strong className="text-white">11.5%</strong>.
+                <p className="text-ink/60 text-xl leading-relaxed mb-10">
+                  Shop smarter with AI-powered gift card stacking. Average checkout saving: <strong className="text-ink">11.5%</strong>.
                 </p>
                 <div className="grid grid-cols-2 gap-4 mb-10">
                   {[
@@ -506,20 +505,20 @@ const AIMagicPage: React.FC = () => {
                     { brand: 'Nykaa', saving: '13%' },
                     { brand: 'Uber', saving: '8%' },
                   ].map(b => (
-                    <div key={b.brand} className="flex items-center justify-between p-3 bg-white/[0.03] border border-white/5 rounded-xl">
-                      <span className="text-white/70 text-sm font-bold">{b.brand}</span>
-                      <span className="text-orange-400 text-[10px] font-black uppercase tracking-widest">Save {b.saving}</span>
+                    <div key={b.brand} className="flex items-center justify-between p-3 bg-slate-50 border border-black/5 rounded-xl">
+                      <span className="text-ink/70 text-sm font-bold">{b.brand}</span>
+                      <span className="text-orange-600 text-[10px] font-black uppercase tracking-widest">Save {b.saving}</span>
                     </div>
                   ))}
                 </div>
-                <Link to="/join-waitlist" className="inline-flex items-center gap-3 px-8 py-4 bg-orange-500 text-white rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-orange-400 transition-colors group">
+                <Link to="/join-waitlist" className="inline-flex items-center gap-3 px-8 py-4 bg-orange-600 text-white rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-orange-500 transition-colors group shadow-lg shadow-orange-600/20">
                   Get RewardX Access <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
 
               <div className="hidden lg:block">
                 <div className="space-y-4">
-                  <div className="text-white/30 text-[10px] font-bold uppercase tracking-widest mb-6">Live Cart Optimisation</div>
+                  <div className="text-ink/30 text-[10px] font-bold uppercase tracking-widest mb-6">Live Cart Optimisation</div>
                   {[
                     { step: '1', action: 'Cart value', amount: '₹4,200', note: 'Amazon order' },
                     { step: '2', action: 'RewardX Gift Card', amount: '−₹378', note: '9% discount' },
@@ -532,23 +531,23 @@ const AIMagicPage: React.FC = () => {
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: i * 0.1 }}
-                      className={`flex items-center justify-between p-4 rounded-2xl border ${i === 3 ? 'bg-orange-500/10 border-orange-500/30' : 'bg-white/[0.03] border-white/5'}`}
+                      className={`flex items-center justify-between p-4 rounded-2xl border ${i === 3 ? 'bg-orange-600/5 border-orange-600/20' : 'bg-white border-black/5'}`}
                     >
                       <div className="flex items-center gap-3">
-                        <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-black ${i === 3 ? 'bg-orange-500 text-white' : 'bg-white/10 text-white/50'}`}>{row.step}</div>
+                        <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-black ${i === 3 ? 'bg-orange-600 text-white' : 'bg-black/5 text-ink/40'}`}>{row.step}</div>
                         <div>
-                          <div className={`text-sm font-bold ${i === 3 ? 'text-orange-300' : 'text-white/70'}`}>{row.action}</div>
-                          <div className="text-white/30 text-[10px]">{row.note}</div>
+                          <div className={`text-sm font-bold ${i === 3 ? 'text-orange-600' : 'text-ink/70'}`}>{row.action}</div>
+                          <div className="text-ink/30 text-[10px] uppercase tracking-widest">{row.note}</div>
                         </div>
                       </div>
-                      <div className={`font-black text-sm ${i === 0 ? 'text-white' : 'text-orange-400'}`}>{row.amount}</div>
+                      <div className={`font-black text-sm ${i === 0 ? 'text-ink' : 'text-orange-600'}`}>{row.amount}</div>
                     </motion.div>
                   ))}
-                  <div className="flex items-center justify-between p-5 rounded-2xl bg-white/[0.06] border border-white/10">
-                    <span className="text-white font-black text-lg">You Pay</span>
+                  <div className="flex items-center justify-between p-5 rounded-2xl bg-white border-2 border-orange-600/20 shadow-xl shadow-orange-600/5">
+                    <span className="text-ink font-black text-lg">You Pay</span>
                     <div className="text-right">
-                      <div className="text-white font-black text-2xl">₹3,546</div>
-                      <div className="text-orange-400 text-[10px] font-bold uppercase tracking-widest">You saved ₹654 · 15.6%</div>
+                      <div className="text-ink font-black text-2xl">₹3,546</div>
+                      <div className="text-orange-600 text-[10px] font-bold uppercase tracking-widest">You saved ₹654 · 15.6%</div>
                     </div>
                   </div>
                 </div>
@@ -564,25 +563,25 @@ const AIMagicPage: React.FC = () => {
           viewport={{ once: true }}
           className="text-center"
         >
-          <div className="relative rounded-[4rem] overflow-hidden bg-gradient-to-br from-teal/10 via-transparent to-clay/10 border border-white/5 p-12 md:p-24">
-            <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
-            <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-96 h-96 bg-teal/10 rounded-full blur-[100px] pointer-events-none" />
+          <div className="relative rounded-[4rem] overflow-hidden bg-white border border-black/5 p-12 md:p-24 shadow-2xl shadow-black/5">
+            <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #000 1px, transparent 0)', backgroundSize: '40px 40px' }} />
+            <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-96 h-96 bg-teal/5 rounded-full blur-[100px] pointer-events-none" />
 
             <div className="relative z-10">
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-teal/10 border border-teal/20 rounded-[2rem] mb-10 mx-auto">
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-teal/5 border border-teal/10 rounded-[2rem] mb-10 mx-auto">
                 <Brain size={36} className="text-teal" />
               </div>
-              <h2 className="text-4xl md:text-7xl font-sans font-black text-white tracking-tighter leading-tight mb-8">
+              <h2 className="text-4xl md:text-7xl font-sans font-black text-ink tracking-tighter leading-tight mb-8">
                 Ready for your<br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal to-cyan-400">AI co-pilot?</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal to-cyan-600">AI co-pilot?</span>
               </h2>
-              <p className="text-white/40 text-xl max-w-2xl mx-auto leading-relaxed mb-12">
-                Join the waitlist and get personalised access to Yureka AI, RewardX, and the full Rewards Transfer Engine.
+              <p className="text-ink/50 text-xl max-w-2xl mx-auto leading-relaxed mb-12">
+                Join the waitlist and get personalised access to Yureka AI, RewardX, and the full Rewards Engine.
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
                 <Link
                   to="/join-waitlist"
-                  className="group relative overflow-hidden bg-gradient-to-r from-teal to-cyan-500 text-white px-12 py-5 rounded-2xl font-bold uppercase tracking-widest text-xs flex items-center justify-center gap-3 shadow-2xl shadow-teal/20 hover:shadow-teal/40 transition-shadow"
+                  className="group relative overflow-hidden bg-clay text-white px-12 py-5 rounded-2xl font-bold uppercase tracking-widest text-xs flex items-center justify-center gap-3 shadow-2xl shadow-clay/20 hover:shadow-clay/40 transition-shadow"
                 >
                   <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
                   <Sparkles size={16} />
@@ -591,12 +590,12 @@ const AIMagicPage: React.FC = () => {
                 </Link>
                 <Link
                   to="/rewards-calculator"
-                  className="border border-white/10 text-white/60 hover:text-white hover:border-white/20 px-12 py-5 rounded-2xl font-bold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-2"
+                  className="border border-black/10 text-ink/60 hover:text-ink hover:border-black/20 px-12 py-5 rounded-2xl font-bold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-2"
                 >
                   Try the Rewards Calculator
                 </Link>
               </div>
-              <p className="mt-8 text-white/20 text-[10px] font-bold uppercase tracking-[0.5em]">
+              <p className="mt-8 text-black/20 text-[10px] font-bold uppercase tracking-[0.5em]">
                 No credit card required · Free forever tier available
               </p>
             </div>
