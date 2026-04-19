@@ -9,35 +9,7 @@ import { SkeletonBlog } from './SkeletonLoaders';
 const JournalPage: React.FC = () => {
     const { blogs: blogsList, isLoading, syncStatus } = useSupabase();
 
-    // Placeholder data if Supabase is empty
-    const defaultBlogs: Blog[] = [
-        {
-            id: 'b1',
-            title: "The UPI Cashback Revolution: Why your bank is hiding it",
-            excerpt: "UPI is the backbone of India's economy, but are you getting the rewards you deserve? Here is how to stack cashback on every scan.",
-            category: "Fintech",
-            author: "Riya S.",
-            date: "Oct 12, 2026",
-            slug: "upi-cashback-revolution", // Added missing slug
-            image: "https://images.unsplash.com/photo-1556742044-3c52d6e88c62?auto=format&fit=crop&q=80&w=1600",
-            featured: true,
-            content: "..."
-        },
-        {
-            id: 'b2',
-            title: "How AI Finds Your Perfect Card in 60 Seconds",
-            excerpt: "Stop scrolling through endless PDF terms. Our AI engine scans 200+ cards to find your match based on real spending habits.",
-            category: "Technology",
-            author: "Ankit M.",
-            date: "Oct 08, 2026",
-            slug: "ai-card-matching", // Added missing slug
-            image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80&w=800",
-            featured: false,
-            content: "..."
-        }
-    ];
-
-    const currentBlogs = blogsList.length > 0 ? blogsList : defaultBlogs;
+    const currentBlogs = blogsList;
     const featured = currentBlogs.find(b => b.featured) || currentBlogs[0];
     const regular = currentBlogs.filter(b => b.id !== featured?.id);
 
@@ -118,41 +90,46 @@ const JournalPage: React.FC = () => {
                             </div>
                         </div>
                     </section>
+                )}                {/* News Grid or Empty State */}
+                {currentBlogs.length > 0 ? (
+                  <div id="news-grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 border-l border-t border-ink/10 scroll-mt-32">
+                      {regular.map((post, idx) => (
+                          <div 
+                              key={post.id} 
+                              className="p-10 border-r border-b border-ink/10 hover:bg-white transition-colors group opacity-0 animate-fade-in-up"
+                              style={{ animationDelay: `${idx * 100 + 200}ms` }}
+                          >
+                              <div className="flex items-center justify-between text-[8px] font-bold uppercase tracking-widest text-ink/30 mb-8">
+                                  <span>{post.category}</span>
+                                  <span>{post.date || new Date(post.created_at || '').toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+                              </div>
+                              <h3 className="text-2xl font-heading font-bold leading-tight text-ink mb-6 group-hover:text-clay transition-colors line-clamp-3 uppercase">
+                                  {post.title}
+                              </h3>
+                              <p className="text-sm text-ink/60 leading-relaxed font-sans mb-10 line-clamp-3">
+                                  {post.excerpt}
+                              </p>
+                              <div className="flex items-center justify-between mt-auto">
+                                  <div className="flex items-center gap-2">
+                                      <Clock size={12} className="text-ink/20" />
+                                      <span className="text-[9px] font-bold uppercase tracking-widest text-ink/40">{post.read_time || '5 min read'}</span>
+                                  </div>
+                                  <Link to={`/blogs/${post.slug}`}>
+                                      <button className="w-10 h-10 border border-ink/10 rounded-full flex items-center justify-center text-ink hover:bg-ink hover:text-white transition-all transform hover:rotate-45 cursor-pointer">
+                                          <ArrowUpRight size={14} />
+                                      </button>
+                                  </Link>
+                              </div>
+                          </div>
+                      ))}
+                  </div>
+                ) : (
+                  <div className="py-40 text-center border-2 border-dashed border-ink/10 rounded-[3rem]">
+                      <h3 className="text-2xl font-heading font-black text-ink/20 uppercase tracking-tighter">Editorial Bureau Under Maintenance</h3>
+                      <p className="text-sm text-ink/40 font-sans mt-4">The next digital dispatch is being prepared for publication.</p>
+                  </div>
                 )}
-
-                {/* News Grid */}
-                <div id="news-grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 border-l border-t border-ink/10 scroll-mt-32">
-
-                    {regular.map((post, idx) => (
-                        <div 
-                            key={post.id} 
-                            className="p-10 border-r border-b border-ink/10 hover:bg-white transition-colors group opacity-0 animate-fade-in-up"
-                            style={{ animationDelay: `${idx * 100 + 200}ms` }}
-                        >
-                            <div className="flex items-center justify-between text-[8px] font-bold uppercase tracking-widest text-ink/30 mb-8">
-                                <span>{post.category}</span>
-                                <span>{post.date}</span>
-                            </div>
-                            <h3 className="text-2xl font-heading font-bold leading-tight text-ink mb-6 group-hover:text-clay transition-colors line-clamp-3 uppercase">
-                                {post.title}
-                            </h3>
-                            <p className="text-sm text-ink/60 leading-relaxed font-sans mb-10 line-clamp-3">
-                                {post.excerpt}
-                            </p>
-                            <div className="flex items-center justify-between mt-auto">
-                                <div className="flex items-center gap-2">
-                                    <Clock size={12} className="text-ink/20" />
-                                    <span className="text-[9px] font-bold uppercase tracking-widest text-ink/40">5 min read</span>
-                                </div>
-                                <Link to={`/blogs/${post.slug}`}>
-                                    <button className="w-10 h-10 border border-ink/10 rounded-full flex items-center justify-center text-ink hover:bg-ink hover:text-white transition-all transform hover:rotate-45 cursor-pointer">
-                                        <ArrowUpRight size={14} />
-                                    </button>
-                                </Link>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+>
 
                 {/* Newsletter Section - Newsprint Style */}
                 <section id="newsletter" className="mt-40 p-12 md:p-24 bg-ink text-white relative overflow-hidden text-center rounded-[3rem] shadow-2xl scroll-mt-32">
