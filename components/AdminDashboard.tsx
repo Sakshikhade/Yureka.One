@@ -240,6 +240,8 @@ const AdminDashboard: React.FC = () => {
     );
 
     try {
+      const { data: { user } } = await supabase.auth.getUser();
+      const userEmail = user?.email || 'admin@yureka.money';
       if (activeTab === 'blogs') {
         const timestampedSlug = blogForm.slug || `${blogForm.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}-${Math.random().toString(36).substring(7)}`;
         
@@ -274,17 +276,17 @@ const AdminDashboard: React.FC = () => {
           : await supabase.from('reviews').insert([reviewForm]);
         if (saveError) throw saveError;
       }
-      // LOG THE ACTION
+      // LOG THE ACTION (Non-blocking but retried)
       try {
         await supabase.from('audit_logs').insert([{
-          user_email: user?.email,
+          user_email: userEmail,
           action: editingItem ? 'UPDATE' : 'INSERT',
           table_name: activeTab,
           record_id: editingItem?.id || 'new',
           record_name: activeTab === 'blogs' ? blogForm.title : activeTab === 'cards' ? cardForm.name : activeTab === 'reviews' ? reviewForm.author : 'system'
         }]);
       } catch (logErr) {
-        console.error("Log failed", logErr);
+        console.warn("Log failed silently", logErr);
       }
 
       // SUCCESS: VIOLENTLY CLOSE MODAL
