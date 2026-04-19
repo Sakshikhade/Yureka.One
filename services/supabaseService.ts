@@ -108,13 +108,13 @@ export const getBlogsAdmin = (callback: (blogs: Blog[]) => void, onError?: (erro
 };
 
 export const addBlog = async (blog: any) => {
-  const { data, error } = await supabaseAdmin.from('blogs').insert([cleanData(blog)]).select();
+  const { data, error } = await supabase.from('blogs').insert([cleanData(blog)]).select();
   if (error) throw error;
   return data[0].id;
 };
 
 export const updateBlog = async (id: string, blogData: any) => {
-  const { error } = await supabaseAdmin.from('blogs').update(cleanData(blogData)).eq('id', id);
+  const { error } = await supabase.from('blogs').update(cleanData(blogData)).eq('id', id);
   if (error) throw error;
 };
 
@@ -130,7 +130,7 @@ export const getBlogBySlug = async (slug: string): Promise<Blog | null> => {
 };
 
 export const deleteBlog = async (id: string) => {
-  const { error } = await supabaseAdmin.from('blogs').delete().eq('id', id);
+  const { error } = await supabase.from('blogs').delete().eq('id', id);
   if (error) throw error;
 };
 
@@ -187,13 +187,13 @@ export const getCards = (callback: (cards: Card[]) => void, onError?: (error: st
 };
 
 export const addCard = async (card: any) => {
-  const { data, error } = await supabaseAdmin.from('cards').insert([cleanData(card)]).select();
+  const { data, error } = await supabase.from('cards').insert([cleanData(card)]).select();
   if (error) throw error;
   return data[0].id;
 };
 
 export const updateCard = async (id: string, cardData: any) => {
-  const { error } = await supabaseAdmin.from('cards').update(cleanData(cardData)).eq('id', id);
+  const { error } = await supabase.from('cards').update(cleanData(cardData)).eq('id', id);
   if (error) throw error;
 };
 
@@ -223,7 +223,7 @@ export const getCardBySlug = async (slugOrId: string): Promise<Card | null> => {
 };
 
 export const deleteCard = async (id: string) => {
-  const { error } = await supabaseAdmin.from('cards').delete().eq('id', id);
+  const { error } = await supabase.from('cards').delete().eq('id', id);
   if (error) throw error;
 };
 

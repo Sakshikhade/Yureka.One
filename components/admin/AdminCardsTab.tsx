@@ -39,17 +39,12 @@ export const AdminCardsTab: React.FC<AdminCardsTabProps> = ({
           </tr>
         </thead>
         <tbody className="divide-y divide-black/5">
-          <AnimatePresence mode="popLayout">
-            {cards.map((card, idx) => (
-              <motion.tr 
-                layout
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ delay: idx * 0.05 }}
-                key={card.id} 
-                className="group hover:bg-slate-50/50 transition-colors"
-              >
+          {cards.map((card, idx) => (
+            <tr 
+              key={card.id} 
+              className="group hover:bg-slate-50/50 transition-colors"
+            >
+
                 <td className="px-8 py-6">
                   <div className="flex items-center gap-4">
                     <div className="w-16 h-10 rounded-xl bg-black/5 overflow-hidden border border-black/5 group-hover:scale-105 transition-transform shadow-sm">
@@ -102,9 +97,9 @@ export const AdminCardsTab: React.FC<AdminCardsTabProps> = ({
                     </button>
                   </div>
                 </td>
-              </motion.tr>
-            ))}
-          </AnimatePresence>
+            </tr>
+          ))}
+
           {cards.length === 0 && (
             <tr>
               <td colSpan={5} className="px-8 py-24 text-center">

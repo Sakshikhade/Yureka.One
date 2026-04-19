@@ -41,20 +41,14 @@ export const AdminBlogsTab: React.FC<AdminBlogsTabProps> = ({
           </tr>
         </thead>
         <tbody className="divide-y divide-black/5">
-          <AnimatePresence mode="popLayout">
-            {blogs.map((blog, idx) => {
-              const isScheduled = blog.scheduled_at && new Date(blog.scheduled_at) > new Date();
-              
-              return (
-                <motion.tr 
-                  layout
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ delay: idx * 0.05 }}
-                  key={blog.id} 
-                  className="group hover:bg-slate-50/50 transition-colors"
-                >
+          {blogs.map((blog, idx) => {
+            const isScheduled = blog.scheduled_at && new Date(blog.scheduled_at) > new Date();
+            
+            return (
+              <tr 
+                key={blog.id} 
+                className="group hover:bg-slate-50/50 transition-colors"
+              >
                   <td className="px-8 py-6">
                     <div className="flex items-center gap-4">
                       <div className="w-12 h-12 rounded-2xl bg-black/5 overflow-hidden border border-black/5 group-hover:scale-105 transition-transform">
@@ -117,10 +111,9 @@ export const AdminBlogsTab: React.FC<AdminBlogsTabProps> = ({
                       </button>
                     </div>
                   </td>
-                </motion.tr>
-              );
-            })}
-          </AnimatePresence>
+                </tr>
+            );
+          })}
           {blogs.length === 0 && (
             <tr>
               <td colSpan={5} className="px-8 py-24 text-center">
