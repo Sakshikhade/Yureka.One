@@ -7,8 +7,8 @@ const upcomingCards: OSFeature[] = [
   { 
     id: 'cs1', 
     name: 'Yureka Extension', 
-    issuer: 'Yureka', 
-    image: 'https://images.unsplash.com/photo-1613243555988-441166d4d6fd?auto=format&fit=crop&q=80&w=600', 
+    issuer: 'YUREKA', 
+    image: '/assets/coming-soon/extension.png', 
     rewards_rate: 'Waitlist', 
     annual_fee: 'Invite Only', 
     category: 'Ultra Premium', 
@@ -18,8 +18,8 @@ const upcomingCards: OSFeature[] = [
   { 
     id: 'cs2', 
     name: 'Reward X', 
-    issuer: 'Partner Bank', 
-    image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&q=80&w=600', 
+    issuer: 'PARTNER BANK', 
+    image: '/assets/coming-soon/rewardx.png', 
     rewards_rate: 'Waitlist', 
     annual_fee: '₹5,000', 
     category: 'Travel', 
@@ -29,8 +29,8 @@ const upcomingCards: OSFeature[] = [
   { 
     id: 'cs3', 
     name: 'YurekaAi', 
-    issuer: 'Fintech Co', 
-    image: 'https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?auto=format&fit=crop&q=80&w=600', 
+    issuer: 'FINTECH CO', 
+    image: '/assets/coming-soon/ai.png', 
     rewards_rate: 'Waitlist', 
     annual_fee: 'Lifetime Free', 
     category: 'International', 
@@ -92,7 +92,7 @@ const ComingSoon: React.FC = () => {
                     className="snap-center shrink-0 w-[85vw] max-w-[300px] md:w-[380px] group relative"
                 >
                     <div className="border-t border-black/20 pt-4 h-full flex flex-col">
-                        <div className="relative aspect-[4/5] overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700 bg-gray-100 mb-6 border border-black/5">
+                        <div className="relative aspect-[4/5] overflow-hidden group-hover:scale-105 transition-all duration-700 bg-gray-100 mb-6 border border-black/5">
                             <ImageWithLoader 
                                 src={card.image} 
                                 alt={card.name} 
