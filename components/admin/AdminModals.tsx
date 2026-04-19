@@ -122,9 +122,9 @@ export const AdminModals: React.FC<AdminModalsProps> = ({
                 </div>
               )}
 
-              {activeTab === 'blogs' && (
+              {activeTab === 'blogs' && forms.blog && (
                 <BlogForm 
-                  form={forms.blog} 
+                  form={forms.blog || {}} 
                   setForm={setForms.setBlog} 
                   onSubmit={onSave}
                   onFileUpload={onFileUpload}
@@ -134,23 +134,23 @@ export const AdminModals: React.FC<AdminModalsProps> = ({
                 />
               )}
 
-              {activeTab === 'cards' && (
+              {activeTab === 'cards' && forms.card && (
                 <CardForm 
-                  form={forms.card} 
+                  form={forms.card || {}} 
                   setForm={setForms.setCard} 
                   onSubmit={onSave}
                   onFileUpload={onFileUpload}
                   uploading={helpers.uploading}
                   saving={helpers.saving}
-                  banks={helpers.banks}
-                  categories={helpers.categories}
+                  banks={helpers.banks || []}
+                  categories={helpers.categories || []}
                   generateSlug={helpers.generateSlug}
                 />
               )}
 
-              {activeTab === 'reviews' && (
+              {activeTab === 'reviews' && forms.review && (
                 <ReviewForm 
-                  form={forms.review} 
+                  form={forms.review || {}} 
                   setForm={setForms.setReview} 
                   onSubmit={onSave}
                   onFileUpload={onFileUpload}
@@ -159,9 +159,9 @@ export const AdminModals: React.FC<AdminModalsProps> = ({
                 />
               )}
 
-              {activeTab === 'settings' && (
+              {activeTab === 'settings' && forms.team && (
                 <TeamForm 
-                  form={forms.team} 
+                  form={forms.team || {}} 
                   setForm={setForms.setTeam} 
                   onSubmit={onSave}
                   saving={helpers.saving}
