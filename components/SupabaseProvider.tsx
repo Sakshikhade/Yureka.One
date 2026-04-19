@@ -100,6 +100,18 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       clearTimeout(fallbackTimer);
     };
 
+    // --- NEW: Event-driven Hash Cleaner ---
+    const { data: { subscription: authSub } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+        if (window.location.hash) {
+          // Clean the hash after a tiny delay to ensure everything is saved
+          setTimeout(() => {
+            window.history.replaceState(null, '', window.location.pathname + window.location.search);
+          }, 100);
+        }
+      }
+    });
+
     setupPublic();
     if (isAdminRoute) setupAdmin();
 
@@ -120,6 +132,7 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return () => {
 
       clearTimeout(fallbackTimer);
+      authSub.unsubscribe();
       if (cardSub) cardSub();
       if (blogSub) blogSub();
       if (reviewSub) reviewSub();
