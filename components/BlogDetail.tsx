@@ -147,8 +147,8 @@ const BlogDetail: React.FC = () => {
                     </aside>
 
                     <article className="lg:col-span-10 space-y-10 prose prose-lg prose-ink max-w-none prose-serif">
-                        <div className="text-2xl md:text-3xl italic text-ink/60 border-l-8 border-clay pl-10 mb-16 leading-relaxed">
-                            {blog.excerpt}
+                        <div className="text-2xl md:text-3xl italic text-ink/60 border-l-8 border-clay pl-10 mb-16 leading-relaxed prose prose-2xl prose-serif max-w-none">
+                            <ReactMarkdown>{blog.excerpt}</ReactMarkdown>
                         </div>
                         
                         <div className="article-content text-xl leading-[1.8] text-ink/80 markdown-body">
