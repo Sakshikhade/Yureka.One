@@ -220,34 +220,51 @@ const AdminDashboard: React.FC = () => {
     e.preventDefault();
     setSaving(true);
     setError(null);
-    try {
-      if (activeTab === 'blogs') {
-        const { publishMode, ...blogData } = blogForm;
-        const payload = { ...blogData };
-        if (publishMode === 'later' && blogForm.scheduled_at) {
-          payload.scheduled_at = new Date(blogForm.scheduled_at).toISOString();
-        } else {
-          payload.scheduled_at = null;
-        }
-        editingItem ? await updateBlog(editingItem.id, payload) : await addBlog(payload);
-      } else if (activeTab === 'cards') {
 
-        editingItem ? await updateCard(editingItem.id, cardForm) : await addCard(cardForm);
-      } else if (activeTab === 'reviews') {
-        editingItem ? await updateReview(editingItem.id, reviewForm) : await addReview(reviewForm);
-      } else if (activeTab === 'settings') {
-        editingItem ? await updateUserRole(editingItem.id, teamForm.role) : await inviteTeamMember(teamForm.email, teamForm.role);
-      }
+    // Timeout safety: if it takes more than 15s, resume control
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error("Operation timed out (15s). The data might still be saving in the background.")), 15000)
+    );
+
+    try {
+      const saveAction = async () => {
+        if (activeTab === 'blogs') {
+          const { publishMode, ...blogData } = blogForm;
+          const payload = { ...blogData };
+          if (publishMode === 'later' && blogForm.scheduled_at) {
+            payload.scheduled_at = new Date(blogForm.scheduled_at).toISOString();
+          } else {
+            payload.scheduled_at = null;
+          }
+          return editingItem ? updateBlog(editingItem.id, payload) : addBlog(payload);
+        } else if (activeTab === 'cards') {
+          return editingItem ? updateCard(editingItem.id, cardForm) : addCard(cardForm);
+        } else if (activeTab === 'reviews') {
+          return editingItem ? updateReview(editingItem.id, reviewForm) : addReview(reviewForm);
+        } else if (activeTab === 'settings') {
+          return editingItem ? updateUserRole(editingItem.id, teamForm.role) : inviteTeamMember(teamForm.email, teamForm.role);
+        }
+      };
+
+      // Race the save against the 15s timeout
+      await Promise.race([saveAction(), timeoutPromise]);
+      
+      // SUCCESS: Close modal INSTANTLY
       setIsModalOpen(false);
       setEditingItem(null);
-      await refreshAll();
+      setSaving(false);
+      
+      // Perform refresh in the background
+      refreshAll().catch(console.error);
 
     } catch (err: any) {
+      console.error("Save error:", err);
       setError(err.message || "Failed to save record.");
     } finally {
       setSaving(false);
     }
   };
+
 
   const getAddAction = () => {
     if (!['blogs', 'cards', 'reviews', 'settings'].includes(activeTab)) return undefined;
