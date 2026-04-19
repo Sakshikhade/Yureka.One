@@ -63,9 +63,10 @@ const JournalPage: React.FC = () => {
                     <div className="inline-block px-4 py-1 border-2 border-ink mb-8">
                         <p className="text-[10px] font-bold tracking-[0.5em] uppercase text-ink">Yureka Journal • Digital Edition</p>
                     </div>
-                    <h1 className="text-6xl md:text-9xl font-serif tracking-tighter leading-none text-ink mb-12">
-                        The <span className="italic font-light text-ink/30 text-8xl md:text-[10rem]">Pulse</span>
+                    <h1 className="text-6xl md:text-8xl font-heading font-black tracking-tighter leading-none text-ink mb-12 uppercase">
+                        The <span className="text-ink/30">Pulse</span>
                     </h1>
+
                     <div className="flex justify-center items-center gap-8 text-[10px] font-bold uppercase tracking-[0.3em] text-ink/60 border-y border-ink/10 py-6">
                         <span>Strategy</span>
                         <div className="w-1.5 h-1.5 bg-clay rounded-full"></div>
@@ -94,12 +95,14 @@ const JournalPage: React.FC = () => {
                                 <div className="w-1 h-1 bg-ink/20 rounded-full"></div>
                                 <span>{featured.date}</span>
                             </div>
-                            <h2 className="text-4xl md:text-5xl font-serif leading-[1.1] text-ink mb-8 tracking-tight italic">
+                            <h2 className="text-4xl md:text-5xl font-heading font-black leading-[1.1] text-ink mb-8 tracking-tight uppercase">
                                 {featured.title}
                             </h2>
-                            <p className="text-lg text-ink/60 font-serif leading-relaxed mb-12 border-l-4 border-clay pl-6">
+
+                            <p className="text-lg text-ink/60 font-sans font-medium leading-relaxed mb-12 border-l-4 border-clay pl-6">
                                 {featured.excerpt}
                             </p>
+
                             <div className="flex items-center justify-between pt-8 border-t border-ink/10">
                                 <div className="flex items-center gap-3">
                                     <div className="w-10 h-10 bg-ink text-white rounded-full flex items-center justify-center font-serif italic text-lg">
@@ -127,10 +130,10 @@ const JournalPage: React.FC = () => {
                                 <span>{post.category}</span>
                                 <span>{post.date}</span>
                             </div>
-                            <h3 className="text-2xl font-serif leading-tight text-ink mb-6 group-hover:text-clay transition-colors line-clamp-3">
+                            <h3 className="text-2xl font-heading font-bold leading-tight text-ink mb-6 group-hover:text-clay transition-colors line-clamp-3 uppercase">
                                 {post.title}
                             </h3>
-                            <p className="text-sm text-ink/60 leading-relaxed font-serif mb-10 line-clamp-3">
+                            <p className="text-sm text-ink/60 leading-relaxed font-sans mb-10 line-clamp-3">
                                 {post.excerpt}
                             </p>
                             <div className="flex items-center justify-between mt-auto">
@@ -153,10 +156,11 @@ const JournalPage: React.FC = () => {
                     <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
                     <div className="relative z-10 max-w-3xl mx-auto">
                         <span className="text-clay font-bold text-[10px] uppercase tracking-[0.5em] mb-8 block">Stay Ahead</span>
-                        <h2 className="text-4xl md:text-6xl font-serif mb-8 leading-tight tracking-tighter">Get the <span className="italic font-light text-white/40">Premium</span> <br/> Weekly Dispatch.</h2>
-                        <p className="text-lg md:text-xl text-white/60 font-serif italic mb-12">
+                         <h2 className="text-4xl md:text-6xl font-heading font-black mb-8 leading-tight tracking-tighter uppercase">Get the <span className="text-white/40 font-light">Premium</span> <br/> Weekly Dispatch.</h2>
+                        <p className="text-lg md:text-xl text-white/60 font-sans font-medium mb-12">
                             Deep-dives into credit policy, reward loopholes, and financial strategy. Delivered every Sunday.
                         </p>
+
                         <form className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto" onSubmit={(e) => e.preventDefault()}>
                             <input 
                                 type="email" 

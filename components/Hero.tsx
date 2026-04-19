@@ -37,17 +37,19 @@ const Hero: React.FC = () => {
                 {/* Left Ear - Keyword Rich Context */}
                 <div className="hidden md:block w-64 text-left border-r border-ink/10 pr-6 h-full">
                     <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-ink/40 mb-2">Est. 2026 • India</p>
-                    <p className="text-sm font-serif italic text-ink/70 leading-tight">
+                    <p className="text-sm font-sans text-ink/70 leading-tight">
                         "The easiest way to find the right credit card."
                     </p>
                 </div>
+
                 
                 {/* Masthead - Brand Name */}
                 <div className="flex-1 text-center px-2 md:px-4 mb-4 md:mb-0">
-                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-serif font-black tracking-tighter leading-none text-ink">
-                        Yureka Times
+                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-heading font-black tracking-tighter leading-[1.1] text-ink">
+                        YUREKA TIMES
                     </h1>
                 </div>
+
 
                 {/* Right Ear - Metadata */}
                 <div className="hidden md:block w-64 text-right border-l border-ink/10 pl-6 h-full">
@@ -97,12 +99,13 @@ const Hero: React.FC = () => {
                      <span className="text-clay font-mono font-bold text-[10px] md:text-xs uppercase tracking-[0.3em]">Smart Card Finder</span>
                      <div className="h-px bg-clay w-6 md:w-16"></div>
                 </div>
-                <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[0.95] md:leading-[0.9] font-serif font-medium text-ink uppercase tracking-tighter transform scale-y-100 md:scale-y-105">
-                    Stop Guessing. <br className="hidden md:block" /> <span className="italic font-light">Start Saving.</span>
+                <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight font-heading font-black text-ink uppercase tracking-tighter">
+                    Stop Guessing. <br className="hidden md:block" /> Start Saving.
                 </h2>
-                <h3 className="text-lg md:text-2xl lg:text-3xl font-sans font-light text-ink/60 mt-4 md:mt-8 max-w-2xl mx-auto leading-relaxed">
+                <h3 className="text-lg md:text-2xl lg:text-3xl font-sans font-medium text-ink/60 mt-4 md:mt-8 max-w-2xl mx-auto leading-relaxed">
                     We check <span className="font-bold text-ink">200+ credit cards</span> to find the one that saves you the most money.
                 </h3>
+
                 
                 <div className="mt-8 md:mt-10 flex flex-col md:flex-row items-center justify-center gap-4">
                     <Link to="/ai-magic" className="group relative px-10 py-4 bg-ink text-white overflow-hidden rounded-full w-full md:w-auto shadow-xl">
@@ -128,24 +131,27 @@ const Hero: React.FC = () => {
                     transition={{ ...fadeInUp.transition, delay: 0.3 }}
                     className="md:col-span-1 lg:col-span-3 lg:border-r border-ink/10 lg:pr-6 pt-8 hidden md:block"
                 >
-                     <div className="flex items-center gap-2 mb-6">
-                        <span className="text-4xl font-serif leading-none text-ink">J</span>
+                 <div className="flex items-center gap-2 mb-6">
+                        <span className="text-4xl font-heading font-black leading-none text-ink">J</span>
                         <h4 className="font-bold text-xs uppercase tracking-widest text-ink/40 pt-2">The Lead Story</h4>
                      </div>
+
                      
-                     <h5 className="font-serif text-3xl text-ink leading-tight mb-3">Get Better Rewards</h5>
+                      <h5 className="font-heading font-bold text-3xl text-ink leading-tight mb-3 uppercase">Get Better Rewards</h5>
+
                      
                      <div className="flex justify-between items-center text-xs text-ink/40 font-mono uppercase tracking-widest mb-4 border-b border-ink/10 pb-2">
                         <span>Editorial</span>
                         <span>Market Analysis</span>
                      </div>
                      
-                     <p className="text-justify font-serif text-ink/80 leading-relaxed text-base mb-6 border-b border-ink/10 pb-6">
+                     <p className="text-justify font-sans text-ink/80 leading-relaxed text-base mb-6 border-b border-ink/10 pb-6">
                         There are too many credit cards in India. It's confusing. We scan them all to find the best one for you. No ads. No bias.
                      </p>
-                     <p className="text-justify font-serif text-ink/80 leading-relaxed text-base">
+                     <p className="text-justify font-sans text-ink/80 leading-relaxed text-base">
                         Whether you order food or fly often, we find a card that fits your spending.
                      </p>
+
                      
                      <div className="mt-12 bg-ink/5 p-6 border border-ink/10">
                          <h5 className="font-bold text-xs uppercase tracking-widest text-clay mb-4">Your Potential Savings</h5>

@@ -150,19 +150,7 @@ const YurekaOsPage: React.FC = () => {
                   </button>
                 </div>
 
-                {/* Secure Check System */}
-                <div className="p-4 rounded-2xl border border-black/5 flex items-center justify-between bg-white/40 backdrop-blur-xl shadow-sm">
-                  <div className="flex items-center gap-4">
-                    <div className="w-6 h-6 rounded-lg bg-teal/5 border border-teal/10 flex items-center justify-center">
-                      <ShieldCheck size={14} className="text-teal" />
-                    </div>
-                    <span className="text-[11px] font-bold text-ink/60 uppercase tracking-widest leading-none">Verified Secure Hub</span>
-                  </div>
-                  <div className="flex flex-col items-end opacity-20">
-                    <div className="text-[7px] font-bold uppercase tracking-tighter leading-none mb-0.5">Powered by</div>
-                    <div className="text-[9px] font-black tracking-tighter italic">Cloudflare</div>
-                  </div>
-                </div>
+
 
                 <div className="text-center md:text-left">
                   <p className="text-[10px] text-ink/30 font-sans tracking-wide">

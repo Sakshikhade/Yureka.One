@@ -174,7 +174,7 @@ const CardExplorer: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen bg-[#FDFCF9] pt-0 pb-20 overflow-x-hidden font-serif">
+        <div className="min-h-screen bg-[#FDFCF9] pt-0 pb-20 overflow-x-hidden font-sans">
             {/* --- PAGE HERO (NEW) --- */}
             <div className="max-w-[1440px] mx-auto px-6 pt-6 md:pt-12 pb-10 md:pb-16 border-b border-ink/10 mb-8 md:mb-12">
                 <div className="flex flex-col lg:flex-row justify-between items-end gap-8">
@@ -183,12 +183,12 @@ const CardExplorer: React.FC = () => {
                             <div className="w-2 h-2 bg-clay rounded-full animate-pulse"></div>
                             <span className="text-[10px] font-mono font-bold tracking-[0.5em] uppercase text-ink/40">The Curated Catalog</span>
                         </div>
-                        <h1 className="text-4xl md:text-8xl font-serif italic tracking-tighter leading-[0.9] md:leading-[0.85] text-ink mb-4 md:mb-6">
+                        <h1 className="text-5xl md:text-7xl font-heading font-black tracking-tighter leading-tight text-ink mb-4 md:mb-6">
                             Precision <br />
                             <span className="text-clay">Instruments</span>
                         </h1>
-                        <p className="text-base md:text-2xl text-ink/60 font-serif leading-tight max-w-md italic">
-                            A distilled index of the finest credit instruments. No bias. Just the data you need to optimize your wealth.
+                        <p className="text-lg md:text-xl font-sans font-medium text-ink/60 max-w-2xl leading-relaxed">
+                            Data-driven matching for the top 1% of Indian credit portfolios. We scan 200+ cards to optimize your financial yield.
                         </p>
                     </div>
                     <div className="w-full lg:w-auto flex flex-col gap-4 items-end">
@@ -199,7 +199,7 @@ const CardExplorer: React.FC = () => {
                                 placeholder="Search our archives..." 
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full pl-16 pr-8 py-6 bg-white border-2 border-ink/5 rounded-3xl outline-none focus:border-clay/20 transition-all font-serif italic text-xl shadow-sm"
+                                className="w-full pl-16 pr-8 py-6 bg-white border-2 border-ink/5 rounded-3xl outline-none focus:border-clay/20 transition-all font-sans text-xl shadow-sm"
                             />
                         </div>
                         <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-widest text-ink/30 px-6">
@@ -239,7 +239,7 @@ const CardExplorer: React.FC = () => {
                 {/* --- SIDEBAR FILTERS (SCREENSHOT 2 & 3) --- */}
                 <div className="hidden lg:block lg:col-span-3 space-y-8 bg-white/40 backdrop-blur-md p-8 rounded-3xl shadow-sm border border-ink/5 h-fit sticky top-32">
                     <div className="flex justify-between items-center mb-10">
-                        <h2 className="text-3xl font-serif tracking-tighter text-ink italic leading-none">Filter</h2>
+                        <h2 className="text-3xl font-heading font-black text-ink leading-none">Filter</h2>
                         <button 
                             onClick={() => { setSelectedBanks([]); setSelectedCategories([]); }}
                             className="text-clay text-[9px] font-bold uppercase tracking-[0.2em] px-4 py-2 bg-clay/5 rounded-full hover:bg-clay hover:text-white transition-all duration-300"
@@ -249,7 +249,8 @@ const CardExplorer: React.FC = () => {
                     {/* Bank Name Filter */}
                     <div className="space-y-6">
                         <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-[10px] font-bold text-ink/30 uppercase tracking-[0.4em]">Issuers</h3>
+                            <h3 className="text-[11px] font-bold text-ink uppercase tracking-[0.3em]">Issuers</h3>
+
                             {selectedBanks.length > 0 && (
                                 <button onClick={() => setSelectedBanks([])} className="text-[9px] font-bold text-clay uppercase tracking-widest hover:underline">Clear</button>
                             )}
@@ -289,7 +290,8 @@ const CardExplorer: React.FC = () => {
                     {/* Categories Filter */}
                     <div className="pt-10 border-t border-ink/5">
                         <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-[10px] font-bold text-ink/30 uppercase tracking-[0.4em]">Categories</h3>
+                            <h3 className="text-[11px] font-bold text-ink uppercase tracking-[0.3em]">Categories</h3>
+
                             {selectedCategories.length > 0 && (
                                 <button onClick={() => setSelectedCategories([])} className="text-[9px] font-bold text-clay uppercase tracking-widest hover:underline">Clear</button>
                             )}
@@ -328,7 +330,7 @@ const CardExplorer: React.FC = () => {
                     {/* Results Header */}
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-10 pb-6 border-b border-ink/10">
                         <div className="flex items-center gap-4">
-                            <h2 className="text-2xl font-serif italic text-ink tracking-tight">Archives</h2>
+                            <h2 className="text-2xl font-heading font-black text-ink tracking-tight">Archives</h2>
                             <span className="px-3 py-1 bg-clay text-white text-[10px] font-bold rounded-full uppercase tracking-widest">{filteredCards.length} Found</span>
                         </div>
                         
@@ -356,7 +358,7 @@ const CardExplorer: React.FC = () => {
                             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-ink/30" size={16} />
                             <input 
                                 type="text" placeholder="Search curated cards..." 
-                                className="w-full pl-12 pr-6 py-4 bg-white/40 backdrop-blur-sm rounded-2xl border border-ink/5 outline-none focus:border-clay/30 transition-all font-serif italic text-ink"
+                                className="w-full pl-12 pr-6 py-4 bg-white/40 backdrop-blur-sm rounded-2xl border border-ink/5 outline-none focus:border-clay/30 transition-all font-sans text-ink"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
@@ -419,13 +421,13 @@ const CardExplorer: React.FC = () => {
                                                         </div>
                                                     )}
                                                 </div>
-                                                <h2 className="text-3xl md:text-5xl font-serif italic tracking-tighter text-ink leading-tight group-hover:text-clay transition-colors duration-700">
+                                                <h3 className="text-3xl md:text-5xl font-heading font-black text-ink leading-none tracking-tighter group-hover:text-clay transition-colors uppercase">
                                                     {card.name}
-                                                </h2>
-                                                <div className="flex items-center gap-3 text-ink/40">
-                                                    <Landmark size={14} className="opacity-60" />
-                                                    <span className="text-[10px] font-bold uppercase tracking-[0.4em]">{card.issuer || card.bank}</span>
-                                                </div>
+                                                </h3>
+
+                                                <p className="text-lg md:text-xl font-sans font-medium text-ink/40 mt-2 italic">
+                                                    {card.issuer || card.bank} • {card.category} Portfolio
+                                                </p>
                                             </div>
 
                                             {/* Actions Right */}
@@ -444,25 +446,25 @@ const CardExplorer: React.FC = () => {
                                         {/* Stats Row Bottom - Factual Data Sheet Style */}
                                         <div className="bg-[#F9F8F4] px-8 md:px-16 py-10 grid grid-cols-2 md:grid-cols-5 gap-8 border-t border-ink/5 overflow-x-auto no-scrollbar relative z-10">
                                             <div className="space-y-2 border-r border-ink/5 pr-4">
-                                                <p className="text-ink/20 text-[8px] font-bold uppercase tracking-[0.5em]">Introductory Offer</p>
-                                                <p className="text-xs font-semibold text-ink leading-relaxed italic">{card.intro_offer || 'Data Pending'}</p>
+                                                <p className="text-ink text-[11px] font-bold uppercase tracking-[0.2em]">Introductory Offer</p>
+                                                <p className="text-xs font-semibold text-ink leading-relaxed">{card.intro_offer || 'Data Pending'}</p>
                                             </div>
                                             <div className="space-y-2 border-r border-ink/5 pr-4">
-                                                <p className="text-ink/20 text-[8px] font-bold uppercase tracking-[0.5em]">Annual Fixed Fee</p>
-                                                <p className="text-sm font-light text-ink italic">₹{card.annual_fee} <span className="text-[10px] opacity-40 font-sans font-bold">+ GST</span></p>
+                                                <p className="text-ink text-[11px] font-bold uppercase tracking-[0.2em]">Annual Fixed Fee</p>
+                                                <p className="text-sm font-light text-ink">₹{card.annual_fee} <span className="text-[10px] opacity-40 font-sans font-bold">+ GST</span></p>
                                             </div>
                                             <div className="space-y-2 border-r border-ink/5 pr-4">
-                                                <p className="text-ink/20 text-[8px] font-bold uppercase tracking-[0.5em]">Joining Premium</p>
-                                                <p className="text-sm font-light text-ink italic">₹{card.joining_fee || card.annual_fee} <span className="text-[10px] opacity-40 font-sans font-bold">+ GST</span></p>
+                                                <p className="text-ink text-[11px] font-bold uppercase tracking-[0.2em]">Joining Premium</p>
+                                                <p className="text-sm font-light text-ink">₹{card.joining_fee || card.annual_fee} <span className="text-[10px] opacity-40 font-sans font-bold">+ GST</span></p>
                                             </div>
                                             <div className="space-y-2 border-r border-ink/5 pr-4">
-                                                <p className="text-ink/20 text-[8px] font-bold uppercase tracking-[0.5em]">Yield Potential</p>
-                                                <p className="text-sm font-bold text-clay italic tracking-tight">{card.rewards_rate || '2% → 30%'}</p>
+                                                <p className="text-ink text-[11px] font-bold uppercase tracking-[0.2em]">Yield Potential</p>
+                                                <p className="text-sm font-bold text-clay tracking-tight">{card.rewards_rate || '2% → 30%'}</p>
                                             </div>
                                             <div className="space-y-2">
-                                                <p className="text-ink/20 text-[8px] font-bold uppercase tracking-[0.5em]">Market Rating</p>
+                                                <p className="text-ink text-[11px] font-bold uppercase tracking-[0.2em]">Market Rating</p>
                                                 <div className="flex items-center gap-2">
-                                                    <p className="text-sm font-black text-ink italic">{card.rating?.toFixed(1) || '4.0'}</p>
+                                                    <p className="text-sm font-black text-ink">{card.rating?.toFixed(1) || '4.0'}</p>
                                                     <div className="flex gap-0.5">
                                                         {[...Array(5)].map((_, i) => (
                                                             <Star key={i} size={8} className={`${i < Math.floor(card.rating || 4) ? 'fill-clay text-clay' : 'fill-ink/5 text-ink/5'}`} />
@@ -471,6 +473,7 @@ const CardExplorer: React.FC = () => {
                                                 </div>
                                             </div>
                                         </div>
+
                                     </motion.div>
                                 </motion.div>
                                 );
@@ -481,8 +484,8 @@ const CardExplorer: React.FC = () => {
                     {filteredCards.length === 0 && (
                         <div className="text-center py-32 bg-white/40 backdrop-blur-sm rounded-[3rem] border-2 border-dashed border-ink/10">
                              <AlertCircle size={48} className="text-ink/10 mx-auto mb-6" />
-                             <h3 className="text-3xl font-serif italic text-ink/30tracking-tighter">No matching instruments</h3>
-                             <p className="text-ink/40 mt-4 font-medium italic">Adjust filters to discover new rewards.</p>
+                             <h3 className="text-3xl font-heading font-black text-ink/30 tracking-tighter">No matching instruments</h3>
+                             <p className="text-ink/40 mt-4 font-medium">Adjust filters to discover new rewards.</p>
                              <button 
                                 onClick={() => { setSelectedBanks([]); setSelectedCategories([]); setSearchQuery(''); }}
                                 className="mt-10 text-clay font-bold uppercase tracking-[0.3em] text-[10px] hover:opacity-70 transition-opacity border-b-2 border-clay/20 pb-1"
@@ -500,8 +503,8 @@ const CardExplorer: React.FC = () => {
                         <div className="h-14" />
                         <div className="flex justify-between items-center mb-8">
                             <div className="space-y-1">
-                                <h2 className="text-3xl font-serif italic tracking-tighter leading-none">Filters</h2>
-                                <p className="text-[10px] font-bold uppercase tracking-widest text-ink/30">Refine your search</p>
+                                    <h2 className="text-[11px] font-heading font-black uppercase tracking-[0.2em] text-ink">Catalog Index</h2>
+                                    <p className="text-[10px] font-sans font-bold uppercase tracking-widest text-ink/30 mt-1">Found {filteredCards.length} instruments</p>
                             </div>
                             <button onClick={() => setIsMobileFilterOpen(false)} className="w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-lg border border-ink/5 transition-transform active:scale-90">
                                 <X size={20} className="text-ink" />

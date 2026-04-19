@@ -118,7 +118,8 @@ const AppContent: React.FC = () => {
   const isAdminRoute = location.pathname.startsWith('/admin');
 
   return (
-    <div className={`min-h-screen bg-cream font-sans text-ink relative ${isAdminRoute ? 'pt-0' : 'pt-[104px] md:pt-24'}`}>
+    <div className={`min-h-screen bg-cream font-sans text-ink relative ${isAdminRoute ? 'pt-0' : 'pt-32 md:pt-40'}`}>
+
       <div className="paper-texture" />
       <div className="vignette-overlay" />
 

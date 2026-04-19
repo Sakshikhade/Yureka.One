@@ -91,10 +91,11 @@ const OurStory: React.FC = () => {
             <div className="lg:col-span-7">
                 <div className="mb-6">
                     <h3 className="font-sans text-xs font-bold uppercase tracking-widest text-black/60 mb-2">Making credit cards simple for everyone.</h3>
-                    <h2 className="font-serif text-4xl md:text-5xl lg:text-5xl font-bold leading-[0.95] text-black mb-6">
+                    <h2 className="font-heading text-4xl md:text-5xl lg:text-5xl font-black leading-[1.1] text-black mb-6 uppercase">
                         Credit cards are complicated. We make them simple.
                     </h2>
                 </div>
+
                 
                 <div className="mb-6">
                     <div className="w-full aspect-[4/3] bg-black/5 relative overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
@@ -137,8 +138,9 @@ const OurStory: React.FC = () => {
             <div className="lg:col-span-3 border-l border-black/10 pl-6 md:pl-8">
                 
                 <div className="mb-8 pb-8 border-b border-black/10">
-                    <h3 className="font-serif text-2xl font-bold leading-tight mb-3">No more hidden fees</h3>
-                    <p className="font-serif text-3xl font-bold float-left mr-2 leading-none text-black/20">F</p>
+                    <h3 className="font-heading text-2xl font-black leading-tight mb-3 uppercase">No more hidden fees</h3>
+                    <p className="font-heading font-black text-3xl float-left mr-2 leading-none text-black/20">F</p>
+
                     <p className="font-serif text-sm leading-relaxed text-black/80 mb-4">
                         We help you find cards with the best benefits and lowest fees.
                     </p>
@@ -186,13 +188,13 @@ const OurStory: React.FC = () => {
            ))}
         </div>
 
-        {/* 2. MASTHEAD */}
-        <div className="bg-[#111] text-white p-6 md:p-10 flex flex-col md:flex-row justify-between items-start md:items-end border-b border-black">
+         <div className="bg-[#111] text-white p-6 md:p-10 flex flex-col md:flex-row justify-between items-start md:items-end border-b border-black">
             <div>
-                <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold tracking-tighter leading-none">
+                <h1 className="text-4xl md:text-6xl lg:text-7xl font-heading font-black tracking-tighter leading-tight uppercase">
                     our mission<span className="text-teal">.</span>
                 </h1>
             </div>
+
             <div className="flex gap-8 text-right mt-4 md:mt-0 font-serif italic opacity-80 text-sm">
                 <div>
                     <span className="block font-sans font-bold text-[10px] uppercase tracking-widest opacity-50 mb-1">Published</span>
@@ -205,14 +207,14 @@ const OurStory: React.FC = () => {
             </div>
         </div>
 
-        {/* 3. HEADLINE SECTION */}
-        <div className="p-6 md:p-12 border-b border-black/10">
+         <div className="p-6 md:p-12 border-b border-black/10">
             <FadeInSection>
-                <h2 className="text-3xl md:text-5xl lg:text-6xl font-serif font-bold leading-[0.95] text-black tracking-tight mb-4">
-                    Credit cards are confusing. <br className="hidden md:block"/> <span className="italic text-clay">We make them simple.</span>
+                <h2 className="text-3xl md:text-5xl lg:text-6xl font-heading font-black leading-[1.1] text-black tracking-tight mb-4 uppercase">
+                    Credit cards are confusing. <br className="hidden md:block"/> <span className="text-clay">We make them simple.</span>
                 </h2>
             </FadeInSection>
         </div>
+
 
         {/* 4. MAIN CONTENT GRID */}
         <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[600px]">
@@ -339,17 +341,17 @@ const OurStory: React.FC = () => {
       {/* --- NEW EDITORIAL SECTIONS --- */}
       <div className="max-w-[1280px] mx-auto px-6 mb-20 space-y-32">
         
-        {/* 1. AI MATCH */}
-        <section id="ai-match" className="scroll-mt-32">
+         <section id="ai-match" className="scroll-mt-32">
             <FadeInSection>
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 border-t-4 border-black pt-12">
                     <div className="lg:col-span-4">
                         <span className="text-clay font-bold text-xs uppercase tracking-widest block mb-4">Neural Dispatch 01</span>
-                        <h2 className="text-4xl md:text-5xl font-serif font-bold leading-none mb-6">The AI Match Engine.</h2>
-                        <div className="bg-black text-[#F2EFE9] p-6 font-serif italic text-lg leading-relaxed shadow-xl transform -rotate-1">
+                        <h2 className="text-4xl md:text-5xl font-heading font-black leading-none mb-6 uppercase">The AI Match Engine.</h2>
+                        <div className="bg-black text-[#F2EFE9] p-6 font-sans font-medium text-lg leading-relaxed shadow-xl transform -rotate-1">
                             "We don't guess. We compute. Every reward, every fee, every hidden clause scanned in 350ms."
                         </div>
                     </div>
+
                     <div className="lg:col-span-8 flex flex-col justify-center">
                         <div className="columns-1 md:columns-2 gap-10 font-serif text-lg leading-relaxed text-justify text-black/90">
                             <p className="mb-6">
@@ -364,12 +366,12 @@ const OurStory: React.FC = () => {
             </FadeInSection>
         </section>
 
-        {/* 2. REWARDS */}
-        <section id="rewards" className="scroll-mt-32">
+         <section id="rewards" className="scroll-mt-32">
             <FadeInSection>
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 border-t-2 border-black/10 pt-12">
                     <div className="lg:col-span-7 border-r border-black/10 pr-12">
-                        <h2 className="text-4xl md:text-6xl font-blackletter text-black mb-8">The Matrix of Rewards.</h2>
+                        <h2 className="text-4xl md:text-6xl font-heading font-black text-black mb-8 uppercase tracking-tighter">The Matrix of Rewards.</h2>
+
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                             <div className="space-y-4">
                                 <h4 className="font-bold text-xs uppercase tracking-widest bg-clay text-white inline-block px-2 py-1">Strategy A</h4>
@@ -468,14 +470,14 @@ const OurStory: React.FC = () => {
             </FadeInSection>
         </section>
 
-        {/* 5. TECH */}
-        <section id="tech" className="scroll-mt-32">
+         <section id="tech" className="scroll-mt-32">
             <FadeInSection>
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 border-y-2 border-black py-16 bg-white shadow-2xl">
                     <div className="lg:col-span-12 text-center mb-8 px-6">
-                        <h2 className="text-5xl md:text-7xl font-serif font-bold tracking-tighter mb-4">The Stack Behind the Strategy.</h2>
-                        <p className="max-w-2xl mx-auto font-serif text-xl italic text-black/60">Built for 99.9% precision in a world of 100% financial noise.</p>
+                        <h2 className="text-5xl md:text-7xl font-heading font-black tracking-tighter mb-4 uppercase">The Stack Behind the Strategy.</h2>
+                        <p className="max-w-2xl mx-auto font-sans text-xl font-medium text-black/60">Built for 99.9% precision in a world of 100% financial noise.</p>
                     </div>
+
                     <div className="lg:col-span-4 px-12 border-r border-black/5">
                         <h4 className="font-bold text-xs uppercase tracking-[0.3em] mb-4 text-clay">Neural Engine</h4>
                         <p className="font-serif text-sm leading-relaxed">

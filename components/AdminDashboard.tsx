@@ -246,8 +246,9 @@ const AdminDashboard: React.FC = () => {
       <div className="min-h-screen bg-cream flex flex-col items-center justify-center p-4">
         <div className="w-full max-w-md bg-white p-12 rounded-3xl shadow-xl border border-black/5 text-center">
           <LayoutDashboard className="mx-auto mb-6 text-teal" size={64} />
-          <h1 className="text-3xl font-serif font-bold mb-4">Admin Access Required</h1>
-          <p className="text-black/60 mb-8 text-sm">Please sign in with an authorized account to access the Yureka control plane.</p>
+          <h1 className="text-3xl font-heading font-black mb-4 uppercase">Admin Access Required</h1>
+          <p className="text-black/60 mb-8 text-sm font-sans font-medium">Please sign in with an authorized account to access the Yureka control plane.</p>
+
           <button onClick={handleLogin} className="w-full bg-teal text-white py-4 rounded-xl font-bold hover:bg-teal/90 transition-all flex items-center justify-center gap-2">Sign in with Google</button>
         </div>
       </div>

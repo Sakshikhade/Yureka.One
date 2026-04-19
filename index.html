@@ -31,7 +31,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Optimization: swap display for fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Inter:wght@300;400;500;600;700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
     <style>
       html {
         scroll-behavior: smooth;
@@ -39,7 +39,9 @@
         -webkit-tap-highlight-color: transparent;
       }
       body {
-        font-family: 'DM Sans', sans-serif;
+        font-family: 'Inter', sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
         background-color: #F2EFE9;
         color: #242424;
         -webkit-font-smoothing: antialiased;
@@ -51,6 +53,41 @@
         -ms-user-select: none;
       }
 
+      /* Heading modular scale and hierarchy */
+      h1, .font-heading {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 900;
+        line-height: 1.125;
+        letter-spacing: -0.02em;
+      }
+
+      h2 {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 800;
+        line-height: 1.15;
+        letter-spacing: -0.01em;
+      }
+
+      h3 {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 700;
+        line-height: 1.2;
+      }
+
+      /* Global Heading Sizes */
+      h1 { font-size: clamp(32px, 8vw, 64px); }
+      h2 { font-size: clamp(24px, 5vw, 36px); }
+      h3 { font-size: clamp(18px, 4vw, 24px); }
+
+      .font-serif {
+        font-family: 'Montserrat', sans-serif; /* Pointing serif to Montserrat to transition the website */
+      }
+      
+      .font-blackletter {
+        font-family: 'UnifrakturMaguntia', serif;
+      }
+      
+      /* Rest of existing styles... */
       /* Allow selection on form inputs/textareas only */
       input, textarea, [contenteditable="true"] {
         user-select: text !important;
@@ -68,7 +105,6 @@
         inset: 0;
         pointer-events: none;
         z-index: 9999;
-        /* Lightweight base64 tile */
         background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyBAMAAADsEZWCAAAAGFBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA75mMAAAACHRSTlMA1P////+/AE+3TToAAACgSURBVDjLjZPRDoQgDEVb8P//Y3dMvKxGZ+GDFGgvA+N2DqI1nK8v6220Z+bMTf133h51U92W3u3n/c3j9/2Q13f8+pP1rQfz0sP02B895O7RfnTof0P+e7Tv3x7pQ//o0d6/PRL7g0d7f/dov7899P8e2U/oR8gPdXvkHz+Q/2yPdKH+2SO/1D165H11jz6+oUffX9eH/Pujvdn9f/UBU2k3sKxT+mEAAAAASUVORK5CYII=");
         opacity: 0.15;
         background-repeat: repeat;
@@ -91,14 +127,6 @@
         border: 1px solid rgba(255, 255, 255, 0.5); 
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03); 
         transform: translateZ(0);
-      }
-
-      h1, h2, h3, h4, h5, h6, .font-serif {
-        font-family: 'Playfair Display', serif;
-      }
-      
-      .font-blackletter {
-        font-family: 'UnifrakturMaguntia', serif;
       }
 
       /* Custom Selection Color (for inputs) */
@@ -158,36 +186,12 @@
 
       // Security: Disable Keyboard Shortucts for DevTools
       document.addEventListener('keydown', e => {
-        // Disable F12
-        if (e.keyCode === 123) {
-          e.preventDefault();
-          return false;
-        }
-        // Disable Ctrl+Shift+I (Inspect)
-        if (e.ctrlKey && e.shiftKey && e.keyCode === 73) {
-          e.preventDefault();
-          return false;
-        }
-        // Disable Ctrl+Shift+J (Console)
-        if (e.ctrlKey && e.shiftKey && e.keyCode === 74) {
-          e.preventDefault();
-          return false;
-        }
-        // Disable Ctrl+Shift+C (Element selector)
-        if (e.ctrlKey && e.shiftKey && e.keyCode === 67) {
-          e.preventDefault();
-          return false;
-        }
-        // Disable Ctrl+U (View Source)
-        if (e.ctrlKey && e.keyCode === 85) {
-          e.preventDefault();
-          return false;
-        }
-        // Disable Ctrl+S (Save Page)
-        if (e.ctrlKey && e.keyCode === 83) {
-          e.preventDefault();
-          return false;
-        }
+        if (e.keyCode === 123) { e.preventDefault(); return false; }
+        if (e.ctrlKey && e.shiftKey && e.keyCode === 73) { e.preventDefault(); return false; }
+        if (e.ctrlKey && e.shiftKey && e.keyCode === 74) { e.preventDefault(); return false; }
+        if (e.ctrlKey && e.shiftKey && e.keyCode === 67) { e.preventDefault(); return false; }
+        if (e.ctrlKey && e.keyCode === 85) { e.preventDefault(); return false; }
+        if (e.ctrlKey && e.keyCode === 83) { e.preventDefault(); return false; }
       });
 
       tailwind.config = {
@@ -201,9 +205,14 @@
               teal: '#1A5F54',  
             },
             fontFamily: {
-              sans: ['DM Sans', 'sans-serif'],
-              serif: ['Playfair Display', 'serif'],
+              sans: ['Inter', 'sans-serif'],
+              heading: ['Montserrat', 'sans-serif'],
+              serif: ['Montserrat', 'sans-serif'], // Redirecting for uniformity in existing code
               blackletter: ['UnifrakturMaguntia', 'serif'],
+            },
+            lineHeight: {
+              tight: '1.125',
+              snug: '1.2',
             },
             animation: {
               'fade-in-up': 'fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards',

@@ -46,9 +46,10 @@ const CardDetail: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen bg-[#FDFCF9] pt-4 md:pt-8 pb-32 font-serif overflow-x-hidden">
+        <div className="min-h-screen bg-[#FDFCF9] pb-32 font-serif overflow-x-hidden">
             {/* Sticky Sub-nav */}
-            <div className="sticky top-[104px] md:top-[88px] z-40 bg-white/80 backdrop-blur-md border-b border-ink/5 px-6 py-3 md:py-4">
+            <div className="sticky top-[80px] md:top-[96px] z-40 bg-white/80 backdrop-blur-md border-b border-ink/5 px-6 py-3 md:py-4">
+
                 <div className="max-w-[1440px] mx-auto flex items-center justify-between">
                     <Link to="/cards" className="flex items-center gap-2 text-ink/40 hover:text-clay transition-colors group">
                         <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
@@ -71,7 +72,8 @@ const CardDetail: React.FC = () => {
                 </div>
             </div>
 
-            <div className="max-w-[1440px] mx-auto px-6 pt-20">
+            <div className="max-w-[1440px] mx-auto px-6 pt-12 md:pt-20">
+
                 {/* Hero Section */}
                 <section id="overview" className="grid grid-cols-1 lg:grid-cols-2 gap-20 mb-32 items-center">
                     <div className="relative group">
@@ -112,23 +114,25 @@ const CardDetail: React.FC = () => {
                                 <Landmark size={18} />
                                 <span className="text-xs uppercase tracking-[0.4em]">{card.issuer || card.bank}</span>
                             </div>
-                            <h1 className="text-6xl md:text-8xl font-serif italic tracking-tighter text-ink leading-tight">
+                            <h1 className="text-5xl md:text-7xl font-heading font-black tracking-tighter text-ink leading-[1.1]">
                                 {card.name}
                             </h1>
-                            <p className="text-2xl font-serif text-ink/40 leading-snug max-w-xl">
+                            <p className="text-xl md:text-2xl font-sans font-medium text-ink/40 leading-snug max-w-xl">
                                 {card.best_for} • {card.category} Portfolio
                             </p>
+
                         </div>
 
                         <div className="grid grid-cols-2 gap-8 pt-10 border-t border-ink/5">
                             <div className="space-y-2">
-                                <p className="text-ink/30 text-[9px] font-bold uppercase tracking-[0.4em]">Annual Fee</p>
-                                <p className="text-2xl font-serif italic text-ink">{card.annual_fee}</p>
+                                <p className="text-ink text-[11px] font-bold uppercase tracking-[0.3em]">Annual Fee</p>
+                                <p className="text-2xl font-heading font-black text-ink">₹{card.annual_fee}</p>
                             </div>
                             <div className="space-y-2">
-                                <p className="text-ink/30 text-[9px] font-bold uppercase tracking-[0.4em]">Joining Fee</p>
-                                <p className="text-2xl font-serif italic text-ink">{card.joining_fee || card.annual_fee}</p>
+                                <p className="text-ink text-[11px] font-bold uppercase tracking-[0.3em]">Joining Fee</p>
+                                <p className="text-2xl font-heading font-black text-ink">₹{card.joining_fee || card.annual_fee}</p>
                             </div>
+
                         </div>
 
                         <div className="flex flex-wrap gap-4 pt-10">
@@ -151,10 +155,11 @@ const CardDetail: React.FC = () => {
                 {/* Benefits Section */}
                 <section id="benefits" className="mb-32">
                     <div className="flex items-end justify-between mb-16 border-b-2 border-ink pb-8">
-                        <div>
+                         <div>
                             <p className="text-clay text-[10px] font-bold uppercase tracking-[0.5em] mb-4">The Advantage</p>
-                            <h2 className="text-5xl font-serif italic tracking-tighter text-ink">Elite Benefits Portfolio</h2>
+                            <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tighter text-ink uppercase">Elite Benefits Portfolio</h2>
                         </div>
+
                         <div className="hidden md:block text-right">
                             <p className="text-ink/30 text-[10px] font-bold uppercase tracking-widest max-w-[200px]">Curated analysis of reward structures and lifestyle perks.</p>
                         </div>
@@ -167,9 +172,11 @@ const CardDetail: React.FC = () => {
                                     <div className="w-12 h-12 bg-cream rounded-2xl flex items-center justify-center mb-8 border border-ink/5 group-hover:scale-110 transition-transform">
                                         <CheckCircle2 className="text-clay" size={24} />
                                     </div>
-                                    <h3 className="text-xl font-serif text-ink leading-tight mb-4">{benefit.heading}</h3>
-                                    <p className="text-sm text-ink/40 font-medium italic">{benefit.subheading || 'Premium lifestyle benefit included in the standard portfolio.'}</p>
+                                     <h3 className="text-xl font-heading font-bold text-ink leading-tight mb-4 uppercase">{benefit.heading}</h3>
+                                    <p className="text-base font-sans text-ink font-bold italic">{benefit.subheading || 'Premium lifestyle benefit included in the standard portfolio.'}</p>
                                 </div>
+
+
                             ))
                         ) : card.benefits && card.benefits.length > 0 && card.benefits[0] ? (
                             card.benefits.map((benefit, idx) => (
@@ -177,14 +184,15 @@ const CardDetail: React.FC = () => {
                                     <div className="w-12 h-12 bg-cream rounded-2xl flex items-center justify-center mb-8 border border-ink/5 group-hover:scale-110 transition-transform">
                                         <CheckCircle2 className="text-clay" size={24} />
                                     </div>
-                                    <h3 className="text-xl font-serif text-ink leading-tight mb-4">{benefit}</h3>
-                                    <p className="text-sm text-ink/40 font-medium italic">Premium lifestyle benefit included in the standard portfolio.</p>
+                                    <h3 className="text-xl font-heading font-bold text-ink leading-tight mb-4 uppercase">{benefit}</h3>
+                                    <p className="text-base font-sans text-ink font-bold italic">Premium lifestyle benefit included in the standard portfolio.</p>
                                 </div>
+
                             ))
                         ) : (
                             <div className="col-span-full py-32 text-center bg-white">
                                 <Info className="mx-auto text-ink/10 mb-6" size={48} />
-                                <p className="text-ink/40 font-serif italic">Benefit breakdown currently under audit.</p>
+                                <p className="text-ink/40 font-sans">Benefit breakdown currently under audit.</p>
                             </div>
                         )}
                     </div>
@@ -198,12 +206,13 @@ const CardDetail: React.FC = () => {
                             <div className="inline-block border border-clay px-4 py-2 rounded-full">
                                 <p className="text-clay text-[10px] font-bold uppercase tracking-[0.4em]">Yureka Insights</p>
                             </div>
-                            <h2 className="text-5xl md:text-7xl font-serif leading-none italic tracking-tighter">
+                             <h2 className="text-4xl md:text-6xl font-heading font-black leading-none tracking-tighter uppercase">
                                 The <span className="text-white/40">Verdict</span>
-                            </h2>
-                            <p className="text-xl md:text-2xl font-serif text-white/60 leading-relaxed italic border-l-4 border-clay pl-8">
+                             </h2>
+                             <p className="text-xl md:text-2xl font-sans font-medium text-white/60 leading-relaxed italic border-l-4 border-clay pl-8">
                                 "{card.verdict || `The ${card.name} remains a cornerstone of the ${card.issuer || card.bank} ecosystem. While the ${card.annual_fee} fee is significant, the projected savings of ${card.projected_savings || '₹12,000/yr'} creates an undeniable value proposition for high-spend portfolios.`}"
-                            </p>
+                             </p>
+
                             <div className="flex items-center gap-6 pt-10">
                                 <div className="flex -space-x-4">
                                     {[1, 2, 3].map(i => (
@@ -218,40 +227,33 @@ const CardDetail: React.FC = () => {
                         <div className="lg:col-span-5 bg-white/10 backdrop-blur-xl p-12 rounded-[3rem] border border-white/10 space-y-8 shadow-inner">
                             <h3 className="text-xs font-bold uppercase tracking-[0.5em] text-clay">Technical Profile</h3>
                             <div className="space-y-6">
-                                <div className="flex justify-between items-center border-b border-white/5 pb-4">
-                                    <span className="text-sm font-medium text-white/40 italic uppercase tracking-widest">Reward Rate</span>
-                                    <span className="text-xl font-serif italic text-white">{card.rewards_rate || '5% Base'}</span>
+                                 <div className="flex justify-between items-center border-b border-white/5 pb-4">
+                                    <span className="text-lg font-bold text-white uppercase tracking-widest">Reward Rate</span>
+                                    <span className="text-xl font-heading font-bold text-white">{card.rewards_rate || '5% Base'}</span>
                                 </div>
                                 <div className="flex justify-between items-center border-b border-white/5 pb-4">
-                                    <span className="text-sm font-medium text-white/40 italic uppercase tracking-widest">Best For</span>
-                                    <span className="text-xl font-serif italic text-white">{card.best_for}</span>
+                                    <span className="text-lg font-bold text-white uppercase tracking-widest">Best For</span>
+                                    <span className="text-xl font-heading font-bold text-white">{card.best_for}</span>
                                 </div>
+
                                 <div className="flex justify-between items-center border-b border-white/5 pb-4">
-                                    <span className="text-sm font-medium text-white/40 italic uppercase tracking-widest">Status</span>
+                                    <span className="text-lg font-bold text-white uppercase tracking-widest">Status</span>
                                     <div className="flex items-center gap-2 text-green-400">
                                         <Zap size={14} className="fill-green-400" />
                                         <span className="text-xs font-bold uppercase tracking-widest">Highly Liquid</span>
                                     </div>
                                 </div>
                             </div>
-                            <button className="w-full bg-white text-ink font-bold py-6 rounded-[2rem] text-[10px] uppercase tracking-[0.4em] hover:bg-clay hover:text-white transition-all shadow-2xl">
+                            <button className="w-full bg-white text-ink font-black py-7 rounded-[2rem] text-sm uppercase tracking-[0.3em] hover:bg-clay hover:text-white transition-all shadow-2xl">
                                 Request Full Audit
                             </button>
+
                         </div>
                     </div>
                 </section>
             </div>
 
-            {/* Floating Action Button for AI */}
-            <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50 animate-fade-in">
-                <button className="bg-clay text-white px-10 py-6 rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex items-center gap-4 hover:scale-105 transition-all group backdrop-blur-xl border border-white/10">
-                    <Sparkles size={24} className="group-hover:rotate-12 transition-transform" />
-                    <div className="text-left leading-none">
-                        <p className="text-[10px] font-bold uppercase tracking-widest opacity-60 mb-1">Talk to engine</p>
-                        <p className="text-lg font-serif italic">Optimize this instrument</p>
-                    </div>
-                </button>
-            </div>
+
         </div>
     );
 };

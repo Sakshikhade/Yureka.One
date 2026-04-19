@@ -66,9 +66,10 @@ const ShowcaseCard: React.FC<ShowcaseCardProps> = ({ card, index, total, progres
                             <p className="text-[10px] text-ink/40 font-bold uppercase tracking-widest mb-1 font-mono">Est. Savings</p>
                             <p className="text-3xl font-serif text-ink tracking-tight uppercase">{projectedSavings}</p>
                         </div>
-                        <Link to="/join-waitlist" className="w-12 h-12 border border-ink/10 text-ink flex items-center justify-center hover:bg-ink hover:text-white transition-all rounded-full shadow-md hover:shadow-xl hover:-translate-y-1">
+                        <Link to={`/cards/${card.slug || card.id}`} className="w-12 h-12 border border-ink/10 text-ink flex items-center justify-center hover:bg-ink hover:text-white transition-all rounded-full shadow-md hover:shadow-xl hover:-translate-y-1">
                             <ArrowUpRight size={18} />
                         </Link>
+
                     </div>
                 </div>
             </div>

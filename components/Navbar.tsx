@@ -28,8 +28,9 @@ const Navbar: React.FC = () => {
             flex justify-center
             z-[90]
             transition-all duration-700 cubic-bezier(0.25, 0.8, 0.25, 1)
-            ${isScrolled ? 'top-12 md:top-14 pointer-events-none' : 'top-10'}
+            ${isScrolled ? 'top-10' : 'top-10'}
         `}
+
       >
         <div 
             className={`
@@ -45,9 +46,10 @@ const Navbar: React.FC = () => {
             <div className={`
                 flex flex-col relative z-10 group cursor-pointer mr-8
             `}>
-                <Link to="/" className="font-serif font-black tracking-tighter text-xl md:text-2xl text-ink leading-none hover:opacity-80 transition-opacity flex items-baseline">
+                <Link to="/" className="font-heading font-black tracking-tighter text-xl md:text-2xl text-ink leading-none hover:opacity-80 transition-opacity flex items-baseline uppercase">
                     Yureka<span className="text-clay">.</span>money
                 </Link>
+
                 {!isScrolled && (
                      <span className="hidden md:block text-[9px] uppercase tracking-[0.3em] text-ink/40 mt-1 font-sans">
                         AI-Driven Intelligence • Est. 2026
@@ -82,11 +84,12 @@ const Navbar: React.FC = () => {
                 <div className="h-4 w-px bg-ink/20"></div>
 
                 <div className="flex items-center gap-4 lg:gap-6">
-                     <Link to="/ai-magic" className={`
-                        text-ink font-serif italic text-base lg:text-lg hover:text-clay transition-colors whitespace-nowrap
-                     `}>
+                      <Link to="/ai-magic" className={`
+                        text-ink font-sans font-bold text-sm lg:text-base hover:text-clay transition-colors whitespace-nowrap uppercase tracking-widest
+                      `}>
                         Yureka AI Magic
-                     </Link>
+                      </Link>
+
                     
                     <Link to="/join-waitlist" className={`
                         bg-ink text-white text-[10px] lg:text-xs font-bold uppercase tracking-widest px-6 lg:px-8 py-3 lg:py-3.5
@@ -133,10 +136,11 @@ const Navbar: React.FC = () => {
                 transition={{ type: 'spring', damping: 25, stiffness: 200 }}
                 className="absolute top-0 right-0 h-full w-[85%] max-w-[400px] bg-paper border-l border-ink/10 p-8 flex flex-col shadow-2xl"
               >
-                 <div className="flex justify-between items-center mb-12 border-b border-ink/10 pb-6">
-                      <span className="font-serif text-3xl font-bold text-ink flex items-end">
+                  <div className="flex justify-between items-center mb-12 border-b border-ink/10 pb-6">
+                      <span className="font-sans text-3xl font-black text-ink flex items-end uppercase">
                         Index<span className="text-clay ml-1">.</span>
                       </span>
+
                       <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 hover:bg-ink/5 rounded-full transition-all">
                           <X size={24} className="text-ink" strokeWidth={1.5} />
                       </button>
@@ -161,9 +165,10 @@ const Navbar: React.FC = () => {
                                 onClick={() => setIsMobileMenuOpen(false)} 
                                 className="group block"
                             >
-                                <div className="text-2xl font-serif text-ink group-hover:text-clay transition-colors mb-1">{item.name}</div>
+                                <div className="text-2xl font-heading font-black text-ink group-hover:text-clay transition-colors mb-1 uppercase">{item.name}</div>
                                 <div className="text-[10px] font-sans uppercase tracking-[0.2em] text-ink/40 group-hover:text-ink/60">{item.desc}</div>
                             </Link>
+
                         </motion.div>
                     ))}
                     

@@ -49,9 +49,10 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
         </button>
         
         <div className="flex flex-col">
-          <h1 className="text-xl md:text-2xl font-serif font-black tracking-tight text-ink">
+          <h1 className="text-2xl md:text-3xl font-heading font-black tracking-tight text-ink uppercase leading-none">
             {getTabTitle(activeTab)}
           </h1>
+
           <div className="flex items-center gap-2 mt-1.5">
             <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${
               syncStatus === 'connected' ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.5)]' : 

@@ -16,12 +16,13 @@ const TopBanner: React.FC = () => {
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em] px-6 border-r border-white/20 h-full flex items-center opacity-60">
                     Latest
                 </span>
-                <span className="text-sm font-serif italic text-white px-4">
+                <span className="text-sm font-sans font-medium text-white px-4">
                     "Stop letting banks hold your rewards. With Yureka, earn 15% more."
                 </span>
-                <span className="text-xs font-medium text-white/60 px-4 uppercase tracking-wider">
+                <span className="text-xs font-sans font-bold text-white/60 px-4 uppercase tracking-wider">
                     Market Update: Credit Spends ▲ 12.4%
                 </span>
+
                 <span className="text-[10px] text-white/30 px-6">///</span>
             </div>
         ))}
