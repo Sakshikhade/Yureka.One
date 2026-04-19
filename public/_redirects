@@ -1,1 +1,6 @@
+# Allow search engine verification files
+/google432b4c0815ba33ee.html /google432b4c0815ba33ee.html 200
+/bing_*.xml /bing_*.xml 200
+
+# React SPA catch-all
 /* /index.html 200
