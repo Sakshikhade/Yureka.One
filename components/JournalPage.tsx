@@ -131,7 +131,6 @@ const JournalPage: React.FC = () => {
                     </div>
                   </>
                 )}
->
 
                 {/* Newsletter Section - Newsprint Style */}
                 <section id="newsletter" className="mt-40 p-12 md:p-24 bg-ink text-white relative overflow-hidden text-center rounded-[3rem] shadow-2xl scroll-mt-32">
