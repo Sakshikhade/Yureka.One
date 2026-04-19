@@ -169,7 +169,7 @@ export const CardForm: React.FC<CardFormProps> = ({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div>
           <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Annual Fee</label>
           <input type="text" required value={form.annual_fee} onChange={e => setForm({...form, annual_fee: e.target.value})} className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all" />
@@ -177,6 +177,16 @@ export const CardForm: React.FC<CardFormProps> = ({
         <div>
           <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Joining Fee</label>
           <input type="text" required value={form.joining_fee} onChange={e => setForm({...form, joining_fee: e.target.value})} className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all" />
+        </div>
+        <div>
+          <label className="block text-xs font-bold uppercase tracking-widest text-teal mb-2">Introductory Offer</label>
+          <input 
+            type="text" 
+            placeholder="e.g. 50,000 Bonus Points"
+            value={form.intro_offer || ''} 
+            onChange={e => setForm({...form, intro_offer: e.target.value})} 
+            className="w-full bg-teal/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all font-medium text-teal" 
+          />
         </div>
         <div>
           <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Est. Savings</label>
@@ -261,11 +271,55 @@ export const CardForm: React.FC<CardFormProps> = ({
         </div>
 
         <div>
-            <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Editorial Verdict</label>
+            <div className="flex items-center justify-between mb-2">
+                <label className="block text-xs font-bold uppercase tracking-widest text-black/40">Editorial Verdict</label>
+                <button 
+                  type="button"
+                  onClick={async () => {
+                    const btn = document.getElementById('ai-verdict-btn');
+                    if (btn) btn.classList.add('animate-pulse');
+                    try {
+                      const benefitsText = form.benefit_items.map((b: any) => `${b.heading}: ${b.subheading}`).join('\n');
+                      const prompt = `Act as a senior financial analyst. Summarize this credit card into a sharp, 3-sentence editorial verdict. 
+                      Card Name: ${form.name}
+                      Bank: ${form.bank}
+                      Category: ${form.category}
+                      Fees: ${form.annual_fee} (Annual), ${form.joining_fee} (Joining)
+                      Intro Offer: ${form.intro_offer}
+                      Benefits:
+                      ${benefitsText}
+                      
+                      Focus on value proposition and who should get it. Keep it premium and concise.`;
+
+                      // Gemini API call logic
+                      const API_KEY = (import.meta as any).env.VITE_GEMINI_API_KEY;
+                      if (!API_KEY) throw new Error("VITE_GEMINI_API_KEY missing");
+                      
+                      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
+                        method: 'POST',
+                        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                      });
+                      const result = await response.json();
+                      const summary = result.candidates[0].content.parts[0].text;
+                      setForm({...form, verdict: summary.trim()});
+                    } catch (err: any) {
+                      alert(`AI Error: ${err.message}. Please ensure VITE_GEMINI_API_KEY is in your .env`);
+                    } finally {
+                      if (btn) btn.classList.remove('animate-pulse');
+                    }
+                  }}
+                  id="ai-verdict-btn"
+                  className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-widest text-teal bg-teal/5 px-3 py-1.5 rounded-full hover:bg-teal/10 transition-all border border-teal/10"
+                >
+                  <Zap size={10} fill="currentColor" />
+                  Magic Summarize
+                </button>
+            </div>
             <textarea 
               value={form.verdict || ''}
               onChange={e => setForm({...form, verdict: e.target.value})}
-              className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all h-32 text-sm"
+              className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all h-32 text-sm leading-relaxed"
+              placeholder="Generate with AI or type your professional verdict here..."
             />
         </div>
       </div>

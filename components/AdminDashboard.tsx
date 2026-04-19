@@ -75,7 +75,7 @@ const AdminDashboard: React.FC = () => {
   const defaultCardForm = {
     name: '', bank: '', issuer: '', type: 'Rewards', image: 'https://picsum.photos/seed/card/400/250',
     rating: 4.5, elite_rating: 4.5, benefits: [''], benefit_items: [{ heading: '', subheading: '' }],
-    verdict: '', slug: '', apply_link: '', annual_fee: '₹0', joining_fee: '₹0',
+    verdict: '', slug: '', apply_link: '', annual_fee: '₹0', joining_fee: '₹0', intro_offer: '',
     best_for: 'Shopping', category: 'Shopping', categories: [] as string[],
     color: 'from-blue-600 to-indigo-700', rewards_rate: '5%', projected_savings: '₹12,000/yr', status: 'published'
   };
