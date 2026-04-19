@@ -236,11 +236,13 @@ const AdminDashboard: React.FC = () => {
           } else {
             payload.scheduled_at = null;
           }
-          return editingItem ? updateBlog(editingItem.id, payload) : addBlog(payload);
+          editingItem ? await updateBlog(editingItem.id, payload) : await addBlog(payload);
         } else if (activeTab === 'cards') {
-          return editingItem ? updateCard(editingItem.id, cardForm) : addCard(cardForm);
+          const { color, ...cardData } = cardForm;
+          editingItem ? await updateCard(editingItem.id, cardData) : await addCard(cardData);
         } else if (activeTab === 'reviews') {
-          return editingItem ? updateReview(editingItem.id, reviewForm) : addReview(reviewForm);
+          const { rotation, ...reviewData } = reviewForm;
+          editingItem ? await updateReview(editingItem.id, reviewData) : await addReview(reviewData);
         } else if (activeTab === 'settings') {
           return editingItem ? updateUserRole(editingItem.id, teamForm.role) : inviteTeamMember(teamForm.email, teamForm.role);
         }

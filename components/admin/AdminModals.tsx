@@ -62,8 +62,17 @@ export const AdminModals: React.FC<AdminModalsProps> = ({
               <Trash2 size={32} />
             </div>
             <h3 className="text-2xl font-serif font-bold mb-2">Confirm Delete</h3>
-            <p className="text-black/60 mb-8 text-sm">Are you sure you want to delete this item? This action cannot be undone.</p>
+            <p className="text-black/60 mb-6 text-sm">Are you sure you want to delete this item? This action cannot be undone.</p>
+            
+            {helpers.error && (
+              <div className="mb-6 p-4 bg-red-50 text-red-500 rounded-xl flex items-center gap-3 text-xs font-bold border border-red-100">
+                <X size={14} className="shrink-0" />
+                <span className="text-left">{helpers.error}</span>
+              </div>
+            )}
+
             <div className="flex gap-4">
+
               <button 
                 onClick={() => setIsDeleteModalOpen(false)}
                 className="flex-1 px-6 py-3 rounded-xl font-bold border border-black/10 hover:bg-black/5 transition-colors text-xs uppercase tracking-widest"
