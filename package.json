@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "tsx server.ts",
-    "build": "vite build",
+    "build": "tsx scripts/generate-sitemap.ts && vite build",
     "start": "node server.ts",
     "lint": "tsc --noEmit",
     "preview": "vite preview"
+
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.100.1",
