@@ -85,10 +85,10 @@ const AdminDashboard: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   // --- Form States ---
-  const [blogForm, setBlogForm] = useState(structuredClone(DEFAULT_BLOG_FORM));
-  const [cardForm, setCardForm] = useState(structuredClone(DEFAULT_CARD_FORM));
-  const [reviewForm, setReviewForm] = useState<Review>(structuredClone(DEFAULT_REVIEW_FORM) as Review);
-  const [teamForm, setTeamForm] = useState(structuredClone(DEFAULT_TEAM_FORM));
+  const [blogForm, setBlogForm] = useState(JSON.parse(JSON.stringify(DEFAULT_BLOG_FORM)));
+  const [cardForm, setCardForm] = useState(JSON.parse(JSON.stringify(DEFAULT_CARD_FORM)));
+  const [reviewForm, setReviewForm] = useState<Review>(JSON.parse(JSON.stringify(DEFAULT_REVIEW_FORM)) as Review);
+  const [teamForm, setTeamForm] = useState(JSON.parse(JSON.stringify(DEFAULT_TEAM_FORM)));
 
   // --- Modal States ---
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -167,12 +167,12 @@ const AdminDashboard: React.FC = () => {
       });
     } else if (activeTab === 'cards') {
       setCardForm({ 
-        ...structuredClone(DEFAULT_CARD_FORM), 
+        ...JSON.parse(JSON.stringify(DEFAULT_CARD_FORM)), 
         ...item,
         benefit_items: item.benefit_items || [{ heading: '', subheading: '' }]
       });
     } else if (activeTab === 'reviews') {
-      setReviewForm({ ...structuredClone(DEFAULT_REVIEW_FORM), ...item });
+      setReviewForm({ ...JSON.parse(JSON.stringify(DEFAULT_REVIEW_FORM)), ...item });
     } else if (activeTab === 'settings') {
       setTeamForm({ email: item.email, role: item.role });
     }
@@ -308,10 +308,10 @@ If this persists, please:
     
     return () => {
        setEditingItem(null);
-      if (activeTab === 'blogs') setBlogForm(structuredClone(DEFAULT_BLOG_FORM));
-      else if (activeTab === 'cards') setCardForm(structuredClone(DEFAULT_CARD_FORM));
-      else if (activeTab === 'reviews') setReviewForm(structuredClone(DEFAULT_REVIEW_FORM) as Review);
-      else if (activeTab === 'settings') setTeamForm(structuredClone(DEFAULT_TEAM_FORM));
+      if (activeTab === 'blogs') setBlogForm(JSON.parse(JSON.stringify(DEFAULT_BLOG_FORM)));
+      else if (activeTab === 'cards') setCardForm(JSON.parse(JSON.stringify(DEFAULT_CARD_FORM)));
+      else if (activeTab === 'reviews') setReviewForm(JSON.parse(JSON.stringify(DEFAULT_REVIEW_FORM)) as Review);
+      else if (activeTab === 'settings') setTeamForm(JSON.parse(JSON.stringify(DEFAULT_TEAM_FORM)));
       setError(null);
       setIsModalOpen(true);
     };

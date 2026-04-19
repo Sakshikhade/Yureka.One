@@ -71,10 +71,10 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
         {onAdd && (
           <button 
             onClick={onAdd}
-            className="hidden md:flex items-center gap-2 bg-black text-white px-6 py-2.5 rounded-2xl font-bold text-[11px] uppercase tracking-wider hover:bg-teal transition-all shadow-lg active:scale-95"
+            className="flex items-center gap-2 bg-black text-white px-4 md:px-6 py-2.5 rounded-2xl font-bold text-[11px] uppercase tracking-wider hover:bg-teal transition-all shadow-lg active:scale-95"
           >
             <Plus size={16} />
-            {addLabel || `Add New`}
+            <span className="hidden sm:inline">{addLabel || `Add New`}</span>
           </button>
         )}
 
