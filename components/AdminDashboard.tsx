@@ -14,7 +14,8 @@ import {
   addCard, updateCard, deleteCard,
   deleteWaitlistEntry, updateWaitlistStatus,
   inviteTeamMember, updateUserRole, deleteUser,
-  addReview, updateReview, deleteReview
+  addReview, updateReview, deleteReview,
+  withRetry
 } from '../services/supabaseService';
 import { Blog, Card, WaitlistEntry, Review } from '../types';
 import { useSupabase } from './SupabaseProvider';
