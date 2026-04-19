@@ -10,11 +10,26 @@ import { getBlogBySlug } from '../services/supabaseService';
 import { Blog } from '../types';
 import ImageWithLoader from './ImageWithLoader';
 
+import SEO from './SEO';
+
 const BlogDetail: React.FC = () => {
     const { slug } = useParams<{ slug: string }>();
     const [blog, setBlog] = useState<Blog | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [readingProgress, setReadingProgress] = useState(0);
+
+    const blogSchema = blog ? {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": blog.title,
+      "image": [blog.image],
+      "datePublished": blog.created_at,
+      "author": [{
+          "@type": "Person",
+          "name": blog.author
+        }]
+    } : undefined;
+
 
     useEffect(() => {
         if (!slug) return;
@@ -57,7 +72,13 @@ const BlogDetail: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-cream pb-32 font-serif">
+            <SEO 
+                title={`${blog.title} | Yureka Journal`}
+                description={blog.excerpt || `Read the latest insights on ${blog.category} and credit card optimization by ${blog.author}.`}
+                schema={blogSchema}
+            />
             {/* Reading Progress Bar */}
+
             <div 
                 className="fixed top-[104px] md:top-20 left-0 h-1 bg-clay z-[85] transition-all duration-100" 
                 style={{ width: `${readingProgress}%` }}

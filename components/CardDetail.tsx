@@ -10,10 +10,26 @@ import { Card } from '../types';
 import ImageWithLoader from './ImageWithLoader';
 import { motion } from 'motion/react';
 
+import SEO from './SEO';
+
 const CardDetail: React.FC = () => {
     const { slug } = useParams<{ slug: string }>();
     const [card, setCard] = useState<Card | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+
+    const cardSchema = card ? {
+      "@context": "https://schema.org",
+      "@type": "FinancialProduct",
+      "name": card.name,
+      "description": card.description,
+      "brand": {
+        "@type": "Brand",
+        "name": card.issuer || card.bank
+      },
+      "category": card.category || card.type,
+      "feesAndCommissionsSpecification": `Annual Fee: ${card.annualFee || card.annual_fee || 'N/A'}`
+    } : undefined;
+
 
     useEffect(() => {
         if (!slug) return;
@@ -47,7 +63,13 @@ const CardDetail: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-[#FDFCF9] pb-32 font-serif overflow-x-hidden">
+            <SEO 
+                title={`${card.name} | Instrument Analysis`}
+                description={card.description || `Detailed review and rewards breakdown for the ${card.name} by ${card.bank || card.issuer}.`}
+                schema={cardSchema}
+            />
             {/* Sticky Sub-nav */}
+
             <div className="sticky top-[80px] md:top-[96px] z-40 bg-white/80 backdrop-blur-md border-b border-ink/5 px-6 py-3 md:py-4">
 
                 <div className="max-w-[1440px] mx-auto flex items-center justify-between">

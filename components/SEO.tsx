@@ -6,14 +6,16 @@ interface SEOProps {
   image?: string;
   canonical?: string;
   robots?: string;
+  schema?: object;
 }
 
 const SEO: React.FC<SEOProps> = ({ 
   title, 
-  description = "Find the perfect credit card from 200+ options. Maximize rewards and save on every spend with Yureka's AI engine.",
+  description = "Find the perfect credit card from 200+ options. Maximize rewards and save on every spend with Yureka's neural matching engine.",
   image = "https://yureka.money/og-image.jpg",
   canonical,
-  robots = "index, follow"
+  robots = "index, follow",
+  schema
 }) => {
   React.useEffect(() => {
     const fullTitle = `${title} | Yureka.money`;
@@ -45,9 +47,22 @@ const SEO: React.FC<SEOProps> = ({
     if (canonicalTag) {
       canonicalTag.setAttribute('href', canonical || window.location.href);
     }
-  }, [title, description, image, canonical, robots]);
+
+    // Update Schema
+    if (schema) {
+      const existingSchema = document.getElementById('seo-schema');
+      if (existingSchema) existingSchema.remove();
+
+      const script = document.createElement('script');
+      script.id = 'seo-schema';
+      script.type = 'application/ld+json';
+      script.innerHTML = JSON.stringify(schema);
+      document.head.appendChild(script);
+    }
+  }, [title, description, image, canonical, robots, schema]);
 
   return null;
 };
+
 
 export default SEO;
