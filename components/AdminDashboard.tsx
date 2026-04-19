@@ -264,14 +264,26 @@ const AdminDashboard: React.FC = () => {
          editingItem ? await updateUserRole(editingItem.id, teamForm.role) : await inviteTeamMember(teamForm.email, teamForm.role);
       }
 
-      // SUCCESS: Clear everything instantly
+      // SUCCESS: VIOLENTLY CLOSE MODAL
       setIsModalOpen(false);
       setEditingItem(null);
-      refreshAll().catch(console.error);
+      setSaving(false); // Reset saving BEFORE anything else
+      
+      // Delay the refresh slightly to allow modal animation to complete
+      setTimeout(() => {
+        refreshAll().catch(console.error);
+      }, 100);
+
     } catch (err: any) {
       console.error("CRITICAL SAVE FAILURE:", err);
-      alert(`Publication Conflict: ${err.message || "Unknown error"}. Try changing the title slightly.`);
+      setSaving(false);
+      alert(`Publication Conflict: ${err.message || "Unknown error"}. 
+      
+If this persists, please:
+1. Run the latest SQL Script I provided.
+2. Check if the Title is a duplicate.`);
     } finally {
+      // Ensure we are NEVER stuck in a loading state
       setSaving(false);
     }
   };
