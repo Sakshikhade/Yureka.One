@@ -31,7 +31,7 @@ export const withRetry = async <T>(
 };
 
 // Helper for cleaning objects for Supabase (removing undefined/null)
-const cleanData = (obj: any) => {
+export const cleanData = (obj: any) => {
   const cleaned = { ...obj };
   Object.keys(cleaned).forEach(key => {
     if (cleaned[key] === undefined) delete cleaned[key];

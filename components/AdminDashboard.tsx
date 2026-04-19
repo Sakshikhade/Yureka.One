@@ -15,7 +15,7 @@ import {
   deleteWaitlistEntry, updateWaitlistStatus,
   inviteTeamMember, updateUserRole, deleteUser,
   addReview, updateReview, deleteReview,
-  withRetry
+  withRetry, cleanData
 } from '../services/supabaseService';
 import { Blog, Card, WaitlistEntry, Review } from '../types';
 import { useSupabase } from './SupabaseProvider';
@@ -190,12 +190,10 @@ const AdminDashboard: React.FC = () => {
   const handleDeleteConfirm = async () => {
     if (!itemToDelete) return;
     try {
-      const { error: deleteError } = await withRetry(async () => {
-        const res = await supabase.from(itemToDelete.collection).delete().eq('id', itemToDelete.id);
-        return res;
+      await withRetry(async () => {
+        const { error } = await supabase.from(itemToDelete.collection).delete().eq('id', itemToDelete.id);
+        return { data: true, error };
       });
-
-      if (deleteError) throw deleteError;
 
       setIsDeleteModalOpen(false);
       setItemToDelete(null);
@@ -263,20 +261,20 @@ const AdminDashboard: React.FC = () => {
               scheduled_at: (blogForm.publishMode === 'later' && blogForm.scheduled_at) ? new Date(blogForm.scheduled_at).toISOString() : null
             };
             const { error: saveError } = editingItem 
-              ? await supabase.from('blogs').update(payload).eq('id', editingItem.id)
-              : await supabase.from('blogs').insert([payload]);
+              ? await supabase.from('blogs').update(cleanData(payload)).eq('id', editingItem.id)
+              : await supabase.from('blogs').insert([cleanData(payload)]);
             if (saveError) throw saveError;
           } 
           else if (activeTab === 'cards') {
             const { error: saveError } = editingItem 
-              ? await supabase.from('cards').update(cardForm).eq('id', editingItem.id)
-              : await supabase.from('cards').insert([cardForm]);
+              ? await supabase.from('cards').update(cleanData(cardForm)).eq('id', editingItem.id)
+              : await supabase.from('cards').insert([cleanData(cardForm)]);
             if (saveError) throw saveError;
           }
           else if (activeTab === 'reviews') {
             const { error: saveError } = editingItem 
-              ? await supabase.from('reviews').update(reviewForm).eq('id', editingItem.id)
-              : await supabase.from('reviews').insert([reviewForm]);
+              ? await supabase.from('reviews').update(cleanData(reviewForm)).eq('id', editingItem.id)
+              : await supabase.from('reviews').insert([cleanData(reviewForm)]);
             if (saveError) throw saveError;
           }
           else if (activeTab === 'settings') {
