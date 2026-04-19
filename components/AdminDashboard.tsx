@@ -221,60 +221,56 @@ const AdminDashboard: React.FC = () => {
     setSaving(true);
     setError(null);
 
-    // Timeout safety: if it takes more than 8s, resume control
     const timeoutPromise = new Promise((_, reject) => 
       setTimeout(() => reject(new Error("Operation timed out (8s). The data might still be saving in the background.")), 8000)
     );
 
     try {
-      const saveAction = async () => {
-        if (activeTab === 'blogs') {
-          // STRICT Payload Sanitization + Defaults
-          const payload = {
-            title: blogForm.title || "Untitled Post",
-            slug: blogForm.slug || blogForm.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || `blog-${Date.now()}`,
-            excerpt: blogForm.excerpt || '',
-            content: blogForm.content || '',
-            author: blogForm.author || 'Yureka Team',
-            category: blogForm.category || 'Finance',
-            image: blogForm.image || 'https://picsum.photos/seed/blog/800/600',
-            status: 'published',
-            read_time: blogForm.read_time || '5 min read',
-            scheduled_at: (blogForm.publishMode === 'later' && blogForm.scheduled_at) 
-              ? new Date(blogForm.scheduled_at).toISOString() 
-              : null
-          };
-          
-          if (!payload.title || !payload.content) throw new Error("Headline and Manuscript Body are required.");
+      if (activeTab === 'blogs') {
+        const timestampedSlug = blogForm.slug || `${blogForm.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}-${Math.random().toString(36).substring(7)}`;
+        
+        const payload = {
+          title: blogForm.title || 'Untitled Journal',
+          slug: editingItem ? blogForm.slug : timestampedSlug,
+          excerpt: blogForm.excerpt || '',
+          content: blogForm.content || '',
+          author: blogForm.author || 'Yureka Editorial',
+          category: blogForm.category || 'Credit Cards',
+          image: blogForm.image || 'https://picsum.photos/seed/blog/800/600',
+          status: 'published',
+          read_time: blogForm.read_time || '5 min read',
+          scheduled_at: (blogForm.publishMode === 'later' && blogForm.scheduled_at) ? new Date(blogForm.scheduled_at).toISOString() : null
+        };
 
-          editingItem ? await updateBlog(editingItem.id, payload) : await addBlog(payload);
-        } else if (activeTab === 'cards') {
-          const { color, ...cardData } = cardForm;
-          editingItem ? await updateCard(editingItem.id, cardData) : await addCard(cardData);
-        } else if (activeTab === 'reviews') {
-          const { rotation, ...reviewData } = reviewForm;
-          editingItem ? await updateReview(editingItem.id, reviewData) : await addReview(reviewData);
-        } else if (activeTab === 'settings') {
-          return editingItem ? updateUserRole(editingItem.id, teamForm.role) : inviteTeamMember(teamForm.email, teamForm.role);
-        }
-      };
+        const { error: saveError } = editingItem 
+          ? await supabase.from('blogs').update(payload).eq('id', editingItem.id)
+          : await supabase.from('blogs').insert([payload]);
 
-      // Race the save against the 15s timeout
-      await Promise.race([saveAction(), timeoutPromise]);
-      
-      // SUCCESS: Close modal INSTANTLY
+        if (saveError) throw saveError;
+      } 
+      else if (activeTab === 'cards') {
+        const { error: saveError } = editingItem 
+          ? await supabase.from('cards').update(cardForm).eq('id', editingItem.id)
+          : await supabase.from('cards').insert([cardForm]);
+        if (saveError) throw saveError;
+      }
+      else if (activeTab === 'reviews') {
+        const { error: saveError } = editingItem 
+          ? await supabase.from('reviews').update(reviewForm).eq('id', editingItem.id)
+          : await supabase.from('reviews').insert([reviewForm]);
+        if (saveError) throw saveError;
+      }
+      else if (activeTab === 'settings') {
+         editingItem ? await updateUserRole(editingItem.id, teamForm.role) : await inviteTeamMember(teamForm.email, teamForm.role);
+      }
+
+      // SUCCESS: Clear everything instantly
       setIsModalOpen(false);
       setEditingItem(null);
-      setSaving(false);
-      
-      // Perform refresh in the background
       refreshAll().catch(console.error);
-
     } catch (err: any) {
-      console.error("Save error:", err);
-      const errorMsg = err.message || "Failed to save record.";
-      setError(errorMsg);
-      alert(`Publication Failed: ${errorMsg}`);
+      console.error("CRITICAL SAVE FAILURE:", err);
+      alert(`Publication Conflict: ${err.message || "Unknown error"}. Try changing the title slightly.`);
     } finally {
       setSaving(false);
     }
