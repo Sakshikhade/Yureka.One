@@ -27,17 +27,18 @@ export const AdminCardsTab: React.FC<AdminCardsTabProps> = ({
   }
 
   return (
-    <div className="flex-1 overflow-x-auto">
+    <div className="flex-1 overflow-x-auto overflow-y-auto max-h-[calc(100vh-16rem)] custom-scrollbar">
       <table className="w-full text-left border-collapse min-w-[1000px]">
-        <thead>
-          <tr className="bg-slate-50/50 border-b border-black/5">
-            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40">Financial Product</th>
-            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40">Issuer & Bank</th>
-            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40">Optimization</th>
-            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40">Fees & Rates</th>
-            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40 text-right">Actions</th>
+        <thead className="sticky top-0 z-20 shadow-sm">
+          <tr className="bg-slate-50 border-b border-black/5">
+            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40 bg-slate-50">Financial Product</th>
+            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40 bg-slate-50">Issuer & Bank</th>
+            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40 bg-slate-50">Optimization</th>
+            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40 bg-slate-50">Fees & Rates</th>
+            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40 text-right bg-slate-50">Actions</th>
           </tr>
         </thead>
+
         <tbody className="divide-y divide-black/5">
           {cards.map((card, idx) => (
             <tr 

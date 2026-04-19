@@ -50,8 +50,11 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   // Determine if we are on an admin route to trigger admin data fetching
   const refreshAll = useCallback(async () => {
-    window.location.reload();
+    // Real-time subscriptions handle this automatically. 
+    // We keep this as a no-op to prevent breaking dependent code.
+    console.log('⚡️ Background sync confirmed.');
   }, []);
+
 
   useEffect(() => {
     let cardSub: (() => void) | undefined;

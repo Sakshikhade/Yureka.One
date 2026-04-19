@@ -29,17 +29,18 @@ export const AdminBlogsTab: React.FC<AdminBlogsTabProps> = ({
   }
 
   return (
-    <div className="flex-1 overflow-x-auto">
+    <div className="flex-1 overflow-x-auto overflow-y-auto max-h-[calc(100vh-16rem)] custom-scrollbar">
       <table className="w-full text-left border-collapse min-w-[900px]">
-        <thead>
-          <tr className="bg-slate-50/50 border-b border-black/5">
-            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40">Publication Context</th>
-            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40">Taxonomy</th>
-            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40">Author</th>
-            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40">Status & Timeline</th>
-            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40 text-right">Management</th>
+        <thead className="sticky top-0 z-20 shadow-sm">
+          <tr className="bg-slate-50 border-b border-black/5">
+            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40 bg-slate-50">Publication Context</th>
+            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40 bg-slate-50">Taxonomy</th>
+            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40 bg-slate-50">Author</th>
+            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40 bg-slate-50">Status & Timeline</th>
+            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40 text-right bg-slate-50">Management</th>
           </tr>
         </thead>
+
         <tbody className="divide-y divide-black/5">
           {blogs.map((blog, idx) => {
             const isScheduled = blog.scheduled_at && new Date(blog.scheduled_at) > new Date();
