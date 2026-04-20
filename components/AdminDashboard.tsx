@@ -223,16 +223,16 @@ const AdminDashboard: React.FC = () => {
       const { data: { user } } = await supabase.auth.getUser();
       const userEmail = user?.email || 'admin@yureka.money';
 
-      const deletePromise = withRetry(async () => {
-        const { error } = await supabase.from(collection).delete().eq('id', id).select();
-        return { data: true, error };
-      });
+      const deletePromise = async () => {
+        const { error } = await supabase.from(collection).delete().eq('id', id);
+        if (error) throw error;
+        return { data: true, error: null };
+      };
 
-      const timeoutPromise = new Promise((_, reject) => 
-        setTimeout(() => reject(new Error("Timeout")), 6000)
-      );
-
-      await Promise.race([deletePromise, timeoutPromise]);
+      await Promise.race([
+        withRetry(deletePromise), 
+        new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout")), 10000))
+      ]);
 
       // LOG THE DELETION (Non-blocking)
       supabase.from('audit_logs').insert([{
@@ -296,7 +296,8 @@ const AdminDashboard: React.FC = () => {
       const userEmail = user?.email || 'admin@yureka.money';
 
       // ENFORCE TIMEOUT ON SAVING
-      const saveAction = (async () => {
+      // ENFORCE TIMEOUT ON SAVING
+      const saveAction = async () => {
         let payload: any = {};
         let collection = '';
 
@@ -330,46 +331,52 @@ const AdminDashboard: React.FC = () => {
             : { email: teamForm.email, role: teamForm.role, full_name: teamForm.email.split('@')[0] };
         }
 
+        // METADATA STRIPPING FOR UPDATES
+        const finalPayload = { ...payload };
+        if (editingItem) {
+          delete finalPayload.id;
+          delete finalPayload.created_at;
+          delete finalPayload.updated_at;
+        }
+
         // OPTIMISTIC UPDATE FOR EDITS
         let rollbackData: any[] = [];
         if (editingItem) {
-          if (collection === 'blogs') setBlogs(prev => { rollbackData = [...prev]; return prev.map(i => i.id === editingItem.id ? { ...i, ...payload } : i); });
-          else if (collection === 'cards') setCards(prev => { rollbackData = [...prev]; return prev.map(i => i.id === editingItem.id ? { ...i, ...payload } : i); });
-          else if (collection === 'reviews') setReviews(prev => { rollbackData = [...prev]; return prev.map(i => i.id === editingItem.id ? { ...i, ...payload } : i); });
-          else if (collection === 'users') setTeam(prev => { rollbackData = [...prev]; return prev.map(i => i.id === editingItem.id ? { ...i, ...payload } : i); });
+          if (collection === 'blogs') setBlogs(prev => { rollbackData = [...prev]; return prev.map(i => i.id === editingItem.id ? { ...i, ...finalPayload } : i); });
+          else if (collection === 'cards') setCards(prev => { rollbackData = [...prev]; return prev.map(i => i.id === editingItem.id ? { ...i, ...finalPayload } : i); });
+          else if (collection === 'reviews') setReviews(prev => { rollbackData = [...prev]; return prev.map(i => i.id === editingItem.id ? { ...i, ...finalPayload } : i); });
+          else if (collection === 'users') setTeam(prev => { rollbackData = [...prev]; return prev.map(i => i.id === editingItem.id ? { ...i, ...finalPayload } : i); });
         }
 
-        const { data, error: saveError } = editingItem 
-          ? await supabase.from(collection).update(payload).eq('id', editingItem.id).select()
-          : await supabase.from(collection).insert([payload]).select();
+        const execute = async () => {
+          const { data, error: saveError } = editingItem 
+            ? await supabase.from(collection).update(finalPayload).eq('id', editingItem.id).select()
+            : await supabase.from(collection).insert([finalPayload]).select();
+          return { data, error: saveError };
+        };
 
-        if (saveError) {
-          // ROLLBACK ON ERROR
-          if (editingItem) {
-            if (collection === 'blogs') setBlogs(rollbackData);
-            else if (collection === 'cards') setCards(rollbackData);
-            else if (collection === 'reviews') setReviews(rollbackData);
-            else if (collection === 'users') setTeam(rollbackData);
-          }
-          throw saveError;
-        }
+        const data = await withRetry(execute);
+
+        if (!data) throw new Error("Save returned no data");
 
         // FOR INSERTS, ADD TO LOCAL STATE
-        if (!editingItem && data) {
+        if (!editingItem) {
            if (collection === 'blogs') setBlogs(prev => [data[0], ...prev]);
            else if (collection === 'cards') setCards(prev => [data[0], ...prev]);
            else if (collection === 'reviews') setReviews(prev => [data[0], ...prev]);
            else if (collection === 'users') setTeam(prev => [data[0], ...prev]);
         }
-
         return data;
-      })();
+      };
 
       const isUpdate = !!editingItem;
       const recordId = editingItem?.id || 'new';
       const recordName = activeTab === 'blogs' ? blogForm.title : (activeTab === 'cards' ? cardForm.name : (activeTab === 'reviews' ? reviewForm.author : teamForm.email));
 
-      await Promise.race([saveAction, timeoutPromise]);
+      await Promise.race([
+        saveAction(), 
+        timeoutPromise
+      ]);
 
       showNotification(`${isUpdate ? 'Updated' : 'Created'} successfully!`);
       setIsModalOpen(false);
@@ -384,10 +391,10 @@ const AdminDashboard: React.FC = () => {
         record_name: recordName
       }]).then();
 
-      // Ensure we are NEVER stuck in a loading state
-      setSaving(false);
     } catch (err: any) {
+      console.error("SAVE FAILURE:", err);
       setError(err.message);
+    } finally {
       setSaving(false);
     }
   };

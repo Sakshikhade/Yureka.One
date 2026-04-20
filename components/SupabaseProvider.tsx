@@ -12,7 +12,16 @@ import {
   getReviewsAdmin,
   getWaitlist,
   getTeamMembersAdmin,
-  getAuditLogsAdmin
+  getAuditLogsAdmin,
+  fetchCardsPublic,
+  fetchBlogsPublic,
+  fetchReviewsPublic,
+  fetchCardsAdmin,
+  fetchBlogsAdmin,
+  fetchReviewsAdmin,
+  fetchWaitlist,
+  fetchTeamMembersAdmin,
+  fetchAuditLogsAdmin
 } from '../services/supabaseService';
 import { SupabaseClient } from '@supabase/supabase-js';
 
@@ -38,7 +47,7 @@ interface SupabaseContextType {
 const SupabaseContext = createContext<SupabaseContextType | undefined>(undefined);
 
 export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [cards, setCards] = useState<Card[]>(featuredCards);
+  const [cards, setCards] = useState<Card[]>([]);
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [waitlist, setWaitlist] = useState<WaitlistEntry[]>([]);
@@ -51,93 +60,99 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
-  const initialLoadTime = useRef(Date.now());
 
-  // Determine if we are on an admin route to trigger admin data fetching
-  // Force a manual re-sync by triggering the internal fetchers
+  // Force a manual re-sync by triggering the standalone fetchers
   const refreshAll = useCallback(async () => {
     setIsLoading(true);
-    // These functions are defined inside useEffect, so we'll 
-    // actually just rely on the existing subscriptions which 
-    // handle this. But for a manual "Hard Sync", we'll 
-    // re-trigger the setupAdmin logic.
-    const setupAdmin = async () => {
-      if (!location.pathname.startsWith('/admin')) return;
-      getCardsAdmin((data) => setCards(data));
-      getBlogsAdmin((data) => setBlogs(data));
-      getReviewsAdmin((data) => setReviews(data));
-      getWaitlist((data) => setWaitlist(data));
-      getTeamMembersAdmin((data) => setTeam(data));
-      getAuditLogsAdmin((data) => setLogs(data));
-      setIsAdminDataLoaded(true);
+    try {
+      if (isAdminRoute) {
+        const [c, b, r, w, t, l] = await Promise.all([
+          fetchCardsAdmin(),
+          fetchBlogsAdmin(),
+          fetchReviewsAdmin(),
+          fetchWaitlist(),
+          fetchTeamMembersAdmin(),
+          fetchAuditLogsAdmin()
+        ]);
+        setCards(c || []);
+        setBlogs(b || []);
+        setReviews(r || []);
+        setWaitlist(w || []);
+        setTeam(t || []);
+        setLogs(l || []);
+      } else {
+        const [c, b, r] = await Promise.all([
+          fetchCardsPublic(),
+          fetchBlogsPublic(),
+          fetchReviewsPublic()
+        ]);
+        setCards((c && c.length > 0) ? c : featuredCards);
+        setBlogs(b || []);
+        setReviews(r || []);
+      }
+      console.log('⚡️ Manual Cloud Resync Complete.');
+    } catch (err) {
+      console.error('Manual resync failed:', err);
+      setSyncStatus('error');
+    } finally {
       setIsLoading(false);
-    };
-    await setupAdmin();
-    console.log('⚡️ Manual Cloud Resync Complete.');
-  }, [location.pathname]);
-
+    }
+  }, [isAdminRoute]);
 
   useEffect(() => {
-    let cardSub: (() => void) | undefined;
-    let blogSub: (() => void) | undefined;
-    let reviewSub: (() => void) | undefined;
+    let subs: Array<() => void> = [];
     
-    // Admin specific subs
-    let adminCardSub: (() => void) | undefined;
-    let adminBlogSub: (() => void) | undefined;
-    let adminReviewSub: (() => void) | undefined;
-    let waitlistSub: (() => void) | undefined;
-    let teamSub: (() => void) | undefined;
-    let logsSub: (() => void) | undefined;
-
-    // Safety timeout to ensure app transitions to loaded state even on slow network
     const fallbackTimer = setTimeout(() => {
       setIsLoading(false);
-    }, 5000);
+    }, 8000);
 
-    const setupPublic = () => {
-      cardSub = getCards(
-        (data) => { 
-          setCards(data.length > 0 ? data : featuredCards); 
-          setIsLoading(false);
-          clearTimeout(fallbackTimer);
-        },
-        () => setSyncStatus('error')
-      );
-      blogSub = getBlogs(
-        (data) => setBlogs(data.filter(b => b.id && b.title && b.title !== 'Untitled Journal')), 
-        () => setSyncStatus('error')
-      );
-      reviewSub = getReviews((data) => setReviews(data), () => setSyncStatus('error'));
-    };
-
-    const setupAdmin = async () => {
-      if (!isAdminRoute) return;
-      
+    const setup = async () => {
       setIsLoading(true);
-      // Staggered subscriptions to prevent auth-token collisions
-      adminCardSub = getCardsAdmin((data) => setCards(data));
-      await new Promise(r => setTimeout(r, 200));
-      adminBlogSub = getBlogsAdmin((data) => setBlogs(data));
-      await new Promise(r => setTimeout(r, 200));
-      adminReviewSub = getReviewsAdmin((data) => setReviews(data));
-      await new Promise(r => setTimeout(r, 200));
-      waitlistSub = getWaitlist((data) => setWaitlist(data));
-      await new Promise(r => setTimeout(r, 200));
-      teamSub = getTeamMembersAdmin((data) => setTeam(data));
-      await new Promise(r => setTimeout(r, 200));
-      logsSub = getAuditLogsAdmin((data) => setLogs(data));
       
-      setIsAdminDataLoaded(true);
+      if (isAdminRoute) {
+        subs.push(getCardsAdmin((data) => setCards(data)));
+        await new Promise(r => setTimeout(r, 100));
+        subs.push(getBlogsAdmin((data) => setBlogs(data)));
+        await new Promise(r => setTimeout(r, 100));
+        subs.push(getReviewsAdmin((data) => setReviews(data)));
+        await new Promise(r => setTimeout(r, 100));
+        subs.push(getWaitlist((data) => setWaitlist(data)));
+        await new Promise(r => setTimeout(r, 100));
+        subs.push(getTeamMembersAdmin((data) => setTeam(data)));
+        await new Promise(r => setTimeout(r, 100));
+        subs.push(getAuditLogsAdmin((data) => setLogs(data)));
+        
+        setIsAdminDataLoaded(true);
+      } else {
+        subs.push(getCards(
+          (data) => { 
+            setCards(data.length > 0 ? data : featuredCards); 
+          },
+          () => setSyncStatus('error')
+        ));
+        subs.push(getBlogs(
+          (data) => setBlogs(data.filter(b => b.id && b.title && b.title !== 'Untitled Journal')), 
+          () => setSyncStatus('error')
+        ));
+        subs.push(getReviews((data) => setReviews(data), () => setSyncStatus('error')));
+      }
+      
       setIsLoading(false);
       clearTimeout(fallbackTimer);
     };
 
-    // --- NEW: Event-driven Hash Cleaner ---
+    setup();
+
+    return () => {
+      clearTimeout(fallbackTimer);
+      subs.forEach(unsub => unsub());
+    };
+  }, [isAdminRoute]);
+
+  useEffect(() => {
     const { data: { subscription: authSub } } = supabase.auth.onAuthStateChange((event) => {
       if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
         if (window.location.hash) {
-          // Clean the hash after a tiny delay to ensure everything is saved
           setTimeout(() => {
             window.history.replaceState(null, '', window.location.pathname + window.location.search);
           }, 100);
@@ -145,38 +160,20 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       }
     });
 
-    setupPublic();
-    if (isAdminRoute) setupAdmin();
-
-    // Clean URL hash after login
     const cleanHash = () => {
       if (window.location.hash) {
-        // Use replaceState to clear hash without reloading
         window.history.replaceState(null, '', window.location.pathname + window.location.search);
       }
     };
 
-    // Check for hash on initial load or auth change
     if (window.location.hash && (window.location.hash.includes('access_token') || window.location.hash === '#')) {
-      // Small timeout to let Supabase finish parsing the token
       setTimeout(cleanHash, 500);
     }
 
     return () => {
-
-      clearTimeout(fallbackTimer);
       authSub.unsubscribe();
-      if (cardSub) cardSub();
-      if (blogSub) blogSub();
-      if (reviewSub) reviewSub();
-      if (adminCardSub) adminCardSub();
-      if (adminBlogSub) adminBlogSub();
-      if (adminReviewSub) adminReviewSub();
-      if (waitlistSub) waitlistSub();
-      if (teamSub) teamSub();
-      if (logsSub) logsSub();
     };
-  }, [isAdminRoute]);
+  }, []);
 
   return (
     <SupabaseContext.Provider value={{ 
