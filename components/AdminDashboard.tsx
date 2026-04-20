@@ -312,7 +312,12 @@ const AdminDashboard: React.FC = () => {
         collection = 'users';
         payload = editingItem 
           ? { role: teamForm.role } 
-          : { email: teamForm.email, role: teamForm.role, full_name: teamForm.email.split('@')[0] };
+          : { 
+              email: teamForm.email.toLowerCase().trim(), 
+              role: teamForm.role, 
+              full_name: teamForm.email.split('@')[0],
+              created_at: new Date().toISOString()
+            };
       }
 
       // Final Sanitization: Remove metadata that Supabase rejects on inserts/updates
@@ -367,10 +372,25 @@ const AdminDashboard: React.FC = () => {
       supabase.from('audit_logs').insert([{
         user_email: userEmail,
         action: isUpdate ? 'UPDATE' : 'INSERT',
-        table_name: activeTab,
+        table_name: collection,
         record_id: savedItem.id,
         record_name: recordName
       }]).then();
+
+      // IF NEW TEAM MEMBER, SEND NOTIFICATION
+      if (!isUpdate && activeTab === 'settings') {
+        fetch("/api/notify-team-member", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: teamForm.email,
+            role: teamForm.role,
+            firstName: teamForm.email.split('@')[0]
+          })
+        }).then(res => res.json())
+          .then(data => console.log("Notification status:", data))
+          .catch(e => console.error("Notification failed:", e));
+      }
 
     } catch (err: any) {
       console.error("💥 CRITICAL SAVE FAILURE:", err);
