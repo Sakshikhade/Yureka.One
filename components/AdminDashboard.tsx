@@ -288,121 +288,105 @@ const AdminDashboard: React.FC = () => {
     setSaving(true);
     setError(null);
 
-    const timeoutPromise = new Promise((_, reject) => 
-      setTimeout(() => reject(new Error("Operation timed out (8s). The data might still be saving in the background.")), 8000)
-    );
-
     try {
-      const { data: { user } } = await supabase.auth.getUser();
       const userEmail = user?.email || 'admin@yureka.money';
+      let payload: any = {};
+      let collection = '';
 
-      // ENFORCE TIMEOUT ON SAVING
-      const saveAction = async () => {
-        let payload: any = {};
-        let collection = '';
-
-        if (activeTab === 'blogs') {
-          collection = 'blogs';
-          const timestampedSlug = blogForm.slug || `${blogForm.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}-${Math.random().toString(36).substring(7)}`;
-          payload = cleanData({
-            ...blogForm,
-            title: blogForm.title || 'Untitled Journal',
-            slug: editingItem ? blogForm.slug : timestampedSlug,
-            author: blogForm.author || 'Yureka Editorial',
-            category: blogForm.category || 'Credit Cards',
-            image: blogForm.image || 'https://picsum.photos/seed/blog/800/600',
-            status: 'published',
-            read_time: blogForm.read_time || '5 min read',
-            scheduled_at: (blogForm.publishMode === 'later' && blogForm.scheduled_at) ? new Date(blogForm.scheduled_at).toISOString() : null
-          });
-        } 
-        else if (activeTab === 'cards') {
-          collection = 'cards';
-          // Ensure a slug exists if empty
-          const cardPayload = { ...cardForm };
-          if (!cardPayload.slug) {
-            cardPayload.slug = generateSlug(cardPayload.name, cardPayload.bank) || `card-${Date.now()}`;
-          }
-          payload = cleanData(cardPayload);
+      if (activeTab === 'blogs') {
+        collection = 'blogs';
+        const timestampedSlug = blogForm.slug || `${blogForm.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}-${Date.now()}`;
+        payload = cleanData({
+          ...blogForm,
+          title: blogForm.title || 'Untitled Journal',
+          slug: editingItem ? blogForm.slug : timestampedSlug,
+          author: blogForm.author || 'Yureka Editorial',
+          category: blogForm.category || 'Credit Cards',
+          image: blogForm.image || 'https://picsum.photos/seed/blog/800/600',
+          status: 'published',
+          read_time: blogForm.read_time || '5 min read',
+          scheduled_at: (blogForm.publishMode === 'later' && blogForm.scheduled_at) ? new Date(blogForm.scheduled_at).toISOString() : null
+        });
+      } 
+      else if (activeTab === 'cards') {
+        collection = 'cards';
+        const cardPayload = { ...cardForm };
+        if (!cardPayload.slug) {
+          cardPayload.slug = generateSlug(cardPayload.name, cardPayload.bank) || `card-${Date.now()}`;
         }
-        else if (activeTab === 'reviews') {
-          collection = 'reviews';
-          payload = cleanData(reviewForm);
-        }
-        else if (activeTab === 'settings') {
-          collection = 'users';
-          payload = editingItem 
-            ? { role: teamForm.role } 
-            : { email: teamForm.email, role: teamForm.role, full_name: teamForm.email.split('@')[0] };
-        }
+        payload = cleanData(cardPayload);
+      }
+      else if (activeTab === 'reviews') {
+        collection = 'reviews';
+        payload = cleanData(reviewForm);
+      }
+      else if (activeTab === 'settings') {
+        collection = 'users';
+        payload = editingItem 
+          ? { role: teamForm.role } 
+          : { email: teamForm.email, role: teamForm.role, full_name: teamForm.email.split('@')[0] };
+      }
 
-        // METADATA STRIPPING FOR UPDATES/INSERTS
-        const finalPayload = { ...payload };
-        delete finalPayload.id;
-        delete finalPayload.created_at;
-        delete finalPayload.updated_at;
+      // Final Sanitization: Remove metadata that Supabase rejects on inserts/updates
+      const finalPayload = { ...payload };
+      delete finalPayload.id;
+      delete finalPayload.created_at;
+      delete finalPayload.updated_at;
 
-        // OPTIMISTIC UPDATE FOR EDITS (Visual only, listener will sync true state)
-        if (editingItem) {
-          if (collection === 'blogs') setBlogs(prev => prev.map(i => i.id === editingItem.id ? { ...i, ...finalPayload } : i));
-          else if (collection === 'cards') setCards(prev => prev.map(i => i.id === editingItem.id ? { ...i, ...finalPayload } : i));
-          else if (collection === 'reviews') setReviews(prev => prev.map(i => i.id === editingItem.id ? { ...i, ...finalPayload } : i));
-          else if (collection === 'users') setTeam(prev => prev.map(i => i.id === editingItem.id ? { ...i, ...finalPayload } : i));
-        }
-
-        const execute = async () => {
-          // Use supabaseAdmin to ensure administrative actions always succeed bypasssing RLS
-          const query = editingItem 
-            ? supabaseAdmin.from(collection).update(finalPayload).eq('id', editingItem.id)
-            : supabaseAdmin.from(collection).insert([finalPayload]);
-          
-          const { data, error: saveError } = await query.select();
-          return { data, error: saveError };
-        };
-
-        const resultData = await withRetry(execute);
-
-        if (!resultData || resultData.length === 0) {
-          throw new Error("The operation completed but no data was returned from the database.");
-        }
-
-        // FOR INSERTS, PUSH TO LOCAL STATE
-        if (!editingItem) {
-           const newItem = resultData[0];
-           if (collection === 'blogs') setBlogs(prev => [newItem, ...prev]);
-           else if (collection === 'cards') setCards(prev => [newItem, ...prev]);
-           else if (collection === 'reviews') setReviews(prev => [newItem, ...prev]);
-           else if (collection === 'users') setTeam(prev => [newItem, ...prev]);
-        }
-        
-        return resultData;
-      };
+      console.log(`📤 Saving to ${collection}:`, finalPayload);
 
       const isUpdate = !!editingItem;
       const recordId = editingItem?.id || 'new';
       const recordName = activeTab === 'blogs' ? blogForm.title : (activeTab === 'cards' ? cardForm.name : (activeTab === 'reviews' ? reviewForm.author : teamForm.email));
 
-      await Promise.race([
-        saveAction(), 
-        new Promise((_, reject) => setTimeout(() => reject(new Error("The save operation is taking longer than expected (15s). Please check your connection.")), 15000))
-      ]);
+      // Use supabaseAdmin to bypass RLS and ensure reliability for admin users
+      const query = isUpdate 
+        ? supabaseAdmin.from(collection).update(finalPayload).eq('id', editingItem.id)
+        : supabaseAdmin.from(collection).insert([finalPayload]);
+      
+      const { data, error: saveError } = await query.select();
+
+      if (saveError) {
+        console.error("❌ Database Save Error:", saveError);
+        throw new Error(saveError.message || "Failed to save to database. Check your network or permissions.");
+      }
+
+      if (!data || data.length === 0) {
+        throw new Error("The operation was successful, but the database did not return the new record. Try refreshing.");
+      }
+
+      const savedItem = data[0];
+
+      // Update global state - SupabaseProvider listeners will also pick this up, 
+      // but we update locally for immediate UX response.
+      if (isUpdate) {
+        if (collection === 'blogs') setBlogs(prev => prev.map(i => i.id === editingItem.id ? savedItem : i));
+        else if (collection === 'cards') setCards(prev => prev.map(i => i.id === editingItem.id ? savedItem : i));
+        else if (collection === 'reviews') setReviews(prev => prev.map(i => i.id === editingItem.id ? savedItem : i));
+        else if (collection === 'users') setTeam(prev => prev.map(i => i.id === editingItem.id ? savedItem : i));
+      } else {
+        if (collection === 'blogs') setBlogs(prev => [savedItem, ...prev]);
+        else if (collection === 'cards') setCards(prev => [savedItem, ...prev]);
+        else if (collection === 'reviews') setReviews(prev => [savedItem, ...prev]);
+        else if (collection === 'users') setTeam(prev => [savedItem, ...prev]);
+      }
 
       showNotification(`${isUpdate ? 'Updated' : 'Created'} successfully!`);
       setIsModalOpen(false);
       setEditingItem(null);
 
-      // LOG THE ACTION (Fire and forget)
+      // Audit Logging (Fire and forget)
       supabase.from('audit_logs').insert([{
         user_email: userEmail,
         action: isUpdate ? 'UPDATE' : 'INSERT',
         table_name: activeTab,
-        record_id: recordId,
+        record_id: savedItem.id,
         record_name: recordName
       }]).then();
 
     } catch (err: any) {
-      console.error("SAVE FAILURE:", err);
-      setError(err.message);
+      console.error("💥 CRITICAL SAVE FAILURE:", err);
+      setError(err.message || "An unexpected error occurred while saving.");
     } finally {
       setSaving(false);
     }
