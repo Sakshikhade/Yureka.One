@@ -198,26 +198,8 @@ const AdminDashboard: React.FC = () => {
 
   const handleDeleteConfirm = async () => {
     if (!itemToDelete) return;
-    
-    // CAPTURE SNAPSHOT FOR ROLLBACK
-    let rollbackData: any[] = [];
-    const collection = itemToDelete.collection;
-    const id = itemToDelete.id;
-
-    // OPTIMISTIC UPDATE
-    if (collection === 'blogs') {
-      setBlogs(prev => { rollbackData = [...prev]; return prev.filter(i => i.id !== id); });
-    } else if (collection === 'cards') {
-      setCards(prev => { rollbackData = [...prev]; return prev.filter(i => i.id !== id); });
-    } else if (collection === 'reviews') {
-      setReviews(prev => { rollbackData = [...prev]; return prev.filter(i => i.id !== id); });
-    } else if (collection === 'users') {
-      setTeam(prev => { rollbackData = [...prev]; return prev.filter(i => i.id !== id); });
-    } else if (collection === 'waitlist') {
-      setWaitlist(prev => { rollbackData = [...prev]; return prev.filter(i => i.id !== id); });
-    }
-
-    setIsDeleteModalOpen(false);
+    const { collection, id } = itemToDelete;
+    setError(null);
     
     try {
       const userEmail = user?.email || 'admin@yureka.money';
@@ -241,19 +223,10 @@ const AdminDashboard: React.FC = () => {
         record_name: 'REMOVED_ITEM'
       }]).then();
 
-      showNotification(`${collection.toUpperCase()} item deleted successfully.`);
-      setItemToDelete(null);
-
     } catch (err: any) {
       console.error("💥 CRITICAL DELETE FAILURE:", err);
-      // ROLLBACK local state to restore the item that failed to delete
-      if (collection === 'blogs') setBlogs(rollbackData);
-      else if (collection === 'cards') setCards(rollbackData);
-      else if (collection === 'reviews') setReviews(rollbackData);
-      else if (collection === 'users') setTeam(rollbackData);
-      else if (collection === 'waitlist') setWaitlist(rollbackData);
-
       showNotification(`Failed to delete: ${err.message || "Database error"}`, 'error');
+    } finally {
       setIsDeleteModalOpen(false);
       setItemToDelete(null);
     }

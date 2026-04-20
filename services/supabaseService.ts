@@ -3,7 +3,6 @@ import { Blog, Card, WaitlistEntry, NewsletterEntry, Review } from '../types';
 
 /**
  * Robust retry wrapper for Supabase fetches with exponential backoff.
- * Helps prevent the "hard refresh" issue by automatically recovering from transient errors.
  */
 export const withRetry = async <T>(
   fn: () => Promise<{ data: T | null; error: any }>,
@@ -13,7 +12,6 @@ export const withRetry = async <T>(
   try {
     const { data, error } = await fn();
     if (error) {
-      // Check for specific transient errors that warrant a retry
       const isTransient = error.code === 'PGRST116' || error.message?.includes('fetch') || error.status === 502 || error.status === 503;
       if (isTransient && retries > 0) throw error;
       if (error) throw error;
@@ -21,29 +19,22 @@ export const withRetry = async <T>(
     return data;
   } catch (err) {
     if (retries > 0) {
-      console.warn(`Supabase sync failed, retrying in ${delay}ms... (${retries} left)`, err);
+      console.warn(`Supabase sync failed, retrying in ${delay}ms...`, err);
       await new Promise(resolve => setTimeout(resolve, delay));
       return withRetry(fn, retries - 1, delay * 2);
     }
-    console.error('Supabase critical sync failure:', err);
     throw err;
   }
 };
 
-// Helper for cleaning objects for Supabase (removing undefined/null)
 export const cleanData = (obj: any) => {
   const cleaned = { ...obj };
   Object.keys(cleaned).forEach(key => {
     if (cleaned[key] === undefined) delete cleaned[key];
-    // Convert empty strings to null for date fields
-    if (key === 'scheduled_at' && cleaned[key] === '') {
-      cleaned[key] = null;
-    }
-    // Convert benefits array to Postgres format if needed
+    if (key === 'scheduled_at' && cleaned[key] === '') cleaned[key] = null;
     if (key === 'benefits' && Array.isArray(cleaned[key])) {
       cleaned[key] = cleaned[key].filter((b: string) => b && typeof b === 'string' && b.trim() !== '');
     }
-    // Handle benefit_items array of objects
     if (key === 'benefit_items' && Array.isArray(cleaned[key])) {
       cleaned[key] = cleaned[key].filter(b => b && b.heading?.trim() !== '');
     }
@@ -51,275 +42,170 @@ export const cleanData = (obj: any) => {
   return cleaned;
 };
 
-// --- Blogs ---
+// --- PUBLIC FETCHERS ---
 export const fetchBlogsPublic = async () => {
   const now = new Date().toISOString();
-  return await withRetry<Blog[]>(() => 
-    Promise.resolve(supabase
-      .from('blogs')
-      .select('*')
-      .eq('status', 'published')
-      .or(`scheduled_at.is.null,scheduled_at.lte.${now}`)
-      .order('created_at', { ascending: false }))
-  );
+  return await withRetry<Blog[]>(() => supabase.from('blogs').select('*').eq('status', 'published').or(`scheduled_at.is.null,scheduled_at.lte.${now}`).order('created_at', { ascending: false }));
 };
 
-export const fetchBlogsAdmin = async () => {
-  return await withRetry<Blog[]>(() => 
-    Promise.resolve(supabase
-      .from('blogs')
-      .select('*')
-      .order('created_at', { ascending: false }))
-  );
-};
-
-export const getBlogs = (callback: (blogs: Blog[]) => void, onError?: (error: string) => void) => {
-  const execute = async () => {
-    try {
-      const data = await fetchBlogsPublic();
-      callback(data || []);
-    } catch (error: any) {
-      console.error('Error fetching blogs:', error);
-      if (onError) onError(error.message || 'Failed to sync blogs archive.');
-    }
-  };
-  execute();
-  
-  const channelId = `blogs-public-${Math.random().toString(36).substring(2, 11)}`;
-  const channel = supabase.channel(channelId)
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'blogs' }, () => execute())
-    .subscribe((status) => {
-        if (status === 'CHANNEL_ERROR' && onError) onError('Real-time connection interrupted.');
-    });
-    
-  return () => { supabase.removeChannel(channel); };
-};
-
-export const getBlogsAdmin = (callback: (blogs: Blog[]) => void, onError?: (error: string) => void) => {
-  const execute = async () => {
-    try {
-      const data = await fetchBlogsAdmin();
-      callback(data || []);
-    } catch (error: any) {
-      console.error('Error fetching blogs admin:', error);
-      if (onError) onError(error.message || 'Failed to sync admin blogs.');
-    }
-  };
-  execute();
-  
-  const channelId = `blogs-admin-${Math.random().toString(36).substring(2, 11)}`;
-  const channel = supabase.channel(channelId)
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'blogs' }, () => execute())
-    .subscribe();
-    
-  return () => { supabase.removeChannel(channel); };
-};
-
-export const addBlog = async (blog: any) => {
-  return await withRetry(async () => {
-    const { data, error } = await supabase.from('blogs').insert([cleanData(blog)]).select();
-    if (error) return { data: null, error };
-    return { data: data[0].id, error: null };
-  });
-};
-
-export const updateBlog = async (id: string, blogData: any) => {
-  const { error } = await supabase.from('blogs').update(cleanData(blogData)).eq('id', id);
-  if (error) throw error;
-};
-
-export const getBlogBySlug = async (slug: string): Promise<Blog | null> => {
-  try {
-    const { data, error } = await supabase.from('blogs').select('*').eq('slug', slug).single();
-    if (error) throw error;
-    return data;
-  } catch (error) {
-    console.error('getBlogBySlug Error:', error);
-    return null;
-  }
-};
-
-export const deleteBlog = async (id: string) => {
-  const { error } = await supabase.from('blogs').delete().eq('id', id);
-  if (error) throw error;
-};
-
-// --- Cards ---
 export const fetchCardsPublic = async () => {
-  return await withRetry<Card[]>(() => 
-    Promise.resolve(supabase
-      .from('cards')
-      .select('*')
-      .eq('status', 'published')
-      .order('created_at', { ascending: false }))
-  );
+  return await withRetry<Card[]>(() => supabase.from('cards').select('*').eq('status', 'published').order('created_at', { ascending: false }));
+};
+
+export const fetchReviewsPublic = async () => {
+  return await withRetry<Review[]>(() => supabase.from('reviews').select('*').eq('status', 'published').order('created_at', { ascending: false }));
+};
+
+// --- ADMIN FETCHERS (Using supabaseAdmin to bypass RLS) ---
+export const fetchBlogsAdmin = async () => {
+  return await withRetry<Blog[]>(() => supabaseAdmin.from('blogs').select('*').order('created_at', { ascending: false }));
 };
 
 export const fetchCardsAdmin = async () => {
-  return await withRetry<Card[]>(() => 
-    Promise.resolve(supabase
-      .from('cards')
-      .select('*')
-      .order('created_at', { ascending: false }))
-  );
+  return await withRetry<Card[]>(() => supabaseAdmin.from('cards').select('*').order('created_at', { ascending: false }));
 };
 
-export const getCardsAdmin = (callback: (cards: Card[]) => void, onError?: (error: string) => void) => {
-  const execute = async () => {
+export const fetchReviewsAdmin = async () => {
+  return await withRetry<Review[]>(() => supabaseAdmin.from('reviews').select('*').order('created_at', { ascending: false }));
+};
+
+export const fetchWaitlist = async () => {
+  return await withRetry<WaitlistEntry[]>(() => supabaseAdmin.from('waitlist').select('*').order('created_at', { ascending: false }));
+};
+
+export const fetchTeamMembersAdmin = async () => {
+  return await withRetry<any[]>(() => supabaseAdmin.from('users').select('*').order('created_at', { ascending: false }));
+};
+
+export const fetchAuditLogsAdmin = async () => {
+  return await withRetry<any[]>(() => supabaseAdmin.from('audit_logs').select('*').order('created_at', { ascending: false }).limit(100));
+};
+
+// --- REALTIME LISTENERS (PUBLIC) ---
+export const getBlogs = (callback: (blogs: Blog[]) => void, onError?: (error: string) => void) => {
+  const execute = async () => { 
     try {
-      const data = await fetchCardsAdmin();
-      callback(data || []);
-    } catch (error: any) {
-      console.error('Error fetching cards admin:', error);
-      if (onError) onError(error.message || 'Failed to sync admin repository.');
+      const data = await fetchBlogsPublic(); callback(data || []); 
+    } catch (err: any) {
+      if (onError) onError(err.message);
     }
   };
   execute();
-  
-  const channelId = `cards-admin-${Math.random().toString(36).substring(2, 11)}`;
-  const channel = supabase.channel(channelId)
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'cards' }, () => execute())
-    .subscribe();
-    
-  return () => { supabase.removeChannel(channel); };
+  const sub = supabase.channel('blogs-public').on('postgres_changes', { event: '*', schema: 'public', table: 'blogs' }, () => execute()).subscribe();
+  return () => { sub.unsubscribe(); };
 };
 
 export const getCards = (callback: (cards: Card[]) => void, onError?: (error: string) => void) => {
-  const execute = async () => {
+  const execute = async () => { 
     try {
-      const data = await fetchCardsPublic();
-      callback(data || []);
-    } catch (error: any) {
-      console.error('Error fetching cards public:', error);
-      if (onError) onError(error.message || 'Failed to sync card matrix.');
+      const data = await fetchCardsPublic(); callback(data || []); 
+    } catch (err: any) {
+      if (onError) onError(err.message);
     }
   };
   execute();
-  
-  const channelId = `cards-public-${Math.random().toString(36).substring(2, 11)}`;
-  const channel = supabase.channel(channelId)
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'cards' }, () => execute())
-    .subscribe();
-    
-  return () => { supabase.removeChannel(channel); };
+  const sub = supabase.channel('cards-public').on('postgres_changes', { event: '*', schema: 'public', table: 'cards' }, () => execute()).subscribe();
+  return () => { sub.unsubscribe(); };
 };
 
-export const addCard = async (card: any) => {
-  return await withRetry(async () => {
-    const { data, error } = await supabase.from('cards').insert([cleanData(card)]).select();
-    if (error) return { data: null, error };
-    return { data: data[0].id, error: null };
-  });
+export const getReviews = (callback: (reviews: Review[]) => void, onError?: (error: string) => void) => {
+  const execute = async () => { 
+    try {
+      const data = await fetchReviewsPublic(); callback(data || []); 
+    } catch (err: any) {
+      if (onError) onError(err.message);
+    }
+  };
+  execute();
+  const sub = supabase.channel('reviews-public').on('postgres_changes', { event: '*', schema: 'public', table: 'reviews' }, () => execute()).subscribe();
+  return () => { sub.unsubscribe(); };
 };
 
-export const updateCard = async (id: string, cardData: any) => {
-  const { error } = await supabase.from('cards').update(cleanData(cardData)).eq('id', id);
-  if (error) throw error;
+// --- REALTIME LISTENERS (ADMIN) ---
+export const getBlogsAdmin = (callback: (blogs: Blog[]) => void, onError?: (error: string) => void) => {
+  const execute = async () => { 
+    try {
+      const data = await fetchBlogsAdmin(); callback(data || []); 
+    } catch (err: any) {
+      if (onError) onError(err.message);
+    }
+  };
+  execute();
+  const sub = supabaseAdmin.channel('blogs-admin').on('postgres_changes', { event: '*', schema: 'public', table: 'blogs' }, () => execute()).subscribe();
+  return () => { sub.unsubscribe(); };
 };
 
-export const getCardById = async (id: string): Promise<Card | null> => {
-  try {
-    const { data, error } = await supabase.from('cards').select('*').eq('id', id).single();
-    if (error) throw error;
-    return data;
-  } catch (error) {
-    console.error('getCardById Error:', error);
-    return null;
-  }
+export const getCardsAdmin = (callback: (cards: Card[]) => void, onError?: (error: string) => void) => {
+  const execute = async () => { 
+    try {
+      const data = await fetchCardsAdmin(); callback(data || []); 
+    } catch (err: any) {
+      if (onError) onError(err.message);
+    }
+  };
+  execute();
+  const sub = supabaseAdmin.channel('cards-admin').on('postgres_changes', { event: '*', schema: 'public', table: 'cards' }, () => execute()).subscribe();
+  return () => { sub.unsubscribe(); };
 };
 
-export const getCardBySlug = async (slugOrId: string): Promise<Card | null> => {
-  try {
-    let result = await supabase.from('cards').select('*').eq('slug', slugOrId).single();
-    if (!result.error && result.data) return result.data;
-    
-    result = await supabase.from('cards').select('*').eq('id', slugOrId).single();
-    if (result.error) throw result.error;
-    return result.data;
-  } catch (error) {
-    console.error('getCardBySlug Error:', error);
-    return null;
-  }
-};
-
-export const deleteCard = async (id: string) => {
-  const { error } = await supabase.from('cards').delete().eq('id', id);
-  if (error) throw error;
-};
-
-// --- Waitlist ---
-export const fetchWaitlist = async () => {
-  return await withRetry<WaitlistEntry[]>(() => 
-    Promise.resolve(supabase
-      .from('waitlist')
-      .select('*')
-      .order('created_at', { ascending: false }))
-  );
+export const getReviewsAdmin = (callback: (reviews: Review[]) => void, onError?: (error: string) => void) => {
+  const execute = async () => { 
+    try {
+      const data = await fetchReviewsAdmin(); callback(data || []); 
+    } catch (err: any) {
+      if (onError) onError(err.message);
+    }
+  };
+  execute();
+  const sub = supabaseAdmin.channel('reviews-admin').on('postgres_changes', { event: '*', schema: 'public', table: 'reviews' }, () => execute()).subscribe();
+  return () => { sub.unsubscribe(); };
 };
 
 export const getWaitlist = (callback: (entries: WaitlistEntry[]) => void) => {
-  const execute = async () => {
-    try {
-      const data = await fetchWaitlist();
-      callback(data || []);
-    } catch (error) {
-      console.error('Error fetching waitlist:', error);
-    }
-  };
+  const execute = async () => { const data = await fetchWaitlist(); callback(data || []); };
   execute();
-  
-  const channelId = `waitlist-realtime-${Math.random().toString(36).substring(2, 11)}`;
-  const channel = supabase.channel(channelId)
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'waitlist' }, () => execute())
-    .subscribe();
-    
-  return () => { supabase.removeChannel(channel); };
+  const sub = supabaseAdmin.channel('waitlist-admin').on('postgres_changes', { event: '*', schema: 'public', table: 'waitlist' }, () => execute()).subscribe();
+  return () => { sub.unsubscribe(); };
+};
+
+export const getTeamMembersAdmin = (callback: (members: any[]) => void) => {
+  const execute = async () => { const data = await fetchTeamMembersAdmin(); callback(data || []); };
+  execute();
+  const sub = supabaseAdmin.channel('team-admin').on('postgres_changes', { event: '*', schema: 'public', table: 'users' }, () => execute()).subscribe();
+  return () => { sub.unsubscribe(); };
+};
+
+export const getAuditLogsAdmin = (callback: (logs: any[]) => void) => {
+  const execute = async () => { const data = await fetchAuditLogsAdmin(); callback(data || []); };
+  execute();
+  const sub = supabaseAdmin.channel('logs-admin').on('postgres_changes', { event: '*', schema: 'public', table: 'audit_logs' }, () => execute()).subscribe();
+  return () => { sub.unsubscribe(); };
+};
+
+// --- MISC UTILS ---
+export const getBlogBySlug = async (slug: string): Promise<Blog | null> => {
+  const { data } = await supabase.from('blogs').select('*').eq('slug', slug).single();
+  return data;
+};
+
+export const getCardBySlug = async (slugOrId: string): Promise<Card | null> => {
+  let result = await supabase.from('cards').select('*').eq('slug', slugOrId).single();
+  if (result.data) return result.data;
+  result = await supabase.from('cards').select('*').eq('id', slugOrId).single();
+  return result.data;
+};
+
+export const checkIfAdmin = async (userId: string | undefined, userEmail: string | undefined) => {
+  if (userEmail === "toanweshbiswas@gmail.com" || userEmail === "buildwithjupyter.network@gmail.com") return true;
+  if (!userEmail) return false;
+  const { data } = await supabase.from('users').select('role').eq('email', userEmail).single();
+  return data ? ['admin', 'editor', 'writer'].includes(data.role) : false;
 };
 
 export const joinWaitlist = async (entry: any) => {
-  const dataToInsert = { ...cleanData(entry), status: entry.status || 'pending' };
-  const { data, error } = await supabase.from('waitlist').insert([dataToInsert]).select();
+  const { data, error } = await supabase.from('waitlist').insert([cleanData(entry)]).select();
   if (error) throw error;
   return data[0].id;
-};
-
-export const updateWaitlistStatus = async (id: string, status: 'accepted' | 'rejected' | 'on_hold' | 'pending') => {
-  const { error } = await supabase.from('waitlist').update({ status }).eq('id', id);
-  if (error) throw error;
-};
-
-export const deleteWaitlistEntry = async (id: string) => {
-  const { error } = await supabase.from('waitlist').delete().eq('id', id);
-  if (error) throw error;
-};
-
-// --- Newsletters ---
-export const fetchNewsletters = async () => {
-  return await withRetry<NewsletterEntry[]>(() => 
-    Promise.resolve(supabase
-      .from('newsletters')
-      .select('*')
-      .order('created_at', { ascending: false }))
-  );
-};
-
-export const getNewsletters = (callback: (entries: NewsletterEntry[]) => void) => {
-  const execute = async () => {
-    try {
-      const data = await fetchNewsletters();
-      callback(data || []);
-    } catch (error) {
-      console.error('Error fetching newsletters:', error);
-    }
-  };
-  execute();
-  
-  const channelId = `newsletters-realtime-${Math.random().toString(36).substring(2, 11)}`;
-  const channel = supabase.channel(channelId)
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'newsletters' }, () => execute())
-    .subscribe();
-    
-  return () => { supabase.removeChannel(channel); };
 };
 
 export const subscribeNewsletter = async (email: string) => {
@@ -327,205 +213,3 @@ export const subscribeNewsletter = async (email: string) => {
   if (error) throw error;
   return data[0].id;
 };
-
-export const deleteNewsletterEntry = async (id: string) => {
-  const { error } = await supabase.from('newsletters').delete().eq('id', id);
-  if (error) throw error;
-};
-
-// --- Reviews ---
-export const fetchReviewsPublic = async () => {
-  return await withRetry<Review[]>(() => 
-    Promise.resolve(supabase
-      .from('reviews')
-      .select('*')
-      .eq('status', 'published')
-      .order('created_at', { ascending: false }))
-  );
-};
-
-export const fetchReviewsAdmin = async () => {
-  return await withRetry<Review[]>(() => 
-    Promise.resolve(supabase
-      .from('reviews')
-      .select('*')
-      .order('created_at', { ascending: false }))
-  );
-};
-
-export const getReviews = (callback: (reviews: Review[]) => void, onError?: (error: string) => void) => {
-  const execute = async () => {
-    try {
-      const data = await fetchReviewsPublic();
-      callback(data || []);
-    } catch (error: any) {
-      console.error('Error fetching reviews:', error);
-      if (onError) onError(error.message || 'Failed to sync community reviews.');
-    }
-  };
-  execute();
-  
-  const channelId = `reviews-public-${Math.random().toString(36).substring(2, 11)}`;
-  const channel = supabase.channel(channelId)
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'reviews' }, () => execute())
-    .subscribe();
-    
-  return () => { supabase.removeChannel(channel); };
-};
-
-export const getReviewsAdmin = (callback: (reviews: Review[]) => void, onError?: (error: string) => void) => {
-  const execute = async () => {
-    try {
-      const data = await fetchReviewsAdmin();
-      callback(data || []);
-    } catch (error: any) {
-      console.error('Error fetching reviews admin:', error);
-      if (onError) onError(error.message || 'Failed to sync admin reviews.');
-    }
-  };
-  execute();
-  
-  const channelId = `reviews-admin-${Math.random().toString(36).substring(2, 11)}`;
-  const channel = supabase.channel(channelId)
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'reviews' }, () => execute())
-    .subscribe();
-    
-  return () => { supabase.removeChannel(channel); };
-};
-
-export const addReview = async (review: any) => {
-  return await withRetry(async () => {
-    const { data, error } = await supabase.from('reviews').insert([cleanData(review)]).select();
-    if (error) return { data: null, error };
-    return { data: data[0].id, error: null };
-  });
-};
-
-export const updateReview = async (id: string, reviewData: any) => {
-  const { error } = await supabase.from('reviews').update(cleanData(reviewData)).eq('id', id);
-  if (error) throw error;
-};
-
-export const deleteReview = async (id: string) => {
-  const { error } = await supabase.from('reviews').delete().eq('id', id);
-  if (error) throw error;
-};
-
-// --- Admin Check ---
-export const checkIfAdmin = async (userId: string | undefined, userEmail: string | undefined) => {
-  if (userEmail === "toanweshbiswas@gmail.com") return true;
-  if (!userEmail) return false;
-  
-  try {
-    const { data, error } = await supabase
-      .from('users')
-      .select('role')
-      .eq('email', userEmail)
-      .single();
-    
-    if (error || !data) return false;
-    return ['admin', 'editor', 'writer'].includes(data.role);
-  } catch (error) {
-    console.error('Error checking admin status:', error);
-    return false;
-  }
-};
-
-// --- Team Management ---
-export const fetchTeamMembersAdmin = async () => {
-  return await withRetry<any[]>(() => 
-    Promise.resolve(supabase
-      .from('users')
-      .select('*')
-      .order('created_at', { ascending: false }))
-  );
-};
-
-export const getTeamMembers = async (): Promise<any[]> => {
-  const data = await fetchTeamMembersAdmin();
-  return data || [];
-};
-
-export const inviteTeamMember = async (email: string, role: string) => {
-  return await withRetry(async () => {
-    const { data, error } = await supabase
-      .from('users')
-      .insert([{ email, role, full_name: email.split('@')[0] }])
-      .select();
-    if (error) return { data: null, error };
-    return { data: data[0], error: null };
-  });
-};
-
-export const updateUserRole = async (userId: string, role: string) => {
-  const { error } = await supabase
-    .from('users')
-    .update({ role })
-    .eq('id', userId);
-  if (error) throw error;
-};
-
-export const deleteUser = async (userId: string) => {
-  const { error } = await supabase
-    .from('users')
-    .delete()
-    .eq('id', userId);
-  if (error) throw error;
-};
-
-export const getTeamMembersAdmin = (callback: (members: any[]) => void, onError?: (error: string) => void) => {
-  const execute = async () => {
-    try {
-      const data = await fetchTeamMembersAdmin();
-      callback(data || []);
-    } catch (error: any) {
-      console.error('Error fetching team admin:', error);
-      if (onError) onError(error.message || 'Failed to sync team registry.');
-    }
-  };
-  execute();
-  
-  const channelId = `team-admin-${Math.random().toString(36).substring(2, 11)}`;
-  const channel = supabase.channel(channelId)
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'users' }, () => execute())
-    .subscribe();
-    
-  return () => { supabase.removeChannel(channel); };
-};
-
-// --- Audit Logs ---
-export const fetchAuditLogsAdmin = async () => {
-  return await withRetry<any[]>(() => 
-    Promise.resolve(supabase
-      .from('audit_logs')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .limit(100))
-  );
-};
-
-export const getAuditLogs = async (): Promise<any[]> => {
-  const data = await fetchAuditLogsAdmin();
-  return data || [];
-};
-
-export const getAuditLogsAdmin = (callback: (logs: any[]) => void, onError?: (error: string) => void) => {
-  const execute = async () => {
-    try {
-      const data = await fetchAuditLogsAdmin();
-      callback(data || []);
-    } catch (error: any) {
-      console.error('Error fetching audit logs admin:', error);
-      if (onError) onError(error.message || 'Failed to sync activity logs.');
-    }
-  };
-  execute();
-  
-  const channelId = `logs-admin-${Math.random().toString(36).substring(2, 11)}`;
-  const channel = supabase.channel(channelId)
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'audit_logs' }, () => execute())
-    .subscribe();
-    
-  return () => { supabase.removeChannel(channel); };
-};
-
