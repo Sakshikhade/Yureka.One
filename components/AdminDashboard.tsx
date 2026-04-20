@@ -265,18 +265,35 @@ const AdminDashboard: React.FC = () => {
 
       if (activeTab === 'blogs') {
         collection = 'blogs';
-        const timestampedSlug = blogForm.slug || `${blogForm.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}-${Date.now()}`;
-        payload = cleanData({
-          ...blogForm,
+        // Generate a valid slug if missing
+        const rawSlug = (blogForm.slug || blogForm.title || 'untitled').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        const finalSlug = editingItem ? blogForm.slug : (rawSlug || `journal-${Date.now()}`);
+        
+        // Construct a clean payload matching the DB schema exactly
+        payload = {
           title: blogForm.title || 'Untitled Journal',
-          slug: editingItem ? blogForm.slug : timestampedSlug,
+          excerpt: blogForm.excerpt || '',
+          content: blogForm.content || '',
           author: blogForm.author || 'Yureka Editorial',
           category: blogForm.category || 'Credit Cards',
           image: blogForm.image || 'https://picsum.photos/seed/blog/800/600',
+          slug: finalSlug,
           status: 'published',
-          read_time: blogForm.read_time || '5 min read',
-          scheduled_at: (blogForm.publishMode === 'later' && blogForm.scheduled_at) ? new Date(blogForm.scheduled_at).toISOString() : null
-        });
+          read_time: blogForm.read_time || '5 min read'
+        };
+
+        // Handle scheduling safely
+        if (blogForm.publishMode === 'later' && blogForm.scheduled_at) {
+          try {
+            payload.scheduled_at = new Date(blogForm.scheduled_at).toISOString();
+          } catch (e) {
+            payload.scheduled_at = null;
+          }
+        } else {
+          payload.scheduled_at = null;
+        }
+
+        payload = cleanData(payload);
       } 
       else if (activeTab === 'cards') {
         collection = 'cards';
@@ -284,6 +301,7 @@ const AdminDashboard: React.FC = () => {
         if (!cardPayload.slug) {
           cardPayload.slug = generateSlug(cardPayload.name, cardPayload.bank) || `card-${Date.now()}`;
         }
+        // Remove UI-specific or non-DB fields if any exist
         payload = cleanData(cardPayload);
       }
       else if (activeTab === 'reviews') {
