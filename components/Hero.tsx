@@ -184,6 +184,7 @@ const Hero: React.FC = () => {
                                         src="https://images.unsplash.com/photo-1556742044-3c52d6e88c62?auto=format&fit=crop&q=80&w=800" 
                                         className="w-full h-full object-cover" 
                                         alt="Modern credit card payment experience"
+                                        priority={true}
                                      />
                                 </div>
                                 <div className="mt-2 md:mt-4 flex justify-between items-end px-1">
@@ -207,6 +208,7 @@ const Hero: React.FC = () => {
                                         src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=800" 
                                         className="w-full h-full object-cover" 
                                         alt="AI matching visualization"
+                                        priority={true}
                                      />
                                 </div>
                                 <div className="mt-3 text-center">

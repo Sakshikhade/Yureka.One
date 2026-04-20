@@ -66,7 +66,7 @@ const Preloader = () => {
       setIsVisible(false);
       return;
     }
-    const timer = setTimeout(() => setIsVisible(false), 2500);
+    const timer = setTimeout(() => setIsVisible(false), 1200);
     return () => clearTimeout(timer);
   }, [isAdmin]);
 

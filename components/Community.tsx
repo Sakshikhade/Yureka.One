@@ -71,13 +71,13 @@ const DraggableCardPair: React.FC<DraggableCardPairProps> = ({ review, index, pr
   const quoteEase = easeOutCubic(quoteProgress);
 
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-  const distance = isMobile ? 600 : 1200;
+  const distance = isMobile ? 400 : 1200;
 
   const profileTranslateX = (1 - profileEase) * -distance; 
   const quoteTranslateX = (1 - quoteEase) * distance;
   const profileOpacity = profileEase;
   const quoteOpacity = quoteEase;
-  const wrapperScale = 0.85 + (pairProgress * 0.15); 
+  const wrapperScale = isMobile ? (0.75 + (pairProgress * 0.15)) : (0.85 + (pairProgress * 0.15)); 
 
   const handleMouseDown = (e: React.MouseEvent | React.TouchEvent) => {
     if (pairProgress < 0.9) return;

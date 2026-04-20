@@ -395,7 +395,7 @@ const CardExplorer: React.FC = () => {
                                         <div className="absolute inset-0 bg-gradient-to-br from-paper via-transparent to-paper opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none"></div>
                                         
                                         {/* Main Info Section */}
-                                        <div className="p-8 md:p-12 flex flex-col md:flex-row gap-12 relative z-10">
+                                        <div className="p-6 md:p-12 flex flex-col md:flex-row gap-8 md:gap-12 relative z-10">
                                             {/* Card Image Wrapper with dynamic shadow */}
                                             <div className="w-full md:w-[320px] shrink-0">
                                                 <div className="relative aspect-[1.58/1] rounded-2xl overflow-hidden shadow-2xl group-hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] transition-all duration-700 border border-ink/5">
@@ -444,7 +444,7 @@ const CardExplorer: React.FC = () => {
                                         </div>
 
                                         {/* Stats Row Bottom - Factual Data Sheet Style */}
-                                        <div className="bg-[#F9F8F4] px-8 md:px-16 py-10 grid grid-cols-2 md:grid-cols-5 gap-8 border-t border-ink/5 overflow-x-auto no-scrollbar relative z-10">
+                                        <div className="bg-[#F9F8F4] px-6 md:px-16 py-8 md:py-10 grid grid-cols-2 md:grid-cols-5 gap-6 md:gap-8 border-t border-ink/5 overflow-x-auto no-scrollbar relative z-10">
                                             <div className="space-y-2 border-r border-ink/5 pr-4">
                                                 <p className="text-ink text-[11px] font-bold uppercase tracking-[0.2em]">Introductory Offer</p>
                                                 <p className="text-xs font-semibold text-ink leading-relaxed">{card.intro_offer || 'Data Pending'}</p>
@@ -498,18 +498,18 @@ const CardExplorer: React.FC = () => {
             {/* Mobile Filter Modal */}
             {isMobileFilterOpen && (
                 <div className="fixed inset-0 z-[95] bg-ink/60 backdrop-blur-md lg:hidden">
-                    <div className="absolute right-0 top-0 h-full w-[90%] bg-cream pt-4 px-6 pb-10 shadow-[0_0_100px_rgba(0,0,0,0.5)] overflow-y-auto">
-                        {/* Spacer to clear TopBanner + Navbar */}
-                        <div className="h-14" />
-                        <div className="flex justify-between items-center mb-8">
+                    <div className="absolute right-0 bottom-0 top-[80px] w-full max-w-[400px] bg-cream rounded-t-[2.5rem] shadow-[0_-20px_100px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col">
+                        <div className="p-8 pb-4 flex justify-between items-center bg-white border-b border-ink/5">
                             <div className="space-y-1">
-                                    <h2 className="text-[11px] font-heading font-black uppercase tracking-[0.2em] text-ink">Catalog Index</h2>
+                                    <h2 className="text-[11px] font-heading font-black uppercase tracking-[0.2em] text-ink">Refine Catalog</h2>
                                     <p className="text-[10px] font-sans font-bold uppercase tracking-widest text-ink/30 mt-1">Found {filteredCards.length} instruments</p>
                             </div>
-                            <button onClick={() => setIsMobileFilterOpen(false)} className="w-12 h-12 flex items-center justify-center bg-white rounded-full shadow-lg border border-ink/5 transition-transform active:scale-90">
-                                <X size={20} className="text-ink" />
+                            <button onClick={() => setIsMobileFilterOpen(false)} className="w-10 h-10 flex items-center justify-center bg-ink text-white rounded-full shadow-lg transition-transform active:scale-90">
+                                <X size={20} />
                             </button>
                         </div>
+                        
+                        <div className="flex-1 overflow-y-auto px-8 py-8 space-y-12">
                         {/* Repeat sidebar content for mobile */}
                         <div className="space-y-12">
                              <div className="flex justify-between items-center border-b border-ink/5 pb-4">

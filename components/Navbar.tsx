@@ -37,8 +37,8 @@ const Navbar: React.FC = () => {
                 flex items-center justify-between
                 transition-all duration-700 cubic-bezier(0.25, 0.8, 0.25, 1)
                 ${isScrolled 
-                    ? 'w-[96%] md:w-[90%] lg:w-[80%] max-w-7xl pointer-events-auto px-4 md:px-8 py-2 md:py-2.5 bg-paper/80 md:bg-ink/0 glass-panel md:glass-panel rounded-full shadow-2xl border border-ink/10 filter backdrop-blur-md' 
-                    : 'w-full max-w-[1440px] bg-transparent border-b border-ink/10 px-6 py-4 md:py-6 rounded-none shadow-none border-x-0 border-t-0'
+                    ? 'w-[92%] md:w-[90%] lg:w-[80%] max-w-7xl pointer-events-auto px-6 py-2 bg-paper/80 glass-panel rounded-full shadow-2xl border border-ink/10 filter backdrop-blur-md' 
+                    : 'w-full max-w-[1440px] bg-transparent border-b border-ink/10 px-6 py-5 md:py-6 rounded-none shadow-none border-x-0 border-t-0'
                 }
             `}
         >
