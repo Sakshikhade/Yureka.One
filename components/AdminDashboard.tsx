@@ -220,22 +220,19 @@ const AdminDashboard: React.FC = () => {
     setIsDeleteModalOpen(false);
     
     try {
-      const { data: { user } } = await supabase.auth.getUser();
       const userEmail = user?.email || 'admin@yureka.money';
 
-      const deletePromise = async () => {
-        // Use supabaseAdmin for deletions to bypass RLS/session issues in admin panel
-        const { error } = await supabaseAdmin.from(collection).delete().eq('id', id);
-        if (error) throw error;
-        return { data: true, error: null };
-      };
+      console.log(`🗑️ Deleting from ${collection} (ID: ${id})`);
 
-      await Promise.race([
-        withRetry(deletePromise), 
-        new Promise((_, reject) => setTimeout(() => reject(new Error("Operation timed out while deleting.")), 15000))
-      ]);
+      // Use supabaseAdmin for deletions to ensure administrative actions always succeed
+      const { error } = await supabaseAdmin.from(collection).delete().eq('id', id);
+      
+      if (error) {
+        console.error("❌ Database Delete Error:", error);
+        throw error;
+      }
 
-      // LOG THE DELETION (Non-blocking)
+      // LOG THE DELETION (Fire and forget)
       supabase.from('audit_logs').insert([{
         user_email: userEmail,
         action: 'DELETE',
@@ -248,15 +245,15 @@ const AdminDashboard: React.FC = () => {
       setItemToDelete(null);
 
     } catch (err: any) {
-      console.error("DELETE FAILURE:", err);
-      // ROLLBACK
+      console.error("💥 CRITICAL DELETE FAILURE:", err);
+      // ROLLBACK local state to restore the item that failed to delete
       if (collection === 'blogs') setBlogs(rollbackData);
       else if (collection === 'cards') setCards(rollbackData);
       else if (collection === 'reviews') setReviews(rollbackData);
       else if (collection === 'users') setTeam(rollbackData);
       else if (collection === 'waitlist') setWaitlist(rollbackData);
 
-      showNotification(`Failed to delete: ${err.message || "Permissions error"}`, 'error');
+      showNotification(`Failed to delete: ${err.message || "Database error"}`, 'error');
       setIsDeleteModalOpen(false);
       setItemToDelete(null);
     }
