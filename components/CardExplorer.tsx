@@ -565,7 +565,7 @@ const CardExplorer: React.FC = () => {
                                 )}
                              </div>
                              
-                             <button 
+                            <button 
                                 onClick={() => setIsMobileFilterOpen(false)}
                                 className="w-full bg-ink text-white font-bold py-6 rounded-3xl shadow-[0_20px_50px_rgba(36,36,36,0.3)] mt-12 mb-8 uppercase tracking-[0.4em] text-[10px] flex items-center justify-center gap-3 active:scale-95 transition-all"
                             >
@@ -574,9 +574,10 @@ const CardExplorer: React.FC = () => {
                         </div>
                     </div>
                 </div>
-            )}
-        </div>
-    );
+            </div>
+        )}
+    </div>
+);
 };
 
 export default CardExplorer;
