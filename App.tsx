@@ -28,6 +28,7 @@ const WaitlistPage = lazy(() => import('./components/WaitlistPage'));
 const YurekaAIPage = lazy(() => import('./components/YurekaAIPage'));
 const CareersPage = lazy(() => import('./components/CareersPage'));
 const RewardsTransferCalculator = lazy(() => import('./components/RewardsTransferCalculator'));
+const ComingSoon = lazy(() => import('./components/ComingSoon'));
 
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -159,6 +160,7 @@ const AppContent: React.FC = () => {
             } />
             
             <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/coming-soon" element={<ComingSoon />} />
             
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-of-service" element={<TermsOfService />} />
