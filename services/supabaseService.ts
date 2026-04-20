@@ -84,11 +84,7 @@ export const fetchAuditLogsAdmin = async () => {
 // --- REALTIME LISTENERS (PUBLIC) ---
 export const getBlogs = (callback: (blogs: Blog[]) => void, onError?: (error: string) => void) => {
   const execute = async () => { 
-    try {
-      const data = await fetchBlogsPublic(); callback(data || []); 
-    } catch (err: any) {
-      if (onError) onError(err.message);
-    }
+    try { const data = await fetchBlogsPublic(); callback(data || []); } catch (err: any) { if (onError) onError(err.message); }
   };
   execute();
   const sub = supabase.channel('blogs-public').on('postgres_changes', { event: '*', schema: 'public', table: 'blogs' }, () => execute()).subscribe();
@@ -97,11 +93,7 @@ export const getBlogs = (callback: (blogs: Blog[]) => void, onError?: (error: st
 
 export const getCards = (callback: (cards: Card[]) => void, onError?: (error: string) => void) => {
   const execute = async () => { 
-    try {
-      const data = await fetchCardsPublic(); callback(data || []); 
-    } catch (err: any) {
-      if (onError) onError(err.message);
-    }
+    try { const data = await fetchCardsPublic(); callback(data || []); } catch (err: any) { if (onError) onError(err.message); }
   };
   execute();
   const sub = supabase.channel('cards-public').on('postgres_changes', { event: '*', schema: 'public', table: 'cards' }, () => execute()).subscribe();
@@ -110,11 +102,7 @@ export const getCards = (callback: (cards: Card[]) => void, onError?: (error: st
 
 export const getReviews = (callback: (reviews: Review[]) => void, onError?: (error: string) => void) => {
   const execute = async () => { 
-    try {
-      const data = await fetchReviewsPublic(); callback(data || []); 
-    } catch (err: any) {
-      if (onError) onError(err.message);
-    }
+    try { const data = await fetchReviewsPublic(); callback(data || []); } catch (err: any) { if (onError) onError(err.message); }
   };
   execute();
   const sub = supabase.channel('reviews-public').on('postgres_changes', { event: '*', schema: 'public', table: 'reviews' }, () => execute()).subscribe();
@@ -124,11 +112,7 @@ export const getReviews = (callback: (reviews: Review[]) => void, onError?: (err
 // --- REALTIME LISTENERS (ADMIN) ---
 export const getBlogsAdmin = (callback: (blogs: Blog[]) => void, onError?: (error: string) => void) => {
   const execute = async () => { 
-    try {
-      const data = await fetchBlogsAdmin(); callback(data || []); 
-    } catch (err: any) {
-      if (onError) onError(err.message);
-    }
+    try { const data = await fetchBlogsAdmin(); callback(data || []); } catch (err: any) { if (onError) onError(err.message); }
   };
   execute();
   const sub = supabaseAdmin.channel('blogs-admin').on('postgres_changes', { event: '*', schema: 'public', table: 'blogs' }, () => execute()).subscribe();
@@ -137,11 +121,7 @@ export const getBlogsAdmin = (callback: (blogs: Blog[]) => void, onError?: (erro
 
 export const getCardsAdmin = (callback: (cards: Card[]) => void, onError?: (error: string) => void) => {
   const execute = async () => { 
-    try {
-      const data = await fetchCardsAdmin(); callback(data || []); 
-    } catch (err: any) {
-      if (onError) onError(err.message);
-    }
+    try { const data = await fetchCardsAdmin(); callback(data || []); } catch (err: any) { if (onError) onError(err.message); }
   };
   execute();
   const sub = supabaseAdmin.channel('cards-admin').on('postgres_changes', { event: '*', schema: 'public', table: 'cards' }, () => execute()).subscribe();
@@ -150,11 +130,7 @@ export const getCardsAdmin = (callback: (cards: Card[]) => void, onError?: (erro
 
 export const getReviewsAdmin = (callback: (reviews: Review[]) => void, onError?: (error: string) => void) => {
   const execute = async () => { 
-    try {
-      const data = await fetchReviewsAdmin(); callback(data || []); 
-    } catch (err: any) {
-      if (onError) onError(err.message);
-    }
+    try { const data = await fetchReviewsAdmin(); callback(data || []); } catch (err: any) { if (onError) onError(err.message); }
   };
   execute();
   const sub = supabaseAdmin.channel('reviews-admin').on('postgres_changes', { event: '*', schema: 'public', table: 'reviews' }, () => execute()).subscribe();
@@ -180,6 +156,81 @@ export const getAuditLogsAdmin = (callback: (logs: any[]) => void) => {
   execute();
   const sub = supabaseAdmin.channel('logs-admin').on('postgres_changes', { event: '*', schema: 'public', table: 'audit_logs' }, () => execute()).subscribe();
   return () => { sub.unsubscribe(); };
+};
+
+// --- MUTATIONS (Using supabaseAdmin to bypass RLS) ---
+export const addBlog = async (blog: any) => {
+  const { data, error } = await supabaseAdmin.from('blogs').insert([cleanData(blog)]).select();
+  if (error) throw error;
+  return data[0];
+};
+
+export const updateBlog = async (id: string, blogData: any) => {
+  const { error } = await supabaseAdmin.from('blogs').update(cleanData(blogData)).eq('id', id);
+  if (error) throw error;
+};
+
+export const deleteBlog = async (id: string) => {
+  const { error } = await supabaseAdmin.from('blogs').delete().eq('id', id);
+  if (error) throw error;
+};
+
+export const addCard = async (card: any) => {
+  const { data, error } = await supabaseAdmin.from('cards').insert([cleanData(card)]).select();
+  if (error) throw error;
+  return data[0];
+};
+
+export const updateCard = async (id: string, cardData: any) => {
+  const { error } = await supabaseAdmin.from('cards').update(cleanData(cardData)).eq('id', id);
+  if (error) throw error;
+};
+
+export const deleteCard = async (id: string) => {
+  const { error } = await supabaseAdmin.from('cards').delete().eq('id', id);
+  if (error) throw error;
+};
+
+export const updateWaitlistStatus = async (id: string, status: string) => {
+  const { error } = await supabaseAdmin.from('waitlist').update({ status }).eq('id', id);
+  if (error) throw error;
+};
+
+export const deleteWaitlistEntry = async (id: string) => {
+  const { error } = await supabaseAdmin.from('waitlist').delete().eq('id', id);
+  if (error) throw error;
+};
+
+export const addReview = async (review: any) => {
+  const { data, error } = await supabaseAdmin.from('reviews').insert([cleanData(review)]).select();
+  if (error) throw error;
+  return data[0];
+};
+
+export const updateReview = async (id: string, reviewData: any) => {
+  const { error } = await supabaseAdmin.from('reviews').update(cleanData(reviewData)).eq('id', id);
+  if (error) throw error;
+};
+
+export const deleteReview = async (id: string) => {
+  const { error } = await supabaseAdmin.from('reviews').delete().eq('id', id);
+  if (error) throw error;
+};
+
+export const inviteTeamMember = async (email: string, role: string) => {
+  const { data, error } = await supabaseAdmin.from('users').insert([{ email, role, full_name: email.split('@')[0] }]).select();
+  if (error) throw error;
+  return data[0];
+};
+
+export const updateUserRole = async (userId: string, role: string) => {
+  const { error } = await supabaseAdmin.from('users').update({ role }).eq('id', userId);
+  if (error) throw error;
+};
+
+export const deleteUser = async (userId: string) => {
+  const { error } = await supabaseAdmin.from('users').delete().eq('id', userId);
+  if (error) throw error;
 };
 
 // --- MISC UTILS ---
