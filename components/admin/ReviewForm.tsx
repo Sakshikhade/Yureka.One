@@ -87,6 +87,19 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
               />
             </div>
           </div>
+
+          <div>
+            <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Company Logo URL</label>
+            <div className="flex gap-2">
+              <input 
+                type="text"
+                value={form.company_logo}
+                onChange={e => setForm({...form, company_logo: e.target.value})}
+                className="flex-1 bg-black/5 border-none rounded-xl p-4 text-xs focus:ring-2 focus:ring-teal outline-none transition-all"
+                placeholder="https://example.com/logo.png"
+              />
+            </div>
+          </div>
           <div>
             <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Quote</label>
             <textarea 

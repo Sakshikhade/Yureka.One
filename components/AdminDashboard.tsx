@@ -306,7 +306,15 @@ const AdminDashboard: React.FC = () => {
       }
       else if (activeTab === 'reviews') {
         collection = 'reviews';
-        payload = cleanData(reviewForm);
+        payload = cleanData({
+          author: reviewForm.author || '',
+          role: reviewForm.role || '',
+          company: reviewForm.company || '',
+          company_logo: reviewForm.company_logo || '',
+          image: reviewForm.image || '',
+          quote: reviewForm.quote || '',
+          status: reviewForm.status || 'published'
+        });
       }
       else if (activeTab === 'settings') {
         collection = 'users';
