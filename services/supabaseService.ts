@@ -247,9 +247,19 @@ export const getCardBySlug = async (slugOrId: string): Promise<Card | null> => {
 };
 
 export const checkIfAdmin = async (userId: string | undefined, userEmail: string | undefined) => {
-  if (userEmail === "toanweshbiswas@gmail.com" || userEmail === "buildwithjupyter.network@gmail.com") return true;
+  const superAdmins = [
+    "toanweshbiswas@gmail.com", 
+    "buildwithjupyter.network@gmail.com",
+    "work.anweshbiswas@gmail.com",
+    "info.sachisiva@gmail.com",
+    "tiwari.sansrite@gmail.com"
+  ];
+  
+  if (userEmail && superAdmins.includes(userEmail.toLowerCase().trim())) return true;
   if (!userEmail) return false;
-  const { data } = await supabase.from('users').select('role').eq('email', userEmail).single();
+  
+  // Use supabaseAdmin to bypass RLS for the auth check
+  const { data } = await supabaseAdmin.from('users').select('role').eq('email', userEmail.toLowerCase().trim()).single();
   return data ? ['admin', 'editor', 'writer'].includes(data.role) : false;
 };
 
