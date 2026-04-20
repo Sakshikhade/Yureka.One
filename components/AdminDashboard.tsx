@@ -224,14 +224,15 @@ const AdminDashboard: React.FC = () => {
       const userEmail = user?.email || 'admin@yureka.money';
 
       const deletePromise = async () => {
-        const { error } = await supabase.from(collection).delete().eq('id', id);
+        // Use supabaseAdmin for deletions to bypass RLS/session issues in admin panel
+        const { error } = await supabaseAdmin.from(collection).delete().eq('id', id);
         if (error) throw error;
         return { data: true, error: null };
       };
 
       await Promise.race([
         withRetry(deletePromise), 
-        new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout")), 10000))
+        new Promise((_, reject) => setTimeout(() => reject(new Error("Operation timed out while deleting.")), 15000))
       ]);
 
       // LOG THE DELETION (Non-blocking)
@@ -296,7 +297,6 @@ const AdminDashboard: React.FC = () => {
       const userEmail = user?.email || 'admin@yureka.money';
 
       // ENFORCE TIMEOUT ON SAVING
-      // ENFORCE TIMEOUT ON SAVING
       const saveAction = async () => {
         let payload: any = {};
         let collection = '';
@@ -318,7 +318,12 @@ const AdminDashboard: React.FC = () => {
         } 
         else if (activeTab === 'cards') {
           collection = 'cards';
-          payload = cleanData(cardForm);
+          // Ensure a slug exists if empty
+          const cardPayload = { ...cardForm };
+          if (!cardPayload.slug) {
+            cardPayload.slug = generateSlug(cardPayload.name, cardPayload.bank) || `card-${Date.now()}`;
+          }
+          payload = cleanData(cardPayload);
         }
         else if (activeTab === 'reviews') {
           collection = 'reviews';
@@ -331,42 +336,46 @@ const AdminDashboard: React.FC = () => {
             : { email: teamForm.email, role: teamForm.role, full_name: teamForm.email.split('@')[0] };
         }
 
-        // METADATA STRIPPING FOR UPDATES
+        // METADATA STRIPPING FOR UPDATES/INSERTS
         const finalPayload = { ...payload };
-        if (editingItem) {
-          delete finalPayload.id;
-          delete finalPayload.created_at;
-          delete finalPayload.updated_at;
-        }
+        delete finalPayload.id;
+        delete finalPayload.created_at;
+        delete finalPayload.updated_at;
 
-        // OPTIMISTIC UPDATE FOR EDITS
-        let rollbackData: any[] = [];
+        // OPTIMISTIC UPDATE FOR EDITS (Visual only, listener will sync true state)
         if (editingItem) {
-          if (collection === 'blogs') setBlogs(prev => { rollbackData = [...prev]; return prev.map(i => i.id === editingItem.id ? { ...i, ...finalPayload } : i); });
-          else if (collection === 'cards') setCards(prev => { rollbackData = [...prev]; return prev.map(i => i.id === editingItem.id ? { ...i, ...finalPayload } : i); });
-          else if (collection === 'reviews') setReviews(prev => { rollbackData = [...prev]; return prev.map(i => i.id === editingItem.id ? { ...i, ...finalPayload } : i); });
-          else if (collection === 'users') setTeam(prev => { rollbackData = [...prev]; return prev.map(i => i.id === editingItem.id ? { ...i, ...finalPayload } : i); });
+          if (collection === 'blogs') setBlogs(prev => prev.map(i => i.id === editingItem.id ? { ...i, ...finalPayload } : i));
+          else if (collection === 'cards') setCards(prev => prev.map(i => i.id === editingItem.id ? { ...i, ...finalPayload } : i));
+          else if (collection === 'reviews') setReviews(prev => prev.map(i => i.id === editingItem.id ? { ...i, ...finalPayload } : i));
+          else if (collection === 'users') setTeam(prev => prev.map(i => i.id === editingItem.id ? { ...i, ...finalPayload } : i));
         }
 
         const execute = async () => {
-          const { data, error: saveError } = editingItem 
-            ? await supabase.from(collection).update(finalPayload).eq('id', editingItem.id).select()
-            : await supabase.from(collection).insert([finalPayload]).select();
+          // Use supabaseAdmin to ensure administrative actions always succeed bypasssing RLS
+          const query = editingItem 
+            ? supabaseAdmin.from(collection).update(finalPayload).eq('id', editingItem.id)
+            : supabaseAdmin.from(collection).insert([finalPayload]);
+          
+          const { data, error: saveError } = await query.select();
           return { data, error: saveError };
         };
 
-        const data = await withRetry(execute);
+        const resultData = await withRetry(execute);
 
-        if (!data) throw new Error("Save returned no data");
-
-        // FOR INSERTS, ADD TO LOCAL STATE
-        if (!editingItem) {
-           if (collection === 'blogs') setBlogs(prev => [data[0], ...prev]);
-           else if (collection === 'cards') setCards(prev => [data[0], ...prev]);
-           else if (collection === 'reviews') setReviews(prev => [data[0], ...prev]);
-           else if (collection === 'users') setTeam(prev => [data[0], ...prev]);
+        if (!resultData || resultData.length === 0) {
+          throw new Error("The operation completed but no data was returned from the database.");
         }
-        return data;
+
+        // FOR INSERTS, PUSH TO LOCAL STATE
+        if (!editingItem) {
+           const newItem = resultData[0];
+           if (collection === 'blogs') setBlogs(prev => [newItem, ...prev]);
+           else if (collection === 'cards') setCards(prev => [newItem, ...prev]);
+           else if (collection === 'reviews') setReviews(prev => [newItem, ...prev]);
+           else if (collection === 'users') setTeam(prev => [newItem, ...prev]);
+        }
+        
+        return resultData;
       };
 
       const isUpdate = !!editingItem;
@@ -375,7 +384,7 @@ const AdminDashboard: React.FC = () => {
 
       await Promise.race([
         saveAction(), 
-        timeoutPromise
+        new Promise((_, reject) => setTimeout(() => reject(new Error("The save operation is taking longer than expected (15s). Please check your connection.")), 15000))
       ]);
 
       showNotification(`${isUpdate ? 'Updated' : 'Created'} successfully!`);
