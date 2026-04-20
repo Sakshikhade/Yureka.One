@@ -126,17 +126,26 @@ const AdminDashboard: React.FC = () => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       const user = session?.user || null;
       setUser(user);
+      
       if (user) {
         try {
-          const { data } = await supabase.from('users').select('role').eq('email', user.email).single();
-          const fetchedRole = data?.role || 'user';
-          const isOwner = ['toanweshbiswas@gmail.com', 'buildwithjupyter.network@gmail.com'].includes(user.email);
-          const role = isOwner ? 'admin' : fetchedRole;
-          setUserRole(role);
-          setIsAdmin(isOwner || ['admin', 'editor', 'writer'].includes(role));
+          // Use the robust checkIfAdmin helper from our service layer
+          // This uses supabaseAdmin to bypass RLS and ensures ground truth
+          const { checkIfAdmin } = await import('../services/supabaseService');
+          const isUserAdmin = await checkIfAdmin(user.id, user.email);
+          
+          if (isUserAdmin) {
+            // Fetch the specific role for UI customization
+            const { supabaseAdmin } = await import('../supabase');
+            const { data } = await supabaseAdmin.from('users').select('role').eq('email', user.email?.toLowerCase().trim()).single();
+            setUserRole(data?.role || 'admin');
+            setIsAdmin(true);
+          } else {
+            setIsAdmin(false);
+          }
         } catch (err) {
-          console.error("Role fetch error:", err);
-          if (['toanweshbiswas@gmail.com'].includes(user.email)) { setIsAdmin(true); setUserRole('admin'); }
+          console.error("Critical Auth Verification Error:", err);
+          setIsAdmin(false);
         }
       } else {
         setIsAdmin(false);
