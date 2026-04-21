@@ -106,8 +106,8 @@ const CardExplorer: React.FC = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedBanks, setSelectedBanks] = useState<string[]>([]);
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-    const [monthlySpend, setMonthlySpend] = useState('Any Budget');
     const [cardType, setCardType] = useState('All Types');
+    const [isBankMenuOpen, setIsBankMenuOpen] = useState(false);
     const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
     const [sortBy, setSortBy] = useState<'featured' | 'rewards' | 'fees' | 'rating'>('featured');
 
@@ -118,11 +118,9 @@ const CardExplorer: React.FC = () => {
             const matchesBank = selectedBanks.length === 0 || selectedBanks.some(b => card.issuer.includes(b));
             const matchesCategory = selectedCategories.length === 0 || selectedCategories.some(c => card.category?.includes(c));
             
-            // Simplified budget/type logic for demonstration
-            const matchesBudget = monthlySpend === 'Any Budget' || true; 
             const matchesType = cardType === 'All Types' || (cardType === 'Premium' && card.annual_fee?.includes('₹')) || true;
 
-            return matchesSearch && matchesBank && matchesCategory && matchesBudget && matchesType;
+            return matchesSearch && matchesBank && matchesCategory && matchesType;
         });
 
         switch(sortBy) {
@@ -143,10 +141,14 @@ const CardExplorer: React.FC = () => {
             default:
                 return result;
         }
-    }, [cardsList, searchQuery, selectedBanks, selectedCategories, monthlySpend, cardType, sortBy]);
+    }, [cardsList, searchQuery, selectedBanks, selectedCategories, cardType, sortBy]);
 
     const toggleBank = (bank: string) => {
-        setSelectedBanks(prev => prev.includes(bank) ? prev.filter(b => b !== bank) : [...prev, bank]);
+        if (bank === 'All Banks') {
+            setSelectedBanks([]);
+        } else {
+            setSelectedBanks(prev => prev.includes(bank) ? prev.filter(b => b !== bank) : [...prev, bank]);
+        }
     };
 
     const toggleCategory = (cat: string) => {
@@ -198,21 +200,113 @@ const CardExplorer: React.FC = () => {
                         className="max-w-5xl mx-auto"
                     >
                         <div className="bg-[#1e1a4b] rounded-[2rem] md:rounded-full p-4 md:p-3 flex flex-col md:flex-row items-stretch md:items-center gap-4 md:gap-2 shadow-2xl relative">
-                            {/* Monthly Spend */}
+                            {/* Bank Selection (Custom Dropdown) */}
                             <div className="flex-1 px-6 py-3 border-b md:border-b-0 md:border-r border-white/10 text-left relative group">
-                                <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40 mb-1 block">Monthly Spend</label>
+                                <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40 mb-1 block">Bank / Issuer</label>
+                                <button 
+                                    onClick={() => setIsBankMenuOpen(!isBankMenuOpen)}
+                                    className="flex items-center justify-between w-full text-white font-bold text-left outline-none"
+                                >
+                                    <span className="truncate">
+                                        {selectedBanks.length === 0 ? 'All Banks' : 
+                                         selectedBanks.length === 1 ? selectedBanks[0] : 
+                                         `${selectedBanks.length} Selected`}
+                                    </span>
+                                    <ChevronDown className={`text-white/20 transition-transform duration-300 ${isBankMenuOpen ? 'rotate-180' : ''}`} size={16} />
+                                </button>
+
+                                {/* Premium Bank Dropdown Popover */}
+                                <AnimatePresence>
+                                    {isBankMenuOpen && (
+                                        <>
+                                            <div className="fixed inset-0 z-40" onClick={() => setIsBankMenuOpen(false)} />
+                                            <motion.div 
+                                                initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                                exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                                                className="absolute top-full left-0 mt-4 w-72 bg-white rounded-3xl shadow-2xl overflow-hidden z-50 border border-ink/5"
+                                            >
+                                                <div className="max-h-80 overflow-y-auto p-2 no-scrollbar">
+                                                    <button 
+                                                        onClick={() => { setSelectedBanks([]); setIsBankMenuOpen(false); }}
+                                                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all ${selectedBanks.length === 0 ? 'bg-clay/5 text-clay' : 'text-ink/60 hover:bg-ink/5'}`}
+                                                    >
+                                                        <div className="w-8 h-8 rounded-full bg-ink/5 flex items-center justify-center">
+                                                            <Landmark size={14} />
+                                                        </div>
+                                                        <span className="text-xs font-bold uppercase tracking-widest">All Banks</span>
+                                                        {selectedBanks.length === 0 && <Check size={14} className="ml-auto" />}
+                                                    </button>
+                                                    
+                                                    {ALL_BANKS.map(bank => {
+                                                        const isSelected = selectedBanks.includes(bank);
+                                                        return (
+                                                            <button 
+                                                                key={bank}
+                                                                onClick={() => toggleBank(bank)}
+                                                                className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all ${isSelected ? 'bg-clay/5 text-clay' : 'text-ink/60 hover:bg-ink/5'}`}
+                                                            >
+                                                                <div className="w-8 h-8 rounded-full bg-white border border-ink/5 overflow-hidden flex items-center justify-center p-1">
+                                                                    {BANK_LOGOS[bank] ? (
+                                                                        <img src={BANK_LOGOS[bank]} alt={bank} className="w-full h-full object-contain" />
+                                                                    ) : (
+                                                                        <span className="font-bold text-[10px] text-clay/40">{bank[0]}</span>
+                                                                    )}
+                                                                </div>
+                                                                <span className="text-xs font-bold uppercase tracking-widest">{bank}</span>
+                                                                {isSelected && <Check size={14} className="ml-auto" />}
+                                                            </button>
+                                                        );
+                                                    })}
+                                                </div>
+                                            </motion.div>
+                                        </>
+                                    )}
+                                </AnimatePresence>
+                            </div>
+
+                            {/* Reward Category */}
+                            <div className="flex-1 px-6 py-3 border-b md:border-b-0 md:border-r border-white/10 text-left relative group">
+                                <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40 mb-1 block">Category</label>
                                 <select 
-                                    value={monthlySpend}
-                                    onChange={(e) => setMonthlySpend(e.target.value)}
+                                    value={selectedCategories[0] || 'All Categories'}
+                                    onChange={(e) => setSelectedCategories(e.target.value === 'All Categories' ? [] : [e.target.value])}
                                     className="bg-transparent text-white font-bold appearance-none outline-none w-full cursor-pointer pr-8"
                                 >
-                                    <option className="bg-[#1e1a4b]">Any Budget</option>
-                                    <option className="bg-[#1e1a4b]">₹20,000 - ₹50,000</option>
-                                    <option className="bg-[#1e1a4b]">₹50,000 - ₹2,00,000</option>
-                                    <option className="bg-[#1e1a4b]">₹2,00,000+</option>
+                                    <option className="bg-[#1e1a4b]">All Categories</option>
+                                    {ALL_CATEGORIES.map(cat => (
+                                        <option key={cat.name} className="bg-[#1e1a4b]">{cat.name}</option>
+                                    ))}
                                 </select>
                                 <ChevronDown className="absolute right-6 top-1/2 -translate-y-1/2 text-white/20 pointer-events-none" size={16} />
                             </div>
+
+                            {/* Card Type */}
+                            <div className="flex-1 px-6 py-3 text-left relative group">
+                                <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40 mb-1 block">Card Type</label>
+                                <select 
+                                    value={cardType}
+                                    onChange={(e) => setCardType(e.target.value)}
+                                    className="bg-transparent text-white font-bold appearance-none outline-none w-full cursor-pointer pr-8"
+                                >
+                                    <option className="bg-[#1e1a4b]">All Types</option>
+                                    <option className="bg-[#1e1a4b]">Premium</option>
+                                    <option className="bg-[#1e1a4b]">Lifestyle</option>
+                                    <option className="bg-[#1e1a4b]">Entry-level</option>
+                                </select>
+                                <ChevronDown className="absolute right-6 top-1/2 -translate-y-1/2 text-white/20 pointer-events-none" size={16} />
+                            </div>
+
+                            {/* Toggles Mobile Hidden */}
+                            <div className="hidden lg:flex items-center gap-3 px-6 shrink-0">
+                                <div className="flex items-center gap-3 bg-white/10 px-5 py-3 rounded-full border border-white/5">
+                                    <span className="text-[10px] font-bold uppercase tracking-widest text-white/80">LTF Only</span>
+                                    <div className="w-8 h-4 bg-white/10 rounded-full relative">
+                                        <div className="absolute left-1 top-1 w-2 h-2 bg-white rounded-full"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                             {/* Reward Category */}
                             <div className="flex-1 px-6 py-3 border-b md:border-b-0 md:border-r border-white/10 text-left relative group">
