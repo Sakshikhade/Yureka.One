@@ -40,17 +40,17 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
   };
 
   return (
-    <header className="sticky top-0 right-0 left-0 h-24 bg-white/80 backdrop-blur-xl border-b border-black/5 z-40 px-4 md:px-10 flex items-center justify-between transition-all duration-300">
+    <header className="sticky top-0 right-0 left-0 h-24 bg-cream/80 backdrop-blur-xl border-b border-black/5 z-40 px-4 md:px-10 flex items-center justify-between transition-all duration-300">
       <div className="flex items-center gap-6">
         <button 
           onClick={onToggleSidebar}
-          className="lg:hidden p-2.5 hover:bg-black/5 rounded-2xl transition-colors border border-black/5 shadow-sm bg-white"
+          className="lg:hidden p-2.5 hover:bg-black/5 rounded-2xl transition-colors border border-black/5 shadow-sm bg-cream"
         >
           <Menu size={20} />
         </button>
         
         <div className="flex flex-col">
-          <h1 className="text-2xl md:text-3xl font-heading font-black tracking-tight text-ink uppercase leading-none">
+          <h1 className="text-2xl md:text-3xl font-heading font-black tracking-tight text-[#242424] uppercase leading-none">
             {getTabTitle(activeTab)}
           </h1>
 
@@ -71,7 +71,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
         {onAdd && (
           <button 
             onClick={onAdd}
-            className="flex items-center gap-2 bg-black text-white px-4 md:px-6 py-2.5 rounded-2xl font-bold text-[11px] uppercase tracking-wider hover:bg-teal transition-all shadow-lg active:scale-95"
+            className="flex items-center gap-2 bg-black text-cream px-4 md:px-6 py-2.5 rounded-2xl font-bold text-[11px] uppercase tracking-wider hover:bg-teal transition-all shadow-lg active:scale-95"
           >
             <Plus size={16} />
             <span className="hidden sm:inline">{addLabel || `Add New`}</span>
@@ -98,12 +98,12 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
 
         <div className="hidden sm:flex items-center gap-3">
           <div className="text-right">
-            <p className="text-xs font-black text-ink leading-none">{user?.email?.split('@')[0] || 'Administrator'}</p>
+            <p className="text-xs font-black text-[#242424] leading-none">{user?.email?.split('@')[0] || 'Administrator'}</p>
             <p className="text-[10px] text-black/40 mt-1 uppercase font-bold tracking-tighter">Access: Active</p>
           </div>
           <div className="w-11 h-11 rounded-2xl bg-teal/10 flex items-center justify-center text-teal font-serif font-black shadow-inner border border-teal/5 relative">
             {user?.email?.[0].toUpperCase() || 'A'}
-            <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 border-2 border-white rounded-full shadow-sm" />
+            <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 border-2 border-cream rounded-full shadow-sm" />
           </div>
         </div>
       </div>

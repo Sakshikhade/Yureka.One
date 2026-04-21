@@ -155,7 +155,7 @@ export const CardForm: React.FC<CardFormProps> = ({
               <button 
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="bg-white text-black p-3 rounded-full hover:scale-110 transition-transform"
+                className="bg-cream text-black p-3 rounded-full hover:scale-110 transition-transform"
               >
                 <Upload size={20} />
               </button>
@@ -250,7 +250,7 @@ export const CardForm: React.FC<CardFormProps> = ({
                             newItems[idx] = { ...newItems[idx], heading: e.target.value };
                             setForm({...form, benefit_items: newItems, benefits: newItems.map(i => i.heading || '')});
                         }}
-                        className="w-full bg-white border-none rounded-lg p-3 text-sm font-bold focus:ring-2 focus:ring-teal outline-none"
+                        className="w-full bg-cream border-none rounded-lg p-3 text-sm font-bold focus:ring-2 focus:ring-teal outline-none"
                       />
                       <input 
                         type="text" placeholder="Subheading" required
@@ -344,7 +344,7 @@ export const CardForm: React.FC<CardFormProps> = ({
         <button 
           type="submit" 
           disabled={uploading || saving}
-          className="bg-teal text-white px-10 py-4 rounded-xl font-bold hover:bg-teal/90 transition-all shadow-lg disabled:opacity-50 flex items-center gap-2"
+          className="bg-teal text-cream px-10 py-4 rounded-xl font-bold hover:bg-teal/90 transition-all shadow-lg disabled:opacity-50 flex items-center gap-2"
         >
           {(uploading || saving) ? <Loader2 className="animate-spin" size={20} /> : <Check size={20} />}
           Save Card

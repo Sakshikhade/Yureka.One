@@ -22,7 +22,7 @@ const CalculatorCTA: React.FC = () => {
   const results = calculateSavings();
 
   return (
-    <section className="relative py-12 md:py-24 bg-[#F8F7F4] overflow-hidden">
+    <section className="relative py-12 md:py-24 bg-[#F2EFE9] overflow-hidden">
       {/* Geometric Background Pattern */}
       <div className="absolute inset-0 opacity-[0.04] pointer-events-none" 
            style={{ 
@@ -36,7 +36,7 @@ const CalculatorCTA: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="bg-white border border-black/10 rounded-[2.5rem] p-6 md:px-12 md:py-10 flex flex-col md:flex-row items-center justify-between gap-8 shadow-sm hover:shadow-xl transition-all duration-700 group"
+          className="bg-cream border border-black/10 rounded-[2.5rem] p-6 md:px-12 md:py-10 flex flex-col md:flex-row items-center justify-between gap-8 shadow-sm hover:shadow-xl transition-all duration-700 group"
         >
           <div className="flex items-center gap-8">
             {/* Full-Fledged Animated Calculator Icon */}
@@ -88,10 +88,10 @@ const CalculatorCTA: React.FC = () => {
             </motion.div>
             
             <div className="text-center md:text-left">
-              <h3 className="text-2xl md:text-4xl font-serif text-ink font-bold tracking-tight mb-2">
+              <h3 className="text-2xl md:text-4xl font-serif text-[#242424] font-bold tracking-tight mb-2">
                 Yureka vs Standard
               </h3>
-              <p className="text-ink/60 text-base md:text-lg font-serif italic">
+              <p className="text-[#242424]/60 text-base md:text-lg font-serif italic">
                 "Stop leaving ₹{results.diff} on the table every year."
               </p>
             </div>
@@ -99,7 +99,7 @@ const CalculatorCTA: React.FC = () => {
           
           <button 
             onClick={() => setIsOpen(true)}
-            className="bg-ink text-white px-12 py-5 rounded-full font-bold uppercase tracking-widest text-[13px] hover:scale-105 active:scale-95 transition-all shadow-2xl hover:shadow-emerald-500/10 flex items-center gap-3 group/btn"
+            className="bg-[#242424] text-cream px-12 py-5 rounded-full font-bold uppercase tracking-widest text-[13px] hover:scale-105 active:scale-95 transition-all shadow-2xl hover:shadow-emerald-500/10 flex items-center gap-3 group/btn"
           >
             Run Comparison
             <motion.div
@@ -119,7 +119,7 @@ const CalculatorCTA: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 backdrop-blur-xl bg-ink/40"
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 backdrop-blur-xl bg-[#242424]/40"
             onClick={() => setIsOpen(false)}
           >
             <motion.div 
@@ -127,19 +127,19 @@ const CalculatorCTA: React.FC = () => {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-paper border border-white/20 w-full max-w-2xl rounded-[3rem] overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)]"
+              className="bg-paper border border-cream/20 w-full max-w-2xl rounded-[3rem] overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)]"
             >
               <div className="p-8 md:p-12">
                 <div className="flex justify-between items-center mb-10">
                    <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20">
-                         <Calculator size={20} className="text-white" />
+                         <Calculator size={20} className="text-cream" />
                       </div>
-                      <h4 className="text-2xl font-serif font-bold text-ink uppercase tracking-tight">Savings Intelligence</h4>
+                      <h4 className="text-2xl font-serif font-bold text-[#242424] uppercase tracking-tight">Savings Intelligence</h4>
                    </div>
                    <button 
                     onClick={() => setIsOpen(false)}
-                    className="w-12 h-12 bg-white border border-ink/5 flex items-center justify-center rounded-full hover:bg-ink hover:text-white transition-all shadow-sm"
+                    className="w-12 h-12 bg-cream border border-ink/5 flex items-center justify-center rounded-full hover:bg-[#242424] hover:text-cream transition-all shadow-sm"
                    >
                      <X size={20} />
                    </button>
@@ -149,10 +149,10 @@ const CalculatorCTA: React.FC = () => {
                    {/* Inputs */}
                    <div className="space-y-8">
                       <div>
-                        <label className="text-[10px] font-bold uppercase tracking-widest text-ink/40 mb-3 block">Monthly Credit Spend</label>
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-[#242424]/40 mb-3 block">Monthly Credit Spend</label>
                         <div className="flex items-baseline gap-2 mb-4">
-                          <span className="text-3xl font-serif text-ink">₹</span>
-                          <span className="text-5xl md:text-6xl font-serif font-bold text-ink tracking-tighter">
+                          <span className="text-3xl font-serif text-[#242424]">₹</span>
+                          <span className="text-5xl md:text-6xl font-serif font-bold text-[#242424] tracking-tighter">
                             {monthlySpend.toLocaleString('en-IN')}
                           </span>
                         </div>
@@ -163,12 +163,12 @@ const CalculatorCTA: React.FC = () => {
                           step="5000" 
                           value={monthlySpend}
                           onChange={(e) => setMonthlySpend(parseInt(e.target.value))}
-                          className="w-full accent-emerald-500 h-1.5 bg-ink/10 rounded-full appearance-none cursor-pointer"
+                          className="w-full accent-emerald-500 h-1.5 bg-[#242424]/10 rounded-full appearance-none cursor-pointer"
                         />
                       </div>
 
                       <div>
-                        <label className="text-[10px] font-bold uppercase tracking-widest text-ink/40 mb-4 block">Major Spend Category</label>
+                        <label className="text-[10px] font-bold uppercase tracking-widest text-[#242424]/40 mb-4 block">Major Spend Category</label>
                         <div className="flex flex-wrap gap-2">
                            {(['travel', 'dining', 'shopping'] as const).map((cat) => (
                              <button
@@ -176,8 +176,8 @@ const CalculatorCTA: React.FC = () => {
                                 onClick={() => setCategory(cat)}
                                 className={`px-6 py-3 rounded-full text-[11px] font-bold uppercase tracking-widest transition-all ${
                                   category === cat 
-                                  ? 'bg-emerald-500 text-white shadow-xl shadow-emerald-500/20' 
-                                  : 'bg-white border border-ink/10 text-ink/60 hover:border-ink'
+                                  ? 'bg-emerald-500 text-cream shadow-xl shadow-emerald-500/20' 
+                                  : 'bg-cream border border-ink/10 text-[#242424]/60 hover:border-ink'
                                 }`}
                              >
                                {cat}
@@ -188,29 +188,29 @@ const CalculatorCTA: React.FC = () => {
                    </div>
 
                    {/* Results */}
-                   <div className="bg-[#F1F3F0] rounded-[2rem] p-8 relative overflow-hidden flex flex-col justify-between">
+                   <div className="bg-[#F2EFE9] rounded-[2rem] p-8 relative overflow-hidden flex flex-col justify-between">
                       <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
                          <TrendingUp size={120} />
                       </div>
 
                       <div className="relative z-10">
                         <div className="mb-8">
-                           <p className="text-[10px] font-bold uppercase tracking-widest text-ink/40 mb-1">Standard Bank Match</p>
-                           <h5 className="text-2xl font-serif text-ink/60">₹{results.standard}<span className="text-xs ml-1">/yr</span></h5>
+                           <p className="text-[10px] font-bold uppercase tracking-widest text-[#242424]/40 mb-1">Standard Bank Match</p>
+                           <h5 className="text-2xl font-serif text-[#242424]/60">₹{results.standard}<span className="text-xs ml-1">/yr</span></h5>
                         </div>
 
                         <div className="mb-8">
                            <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-600 mb-1">Yureka Optimized</p>
-                           <h5 className="text-5xl font-serif font-bold text-ink tracking-tight">₹{results.yureka}<span className="text-base ml-1">/yr</span></h5>
+                           <h5 className="text-5xl font-serif font-bold text-[#242424] tracking-tight">₹{results.yureka}<span className="text-base ml-1">/yr</span></h5>
                         </div>
                       </div>
 
                       <div className="pt-6 border-t border-ink/10 relative z-10">
                          <div className="flex items-center gap-2 mb-2">
                             <ShieldCheck size={14} className="text-emerald-500" />
-                            <span className="text-[10px] uppercase font-bold tracking-widest text-ink/50">Guaranteed delta</span>
+                            <span className="text-[10px] uppercase font-bold tracking-widest text-[#242424]/50">Guaranteed delta</span>
                          </div>
-                         <p className="text-2xl font-serif italic text-ink">
+                         <p className="text-2xl font-serif italic text-[#242424]">
                             Extra +₹{results.diff} savings
                          </p>
                       </div>
@@ -218,11 +218,11 @@ const CalculatorCTA: React.FC = () => {
                 </div>
 
                 <div className="mt-12 pt-8 border-t border-ink/5 flex flex-col md:flex-row items-center justify-between gap-6">
-                   <p className="text-[10px] text-ink/40 font-mono flex items-center gap-2">
+                   <p className="text-[10px] text-[#242424]/40 font-mono flex items-center gap-2">
                       <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
                       YUREKA ALG.v4 CLUSTER ANALYSIS ACTIVE
                    </p>
-                   <Link to="/join-waitlist" className="flex items-center gap-3 text-sm font-bold text-ink border-b-2 border-emerald-500 pb-1 hover:text-emerald-600 transition-colors">
+                   <Link to="/join-waitlist" className="flex items-center gap-3 text-sm font-bold text-[#242424] border-b-2 border-emerald-500 pb-1 hover:text-emerald-600 transition-colors">
                       Claim Your Optimization Report
                       <ArrowRight size={18} />
                    </Link>

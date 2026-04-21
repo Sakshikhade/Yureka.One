@@ -139,7 +139,7 @@ const DraggableCardPair: React.FC<DraggableCardPairProps> = ({ review, index, pr
         >
             {/* Profile Card - Photo ID Style */}
             <div 
-                className="bg-white p-3 w-full md:w-[320px] h-auto shadow-2xl border border-black/10 select-none will-change-transform transform rotate-[-2deg]"
+                className="bg-cream p-3 w-full md:w-[320px] h-auto shadow-2xl border border-black/10 select-none will-change-transform transform rotate-[-2deg]"
                 style={{ 
                     transform: `translate3d(${profileTranslateX}px, 0, 0)`,
                     opacity: profileOpacity,
@@ -164,7 +164,7 @@ const DraggableCardPair: React.FC<DraggableCardPairProps> = ({ review, index, pr
             {/* Quote Card - Premium Stationery Style */}
             <div 
                 className={`
-                    bg-[#FFFFFF] text-black
+                    bg-[#F2EFE9] text-black
                     p-8 md:p-16 w-full md:w-[500px] h-auto min-h-[340px]
                     shadow-[15px_15px_40px_rgba(0,0,0,0.15)]
                     border border-black/5

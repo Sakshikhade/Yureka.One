@@ -56,7 +56,7 @@ export const AdminReviewsTab: React.FC<AdminReviewsTabProps> = ({
                       <img src={review.image} alt={review.author} className="w-full h-full object-cover" />
                     </div>
                     <div>
-                      <div className="font-bold text-ink leading-tight group-hover:text-teal transition-colors line-clamp-1">{review.author}</div>
+                      <div className="font-bold text-[#242424] leading-tight group-hover:text-teal transition-colors line-clamp-1">{review.author}</div>
                       <div className="text-[10px] text-black/40 mt-1 uppercase font-bold tracking-tighter">{review.role}</div>
                     </div>
                   </div>
@@ -64,13 +64,13 @@ export const AdminReviewsTab: React.FC<AdminReviewsTabProps> = ({
                 <td className="px-8 py-6">
                   <div className="flex items-center gap-3">
                     <img src={review.company_logo} alt="" className="w-6 h-6 object-contain opacity-40 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all" />
-                    <span className="text-sm text-ink font-bold">{review.company}</span>
+                    <span className="text-sm text-[#242424] font-bold">{review.company}</span>
                   </div>
                 </td>
                 <td className="px-8 py-6">
                   <div className="flex items-center gap-3 max-w-xs">
                     <Quote size={14} className="text-teal/20 shrink-0" />
-                    <p className="text-[11px] text-ink/60 line-clamp-2 italic leading-relaxed">"{review.quote}"</p>
+                    <p className="text-[11px] text-[#242424]/60 line-clamp-2 italic leading-relaxed">"{review.quote}"</p>
                   </div>
                 </td>
                 <td className="px-8 py-6">
@@ -105,7 +105,7 @@ export const AdminReviewsTab: React.FC<AdminReviewsTabProps> = ({
           {reviews.length === 0 && (
             <tr>
               <td colSpan={5} className="px-8 py-24 text-center">
-                <p className="text-ink font-serif font-bold text-xl italic">No social proof available yet.</p>
+                <p className="text-[#242424] font-serif font-bold text-xl italic">No social proof available yet.</p>
                 <p className="text-black/40 text-xs mt-2 uppercase tracking-widest font-black">Curate your customer success stories here.</p>
               </td>
             </tr>

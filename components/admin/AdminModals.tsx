@@ -57,7 +57,7 @@ export const AdminModals: React.FC<AdminModalsProps> = ({
       {isDeleteModalOpen && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsDeleteModalOpen(false)}></div>
-          <div className="relative bg-white w-full max-w-md rounded-2xl shadow-2xl p-8 text-center">
+          <div className="relative bg-cream w-full max-w-md rounded-2xl shadow-2xl p-8 text-center">
             <div className="w-16 h-16 bg-red-100 text-red-500 rounded-full flex items-center justify-center mx-auto mb-6">
               <Trash2 size={32} />
             </div>
@@ -81,7 +81,7 @@ export const AdminModals: React.FC<AdminModalsProps> = ({
               </button>
               <button 
                 onClick={onDeleteConfirm}
-                className="flex-1 px-6 py-3 rounded-xl font-bold bg-red-500 text-white hover:bg-red-600 transition-colors shadow-lg text-xs uppercase tracking-widest"
+                className="flex-1 px-6 py-3 rounded-xl font-bold bg-red-500 text-cream hover:bg-red-600 transition-colors shadow-lg text-xs uppercase tracking-widest"
               >
                 Delete
               </button>
@@ -94,7 +94,7 @@ export const AdminModals: React.FC<AdminModalsProps> = ({
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsModalOpen(false)}></div>
-          <div className="relative bg-white w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
+          <div className="relative bg-cream w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
             <div className="p-6 border-b border-black/5 flex justify-between items-center bg-slate-50/50">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 bg-teal/10 rounded-lg flex items-center justify-center text-teal">
@@ -112,10 +112,10 @@ export const AdminModals: React.FC<AdminModalsProps> = ({
               </button>
             </div>
 
-            <div className="p-6 overflow-y-auto custom-scrollbar bg-white">
+            <div className="p-6 overflow-y-auto custom-scrollbar bg-cream">
               {helpers.error && (
                 <div className="mb-6 p-4 bg-red-50 text-red-500 rounded-xl flex items-center gap-3 text-xs font-bold border border-red-100">
-                  <div className="p-1 bg-red-500 text-white rounded-full">
+                  <div className="p-1 bg-red-500 text-cream rounded-full">
                     <X size={12} />
                   </div>
                   {helpers.error}

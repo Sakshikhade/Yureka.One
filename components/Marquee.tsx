@@ -14,26 +14,26 @@ const Marquee: React.FC = () => {
       <div className="relative z-10 flex flex-col gap-0">
           
           {/* Row 1: Right to Left */}
-          <div className="bg-black text-white py-3 border-y border-white/10 transform -rotate-1 scale-105 shadow-xl origin-center">
+          <div className="bg-black text-cream py-3 border-y border-cream/10 transform -rotate-1 scale-105 shadow-xl origin-center">
              <div className="flex whitespace-nowrap animate-marquee w-max" style={{ animationDuration: '44s' }}>
                  {[...Array(6)].map((_, i) => (
                     <div key={i} className="flex items-center gap-10 px-6">
                         <span className="text-xl md:text-3xl font-serif italic">AI-driven matching for 200M+ Indians.</span>
                         <span className="text-xl md:text-3xl font-bold uppercase tracking-tighter">No Ads. No Bias.</span>
-                        <div className="w-3 h-3 bg-white rounded-full opacity-60"></div>
+                        <div className="w-3 h-3 bg-cream rounded-full opacity-60"></div>
                     </div>
                  ))}
              </div>
           </div>
 
           {/* Row 2: Left to Right */}
-          <div className="bg-teal text-white py-3 border-y border-black/10 transform rotate-1 scale-105 shadow-xl origin-center mt-[-8px] z-20">
+          <div className="bg-teal text-cream py-3 border-y border-black/10 transform rotate-1 scale-105 shadow-xl origin-center mt-[-8px] z-20">
              <div className="flex whitespace-nowrap animate-marquee w-max" style={{ animationDuration: '50s', animationDirection: 'reverse' }}>
                  {[...Array(6)].map((_, i) => (
                     <div key={i} className="flex items-center gap-10 px-6">
                         <span className="text-xl md:text-3xl font-bold uppercase tracking-tighter">Voucher Savings.</span>
                         <span className="text-xl md:text-3xl font-serif italic">Managed by Yureka AI.</span>
-                        <div className="w-3 h-3 bg-white rounded-full opacity-60"></div>
+                        <div className="w-3 h-3 bg-cream rounded-full opacity-60"></div>
                     </div>
                  ))}
              </div>

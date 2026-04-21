@@ -444,12 +444,12 @@ const AdminDashboard: React.FC = () => {
   if (!user || !isAdmin) {
     return (
       <div className="min-h-screen bg-cream flex flex-col items-center justify-center p-4">
-        <div className="w-full max-w-md bg-white p-12 rounded-3xl shadow-xl border border-black/5 text-center">
+        <div className="w-full max-w-md bg-cream p-12 rounded-3xl shadow-xl border border-black/5 text-center">
           <LayoutDashboard className="mx-auto mb-6 text-teal" size={64} />
           <h1 className="text-3xl font-heading font-black mb-4 uppercase">Admin Access Required</h1>
           <p className="text-black/60 mb-8 text-sm font-sans font-medium">Please sign in with an authorized account to access the Yureka control plane.</p>
 
-          <button onClick={handleLogin} className="w-full bg-teal text-white py-4 rounded-xl font-bold hover:bg-teal/90 transition-all flex items-center justify-center gap-2">Sign in with Google</button>
+          <button onClick={handleLogin} className="w-full bg-teal text-cream py-4 rounded-xl font-bold hover:bg-teal/90 transition-all flex items-center justify-center gap-2">Sign in with Google</button>
         </div>
       </div>
     );
@@ -479,7 +479,7 @@ const AdminDashboard: React.FC = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.2 }}
-                  className="bg-white rounded-[2.5rem] border border-black/5 shadow-2xl shadow-black/[0.02] overflow-hidden min-h-[70vh] flex flex-col"
+                  className="bg-cream rounded-[2.5rem] border border-black/5 shadow-2xl shadow-black/[0.02] overflow-hidden min-h-[70vh] flex flex-col"
                 >
                   {activeTab === 'blogs' && <AdminBlogsTab onEdit={handleEdit} onDelete={confirmDelete} formatDateForInput={formatDateForInput} />}
                   {activeTab === 'cards' && <AdminCardsTab onEdit={handleEdit} onDelete={confirmDelete} />}
@@ -517,12 +517,12 @@ const AdminDashboard: React.FC = () => {
             exit={{ opacity: 0, scale: 0.8, filter: 'blur(10px)' }}
             className={`fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] px-6 py-4 rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] backdrop-blur-3xl border flex items-center gap-5 min-w-[340px] max-w-[90vw] ${
               notification.type === 'success' 
-                ? 'bg-ink/90 border-teal/20 text-white' 
-                : 'bg-red-600/90 border-red-400/20 text-white'
+                ? 'bg-[#242424]/90 border-teal/20 text-cream' 
+                : 'bg-red-600/90 border-red-400/20 text-cream'
             }`}
           >
             <div className={`w-10 h-10 rounded-full flex items-center justify-center relative ${
-              notification.type === 'success' ? 'bg-teal/20 text-teal-300' : 'bg-white/20 text-white'
+              notification.type === 'success' ? 'bg-teal/20 text-teal-300' : 'bg-cream/20 text-cream'
             }`}>
               {notification.type === 'success' && <div className="absolute inset-0 rounded-full border border-teal/40 animate-ping" />}
               {notification.type === 'success' ? '✓' : '!'}
@@ -535,7 +535,7 @@ const AdminDashboard: React.FC = () => {
             </div>
             <button 
               onClick={() => setNotification(null)}
-              className="text-white/20 hover:text-white transition-colors"
+              className="text-cream/20 hover:text-cream transition-colors"
             >
               ✕
             </button>

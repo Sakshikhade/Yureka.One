@@ -17,13 +17,13 @@ const JournalPage: React.FC = () => {
 
     if (isLoading && blogsList.length === 0) {
         return (
-            <div className="min-h-screen bg-[#FDFCF9] pt-32 px-6">
+            <div className="min-h-screen bg-[#F2EFE9] pt-32 px-6">
                 <div className="max-w-[1440px] mx-auto space-y-12">
-                   <div className="h-[60vh] bg-ink/5 rounded-[3rem] animate-pulse" />
+                   <div className="h-[60vh] bg-[#242424]/5 rounded-[3rem] animate-pulse" />
                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div className="h-64 bg-ink/5 rounded-3xl animate-pulse" />
-                        <div className="h-64 bg-ink/5 rounded-3xl animate-pulse" />
-                        <div className="h-64 bg-ink/5 rounded-3xl animate-pulse" />
+                        <div className="h-64 bg-[#242424]/5 rounded-3xl animate-pulse" />
+                        <div className="h-64 bg-[#242424]/5 rounded-3xl animate-pulse" />
+                        <div className="h-64 bg-[#242424]/5 rounded-3xl animate-pulse" />
                    </div>
                 </div>
             </div>
@@ -31,7 +31,7 @@ const JournalPage: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen bg-[#FDFCF9] pb-32 overflow-x-hidden font-sans">
+        <div className="min-h-screen bg-[#F2EFE9] pb-32 overflow-x-hidden font-sans">
             
             {/* ─── EDITORIAL HEADER ─── */}
             <div className="relative pt-20 pb-32 md:pt-32 md:pb-48 bg-cream overflow-hidden border-b border-ink/5">
@@ -50,22 +50,22 @@ const JournalPage: React.FC = () => {
                         transition={{ duration: 0.8 }}
                     >
                          <div className="flex items-center justify-center gap-4 mb-10">
-                            <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-ink/30 px-6 py-2 border border-ink/10 rounded-full">
+                            <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#242424]/30 px-6 py-2 border border-ink/10 rounded-full">
                                 Volume 01. Issue 04
                             </span>
                         </div>
-                        <h1 className="text-6xl md:text-9xl font-heading font-black text-ink tracking-tighter mb-8 leading-[0.85] uppercase">
-                            The <br className="md:hidden" /> <span className="text-clay italic serif font-light lowercase">Intelligence</span> <br className="hidden md:block" /> Ledger
+                        <h1 className="text-6xl md:text-9xl font-heading font-black text-[#242424] tracking-tighter mb-8 leading-[0.85] uppercase">
+                            The <br className="md:hidden" /> <span className="text-[#047857] italic serif font-light lowercase">Intelligence</span> <br className="hidden md:block" /> Ledger
                         </h1>
-                        <p className="text-ink/60 text-lg md:text-xl font-medium max-w-2xl mx-auto leading-relaxed mb-16 italic serif">
+                        <p className="text-[#242424]/60 text-lg md:text-xl font-medium max-w-2xl mx-auto leading-relaxed mb-16 italic serif">
                             A curated sequence of briefings on financial strategy, reward architecture, <br className="hidden md:block" /> and the shifting landscape of premium instruments.
                         </p>
 
                         <div className="flex flex-wrap justify-center items-center gap-4 md:gap-12">
                              {['Strategy', 'Architecture', 'Market Insights', 'Deep Tech'].map((cat) => (
-                                <button key={cat} className="group relative py-2 text-[10px] font-bold uppercase tracking-[0.3em] text-ink hover:text-clay transition-colors">
+                                <button key={cat} className="group relative py-2 text-[10px] font-bold uppercase tracking-[0.3em] text-[#242424] hover:text-[#047857] transition-colors">
                                     {cat}
-                                    <span className="absolute bottom-0 left-0 w-0 h-px bg-clay transition-all group-hover:w-full"></span>
+                                    <span className="absolute bottom-0 left-0 w-0 h-px bg-[#047857] transition-all group-hover:w-full"></span>
                                 </button>
                              ))}
                         </div>
@@ -81,7 +81,7 @@ const JournalPage: React.FC = () => {
                         initial={{ opacity: 0, scale: 0.98 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
-                        className="group relative bg-[#1e1a4b] rounded-[3.5rem] overflow-hidden shadow-[0_50px_100px_-20px_rgba(30,26,75,0.4)]"
+                        className="group relative bg-[#242424] rounded-[3.5rem] overflow-hidden shadow-[0_50px_100px_-20px_rgba(30,26,75,0.4)]"
                     >
                         <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[600px]">
                             {/* Graphic Side */}
@@ -91,42 +91,42 @@ const JournalPage: React.FC = () => {
                                     alt={featured.title} 
                                     className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000"
                                 />
-                                <div className="absolute inset-0 bg-ink/20 mix-blend-multiply" />
+                                <div className="absolute inset-0 bg-[#242424]/20 mix-blend-multiply" />
                                 <div className="absolute top-12 left-12">
-                                    <div className="bg-white/10 backdrop-blur-md border border-white/20 px-6 py-3 rounded-2xl">
-                                        <span className="text-white text-[10px] font-bold uppercase tracking-widest">Master File No. 8821</span>
+                                    <div className="bg-cream/10 backdrop-blur-md border border-cream/20 px-6 py-3 rounded-2xl">
+                                        <span className="text-cream text-[10px] font-bold uppercase tracking-widest">Master File No. 8821</span>
                                     </div>
                                 </div>
                             </div>
 
                             {/* Content Side */}
-                            <div className="p-12 md:p-24 flex flex-col justify-center text-white relative">
+                            <div className="p-12 md:p-24 flex flex-col justify-center text-cream relative">
                                 <div className="space-y-8">
                                     <div className="flex items-center gap-4">
-                                        <div className="w-1.5 h-1.5 bg-clay rounded-full animate-pulse" />
-                                        <span className="text-clay text-[10px] font-bold uppercase tracking-[0.3em]">{featured.category}</span>
-                                        <span className="text-white/20 text-[10px] font-bold uppercase tracking-widest">{new Date(featured.created_at || '').toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })}</span>
+                                        <div className="w-1.5 h-1.5 bg-[#047857] rounded-full animate-pulse" />
+                                        <span className="text-[#047857] text-[10px] font-bold uppercase tracking-[0.3em]">{featured.category}</span>
+                                        <span className="text-cream/20 text-[10px] font-bold uppercase tracking-widest">{new Date(featured.created_at || '').toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })}</span>
                                     </div>
 
-                                    <h2 className="text-4xl md:text-6xl font-heading font-black leading-[0.9] tracking-tighter uppercase group-hover:text-clay transition-colors duration-500">
+                                    <h2 className="text-4xl md:text-6xl font-heading font-black leading-[0.9] tracking-tighter uppercase group-hover:text-[#047857] transition-colors duration-500">
                                         {featured.title}
                                     </h2>
 
-                                    <p className="text-xl md:text-2xl text-white/60 font-serif leading-relaxed italic max-w-lg">
+                                    <p className="text-xl md:text-2xl text-cream/60 font-serif leading-relaxed italic max-w-lg">
                                         "{featured.excerpt}"
                                     </p>
 
                                     <div className="pt-12 flex flex-col md:flex-row items-center gap-8">
                                         <Link to={`/blogs/${featured.slug}`} className="w-full md:w-auto">
-                                            <button className="bg-white text-ink px-12 py-6 rounded-full text-xs font-bold uppercase tracking-[0.3em] shadow-2xl hover:bg-clay hover:text-white transition-all transform active:scale-95 cursor-pointer">
+                                            <button className="bg-cream text-[#242424] px-12 py-6 rounded-full text-xs font-bold uppercase tracking-[0.3em] shadow-2xl hover:bg-[#047857] hover:text-cream transition-all transform active:scale-95 cursor-pointer">
                                                 Examine Dispatch
                                             </button>
                                         </Link>
                                         <div className="flex items-center gap-4">
-                                            <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center font-heading font-black text-clay">
+                                            <div className="w-12 h-12 rounded-full border border-cream/10 flex items-center justify-center font-heading font-black text-[#047857]">
                                                 {featured.author ? featured.author[0] : 'Y'}
                                             </div>
-                                            <div className="text-[10px] font-bold uppercase tracking-widest text-white/40">Editorial by <br/> <span className="text-white">{featured.author || 'Yureka Research'}</span></div>
+                                            <div className="text-[10px] font-bold uppercase tracking-widest text-cream/40">Editorial by <br/> <span className="text-cream">{featured.author || 'Yureka Research'}</span></div>
                                         </div>
                                     </div>
                                 </div>
@@ -139,11 +139,11 @@ const JournalPage: React.FC = () => {
                 <div className="mt-32 space-y-16">
                     <div className="flex items-end justify-between border-b border-ink/5 pb-12">
                         <div className="space-y-4">
-                            <h3 className="text-4xl md:text-6xl font-heading font-black text-ink tracking-tight uppercase leading-none">The <span className="text-clay italic serif font-light lowercase">Archives</span></h3>
-                            <p className="text-ink/40 text-[10px] font-bold uppercase tracking-[0.5em]">Sequence of documented intelligence dispatches</p>
+                            <h3 className="text-4xl md:text-6xl font-heading font-black text-[#242424] tracking-tight uppercase leading-none">The <span className="text-[#047857] italic serif font-light lowercase">Archives</span></h3>
+                            <p className="text-[#242424]/40 text-[10px] font-bold uppercase tracking-[0.5em]">Sequence of documented intelligence dispatches</p>
                         </div>
                         <div className="hidden md:flex gap-4">
-                            <Landmark className="text-ink/10" size={48} />
+                            <Landmark className="text-[#242424]/10" size={48} />
                         </div>
                     </div>
 
@@ -161,29 +161,29 @@ const JournalPage: React.FC = () => {
                                     <div className="space-y-8">
                                         <div className="relative aspect-[4/3] rounded-[2.5rem] overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700">
                                             <ImageWithLoader src={post.image} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
-                                            <div className="absolute inset-0 bg-ink/10 group-hover:bg-transparent transition-colors duration-700" />
+                                            <div className="absolute inset-0 bg-[#242424]/10 group-hover:bg-transparent transition-colors duration-700" />
                                             <div className="absolute top-6 right-6">
-                                                <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-ink shadow-xl group-hover:bg-clay group-hover:text-white transition-all transform group-hover:rotate-45">
+                                                <div className="w-12 h-12 bg-cream rounded-2xl flex items-center justify-center text-[#242424] shadow-xl group-hover:bg-[#047857] group-hover:text-cream transition-all transform group-hover:rotate-45">
                                                     <ArrowUpRight size={24} />
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div className="space-y-4 px-2">
-                                            <div className="flex items-center gap-4 text-[9px] font-bold uppercase tracking-[0.3em] text-ink/30">
+                                            <div className="flex items-center gap-4 text-[9px] font-bold uppercase tracking-[0.3em] text-[#242424]/30">
                                                 <span>{post.category}</span>
-                                                <span className="w-1 h-1 bg-clay rounded-full" />
+                                                <span className="w-1 h-1 bg-[#047857] rounded-full" />
                                                 <span>{post.read_time || '4 min'} Read</span>
                                             </div>
-                                            <h4 className="text-3xl font-heading font-black text-ink leading-[0.9] tracking-tighter uppercase group-hover:text-clay transition-colors duration-500">
+                                            <h4 className="text-3xl font-heading font-black text-[#242424] leading-[0.9] tracking-tighter uppercase group-hover:text-[#047857] transition-colors duration-500">
                                                 {post.title}
                                             </h4>
-                                            <p className="text-sm text-ink/60 font-sans leading-relaxed line-clamp-2">
+                                            <p className="text-sm text-[#242424]/60 font-sans leading-relaxed line-clamp-2">
                                                 {post.excerpt}
                                             </p>
-                                            <div className="pt-4 flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-ink/20">
+                                            <div className="pt-4 flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-[#242424]/20">
                                                 <span>Pub. REF / {new Date(post.created_at || '').toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit' })}</span>
-                                                <span className="group-hover:text-clay transition-colors uppercase">Read Examination →</span>
+                                                <span className="group-hover:text-[#047857] transition-colors uppercase">Read Examination →</span>
                                             </div>
                                         </div>
                                     </div>
@@ -208,13 +208,13 @@ const JournalPage: React.FC = () => {
                     />
 
                     <div className="relative z-10 max-w-4xl mx-auto space-y-12">
-                        <div className="inline-block px-10 py-2 bg-ink text-white text-[10px] font-bold uppercase tracking-[0.5em] rounded-full">
+                        <div className="inline-block px-10 py-2 bg-[#242424] text-cream text-[10px] font-bold uppercase tracking-[0.5em] rounded-full">
                             Access Digital Dispatch
                         </div>
-                        <h2 className="text-5xl md:text-8xl font-heading font-black text-ink tracking-tighter leading-[0.85] uppercase">
-                            Secure the <span className="text-clay italic serif font-light lowercase">premium</span> <br/> Weekly Dispatch
+                        <h2 className="text-5xl md:text-8xl font-heading font-black text-[#242424] tracking-tighter leading-[0.85] uppercase">
+                            Secure the <span className="text-[#047857] italic serif font-light lowercase">premium</span> <br/> Weekly Dispatch
                         </h2>
-                        <p className="text-xl md:text-2xl text-ink/60 font-serif italic max-w-2xl mx-auto leading-relaxed">
+                        <p className="text-xl md:text-2xl text-[#242424]/60 font-serif italic max-w-2xl mx-auto leading-relaxed">
                             A highly confidential summary of policy changes, reward arbitrage, and high-yield financial maneuvers.
                         </p>
 
@@ -222,13 +222,13 @@ const JournalPage: React.FC = () => {
                              <input 
                                 type="email" 
                                 placeholder="Enter editorial email." 
-                                className="flex-1 px-10 py-6 bg-white border border-ink/10 rounded-full focus:outline-none focus:border-clay text-lg placeholder-ink/20 font-serif"
+                                className="flex-1 px-10 py-6 bg-cream border border-ink/10 rounded-full focus:outline-none focus:border-clay text-lg placeholder-ink/20 font-serif"
                              />
-                             <button className="bg-ink text-white px-12 py-6 rounded-full text-xs font-bold uppercase tracking-[0.4em] shadow-2xl hover:bg-clay transition-all active:scale-95 cursor-pointer flex items-center justify-center gap-3">
-                                Subscribe <ArrowRight size={16} className="text-clay" />
+                             <button className="bg-[#242424] text-cream px-12 py-6 rounded-full text-xs font-bold uppercase tracking-[0.4em] shadow-2xl hover:bg-[#047857] transition-all active:scale-95 cursor-pointer flex items-center justify-center gap-3">
+                                Subscribe <ArrowRight size={16} className="text-[#047857]" />
                              </button>
                         </div>
-                        <p className="text-[10px] font-bold uppercase tracking-widest text-ink/30 italic">
+                        <p className="text-[10px] font-bold uppercase tracking-widest text-[#242424]/30 italic">
                             No spam. Only high-performance intelligence.
                         </p>
                     </div>

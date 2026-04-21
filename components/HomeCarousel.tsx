@@ -145,24 +145,24 @@ const HomeCarousel = forwardRef<HomeCarouselHandle, HomeCarouselProps>(({
 
   const Content = (
     <div className="relative w-full h-full max-w-[1700px] border-y border-ink/10 bg-transparent block will-change-transform">
-        <div className="absolute top-0 left-1/4 bottom-0 w-px bg-ink/10 hidden md:block z-0"></div>
-        <div className="absolute top-0 right-1/4 bottom-0 w-px bg-ink/10 hidden md:block z-0"></div>
+        <div className="absolute top-0 left-1/4 bottom-0 w-px bg-[#242424]/10 hidden md:block z-0"></div>
+        <div className="absolute top-0 right-1/4 bottom-0 w-px bg-[#242424]/10 hidden md:block z-0"></div>
 
         <div className="relative z-10 w-full h-full grid grid-cols-1 md:grid-cols-12">
             <div className="absolute top-4 sm:top-8 left-0 right-0 z-20 flex flex-col items-center text-center px-6 md:static md:col-span-4 md:flex md:justify-center md:px-12 lg:px-16 md:text-left md:items-start md:z-auto">
                     {/* Glass Island Effect for Content Block */}
                     <div className="relative glass-panel p-6 sm:p-8 rounded-2xl shadow-xl md:p-10 border border-ink/5 max-w-[90vw] sm:max-w-none">
                         <span className="block text-teal text-[10px] sm:text-xs font-bold uppercase tracking-[0.3em] mb-2 sm:mb-4">Feature Story</span>
-                        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl leading-[0.9] mb-2 sm:mb-4 font-serif text-ink">
+                        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl leading-[0.9] mb-2 sm:mb-4 font-serif text-[#242424]">
                             {title.split(',')[0]}<br />
-                            <span className="font-light italic text-ink/60">{title.split(',')[1] || ''}</span>
+                            <span className="font-light italic text-[#242424]/60">{title.split(',')[1] || ''}</span>
                         </h2>
-                        <p className="text-[11px] sm:text-sm md:text-base text-ink/60 font-mono max-w-sm leading-relaxed mb-4 sm:mb-8 mx-auto md:mx-0 pl-1">
+                        <p className="text-[11px] sm:text-sm md:text-base text-[#242424]/60 font-mono max-w-sm leading-relaxed mb-4 sm:mb-8 mx-auto md:mx-0 pl-1">
                             {subtitle}
                         </p>
                         
-                        <div className="hidden md:flex items-center gap-3 text-ink/30 text-xs font-bold tracking-widest uppercase">
-                            <div className="w-8 h-[1px] bg-ink/30"></div>
+                        <div className="hidden md:flex items-center gap-3 text-[#242424]/30 text-xs font-bold tracking-widest uppercase">
+                            <div className="w-8 h-[1px] bg-[#242424]/30"></div>
                             Fig. 1.0 — Scroll to reveal
                         </div>
                     </div>
@@ -182,7 +182,7 @@ const HomeCarousel = forwardRef<HomeCarouselHandle, HomeCarouselProps>(({
                                 zIndex: index + 10
                             }}
                         >
-                            <div className="w-full h-full bg-white p-2 shadow-2xl border border-ink/10 relative transition-all duration-300 ease-out hover:scale-[1.01]">
+                            <div className="w-full h-full bg-cream p-2 shadow-2xl border border-ink/10 relative transition-all duration-300 ease-out hover:scale-[1.01]">
                                 <div className="relative h-[60%] overflow-hidden border-b border-ink/10">
                                     <ImageWithLoader 
                                         src={card.image} 
@@ -190,31 +190,31 @@ const HomeCarousel = forwardRef<HomeCarouselHandle, HomeCarouselProps>(({
                                         className="w-full h-full object-cover"
                                     />
                                     {/* Glass Badge */}
-                                    <div className="absolute top-2 right-2 glass-panel text-ink px-3 py-1 text-[9px] uppercase font-bold tracking-widest rounded-full backdrop-blur-md">
+                                    <div className="absolute top-2 right-2 glass-panel text-[#242424] px-3 py-1 text-[9px] uppercase font-bold tracking-widest rounded-full backdrop-blur-md">
                                         {card.issuer}
                                     </div>
                                 </div>
-                                <div className="flex-1 p-6 flex flex-col justify-between relative bg-white">
+                                <div className="flex-1 p-6 flex flex-col justify-between relative bg-cream">
                                     <div>
                                         <div className="flex justify-between items-start mb-2">
-                                            <h3 className="text-2xl font-serif text-ink leading-none">{card.name}</h3>
-                                            <span className="text-[10px] text-ink/30 font-mono">NO. {index + 1}</span>
+                                            <h3 className="text-2xl font-serif text-[#242424] leading-none">{card.name}</h3>
+                                            <span className="text-[10px] text-[#242424]/30 font-mono">NO. {index + 1}</span>
                                         </div>
                                         
-                                        <p className="text-ink/60 text-sm leading-relaxed font-serif italic line-clamp-3 mt-2">
+                                        <p className="text-[#242424]/60 text-sm leading-relaxed font-serif italic line-clamp-3 mt-2">
                                             {card.features[0]}
                                         </p>
                                     </div>
                                     <div className="pt-4 flex items-end justify-between">
                                         <div>
-                                            <p className="text-[10px] text-ink/30 uppercase tracking-widest font-bold mb-1">
+                                            <p className="text-[10px] text-[#242424]/30 uppercase tracking-widest font-bold mb-1">
                                                 Rewards Rate
                                             </p>
-                                            <h4 className="text-xl font-medium text-ink tracking-tight">
+                                            <h4 className="text-xl font-medium text-[#242424] tracking-tight">
                                                 {card.rewards_rate}
                                             </h4>
                                         </div>
-                                        <div className="w-8 h-8 bg-ink/5 border border-ink/10 text-ink flex items-center justify-center hover:bg-ink hover:text-white transition-colors">
+                                        <div className="w-8 h-8 bg-[#242424]/5 border border-ink/10 text-[#242424] flex items-center justify-center hover:bg-[#242424] hover:text-cream transition-colors">
                                             <ArrowUpRight size={14} />
                                         </div>
                                     </div>
@@ -237,14 +237,14 @@ const HomeCarousel = forwardRef<HomeCarouselHandle, HomeCarouselProps>(({
                     }}
                 >
                         <Link to="/cards" className="block w-full h-full group">
-                        <div className="w-full h-full bg-clay flex flex-col items-center justify-center p-6 sm:p-8 text-center shadow-[10px_10px_0px_rgba(0,0,0,0.1)] border border-black/20 transition-all duration-300 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none">
+                        <div className="w-full h-full bg-[#047857] flex flex-col items-center justify-center p-6 sm:p-8 text-center shadow-[10px_10px_0px_rgba(0,0,0,0.1)] border border-black/20 transition-all duration-300 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none">
                             <div className="relative z-10">
-                                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white text-black rounded-full flex items-center justify-center mb-4 sm:mb-6 mx-auto group-hover:scale-110 transition-transform duration-300 shadow-md">
+                                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-cream text-black rounded-full flex items-center justify-center mb-4 sm:mb-6 mx-auto group-hover:scale-110 transition-transform duration-300 shadow-md">
                                     <ArrowRight size={20} className="sm:w-[24px] sm:h-[24px]" />
                                 </div>
-                                <h3 className="text-lg sm:text-xl font-serif text-white mb-1 sm:mb-2 italic">Browse</h3>
-                                <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight mb-4 sm:mb-6 uppercase">The<br/>Catalog</h3>
-                                <span className="inline-block px-4 sm:px-6 py-1.5 sm:py-2 border border-white text-white text-[9px] sm:text-[10px] font-bold tracking-widest uppercase hover:bg-white hover:text-clay transition-colors">
+                                <h3 className="text-lg sm:text-xl font-serif text-cream mb-1 sm:mb-2 italic">Browse</h3>
+                                <h3 className="text-xl sm:text-2xl font-bold text-cream tracking-tight mb-4 sm:mb-6 uppercase">The<br/>Catalog</h3>
+                                <span className="inline-block px-4 sm:px-6 py-1.5 sm:py-2 border border-cream text-cream text-[9px] sm:text-[10px] font-bold tracking-widest uppercase hover:bg-cream hover:text-[#047857] transition-colors">
                                     View Index
                                 </span>
                             </div>

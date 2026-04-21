@@ -39,7 +39,7 @@ export const AdminWaitlistTab: React.FC<AdminWaitlistTabProps> = ({
     { id: 'accepted', label: 'Accepted', icon: CheckCircle, color: 'text-green-500' },
     { id: 'on_hold', label: 'On Hold', icon: PauseCircle, color: 'text-blue-500' },
     { id: 'rejected', label: 'Rejected', icon: XCircle, color: 'text-red-500' },
-    { id: 'all', label: 'All Entries', icon: Filter, color: 'text-ink' }
+    { id: 'all', label: 'All Entries', icon: Filter, color: 'text-[#242424]' }
   ];
 
   return (
@@ -59,14 +59,14 @@ export const AdminWaitlistTab: React.FC<AdminWaitlistTabProps> = ({
                 onClick={() => onFilterChange(tab.id as any)}
                 className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${
                   filter === tab.id 
-                    ? 'bg-white text-ink shadow-sm' 
-                    : 'text-black/40 hover:text-black hover:bg-white/50'
+                    ? 'bg-cream text-[#242424] shadow-sm' 
+                    : 'text-black/40 hover:text-black hover:bg-cream/50'
                 }`}
               >
                 <Icon size={14} className={filter === tab.id ? tab.color : 'text-black/20'} />
                 {tab.label}
                 <span className={`ml-1 px-2 py-0.5 rounded-md text-[9px] ${
-                  filter === tab.id ? 'bg-black/5 text-ink' : 'bg-black/5 text-black/40'
+                  filter === tab.id ? 'bg-black/5 text-[#242424]' : 'bg-black/5 text-black/40'
                 }`}>
                   {count}
                 </span>
@@ -104,7 +104,7 @@ export const AdminWaitlistTab: React.FC<AdminWaitlistTabProps> = ({
                         {entry.name[0].toUpperCase()}
                       </div>
                       <div>
-                        <div className="font-bold text-ink leading-tight">{entry.name}</div>
+                        <div className="font-bold text-[#242424] leading-tight">{entry.name}</div>
                         <div className="text-[11px] text-black/40 mt-0.5 lowercase">{entry.email}</div>
                       </div>
                     </div>
@@ -117,7 +117,7 @@ export const AdminWaitlistTab: React.FC<AdminWaitlistTabProps> = ({
                     </span>
                   </td>
                   <td className="px-8 py-6">
-                    <div className="text-[11px] font-bold text-ink/60 uppercase tracking-tight">
+                    <div className="text-[11px] font-bold text-[#242424]/60 uppercase tracking-tight">
                       {entry.role === 'user' ? (
                         <span className="flex items-center gap-2"><Filter size={12} className="text-black/20" /> {entry.category} Preference</span>
                       ) : (
@@ -133,7 +133,7 @@ export const AdminWaitlistTab: React.FC<AdminWaitlistTabProps> = ({
                         entry.status === 'rejected' ? 'bg-red-500' : 
                         'bg-amber-500'
                       }`} />
-                      <span className="text-[10px] font-black uppercase tracking-widest text-ink">
+                      <span className="text-[10px] font-black uppercase tracking-widest text-[#242424]">
                         {entry.status || 'pending'}
                       </span>
                     </div>
@@ -183,7 +183,7 @@ export const AdminWaitlistTab: React.FC<AdminWaitlistTabProps> = ({
                   <div className="bg-black/5 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-black/20">
                     <Filter size={32} />
                   </div>
-                  <p className="text-ink font-serif font-bold text-xl italic">No entries found.</p>
+                  <p className="text-[#242424] font-serif font-bold text-xl italic">No entries found.</p>
                   <p className="text-black/40 text-xs mt-2 uppercase tracking-widest font-black">Adjust your filters or wait for new applications.</p>
                 </td>
               </tr>

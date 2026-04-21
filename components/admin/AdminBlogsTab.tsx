@@ -56,7 +56,7 @@ export const AdminBlogsTab: React.FC<AdminBlogsTabProps> = ({
                         <img src={blog.image} alt={blog.title} className="w-full h-full object-cover" />
                       </div>
                       <div className="max-w-md">
-                        <div className="font-bold text-ink leading-tight group-hover:text-teal transition-colors line-clamp-1">{blog.title}</div>
+                        <div className="font-bold text-[#242424] leading-tight group-hover:text-teal transition-colors line-clamp-1">{blog.title}</div>
                         <div className="text-[11px] text-black/40 mt-1 flex items-center gap-2">
                           <ExternalLink size={10} />
                           {blog.slug}
@@ -65,7 +65,7 @@ export const AdminBlogsTab: React.FC<AdminBlogsTabProps> = ({
                     </div>
                   </td>
                   <td className="px-8 py-6">
-                    <span className="px-2.5 py-1.5 rounded-lg bg-black/5 text-ink/60 text-[10px] font-black uppercase tracking-wider flex items-center gap-2 w-fit">
+                    <span className="px-2.5 py-1.5 rounded-lg bg-black/5 text-[#242424]/60 text-[10px] font-black uppercase tracking-wider flex items-center gap-2 w-fit">
                       <Target size={12} className="text-black/20" />
                       {blog.category}
                     </span>
@@ -75,7 +75,7 @@ export const AdminBlogsTab: React.FC<AdminBlogsTabProps> = ({
                       <div className="w-6 h-6 rounded-full bg-teal/10 flex items-center justify-center text-teal text-[10px] font-bold">
                         {blog.author?.[0] || 'A'}
                       </div>
-                      <span className="text-sm text-ink/70 font-medium">{blog.author}</span>
+                      <span className="text-sm text-[#242424]/70 font-medium">{blog.author}</span>
                     </div>
                   </td>
                   <td className="px-8 py-6">
@@ -118,7 +118,7 @@ export const AdminBlogsTab: React.FC<AdminBlogsTabProps> = ({
           {blogs.length === 0 && (
             <tr>
               <td colSpan={5} className="px-8 py-24 text-center">
-                <p className="text-ink font-serif font-bold text-xl italic">The catalog is currently empty.</p>
+                <p className="text-[#242424] font-serif font-bold text-xl italic">The catalog is currently empty.</p>
                 <p className="text-black/40 text-xs mt-2 uppercase tracking-widest font-black">Begin by publishing your first article.</p>
               </td>
             </tr>

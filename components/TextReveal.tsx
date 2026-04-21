@@ -16,23 +16,23 @@ const TextReveal: React.FC = () => {
   const words = bodyText.split(" ");
 
   return (
-    <section ref={containerRef} className="relative bg-cream h-[250vh] md:h-[400vh] z-20 border-b border-black/10 text-ink overflow-visible">
+    <section ref={containerRef} className="relative bg-cream h-[250vh] md:h-[400vh] z-20 border-b border-black/10 text-[#242424] overflow-visible">
       {/* Background Micro-details */}
       <div className="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/p6-mini.png')]" />
 
       <div className="sticky top-0 h-screen flex flex-col items-center justify-center px-6 md:px-12 max-w-[1240px] mx-auto w-full overflow-hidden">
         <div className="w-full border-l border-clay/30 pl-8 md:pl-16 py-16 relative">
             {/* Corner Deco */}
-            <div className="absolute top-0 left-0 w-8 h-px bg-clay/20"></div>
-            <div className="absolute top-0 left-0 w-px h-8 bg-clay/20"></div>
+            <div className="absolute top-0 left-0 w-8 h-px bg-[#047857]/20"></div>
+            <div className="absolute top-0 left-0 w-px h-8 bg-[#047857]/20"></div>
 
             <motion.div 
               style={{ opacity: useTransform(scrollYProgress, [0, 0.05], [0, 1]) }}
               className="mb-12 md:mb-16"
             >
                 <div className="flex items-center gap-4">
-                  <div className="h-px w-8 bg-clay/30"></div>
-                  <h3 className="text-ink font-medium text-[10px] uppercase tracking-[0.4em]">
+                  <div className="h-px w-8 bg-[#047857]/30"></div>
+                  <h3 className="text-[#242424] font-medium text-[10px] uppercase tracking-[0.4em]">
                       {headerText}
                   </h3>
                 </div>
@@ -70,14 +70,14 @@ const TextReveal: React.FC = () => {
               }}
               className="mt-16 md:mt-20 pt-8 border-t border-clay/10 inline-block"
             >
-                <p className="font-serif italic text-sm text-ink/40">
+                <p className="font-serif italic text-sm text-[#242424]/40">
                     — The Intelligence Bureau
                 </p>
             </motion.div>
 
             {/* Bottom Deco */}
-            <div className="absolute bottom-0 left-0 w-8 h-px bg-clay/20"></div>
-            <div className="absolute bottom-0 left-0 w-px h-8 bg-clay/20"></div>
+            <div className="absolute bottom-0 left-0 w-8 h-px bg-[#047857]/20"></div>
+            <div className="absolute bottom-0 left-0 w-px h-8 bg-[#047857]/20"></div>
 
         </div>
       </div>

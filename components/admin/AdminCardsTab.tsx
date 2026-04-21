@@ -52,14 +52,14 @@ export const AdminCardsTab: React.FC<AdminCardsTabProps> = ({
                       <img src={card.image} alt={card.name} className="w-full h-full object-cover" />
                     </div>
                     <div>
-                      <div className="font-bold text-ink leading-tight group-hover:text-teal transition-colors line-clamp-1">{card.name}</div>
+                      <div className="font-bold text-[#242424] leading-tight group-hover:text-teal transition-colors line-clamp-1">{card.name}</div>
                       <div className="text-[10px] text-black/30 mt-1 uppercase font-black tracking-widest">{card.type}</div>
                     </div>
                   </div>
                 </td>
                 <td className="px-8 py-6">
                   <div className="flex flex-col">
-                    <span className="text-sm text-ink font-bold">{card.bank}</span>
+                    <span className="text-sm text-[#242424] font-bold">{card.bank}</span>
                     <span className="text-[10px] text-black/40 uppercase font-bold tracking-tighter mt-0.5">{card.issuer || 'Local Primary'}</span>
                   </div>
                 </td>
@@ -71,8 +71,8 @@ export const AdminCardsTab: React.FC<AdminCardsTabProps> = ({
                 </td>
                 <td className="px-8 py-6">
                   <div className="flex flex-col gap-1">
-                    <div className="text-[11px] font-bold text-ink/70">
-                      Annual: <span className="text-ink">{card.annual_fee}</span>
+                    <div className="text-[11px] font-bold text-[#242424]/70">
+                      Annual: <span className="text-[#242424]">{card.annual_fee}</span>
                     </div>
                     <div className="text-[10px] text-black/30 font-bold uppercase tracking-tighter flex items-center gap-1">
                       <ShieldCheck size={10} />
@@ -104,7 +104,7 @@ export const AdminCardsTab: React.FC<AdminCardsTabProps> = ({
           {cards.length === 0 && (
             <tr>
               <td colSpan={5} className="px-8 py-24 text-center">
-                <p className="text-ink font-serif font-bold text-xl italic">No financial products listed.</p>
+                <p className="text-[#242424] font-serif font-bold text-xl italic">No financial products listed.</p>
                 <p className="text-black/40 text-xs mt-2 uppercase tracking-widest font-black">Add your first credit card to the registry.</p>
               </td>
             </tr>

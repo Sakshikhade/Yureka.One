@@ -15,7 +15,7 @@ export const SkeletonCard = () => (
   <motion.div 
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
-    className="bg-white border border-black/5 rounded-3xl overflow-hidden relative p-6 h-[400px] flex flex-col shadow-sm"
+    className="bg-cream border border-black/5 rounded-3xl overflow-hidden relative p-6 h-[400px] flex flex-col shadow-sm"
   >
     <div className="w-full h-48 bg-slate-100 rounded-2xl mb-6 relative overflow-hidden">
       <Shimmer />
@@ -41,7 +41,7 @@ export const SkeletonBlog = () => (
   <motion.div 
     initial={{ opacity: 0, scale: 0.95 }}
     animate={{ opacity: 1, scale: 1 }}
-    className="border border-black/5 rounded-3xl overflow-hidden p-6 relative bg-white shadow-sm"
+    className="border border-black/5 rounded-3xl overflow-hidden p-6 relative bg-cream shadow-sm"
   >
     <div className="aspect-video bg-slate-100 rounded-2xl mb-6 relative overflow-hidden">
       <Shimmer />
@@ -69,7 +69,7 @@ export const SkeletonTable = ({ rows = 5 }: { rows?: number }) => (
         initial={{ opacity: 0, x: -10 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: i * 0.05 }}
-        className="h-16 bg-white border border-black/5 rounded-xl w-full flex items-center px-6 gap-4 relative overflow-hidden shadow-sm"
+        className="h-16 bg-cream border border-black/5 rounded-xl w-full flex items-center px-6 gap-4 relative overflow-hidden shadow-sm"
       >
         <div className="h-8 w-8 bg-slate-100 rounded-lg shrink-0" />
         <div className="h-4 bg-slate-100 rounded w-1/4" />

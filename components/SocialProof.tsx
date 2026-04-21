@@ -33,7 +33,7 @@ const tweets = [
 ];
 
 const TweetCard = React.memo<{ tweet: any }>(({ tweet }) => (
-  <div className="bg-white border-r border-black/10 p-6 md:p-10 w-[280px] sm:w-[350px] md:w-[450px] flex-shrink-0 flex flex-col h-full hover:bg-[#F5F5F0] transition-colors group">
+  <div className="bg-cream border-r border-black/10 p-6 md:p-10 w-[280px] sm:w-[350px] md:w-[450px] flex-shrink-0 flex flex-col h-full hover:bg-[#F2EFE9] transition-colors group">
      <div className="flex gap-3 mb-4 md:mb-6">
         <div className="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden grayscale group-hover:grayscale-0 transition-all">
              <ImageWithLoader src={tweet.avatar} alt={tweet.name} className="w-full h-full object-cover" />

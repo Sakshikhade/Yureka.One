@@ -52,7 +52,7 @@ const PROGRAM_LOGOS: Record<string, string> = {
 };
 
 const ProgramIcon: React.FC<{ name: string | null, fallbackColor?: string, size?: string }> = ({ name, fallbackColor = 'bg-blue-500', size = 'w-8 h-8' }) => {
-  if (!name) return <div className={`${size} rounded ${fallbackColor} flex items-center justify-center text-[10px] font-bold text-white uppercase`}>??</div>;
+  if (!name) return <div className={`${size} rounded ${fallbackColor} flex items-center justify-center text-[10px] font-bold text-cream uppercase`}>??</div>;
   
   // Try exact match first, then prefix match
   let logoUrl = PROGRAM_LOGOS[name];
@@ -65,14 +65,14 @@ const ProgramIcon: React.FC<{ name: string | null, fallbackColor?: string, size?
 
   if (logoUrl) {
     return (
-      <div className={`${size} rounded bg-white flex items-center justify-center overflow-hidden border border-slate-100 shadow-sm shrink-0`}>
+      <div className={`${size} rounded bg-cream flex items-center justify-center overflow-hidden border border-slate-100 shadow-sm shrink-0`}>
         <img src={logoUrl} alt={name} className="w-full h-full object-contain p-1" />
       </div>
     );
   }
   
   return (
-    <div className={`${size} rounded ${fallbackColor} flex items-center justify-center text-[10px] font-bold text-white uppercase shrink-0`}>
+    <div className={`${size} rounded ${fallbackColor} flex items-center justify-center text-[10px] font-bold text-cream uppercase shrink-0`}>
       {name.substring(0, 2)}
     </div>
   );
@@ -155,13 +155,13 @@ const RewardsTransferCalculator: React.FC = () => {
   }, [results, showBonusesOnly, visibleCount]);
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] font-sans text-slate-900 pb-20">
+    <div className="min-h-screen bg-[#F2EFE9] font-sans text-slate-900 pb-20">
       <SEO title="Transfer Calculator | Yureka" description="Optimize your rewards transfers with precision." />
 
       <div className="max-w-[1240px] mx-auto px-4 sm:px-6 pt-6 sm:pt-10">
         
         {/* Controls Section */}
-        <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-6 mb-4">
+        <div className="bg-cream rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-6 mb-4">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-4 lg:gap-6 items-end">
             
             {/* Transfer From */}
@@ -170,7 +170,7 @@ const RewardsTransferCalculator: React.FC = () => {
               <div className="flex items-center gap-2">
                 <div 
                   onClick={() => setIsFromOpen(!isFromOpen)}
-                  className="flex-1 h-[54px] sm:h-[60px] bg-white border border-slate-200 rounded-xl px-4 flex items-center justify-between cursor-pointer hover:border-slate-400 transition-all group"
+                  className="flex-1 h-[54px] sm:h-[60px] bg-cream border border-slate-200 rounded-xl px-4 flex items-center justify-between cursor-pointer hover:border-slate-400 transition-all group"
                 >
                   <div className="flex items-center gap-3 overflow-hidden">
                     <ProgramIcon name={selectedFrom} fallbackColor="bg-blue-500" />
@@ -194,7 +194,7 @@ const RewardsTransferCalculator: React.FC = () => {
                 {isFromOpen && (
                   <motion.div 
                     initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 5 }}
-                    className="absolute top-full left-0 right-0 z-[60] mt-2 bg-white border border-slate-200 shadow-2xl rounded-xl overflow-hidden min-w-[280px]"
+                    className="absolute top-full left-0 right-0 z-[60] mt-2 bg-cream border border-slate-200 shadow-2xl rounded-xl overflow-hidden min-w-[280px]"
                   >
                     <div className="p-3 border-b border-slate-100">
                       <div className="relative">
@@ -232,7 +232,7 @@ const RewardsTransferCalculator: React.FC = () => {
               <div className="flex items-center gap-2">
                 <div 
                   onClick={() => setIsToOpen(!isToOpen)}
-                  className="flex-1 h-[54px] sm:h-[60px] bg-white border border-slate-200 rounded-xl px-4 flex items-center justify-between cursor-pointer hover:border-slate-400 transition-all group"
+                  className="flex-1 h-[54px] sm:h-[60px] bg-cream border border-slate-200 rounded-xl px-4 flex items-center justify-between cursor-pointer hover:border-slate-400 transition-all group"
                 >
                   <div className="flex items-center gap-3 overflow-hidden">
                     <ProgramIcon name={selectedTo} fallbackColor="bg-indigo-600" />
@@ -256,7 +256,7 @@ const RewardsTransferCalculator: React.FC = () => {
                 {isToOpen && (
                   <motion.div 
                     initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 5 }}
-                    className="absolute top-full left-0 right-0 z-[60] mt-2 bg-white border border-slate-200 shadow-2xl rounded-xl overflow-hidden min-w-[280px]"
+                    className="absolute top-full left-0 right-0 z-[60] mt-2 bg-cream border border-slate-200 shadow-2xl rounded-xl overflow-hidden min-w-[280px]"
                   >
                     <div className="p-3 border-b border-slate-100">
                       <div className="relative">
@@ -291,7 +291,7 @@ const RewardsTransferCalculator: React.FC = () => {
             {/* Points */}
             <div className="md:col-span-4">
               <label className="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider block mb-2 px-1">Transfer Points</label>
-              <div className="h-[54px] sm:h-[60px] bg-white border border-slate-200 rounded-xl px-4 flex items-center gap-2 focus-within:border-blue-500 transition-all">
+              <div className="h-[54px] sm:h-[60px] bg-cream border border-slate-200 rounded-xl px-4 flex items-center gap-2 focus-within:border-blue-500 transition-all">
                 <input 
                   type="number" 
                   value={amount || ''} 
@@ -306,7 +306,7 @@ const RewardsTransferCalculator: React.FC = () => {
         </div>
 
         {/* Login Banner */}
-        <div className="bg-white rounded-2xl border border-slate-100 p-4 mb-8 flex items-center justify-between group cursor-pointer hover:bg-slate-50 transition-colors shadow-sm">
+        <div className="bg-cream rounded-2xl border border-slate-100 p-4 mb-8 flex items-center justify-between group cursor-pointer hover:bg-slate-50 transition-colors shadow-sm">
           <div className="flex items-center gap-4 text-slate-400 font-medium">
             <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center">
               <User size={16} />
@@ -324,12 +324,12 @@ const RewardsTransferCalculator: React.FC = () => {
           <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-hide">
             <button 
               onClick={() => setShowBonusesOnly(!showBonusesOnly)}
-              className={`whitespace-nowrap px-4 py-2 rounded-full text-[10px] sm:text-xs font-bold border transition-all flex items-center gap-2 shrink-0 ${showBonusesOnly ? 'bg-amber-50 border-amber-200 text-amber-600 shadow-sm' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'}`}
+              className={`whitespace-nowrap px-4 py-2 rounded-full text-[10px] sm:text-xs font-bold border transition-all flex items-center gap-2 shrink-0 ${showBonusesOnly ? 'bg-amber-50 border-amber-200 text-amber-600 shadow-sm' : 'bg-cream border-slate-200 text-slate-600 hover:bg-slate-50'}`}
             >
               <Zap size={12} className={showBonusesOnly ? 'fill-amber-600' : ''} />
               Show Bonus Only
             </button>
-            <button className="whitespace-nowrap px-4 py-2 bg-white border border-slate-200 text-slate-600 rounded-full text-[10px] sm:text-xs font-bold hover:bg-slate-50 transition-all flex items-center gap-2 shrink-0">
+            <button className="whitespace-nowrap px-4 py-2 bg-cream border border-slate-200 text-slate-600 rounded-full text-[10px] sm:text-xs font-bold hover:bg-slate-50 transition-all flex items-center gap-2 shrink-0">
               <SlidersHorizontal size={12} />
               Sort by Value
             </button>
@@ -342,7 +342,7 @@ const RewardsTransferCalculator: React.FC = () => {
             {displayedResults.length === 0 ? (
                <motion.div 
                  initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                 className="py-20 text-center bg-white rounded-3xl border border-dashed border-slate-200 text-slate-400 flex flex-col items-center gap-4"
+                 className="py-20 text-center bg-cream rounded-3xl border border-dashed border-slate-200 text-slate-400 flex flex-col items-center gap-4"
                >
                   <TrendingUp size={40} strokeWidth={1.5} className="text-slate-200" />
                   <p className="text-sm font-medium">Select a source bank or airline to view conversion routes.</p>
@@ -367,7 +367,7 @@ const RewardsTransferCalculator: React.FC = () => {
                   <motion.div 
                     layout initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
                     key={itemId}
-                    className="bg-white rounded-3xl sm:rounded-[2rem] border border-slate-200 p-5 sm:p-8 hover:shadow-xl hover:border-slate-300 transition-all group overflow-hidden relative"
+                    className="bg-cream rounded-3xl sm:rounded-[2rem] border border-slate-200 p-5 sm:p-8 hover:shadow-xl hover:border-slate-300 transition-all group overflow-hidden relative"
                   >
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center">
                       
@@ -412,7 +412,7 @@ const RewardsTransferCalculator: React.FC = () => {
                         <div className="space-y-1">
                           <div className="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-[0.1em]">If you transfer</div>
                           <div className="flex items-center gap-1.5 sm:gap-2">
-                             <div className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded bg-slate-900 text-[5px] sm:text-[6px] text-white font-bold flex items-center justify-center shrink-0">SR</div>
+                             <div className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded bg-slate-900 text-[5px] sm:text-[6px] text-cream font-bold flex items-center justify-center shrink-0">SR</div>
                              <span className="text-base sm:text-lg font-bold text-slate-900 tracking-tight">{formatNumber(amount)}</span>
                           </div>
                           <div className="text-[10px] sm:text-[11px] font-semibold text-slate-400">est. ₹{formatNumber(estSourceVal)}</div>
@@ -422,7 +422,7 @@ const RewardsTransferCalculator: React.FC = () => {
                         <div className="space-y-1">
                           <div className="text-[9px] sm:text-[10px] font-bold text-slate-400 uppercase tracking-[0.1em]">You'll receive</div>
                           <div className="flex items-center gap-1.5 sm:gap-2">
-                             <div className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded bg-indigo-600 text-[5px] sm:text-[6px] text-white font-bold flex items-center justify-center shrink-0">TR</div>
+                             <div className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded bg-indigo-600 text-[5px] sm:text-[6px] text-cream font-bold flex items-center justify-center shrink-0">TR</div>
                              <span className="text-lg sm:text-xl font-bold text-indigo-600 tracking-tight">{formatNumber(yieldValue)}</span>
                           </div>
                           <div className="text-[10px] sm:text-[11px] font-semibold text-slate-400">est. ₹{formatNumber(estTargetVal)}</div>
@@ -441,7 +441,7 @@ const RewardsTransferCalculator: React.FC = () => {
             <div className="pt-8 flex justify-center">
               <button 
                 onClick={() => setVisibleCount(prev => prev + 20)}
-                className="flex items-center gap-3 px-8 py-4 bg-slate-900 text-white rounded-2xl font-bold text-sm hover:bg-slate-800 transition-all shadow-xl shadow-slate-200"
+                className="flex items-center gap-3 px-8 py-4 bg-slate-900 text-cream rounded-2xl font-bold text-sm hover:bg-slate-800 transition-all shadow-xl shadow-slate-200"
               >
                 <History size={18} />
                 Load More Opportunities

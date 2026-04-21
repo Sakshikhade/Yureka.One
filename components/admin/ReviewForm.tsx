@@ -42,7 +42,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
               <button 
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="bg-white text-black p-2 rounded-full hover:scale-110 transition-transform"
+                className="bg-cream text-black p-2 rounded-full hover:scale-110 transition-transform"
               >
                 <Upload size={16} />
               </button>
@@ -116,7 +116,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
         <button 
           type="submit" 
           disabled={uploading || saving}
-          className="bg-teal text-white px-10 py-4 rounded-xl font-bold hover:bg-teal/90 transition-all shadow-lg disabled:opacity-50 flex items-center gap-2"
+          className="bg-teal text-cream px-10 py-4 rounded-xl font-bold hover:bg-teal/90 transition-all shadow-lg disabled:opacity-50 flex items-center gap-2"
         >
           {(uploading || saving) ? <Loader2 className="animate-spin" size={20} /> : <Check size={20} />}
           Save Review

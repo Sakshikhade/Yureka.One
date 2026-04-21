@@ -69,7 +69,7 @@ const CareersPage: React.FC = () => {
             {/* Sidebar - Context */}
             <div className="lg:col-span-4">
                 <FadeInSection>
-                    <div className="bg-white border border-black/10 p-8 mb-8 shadow-sm">
+                    <div className="bg-cream border border-black/10 p-8 mb-8 shadow-sm">
                         <h3 className="text-2xl font-serif mb-4 text-black">Why join?</h3>
                         <p className="text-black/60 leading-relaxed mb-6">
                             We are a team of misfits building the future of credit. If you think the banking system is broken, come help us fix it with AI.
@@ -81,7 +81,7 @@ const CareersPage: React.FC = () => {
                         </ul>
                     </div>
                     
-                    <div className="p-2 border border-black/10 bg-white rotate-1 w-full max-w-[300px] mx-auto lg:mx-0 shadow-lg">
+                    <div className="p-2 border border-black/10 bg-cream rotate-1 w-full max-w-[300px] mx-auto lg:mx-0 shadow-lg">
                          <div className="aspect-square bg-gray-200 grayscale">
                             <ImageWithLoader src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80&w=800" alt="Office" className="w-full h-full object-cover" />
                          </div>
@@ -92,7 +92,7 @@ const CareersPage: React.FC = () => {
 
             {/* Job List - Table Style */}
             <div className="lg:col-span-8">
-                <div className="border border-black/10 bg-white shadow-sm">
+                <div className="border border-black/10 bg-cream shadow-sm">
                     <div className="grid grid-cols-12 border-b border-black/10 bg-black/5 text-[10px] font-bold uppercase tracking-widest py-3 px-4 text-black/50">
                         <div className="col-span-2">Ref ID</div>
                         <div className="col-span-5">Position</div>
@@ -102,7 +102,7 @@ const CareersPage: React.FC = () => {
                     
                     {roles.map((role, idx) => (
                         <FadeInSection key={idx} delay={idx * 50}>
-                            <div className="grid grid-cols-12 border-b border-black/10 hover:bg-black hover:text-white transition-colors py-6 px-4 items-center group cursor-pointer text-black">
+                            <div className="grid grid-cols-12 border-b border-black/10 hover:bg-black hover:text-cream transition-colors py-6 px-4 items-center group cursor-pointer text-black">
                                 <div className="col-span-2 font-mono text-xs opacity-50">{role.id}</div>
                                 <div className="col-span-5">
                                     <h3 className="text-xl font-bold font-serif">{role.title}</h3>

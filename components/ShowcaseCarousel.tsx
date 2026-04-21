@@ -12,22 +12,22 @@ interface ShowcaseCarouselProps {
 // Pill data
 // ─────────────────────────────────────────────────────────────
 const WITH_ROW1 = [
-  { icon: '⚡', text: 'AI-matched rewards',      bg: 'bg-[#047857] text-white' },
-  { icon: '🎯', text: 'Zero hidden fees',         bg: 'bg-indigo-700 text-white' },
-  { icon: '💳', text: '200+ cards analyzed',      bg: 'bg-[#1A5F54] text-white' },
-  { icon: '✅', text: 'Best card, guaranteed',    bg: 'bg-[#047857] text-white' },
-  { icon: '🔄', text: 'Instant comparison',       bg: 'bg-slate-800 text-white' },
-  { icon: '🤖', text: 'Neural matching',          bg: 'bg-violet-800 text-white' },
-  { icon: '🎁', text: 'Max rewards unlocked',     bg: 'bg-[#065F46] text-white' },
+  { icon: '⚡', text: 'AI-matched rewards',      bg: 'bg-[#047857] text-cream' },
+  { icon: '🎯', text: 'Zero hidden fees',         bg: 'bg-indigo-700 text-cream' },
+  { icon: '💳', text: '200+ cards analyzed',      bg: 'bg-[#047857] text-cream' },
+  { icon: '✅', text: 'Best card, guaranteed',    bg: 'bg-[#047857] text-cream' },
+  { icon: '🔄', text: 'Instant comparison',       bg: 'bg-slate-800 text-cream' },
+  { icon: '🤖', text: 'Neural matching',          bg: 'bg-violet-800 text-cream' },
+  { icon: '🎁', text: 'Max rewards unlocked',     bg: 'bg-[#047857] text-cream' },
 ];
 const WITH_ROW2 = [
-  { icon: '💰', text: '₹15k average savings',    bg: 'bg-amber-700 text-white' },
-  { icon: '📊', text: 'Reward math done for you', bg: 'bg-[#047857] text-white' },
-  { icon: '🏆', text: 'Top cluster match',        bg: 'bg-indigo-600 text-white' },
-  { icon: '🔐', text: 'Unbiased, always',         bg: 'bg-slate-700 text-white' },
-  { icon: '📱', text: 'Chrome auto-apply',        bg: 'bg-[#1A5F54] text-white' },
-  { icon: '⚡', text: 'Real-time audit',          bg: 'bg-purple-800 text-white' },
-  { icon: '🎯', text: 'Spend-matched card',       bg: 'bg-[#047857] text-white' },
+  { icon: '💰', text: '₹15k average savings',    bg: 'bg-amber-700 text-cream' },
+  { icon: '📊', text: 'Reward math done for you', bg: 'bg-[#047857] text-cream' },
+  { icon: '🏆', text: 'Top cluster match',        bg: 'bg-indigo-600 text-cream' },
+  { icon: '🔐', text: 'Unbiased, always',         bg: 'bg-slate-700 text-cream' },
+  { icon: '📱', text: 'Chrome auto-apply',        bg: 'bg-[#047857] text-cream' },
+  { icon: '⚡', text: 'Real-time audit',          bg: 'bg-purple-800 text-cream' },
+  { icon: '🎯', text: 'Spend-matched card',       bg: 'bg-[#047857] text-cream' },
 ];
 
 const WITHOUT_ROW1 = [
@@ -103,13 +103,13 @@ const ComparisonWidget: React.FC = () => {
     <div className="w-full h-full flex flex-col items-center justify-center px-4 py-8 overflow-hidden select-none relative">
 
       {/* ── Toggle ── */}
-      <div className="flex items-center bg-white border border-ink/10 rounded-full p-1 mb-8 shadow-sm relative z-50">
+      <div className="flex items-center bg-cream border border-ink/10 rounded-full p-1 mb-8 shadow-sm relative z-50">
         <button
           onClick={() => setMode('with')}
           className={`px-5 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all duration-300 ${
             mode === 'with'
-              ? 'bg-ink text-white shadow'
-              : 'text-ink/40 hover:text-ink'
+              ? 'bg-[#242424] text-cream shadow'
+              : 'text-[#242424]/40 hover:text-[#242424]'
           }`}
         >
           With Yureka
@@ -118,8 +118,8 @@ const ComparisonWidget: React.FC = () => {
           onClick={() => setMode('without')}
           className={`px-5 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all duration-300 ${
             mode === 'without'
-              ? 'bg-ink text-white shadow'
-              : 'text-ink/40 hover:text-ink'
+              ? 'bg-[#242424] text-cream shadow'
+              : 'text-[#242424]/40 hover:text-[#242424]'
           }`}
         >
           Without Yureka
@@ -145,21 +145,21 @@ const ComparisonWidget: React.FC = () => {
           >
             {mode === 'with' ? (
               <>
-                <h3 className="text-2xl md:text-3xl font-serif text-ink leading-snug mb-1.5">
+                <h3 className="text-2xl md:text-3xl font-serif text-[#242424] leading-snug mb-1.5">
                   Just pick your card,<br />
-                  <span className="italic font-light text-clay">and start earning.</span>
+                  <span className="italic font-light text-[#047857]">and start earning.</span>
                 </h3>
-                <p className="text-[10px] text-ink/35 font-sans uppercase tracking-[0.25em]">
+                <p className="text-[10px] text-[#242424]/35 font-sans uppercase tracking-[0.25em]">
                   We do the heavy lifting. You earn more.
                 </p>
               </>
             ) : (
               <>
-                <h3 className="text-2xl md:text-3xl font-serif text-ink leading-snug mb-1.5">
+                <h3 className="text-2xl md:text-3xl font-serif text-[#242424] leading-snug mb-1.5">
                   Why go through<br />
-                  <span className="italic font-light text-ink/45 lowercase">all this?</span>
+                  <span className="italic font-light text-[#242424]/45 lowercase">all this?</span>
                 </h3>
-                <p className="text-[10px] text-ink/35 font-sans uppercase tracking-[0.25em]">
+                <p className="text-[10px] text-[#242424]/35 font-sans uppercase tracking-[0.25em]">
                   Weeks of research. Wrong card. Zero savings.
                 </p>
               </>
@@ -249,10 +249,10 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp })
 
           {/* Background Vellum Grid */}
           <div className="absolute inset-0 opacity-[0.02] pointer-events-none" 
-               style={{ backgroundImage: 'linear-gradient(to right, #000 1px, transparent 1px), linear-gradient(to bottom, #000 1px, transparent 1px)', backgroundSize: '100px 100px' }} 
+               style={{ backgroundImage: 'linear-gradient(to right, #242424 1px, transparent 1px), linear-gradient(to bottom, #242424 1px, transparent 1px)', backgroundSize: '100px 100px' }} 
           />
           
-          <div className="w-full h-full relative z-10 text-ink">
+          <div className="w-full h-full relative z-10 text-[#242424]">
             <div className="flex flex-col lg:grid lg:grid-cols-2 h-full min-h-[600px] lg:min-h-[800px]">
 
               {/* ── LEFT: copy ── */}
@@ -264,21 +264,21 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp })
                   transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
                   className="pointer-events-auto py-10"
                 >
-                  <span className="block text-clay text-[11px] font-bold uppercase tracking-[0.4em] mb-4">
+                  <span className="block text-[#047857] text-[11px] font-bold uppercase tracking-[0.4em] mb-4">
                     How It Works
                   </span>
-                  <h2 className="text-4xl md:text-6xl lg:text-7xl font-serif text-ink mb-8 leading-[0.82] tracking-tighter uppercase">
+                  <h2 className="text-4xl md:text-6xl lg:text-7xl font-serif text-[#242424] mb-8 leading-[0.82] tracking-tighter uppercase">
                     We Compare <br />
-                    <span className="italic font-light text-clay">For You.</span>
+                    <span className="italic font-light text-[#047857]">For You.</span>
                   </h2>
-                  <p className="text-ink/80 text-lg md:text-xl font-serif italic leading-snug mb-10 border-l-2 border-clay/30 pl-8 max-w-md">
+                  <p className="text-[#242424]/80 text-lg md:text-xl font-serif italic leading-snug mb-10 border-l-2 border-clay/30 pl-8 max-w-md">
                     "We don't just list cards. We scan 200+ options to find the one that fits your life perfectly."
                   </p>
-                  <div className="flex items-center gap-6 text-[11px] font-bold tracking-[0.3em] uppercase text-ink/30">
+                  <div className="flex items-center gap-6 text-[11px] font-bold tracking-[0.3em] uppercase text-[#242424]/30">
                     <motion.div
                       animate={{ width: [40, 80, 40] }}
                       transition={{ repeat: Infinity, duration: 2.5 }}
-                      className="h-px bg-clay/50"
+                      className="h-px bg-[#047857]/50"
                     />
                     Scroll to discover
                   </div>

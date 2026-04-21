@@ -103,7 +103,7 @@ const AppContent: React.FC = () => {
   const isAdminRoute = location.pathname.startsWith('/admin');
 
   return (
-    <div className={`min-h-screen bg-cream font-sans text-ink relative ${isAdminRoute ? 'pt-0' : 'pt-32 md:pt-28'}`}>
+    <div className={`min-h-screen bg-cream font-sans text-[#242424] relative ${isAdminRoute ? 'pt-0' : 'pt-32 md:pt-28'}`}>
       {!isAdminRoute && <Preloader />}
 
       <ScrollToTop />
@@ -116,9 +116,9 @@ const AppContent: React.FC = () => {
             <motion.div 
                animate={{ scale: [0.95, 1, 0.95], opacity: [0.5, 1, 0.5] }}
                transition={{ duration: 2, repeat: Infinity }}
-               className="w-40 h-40 bg-white rounded-[2rem] shadow-2xl flex items-center justify-center border border-black/5"
+               className="w-40 h-40 bg-cream rounded-[2rem] shadow-2xl flex items-center justify-center border border-black/5"
             >
-               <Sparkles className="text-clay" size={48} />
+               <Sparkles className="text-[#047857]" size={48} />
             </motion.div>
           </div>
         }>
@@ -198,7 +198,7 @@ const AppContent: React.FC = () => {
       {!isAdminRoute && (
         <Link 
           to="/coming-soon"
-          className="fixed bottom-14 right-6 z-[70] bg-clay text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform cursor-pointer border border-white/20"
+          className="fixed bottom-14 right-6 z-[70] bg-[#047857] text-cream p-4 rounded-full shadow-2xl hover:scale-110 transition-transform cursor-pointer border border-cream/20"
           aria-label="Launch Intelligence Lab"
         >
           <button className="cursor-pointer" aria-hidden="true" tabIndex={-1}>

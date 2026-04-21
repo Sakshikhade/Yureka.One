@@ -60,9 +60,9 @@ export const TeamForm: React.FC<TeamFormProps> = ({
         <button 
           type="submit" 
           disabled={saving}
-          className="bg-teal text-white px-10 py-4 rounded-xl font-bold hover:bg-teal/90 transition-all shadow-lg disabled:opacity-50 flex items-center gap-2"
+          className="bg-teal text-cream px-10 py-4 rounded-xl font-bold hover:bg-teal/90 transition-all shadow-lg disabled:opacity-50 flex items-center gap-2"
         >
-          {saving ? <Loader2 className="animate-spin text-white" size={20} /> : <Check size={20} />}
+          {saving ? <Loader2 className="animate-spin text-cream" size={20} /> : <Check size={20} />}
           {saving ? 'Inviting...' : 'Invite to Platform'}
         </button>
       </div>
