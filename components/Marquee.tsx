@@ -18,8 +18,8 @@ const Marquee: React.FC = () => {
              <div className="flex whitespace-nowrap animate-marquee w-max" style={{ animationDuration: '40s' }}>
                  {[...Array(6)].map((_, i) => (
                     <div key={i} className="flex items-center gap-12 px-6">
-                        <span className="text-3xl md:text-5xl font-serif italic">AI-driven matching for 200M+ Indians.</span>
-                        <span className="text-3xl md:text-5xl font-bold uppercase tracking-tighter">No Ads. No Bias.</span>
+                        <span className="text-2xl md:text-5xl font-serif italic">AI-driven matching for 200M+ Indians.</span>
+                        <span className="text-2xl md:text-5xl font-bold uppercase tracking-tighter">No Ads. No Bias.</span>
                         <div className="w-4 h-4 bg-white rounded-full"></div>
                     </div>
                  ))}
@@ -31,8 +31,8 @@ const Marquee: React.FC = () => {
              <div className="flex whitespace-nowrap animate-marquee w-max" style={{ animationDuration: '45s', animationDirection: 'reverse' }}>
                  {[...Array(6)].map((_, i) => (
                     <div key={i} className="flex items-center gap-12 px-6">
-                        <span className="text-3xl md:text-5xl font-bold uppercase tracking-tighter">Voucher Savings.</span>
-                        <span className="text-3xl md:text-5xl font-serif italic">Managed by Yureka AI.</span>
+                        <span className="text-2xl md:text-5xl font-bold uppercase tracking-tighter">Voucher Savings.</span>
+                        <span className="text-2xl md:text-5xl font-serif italic">Managed by Yureka AI.</span>
                         <div className="w-4 h-4 bg-white rounded-full"></div>
                     </div>
                  ))}

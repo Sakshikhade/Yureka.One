@@ -153,7 +153,7 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp })
                     </div>
 
                     {/* Middle Column: Cards Container */}
-                    <div className="h-[55%] lg:h-full flex-1 lg:col-span-1 relative flex items-center justify-center pointer-events-none">
+                    <div className="h-[60%] lg:h-full flex-1 lg:col-span-1 relative flex items-center justify-center pointer-events-none">
                         <div className="relative w-[85vw] h-[100%] lg:h-[60vh] max-h-[480px] lg:max-h-[600px] max-w-[320px] lg:max-w-[420px] pointer-events-auto">
                             {cards.map((card, i) => (
                                 <ShowcaseCard 

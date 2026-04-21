@@ -37,14 +37,14 @@ const Navbar: React.FC = () => {
                 flex items-center justify-between
                 transition-all duration-700 cubic-bezier(0.25, 0.8, 0.25, 1)
                 ${isScrolled 
-                    ? 'w-[95%] md:w-[90%] lg:w-[80%] max-w-7xl pointer-events-auto px-4 md:px-6 py-2 bg-paper/90 glass-panel rounded-full shadow-2xl border border-ink/10 filter backdrop-blur-md' 
-                    : 'w-full max-w-[1440px] bg-transparent border-b border-ink/10 px-6 py-5 md:py-6 rounded-none shadow-none border-x-0 border-t-0'
+                    ? 'w-[92%] md:w-[90%] lg:w-[80%] max-w-7xl pointer-events-auto px-4 md:px-6 py-2 bg-paper/90 glass-panel rounded-full shadow-2xl border border-ink/10 filter backdrop-blur-md' 
+                    : 'w-full max-w-[1440px] bg-transparent border-b border-ink/10 px-4 md:px-6 py-5 md:py-6 rounded-none shadow-none border-x-0 border-t-0'
                 }
             `}
         >
             {/* Logo Section - Masthead Style */}
             <div className={`
-                flex flex-col relative z-10 group cursor-pointer mr-8
+                flex flex-col relative z-10 group cursor-pointer
             `}>
                 <Link to="/" className="font-heading font-medium tracking-tighter text-lg md:text-xl text-ink leading-none hover:opacity-80 transition-opacity flex items-baseline uppercase">
                     Yureka<span className="text-clay">.</span>money

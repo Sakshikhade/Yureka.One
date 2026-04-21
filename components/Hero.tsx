@@ -34,7 +34,7 @@ const Hero: React.FC = () => {
                 whileInView={fadeInUp.whileInView}
                 viewport={fadeInUp.viewport}
                 transition={fadeInUp.transition}
-                className="w-full flex flex-col md:flex-row justify-between items-end border-b-4 border-double border-ink/20 pb-6 mb-2"
+                className="w-full flex flex-col md:flex-row justify-between items-center md:items-end border-b-4 border-double border-ink/20 pb-6 mb-2"
             >
                 {/* Left Ear - Keyword Rich Context */}
                 <div className="hidden md:block w-64 text-left border-r border-ink/10 pr-6 h-full">
@@ -47,7 +47,7 @@ const Hero: React.FC = () => {
                 {/* Masthead - Brand Name */}
                 <div className="flex-1 text-center px-4 md:px-8 mb-4 md:mb-0 group overflow-hidden">
                     <div className="text-[10px] font-medium uppercase tracking-[0.5em] text-clay mb-3 opacity-0 group-hover:opacity-100 transition-all duration-700 -translate-y-2 group-hover:translate-y-0 text-clay">The Intelligence Edition</div>
-                    <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-medium tracking-tight leading-[0.9] text-ink uppercase">
+                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-medium tracking-tight leading-[0.9] text-ink uppercase">
                         Yureka<span className="text-clay"> Times.</span>
                     </h1>
                 </div>
