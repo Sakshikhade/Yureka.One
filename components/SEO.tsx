@@ -12,7 +12,7 @@ interface SEOProps {
 const SEO: React.FC<SEOProps> = ({ 
   title, 
   description = "Maximize every reward, swipe with precision & unlock the elite financial life. India's #1 AI-driven credit card intelligence engine.",
-  image = "https://yureka.money/og-image.jpg",
+  image = "https://yureka.money/favicon.png",
   canonical,
   robots = "index, follow",
   schema
