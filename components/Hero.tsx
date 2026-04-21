@@ -16,11 +16,12 @@ const Hero: React.FC = () => {
   return (
     <section id="hero" className="relative w-full min-h-screen flex flex-col items-center pt-4 md:pt-8 pb-12 bg-cream border-b border-ink/10 overflow-hidden text-ink scroll-mt-32">
 
-        {/* Background Grid/Lines */}
-        <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-clay/10 rounded-full blur-[120px] animate-pulse" />
+            <div className="absolute bottom-[0%] right-[-5%] w-[40%] h-[40%] bg-teal/10 rounded-full blur-[100px]" />
             <div className="w-full h-full max-w-[1440px] mx-auto border-x border-ink/5 relative">
-                 <div className="absolute top-0 left-[20%] bottom-0 w-px bg-ink/5 hidden lg:block"></div>
-                 <div className="absolute top-0 right-[20%] bottom-0 w-px bg-ink/5 hidden lg:block"></div>
+                 <div className="absolute top-0 left-[20%] bottom-0 w-px bg-white/5 hidden lg:block"></div>
+                 <div className="absolute top-0 right-[20%] bottom-0 w-px bg-white/5 hidden lg:block"></div>
             </div>
         </div>
 
@@ -97,9 +98,9 @@ const Hero: React.FC = () => {
                 className="w-full text-center mb-16 md:mb-24 px-6"
             >
                 <div className="flex justify-center items-center gap-6 mb-8 md:mb-12">
-                     <div className="h-[1px] bg-clay/20 w-12 md:w-24"></div>
+                     <div className="h-[1px] bg-clay/30 w-12 md:w-24"></div>
                      <span className="text-ink font-medium text-[10px] md:text-xs uppercase tracking-[0.4em]">The Automation of Wealth</span>
-                     <div className="h-[1px] bg-clay/20 w-12 md:w-24"></div>
+                     <div className="h-[1px] bg-clay/30 w-12 md:w-24"></div>
                 </div>
                 <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl leading-[0.95] font-heading font-medium text-ink uppercase tracking-tight">
                     Stop Guessing. <br className="hidden md:block" /> Start Winning.

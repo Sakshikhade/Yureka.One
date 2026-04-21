@@ -105,7 +105,7 @@ const AppContent: React.FC = () => {
   return (
     <div className={`min-h-screen bg-cream font-sans text-ink relative ${isAdminRoute ? 'pt-0' : 'pt-32 md:pt-28'}`}>
       {/* Global Grain & Texture Overlay - Shared across all pages */}
-      <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-[100] mix-blend-overlay" style={{ backgroundImage: 'linear-gradient(to bottom, #242424 0.5px, transparent 0.5px), linear-gradient(to right, #242424 0.5px, transparent 0.5px)', backgroundSize: '40px 40px' }} />
+      <div className="fixed inset-0 pointer-events-none opacity-[0.02] z-[100] mix-blend-overlay" style={{ backgroundImage: 'linear-gradient(to bottom, #F2EFE9 0.5px, transparent 0.5px), linear-gradient(to right, #F2EFE9 0.5px, transparent 0.5px)', backgroundSize: '40px 40px' }} />
       
       {!isAdminRoute && <Preloader />}
 
