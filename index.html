@@ -13,8 +13,8 @@
 
     <meta name="application-name" content="Yureka" />
     <meta name="apple-mobile-web-app-title" content="Yureka" />
-    <meta name="theme-color" content="#050a0a" />
-    <meta name="msapplication-TileColor" content="#050a0a" />
+    <meta name="theme-color" content="#F2EFE9" />
+    <meta name="msapplication-TileColor" content="#F2EFE9" />
     
     <!-- Structured Data: Organization -->
     <script type="application/ld+json">
@@ -66,15 +66,15 @@
     <style>
       html {
         scroll-behavior: smooth;
-        background-color: #050a0a;
+        background-color: #F2EFE9;
         -webkit-tap-highlight-color: transparent;
       }
       body {
         font-family: 'Inter', sans-serif;
         font-size: 16px;
         line-height: 1.5;
-        background-color: #050a0a;
-        color: #F2EFE9;
+        background-color: #F2EFE9;
+        color: #242424;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         overflow-x: hidden;
@@ -137,7 +137,7 @@
         pointer-events: none;
         z-index: 9999;
         background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyBAMAAADsEZWCAAAAGFBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA75mMAAAACHRSTlMA1P////+/AE+3TToAAACgSURBVDjLjZPRDoQgDEVb8P//Y3dMvKxGZ+GDFGgvA+N2DqI1nK8v6220Z+bMTf133h51U92W3u3n/c3j9/2Q13f8+pP1rQfz0sP02B895O7RfnTof0P+e7Tv3x7pQ//o0d6/PRL7g0d7f/dov7899P8e2U/oR8gPdXvkHz+Q/2yPdKH+2SO/1D165H11jz6+oUffX9eH/Pujvdn9f/UBU2k3sKxT+mEAAAAASUVORK5CYII=");
-        opacity: 0.12; 
+        opacity: 0.15;
         background-repeat: repeat;
       }
 
@@ -147,19 +147,16 @@
         inset: 0;
         pointer-events: none;
         z-index: 9998;
-        background: 
-          radial-gradient(circle at 20% 20%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
-          radial-gradient(circle at 80% 80%, rgba(13, 148, 136, 0.08) 0%, transparent 40%),
-          radial-gradient(circle at center, transparent 30%, rgba(0, 0, 0, 0.4) 100%);
+        background: radial-gradient(circle at center, transparent 60%, rgba(200, 195, 185, 0.2) 100%);
       }
 
       /* Glass/Vellum Island Effect - Hardware Accelerated */
       .glass-panel {
-        background: rgba(10, 20, 20, 0.85); 
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.05); 
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); 
+        background: rgba(255, 255, 255, 0.85); 
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.5); 
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03); 
         transform: translateZ(0);
       }
 
@@ -174,12 +171,12 @@
         width: 6px;
       }
       ::-webkit-scrollbar-track {
-        background: #050a0a; 
-        border-left: 1px solid rgba(255,255,255,0.05);
+        background: #F2EFE9; 
+        border-left: 1px solid rgba(0,0,0,0.08);
       }
       ::-webkit-scrollbar-thumb {
-        background: #111; 
-        border: 2px solid #050a0a;
+        background: #D1CDC4; 
+        border: 2px solid #F2EFE9;
         border-radius: 4px;
       }
       ::-webkit-scrollbar-thumb:hover {
@@ -234,7 +231,7 @@
       .prose-ink h1, .prose-ink h2, .prose-ink h3 {
         margin-top: 2rem !important;
         margin-bottom: 1rem !important;
-        color: #F2EFE9 !important;
+        color: #242424 !important;
       }
       .prose-ink p {
         margin-bottom: 1.5rem !important;
@@ -259,11 +256,11 @@
         theme: {
           extend: {
             colors: {
-              cream: '#050a0a', 
-              paper: '#0a1212', 
-              ink: '#F2EFE9',   
-              clay: '#10b981',  
-              teal: '#0d9488',  
+              cream: '#F2EFE9', 
+              paper: '#FCFBF8', 
+              ink: '#242424',   
+              clay: '#047857',  
+              teal: '#1A5F54',  
             },
             fontFamily: {
               sans: ['Inter', 'sans-serif'],
