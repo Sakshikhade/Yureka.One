@@ -21,7 +21,7 @@ const TextReveal: React.FC = () => {
       <div className="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/p6-mini.png')]" />
 
       <div className="sticky top-0 h-screen flex flex-col items-center justify-center px-6 md:px-12 max-w-[1240px] mx-auto w-full overflow-hidden">
-        <div className="w-full border-l-2 border-clay/20 pl-8 md:pl-20 py-20 relative">
+        <div className="w-full border-l border-clay/30 pl-8 md:pl-16 py-16 relative">
             {/* Corner Deco */}
             <div className="absolute top-0 left-0 w-8 h-px bg-clay/20"></div>
             <div className="absolute top-0 left-0 w-px h-8 bg-clay/20"></div>
@@ -56,7 +56,7 @@ const TextReveal: React.FC = () => {
                 <motion.span
                     key={i}
                     style={{ color }}
-                    className="font-heading font-medium text-2xl sm:text-3xl md:text-5xl lg:text-5xl xl:text-6xl uppercase tracking-tight"
+                    className="font-heading font-medium text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-[2.75rem] uppercase tracking-tight"
                 >
                     {word}
                 </motion.span>
@@ -70,7 +70,7 @@ const TextReveal: React.FC = () => {
               }}
               className="mt-16 md:mt-20 pt-8 border-t border-clay/10 inline-block"
             >
-                <p className="font-serif italic text-lg text-ink/40">
+                <p className="font-serif italic text-sm text-ink/40">
                     — The Intelligence Bureau
                 </p>
             </motion.div>

@@ -13,17 +13,16 @@ const TopBanner: React.FC = () => {
       <div className="flex whitespace-nowrap animate-marquee w-max" style={{ animationDuration: '60s' }}>
         {[...Array(6)].map((_, i) => (
             <div key={i} className="flex items-center">
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] px-6 border-r border-white/20 h-full flex items-center opacity-60">
+                <span className="text-[9px] font-bold uppercase tracking-[0.25em] px-5 border-r border-white/20 h-full flex items-center opacity-50">
                     Latest
                 </span>
-                <span className="text-sm font-sans font-medium text-white px-4">
+                <span className="text-[11px] font-sans font-medium text-white px-4">
                     "Stop letting banks hold your rewards. With Yureka, earn 15% more."
                 </span>
-                <span className="text-xs font-sans font-bold text-white/60 px-4 uppercase tracking-wider">
+                <span className="text-[10px] font-sans font-semibold text-white/50 px-4 uppercase tracking-wider">
                     Market Update: Credit Spends ▲ 12.4%
                 </span>
-
-                <span className="text-[10px] text-white/30 px-6">///</span>
+                <span className="text-[9px] text-white/20 px-5">///</span>
             </div>
         ))}
       </div>

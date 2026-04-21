@@ -59,7 +59,7 @@ const Stats: React.FC = () => {
                         <div className="w-1.5 h-1.5 bg-clay rounded-full animate-pulse"></div>
                         <h2 className="text-[10px] md:text-xs font-mono font-bold tracking-[0.3em] uppercase text-ink/60">Our Numbers</h2>
                     </div>
-                    <h3 className="text-3xl md:text-5xl font-serif leading-none text-ink tracking-tight uppercase">
+                    <h3 className="text-2xl md:text-4xl font-serif leading-none text-ink tracking-tight uppercase">
                         Why Use <br/><span className="italic font-light text-ink/50">Us?</span>
                     </h3>
                 </motion.div>
@@ -71,7 +71,7 @@ const Stats: React.FC = () => {
                     transition={{ delay: 0.2 }}
                     className="md:text-right"
                 >
-                    <p className="text-ink/60 text-base md:text-lg max-w-sm font-serif italic border-l-2 md:border-l-0 md:border-r-2 border-clay pl-4 md:pl-0 md:pr-4">
+                    <p className="text-ink/60 text-sm md:text-base max-w-sm font-serif italic border-l md:border-l-0 md:border-r border-clay/50 pl-4 md:pl-0 md:pr-4">
                         "Banks make money when you're confused. <br className="hidden lg:block" /> We help you understand and save."
                     </p>
                 </motion.div>
@@ -94,7 +94,7 @@ const Stats: React.FC = () => {
                      <span className="text-[10px] font-bold uppercase tracking-widest text-clay border border-clay/30 px-3 py-1.5 bg-clay/5 rounded-sm">Cards</span>
                      <span className="text-[10px] font-mono text-ink/30">DAT.01</span>
                 </div>
-                <div className="text-5xl md:text-7xl text-ink mb-4 tracking-tighter leading-none font-serif">
+                <div className="text-4xl md:text-5xl text-ink mb-3 tracking-tighter leading-none font-serif">
                     <Counter end={248} suffix="" trigger={hasAnimated} />
                 </div>
                 <h4 className="text-xs font-bold uppercase tracking-widest text-ink mb-3 border-t border-ink/10 pt-4 flex justify-between items-center w-full">
@@ -112,7 +112,7 @@ const Stats: React.FC = () => {
                      <span className="text-[10px] font-bold uppercase tracking-widest text-ink border border-ink/30 px-3 py-1.5 rounded-sm">Accuracy</span>
                      <span className="text-[10px] font-mono text-ink/30">ALG.02</span>
                 </div>
-                <div className="text-5xl md:text-7xl text-ink mb-4 tracking-tighter leading-none font-serif">
+                <div className="text-4xl md:text-5xl text-ink mb-3 tracking-tighter leading-none font-serif">
                     <Counter end={100} prefix="" suffix="%" trigger={hasAnimated} />
                 </div>
                 <h4 className="text-xs font-bold uppercase tracking-widest text-ink mb-3 border-t border-ink/10 pt-4 flex justify-between items-center w-full">
@@ -130,7 +130,7 @@ const Stats: React.FC = () => {
                      <span className="text-[10px] font-bold uppercase tracking-widest text-clay border border-clay/30 px-3 py-1.5 bg-clay/5 rounded-sm">Savings</span>
                      <span className="text-[10px] font-mono text-ink/30">RES.03</span>
                 </div>
-                <div className="text-5xl md:text-7xl text-ink mb-4 tracking-tighter leading-none font-serif">
+                <div className="text-4xl md:text-5xl text-ink mb-3 tracking-tighter leading-none font-serif">
                     <Counter end={15} prefix="₹" suffix="k" trigger={hasAnimated} />
                 </div>
                 <h4 className="text-xs font-bold uppercase tracking-widest text-ink mb-3 border-t border-ink/10 pt-4 flex justify-between items-center w-full">

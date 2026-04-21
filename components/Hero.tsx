@@ -47,7 +47,7 @@ const Hero: React.FC = () => {
                 {/* Masthead - Brand Name */}
                 <div className="flex-1 text-center px-4 md:px-8 mb-4 md:mb-0 group overflow-hidden">
                     <div className="text-[10px] font-medium uppercase tracking-[0.5em] text-clay mb-3 opacity-0 group-hover:opacity-100 transition-all duration-700 -translate-y-2 group-hover:translate-y-0 text-clay">The Intelligence Edition</div>
-                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-medium tracking-tight leading-[0.9] text-ink uppercase">
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-heading font-medium tracking-tight leading-[0.88] text-ink uppercase">
                         Yureka<span className="text-clay"> Times.</span>
                     </h1>
                 </div>
@@ -101,10 +101,10 @@ const Hero: React.FC = () => {
                      <span className="text-ink font-medium text-[10px] md:text-xs uppercase tracking-[0.4em]">The Automation of Wealth</span>
                      <div className="h-[1px] bg-clay/20 w-12 md:w-24"></div>
                 </div>
-                <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl leading-[0.95] font-heading font-medium text-ink uppercase tracking-tight">
+                <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-[3.25rem] leading-[0.95] font-heading font-medium text-ink uppercase tracking-tight">
                     Stop Guessing. <br className="hidden md:block" /> Start Winning.
                 </h2>
-                <h3 className="text-base md:text-lg lg:text-xl font-sans font-medium text-ink/70 mt-10 md:mt-14 max-w-3xl mx-auto leading-relaxed tracking-tight uppercase">
+                <h3 className="text-sm md:text-base lg:text-lg font-sans font-medium text-ink/60 mt-8 md:mt-10 max-w-3xl mx-auto leading-relaxed tracking-tight uppercase">
                     We audit <span className="text-ink">200+ elite credit cards</span> through the RewardX Neural Engine <br className="hidden lg:block" /> to reveal your highest possible yield path.
                 </h3>
 
@@ -143,7 +143,7 @@ const Hero: React.FC = () => {
                      </div>
 
                      
-                      <h5 className="font-heading font-medium text-4xl text-ink leading-[0.9] mb-8 uppercase tracking-tight">Financial <br />Absolute.</h5>
+                      <h5 className="font-heading font-medium text-3xl text-ink leading-[0.88] mb-6 uppercase tracking-tight">Financial <br />Absolute.</h5>
 
                      
                      <div className="flex justify-between items-center text-[10px] text-ink/20 font-medium uppercase tracking-[0.4em] mb-8 border-b border-ink/10 pb-4 text-ink/20">
@@ -196,7 +196,7 @@ const Hero: React.FC = () => {
                                     <Link to={item.link} className="flex justify-between items-start py-6 md:py-8 cursor-pointer relative overflow-hidden px-6 -mx-6 transition-all duration-700">
                                         <div className="absolute inset-0 bg-ink/[0.02] -translate-x-full group-hover:translate-x-0 transition-transform duration-700" />
                                         <div className="relative z-10">
-                                            <span className="block font-heading font-medium text-xl md:text-2xl text-ink group-hover:text-clay transition-colors mb-2 uppercase tracking-tight">{item.title}</span>
+                                            <span className="block font-heading font-medium text-lg md:text-xl text-ink group-hover:text-clay transition-colors mb-1 uppercase tracking-tight">{item.title}</span>
                                             <span className="block text-[11px] font-medium uppercase tracking-[0.2em] text-ink/30 group-hover:text-ink/60">{item.desc}</span>
                                         </div>
                                         <span className="relative z-10 font-mono text-xs md:text-sm text-ink/10 font-medium group-hover:text-ink/30 transition-colors">.{item.page}</span>
@@ -208,17 +208,18 @@ const Hero: React.FC = () => {
 
                      <div className="mt-16 mb-10 px-4 md:px-0">
                          <motion.div 
-                            whileHover={{ y: -5 }}
-                            className="border border-ink/10 p-8 md:p-10 text-center bg-white shadow-xl relative overflow-hidden rounded-[2.5rem]"
+                            whileHover={{ y: -6, boxShadow: '0 32px 64px -12px rgba(0,0,0,0.14)' }}
+                            transition={{ duration: 0.4, ease: [0.25, 0.8, 0.25, 1] }}
+                            className="border border-ink/8 p-7 md:p-8 text-center bg-white shadow-[0_8px_40px_-12px_rgba(0,0,0,0.12)] relative overflow-hidden rounded-[2rem]"
                          >
-                             <div className="absolute top-0 right-0 p-4 opacity-10">
-                                <Sparkles size={40} className="text-ink" />
+                             <div className="absolute top-0 right-0 p-4 opacity-[0.06]">
+                                <Sparkles size={32} className="text-ink" />
                              </div>
-                             <h4 className="font-serif text-2xl italic mb-8 text-ink leading-relaxed">"The definitive way to <br /> audit credit cards."</h4>
-                             <Link to="/join-waitlist" className="block w-full bg-clay hover:bg-ink text-white text-center py-5 rounded-2xl font-medium uppercase tracking-[0.25em] text-[10px] transition-all">
+                             <h4 className="font-serif text-lg italic mb-6 text-ink leading-snug">"The definitive way to <br /> audit credit cards."</h4>
+                             <Link to="/join-waitlist" className="block w-full bg-clay hover:bg-ink text-white text-center py-4 rounded-xl font-medium uppercase tracking-[0.25em] text-[10px] transition-all duration-300">
                                  Join Registry
                              </Link>
-                             <p className="text-center text-[10px] text-ink/30 mt-6 uppercase tracking-[0.4em] font-medium">
+                             <p className="text-center text-[10px] text-ink/30 mt-5 uppercase tracking-[0.4em] font-medium">
                                  Launching Q2 2026
                              </p>
                          </motion.div>

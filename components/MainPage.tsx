@@ -14,6 +14,7 @@ const Community = lazy(() => import('./Community'));
 const ComingSoon = lazy(() => import('./ComingSoon'));
 const SocialProof = lazy(() => import('./SocialProof'));
 const FAQ = lazy(() => import('./FAQ'));
+const CalculatorCTA = lazy(() => import('./CalculatorCTA'));
 
 const MainPage: React.FC = () => {
   const { cards } = useSupabase();
@@ -53,6 +54,10 @@ const MainPage: React.FC = () => {
           <ShowcaseCarousel cards={cards} />
         </Suspense>
       </section>
+
+      <Suspense fallback={<div className="h-40 animate-pulse bg-paper/50" />}>
+        <CalculatorCTA />
+      </Suspense>
 
       <section id="stats" className="scroll-mt-24">
         <Suspense fallback={<div className="h-64 bg-slate-50/50 animate-pulse" />}>

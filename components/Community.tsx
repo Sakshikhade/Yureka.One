@@ -182,7 +182,7 @@ const DraggableCardPair: React.FC<DraggableCardPairProps> = ({ review, index, pr
                  <div className="mb-6 relative z-10">
                     <span className="text-8xl font-serif text-black/10 leading-none absolute -top-8 -left-4">“</span>
                  </div>
-                 <p className="text-2xl md:text-3xl font-serif text-black leading-snug mb-10 relative z-10 italic">
+                 <p className="text-xl md:text-2xl font-serif text-black leading-snug mb-8 relative z-10 italic">
                      {review.quote}
                  </p>
                  <div className="mt-auto pt-6 border-t border-black/10 w-full relative z-10">
@@ -273,7 +273,7 @@ const Community: React.FC = () => {
         >
             <div className="max-w-[90vw] md:max-w-5xl">
                 <span className="text-teal font-mono text-[10px] uppercase tracking-widest mb-4 block">Section 3: Community</span>
-                <h2 className="text-3xl md:text-5xl lg:text-7xl font-serif text-black leading-[1.0] tracking-tight">
+                <h2 className="text-2xl md:text-4xl lg:text-5xl font-serif text-black leading-[1.0] tracking-tight">
                     Join <br />
                     <span className="italic font-light">thousands</span> who <br />
                     actually <span className="italic font-light">earn more.</span>

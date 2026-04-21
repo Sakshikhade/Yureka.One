@@ -71,7 +71,7 @@
       }
       body {
         font-family: 'Inter', sans-serif;
-        font-size: 16px;
+        font-size: 14px;
         line-height: 1.5;
         background-color: #F2EFE9;
         color: #242424;
@@ -106,9 +106,9 @@
       }
 
       /* Global Heading Sizes */
-      h1 { font-size: clamp(32px, 8vw, 64px); }
-      h2 { font-size: clamp(24px, 5vw, 36px); }
-      h3 { font-size: clamp(18px, 4vw, 24px); }
+      h1 { font-size: clamp(28px, 6vw, 56px); }
+      h2 { font-size: clamp(20px, 4vw, 32px); }
+      h3 { font-size: clamp(16px, 3.5vw, 22px); }
 
       .font-serif {
         font-family: 'Outfit', sans-serif; /* Pointing serif to Outfit for uniformity */
@@ -152,11 +152,11 @@
 
       /* Glass/Vellum Island Effect - Hardware Accelerated */
       .glass-panel {
-        background: rgba(255, 255, 255, 0.85); 
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        border: 1px solid rgba(255, 255, 255, 0.5); 
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03); 
+        background: rgba(252, 251, 248, 0.92); 
+        backdrop-filter: blur(16px) saturate(180%);
+        -webkit-backdrop-filter: blur(16px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.6); 
+        box-shadow: 0 2px 32px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0,0,0,0.04); 
         transform: translateZ(0);
       }
 

@@ -46,7 +46,7 @@ const Navbar: React.FC = () => {
             <div className={`
                 flex flex-col relative z-10 group cursor-pointer
             `}>
-                <Link to="/" className="font-heading font-medium tracking-tighter text-lg md:text-xl text-ink leading-none hover:opacity-80 transition-opacity flex items-baseline uppercase">
+                <Link to="/" className="font-heading font-medium tracking-tighter text-base md:text-[17px] text-ink leading-none hover:opacity-75 transition-opacity flex items-baseline uppercase">
                     Yureka<span className="text-clay">.</span>money
                 </Link>
 
@@ -85,15 +85,15 @@ const Navbar: React.FC = () => {
 
                 <div className="flex items-center gap-4 lg:gap-6">
                       <Link to="/yureka-ai" className={`
-                        text-ink font-sans font-medium text-sm lg:text-base hover:text-clay transition-colors whitespace-nowrap uppercase tracking-widest
+                        text-ink font-sans font-medium text-[11px] hover:text-clay transition-colors whitespace-nowrap uppercase tracking-widest
                       `}>
                         Yureka AI
                       </Link>
 
                     
                     <Link to="/coming-soon" className={`
-                        bg-ink text-white text-[10px] lg:text-xs font-medium uppercase tracking-widest px-6 lg:px-8 py-3 lg:py-3.5
-                        flex items-center gap-2 group transition-all duration-500 rounded-full shrink-0 shadow-xl hover:shadow-clay/20 hover:-translate-y-0.5
+                        bg-ink text-white text-[10px] font-medium uppercase tracking-widest px-5 lg:px-7 py-2.5 lg:py-3
+                        flex items-center gap-2 group transition-all duration-500 rounded-full shrink-0 shadow-lg hover:shadow-clay/20 hover:-translate-y-0.5
                     `}>
                         <Sparkles size={14} className="text-clay" />
                         <span>Intelligence Lab</span>
