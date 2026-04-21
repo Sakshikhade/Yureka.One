@@ -168,7 +168,7 @@ const ComparisonWidget: React.FC = () => {
         </AnimatePresence>
 
         {/* ── CONTENT AREA ── */}
-        <div className="relative w-full h-[300px]">
+        <div className="relative w-full h-[300px] overflow-hidden">
           <AnimatePresence mode="wait">
             {mode === 'with' ? (
               <motion.div
@@ -192,12 +192,12 @@ const ComparisonWidget: React.FC = () => {
               >
                 {[...WITHOUT_ROW1, ...WITHOUT_ROW2].slice(0, 8).map((pill, i) => {
                   // Ordered layout positions (center grid)
-                  const gridX = (i % 2 === 0 ? -100 : 100);
-                  const gridY = Math.floor(i / 2) * 50;
+                  const gridX = (i % 2 === 0 ? -90 : 90);
+                  const gridY = Math.floor(i / 2) * 45;
                   
-                  // Shattered layout positions (random on bottom)
-                  const shatterX = (Math.random() * 200) - 100;
-                  const shatterY = 250 + (Math.random() * 80);
+                  // Shattered layout positions (random on bottom, constrained)
+                  const shatterX = (Math.random() * 160) - 80;
+                  const shatterY = 160 + (Math.random() * 60);
                   const shatterRotate = (Math.random() * 40) - 20;
 
                   return (
@@ -219,10 +219,10 @@ const ComparisonWidget: React.FC = () => {
                       }
                       style={{ 
                         left: '50%',
-                        top: '0%',
+                        top: '15%',
                         transform: 'translate(-50%, -50%)' 
                       }}
-                      className={`absolute inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-[11px] font-bold shadow-sm whitespace-nowrap transition-colors ${pill.bg}`}
+                      className={`absolute inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-[11px] font-bold shadow-sm whitespace-nowrap transition-colors border border-black/5 ${pill.bg}`}
                     >
                       <span className="text-sm">{pill.icon}</span>
                       {pill.text}
@@ -242,43 +242,26 @@ const ComparisonWidget: React.FC = () => {
 // ShowcaseCarousel
 // ─────────────────────────────────────────────────────────────
 const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end end'],
-  });
-
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001,
-  });
-
-  // CTA slide-in from right
-  const ctaX       = useTransform(smoothProgress, [0.75, 0.95], [120, 0]);
-  const ctaOpacity = useTransform(smoothProgress, [0.75, 0.88], [0, 1]);
-
   return (
-    <section ref={containerRef} className="relative bg-cream h-[250vh] border-t border-ink/10 z-10">
-      <div className="sticky top-0 h-[85vh] w-full overflow-hidden flex items-center justify-center p-2 md:p-4 lg:p-6 pb-2 md:pb-4 lg:pb-6">
+    <section className="relative bg-cream border-t border-ink/10 z-10 py-12 md:py-20 lg:py-32">
+      <div className="w-full h-full flex items-center justify-center p-2 md:p-6 lg:p-10">
+        <div className="relative w-full max-w-[1700px] border border-ink/10 bg-paper flex flex-col shadow-xl overflow-hidden min-h-[600px] lg:min-h-[800px]">
 
-        <div className="relative w-full h-full max-w-[1700px] border border-ink/10 bg-paper flex flex-col shadow-xl">
-
-          {/* column guide lines */}
-          <div className="absolute top-0 bottom-0 left-[33%] w-px bg-ink/5 hidden lg:block z-0" />
-          <div className="absolute top-0 bottom-0 right-[33%] w-px bg-ink/5 hidden lg:block z-0" />
-
+          {/* Background Vellum Grid */}
+          <div className="absolute inset-0 opacity-[0.02] pointer-events-none" 
+               style={{ backgroundImage: 'linear-gradient(to right, #000 1px, transparent 1px), linear-gradient(to bottom, #000 1px, transparent 1px)', backgroundSize: '100px 100px' }} 
+          />
+          
           <div className="w-full h-full relative z-10 text-ink">
-            <div className="flex flex-col lg:grid lg:grid-cols-2 h-full">
+            <div className="flex flex-col lg:grid lg:grid-cols-2 h-full min-h-[600px] lg:min-h-[800px]">
 
               {/* ── LEFT: copy ── */}
-              <div className="h-[40%] lg:h-full flex flex-col justify-center px-6 lg:px-20 relative z-20 pointer-events-none">
+              <div className="h-auto lg:h-full flex flex-col justify-center px-6 lg:px-20 py-12 lg:py-0 relative z-20 pointer-events-none border-b lg:border-b-0 lg:border-r border-ink/5">
                 <motion.div
-                  initial={{ opacity: 0, x: -20 }}
+                  initial={{ opacity: 0, x: -30 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
                   className="pointer-events-auto py-10"
                 >
                   <span className="block text-clay text-[11px] font-bold uppercase tracking-[0.4em] mb-4">
@@ -297,16 +280,22 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp })
                       transition={{ repeat: Infinity, duration: 2.5 }}
                       className="h-px bg-clay/50"
                     />
-                    Scroll down
+                    Scroll to discover
                   </div>
                 </motion.div>
               </div>
 
-              {/* ── RIGHT (Previously Centre): comparison widget ── */}
-              <div className="h-[60%] lg:h-full flex items-center justify-center lg:border-l border-ink/10 overflow-hidden bg-cream/20">
-                <div className="w-full max-w-xl scale-110 lg:scale-125">
+              {/* ── RIGHT: comparison widget ── */}
+              <div className="h-auto lg:h-full flex items-center justify-center overflow-hidden bg-cream/20 py-12 lg:py-0">
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                  className="w-full max-w-xl scale-100 lg:scale-110"
+                >
                   <ComparisonWidget />
-                </div>
+                </motion.div>
               </div>
 
             </div>
