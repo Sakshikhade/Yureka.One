@@ -5,7 +5,7 @@ import {
     X, ChevronRight, Info, Star, MessageSquareShare, AlertCircle,
     ShoppingBag, Landmark, Coffee, Fuel, CreditCard, Hotel, Briefcase, 
     Armchair, GraduationCap, Popcorn, Smartphone, Heart, Home, GraduationCap as Education,
-    ChevronDown, Check, ArrowRight
+    ChevronDown, Check, ArrowRight, Calculator
 } from 'lucide-react';
 import ImageWithLoader from './ImageWithLoader';
 import { getCards } from '../services/supabaseService';
@@ -334,7 +334,7 @@ const CardExplorer: React.FC = () => {
                                                 />
                                                 {/* Location/Bank Tag */}
                                                 <div className="absolute top-4 right-4 bg-paper/80 backdrop-blur-md px-4 py-2 rounded-2xl border border-white flex items-center gap-2 shadow-xl">
-                                                    <landmark className="w-2 h-2 rounded-full bg-clay" />
+                                                    <div className="w-2 h-2 rounded-full bg-clay" />
                                                     <span className="text-[10px] font-bold text-ink uppercase tracking-wider">{card.issuer || 'Prime'}</span>
                                                 </div>
                                             </div>
