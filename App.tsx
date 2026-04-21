@@ -99,16 +99,16 @@ const Preloader = () => {
 };
 
 const AppContent: React.FC = () => {
-  const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
+  const isExplorerRoute = location.pathname.startsWith('/cards');
 
   return (
-    <div className={`min-h-screen bg-cream font-sans text-ink relative ${isAdminRoute ? 'pt-0' : 'pt-32 md:pt-28'}`}>
+    <div className={`min-h-screen bg-cream font-sans text-ink relative ${isAdminRoute || isExplorerRoute ? 'pt-0' : 'pt-32 md:pt-28'}`}>
       {!isAdminRoute && <Preloader />}
 
       <ScrollToTop />
-      {!isAdminRoute && <TopBanner />}
-      {!isAdminRoute && <Navbar />}
+      {!isAdminRoute && !isExplorerRoute && <TopBanner />}
+      {!isAdminRoute && !isExplorerRoute && <Navbar />}
       
       <main className={`relative z-10 ${isAdminRoute ? 'pt-0' : ''}`}>
         <Suspense fallback={

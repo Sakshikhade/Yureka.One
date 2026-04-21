@@ -1,172 +1,134 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { 
-    ArrowUpRight, Zap, ShieldCheck, Plane, Search, Filter as FilterIcon, 
-    X, ChevronRight, Info, Star, MessageSquareShare, AlertCircle,
-    ShoppingBag, Landmark, Coffee, Fuel, CreditCard, Hotel, Briefcase, 
-    Armchair, GraduationCap, Popcorn, Smartphone, Heart, Home, GraduationCap as Education,
-    ChevronDown, Check, ArrowRight
+    Search, ChevronDown, Check, ArrowRight, ArrowLeft,
+    Plane, ShoppingBag, Landmark, Coffee, Fuel, CreditCard, 
+    Hotel, Briefcase, Armchair, Smartphone, Popcorn, Star,
+    Percent, HelpCircle, LayoutGrid, ListFilter
 } from 'lucide-react';
 import ImageWithLoader from './ImageWithLoader';
-import { getCards } from '../services/supabaseService';
-import { Card } from '../types';
-import { featuredCards } from '../data';
+import { useSupabase } from './SupabaseProvider';
+import { SkeletonCard } from './SkeletonLoaders';
 import { motion, AnimatePresence } from 'motion/react';
 
-// --- CUSTOM 3D-STYLE CATEGORY ICON COMPONENT ---
-const CategoryIcon = ({ type }: { type: string }) => {
-    switch(type) {
-        case 'Travel': return <Plane className="text-blue-500" size={32} />;
-        case 'Shopping': return <ShoppingBag className="text-pink-500" size={32} />;
-        case 'Cashback': return <Landmark className="text-purple-500" size={32} />;
-        case 'Fuel': return <Fuel className="text-orange-500" size={32} />;
-        case 'Dining': return <Coffee className="text-red-500" size={32} />;
-        case 'Business': return <Briefcase className="text-blue-500" size={32} />;
-        case 'Lounge Access': return <Armchair className="text-teal-500" size={32} />;
-        default: return <CreditCard className="text-gray-500" size={32} />;
-    }
-};
-
-// ─── Shared master lists (synced with AdminDashboard) ───────────────────────
+// ─── Constants & Master Lists ────────────────────────────────────────────────
 const ALL_BANKS = [
     'HDFC', 'SBI', 'ICICI', 'Axis', 'Kotak', 'Yes Bank', 'RBL', 'Amex',
     'IndusInd', 'BOB', 'SC', 'Indian', 'PNB', 'IDFC', 'Canara', 'HSBC',
-    'DBS', 'IDBI', 'AU', 'Equitas', 'CSB', 'Federal', 'SBM', 'South Indian',
-    'Utkarsh Bank', 'Suryoday Bank', 'Union Bank', 'Unity SFB', 'DCB',
-    'Bank Of India', 'J&K Bank', 'CUB', 'Slice SFB', 'Dhanlaxmi Bank', 'Indian Overseas Bank'
+    'DBS', 'IDBI', 'AU', 'Equitas', 'CSB', 'Federal', 'SBM', 'South Indian'
 ];
 
 const ALL_CATEGORIES = [
-    { name: 'Travel',            icon: <Plane /> },
-    { name: 'Hotels',            icon: <Hotel /> },
-    { name: 'Cashback',          icon: <Landmark /> },
-    { name: 'Brand Voucher',     icon: <ShoppingBag /> },
-    { name: 'Fuel',              icon: <Fuel /> },
-    { name: 'Catalogue Products',icon: <Briefcase /> },
-    { name: 'Travel Bookings',   icon: <Plane /> },
-    { name: 'Brand Wallet',      icon: <CreditCard /> },
-    { name: 'Experience',        icon: <Popcorn /> },
-    { name: 'Shopping',          icon: <ShoppingBag /> },
-    { name: 'Dining',            icon: <Coffee /> },
-    { name: 'Lounge Access',     icon: <Armchair /> },
-    { name: 'Lifetime Free',     icon: <CreditCard /> },
-    { name: 'Business',          icon: <Briefcase /> },
-    { name: 'UPI',               icon: <Smartphone /> },
+    { name: 'Travel',            icon: <Plane size={16} /> },
+    { name: 'Cashback',          icon: <Percent size={16} /> },
+    { name: 'Shopping',          icon: <ShoppingBag size={16} /> },
+    { name: 'Dining',            icon: <Coffee size={16} /> },
+    { name: 'Fuel',              icon: <Fuel size={16} /> },
+    { name: 'Lounge Access',     icon: <Armchair size={16} /> },
+    { name: 'UPI',               icon: <Smartphone size={16} /> },
+    { name: 'Business',          icon: <Briefcase size={16} /> }
 ];
-// ─────────────────────────────────────────────────────────────────────────────
 
-// Helper to generate a slug in case one isn't present
+const REWARD_TYPES = ['Points', 'Cashback', 'Airmiles', 'Vouchers'];
+
+// Helper for card slugs
 const generateSlug = (name: string, bank: string) => {
     return `${name}-${bank}`.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 };
 
-const BANK_LOGOS: Record<string, string> = {
-    'HDFC': '/assets/banks/hdfc.png',
-    'SBI': '/assets/banks/sbi.png',
-    'Axis': '/assets/banks/axis.png',
-    'ICICI': '/assets/banks/icici.png',
-    'Kotak': '/assets/banks/kotak.png',
-    'Yes Bank': '/assets/banks/yesbank.png',
-    'RBL': '/assets/banks/rbl.png',
-    'Amex': '/assets/banks/amex.png',
-    'IndusInd': '/assets/banks/indusind.png',
-    'BOB': '/assets/banks/bob.png',
-    'SC': '/assets/banks/sc.png',
-    'Indian': '/assets/banks/indian.png',
-    'PNB': '/assets/banks/pnb.png',
-    'IDFC': '/assets/banks/idfc.png',
-    'Canara': '/assets/banks/canara.png',
-    'HSBC': '/assets/banks/hsbc.png',
-    'DBS': '/assets/banks/dbs.png',
-    'IDBI': '/assets/banks/idbi.png',
-    'AU': '/assets/banks/au.png',
-    'Equitas': '/assets/banks/equitas.png',
-    'CSB': '/assets/banks/csb.png',
-    'Federal': '/assets/banks/federal.png',
-    'SBM': '/assets/banks/sbm.png',
-    'South Indian': '/assets/banks/southindian.png',
-    'Utkarsh Bank': '/assets/banks/utkarsh.png',
-    'Suryoday Bank': '/assets/banks/suryoday.png',
-    'Union Bank': '/assets/banks/union.png',
-    'Unity SFB': '/assets/banks/unity.png',
-    'DCB': '/assets/banks/dcb.png',
-    'Bank Of India': '/assets/banks/boi.png',
-    'J&K Bank': '/assets/banks/jk.png',
-    'CUB': '/assets/banks/cub.png',
-    'Slice SFB': '/assets/banks/slice.png',
-    'Dhanlaxmi Bank': '/assets/banks/dhanlaxmi.png',
-    'Indian Overseas Bank': '/assets/banks/iob.png'
+// ─── Custom Dropdown Component ───────────────────────────────────────────────
+const CustomSelect = ({ label, value, options, onChange, placeholder }: any) => {
+    const [isOpen, setIsOpen] = useState(false);
+    return (
+        <div className="relative group flex-1">
+            <p className="text-[10px] font-bold text-white/50 uppercase tracking-[0.2em] mb-1.5 ml-1">{label}</p>
+            <button 
+                onClick={() => setIsOpen(!isOpen)}
+                className="w-full h-14 bg-white/10 hover:bg-white/15 border border-white/10 rounded-2xl px-5 flex items-center justify-between text-white transition-all group-hover:border-white/30"
+            >
+                <span className={`text-sm font-medium ${value ? 'text-white' : 'text-white/40'}`}>
+                    {value || placeholder}
+                </span>
+                <ChevronDown size={16} className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+            </button>
+            
+            <AnimatePresence>
+                {isOpen && (
+                    <>
+                        <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
+                        <motion.div 
+                            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                            style={{ zIndex: 9999 }}
+                            className="absolute top-full left-0 right-0 mt-2 bg-[#1A1A2E] border border-white/10 rounded-2xl shadow-2xl overflow-hidden py-2"
+                        >
+                            <div className="max-h-64 overflow-y-auto custom-scrollbar">
+                                <button 
+                                    onClick={() => { onChange(''); setIsOpen(false); }}
+                                    className="w-full px-5 py-3 text-left text-sm text-white/60 hover:bg-white/5 hover:text-white transition-colors"
+                                >
+                                    All {label}
+                                </button>
+                                {options.map((opt: string) => (
+                                    <button 
+                                        key={opt}
+                                        onClick={() => { onChange(opt); setIsOpen(false); }}
+                                        className={`w-full px-5 py-3 text-left text-sm transition-colors flex items-center justify-between ${value === opt ? 'bg-clay text-white' : 'text-white/60 hover:bg-white/5 hover:text-white'}`}
+                                    >
+                                        {opt}
+                                        {value === opt && <Check size={14} />}
+                                    </button>
+                                ))}
+                            </div>
+                        </motion.div>
+                    </>
+                )}
+            </AnimatePresence>
+        </div>
+    );
 };
 
-import { useSupabase } from './SupabaseProvider';
-import { SkeletonCard } from './SkeletonLoaders';
-
+// ─── Card Explorer Component ─────────────────────────────────────────────────
 const CardExplorer: React.FC = () => {
-    const { cards: cardsList, isLoading, syncStatus } = useSupabase();
+    const navigate = useNavigate();
+    const { cards: cardsList, isLoading } = useSupabase();
+    
+    // Filter State
     const [searchQuery, setSearchQuery] = useState('');
-    const [selectedBanks, setSelectedBanks] = useState<string[]>([]);
-    const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-    const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
-    const [showAllBanks, setShowAllBanks] = useState(false);
-    const [showAllCategories, setShowAllCategories] = useState(false);
-    const [showAllPillCategories, setShowAllPillCategories] = useState(false);
-    const [sortBy, setSortBy] = useState<'featured' | 'rewards' | 'fees' | 'rating'>('featured');
+    const [selectedBank, setSelectedBank] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState('');
+    const [selectedRewardType, setSelectedRewardType] = useState('');
+    
+    // Toggles
+    const [premiumOnly, setPremiumOnly] = useState(false);
+    const [showLTF, setShowLTF] = useState(false);
 
-    const BANKS_INITIAL_COUNT = 10;
-    const CATEGORIES_INITIAL_COUNT = 6;
-    const PILL_CATEGORIES_INITIAL_COUNT = 9;
-
-    const categories = ALL_CATEGORIES;
-    const banks = ALL_BANKS;
-    const visibleBanks = showAllBanks ? banks : banks.slice(0, BANKS_INITIAL_COUNT);
-    const visibleCategories = showAllCategories ? categories : categories.slice(0, CATEGORIES_INITIAL_COUNT);
-    const visiblePillCategories = showAllPillCategories ? categories : categories.slice(0, PILL_CATEGORIES_INITIAL_COUNT);
-
+    // Filtering Logic
     const filteredCards = useMemo(() => {
-        let result = cardsList.filter(card => {
+        return cardsList.filter(card => {
             const matchesSearch = card.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                                card.issuer.toLowerCase().includes(searchQuery.toLowerCase());
-            const matchesBank = selectedBanks.length === 0 || selectedBanks.some(b => card.issuer.includes(b));
-            const matchesCategory = selectedCategories.length === 0 || selectedCategories.some(c => card.category?.includes(c));
-            return matchesSearch && matchesBank && matchesCategory;
+                                 card.issuer.toLowerCase().includes(searchQuery.toLowerCase());
+            const matchesBank = !selectedBank || card.issuer.includes(selectedBank);
+            const matchesCategory = !selectedCategory || card.category?.includes(selectedCategory);
+            // Simulating Reward Type match as it might be in features
+            const matchesReward = !selectedRewardType || JSON.stringify(card.features).includes(selectedRewardType);
+            
+            // Simulating toggles
+            const matchesPremium = !premiumOnly || parseFloat(card.annual_fee?.replace(/[^0-9.]/g, '') || '0') > 5000;
+            const matchesLTF = !showLTF || card.annual_fee === '0' || card.annual_fee?.includes('Free');
+
+            return matchesSearch && matchesBank && matchesCategory && matchesReward && matchesPremium && matchesLTF;
         });
-
-        // Sorting Logic
-        switch(sortBy) {
-            case 'rewards':
-                return [...result].sort((a, b) => {
-                    const aRate = parseFloat(a.rewards_rate?.replace(/[^0-9.]/g, '') || '0');
-                    const bRate = parseFloat(b.rewards_rate?.replace(/[^0-9.]/g, '') || '0');
-                    return bRate - aRate;
-                });
-            case 'fees':
-                return [...result].sort((a, b) => {
-                    const aFee = parseFloat(a.annual_fee?.replace(/[^0-9.]/g, '') || '0');
-                    const bFee = parseFloat(b.annual_fee?.replace(/[^0-9.]/g, '') || '0');
-                    return aFee - bFee;
-                });
-            case 'rating':
-                return [...result].sort((a, b) => (b.rating || 0) - (a.rating || 0));
-            default:
-                return result;
-        }
-    }, [cardsList, searchQuery, selectedBanks, selectedCategories, sortBy]);
-
-    const toggleBank = (bank: string) => {
-        setSelectedBanks(prev => prev.includes(bank) ? prev.filter(b => b !== bank) : [...prev, bank]);
-    };
-
-    const toggleCategory = (cat: string) => {
-        setSelectedCategories(prev => prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]);
-    };
+    }, [cardsList, searchQuery, selectedBank, selectedCategory, selectedRewardType, premiumOnly, showLTF]);
 
     if (isLoading && cardsList.length === 0) {
         return (
-            <div className="min-h-screen bg-white pt-32 px-6">
-                <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
-                    <div className="lg:col-span-3 space-y-8"><div className="h-96 bg-slate-50 rounded-3xl animate-pulse" /></div>
-                    <div className="lg:col-span-9 grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <SkeletonCard /><SkeletonCard /><SkeletonCard /><SkeletonCard />
+            <div className="min-h-screen bg-[#FDFCF9] pt-32 px-6">
+                <div className="max-w-7xl mx-auto space-y-12">
+                    <div className="h-48 bg-slate-100 rounded-[3rem] animate-pulse" />
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <SkeletonCard /><SkeletonCard /><SkeletonCard />
                     </div>
                 </div>
             </div>
@@ -174,410 +136,307 @@ const CardExplorer: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen bg-[#FDFCF9] pt-0 pb-20 overflow-x-hidden font-sans">
-            {/* --- PAGE HERO (NEW) --- */}
-            <div className="max-w-[1440px] mx-auto px-6 pt-6 md:pt-12 pb-10 md:pb-16 border-b border-ink/10 mb-8 md:mb-12">
-                <div className="flex flex-col lg:flex-row justify-between items-end gap-8">
-                    <div className="max-w-2xl">
-                        <div className="flex items-center gap-3 mb-6">
-                            <div className="w-2 h-2 bg-clay rounded-full animate-pulse"></div>
-                            <span className="text-[10px] font-mono font-bold tracking-[0.5em] uppercase text-ink/40">The Curated Catalog</span>
-                        </div>
-                        <h1 className="text-5xl md:text-7xl font-heading font-black tracking-tighter leading-tight text-ink mb-4 md:mb-6">
-                            Precision <br />
-                            <span className="text-clay">Instruments</span>
-                        </h1>
-                        <p className="text-lg md:text-xl font-sans font-medium text-ink/60 max-w-2xl leading-relaxed">
-                            Data-driven matching for the top 1% of Indian credit portfolios. We scan 200+ cards to optimize your financial yield.
-                        </p>
-                    </div>
-                    <div className="w-full lg:w-auto flex flex-col gap-4 items-end">
-                        <div className="relative group w-full lg:w-[400px]">
-                            <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-clay/40 group-focus-within:text-clay transition-colors" size={20} />
-                            <input 
-                                type="text" 
-                                placeholder="Search our archives..." 
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full pl-16 pr-8 py-6 bg-white border-2 border-ink/5 rounded-3xl outline-none focus:border-clay/20 transition-all font-sans text-xl shadow-sm"
-                            />
-                        </div>
-                        <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-widest text-ink/30 px-6">
-                            <span>Catalog Index: {cardsList.length} Entries</span>
-                            <span className="opacity-20">•</span>
-                            <span>Last Updated: Today</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* --- TOP CATEGORY GRID --- */}
-            <div className="max-w-[1440px] mx-auto px-6 mb-12">
-                <div className="flex gap-2 md:gap-4 overflow-x-auto no-scrollbar pb-2 md:pb-4 -mx-2 px-2">
-                    {categories.map((cat, i) => {
-                        const isSelected = selectedCategories.includes(cat.name);
-                        return (
-                            <button 
-                                key={i}
-                                onClick={() => toggleCategory(cat.name)}
-                                className={`flex flex-col items-center justify-center min-w-[80px] md:min-w-[120px] p-3 md:p-6 bg-white rounded-2xl md:rounded-[2rem] shadow-sm hover:shadow-xl transition-all duration-500 border-2 shrink-0 ${isSelected ? 'border-clay/30 bg-paper' : 'border-ink/5'}`}
-                            >
-                                <div className={`w-9 h-9 md:w-12 md:h-12 rounded-xl md:rounded-2xl flex items-center justify-center mb-2 md:mb-3 transition-all duration-500 shadow-inner ${isSelected ? 'bg-clay text-white rotate-6' : 'bg-cream text-clay/60'}`}>
-                                    {React.cloneElement(cat.icon as React.ReactElement<any>, { size: 18 })}
-                                </div>
-                                <span className={`text-[9px] md:text-[10px] font-bold uppercase tracking-wider md:tracking-widest text-center leading-tight transition-colors ${isSelected ? 'text-ink' : 'text-ink/40'}`}>
-                                    {cat.name}
-                                </span>
-                            </button>
-                        );
-                    })}
-                </div>
-            </div>
-
-            <div className="max-w-[1440px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
-                
-                {/* --- SIDEBAR FILTERS (SCREENSHOT 2 & 3) --- */}
-                <div className="hidden lg:block lg:col-span-3 space-y-8 bg-white/40 backdrop-blur-md p-8 rounded-3xl shadow-sm border border-ink/5 h-fit sticky top-32">
-                    <div className="flex justify-between items-center mb-10">
-                        <h2 className="text-3xl font-heading font-black text-ink leading-none">Filter</h2>
+        <div className="min-h-screen bg-[#FDFCF9] pb-32">
+            
+            {/* ── Navbar ── */}
+            <nav className="fixed top-0 left-0 right-0 z-[100] bg-[#FDFCF9]/80 backdrop-blur-xl border-b border-ink/5">
+                <div className="max-w-[1700px] mx-auto px-6 h-20 md:h-24 flex items-center justify-between">
+                    <div className="flex items-center gap-8">
                         <button 
-                            onClick={() => { setSelectedBanks([]); setSelectedCategories([]); }}
-                            className="text-clay text-[9px] font-bold uppercase tracking-[0.2em] px-4 py-2 bg-clay/5 rounded-full hover:bg-clay hover:text-white transition-all duration-300"
-                        >Reset All</button>
+                            onClick={() => navigate(-1)}
+                            className="w-12 h-12 md:w-14 md:h-14 flex items-center justify-center bg-white border border-ink/10 rounded-full hover:border-clay/30 transition-all group"
+                        >
+                            <ArrowLeft size={20} className="text-ink group-hover:-translate-x-1 transition-transform" />
+                        </button>
+                        <Link to="/" className="text-xl md:text-2xl font-heading font-black tracking-tighter text-ink">
+                            YUREKA<span className="text-clay">.</span>MONEY
+                        </Link>
                     </div>
 
-                    {/* Bank Name Filter */}
-                    <div className="space-y-6">
-                        <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-[11px] font-bold text-ink uppercase tracking-[0.3em]">Issuers</h3>
-
-                            {selectedBanks.length > 0 && (
-                                <button onClick={() => setSelectedBanks([])} className="text-[9px] font-bold text-clay uppercase tracking-widest hover:underline">Clear</button>
-                            )}
-                        </div>
-                        <div className="space-y-4 pr-2">
-                            {visibleBanks.map(bank => (
-                                <label key={bank} className="flex items-center justify-between group cursor-pointer">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-8 h-8 rounded-full bg-cream border border-ink/5 flex items-center justify-center overflow-hidden group-hover:border-clay/20 transition-all shrink-0">
-                                            {BANK_LOGOS[bank] ? (
-                                                <img src={BANK_LOGOS[bank]} alt={bank} loading="lazy" className="w-full h-full object-contain p-1" />
-                                            ) : (
-                                                <span className="font-bold text-[10px] text-clay/60">{bank[0]}</span>
-                                            )}
-                                        </div>
-                                        <span className="text-sm font-medium text-ink/60 group-hover:text-ink transition-colors">{bank}</span>
-                                    </div>
-                                    <input 
-                                        type="checkbox" 
-                                        checked={selectedBanks.includes(bank)}
-                                        onChange={() => toggleBank(bank)}
-                                        className="w-4 h-4 rounded border-ink/10 text-clay focus:ring-clay cursor-pointer bg-cream shrink-0"
-                                    />
-                                </label>
-                            ))}
-                        </div>
-                        {banks.length > BANKS_INITIAL_COUNT && (
-                            <button
-                                onClick={() => setShowAllBanks(v => !v)}
-                                className="text-clay text-[9px] font-bold uppercase tracking-widest mt-2 hover:opacity-70 transition-opacity"
-                            >
-                                {showAllBanks ? '− View Less' : `+ View ${banks.length - BANKS_INITIAL_COUNT} More Banks`}
-                            </button>
-                        )}
+                    <div className="hidden lg:flex items-center bg-white border border-ink/5 rounded-full p-1 shadow-sm">
+                        <Link to="/cards" className="px-6 py-2.5 rounded-full bg-ink text-white text-[10px] font-bold uppercase tracking-widest shadow-lg">All Cards</Link>
+                        <Link to="/manifesto" className="px-6 py-2.5 rounded-full text-ink/40 hover:text-ink text-[10px] font-bold uppercase tracking-widest transition-colors">Our Story</Link>
+                        <Link to="/rewards-calculator" className="px-6 py-2.5 rounded-full text-ink/40 hover:text-ink text-[10px] font-bold uppercase tracking-widest transition-colors">Neural Hub</Link>
                     </div>
 
-                    {/* Categories Filter */}
-                    <div className="pt-10 border-t border-ink/5">
-                        <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-[11px] font-bold text-ink uppercase tracking-[0.3em]">Categories</h3>
-
-                            {selectedCategories.length > 0 && (
-                                <button onClick={() => setSelectedCategories([])} className="text-[9px] font-bold text-clay uppercase tracking-widest hover:underline">Clear</button>
-                            )}
-                        </div>
-                        <div className="space-y-4">
-                            {visibleCategories.map(cat => (
-                                <label key={cat.name} className="flex items-center justify-between group cursor-pointer">
-                                    <div className="flex items-center gap-3">
-                                        <div className="text-ink/20 group-hover:text-clay/60 transition-colors shrink-0">
-                                            {React.cloneElement(cat.icon as React.ReactElement<any>, { size: 16 })}
-                                        </div>
-                                        <span className="text-sm font-medium text-ink/60 group-hover:text-ink transition-colors">{cat.name}</span>
-                                    </div>
-                                    <input 
-                                        type="checkbox" 
-                                        checked={selectedCategories.includes(cat.name)}
-                                        onChange={() => toggleCategory(cat.name)}
-                                        className="w-4 h-4 rounded border-ink/10 text-clay focus:ring-clay cursor-pointer bg-cream shrink-0"
-                                    />
-                                </label>
-                            ))}
-                        </div>
-                        {categories.length > CATEGORIES_INITIAL_COUNT && (
-                            <button
-                                onClick={() => setShowAllCategories(v => !v)}
-                                className="text-clay text-[9px] font-bold uppercase tracking-widest mt-6 hover:opacity-70 transition-opacity"
-                            >
-                                {showAllCategories ? '− View Less' : `+ View ${categories.length - CATEGORIES_INITIAL_COUNT} More Options`}
-                            </button>
-                        )}
+                    <div className="flex items-center gap-4">
+                        <Link to="/join-waitlist" className="px-6 md:px-10 h-12 md:h-14 bg-[#1A1A2E] text-white rounded-full flex items-center justify-center text-[10px] font-bold uppercase tracking-[0.2em] shadow-xl hover:bg-clay transition-colors group">
+                            Join Waitlist <ArrowRight size={14} className="ml-3 group-hover:translate-x-1 transition-transform" />
+                        </Link>
                     </div>
                 </div>
+            </nav>
 
-                {/* --- CARD RESULTS (SCREENSHOT 4) --- */}
-                <div className="lg:col-span-9 space-y-8">
-                    {/* Results Header */}
-                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-10 pb-6 border-b border-ink/10">
-                        <div className="flex items-center gap-4">
-                            <h2 className="text-2xl font-heading font-black text-ink tracking-tight">Archives</h2>
-                            <span className="px-3 py-1 bg-clay text-white text-[10px] font-bold rounded-full uppercase tracking-widest">{filteredCards.length} Found</span>
-                        </div>
+            {/* ── Hero Section ── */}
+            <section className="pt-40 pb-16 md:pt-48 md:pb-24 px-6">
+                <div className="max-w-4xl mx-auto text-center">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8 }}
+                    >
+                        <h1 className="text-4xl md:text-7xl lg:text-8xl font-serif text-ink leading-[0.9] tracking-tighter mb-6 uppercase">
+                            Start your <br />
+                            <span className="italic font-light text-clay">search here.</span>
+                        </h1>
+                        <p className="text-lg md:text-xl font-serif italic text-ink/50 max-w-2xl mx-auto">
+                            Decode 200+ instruments to find the one that fits your life perfectly.
+                        </p>
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* ── Control Center (The Indigo Bar) ── */}
+            <section className="px-4 md:px-10 lg:px-20 mb-16 relative z-[60]">
+                <div className="max-w-[1700px] mx-auto">
+                    {/* The Interlocking Circle Pattern Background */}
+                    <div className="bg-[#1A1A2E] rounded-[2.5rem] md:rounded-[4rem] p-8 md:p-12 shadow-2xl relative overflow-visible group">
+                        <div className="absolute inset-0 opacity-[0.03] pointer-events-none rounded-[2.5rem] md:rounded-[4rem] overflow-hidden" 
+                             style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 20.5c5.523 0 10-4.477 10-10s-4.477-10-10-10-10 4.477-10 10 4.477 10 10 10zm10 10c5.523 0 10-4.477 10-10s-4.477-10-10-10-10 4.477-10 10 4.477 10 10 10zm-10 10c5.523 0 10-4.477 10-10s-4.477-10-10-10-10 4.477-10 10 4.477 10 10 10z' fill='%23ffffff' fill-rule='evenodd'/%3E%3C/svg%3E")` }} 
+                        />
                         
-                        <div className="flex items-center gap-3">
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-ink/30">Sort By:</span>
-                            <div className="relative group">
-                                <select 
-                                    value={sortBy}
-                                    onChange={(e) => setSortBy(e.target.value as any)}
-                                    className="appearance-none bg-white border border-ink/10 px-6 py-2.5 pr-12 rounded-full text-[10px] font-bold uppercase tracking-widest text-ink outline-none focus:border-clay/40 transition-all cursor-pointer shadow-sm"
-                                >
-                                    <option value="featured">Featured First</option>
-                                    <option value="rewards">Highest Rewards</option>
-                                    <option value="fees">Lowest Fees</option>
-                                    <option value="rating">Top Rated</option>
-                                </select>
-                                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-ink/30 pointer-events-none" size={14} />
+                        <div className="relative z-10 flex flex-col xl:flex-row items-center gap-8 md:gap-10">
+                            {/* Desktop Filters */}
+                            <div className="flex-1 w-full grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <CustomSelect 
+                                    label="Primary Issuer" 
+                                    value={selectedBank} 
+                                    options={ALL_BANKS} 
+                                    onChange={setSelectedBank} 
+                                    placeholder="All Banks" 
+                                />
+                                <CustomSelect 
+                                    label="Spend Category" 
+                                    value={selectedCategory} 
+                                    options={ALL_CATEGORIES.map(c => c.name)} 
+                                    onChange={setSelectedCategory} 
+                                    placeholder="All Categories" 
+                                />
+                                <CustomSelect 
+                                    label="Reward Matrix" 
+                                    value={selectedRewardType} 
+                                    options={REWARD_TYPES} 
+                                    onChange={setSelectedRewardType} 
+                                    placeholder="All Rewards" 
+                                />
+                            </div>
+
+                            {/* Toggles */}
+                            <div className="w-full xl:w-auto flex flex-col md:flex-row items-center gap-6 md:gap-10 border-t xl:border-t-0 xl:border-l border-white/10 pt-8 xl:pt-0 xl:pl-10">
+                                <div className="flex items-center gap-4 cursor-pointer" onClick={() => setPremiumOnly(!premiumOnly)}>
+                                    <div 
+                                        className={`w-14 h-8 rounded-full transition-all relative ${premiumOnly ? 'bg-clay' : 'bg-white/10'}`}
+                                    >
+                                        <motion.div 
+                                            animate={{ x: premiumOnly ? 28 : 4 }}
+                                            className="absolute top-1 w-6 h-6 bg-white rounded-full shadow-lg" 
+                                        />
+                                    </div>
+                                    <span className="text-[11px] font-bold text-white uppercase tracking-widest whitespace-nowrap select-none">Premium Only</span>
+                                </div>
+                                <div className="flex items-center gap-4 cursor-pointer" onClick={() => setShowLTF(!showLTF)}>
+                                    <div 
+                                        className={`w-14 h-8 rounded-full transition-all relative ${showLTF ? 'bg-clay' : 'bg-white/10'}`}
+                                    >
+                                        <motion.div 
+                                            animate={{ x: showLTF ? 28 : 4 }}
+                                            className="absolute top-1 w-6 h-6 bg-white rounded-full shadow-lg" 
+                                        />
+                                    </div>
+                                    <span className="text-[11px] font-bold text-white uppercase tracking-widest whitespace-nowrap select-none">Lifetime Free</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Search Bar - Integrated */}
+                        <div className="mt-10 border-t border-white/10 pt-8 flex flex-col md:flex-row items-center gap-6">
+                            <div className="relative flex-1 group">
+                                <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-white/30 group-focus-within:text-clay transition-colors" size={20} />
+                                <input 
+                                    type="text" 
+                                    placeholder="Deep search by name, features, or perks..." 
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    className="w-full h-16 bg-white/[0.03] border border-white/10 rounded-2xl pl-16 pr-8 text-white placeholder:text-white/20 outline-none focus:border-clay/40 transition-all font-serif italic text-lg"
+                                />
+                            </div>
+                            <div className="flex items-center gap-4 text-white/40 grayscale opacity-50 hidden md:flex">
+                                <LayoutGrid size={20} />
+                                <ListFilter size={20} />
                             </div>
                         </div>
                     </div>
 
-                    {/* Search Bar Mobile */}
-                    <div className="lg:hidden mb-8 flex gap-4">
-                         <div className="relative flex-1">
-                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-ink/30" size={16} />
-                            <input 
-                                type="text" placeholder="Search curated cards..." 
-                                className="w-full pl-12 pr-6 py-4 bg-white/40 backdrop-blur-sm rounded-2xl border border-ink/5 outline-none focus:border-clay/30 transition-all font-sans text-ink"
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                            />
-                         </div>
-                         <button 
-                            onClick={() => setIsMobileFilterOpen(true)}
-                            className="bg-white/40 backdrop-blur-sm p-4 rounded-2xl border border-ink/5"
-                        >
-                             <FilterIcon size={18} className="text-ink/60" />
-                         </button>
+                    {/* Calculator Sub-Banner */}
+                    <div className="mt-8 px-4 md:px-0">
+                        <div className="bg-white border border-ink/10 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm group hover:border-clay/20 transition-all group overflow-hidden relative">
+                             {/* Neural Pattern */}
+                             <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, black 1px, transparent 0)', backgroundSize: '32px 32px' }} />
+                             
+                             <div className="flex flex-col md:flex-row items-center gap-8 relative z-10">
+                                <div className="w-16 h-16 bg-cream border border-clay/10 rounded-2xl flex items-center justify-center shrink-0">
+                                    <motion.div 
+                                        animate={{ rotate: 360 }}
+                                        transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+                                        className="text-clay"
+                                    >
+                                        <Landmark size={28} />
+                                    </motion.div>
+                                </div>
+                                <div className="text-center md:text-left">
+                                    <h4 className="text-2xl font-serif text-ink italic leading-tight">Yureka vs Standard</h4>
+                                    <p className="text-[11px] font-bold text-ink/30 uppercase tracking-[0.2em] mt-1">We uncover hidden yields. See for yourself.</p>
+                                </div>
+                             </div>
+
+                             <button 
+                                onClick={() => navigate('/rewards-calculator')}
+                                className="px-10 h-14 bg-ink text-white rounded-full text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-clay transition-colors relative z-10"
+                             >
+                                Calculate Neural Yield
+                             </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* ── Card Archives Grid ── */}
+            <section className="px-6 md:px-12 lg:px-20">
+                <div className="max-w-[1700px] mx-auto">
+                    {/* Catalog Header */}
+                    <div className="flex justify-between items-end mb-16 md:mb-20 border-b border-ink/5 pb-8">
+                        <div>
+                           <h2 className="text-4xl md:text-6xl font-serif text-ink leading-[0.9] tracking-tighter uppercase">
+                                The <br />
+                                <span className="italic font-light text-ink/50">Archives</span>
+                           </h2>
+                           <p className="text-[11px] font-bold text-ink/20 uppercase tracking-[0.3em] mt-4">Verified Repositories / {filteredCards.length} Matches</p>
+                        </div>
+                        <div className="text-right hidden md:block">
+                            <p className="text-[10px] font-bold text-ink opacity-20 uppercase tracking-[0.4em] mb-2">Sorted By: Data Priority</p>
+                            <div className="flex items-center gap-1">
+                                {[1,2,3,4,5].map(i => <div key={i} className={`w-3 h-1 rounded-full ${i===1 ? 'bg-clay' : 'bg-ink/5'}`} />)}
+                            </div>
+                        </div>
                     </div>
 
                     <AnimatePresence mode="popLayout">
                         <motion.div 
                             layout
-                            className="space-y-8"
+                            className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-x-10 md:gap-y-16"
                         >
                             {filteredCards.map((card, index) => {
                                 const cardSlug = card.slug || generateSlug(card.name, card.issuer);
                                 return (
-                                <motion.div 
-                                    key={card.id}
-                                    initial={{ opacity: 0, y: 30 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, scale: 0.95 }}
-                                    transition={{ duration: 0.5, delay: index * 0.05 }}
-                                    className="relative group"
-                                >
-                                    <motion.div 
-                                        whileHover={{ scale: 1.02 }}
-                                        className="relative bg-white rounded-[2.5rem] shadow-sm border border-ink/5 overflow-hidden group hover:shadow-[0_20px_60px_-15px_rgba(36,36,36,0.10)] transition-transform duration-300"
+                                    <motion.div
+                                        key={card.id}
+                                        initial={{ opacity: 0, y: 30 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ duration: 0.8, delay: (index % 3) * 0.1 }}
+                                        className="group"
                                     >
-                                        {/* Premium background gradient on hover */}
-                                        <div className="absolute inset-0 bg-gradient-to-br from-paper via-transparent to-paper opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none"></div>
-                                        
-                                        {/* Main Info Section */}
-                                        <div className="p-6 md:p-12 flex flex-col md:flex-row gap-8 md:gap-12 relative z-10">
-                                            {/* Card Image Wrapper with dynamic shadow */}
-                                            <div className="w-full md:w-[320px] shrink-0">
-                                                <div className="relative aspect-[1.58/1] rounded-2xl overflow-hidden shadow-2xl group-hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] transition-all duration-700 border border-ink/5">
+                                        <Link to={`/cards/${cardSlug}`} className="block h-full">
+                                            {/* Editorial Card Component */}
+                                            <div className="relative h-full overflow-hidden rounded-[2.5rem] md:rounded-[3.5rem] bg-paper shadow-sm group-hover:shadow-2xl group-hover:-translate-y-2 transition-all duration-700 flex flex-col border border-ink/5">
+                                                
+                                                {/* Category/Location-style Tag */}
+                                                <div className="absolute top-8 left-8 z-20">
+                                                    <div className="bg-[#FFE4E4] text-[#823A3A] px-5 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 shadow-sm">
+                                                        <Landmark size={12} /> {card.issuer}
+                                                    </div>
+                                                </div>
+
+                                                {/* Premium Card Image */}
+                                                <div className="h-[250px] md:h-[300px] w-full relative overflow-hidden bg-white shrink-0">
                                                     <ImageWithLoader 
                                                         src={card.image} 
                                                         alt={card.name} 
-                                                        className="w-full h-full object-cover transition-all duration-1000"
+                                                        className="w-full h-full object-contain p-12 md:p-16 transition-transform duration-1000 group-hover:scale-110"
                                                     />
+                                                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-paper/20" />
                                                 </div>
-                                            </div>
 
-                                            {/* Content Center */}
-                                            <div className="flex-1 space-y-6">
-                                                <div className="flex flex-wrap gap-2">
-                                                    {card.tags?.map((tag, i) => (
-                                                        <div key={i} className="flex items-center gap-1.5 bg-ink/5 px-4 py-1.5 rounded-full group/tag cursor-pointer hover:bg-clay hover:text-white transition-all duration-500">
-                                                            <div className="w-1 h-1 rounded-full bg-clay group-hover/tag:bg-white transition-colors"></div>
-                                                            <span className="text-[9px] font-bold uppercase tracking-[0.2em]">{tag}</span>
+                                                {/* Content Area */}
+                                                <div className="p-8 md:p-10 flex-1 flex flex-col justify-between bg-white border-t border-ink/5">
+                                                    <div>
+                                                        <h3 className="text-3xl md:text-4xl font-serif text-ink tracking-tighter leading-[0.9] uppercase mb-6 h-[80px] line-clamp-2">
+                                                            {card.name.split(' ').slice(0, 2).join(' ')}<br />
+                                                            <span className="italic font-light text-ink/40">{card.name.split(' ').slice(2).join(' ')}</span>
+                                                        </h3>
+                                                        <div className="flex flex-wrap gap-x-6 gap-y-3 mt-8">
+                                                            <div className="flex items-center gap-2">
+                                                                <Percent size={14} className="text-clay/40" />
+                                                                <span className="text-[10px] font-bold text-ink uppercase tracking-wider">{card.rewards_rate || 'Peak Yield'}</span>
+                                                            </div>
+                                                            <div className="flex items-center gap-2">
+                                                                <Landmark size={14} className="text-clay/40" />
+                                                                <span className="text-[10px] font-bold text-ink uppercase tracking-wider">{card.category}</span>
+                                                            </div>
+                                                            <div className="flex items-center gap-2">
+                                                                <Star size={14} className="text-clay/40" />
+                                                                <span className="text-[10px] font-bold text-ink uppercase tracking-wider">{card.rating?.toFixed(1) || 'Elite'} Rating</span>
+                                                            </div>
                                                         </div>
-                                                    )) || (
-                                                        <div className="flex items-center gap-1.5 bg-ink/5 px-4 py-1.5 rounded-full">
-                                                            <span className="text-[9px] font-bold uppercase tracking-[0.2em]">{card.category}</span>
+                                                    </div>
+
+                                                    <div className="pt-8 flex items-end justify-between border-t border-ink/5 mt-auto">
+                                                        <div>
+                                                            <p className="text-[10px] font-bold text-ink/20 uppercase tracking-[0.3em] mb-1">Portfolio Tier</p>
+                                                            <div className="flex items-baseline gap-1">
+                                                                <span className="text-sm font-bold text-ink uppercase">Fees:</span>
+                                                                <span className="text-2xl font-serif text-ink tracking-tight italic">₹{card.annual_fee?.replace(/[^0-9]/g, '') || '0'}</span>
+                                                                <span className="text-[10px] text-ink/30 font-bold ml-1">/ YEAR</span>
+                                                            </div>
                                                         </div>
-                                                    )}
-                                                </div>
-                                                <h3 className="text-3xl md:text-5xl font-heading font-black text-ink leading-none tracking-tighter group-hover:text-clay transition-colors uppercase">
-                                                    {card.name}
-                                                </h3>
-
-                                                <p className="text-lg md:text-xl font-sans font-medium text-ink/40 mt-2 italic">
-                                                    {card.issuer || card.bank} • {card.category} Portfolio
-                                                </p>
-                                            </div>
-
-                                            {/* Actions Right */}
-                                            <div className="w-full md:w-56 flex flex-col gap-3 justify-start pt-4">
-                                                <Link to={`/cards/${cardSlug}`} className="w-full">
-                                                    <button className="w-full bg-ink text-white font-bold py-4 rounded-3xl flex items-center justify-center gap-3 transition-all shadow-xl hover:bg-clay active:scale-95 text-[10px] uppercase tracking-[0.3em] cursor-pointer">
-                                                        View analysis <ArrowRight size={14} className="opacity-60" />
-                                                    </button>
-                                                </Link>
-                                                <button className="w-full bg-white border border-ink/10 hover:border-clay/30 text-ink font-bold py-4 rounded-3xl flex items-center justify-center gap-3 transition-all active:scale-95 text-[10px] uppercase tracking-[0.3em] shadow-sm">
-                                                    Consult AI <MessageSquareShare size={14} className="text-clay" />
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                        {/* Stats Row Bottom - Factual Data Sheet Style */}
-                                        <div className="bg-[#F9F8F4] px-6 md:px-16 py-8 md:py-10 grid grid-cols-2 md:grid-cols-5 gap-6 md:gap-8 border-t border-ink/5 overflow-x-auto no-scrollbar relative z-10">
-                                            <div className="space-y-2 border-r border-ink/5 pr-4">
-                                                <p className="text-ink text-[11px] font-bold uppercase tracking-[0.2em]">Introductory Offer</p>
-                                                <p className="text-xs font-semibold text-ink leading-relaxed">{card.intro_offer || 'Data Pending'}</p>
-                                            </div>
-                                            <div className="space-y-2 border-r border-ink/5 pr-4">
-                                                <p className="text-ink text-[11px] font-bold uppercase tracking-[0.2em]">Annual Fixed Fee</p>
-                                                <p className="text-sm font-light text-ink">₹{String(card.annual_fee).replace(/^₹/, '')} <span className="text-[10px] opacity-40 font-sans font-bold">+ GST</span></p>
-                                            </div>
-                                            <div className="space-y-2 border-r border-ink/5 pr-4">
-                                                <p className="text-ink text-[11px] font-bold uppercase tracking-[0.2em]">Joining Premium</p>
-                                                <p className="text-sm font-light text-ink">₹{String(card.joining_fee || card.annual_fee).replace(/^₹/, '')} <span className="text-[10px] opacity-40 font-sans font-bold">+ GST</span></p>
-                                            </div>
-                                            <div className="space-y-2 border-r border-ink/5 pr-4">
-                                                <p className="text-ink text-[11px] font-bold uppercase tracking-[0.2em]">Yield Potential</p>
-                                                <p className="text-sm font-bold text-clay tracking-tight">{card.rewards_rate || '2% → 30%'}</p>
-                                            </div>
-                                            <div className="space-y-2">
-                                                <p className="text-ink text-[11px] font-bold uppercase tracking-[0.2em]">Market Rating</p>
-                                                <div className="flex items-center gap-2">
-                                                    <p className="text-sm font-black text-ink">{card.rating?.toFixed(1) || '4.0'}</p>
-                                                    <div className="flex gap-0.5">
-                                                        {[...Array(5)].map((_, i) => (
-                                                            <Star key={i} size={8} className={`${i < Math.floor(card.rating || 4) ? 'fill-clay text-clay' : 'fill-ink/5 text-ink/5'}`} />
-                                                        ))}
+                                                        <div className="w-12 h-12 rounded-full border border-ink/10 flex items-center justify-center group-hover:bg-ink group-hover:text-white transition-all duration-500">
+                                                            <ArrowRight size={20} />
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-
+                                        </Link>
                                     </motion.div>
-                                </motion.div>
                                 );
                             })}
                         </motion.div>
                     </AnimatePresence>
 
+                    {/* Empty State */}
                     {filteredCards.length === 0 && (
-                        <div className="text-center py-32 bg-white/40 backdrop-blur-sm rounded-[3rem] border-2 border-dashed border-ink/10">
-                             <AlertCircle size={48} className="text-ink/10 mx-auto mb-6" />
-                             <h3 className="text-3xl font-heading font-black text-ink/30 tracking-tighter">No matching instruments</h3>
-                             <p className="text-ink/40 mt-4 font-medium">Adjust filters to discover new rewards.</p>
-                             <button 
-                                onClick={() => { setSelectedBanks([]); setSelectedCategories([]); setSearchQuery(''); }}
-                                className="mt-10 text-clay font-bold uppercase tracking-[0.3em] text-[10px] hover:opacity-70 transition-opacity border-b-2 border-clay/20 pb-1"
-                            >Clear All Constraints</button>
+                        <div className="text-center py-40">
+                            <h3 className="text-4xl font-serif text-ink/20 italic mb-8">No instruments found in current vault.</h3>
+                            <button 
+                                onClick={() => { setSelectedBank(''); setSelectedCategory(''); setSearchQuery(''); }}
+                                className="text-clay font-bold uppercase tracking-[0.4em] text-[10px] border-b border-clay/30 pb-1"
+                            >Reset Constraints</button>
                         </div>
                     )}
                 </div>
-            </div>
+            </section>
 
-            {/* Mobile Filter Modal */}
-            {isMobileFilterOpen && (
-                <div className="fixed inset-0 z-[95] bg-ink/60 backdrop-blur-md lg:hidden">
-                    <div className="absolute right-0 bottom-0 top-[80px] w-full max-w-[400px] bg-cream rounded-t-[2.5rem] shadow-[0_-20px_100px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col">
-                        <div className="p-8 pb-4 flex justify-between items-center bg-white border-b border-ink/5">
-                            <div className="space-y-1">
-                                    <h2 className="text-[11px] font-heading font-black uppercase tracking-[0.2em] text-ink">Refine Catalog</h2>
-                                    <p className="text-[10px] font-sans font-bold uppercase tracking-widest text-ink/30 mt-1">Found {filteredCards.length} instruments</p>
-                            </div>
-                            <button onClick={() => setIsMobileFilterOpen(false)} className="w-10 h-10 flex items-center justify-center bg-ink text-white rounded-full shadow-lg transition-transform active:scale-90">
-                                <X size={20} />
-                            </button>
-                        </div>
-                        
-                        <div className="flex-1 overflow-y-auto px-8 py-8 space-y-12">
-                        {/* Repeat sidebar content for mobile */}
-                        <div className="space-y-12">
-                             <div className="flex justify-between items-center border-b border-ink/5 pb-4">
-                                <span className="text-ink/40 font-bold uppercase tracking-[0.2em] text-[10px]">Refine Catalog</span>
-                                <button onClick={() => { setSelectedBanks([]); setSelectedCategories([]); }} className="text-clay font-bold uppercase tracking-[0.2em] text-[10px]">Reset All</button>
-                             </div>
-                             <div>
-                                <h3 className="font-serif italic text-2xl text-ink mb-6">Banks</h3>
-                                <div className="grid grid-cols-2 gap-3">
-                                    {(showAllBanks ? banks : banks.slice(0, BANKS_INITIAL_COUNT)).map(bank => (
-                                        <button 
-                                            key={bank}
-                                            onClick={() => toggleBank(bank)}
-                                            className={`py-3 px-4 rounded-2xl border text-[10px] font-bold tracking-widest transition-all flex items-center justify-center gap-2 ${selectedBanks.includes(bank) ? 'bg-clay border-clay text-white shadow-xl scale-[1.02]' : 'bg-white border-ink/5 text-ink/40 hover:border-ink/10'}`}
-                                        >
-                                            {BANK_LOGOS[bank] && (
-                                                <img src={BANK_LOGOS[bank]} alt={bank} loading="lazy" className={`w-4 h-4 object-contain ${selectedBanks.includes(bank) ? 'brightness-0 invert' : ''}`} />
-                                            )}
-                                            {bank}
-                                        </button>
-                                    ))}
-                                </div>
-                                {banks.length > BANKS_INITIAL_COUNT && (
-                                    <button
-                                        onClick={() => setShowAllBanks(v => !v)}
-                                        className="text-clay text-[9px] font-bold uppercase tracking-widest mt-4 hover:opacity-70 transition-opacity"
-                                    >
-                                        {showAllBanks ? '− View Less' : `+ View ${banks.length - BANKS_INITIAL_COUNT} More`}
-                                    </button>
-                                )}
-                             </div>
-
-                             <div>
-                                <h3 className="font-serif italic text-2xl text-ink mb-6">Categories</h3>
-                                <div className="grid grid-cols-2 gap-3">
-                                    {(showAllCategories ? categories : categories.slice(0, CATEGORIES_INITIAL_COUNT)).map(cat => (
-                                        <button 
-                                            key={cat.name}
-                                            onClick={() => toggleCategory(cat.name)}
-                                            className={`py-3 px-4 rounded-2xl border text-[10px] font-bold tracking-widest text-left transition-all ${selectedCategories.includes(cat.name) ? 'bg-clay border-clay text-white shadow-xl scale-[1.02]' : 'bg-white border-ink/5 text-ink/40 hover:border-ink/10'}`}
-                                        >
-                                            {cat.name}
-                                        </button>
-                                    ))}
-                                </div>
-                                {categories.length > CATEGORIES_INITIAL_COUNT && (
-                                    <button
-                                        onClick={() => setShowAllCategories(v => !v)}
-                                        className="text-clay text-[9px] font-bold uppercase tracking-widest mt-4 hover:opacity-70 transition-opacity"
-                                    >
-                                        {showAllCategories ? '− View Less' : `+ View ${categories.length - CATEGORIES_INITIAL_COUNT} More`}
-                                    </button>
-                                )}
-                             </div>
-                             
-                            <button 
-                                onClick={() => setIsMobileFilterOpen(false)}
-                                className="w-full bg-ink text-white font-bold py-6 rounded-3xl shadow-[0_20px_50px_rgba(36,36,36,0.3)] mt-12 mb-8 uppercase tracking-[0.4em] text-[10px] flex items-center justify-center gap-3 active:scale-95 transition-all"
-                            >
-                                Show {filteredCards.length} Matches <ArrowRight size={14} className="opacity-40" />
-                            </button>
-                        </div>
+            {/* --- FAQS Section Link --- */}
+            <section className="mt-32 md:mt-48 px-6 text-center">
+                 <div className="max-w-xl mx-auto space-y-8">
+                    <div className="flex justify-center">
+                        <HelpCircle size={40} className="text-clay animate-pulse" />
                     </div>
-                </div>
-            </div>
-        )}
-    </div>
-);
+                    <h2 className="text-3xl md:text-4xl font-serif text-ink tracking-tighter uppercase leading-tight">
+                        Still navigating <br />
+                        <span className="italic font-light text-ink/40">the decision?</span>
+                    </h2>
+                    <p className="text-ink/60 font-serif italic text-lg leading-relaxed">
+                        Our neural engine is trained on 200+ card variations. If you're stuck, use the comparison tool or consult the manifesto.
+                    </p>
+                    <div className="pt-6">
+                        <Link to="/calculator" className="inline-flex items-center gap-4 text-clay font-bold uppercase tracking-[0.3em] text-[11px] group">
+                           Launch Audit Tool <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                        </Link>
+                    </div>
+                 </div>
+            </section>
+        </div>
+    );
 };
 
 export default CardExplorer;
