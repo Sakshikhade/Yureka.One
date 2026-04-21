@@ -687,12 +687,11 @@ const ComingSoon: React.FC = () => {
             label: 'Ghostwriter',
             desc: 'Your checkout companion. It lives on your toolbar and applies the magic moment you hit any payment page.',
             component: <ExtensionAnimation />,
-            color: 'blue'
         }
     ];
 
     return (
-        <section ref={containerRef} className="relative min-h-screen bg-[#FDFCF9] font-sans selection:bg-clay selection:text-white overflow-hidden py-32 md:py-48">
+        <section ref={containerRef} className="relative min-h-screen bg-[#FDFCF9] font-sans selection:bg-clay selection:text-white overflow-hidden py-20 md:py-48">
             {/* Global Grain & Texture Overlay */}
             <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-[100] mix-blend-overlay" style={{ backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")' }} />
             
@@ -702,21 +701,21 @@ const ComingSoon: React.FC = () => {
             <div className="absolute bottom-[10%] left-[-5%] w-[800px] h-[800px] bg-teal-500/5 blur-[160px] rounded-full pointer-events-none" />
 
             <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
-                {/* Editorial Header */}
-                <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-12 mb-24 md:mb-40">
+                {/* Tactical Header Section */}
+                <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-12 md:gap-16 mb-24 md:mb-48">
                     <motion.div 
                         initial={{ opacity: 0, y: 30 }}
                         animate={isInView ? { opacity: 1, y: 0 } : {}}
                         transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
                         className="max-w-4xl"
                     >
-                        <div className="inline-flex items-center gap-3 px-5 py-2 mb-10 bg-white border border-black/5 rounded-full shadow-sm backdrop-blur-xl">
+                        <div className="inline-flex items-center gap-3 px-4 py-1.5 mb-6 md:mb-10 bg-white border border-black/5 rounded-full shadow-sm backdrop-blur-xl">
                             <span className="w-2 h-2 rounded-full bg-clay animate-pulse" />
-                            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-ink/60">Research & Intelligence Pipeline / v0.9.4B</span>
+                            <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] text-ink/60">Intelligence Pipeline / v0.9.4B</span>
                         </div>
-                        <h2 className="text-7xl md:text-9xl font-black tracking-tighter leading-[0.8] text-ink uppercase">
+                        <h2 className="text-5xl md:text-9xl font-black tracking-tighter leading-[0.85] text-ink uppercase">
                             The <br />
-                           <span className="text-transparent bg-clip-text bg-gradient-to-r from-clay via-teal to-ink italic font-thin serif">Elite</span><br />
+                           <span className="text-transparent bg-clip-text bg-gradient-to-r from-clay via-[#1B4D4B] to-ink italic font-thin serif">Elite</span><br />
                            Standard.
                         </h2>
                     </motion.div>
@@ -725,65 +724,65 @@ const ComingSoon: React.FC = () => {
                         initial={{ opacity: 0, x: 20 }}
                         animate={isInView ? { opacity: 1, x: 0 } : {}}
                         transition={{ duration: 1, delay: 0.3 }}
-                        className="lg:max-w-xs space-y-6 pb-4"
+                        className="lg:max-w-xs space-y-6 md:space-y-8 pb-4"
                     >
-                        <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-2xl border border-black/5 rotate-3 backdrop-blur-xl">
+                        <div className="w-12 h-12 md:w-16 md:h-16 bg-white rounded-[1.2rem] md:rounded-3xl flex items-center justify-center shadow-2xl border border-black/5 rotate-3 hover:rotate-0 transition-transform duration-500 backdrop-blur-xl">
                             <Lock className="text-clay" size={24} />
                         </div>
-                        <p className="text-ink/40 text-sm font-medium leading-relaxed">
-                           Current modules represent the automation of financial superiority. We are building the engine that renders "guessing" obsolete.
+                        <p className="text-ink/40 text-xs md:text-sm font-bold leading-relaxed tracking-tight max-w-xs">
+                           Our system interprets 10^7 variables per second to render "guessing" obsolete. This is the automation of financial superiority.
                         </p>
                     </motion.div>
                 </div>
 
                 {/* Vertical Feature Stack - Editorial Style */}
-                <div className="space-y-32 md:space-y-48">
+                <div className="space-y-32 md:space-y-64">
                     {features.map((feature, idx) => (
-                        <div key={idx} className={`flex flex-col lg:flex-row gap-16 md:gap-24 items-center ${idx % 2 !== 0 ? 'lg:flex-row-reverse' : ''}`}>
-                            {/* Visual Mockup */}
+                        <div key={idx} className={`flex flex-col lg:flex-row gap-12 md:gap-32 items-center ${idx % 2 !== 0 ? 'lg:flex-row-reverse' : ''}`}>
+                            {/* Visual Mockup Container */}
                             <motion.div 
-                                initial={{ opacity: 0, scale: 0.95, y: 40 }}
+                                initial={{ opacity: 0, scale: 0.98, y: 60 }}
                                 whileInView={{ opacity: 1, scale: 1, y: 0 }}
                                 viewport={{ once: true, margin: "-100px" }}
-                                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                                 className="w-full lg:w-3/5 group"
                             >
-                                <div className="relative aspect-[4/5] md:aspect-[4/5] max-w-full">
-                                   {/* Floating accent elements */}
-                                   <div className={`absolute -inset-4 bg-gradient-to-br from-${feature.color}-500/5 to-transparent blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000`} />
+                                <div className="relative aspect-[3/4] md:aspect-[4/5] max-w-full">
+                                   {/* Advanced Glow */}
+                                   <div className={`absolute -inset-10 bg-gradient-to-br from-clay/5 to-transparent blur-[120px] opacity-0 group-hover:opacity-100 transition-opacity duration-1000`} />
                                    {feature.component}
                                 </div>
                             </motion.div>
 
                             {/* Copy Content */}
                             <motion.div 
-                                initial={{ opacity: 0, x: idx % 2 === 0 ? 30 : -30 }}
-                                whileInView={{ opacity: 1, x: 0 }}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 1 }}
-                                className="w-full lg:w-2/5 space-y-8"
+                                className="w-full lg:w-2/5 space-y-6 md:space-y-10"
                             >
-                               <div className="space-y-4">
-                                  <div className="flex items-center gap-3">
-                                     <span className="text-[10px] font-black uppercase tracking-[0.4em] text-ink/20">{feature.label}</span>
-                                     <div className="h-[1px] w-12 bg-ink/5" />
-                                  </div>
-                                  <h3 className="text-5xl md:text-7xl font-black text-ink tracking-tighter uppercase leading-none">
-                                     {feature.title}
-                                  </h3>
-                               </div>
-                               <p className="text-ink/50 text-base md:text-lg font-medium leading-relaxed max-w-sm">
-                                  {feature.desc}
-                               </p>
-                               <div className="pt-4 flex items-center gap-6">
-                                  <button className="h-14 px-10 bg-ink text-white rounded-full text-[10px] font-black uppercase tracking-[0.2em] shadow-2xl shadow-black/10 hover:bg-clay hover:-translate-y-1 transition-all active:scale-95 group">
-                                     Join Internal Test <ChevronRight size={14} className="inline-block ml-2 group-hover:translate-x-1 transition-transform" />
-                                  </button>
-                                  <div className="hidden md:flex flex-col">
-                                     <span className="text-[9px] font-black text-ink/10 uppercase tracking-widest">Availability</span>
-                                     <span className="text-[10px] font-bold text-clay uppercase italic">Limited Nodes</span>
-                                  </div>
-                               </div>
+                                <div className="space-y-4">
+                                   <div className="flex items-center gap-3">
+                                      <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.4em] text-ink/20">{feature.label}</span>
+                                      <div className="h-[1px] w-8 md:w-12 bg-ink/5" />
+                                   </div>
+                                   <h3 className="text-4xl md:text-7xl font-black text-ink tracking-tighter uppercase leading-none">
+                                      {feature.title}
+                                   </h3>
+                                </div>
+                                <p className="text-ink/50 text-sm md:text-lg font-medium leading-relaxed max-w-sm">
+                                   {feature.desc}
+                                </p>
+                                <div className="pt-4 flex flex-col sm:flex-row items-start sm:items-center gap-6">
+                                   <button className="h-12 md:h-14 px-8 md:px-10 bg-ink text-white rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] shadow-2xl shadow-black/10 hover:bg-clay hover:-translate-y-1 transition-all active:scale-95 group shrink-0">
+                                      Join Internal Test <ChevronRight size={14} className="inline-block ml-2 group-hover:translate-x-1 transition-transform" />
+                                   </button>
+                                   <div className="flex flex-col">
+                                      <span className="text-[8px] md:text-[9px] font-black text-ink/10 uppercase tracking-widest">Availability</span>
+                                      <span className="text-[9px] md:text-[10px] font-bold text-clay uppercase italic">Limited Access Nodes</span>
+                                   </div>
+                                </div>
                             </motion.div>
                         </div>
                     ))}
@@ -794,36 +793,36 @@ const ComingSoon: React.FC = () => {
                     initial={{ opacity: 0, y: 60 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="mt-64 p-12 md:p-32 bg-ink rounded-[4rem] text-center relative overflow-hidden group border border-white/5"
+                    className="mt-32 md:mt-64 p-8 md:p-32 bg-ink rounded-[2.5rem] md:rounded-[4rem] text-center relative overflow-hidden group border border-white/5"
                 >
                     {/* Dark Grain Overlay */}
                     <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #fff 1px, transparent 0)', backgroundSize: '40px 40px' }} />
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-clay/10 blur-[160px] rounded-full pointer-events-none" />
 
                     <div className="relative z-10">
-                        <Sparkles className="mx-auto mb-12 text-clay" size={64} />
-                        <h4 className="text-5xl md:text-8xl font-black text-white mb-10 tracking-tighter leading-[0.85] uppercase">
+                        <Sparkles className="mx-auto mb-8 md:mb-12 text-clay" size={48} md={64} />
+                        <h4 className="text-4xl md:text-8xl font-black text-white mb-8 md:mb-10 tracking-tighter leading-[0.9] uppercase">
                            Initialize Your <br /><span className="text-white/20 italic font-thin serif">Elite Status.</span>
                         </h4>
-                        <p className="text-white/40 text-lg md:text-xl font-medium max-w-2xl mx-auto mb-16 leading-relaxed">
+                        <p className="text-white/40 text-base md:text-xl font-medium max-w-2xl mx-auto mb-10 md:mb-16 leading-relaxed">
                            Our ecosystem is currently invite-only. Apply for the Registry to secure one of the 500 alpha testing nodes.
                         </p>
                         
-                        <div className="max-w-xl mx-auto flex flex-col md:flex-row gap-5">
+                        <div className="max-w-xl mx-auto flex flex-col md:flex-row gap-4 md:gap-5">
                             <input 
                                 type="email" 
                                 placeholder="ACCESS_KEY@EMAIL.COM" 
-                                className="flex-1 h-16 bg-white/5 border border-white/10 rounded-2xl px-8 text-white outline-none focus:border-clay/50 focus:bg-white/10 transition-all font-bold placeholder:text-white/10 text-sm tracking-widest uppercase" 
+                                className="w-full h-14 md:h-16 bg-white/5 border border-white/10 rounded-xl md:rounded-2xl px-6 md:px-8 text-white outline-none focus:border-clay/50 focus:bg-white/10 transition-all font-bold placeholder:text-white/10 text-xs md:text-sm tracking-widest uppercase" 
                             />
-                            <button className="h-16 px-12 bg-white text-ink font-black uppercase tracking-widest text-[10px] rounded-2xl hover:bg-clay hover:text-white transition-all shadow-2xl active:scale-95">
-                               Enter Registry
+                            <button className="w-full md:w-auto h-14 md:h-16 px-10 md:px-12 bg-white text-ink font-black uppercase tracking-widest text-[9px] md:text-[10px] rounded-xl md:rounded-2xl hover:bg-clay hover:text-white transition-all shadow-2xl active:scale-95 shrink-0">
+                                Enter Registry
                             </button>
                         </div>
                         
-                        <div className="mt-20 pt-16 border-t border-white/5 flex flex-wrap justify-center gap-12 text-[10px] font-black uppercase tracking-[0.3em] text-white/10">
-                           <div className="flex items-center gap-3"><Shield size={14} /> Encrypted Handshake</div>
-                           <div className="flex items-center gap-3"><Cpu size={14} /> Hardware Accelerated</div>
-                           <div className="flex items-center gap-3"><Globe size={14} /> Global Priority</div>
+                        <div className="mt-16 md:mt-20 pt-10 md:pt-16 border-t border-white/5 flex flex-wrap justify-center gap-6 md:gap-12 text-[8px] md:text-[10px] font-black uppercase tracking-[0.3em] text-white/10">
+                           <div className="flex items-center gap-2 md:gap-3"><Shield size={12} md={14} /> Encrypted</div>
+                           <div className="flex items-center gap-2 md:gap-3"><Cpu size={12} md={14} /> Accelerated</div>
+                           <div className="flex items-center gap-2 md:gap-3"><Globe size={12} md={14} /> Priority</div>
                         </div>
                     </div>
                 </motion.div>

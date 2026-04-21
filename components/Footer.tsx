@@ -62,7 +62,7 @@ const Footer: React.FC = () => {
                     <ul className="space-y-3 md:space-y-4">
                         <li><Link to="/cards" className="hover:text-clay font-serif text-sm md:text-base transition-colors">Card Explorer</Link></li>
                         <li><Link to="/yureka-ai" className="hover:text-clay font-serif text-sm md:text-base transition-colors">Yureka AI</Link></li>
-                        <li><Link to="/yureka-os" className="hover:text-clay font-serif text-sm md:text-base transition-colors">Yureka OS</Link></li>
+                        <li><Link to="/free-tools" className="hover:text-clay font-serif text-sm md:text-base transition-colors">Free Tools</Link></li>
                         <li><Link to="/manifesto" className="hover:text-clay font-serif text-sm md:text-base transition-colors">Our Manifesto</Link></li>
                     </ul>
                 </div>

@@ -104,6 +104,9 @@ const AppContent: React.FC = () => {
 
   return (
     <div className={`min-h-screen bg-cream font-sans text-ink relative ${isAdminRoute ? 'pt-0' : 'pt-32 md:pt-40'}`}>
+      {/* Global Grain & Texture Overlay - Shared across all pages */}
+      <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-[100] mix-blend-overlay" style={{ backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")' }} />
+      
       {!isAdminRoute && <Preloader />}
 
       <div className="paper-texture" />
@@ -115,11 +118,14 @@ const AppContent: React.FC = () => {
       
       <main className={`relative z-10 ${isAdminRoute ? 'pt-0' : ''}`}>
         <Suspense fallback={
-          <div className="fixed inset-0 z-[100] bg-cream flex items-center justify-center overflow-hidden">
-            <video autoPlay muted playsInline loop className="w-40 h-40 object-contain">
-              <source src="/yurekaloader.mov" type="video/quicktime" />
-              <source src="/yurekaloader.mov" type="video/mp4" />
-            </video>
+          <div className="fixed inset-0 z-[100] bg-cream/80 backdrop-blur-xl flex items-center justify-center overflow-hidden">
+            <motion.div 
+               animate={{ scale: [0.95, 1, 0.95], opacity: [0.5, 1, 0.5] }}
+               transition={{ duration: 2, repeat: Infinity }}
+               className="w-40 h-40 bg-white rounded-[2rem] shadow-2xl flex items-center justify-center border border-black/5"
+            >
+               <Sparkles className="text-clay" size={48} />
+            </motion.div>
           </div>
         }>
           <Routes>
@@ -166,7 +172,8 @@ const AppContent: React.FC = () => {
             <Route path="/terms-of-service" element={<TermsOfService />} />
             <Route path="/security-protocol" element={<SecurityProtocolPage />} />
             <Route path="/community-guidelines" element={<CommunityGuidelines />} />
-            <Route path="/yureka-os" element={<YurekaOsPage />} />
+            <Route path="/free-tools" element={<YurekaOsPage />} />
+            <Route path="/yureka-os" element={<Navigate to="/free-tools" replace />} />
             <Route path="/manifesto" element={<OurStory />} />
             <Route path="/jobs" element={<CareersPage />} />
 
@@ -196,9 +203,9 @@ const AppContent: React.FC = () => {
 
       {!isAdminRoute && (
         <Link 
-          to="/join-waitlist"
+          to="/coming-soon"
           className="fixed bottom-14 right-6 z-[70] bg-clay text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform cursor-pointer border border-white/20"
-          aria-label="Join VIP Waitlist"
+          aria-label="View Intelligence Lab"
         >
           <button className="cursor-pointer">
             <Sparkles size={28} />

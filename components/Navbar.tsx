@@ -65,7 +65,7 @@ const Navbar: React.FC = () => {
                     {[
                         { name: 'Cards', path: '/cards' },
                         { name: 'Manifesto', path: '/manifesto' },
-                        { name: 'Yureka OS', path: '/yureka-os' },
+                        { name: 'Free Tools', path: '/free-tools' },
                         { name: 'Blogs', path: '/blogs' }
                     ].map((item) => (
                         <Link 
@@ -91,12 +91,12 @@ const Navbar: React.FC = () => {
                       </Link>
 
                     
-                    <Link to="/join-waitlist" className={`
+                    <Link to="/coming-soon" className={`
                         bg-ink text-white text-[10px] lg:text-xs font-bold uppercase tracking-widest px-6 lg:px-8 py-3 lg:py-3.5
                         flex items-center gap-2 group transition-all duration-500 rounded-full shrink-0 shadow-xl hover:shadow-clay/20 hover:-translate-y-0.5
                     `}>
                         <Sparkles size={14} className="text-clay" />
-                        <span>Join VIP Waitlist</span>
+                        <span>Intelligence Lab</span>
                         <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                     </Link>
                 </div>
@@ -150,7 +150,7 @@ const Navbar: React.FC = () => {
                     {[
                         { name: 'Card Explorer', path: '/cards', desc: 'Curated Matches' },
                         { name: 'Manifesto', path: '/manifesto', desc: 'Our Mission' },
-                        { name: 'Yureka OS', path: '/yureka-os', desc: 'Financial Engine' },
+                        { name: 'Free Tools', path: '/free-tools', desc: 'Financial Engine' },
                         { name: 'Blogs', path: '/blogs', desc: 'Credit Insights' },
                         { name: 'Yureka AI', path: '/yureka-ai', desc: 'AI Matching' }
                     ].map((item, idx) => (
@@ -178,9 +178,9 @@ const Navbar: React.FC = () => {
                       transition={{ delay: 0.6 }}
                       className="mt-4"
                     >
-                        <Link to="/join-waitlist" onClick={() => setIsMobileMenuOpen(false)} className="w-full py-4 bg-ink text-white font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 transition-all rounded-full shadow-lg">
+                        <Link to="/coming-soon" onClick={() => setIsMobileMenuOpen(false)} className="w-full py-4 bg-ink text-white font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 transition-all rounded-full shadow-lg">
                             <Sparkles size={16} className="text-clay" />
-                            Join VIP Waitlist
+                            Intelligence Lab
                         </Link>
                     </motion.div>
                   </nav>

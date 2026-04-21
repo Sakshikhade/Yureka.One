@@ -110,9 +110,12 @@ const YurekaOsPage: React.FC = () => {
             className="flex flex-col justify-center order-1 lg:order-2"
           >
             <div className="space-y-8">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-clay/5 rounded-full border border-clay/10">
-                <span className="w-1.5 h-1.5 rounded-full bg-clay animate-ping" />
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-clay">Limited Beta Access Live</span>
+              <div className="inline-flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-clay/5 rounded-full border border-clay/10">
+                  <span className="w-1.5 h-1.5 rounded-full bg-clay animate-ping" />
+                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-clay">Limited Beta Access Live</span>
+                </div>
+                <div className="text-[10px] font-black uppercase tracking-[0.4em] text-ink/20">Project // FREE TOOLS</div>
               </div>
               
               <div className="space-y-4">
@@ -120,7 +123,7 @@ const YurekaOsPage: React.FC = () => {
                    Optimize your <br /> <span className="text-black/30 italic font-light">Reward</span> <br /> transfers.
                 </h1>
                 <p className="text-ink/50 font-sans text-xl font-medium max-w-sm leading-relaxed">
-                   Stop guessing. We calculate the exact mathematical yield for your specific redemption goals.
+                   Stop guessing. Our Free Tools audit the exact mathematical yield for your specific redemption goals.
                 </p>
               </div>
 

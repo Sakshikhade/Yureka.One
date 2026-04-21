@@ -98,7 +98,7 @@ const RewardsTransferCalculator: React.FC = () => {
 
   useEffect(() => {
     const access = localStorage.getItem('yureka_points_access');
-    if (!access) navigate('/yureka-os');
+    if (!access) navigate('/free-tools');
   }, [navigate]);
 
   // Click outside listener
