@@ -7,7 +7,7 @@ import GroupChatAudit from './GroupChatAudit';
 
 const Hero: React.FC = () => {
   const fadeInUp = {
-    initial: { opacity: 0, y: 20 },
+    initial: { opacity: 0, y: 0 },
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true },
     transition: { duration: 0.8 }
@@ -38,8 +38,8 @@ const Hero: React.FC = () => {
             >
                 {/* Left Ear - Keyword Rich Context */}
                 <div className="hidden md:block w-64 text-left border-r border-ink/10 pr-6 h-full">
-                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-ink/40 mb-2">Est. 2026 • Alpha V.1</p>
-                    <p className="text-sm font-serif italic text-ink/60 leading-tight">
+                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-ink/70 mb-2">Est. 2026 • Alpha V.1</p>
+                    <p className="text-sm font-serif italic text-ink/80 leading-tight">
                         "The automation of financial superiority."
                     </p>
                 </div>
@@ -59,10 +59,10 @@ const Hero: React.FC = () => {
                         <Globe size={14} className="animate-spin-slow text-clay" />
                         <span className="text-xs font-sans font-medium uppercase tracking-widest text-[9px]">Neural Network Stable</span>
                      </div>
-                     <div className="flex justify-end gap-4 text-[10px] font-medium uppercase tracking-[0.3em] text-ink/30">
+                      <div className="flex justify-end gap-4 text-[10px] font-medium uppercase tracking-[0.3em] text-ink/60">
                         <span>Digital Ed.</span>
                         <span>Vol. 09</span>
-                     </div>
+                      </div>
                 </div>
             </motion.div>
 
@@ -104,7 +104,7 @@ const Hero: React.FC = () => {
                 <h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl leading-[0.95] font-heading font-medium text-ink uppercase tracking-tight">
                     Stop Guessing. <br className="hidden md:block" /> Start Winning.
                 </h2>
-                <h3 className="text-base md:text-lg lg:text-xl font-sans font-medium text-ink/40 mt-10 md:mt-14 max-w-3xl mx-auto leading-relaxed tracking-tight uppercase">
+                <h3 className="text-base md:text-lg lg:text-xl font-sans font-medium text-ink/70 mt-10 md:mt-14 max-w-3xl mx-auto leading-relaxed tracking-tight uppercase">
                     We audit <span className="text-ink">200+ elite credit cards</span> through the RewardX Neural Engine <br className="hidden lg:block" /> to reveal your highest possible yield path.
                 </h3>
 

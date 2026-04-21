@@ -105,7 +105,7 @@ const AppContent: React.FC = () => {
   return (
     <div className={`min-h-screen bg-cream font-sans text-ink relative ${isAdminRoute ? 'pt-0' : 'pt-32 md:pt-28'}`}>
       {/* Global Grain & Texture Overlay - Shared across all pages */}
-      <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-[100] mix-blend-overlay" style={{ backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")' }} />
+      <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-[100] mix-blend-overlay" style={{ backgroundImage: 'linear-gradient(to bottom, #242424 0.5px, transparent 0.5px), linear-gradient(to right, #242424 0.5px, transparent 0.5px)', backgroundSize: '40px 40px' }} />
       
       {!isAdminRoute && <Preloader />}
 
@@ -162,7 +162,7 @@ const AppContent: React.FC = () => {
                    description="Join the elite waitlist for early access to the Yureka Neural Engine."
                  />
                  <WaitlistPage />
-              </>
+               </>
             } />
             
             <Route path="/admin" element={<AdminDashboard />} />
@@ -176,7 +176,7 @@ const AppContent: React.FC = () => {
             <Route path="/yureka-os" element={<Navigate to="/free-tools" replace />} />
             <Route path="/manifesto" element={<OurStory />} />
             <Route path="/jobs" element={<CareersPage />} />
-
+ 
             <Route path="/yureka-ai" element={
                <>
                  <SEO 
@@ -192,7 +192,7 @@ const AppContent: React.FC = () => {
             <Route path="/matrix" element={<Navigate to="/rewards-calculator" replace />} />
             <Route path="/journal" element={<Navigate to="/blogs" replace />} />
             <Route path="/rewards-calculator" element={<RewardsTransferCalculator />} />
-
+ 
             <Route path="*" element={<MainPage />} />
           </Routes>
         </Suspense>
@@ -205,9 +205,9 @@ const AppContent: React.FC = () => {
         <Link 
           to="/coming-soon"
           className="fixed bottom-14 right-6 z-[70] bg-clay text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform cursor-pointer border border-white/20"
-          aria-label="View Intelligence Lab"
+          aria-label="Launch Intelligence Lab"
         >
-          <button className="cursor-pointer">
+          <button className="cursor-pointer" aria-hidden="true" tabIndex={-1}>
             <Sparkles size={28} />
           </button>
         </Link>

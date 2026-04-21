@@ -38,7 +38,7 @@ const YurekaOsPage: React.FC = () => {
         <div className="absolute top-[20%] right-[10%] w-[20%] h-[20%] bg-orange-200/5 rounded-full blur-[80px]" />
         <div 
           className="absolute inset-0 opacity-[0.03] mix-blend-multiply pointer-events-none" 
-          style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/p6-mini.png")' }} 
+          style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, #242424 1px, transparent 1px)', backgroundSize: '20px 20px' }} 
         />
       </div>
 
@@ -58,7 +58,7 @@ const YurekaOsPage: React.FC = () => {
             <div className="relative h-[450px] md:h-[650px] rounded-[3rem] overflow-hidden shadow-[0_40px_100px_-20px_rgba(0,0,0,0.3)] group">
               <img 
                 src="/assets/hero/eiffel-points.png" 
-                alt="Travel Redemption Wonders" 
+                alt="Eiffel Tower representing global travel rewards" 
                 className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110"
               />
               
@@ -73,7 +73,7 @@ const YurekaOsPage: React.FC = () => {
                   <div className="flex -space-x-3 items-center mb-4">
                     {[1,2,3,4].map(i => (
                       <div key={i} className="w-10 h-10 rounded-full border-2 border-white/20 bg-slate-200 overflow-hidden shadow-lg backdrop-blur-sm">
-                        <img src={`https://i.pravatar.cc/100?img=${i+10}`} alt="user" className="w-full h-full object-cover" />
+                        <img src={`https://i.pravatar.cc/100?img=${i+10}`} alt={`Community Member ${i+1}`} className="w-full h-full object-cover" />
                       </div>
                     ))}
                     <div className="h-10 px-4 rounded-full border border-white/20 bg-white/10 backdrop-blur-md flex items-center justify-center text-[10px] font-bold text-white uppercase tracking-widest ml-4">

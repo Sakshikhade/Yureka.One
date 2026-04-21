@@ -99,7 +99,6 @@ const CardDetail: React.FC = () => {
                 {/* Hero Section */}
                 <section id="overview" className="grid grid-cols-1 lg:grid-cols-2 gap-20 mb-32 items-center">
                     <div className="relative group">
-                        {/* 3D-ish Card Presentation */}
                         <div className="absolute inset-0 bg-clay/5 blur-[120px] rounded-full scale-125 group-hover:scale-150 transition-transform duration-1000 opacity-50"></div>
                         <motion.div 
                             whileHover={{ 
@@ -238,8 +237,8 @@ const CardDetail: React.FC = () => {
                             <div className="flex items-center gap-6 pt-10">
                                 <div className="flex -space-x-4">
                                     {[1, 2, 3].map(i => (
-                                        <div key={i} className="w-12 h-12 rounded-full border-2 border-ink bg-cream overflow-hidden">
-                                            <img src={`https://i.pravatar.cc/100?img=${i+10}`} alt="Analyst" loading="lazy" />
+                                        <div key={i} className="w-10 h-10 md:w-12 md:h-12 border-2 border-clay/10 bg-white shadow-xl overflow-hidden rounded-full shrink-0">
+                                            <img src={`https://i.pravatar.cc/100?img=${i+10}`} alt={`Analysis specialist ${i+1}`} loading="lazy" />
                                         </div>
                                     ))}
                                 </div>

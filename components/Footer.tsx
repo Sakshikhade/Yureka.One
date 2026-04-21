@@ -7,8 +7,8 @@ const Footer: React.FC = () => {
   return (
     <footer className="bg-cream text-ink border-t border-black/10 relative z-10 pt-20 pb-10">
       <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
       >
@@ -92,9 +92,9 @@ const Footer: React.FC = () => {
 
                 {/* Column 4 - Contact */}
                 <div className="pl-6 md:pl-8 border-r border-black/10 min-h-[150px] md:min-h-[200px] col-span-1 sm:col-span-2 md:col-span-1 lg:col-span-2">
-                    <h4 className="font-bold text-[10px] md:text-xs uppercase tracking-[0.2em] mb-4 md:mb-8 text-black/40">Contact Bureau</h4>
+                    <h4 className="font-bold text-[10px] md:text-xs uppercase tracking-[0.2em] mb-4 md:mb-8 text-black/60">Contact Bureau</h4>
                     <div className="mb-6 md:mb-8">
-                        <p className="text-[10px] uppercase tracking-wider text-ink/50 mb-1">User Support (Pan-India)</p>
+                        <p className="text-[10px] uppercase tracking-wider text-ink/70 mb-1">User Support (Pan-India)</p>
                         <a href="mailto:support@yureka.money" className="text-lg md:text-xl font-serif hover:text-clay transition-colors group">
                            <span className="border-b border-transparent group-hover:border-clay">support@yureka.money</span>
                         </a>
@@ -106,8 +106,13 @@ const Footer: React.FC = () => {
                         </a>
                     </div>
                     <div className="flex gap-3 md:gap-4">
-                          {[Instagram, Linkedin, Twitter, Facebook].map((Icon, i) => (
-                               <a key={i} href="#" aria-label="Social Link" className="w-8 h-8 md:w-10 md:h-10 border border-black/20 flex items-center justify-center text-ink hover:bg-clay hover:text-white transition-all shadow-sm hover:shadow-lg">
+                          {[
+                            { Icon: Instagram, label: "Instagram" },
+                            { Icon: Linkedin, label: "LinkedIn" },
+                            { Icon: Twitter, label: "Twitter" },
+                            { Icon: Facebook, label: "Facebook" }
+                          ].map(({ Icon, label }, i) => (
+                               <a key={i} href="#" aria-label={label} className="w-8 h-8 md:w-10 md:h-10 border border-black/20 flex items-center justify-center text-ink hover:bg-clay hover:text-white transition-all shadow-sm hover:shadow-lg">
                                   <Icon size={16} strokeWidth={1.5} />
                                </a>
                           ))}
@@ -119,7 +124,7 @@ const Footer: React.FC = () => {
 
         {/* Bottom Bar */}
         <div className="max-w-[1440px] mx-auto px-6">
-            <div className="border-t border-black/10 pt-8 flex flex-col md:flex-row justify-between items-center text-ink/30 text-[10px] md:text-xs font-mono uppercase tracking-widest text-center md:text-left">
+            <div className="border-t border-black/10 pt-8 flex flex-col md:flex-row justify-between items-center text-ink/60 text-[10px] md:text-xs font-mono uppercase tracking-widest text-center md:text-left">
                 <p>© 2026 Yureka Technologies Pvt Ltd. All Rights Reserved.</p>
                 <p className="mt-4 md:mt-0">Made with Pride in India</p>
             </div>
