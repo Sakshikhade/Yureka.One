@@ -690,7 +690,7 @@ const ComingSoon: React.FC = () => {
     ];
 
     return (
-        <section ref={containerRef} className="relative min-h-screen bg-[#FDFCF9] font-sans selection:bg-clay selection:text-white overflow-hidden py-20 md:py-48">
+        <section ref={containerRef} className="relative min-h-screen bg-[#FDFCF9] font-sans selection:bg-clay selection:text-white overflow-hidden py-16 md:py-32">
             
             {/* Premium Background Elements */}
             <div className="absolute top-0 left-0 w-full h-[1000px] bg-gradient-to-b from-[#1B4D4B]/5 to-transparent pointer-events-none" />
@@ -710,7 +710,7 @@ const ComingSoon: React.FC = () => {
                             <span className="w-2 h-2 rounded-full bg-clay animate-pulse" />
                             <span className="text-[9px] md:text-[10px] font-medium uppercase tracking-[0.2em] text-ink/60">Intelligence Pipeline / v0.9.4B</span>
                         </div>
-                        <h2 className="text-4xl md:text-7xl font-medium tracking-tight leading-[0.9] text-ink uppercase">
+                        <h2 className="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight leading-[0.9] text-ink uppercase">
                             The <br />
                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-clay via-[#1B4D4B] to-ink italic font-thin serif">Elite</span><br />
                            Standard.
@@ -733,7 +733,7 @@ const ComingSoon: React.FC = () => {
                 </div>
 
                 {/* Vertical Feature Stack - Editorial Style */}
-                <div className="space-y-20 md:space-y-32">
+                <div className="space-y-16 md:space-y-24">
                     {features.map((feature, idx) => (
                         <div key={idx} className={`flex flex-col lg:flex-row gap-12 md:gap-32 items-center ${idx % 2 !== 0 ? 'lg:flex-row-reverse' : ''}`}>
                             {/* Visual Mockup Container */}
@@ -764,7 +764,7 @@ const ComingSoon: React.FC = () => {
                                       <span className="text-[9px] md:text-[10px] font-medium uppercase tracking-[0.3em] text-ink/20">{feature.label}</span>
                                       <div className="h-[1px] w-8 md:w-12 bg-ink/5" />
                                    </div>
-                                   <h3 className="text-3xl md:text-5xl font-medium text-ink tracking-tight uppercase leading-none">
+                                   <h3 className="text-3xl md:text-4xl font-medium text-ink tracking-tight uppercase leading-none">
                                       {feature.title}
                                    </h3>
                                 </div>

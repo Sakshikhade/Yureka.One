@@ -38,7 +38,7 @@ const Security: React.FC = () => {
                              <Lock size={16} strokeWidth={2.5} />
                              <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Privacy Protocol</span>
                         </div>
-                        <h2 className="text-6xl md:text-8xl font-serif text-ink uppercase tracking-tighter leading-[0.8]">Confidential</h2>
+                        <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif text-ink uppercase tracking-tighter leading-[0.8]">Confidential</h2>
                     </div>
                     <div className="hidden md:block text-right mb-1">
                          <p className="text-[9px] font-bold text-ink/40 uppercase tracking-[0.3em] mb-1">Doc. Ref: YR-884-X</p>
@@ -62,7 +62,7 @@ const Security: React.FC = () => {
 
                     {/* Masked Content (Dimmed) */}
                     <div className="relative z-10 transition-all duration-700 opacity-90 group-hover:opacity-40 group-hover:blur-sm text-white">
-                        <h3 className="text-4xl md:text-6xl lg:text-7xl font-bold uppercase tracking-tighter leading-[0.9] mb-10 max-w-2xl mx-auto">
+                        <h3 className="text-3xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tighter leading-[0.9] mb-8 max-w-2xl mx-auto">
                             Your Financial Data <br/> Is None Of Our Business.
                         </h3>
                         <p className="font-serif text-xl md:text-2xl italic max-w-xl mx-auto text-white/60 leading-relaxed">
@@ -85,7 +85,7 @@ const Security: React.FC = () => {
                             <div className="mb-8 opacity-20">
                                 <Lock size={40} strokeWidth={1} />
                             </div>
-                            <h3 className="text-4xl md:text-6xl lg:text-7xl font-bold uppercase tracking-tighter leading-[0.9] mb-10 max-w-2xl mx-auto">
+                            <h3 className="text-3xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tighter leading-[0.9] mb-8 max-w-2xl mx-auto">
                                 Your Financial Data <br/> Is None Of Our Business.
                             </h3>
                             <p className="font-serif text-xl md:text-2xl italic max-w-xl mx-auto text-ink/80 leading-relaxed">

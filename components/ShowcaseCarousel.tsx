@@ -86,15 +86,24 @@ const PillRow: React.FC<{
 // ─────────────────────────────────────────────────────────────
 const ComparisonWidget: React.FC = () => {
   const [mode, setMode] = React.useState<'with' | 'without'>('with');
+  const [isShattered, setIsShattered] = React.useState(false);
 
-  const row1 = mode === 'with' ? WITH_ROW1 : WITHOUT_ROW1;
-  const row2 = mode === 'with' ? WITH_ROW2 : WITHOUT_ROW2;
+  // Reset/Trigger shatter effect when entering 'without' mode
+  React.useEffect(() => {
+    if (mode === 'without') {
+      setIsShattered(false);
+      const timer = setTimeout(() => setIsShattered(true), 2400); // 2s delay + buffer
+      return () => clearTimeout(timer);
+    } else {
+      setIsShattered(false);
+    }
+  }, [mode]);
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center px-4 py-10 overflow-hidden select-none">
+    <div className="w-full h-full flex flex-col items-center justify-center px-4 py-8 overflow-hidden select-none relative">
 
       {/* ── Toggle ── */}
-      <div className="flex items-center bg-white border border-ink/10 rounded-full p-1 mb-8 shadow-sm">
+      <div className="flex items-center bg-white border border-ink/10 rounded-full p-1 mb-8 shadow-sm relative z-50">
         <button
           onClick={() => setMode('with')}
           className={`px-5 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all duration-300 ${
@@ -117,91 +126,114 @@ const ComparisonWidget: React.FC = () => {
         </button>
       </div>
 
-      {/* ── Headline ── */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={mode}
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -16 }}
-          transition={{ duration: 0.35, ease: [0.25, 0.8, 0.25, 1] }}
-          className="text-center mb-8 px-2"
-        >
-          {mode === 'with' ? (
-            <>
-              <h3 className="text-2xl md:text-3xl font-serif text-ink leading-snug mb-1.5">
-                Just pick your card,<br />
-                <span className="italic font-light text-clay">and start earning.</span>
-              </h3>
-              <p className="text-[10px] text-ink/35 font-sans uppercase tracking-[0.25em]">
-                We do the heavy lifting. You earn more.
-              </p>
-            </>
-          ) : (
-            <>
-              <h3 className="text-2xl md:text-3xl font-serif text-ink leading-snug mb-1.5">
-                Why go through<br />
-                <span className="italic font-light text-ink/45">all this?</span>
-              </h3>
-              <p className="text-[10px] text-ink/35 font-sans uppercase tracking-[0.25em]">
-                Weeks of research. Wrong card. Zero savings.
-              </p>
-            </>
-          )}
-        </motion.div>
-      </AnimatePresence>
+      <div className="w-full max-w-md relative min-h-[400px]">
+        {/* ── Headline ── */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={mode}
+            initial={{ opacity: 0, y: 16 }}
+            animate={mode === 'without' && isShattered 
+              ? { opacity: 1, y: 220, rotate: -3, scale: 0.95 } // Shattered position
+              : { opacity: 1, y: 0, rotate: 0, scale: 1 }      // Ordered position
+            }
+            exit={{ opacity: 0, y: -16 }}
+            transition={mode === 'without' && isShattered 
+              ? { type: "spring", stiffness: 100, damping: 10 } // Gravity drop feel
+              : { duration: 0.4, ease: [0.25, 1, 0.5, 1] }
+            }
+            className="text-center mb-12 px-2 relative z-10"
+          >
+            {mode === 'with' ? (
+              <>
+                <h3 className="text-2xl md:text-3xl font-serif text-ink leading-snug mb-1.5">
+                  Just pick your card,<br />
+                  <span className="italic font-light text-clay">and start earning.</span>
+                </h3>
+                <p className="text-[10px] text-ink/35 font-sans uppercase tracking-[0.25em]">
+                  We do the heavy lifting. You earn more.
+                </p>
+              </>
+            ) : (
+              <>
+                <h3 className="text-2xl md:text-3xl font-serif text-ink leading-snug mb-1.5">
+                  Why go through<br />
+                  <span className="italic font-light text-ink/45 lowercase">all this?</span>
+                </h3>
+                <p className="text-[10px] text-ink/35 font-sans uppercase tracking-[0.25em]">
+                  Weeks of research. Wrong card. Zero savings.
+                </p>
+              </>
+            )}
+          </motion.div>
+        </AnimatePresence>
 
-      {/* ── Pill Rows / Chaotic Scattering ── */}
-      <AnimatePresence mode="wait">
-        {mode === 'with' ? (
-          <motion.div
-            key="pills-with"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="w-full flex flex-col gap-2.5"
-          >
-            <PillRow pills={WITH_ROW1} duration={26} />
-            <PillRow pills={WITH_ROW2} reverse duration={32} />
-          </motion.div>
-        ) : (
-          <motion.div
-            key="pills-without"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="relative w-full h-[180px] mt-4"
-          >
-            {[...WITHOUT_ROW1, ...WITHOUT_ROW2].slice(0, 10).map((pill, i) => {
-              // Deterministic "random" positions
-              const angles = [-15, 12, -8, 15, -4, 9, -12, 6, -10, 14];
-              const lefts = [5, 45, 15, 65, 35, 75, 10, 55, 25, 80];
-              const tops = [10, 25, 45, 15, 65, 80, 50, 40, 75, 60];
-              
-              return (
-                <motion.span
-                  key={i}
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ delay: i * 0.05 }}
-                  className={`absolute inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-semibold shadow-sm ${pill.bg}`}
-                  style={{ 
-                    left: `${lefts[i]}%`, 
-                    top: `${tops[i]}%`, 
-                    rotate: `${angles[i]}deg`,
-                    transform: 'translate(-50%, -50%)' 
-                  }}
-                >
-                  <span className="text-xs">{pill.icon}</span>
-                  {pill.text}
-                </motion.span>
-              );
-            })}
-          </motion.div>
-        )}
-      </AnimatePresence>
+        {/* ── CONTENT AREA ── */}
+        <div className="relative w-full h-[300px]">
+          <AnimatePresence mode="wait">
+            {mode === 'with' ? (
+              <motion.div
+                key="pills-with"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="w-full flex flex-col gap-3 pt-4"
+              >
+                <PillRow pills={WITH_ROW1} duration={26} />
+                <PillRow pills={WITH_ROW2} reverse duration={32} />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="pills-without"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="w-full h-full pt-4 relative"
+              >
+                {[...WITHOUT_ROW1, ...WITHOUT_ROW2].slice(0, 8).map((pill, i) => {
+                  // Ordered layout positions (center grid)
+                  const gridX = (i % 2 === 0 ? -100 : 100);
+                  const gridY = Math.floor(i / 2) * 50;
+                  
+                  // Shattered layout positions (random on bottom)
+                  const shatterX = (Math.random() * 200) - 100;
+                  const shatterY = 250 + (Math.random() * 80);
+                  const shatterRotate = (Math.random() * 40) - 20;
+
+                  return (
+                    <motion.span
+                      key={pill.text}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={isShattered 
+                        ? { opacity: 1, x: shatterX, y: shatterY, rotate: shatterRotate, scale: 0.9 }
+                        : { opacity: 1, x: gridX, y: gridY, rotate: 0, scale: 1 }
+                      }
+                      transition={isShattered 
+                        ? { 
+                            type: "spring", 
+                            stiffness: 80, 
+                            damping: 10,
+                            delay: i * 0.05 // Staggered drop
+                          } 
+                        : { duration: 0.6, delay: i * 0.05, ease: "easeOut" }
+                      }
+                      style={{ 
+                        left: '50%',
+                        top: '0%',
+                        transform: 'translate(-50%, -50%)' 
+                      }}
+                      className={`absolute inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-[11px] font-bold shadow-sm whitespace-nowrap transition-colors ${pill.bg}`}
+                    >
+                      <span className="text-sm">{pill.icon}</span>
+                      {pill.text}
+                    </motion.span>
+                  );
+                })}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
     </div>
   );
 };
