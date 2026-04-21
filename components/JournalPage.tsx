@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowUpRight, ArrowRight, Clock, Calendar } from 'lucide-react';
+import { ArrowUpRight, ArrowRight, Clock, Calendar, Landmark } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import ImageWithLoader from './ImageWithLoader';
 import { Blog } from '../types';
@@ -76,6 +76,16 @@ const JournalPage: React.FC = () => {
             <div className="max-w-[1440px] mx-auto px-6 -mt-20 relative z-20">
                 
                 {/* ─── FEATURED DISPATCH ─── */}
+                {currentBlogs.length === 0 ? (
+                    <div className="py-40 text-center border-2 border-dashed border-[#242424]/10 rounded-[4rem] bg-cream/50 mt-12">
+                         <div className="max-w-md mx-auto space-y-6">
+                            <Landmark className="mx-auto text-[#242424]/10" size={64} />
+                            <h3 className="text-3xl font-heading font-black text-[#242424] uppercase tracking-tighter">Editorial Archive Empty</h3>
+                            <p className="text-[#242424]/40 font-serif italic">The next digital dispatch is being prepared for publication. Please stand by for transmission.</p>
+                         </div>
+                    </div>
+                ) : (
+                    <>
                 {featured && (
                     <motion.div 
                         initial={{ opacity: 0, scale: 0.98 }}
@@ -133,6 +143,8 @@ const JournalPage: React.FC = () => {
                             </div>
                         </div>
                     </motion.div>
+                )}
+                    </>
                 )}
 
                 {/* ─── ARCHIVE GRID ─── */}
