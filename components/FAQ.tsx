@@ -156,7 +156,7 @@ const faqData = [
 // --- Main Layout ---
 const FAQ: React.FC = () => {
   return (
-    <section className="py-16 md:py-32 bg-cream border-b border-black/10 relative overflow-hidden">
+    <section className="py-12 md:py-20 bg-cream border-b border-black/10 relative overflow-hidden">
          {/* Background Texture for Glassmorphism Context */}
          <div className="absolute inset-0 pointer-events-none opacity-[0.05]" 
               style={{ backgroundImage: 'radial-gradient(#1A5F54 0.5px, transparent 0.5px)', backgroundSize: '20px 20px' }}>

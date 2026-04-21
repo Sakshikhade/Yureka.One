@@ -40,22 +40,22 @@ const MainPage: React.FC = () => {
         schema={homeSchema}
       />
       
-      <Suspense fallback={<SkeletonHero />}>
+      <Suspense fallback={<div className="h-20" />}>
         <Hero />
       </Suspense>
       
-      <Suspense fallback={<div className="h-40" />}>
+      <Suspense fallback={<div className="h-20" />}>
         <TextReveal />
       </Suspense>
 
       <section id="showcase" className="scroll-mt-24">
-        <Suspense fallback={<div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-6 py-20"><SkeletonCard /><SkeletonCard /><SkeletonCard /></div>}>
+        <Suspense fallback={<div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-6 py-10"><SkeletonCard /><SkeletonCard /><SkeletonCard /></div>}>
           <ShowcaseCarousel cards={cards} />
         </Suspense>
       </section>
 
       <section id="stats" className="scroll-mt-24">
-        <Suspense fallback={<div className="h-96 bg-slate-50/50 animate-pulse" />}>
+        <Suspense fallback={<div className="h-64 bg-slate-50/50 animate-pulse" />}>
           <Stats />
         </Suspense>
       </section>
@@ -63,13 +63,13 @@ const MainPage: React.FC = () => {
       <Marquee />
 
       <section id="security" className="scroll-mt-24">
-        <Suspense fallback={<div className="h-96 bg-slate-900 animate-pulse" />}>
+        <Suspense fallback={<div className="h-64 bg-slate-900 animate-pulse" />}>
           <Security />
         </Suspense>
       </section>
 
       <section id="reviews" className="scroll-mt-24">
-        <Suspense fallback={<div className="h-96" />}>
+        <Suspense fallback={<div className="h-64" />}>
           <Community />
         </Suspense>
       </section>
@@ -78,7 +78,7 @@ const MainPage: React.FC = () => {
       <SocialProof />
 
       <section id="faq" className="scroll-mt-24">
-        <Suspense fallback={<div className="h-96" />}>
+        <Suspense fallback={<div className="h-64" />}>
           <FAQ />
         </Suspense>
       </section>

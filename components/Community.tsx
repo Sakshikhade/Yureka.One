@@ -255,7 +255,7 @@ const Community: React.FC = () => {
   return (
     <section 
         ref={containerRef} 
-        className="relative bg-cream my-24 border-y border-black/10"
+        className="relative bg-cream my-12 border-y border-black/10"
         style={{ height: '350vh' }} 
     >
       <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">

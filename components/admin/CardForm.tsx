@@ -174,11 +174,25 @@ export const CardForm: React.FC<CardFormProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div>
           <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Annual Fee</label>
-          <input type="text" required value={form.annual_fee} onChange={e => setForm({...form, annual_fee: e.target.value})} className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all" />
+          <input 
+            type="text" 
+            required 
+            value={form.annual_fee} 
+            onChange={e => setForm({...form, annual_fee: e.target.value.replace(/^₹/, '')})} 
+            placeholder="e.g. 10000"
+            className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all" 
+          />
         </div>
         <div>
           <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Joining Fee</label>
-          <input type="text" required value={form.joining_fee} onChange={e => setForm({...form, joining_fee: e.target.value})} className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all" />
+          <input 
+            type="text" 
+            required 
+            value={form.joining_fee} 
+            onChange={e => setForm({...form, joining_fee: e.target.value.replace(/^₹/, '')})} 
+            placeholder="e.g. 10000"
+            className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all" 
+          />
         </div>
         <div>
           <label className="block text-xs font-bold uppercase tracking-widest text-teal mb-2">Introductory Offer</label>

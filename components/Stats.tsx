@@ -43,7 +43,7 @@ const Stats: React.FC = () => {
   };
 
   return (
-    <section className="py-16 md:py-32 bg-cream px-4 md:px-8 border-y border-ink/10 relative overflow-hidden">
+    <section className="py-12 md:py-20 bg-cream px-4 md:px-8 border-y border-ink/10 relative overflow-hidden">
       {/* Background Grid Pattern for Financial Look */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.03]" 
            style={{ 

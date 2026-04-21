@@ -148,11 +148,11 @@ const CardDetail: React.FC = () => {
                         <div className="grid grid-cols-2 gap-8 pt-10 border-t border-ink/5">
                             <div className="space-y-2">
                                 <p className="text-ink text-[11px] font-bold uppercase tracking-[0.3em]">Annual Fee</p>
-                                <p className="text-2xl font-heading font-black text-ink">₹{card.annual_fee}</p>
+                                <p className="text-2xl font-heading font-black text-ink">₹{String(card.annual_fee).replace(/^₹/, '')}</p>
                             </div>
                             <div className="space-y-2">
                                 <p className="text-ink text-[11px] font-bold uppercase tracking-[0.3em]">Joining Fee</p>
-                                <p className="text-2xl font-heading font-black text-ink">₹{card.joining_fee || card.annual_fee}</p>
+                                <p className="text-2xl font-heading font-black text-ink">₹{String(card.joining_fee || card.annual_fee).replace(/^₹/, '')}</p>
                             </div>
 
                         </div>

@@ -451,11 +451,11 @@ const CardExplorer: React.FC = () => {
                                             </div>
                                             <div className="space-y-2 border-r border-ink/5 pr-4">
                                                 <p className="text-ink text-[11px] font-bold uppercase tracking-[0.2em]">Annual Fixed Fee</p>
-                                                <p className="text-sm font-light text-ink">₹{card.annual_fee} <span className="text-[10px] opacity-40 font-sans font-bold">+ GST</span></p>
+                                                <p className="text-sm font-light text-ink">₹{String(card.annual_fee).replace(/^₹/, '')} <span className="text-[10px] opacity-40 font-sans font-bold">+ GST</span></p>
                                             </div>
                                             <div className="space-y-2 border-r border-ink/5 pr-4">
                                                 <p className="text-ink text-[11px] font-bold uppercase tracking-[0.2em]">Joining Premium</p>
-                                                <p className="text-sm font-light text-ink">₹{card.joining_fee || card.annual_fee} <span className="text-[10px] opacity-40 font-sans font-bold">+ GST</span></p>
+                                                <p className="text-sm font-light text-ink">₹{String(card.joining_fee || card.annual_fee).replace(/^₹/, '')} <span className="text-[10px] opacity-40 font-sans font-bold">+ GST</span></p>
                                             </div>
                                             <div className="space-y-2 border-r border-ink/5 pr-4">
                                                 <p className="text-ink text-[11px] font-bold uppercase tracking-[0.2em]">Yield Potential</p>
