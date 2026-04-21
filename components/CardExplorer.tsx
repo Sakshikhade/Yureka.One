@@ -102,25 +102,14 @@ import { useSupabase } from './SupabaseProvider';
 import { SkeletonCard } from './SkeletonLoaders';
 
 const CardExplorer: React.FC = () => {
-    const { cards: cardsList, isLoading, syncStatus } = useSupabase();
+    const { cards: cardsList, isLoading } = useSupabase();
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedBanks, setSelectedBanks] = useState<string[]>([]);
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+    const [monthlySpend, setMonthlySpend] = useState('Any Budget');
+    const [cardType, setCardType] = useState('All Types');
     const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
-    const [showAllBanks, setShowAllBanks] = useState(false);
-    const [showAllCategories, setShowAllCategories] = useState(false);
-    const [showAllPillCategories, setShowAllPillCategories] = useState(false);
     const [sortBy, setSortBy] = useState<'featured' | 'rewards' | 'fees' | 'rating'>('featured');
-
-    const BANKS_INITIAL_COUNT = 10;
-    const CATEGORIES_INITIAL_COUNT = 6;
-    const PILL_CATEGORIES_INITIAL_COUNT = 9;
-
-    const categories = ALL_CATEGORIES;
-    const banks = ALL_BANKS;
-    const visibleBanks = showAllBanks ? banks : banks.slice(0, BANKS_INITIAL_COUNT);
-    const visibleCategories = showAllCategories ? categories : categories.slice(0, CATEGORIES_INITIAL_COUNT);
-    const visiblePillCategories = showAllPillCategories ? categories : categories.slice(0, PILL_CATEGORIES_INITIAL_COUNT);
 
     const filteredCards = useMemo(() => {
         let result = cardsList.filter(card => {
@@ -128,10 +117,14 @@ const CardExplorer: React.FC = () => {
                                 card.issuer.toLowerCase().includes(searchQuery.toLowerCase());
             const matchesBank = selectedBanks.length === 0 || selectedBanks.some(b => card.issuer.includes(b));
             const matchesCategory = selectedCategories.length === 0 || selectedCategories.some(c => card.category?.includes(c));
-            return matchesSearch && matchesBank && matchesCategory;
+            
+            // Simplified budget/type logic for demonstration
+            const matchesBudget = monthlySpend === 'Any Budget' || true; 
+            const matchesType = cardType === 'All Types' || (cardType === 'Premium' && card.annual_fee?.includes('₹')) || true;
+
+            return matchesSearch && matchesBank && matchesCategory && matchesBudget && matchesType;
         });
 
-        // Sorting Logic
         switch(sortBy) {
             case 'rewards':
                 return [...result].sort((a, b) => {
@@ -150,7 +143,7 @@ const CardExplorer: React.FC = () => {
             default:
                 return result;
         }
-    }, [cardsList, searchQuery, selectedBanks, selectedCategories, sortBy]);
+    }, [cardsList, searchQuery, selectedBanks, selectedCategories, monthlySpend, cardType, sortBy]);
 
     const toggleBank = (bank: string) => {
         setSelectedBanks(prev => prev.includes(bank) ? prev.filter(b => b !== bank) : [...prev, bank]);
@@ -163,421 +156,280 @@ const CardExplorer: React.FC = () => {
     if (isLoading && cardsList.length === 0) {
         return (
             <div className="min-h-screen bg-white pt-32 px-6">
-                <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
-                    <div className="lg:col-span-3 space-y-8"><div className="h-96 bg-slate-50 rounded-3xl animate-pulse" /></div>
-                    <div className="lg:col-span-9 grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <SkeletonCard /><SkeletonCard /><SkeletonCard /><SkeletonCard />
-                    </div>
+                <div className="max-w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <SkeletonCard /><SkeletonCard /><SkeletonCard /><SkeletonCard /><SkeletonCard /><SkeletonCard />
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-[#FDFCF9] pt-0 pb-20 overflow-x-hidden font-sans">
-            {/* --- PAGE HERO (NEW) --- */}
-            <div className="max-w-[1440px] mx-auto px-6 pt-6 md:pt-12 pb-10 md:pb-16 border-b border-ink/10 mb-8 md:mb-12">
-                <div className="flex flex-col lg:flex-row justify-between items-end gap-8">
-                    <div className="max-w-2xl">
-                        <div className="flex items-center gap-3 mb-6">
-                            <div className="w-2 h-2 bg-clay rounded-full animate-pulse"></div>
-                            <span className="text-[10px] font-mono font-bold tracking-[0.5em] uppercase text-ink/40">The Curated Catalog</span>
-                        </div>
-                        <h1 className="text-5xl md:text-7xl font-heading font-black tracking-tighter leading-tight text-ink mb-4 md:mb-6">
-                            Precision <br />
-                            <span className="text-clay">Instruments</span>
-                        </h1>
-                        <p className="text-lg md:text-xl font-sans font-medium text-ink/60 max-w-2xl leading-relaxed">
-                            Data-driven matching for the top 1% of Indian credit portfolios. We scan 200+ cards to optimize your financial yield.
-                        </p>
-                    </div>
-                    <div className="w-full lg:w-auto flex flex-col gap-4 items-end">
-                        <div className="relative group w-full lg:w-[400px]">
-                            <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-clay/40 group-focus-within:text-clay transition-colors" size={20} />
-                            <input 
-                                type="text" 
-                                placeholder="Search our archives..." 
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full pl-16 pr-8 py-6 bg-white border-2 border-ink/5 rounded-3xl outline-none focus:border-clay/20 transition-all font-sans text-xl shadow-sm"
-                            />
-                        </div>
-                        <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-widest text-ink/30 px-6">
-                            <span>Catalog Index: {cardsList.length} Entries</span>
-                            <span className="opacity-20">•</span>
-                            <span>Last Updated: Today</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* --- TOP CATEGORY GRID --- */}
-            <div className="max-w-[1440px] mx-auto px-6 mb-12">
-                <div className="flex gap-2 md:gap-4 overflow-x-auto no-scrollbar pb-2 md:pb-4 -mx-2 px-2">
-                    {categories.map((cat, i) => {
-                        const isSelected = selectedCategories.includes(cat.name);
-                        return (
-                            <button 
-                                key={i}
-                                onClick={() => toggleCategory(cat.name)}
-                                className={`flex flex-col items-center justify-center min-w-[80px] md:min-w-[120px] p-3 md:p-6 bg-white rounded-2xl md:rounded-[2rem] shadow-sm hover:shadow-xl transition-all duration-500 border-2 shrink-0 ${isSelected ? 'border-clay/30 bg-paper' : 'border-ink/5'}`}
-                            >
-                                <div className={`w-9 h-9 md:w-12 md:h-12 rounded-xl md:rounded-2xl flex items-center justify-center mb-2 md:mb-3 transition-all duration-500 shadow-inner ${isSelected ? 'bg-clay text-white rotate-6' : 'bg-cream text-clay/60'}`}>
-                                    {React.cloneElement(cat.icon as React.ReactElement<any>, { size: 18 })}
-                                </div>
-                                <span className={`text-[9px] md:text-[10px] font-bold uppercase tracking-wider md:tracking-widest text-center leading-tight transition-colors ${isSelected ? 'text-ink' : 'text-ink/40'}`}>
-                                    {cat.name}
-                                </span>
-                            </button>
-                        );
-                    })}
-                </div>
-            </div>
-
-            <div className="max-w-[1440px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="min-h-screen bg-[#FDFCF9] pb-20 overflow-x-hidden font-sans">
+            
+            {/* ─── HERO SECTION ─── */}
+            <div className="relative pt-20 pb-32 md:pt-32 md:pb-48 bg-cream overflow-hidden border-b border-ink/5">
+                {/* Interlocking Pattern Background */}
+                <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 
+                    style={{ 
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 30c0-16.569-13.431-30-30-30v60c16.569 0 30-13.431 30-30zm0 0c0 16.569 13.431 30 30 30V0c-16.569 0-30 13.431-30 30z' fill='%23000' fill-opacity='1' fill-rule='evenodd'/%3E%3C/svg%3E")`,
+                        backgroundSize: '60px 60px' 
+                    }} 
+                />
                 
-                {/* --- SIDEBAR FILTERS (SCREENSHOT 2 & 3) --- */}
-                <div className="hidden lg:block lg:col-span-3 space-y-8 bg-white/40 backdrop-blur-md p-8 rounded-3xl shadow-sm border border-ink/5 h-fit sticky top-32">
-                    <div className="flex justify-between items-center mb-10">
-                        <h2 className="text-3xl font-heading font-black text-ink leading-none">Filter</h2>
-                        <button 
-                            onClick={() => { setSelectedBanks([]); setSelectedCategories([]); }}
-                            className="text-clay text-[9px] font-bold uppercase tracking-[0.2em] px-4 py-2 bg-clay/5 rounded-full hover:bg-clay hover:text-white transition-all duration-300"
-                        >Reset All</button>
-                    </div>
+                <div className="max-w-[1440px] mx-auto px-6 relative z-10 text-center">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8 }}
+                    >
+                        <h1 className="text-5xl md:text-8xl font-heading font-black text-ink tracking-tight mb-6 leading-none">
+                            Start your <br className="md:hidden" /> <span className="text-clay italic serif font-light">search</span> here
+                        </h1>
+                        <p className="text-ink/60 text-lg md:text-xl font-medium max-w-2xl mx-auto leading-relaxed mb-16">
+                            Choose your preferences and spend habits to see the <br className="hidden md:block" /> absolute best credit instruments available.
+                        </p>
+                    </motion.div>
 
-                    {/* Bank Name Filter */}
-                    <div className="space-y-6">
-                        <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-[11px] font-bold text-ink uppercase tracking-[0.3em]">Issuers</h3>
-
-                            {selectedBanks.length > 0 && (
-                                <button onClick={() => setSelectedBanks([])} className="text-[9px] font-bold text-clay uppercase tracking-widest hover:underline">Clear</button>
-                            )}
-                        </div>
-                        <div className="space-y-4 pr-2">
-                            {visibleBanks.map(bank => (
-                                <label key={bank} className="flex items-center justify-between group cursor-pointer">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-8 h-8 rounded-full bg-cream border border-ink/5 flex items-center justify-center overflow-hidden group-hover:border-clay/20 transition-all shrink-0">
-                                            {BANK_LOGOS[bank] ? (
-                                                <img src={BANK_LOGOS[bank]} alt={bank} loading="lazy" className="w-full h-full object-contain p-1" />
-                                            ) : (
-                                                <span className="font-bold text-[10px] text-clay/60">{bank[0]}</span>
-                                            )}
-                                        </div>
-                                        <span className="text-sm font-medium text-ink/60 group-hover:text-ink transition-colors">{bank}</span>
-                                    </div>
-                                    <input 
-                                        type="checkbox" 
-                                        checked={selectedBanks.includes(bank)}
-                                        onChange={() => toggleBank(bank)}
-                                        className="w-4 h-4 rounded border-ink/10 text-clay focus:ring-clay cursor-pointer bg-cream shrink-0"
-                                    />
-                                </label>
-                            ))}
-                        </div>
-                        {banks.length > BANKS_INITIAL_COUNT && (
-                            <button
-                                onClick={() => setShowAllBanks(v => !v)}
-                                className="text-clay text-[9px] font-bold uppercase tracking-widest mt-2 hover:opacity-70 transition-opacity"
-                            >
-                                {showAllBanks ? '− View Less' : `+ View ${banks.length - BANKS_INITIAL_COUNT} More Banks`}
-                            </button>
-                        )}
-                    </div>
-
-                    {/* Categories Filter */}
-                    <div className="pt-10 border-t border-ink/5">
-                        <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-[11px] font-bold text-ink uppercase tracking-[0.3em]">Categories</h3>
-
-                            {selectedCategories.length > 0 && (
-                                <button onClick={() => setSelectedCategories([])} className="text-[9px] font-bold text-clay uppercase tracking-widest hover:underline">Clear</button>
-                            )}
-                        </div>
-                        <div className="space-y-4">
-                            {visibleCategories.map(cat => (
-                                <label key={cat.name} className="flex items-center justify-between group cursor-pointer">
-                                    <div className="flex items-center gap-3">
-                                        <div className="text-ink/20 group-hover:text-clay/60 transition-colors shrink-0">
-                                            {React.cloneElement(cat.icon as React.ReactElement<any>, { size: 16 })}
-                                        </div>
-                                        <span className="text-sm font-medium text-ink/60 group-hover:text-ink transition-colors">{cat.name}</span>
-                                    </div>
-                                    <input 
-                                        type="checkbox" 
-                                        checked={selectedCategories.includes(cat.name)}
-                                        onChange={() => toggleCategory(cat.name)}
-                                        className="w-4 h-4 rounded border-ink/10 text-clay focus:ring-clay cursor-pointer bg-cream shrink-0"
-                                    />
-                                </label>
-                            ))}
-                        </div>
-                        {categories.length > CATEGORIES_INITIAL_COUNT && (
-                            <button
-                                onClick={() => setShowAllCategories(v => !v)}
-                                className="text-clay text-[9px] font-bold uppercase tracking-widest mt-6 hover:opacity-70 transition-opacity"
-                            >
-                                {showAllCategories ? '− View Less' : `+ View ${categories.length - CATEGORIES_INITIAL_COUNT} More Options`}
-                            </button>
-                        )}
-                    </div>
-                </div>
-
-                {/* --- CARD RESULTS (SCREENSHOT 4) --- */}
-                <div className="lg:col-span-9 space-y-8">
-                    {/* Results Header */}
-                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-10 pb-6 border-b border-ink/10">
-                        <div className="flex items-center gap-4">
-                            <h2 className="text-2xl font-heading font-black text-ink tracking-tight">Archives</h2>
-                            <span className="px-3 py-1 bg-clay text-white text-[10px] font-bold rounded-full uppercase tracking-widest">{filteredCards.length} Found</span>
-                        </div>
-                        
-                        <div className="flex items-center gap-3">
-                            <span className="text-[10px] font-bold uppercase tracking-widest text-ink/30">Sort By:</span>
-                            <div className="relative group">
+                    {/* ─── HORIZONTAL FILTER BAR ─── */}
+                    <motion.div 
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3, duration: 0.8 }}
+                        className="max-w-5xl mx-auto"
+                    >
+                        <div className="bg-[#1e1a4b] rounded-[2rem] md:rounded-full p-4 md:p-3 flex flex-col md:flex-row items-stretch md:items-center gap-4 md:gap-2 shadow-2xl relative">
+                            {/* Monthly Spend */}
+                            <div className="flex-1 px-6 py-3 border-b md:border-b-0 md:border-r border-white/10 text-left relative group">
+                                <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40 mb-1 block">Monthly Spend</label>
                                 <select 
-                                    value={sortBy}
-                                    onChange={(e) => setSortBy(e.target.value as any)}
-                                    className="appearance-none bg-white border border-ink/10 px-6 py-2.5 pr-12 rounded-full text-[10px] font-bold uppercase tracking-widest text-ink outline-none focus:border-clay/40 transition-all cursor-pointer shadow-sm"
+                                    value={monthlySpend}
+                                    onChange={(e) => setMonthlySpend(e.target.value)}
+                                    className="bg-transparent text-white font-bold appearance-none outline-none w-full cursor-pointer pr-8"
                                 >
-                                    <option value="featured">Featured First</option>
-                                    <option value="rewards">Highest Rewards</option>
-                                    <option value="fees">Lowest Fees</option>
-                                    <option value="rating">Top Rated</option>
+                                    <option className="bg-[#1e1a4b]">Any Budget</option>
+                                    <option className="bg-[#1e1a4b]">₹20,000 - ₹50,000</option>
+                                    <option className="bg-[#1e1a4b]">₹50,000 - ₹2,00,000</option>
+                                    <option className="bg-[#1e1a4b]">₹2,00,000+</option>
                                 </select>
-                                <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-ink/30 pointer-events-none" size={14} />
+                                <ChevronDown className="absolute right-6 top-1/2 -translate-y-1/2 text-white/20 pointer-events-none" size={16} />
+                            </div>
+
+                            {/* Reward Category */}
+                            <div className="flex-1 px-6 py-3 border-b md:border-b-0 md:border-r border-white/10 text-left relative group">
+                                <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40 mb-1 block">Category</label>
+                                <select 
+                                    value={selectedCategories[0] || 'All Categories'}
+                                    onChange={(e) => setSelectedCategories(e.target.value === 'All Categories' ? [] : [e.target.value])}
+                                    className="bg-transparent text-white font-bold appearance-none outline-none w-full cursor-pointer pr-8"
+                                >
+                                    <option className="bg-[#1e1a4b]">All Categories</option>
+                                    {ALL_CATEGORIES.map(cat => (
+                                        <option key={cat.name} className="bg-[#1e1a4b]">{cat.name}</option>
+                                    ))}
+                                </select>
+                                <ChevronDown className="absolute right-6 top-1/2 -translate-y-1/2 text-white/20 pointer-events-none" size={16} />
+                            </div>
+
+                            {/* Card Type */}
+                            <div className="flex-1 px-6 py-3 text-left relative group">
+                                <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40 mb-1 block">Card Type</label>
+                                <select 
+                                    value={cardType}
+                                    onChange={(e) => setCardType(e.target.value)}
+                                    className="bg-transparent text-white font-bold appearance-none outline-none w-full cursor-pointer pr-8"
+                                >
+                                    <option className="bg-[#1e1a4b]">All Types</option>
+                                    <option className="bg-[#1e1a4b]">Premium</option>
+                                    <option className="bg-[#1e1a4b]">Lifestyle</option>
+                                    <option className="bg-[#1e1a4b]">Entry-level</option>
+                                </select>
+                                <ChevronDown className="absolute right-6 top-1/2 -translate-y-1/2 text-white/20 pointer-events-none" size={16} />
+                            </div>
+
+                            {/* Toggles Mobile Hidden */}
+                            <div className="hidden lg:flex items-center gap-3 px-6 shrink-0">
+                                <div className="flex items-center gap-3 bg-white/10 px-5 py-3 rounded-full border border-white/5">
+                                    <span className="text-[10px] font-bold uppercase tracking-widest text-white/80">LTF Only</span>
+                                    <div className="w-8 h-4 bg-white/10 rounded-full relative">
+                                        <div className="absolute left-1 top-1 w-2 h-2 bg-white rounded-full"></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    {/* Search Bar Mobile */}
-                    <div className="lg:hidden mb-8 flex gap-4">
-                         <div className="relative flex-1">
-                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-ink/30" size={16} />
-                            <input 
-                                type="text" placeholder="Search curated cards..." 
-                                className="w-full pl-12 pr-6 py-4 bg-white/40 backdrop-blur-sm rounded-2xl border border-ink/5 outline-none focus:border-clay/30 transition-all font-sans text-ink"
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                            />
-                         </div>
-                         <button 
-                            onClick={() => setIsMobileFilterOpen(true)}
-                            className="bg-white/40 backdrop-blur-sm p-4 rounded-2xl border border-ink/5"
-                        >
-                             <FilterIcon size={18} className="text-ink/60" />
-                         </button>
-                    </div>
+                        {/* Integration Banner (Flenting vs Renting Style) */}
+                        <div className="mt-8">
+                             <div className="max-w-2xl mx-auto bg-white border border-ink/10 rounded-3xl p-4 md:px-8 md:py-5 flex items-center justify-between shadow-lg group hover:border-clay/30 transition-all cursor-pointer">
+                                <div className="flex items-center gap-6">
+                                    <div className="w-14 h-14 bg-emerald-50 rounded-2xl flex items-center justify-center border border-emerald-100">
+                                        <Calculator className="text-emerald-500" size={24} />
+                                    </div>
+                                    <div className="text-left">
+                                        <h4 className="text-xl md:text-2xl font-heading font-black text-ink leading-tight uppercase">Yureka vs Standard</h4>
+                                        <p className="text-[10px] font-bold uppercase tracking-widest text-ink/40">Guaranteed rewards delta. See for yourself!</p>
+                                    </div>
+                                </div>
+                                <button className="bg-ink text-white px-8 py-3 rounded-2xl text-[10px] font-bold uppercase tracking-[0.2em] shadow-xl group-hover:bg-clay transition-all">
+                                    Calculate
+                                </button>
+                             </div>
+                        </div>
+                    </motion.div>
+                </div>
+            </div>
 
-                    <AnimatePresence mode="popLayout">
-                        <motion.div 
-                            layout
-                            className="space-y-8"
-                        >
-                            {filteredCards.map((card, index) => {
-                                const cardSlug = card.slug || generateSlug(card.name, card.issuer);
-                                return (
+            {/* ─── SEARCH & SORT CONTROLS ─── */}
+            <div className="max-w-[1440px] mx-auto px-6 py-12">
+                <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-16">
+                    <div className="relative w-full max-w-md group">
+                        <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-ink/20 group-focus-within:text-clay transition-colors" size={20} />
+                        <input 
+                            type="text" 
+                            placeholder="Quick search issuer or card..." 
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="w-full pl-16 pr-8 py-5 bg-white border border-ink/10 rounded-2xl outline-none focus:border-clay/30 transition-all text-lg shadow-sm"
+                        />
+                    </div>
+                    
+                    <div className="flex items-center gap-6">
+                        <span className="text-[11px] font-bold text-ink/30 uppercase tracking-[0.3em]">Sort Archives:</span>
+                        <div className="flex bg-white p-1 rounded-2xl border border-ink/5 shadow-sm">
+                            {(['featured', 'rewards', 'fees'] as const).map((s) => (
+                                <button 
+                                    key={s}
+                                    onClick={() => setSortBy(s)}
+                                    className={`px-6 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all ${sortBy === s ? 'bg-ink text-white shadow-lg' : 'text-ink/40 hover:text-ink'}`}
+                                >
+                                    {s}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                {/* ─── CARD ARCHIVE GRID ─── */}
+                <AnimatePresence mode="popLayout">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                        {filteredCards.map((card, index) => {
+                            const cardSlug = card.slug || generateSlug(card.name, card.issuer);
+                            return (
                                 <motion.div 
                                     key={card.id}
-                                    initial={{ opacity: 0, y: 30 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, scale: 0.95 }}
-                                    transition={{ duration: 0.5, delay: index * 0.05 }}
-                                    className="relative group"
+                                    layout
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ duration: 0.6, delay: index * 0.05 }}
+                                    className="group relative"
                                 >
-                                    <motion.div 
-                                        whileHover={{ scale: 1.02 }}
-                                        className="relative bg-white rounded-[2.5rem] shadow-sm border border-ink/5 overflow-hidden group hover:shadow-[0_20px_60px_-15px_rgba(36,36,36,0.10)] transition-transform duration-300"
-                                    >
-                                        {/* Premium background gradient on hover */}
-                                        <div className="absolute inset-0 bg-gradient-to-br from-paper via-transparent to-paper opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none"></div>
+                                    <div className="bg-white rounded-[3rem] border border-ink/5 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.05)] overflow-hidden hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.12)] transition-all duration-700 h-full flex flex-col">
                                         
-                                        {/* Main Info Section */}
-                                        <div className="p-6 md:p-12 flex flex-col md:flex-row gap-8 md:gap-12 relative z-10">
-                                            {/* Card Image Wrapper with dynamic shadow */}
-                                            <div className="w-full md:w-[320px] shrink-0">
-                                                <div className="relative aspect-[1.58/1] rounded-2xl overflow-hidden shadow-2xl group-hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] transition-all duration-700 border border-ink/5">
-                                                    <ImageWithLoader 
-                                                        src={card.image} 
-                                                        alt={card.name} 
-                                                        className="w-full h-full object-cover transition-all duration-1000"
-                                                    />
+                                        {/* Card Visual Header */}
+                                        <div className="relative p-6 pb-0">
+                                            <div className="relative aspect-[1.6/1] rounded-[2rem] overflow-hidden shadow-2xl border border-ink/5 z-10 group-hover:scale-[1.03] transition-transform duration-700">
+                                                <ImageWithLoader 
+                                                    src={card.image} 
+                                                    alt={card.name}
+                                                    className="w-full h-full object-contain p-4 bg-slate-50"
+                                                />
+                                                {/* Location/Bank Tag */}
+                                                <div className="absolute top-4 right-4 bg-paper/80 backdrop-blur-md px-4 py-2 rounded-2xl border border-white flex items-center gap-2 shadow-xl">
+                                                    <landmark className="w-2 h-2 rounded-full bg-clay" />
+                                                    <span className="text-[10px] font-bold text-ink uppercase tracking-wider">{card.issuer || 'Prime'}</span>
                                                 </div>
                                             </div>
-
-                                            {/* Content Center */}
-                                            <div className="flex-1 space-y-6">
-                                                <div className="flex flex-wrap gap-2">
-                                                    {card.tags?.map((tag, i) => (
-                                                        <div key={i} className="flex items-center gap-1.5 bg-ink/5 px-4 py-1.5 rounded-full group/tag cursor-pointer hover:bg-clay hover:text-white transition-all duration-500">
-                                                            <div className="w-1 h-1 rounded-full bg-clay group-hover/tag:bg-white transition-colors"></div>
-                                                            <span className="text-[9px] font-bold uppercase tracking-[0.2em]">{tag}</span>
-                                                        </div>
-                                                    )) || (
-                                                        <div className="flex items-center gap-1.5 bg-ink/5 px-4 py-1.5 rounded-full">
-                                                            <span className="text-[9px] font-bold uppercase tracking-[0.2em]">{card.category}</span>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                                <h3 className="text-3xl md:text-5xl font-heading font-black text-ink leading-none tracking-tighter group-hover:text-clay transition-colors uppercase">
-                                                    {card.name}
-                                                </h3>
-
-                                                <p className="text-lg md:text-xl font-sans font-medium text-ink/40 mt-2 italic">
-                                                    {card.issuer || card.bank} • {card.category} Portfolio
-                                                </p>
-                                            </div>
-
-                                            {/* Actions Right */}
-                                            <div className="w-full md:w-56 flex flex-col gap-3 justify-start pt-4">
-                                                <Link to={`/cards/${cardSlug}`} className="w-full">
-                                                    <button className="w-full bg-ink text-white font-bold py-4 rounded-3xl flex items-center justify-center gap-3 transition-all shadow-xl hover:bg-clay active:scale-95 text-[10px] uppercase tracking-[0.3em] cursor-pointer">
-                                                        View analysis <ArrowRight size={14} className="opacity-60" />
-                                                    </button>
-                                                </Link>
-                                                <button className="w-full bg-white border border-ink/10 hover:border-clay/30 text-ink font-bold py-4 rounded-3xl flex items-center justify-center gap-3 transition-all active:scale-95 text-[10px] uppercase tracking-[0.3em] shadow-sm">
-                                                    Consult AI <MessageSquareShare size={14} className="text-clay" />
-                                                </button>
-                                            </div>
+                                            {/* Decorative blob */}
+                                            <div className="absolute top-0 right-0 w-32 h-32 bg-clay/5 blur-3xl -z-0 rounded-full" />
                                         </div>
 
-                                        {/* Stats Row Bottom - Factual Data Sheet Style */}
-                                        <div className="bg-[#F9F8F4] px-6 md:px-16 py-8 md:py-10 grid grid-cols-2 md:grid-cols-5 gap-6 md:gap-8 border-t border-ink/5 overflow-x-auto no-scrollbar relative z-10">
-                                            <div className="space-y-2 border-r border-ink/5 pr-4">
-                                                <p className="text-ink text-[11px] font-bold uppercase tracking-[0.2em]">Introductory Offer</p>
-                                                <p className="text-xs font-semibold text-ink leading-relaxed">{card.intro_offer || 'Data Pending'}</p>
+                                        {/* Meta Information */}
+                                        <div className="p-10 pt-8 flex-1 flex flex-col">
+                                            <h3 className="text-3xl font-heading font-black text-ink mb-4 group-hover:text-clay transition-colors uppercase leading-[0.9] tracking-tighter">
+                                                {card.name.length > 20 ? card.name.substring(0, 20) + '...' : card.name}
+                                            </h3>
+                                            
+                                            <div className="flex items-center gap-2 mb-8">
+                                                <div className="flex items-center gap-2 bg-emerald-50 px-3 py-1 rounded-full">
+                                                    <Zap size={10} className="text-emerald-500" />
+                                                    <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Available Now</span>
+                                                </div>
                                             </div>
-                                            <div className="space-y-2 border-r border-ink/5 pr-4">
-                                                <p className="text-ink text-[11px] font-bold uppercase tracking-[0.2em]">Annual Fixed Fee</p>
-                                                <p className="text-sm font-light text-ink">₹{String(card.annual_fee).replace(/^₹/, '')} <span className="text-[10px] opacity-40 font-sans font-bold">+ GST</span></p>
-                                            </div>
-                                            <div className="space-y-2 border-r border-ink/5 pr-4">
-                                                <p className="text-ink text-[11px] font-bold uppercase tracking-[0.2em]">Joining Premium</p>
-                                                <p className="text-sm font-light text-ink">₹{String(card.joining_fee || card.annual_fee).replace(/^₹/, '')} <span className="text-[10px] opacity-40 font-sans font-bold">+ GST</span></p>
-                                            </div>
-                                            <div className="space-y-2 border-r border-ink/5 pr-4">
-                                                <p className="text-ink text-[11px] font-bold uppercase tracking-[0.2em]">Yield Potential</p>
-                                                <p className="text-sm font-bold text-clay tracking-tight">{card.rewards_rate || '2% → 30%'}</p>
-                                            </div>
-                                            <div className="space-y-2">
-                                                <p className="text-ink text-[11px] font-bold uppercase tracking-[0.2em]">Market Rating</p>
-                                                <div className="flex items-center gap-2">
-                                                    <p className="text-sm font-black text-ink">{card.rating?.toFixed(1) || '4.0'}</p>
-                                                    <div className="flex gap-0.5">
-                                                        {[...Array(5)].map((_, i) => (
-                                                            <Star key={i} size={8} className={`${i < Math.floor(card.rating || 4) ? 'fill-clay text-clay' : 'fill-ink/5 text-ink/5'}`} />
-                                                        ))}
+
+                                            {/* Specs Grid */}
+                                            <div className="grid grid-cols-2 gap-y-6 gap-x-4 mb-auto pb-10 border-b border-ink/5">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-8 h-8 rounded-full bg-ink/5 flex items-center justify-center text-ink/30">
+                                                        <ShieldCheck size={14} />
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-[9px] font-bold uppercase tracking-widest text-ink/40 leading-none mb-1">LTF Potential</p>
+                                                        <p className="text-xs font-semibold text-ink">Conditional</p>
+                                                    </div>
+                                                </div>
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-8 h-8 rounded-full bg-ink/5 flex items-center justify-center text-ink/30">
+                                                        <Star size={14} />
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-[9px] font-bold uppercase tracking-widest text-ink/40 leading-none mb-1">Rating</p>
+                                                        <p className="text-xs font-semibold text-ink">{card.rating?.toFixed(1) || '4.2'} / 5.0</p>
+                                                    </div>
+                                                </div>
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-8 h-8 rounded-full bg-ink/5 flex items-center justify-center text-ink/30">
+                                                        <Landmark size={14} />
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-[9px] font-bold uppercase tracking-widest text-ink/40 leading-none mb-1">Annual Fee</p>
+                                                        <p className="text-xs font-semibold text-ink">₹{String(card.annual_fee).replace(/[^0-9]/g, '')}</p>
+                                                    </div>
+                                                </div>
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-8 h-8 rounded-full bg-ink/5 flex items-center justify-center text-ink/30">
+                                                        <ArrowUpRight size={14} />
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-[9px] font-bold uppercase tracking-widest text-ink/40 leading-none mb-1">Net Yield</p>
+                                                        <p className="text-xs font-semibold text-ink">{card.rewards_rate || 'Peak'}</p>
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            {/* Yield Metric */}
+                                            <div className="pt-8 flex items-end justify-between">
+                                                <div>
+                                                    <p className="text-[10px] font-bold text-ink/40 uppercase tracking-[0.2em] mb-1">Expected Yield</p>
+                                                    <p className="text-3xl font-heading font-black text-ink tracking-tight">
+                                                        ₹12,400 <span className="text-xs font-serif italic text-ink/30 font-medium lowercase">/annual</span>
+                                                    </p>
+                                                </div>
+                                                <Link to={`/cards/${cardSlug}`}>
+                                                    <button className="w-14 h-14 bg-ink text-white rounded-[1.5rem] flex items-center justify-center hover:bg-clay hover:scale-105 transition-all shadow-xl shadow-ink/10 cursor-pointer">
+                                                        <ArrowRight size={24} />
+                                                    </button>
+                                                </Link>
+                                            </div>
                                         </div>
-
-                                    </motion.div>
+                                    </div>
                                 </motion.div>
-                                );
-                            })}
-                        </motion.div>
-                    </AnimatePresence>
-
-                    {filteredCards.length === 0 && (
-                        <div className="text-center py-32 bg-white/40 backdrop-blur-sm rounded-[3rem] border-2 border-dashed border-ink/10">
-                             <AlertCircle size={48} className="text-ink/10 mx-auto mb-6" />
-                             <h3 className="text-3xl font-heading font-black text-ink/30 tracking-tighter">No matching instruments</h3>
-                             <p className="text-ink/40 mt-4 font-medium">Adjust filters to discover new rewards.</p>
-                             <button 
-                                onClick={() => { setSelectedBanks([]); setSelectedCategories([]); setSearchQuery(''); }}
-                                className="mt-10 text-clay font-bold uppercase tracking-[0.3em] text-[10px] hover:opacity-70 transition-opacity border-b-2 border-clay/20 pb-1"
-                            >Clear All Constraints</button>
-                        </div>
-                    )}
-                </div>
-            </div>
-
-            {/* Mobile Filter Modal */}
-            {isMobileFilterOpen && (
-                <div className="fixed inset-0 z-[95] bg-ink/60 backdrop-blur-md lg:hidden">
-                    <div className="absolute right-0 bottom-0 top-[80px] w-full max-w-[400px] bg-cream rounded-t-[2.5rem] shadow-[0_-20px_100px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col">
-                        <div className="p-8 pb-4 flex justify-between items-center bg-white border-b border-ink/5">
-                            <div className="space-y-1">
-                                    <h2 className="text-[11px] font-heading font-black uppercase tracking-[0.2em] text-ink">Refine Catalog</h2>
-                                    <p className="text-[10px] font-sans font-bold uppercase tracking-widest text-ink/30 mt-1">Found {filteredCards.length} instruments</p>
-                            </div>
-                            <button onClick={() => setIsMobileFilterOpen(false)} className="w-10 h-10 flex items-center justify-center bg-ink text-white rounded-full shadow-lg transition-transform active:scale-90">
-                                <X size={20} />
-                            </button>
-                        </div>
-                        
-                        <div className="flex-1 overflow-y-auto px-8 py-8 space-y-12">
-                        {/* Repeat sidebar content for mobile */}
-                        <div className="space-y-12">
-                             <div className="flex justify-between items-center border-b border-ink/5 pb-4">
-                                <span className="text-ink/40 font-bold uppercase tracking-[0.2em] text-[10px]">Refine Catalog</span>
-                                <button onClick={() => { setSelectedBanks([]); setSelectedCategories([]); }} className="text-clay font-bold uppercase tracking-[0.2em] text-[10px]">Reset All</button>
-                             </div>
-                             <div>
-                                <h3 className="font-serif italic text-2xl text-ink mb-6">Banks</h3>
-                                <div className="grid grid-cols-2 gap-3">
-                                    {(showAllBanks ? banks : banks.slice(0, BANKS_INITIAL_COUNT)).map(bank => (
-                                        <button 
-                                            key={bank}
-                                            onClick={() => toggleBank(bank)}
-                                            className={`py-3 px-4 rounded-2xl border text-[10px] font-bold tracking-widest transition-all flex items-center justify-center gap-2 ${selectedBanks.includes(bank) ? 'bg-clay border-clay text-white shadow-xl scale-[1.02]' : 'bg-white border-ink/5 text-ink/40 hover:border-ink/10'}`}
-                                        >
-                                            {BANK_LOGOS[bank] && (
-                                                <img src={BANK_LOGOS[bank]} alt={bank} loading="lazy" className={`w-4 h-4 object-contain ${selectedBanks.includes(bank) ? 'brightness-0 invert' : ''}`} />
-                                            )}
-                                            {bank}
-                                        </button>
-                                    ))}
-                                </div>
-                                {banks.length > BANKS_INITIAL_COUNT && (
-                                    <button
-                                        onClick={() => setShowAllBanks(v => !v)}
-                                        className="text-clay text-[9px] font-bold uppercase tracking-widest mt-4 hover:opacity-70 transition-opacity"
-                                    >
-                                        {showAllBanks ? '− View Less' : `+ View ${banks.length - BANKS_INITIAL_COUNT} More`}
-                                    </button>
-                                )}
-                             </div>
-
-                             <div>
-                                <h3 className="font-serif italic text-2xl text-ink mb-6">Categories</h3>
-                                <div className="grid grid-cols-2 gap-3">
-                                    {(showAllCategories ? categories : categories.slice(0, CATEGORIES_INITIAL_COUNT)).map(cat => (
-                                        <button 
-                                            key={cat.name}
-                                            onClick={() => toggleCategory(cat.name)}
-                                            className={`py-3 px-4 rounded-2xl border text-[10px] font-bold tracking-widest text-left transition-all ${selectedCategories.includes(cat.name) ? 'bg-clay border-clay text-white shadow-xl scale-[1.02]' : 'bg-white border-ink/5 text-ink/40 hover:border-ink/10'}`}
-                                        >
-                                            {cat.name}
-                                        </button>
-                                    ))}
-                                </div>
-                                {categories.length > CATEGORIES_INITIAL_COUNT && (
-                                    <button
-                                        onClick={() => setShowAllCategories(v => !v)}
-                                        className="text-clay text-[9px] font-bold uppercase tracking-widest mt-4 hover:opacity-70 transition-opacity"
-                                    >
-                                        {showAllCategories ? '− View Less' : `+ View ${categories.length - CATEGORIES_INITIAL_COUNT} More`}
-                                    </button>
-                                )}
-                             </div>
-                             
-                            <button 
-                                onClick={() => setIsMobileFilterOpen(false)}
-                                className="w-full bg-ink text-white font-bold py-6 rounded-3xl shadow-[0_20px_50px_rgba(36,36,36,0.3)] mt-12 mb-8 uppercase tracking-[0.4em] text-[10px] flex items-center justify-center gap-3 active:scale-95 transition-all"
-                            >
-                                Show {filteredCards.length} Matches <ArrowRight size={14} className="opacity-40" />
-                            </button>
-                        </div>
+                            );
+                        })}
                     </div>
-                </div>
+                </AnimatePresence>
+
+                {filteredCards.length === 0 && (
+                    <div className="text-center py-48">
+                        <AlertCircle size={64} className="text-ink/5 mx-auto mb-8" />
+                        <h2 className="text-4xl font-heading font-black text-ink/20 uppercase tracking-tighter">No Instruments Found</h2>
+                        <button 
+                            onClick={() => { setSelectedBanks([]); setSelectedCategories([]); setSearchQuery(''); setMonthlySpend('Any Budget'); setCardType('All Types'); }}
+                            className="mt-8 text-clay font-bold uppercase tracking-[0.3em] text-[10px] hover:border-b border-clay pb-1 transition-all"
+                        >Clear All Constraints</button>
+                    </div>
+                )}
             </div>
-        )}
-    </div>
-);
+        </div>
+    );
 };
 
 export default CardExplorer;
