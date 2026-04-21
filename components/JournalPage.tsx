@@ -6,8 +6,10 @@ import { Blog } from '../types';
 import { useSupabase } from './SupabaseProvider';
 import { SkeletonBlog } from './SkeletonLoaders';
 
+import { motion } from 'motion/react';
+
 const JournalPage: React.FC = () => {
-    const { blogs: blogsList, isLoading, syncStatus } = useSupabase();
+    const { blogs: blogsList, isLoading } = useSupabase();
 
     const currentBlogs = blogsList;
     const featured = currentBlogs.find(b => b.featured) || currentBlogs[0];
@@ -15,11 +17,13 @@ const JournalPage: React.FC = () => {
 
     if (isLoading && blogsList.length === 0) {
         return (
-            <div className="min-h-screen bg-cream pt-32 px-6">
+            <div className="min-h-screen bg-[#FDFCF9] pt-32 px-6">
                 <div className="max-w-[1440px] mx-auto space-y-12">
-                   <div className="h-64 bg-slate-100 rounded-[3rem] animate-pulse" />
-                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <SkeletonBlog /><SkeletonBlog /><SkeletonBlog />
+                   <div className="h-[60vh] bg-ink/5 rounded-[3rem] animate-pulse" />
+                   <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div className="h-64 bg-ink/5 rounded-3xl animate-pulse" />
+                        <div className="h-64 bg-ink/5 rounded-3xl animate-pulse" />
+                        <div className="h-64 bg-ink/5 rounded-3xl animate-pulse" />
                    </div>
                 </div>
             </div>
@@ -27,134 +31,208 @@ const JournalPage: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen bg-cream pt-4 md:pt-8 pb-20">
-            <div className="max-w-[1440px] mx-auto px-6">
+        <div className="min-h-screen bg-[#FDFCF9] pb-32 overflow-x-hidden font-sans">
+            
+            {/* ─── EDITORIAL HEADER ─── */}
+            <div className="relative pt-20 pb-32 md:pt-32 md:pb-48 bg-cream overflow-hidden border-b border-ink/5">
+                {/* Interlocking Pattern Background */}
+                <div className="absolute inset-0 opacity-[0.03] pointer-events-none" 
+                    style={{ 
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 30c0-16.569-13.431-30-30-30v60c16.569 0 30-13.431 30-30zm0 0c0 16.569 13.431 30 30 30V0c-16.569 0-30 13.431-30 30z' fill='%23000' fill-opacity='1' fill-rule='evenodd'/%3E%3C/svg%3E")`,
+                        backgroundSize: '60px 60px' 
+                    }} 
+                />
+
+                <div className="max-w-[1440px] mx-auto px-6 relative z-10 text-center">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8 }}
+                    >
+                         <div className="flex items-center justify-center gap-4 mb-10">
+                            <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-ink/30 px-6 py-2 border border-ink/10 rounded-full">
+                                Volume 01. Issue 04
+                            </span>
+                        </div>
+                        <h1 className="text-6xl md:text-9xl font-heading font-black text-ink tracking-tighter mb-8 leading-[0.85] uppercase">
+                            The <br className="md:hidden" /> <span className="text-clay italic serif font-light lowercase">Intelligence</span> <br className="hidden md:block" /> Ledger
+                        </h1>
+                        <p className="text-ink/60 text-lg md:text-xl font-medium max-w-2xl mx-auto leading-relaxed mb-16 italic serif">
+                            A curated sequence of briefings on financial strategy, reward architecture, <br className="hidden md:block" /> and the shifting landscape of premium instruments.
+                        </p>
+
+                        <div className="flex flex-wrap justify-center items-center gap-4 md:gap-12">
+                             {['Strategy', 'Architecture', 'Market Insights', 'Deep Tech'].map((cat) => (
+                                <button key={cat} className="group relative py-2 text-[10px] font-bold uppercase tracking-[0.3em] text-ink hover:text-clay transition-colors">
+                                    {cat}
+                                    <span className="absolute bottom-0 left-0 w-0 h-px bg-clay transition-all group-hover:w-full"></span>
+                                </button>
+                             ))}
+                        </div>
+                    </motion.div>
+                </div>
+            </div>
+
+            <div className="max-w-[1440px] mx-auto px-6 -mt-20 relative z-20">
                 
-                {/* Header - Editorial Style */}
-                <div id="journal-header" className="text-center mb-24 opacity-0 animate-fade-in-up scroll-mt-32">
+                {/* ─── FEATURED DISPATCH ─── */}
+                {featured && (
+                    <motion.div 
+                        initial={{ opacity: 0, scale: 0.98 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.8, delay: 0.2 }}
+                        className="group relative bg-[#1e1a4b] rounded-[3.5rem] overflow-hidden shadow-[0_50px_100px_-20px_rgba(30,26,75,0.4)]"
+                    >
+                        <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[600px]">
+                            {/* Graphic Side */}
+                            <div className="relative overflow-hidden group-hover:scale-[1.01] transition-transform duration-1000">
+                                <ImageWithLoader 
+                                    src={featured.image} 
+                                    alt={featured.title} 
+                                    className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000"
+                                />
+                                <div className="absolute inset-0 bg-ink/20 mix-blend-multiply" />
+                                <div className="absolute top-12 left-12">
+                                    <div className="bg-white/10 backdrop-blur-md border border-white/20 px-6 py-3 rounded-2xl">
+                                        <span className="text-white text-[10px] font-bold uppercase tracking-widest">Master File No. 8821</span>
+                                    </div>
+                                </div>
+                            </div>
 
-                    <div className="inline-block px-4 py-1 border-2 border-ink mb-8">
-                        <p className="text-[10px] font-bold tracking-[0.5em] uppercase text-ink">Yureka Journal • Digital Edition</p>
+                            {/* Content Side */}
+                            <div className="p-12 md:p-24 flex flex-col justify-center text-white relative">
+                                <div className="space-y-8">
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-1.5 h-1.5 bg-clay rounded-full animate-pulse" />
+                                        <span className="text-clay text-[10px] font-bold uppercase tracking-[0.3em]">{featured.category}</span>
+                                        <span className="text-white/20 text-[10px] font-bold uppercase tracking-widest">{new Date(featured.created_at || '').toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })}</span>
+                                    </div>
+
+                                    <h2 className="text-4xl md:text-6xl font-heading font-black leading-[0.9] tracking-tighter uppercase group-hover:text-clay transition-colors duration-500">
+                                        {featured.title}
+                                    </h2>
+
+                                    <p className="text-xl md:text-2xl text-white/60 font-serif leading-relaxed italic max-w-lg">
+                                        "{featured.excerpt}"
+                                    </p>
+
+                                    <div className="pt-12 flex flex-col md:flex-row items-center gap-8">
+                                        <Link to={`/blogs/${featured.slug}`} className="w-full md:w-auto">
+                                            <button className="bg-white text-ink px-12 py-6 rounded-full text-xs font-bold uppercase tracking-[0.3em] shadow-2xl hover:bg-clay hover:text-white transition-all transform active:scale-95 cursor-pointer">
+                                                Examine Dispatch
+                                            </button>
+                                        </Link>
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center font-heading font-black text-clay">
+                                                {featured.author ? featured.author[0] : 'Y'}
+                                            </div>
+                                            <div className="text-[10px] font-bold uppercase tracking-widest text-white/40">Editorial by <br/> <span className="text-white">{featured.author || 'Yureka Research'}</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+
+                {/* ─── ARCHIVE GRID ─── */}
+                <div className="mt-32 space-y-16">
+                    <div className="flex items-end justify-between border-b border-ink/5 pb-12">
+                        <div className="space-y-4">
+                            <h3 className="text-4xl md:text-6xl font-heading font-black text-ink tracking-tight uppercase leading-none">The <span className="text-clay italic serif font-light lowercase">Archives</span></h3>
+                            <p className="text-ink/40 text-[10px] font-bold uppercase tracking-[0.5em]">Sequence of documented intelligence dispatches</p>
+                        </div>
+                        <div className="hidden md:flex gap-4">
+                            <Landmark className="text-ink/10" size={48} />
+                        </div>
                     </div>
-                    <h1 className="text-6xl md:text-8xl font-heading font-black tracking-tighter leading-none text-ink mb-12 uppercase">
-                        The <span className="text-ink/30">Pulse</span>
-                    </h1>
 
-                    <div className="flex justify-center items-center gap-8 text-[10px] font-bold uppercase tracking-[0.3em] text-ink/60 border-y border-ink/10 py-6">
-                        <span>Strategy</span>
-                        <div className="w-1.5 h-1.5 bg-clay rounded-full"></div>
-                        <span>Insights</span>
-                        <div className="w-1.5 h-1.5 bg-clay rounded-full"></div>
-                        <span>Fintech</span>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-24 gap-x-12">
+                        {regular.map((post, idx) => (
+                            <motion.div 
+                                key={post.id}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: idx * 0.1 }}
+                                className="group cursor-pointer"
+                            >
+                                <Link to={`/blogs/${post.slug}`}>
+                                    <div className="space-y-8">
+                                        <div className="relative aspect-[4/3] rounded-[2.5rem] overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700">
+                                            <ImageWithLoader src={post.image} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" />
+                                            <div className="absolute inset-0 bg-ink/10 group-hover:bg-transparent transition-colors duration-700" />
+                                            <div className="absolute top-6 right-6">
+                                                <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-ink shadow-xl group-hover:bg-clay group-hover:text-white transition-all transform group-hover:rotate-45">
+                                                    <ArrowUpRight size={24} />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-4 px-2">
+                                            <div className="flex items-center gap-4 text-[9px] font-bold uppercase tracking-[0.3em] text-ink/30">
+                                                <span>{post.category}</span>
+                                                <span className="w-1 h-1 bg-clay rounded-full" />
+                                                <span>{post.read_time || '4 min'} Read</span>
+                                            </div>
+                                            <h4 className="text-3xl font-heading font-black text-ink leading-[0.9] tracking-tighter uppercase group-hover:text-clay transition-colors duration-500">
+                                                {post.title}
+                                            </h4>
+                                            <p className="text-sm text-ink/60 font-sans leading-relaxed line-clamp-2">
+                                                {post.excerpt}
+                                            </p>
+                                            <div className="pt-4 flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-ink/20">
+                                                <span>Pub. REF / {new Date(post.created_at || '').toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit' })}</span>
+                                                <span className="group-hover:text-clay transition-colors uppercase">Read Examination →</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Link>
+                            </motion.div>
+                        ))}
                     </div>
                 </div>
 
-                {/* Main Content Area */}
-                {currentBlogs.length === 0 ? (
-                  <div className="py-40 text-center border-2 border-dashed border-ink/10 rounded-[3rem]">
-                      <h3 className="text-2xl font-heading font-black text-ink/20 uppercase tracking-tighter text-center w-full">Editorial Archive Empty</h3>
-                      <p className="text-sm text-ink/40 font-sans mt-4">The next digital dispatch is being prepared for publication.</p>
-                  </div>
-                ) : (
-                  <>
-                    {/* Featured Story */}
-                    {featured && (
-                      <section id="featured-story" className="grid grid-cols-1 lg:grid-cols-12 gap-0 mb-32 border-2 border-ink overflow-hidden opacity-0 animate-fade-in-up delay-100 scroll-mt-32">
-                        <div className="lg:col-span-8 relative aspect-[16/9] lg:aspect-auto min-h-[400px] overflow-hidden border-b-2 lg:border-b-0 lg:border-r-2 border-ink">
-                            <ImageWithLoader 
-                                src={featured.image} 
-                                alt={featured.title} 
-                                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-[2s] hover:scale-105"
-                            />
-                            <div className="absolute top-8 left-8 bg-clay text-white px-4 py-2 text-[10px] font-bold uppercase tracking-widest shadow-2xl">
-                                Featured Story
-                            </div>
+                {/* ─── NEWSLETTER LEDGER ─── */}
+                <motion.section 
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="mt-64 relative bg-cream border border-ink/10 rounded-[4rem] p-12 md:p-32 overflow-hidden text-center"
+                >
+                    <div className="absolute top-0 left-0 w-full h-full opacity-[0.02] pointer-events-none" 
+                        style={{ 
+                            backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 20.5V18l1.5-1.5 1.122 1.122L21.122 19H25v2h-3.878l1.5 1.5-1.122 1.122L20 22.122V24.5l-1.5 1.5-1.122-1.122L18.878 23H15v-2h3.878l-1.5-1.5 1.122-1.122L20 19.878V17.5l1.5-1.5 1.122 1.122L21.122 19z' fill='%23000' fill-opacity='1' fill-rule='evenodd'/%3E%3C/svg%3E")`,
+                            backgroundSize: '40px 40px' 
+                        }} 
+                    />
+
+                    <div className="relative z-10 max-w-4xl mx-auto space-y-12">
+                        <div className="inline-block px-10 py-2 bg-ink text-white text-[10px] font-bold uppercase tracking-[0.5em] rounded-full">
+                            Access Digital Dispatch
                         </div>
-                        <div className="lg:col-span-4 p-8 md:p-12 flex flex-col justify-center bg-white relative">
-                            <div className="flex items-center gap-4 text-[10px] font-bold uppercase tracking-widest text-ink/40 mb-8">
-                                <span>{featured.category}</span>
-                                <div className="w-1 h-1 bg-ink/20 rounded-full"></div>
-                                <span>{featured.date || new Date(featured.created_at || '').toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
-                            </div>
-                            <h2 className="text-2xl md:text-5xl font-heading font-black leading-[1.1] text-ink mb-8 tracking-tight uppercase">
-                                {featured.title}
-                            </h2>
-                            <p className="text-lg text-ink/60 font-sans font-medium leading-relaxed mb-12 border-l-4 border-clay pl-6">
-                                {featured.excerpt}
-                            </p>
-                            <div className="flex items-center justify-between pt-8 border-t border-ink/10">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 bg-ink text-white rounded-full flex items-center justify-center font-serif italic text-lg">
-                                        {featured.author ? featured.author[0] : 'Y'}
-                                    </div>
-                                    <div className="text-[10px] font-bold uppercase tracking-widest text-ink">{featured.author || 'Yureka Editor'}</div>
-                                </div>
-                                <Link to={`/blogs/${featured.slug}`} className="text-clay hover:text-ink transition-colors flex items-center gap-2 text-xs font-bold uppercase tracking-widest cursor-pointer">
-                                    Read <ArrowRight size={14} />
-                                </Link>
-                            </div>
-                        </div>
-                      </section>
-                    )}
-
-                    {/* News Grid */}
-                    <div id="news-grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 border-l border-t border-ink/10 scroll-mt-32">
-                        {regular.map((post, idx) => (
-                            <div 
-                                key={post.id} 
-                                className="p-10 border-r border-b border-ink/10 hover:bg-white transition-colors group opacity-0 animate-fade-in-up"
-                                style={{ animationDelay: `${idx * 100 + 200}ms` }}
-                            >
-                                <div className="flex items-center justify-between text-[8px] font-bold uppercase tracking-widest text-ink/30 mb-8">
-                                    <span>{post.category}</span>
-                                    <span>{post.date || new Date(post.created_at || '').toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
-                                </div>
-                                <h3 className="text-2xl font-heading font-bold leading-tight text-ink mb-6 group-hover:text-clay transition-colors line-clamp-3 uppercase">
-                                    {post.title}
-                                </h3>
-                                <p className="text-sm text-ink/60 leading-relaxed font-sans mb-10 line-clamp-3">
-                                    {post.excerpt}
-                                </p>
-                                <div className="flex items-center justify-between mt-auto">
-                                    <div className="flex items-center gap-2">
-                                        <Clock size={12} className="text-ink/20" />
-                                        <span className="text-[9px] font-bold uppercase tracking-widest text-ink/40">{post.read_time || '5 min read'}</span>
-                                    </div>
-                                    <Link to={`/blogs/${post.slug}`}>
-                                        <button className="w-10 h-10 border border-ink/10 rounded-full flex items-center justify-center text-ink hover:bg-ink hover:text-white transition-all transform hover:rotate-45 cursor-pointer">
-                                            <ArrowUpRight size={14} />
-                                        </button>
-                                    </Link>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                  </>
-                )}
-
-                {/* Newsletter Section - Newsprint Style */}
-                <section id="newsletter" className="mt-40 p-12 md:p-24 bg-ink text-white relative overflow-hidden text-center rounded-[3rem] shadow-2xl scroll-mt-32">
-
-                    <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }}></div>
-                    <div className="relative z-10 max-w-3xl mx-auto">
-                        <span className="text-clay font-bold text-[10px] uppercase tracking-[0.5em] mb-8 block">Stay Ahead</span>
-                         <h2 className="text-4xl md:text-6xl font-heading font-black mb-8 leading-tight tracking-tighter uppercase">Get the <span className="text-white/40 font-light">Premium</span> <br/> Weekly Dispatch.</h2>
-                        <p className="text-lg md:text-xl text-white/60 font-sans font-medium mb-12">
-                            Deep-dives into credit policy, reward loopholes, and financial strategy. Delivered every Sunday.
+                        <h2 className="text-5xl md:text-8xl font-heading font-black text-ink tracking-tighter leading-[0.85] uppercase">
+                            Secure the <span className="text-clay italic serif font-light lowercase">premium</span> <br/> Weekly Dispatch
+                        </h2>
+                        <p className="text-xl md:text-2xl text-ink/60 font-serif italic max-w-2xl mx-auto leading-relaxed">
+                            A highly confidential summary of policy changes, reward arbitrage, and high-yield financial maneuvers.
                         </p>
 
-                        <form className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto" onSubmit={(e) => e.preventDefault()}>
-                            <input 
+                        <div className="flex flex-col md:flex-row gap-4 max-w-2xl mx-auto pt-8">
+                             <input 
                                 type="email" 
-                                placeholder="Your professional email" 
-                                className="flex-1 px-8 py-5 bg-white/5 border border-white/10 rounded-full focus:outline-none focus:border-clay text-lg placeholder-white/20 font-serif text-white backdrop-blur-sm"
-                            />
-                            <button className="px-10 py-5 bg-clay text-white font-bold uppercase tracking-widest text-xs hover:bg-teal transition-all rounded-full shadow-xl">
-                                Dispatch
-                            </button>
-                        </form>
+                                placeholder="Enter editorial email." 
+                                className="flex-1 px-10 py-6 bg-white border border-ink/10 rounded-full focus:outline-none focus:border-clay text-lg placeholder-ink/20 font-serif"
+                             />
+                             <button className="bg-ink text-white px-12 py-6 rounded-full text-xs font-bold uppercase tracking-[0.4em] shadow-2xl hover:bg-clay transition-all active:scale-95 cursor-pointer flex items-center justify-center gap-3">
+                                Subscribe <ArrowRight size={16} className="text-clay" />
+                             </button>
+                        </div>
+                        <p className="text-[10px] font-bold uppercase tracking-widest text-ink/30 italic">
+                            No spam. Only high-performance intelligence.
+                        </p>
                     </div>
-                </section>
+                </motion.section>
             </div>
         </div>
     );
