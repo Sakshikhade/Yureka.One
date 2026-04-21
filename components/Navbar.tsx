@@ -37,7 +37,7 @@ const Navbar: React.FC = () => {
                 flex items-center justify-between
                 transition-all duration-700 cubic-bezier(0.25, 0.8, 0.25, 1)
                 ${isScrolled 
-                    ? 'w-[92%] md:w-[90%] lg:w-[80%] max-w-7xl pointer-events-auto px-6 py-2 bg-paper/80 glass-panel rounded-full shadow-2xl border border-ink/10 filter backdrop-blur-md' 
+                    ? 'w-[95%] md:w-[90%] lg:w-[80%] max-w-7xl pointer-events-auto px-4 md:px-6 py-2 bg-paper/90 glass-panel rounded-full shadow-2xl border border-ink/10 filter backdrop-blur-md' 
                     : 'w-full max-w-[1440px] bg-transparent border-b border-ink/10 px-6 py-5 md:py-6 rounded-none shadow-none border-x-0 border-t-0'
                 }
             `}
@@ -103,14 +103,12 @@ const Navbar: React.FC = () => {
             </div>
 
              {/* Mobile Toggle */}
-             <div className="md:hidden ml-auto">
+             <div className="md:hidden flex items-center ml-auto gap-4">
                  <button 
-                    className={`
-                        p-2 text-ink hover:text-clay transition-colors
-                    `}
+                    className="p-1.5 text-ink hover:text-clay transition-colors"
                     onClick={() => setIsMobileMenuOpen(true)}
                 >
-                    <Menu size={24} strokeWidth={1.5} />
+                    <Menu size={20} strokeWidth={2} />
                 </button>
             </div>
 
@@ -120,7 +118,7 @@ const Navbar: React.FC = () => {
       {/* Mobile Menu Overlay - Paper Texture */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <div className="fixed inset-0 z-[100] pointer-events-auto">
+          <div className="fixed inset-0 z-[110] pointer-events-auto">
               <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}

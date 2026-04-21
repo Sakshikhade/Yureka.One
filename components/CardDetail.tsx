@@ -190,24 +190,24 @@ const CardDetail: React.FC = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1px bg-ink/10 border border-ink/10 rounded-[3rem] overflow-hidden shadow-2xl">
                         {card.benefit_items && card.benefit_items.length > 0 && card.benefit_items[0].heading ? (
                             card.benefit_items.map((benefit, idx) => (
-                                <div key={idx} className="bg-white p-12 hover:bg-cream/40 transition-colors group">
-                                    <div className="w-12 h-12 bg-cream rounded-2xl flex items-center justify-center mb-8 border border-ink/5 group-hover:scale-110 transition-transform">
-                                        <CheckCircle2 className="text-clay" size={24} />
+                                <div key={idx} className="bg-white p-8 md:p-10 hover:bg-cream/40 transition-colors group">
+                                    <div className="w-10 h-10 md:w-12 md:h-12 bg-cream rounded-2xl flex items-center justify-center mb-6 md:mb-8 border border-ink/5 group-hover:scale-110 transition-transform">
+                                        <CheckCircle2 className="text-teal" size={20} />
                                     </div>
-                                     <h3 className="text-xl font-heading font-bold text-ink leading-tight mb-4 uppercase">{benefit.heading}</h3>
-                                    <p className="text-base font-sans text-ink font-bold italic">{benefit.subheading || 'Premium lifestyle benefit included in the standard portfolio.'}</p>
+                                     <h3 className="text-xs font-bold text-ink/40 leading-tight mb-2 uppercase tracking-widest">{benefit.heading}</h3>
+                                    <p className="text-xl md:text-2xl font-heading font-black text-ink uppercase tracking-tight">{benefit.subheading}</p>
                                 </div>
 
 
                             ))
                         ) : card.benefits && card.benefits.length > 0 && card.benefits[0] ? (
                             card.benefits.map((benefit, idx) => (
-                                <div key={idx} className="bg-white p-12 hover:bg-cream/40 transition-colors group">
-                                    <div className="w-12 h-12 bg-cream rounded-2xl flex items-center justify-center mb-8 border border-ink/5 group-hover:scale-110 transition-transform">
-                                        <CheckCircle2 className="text-clay" size={24} />
+                                <div key={idx} className="bg-white p-8 md:p-10 hover:bg-cream/40 transition-colors group">
+                                    <div className="w-10 h-10 md:w-12 md:h-12 bg-cream rounded-2xl flex items-center justify-center mb-6 md:mb-8 border border-ink/5 group-hover:scale-110 transition-transform">
+                                        <CheckCircle2 className="text-teal" size={20} />
                                     </div>
-                                    <h3 className="text-xl font-heading font-bold text-ink leading-tight mb-4 uppercase">{benefit}</h3>
-                                    <p className="text-base font-sans text-ink font-bold italic">Premium lifestyle benefit included in the standard portfolio.</p>
+                                    <h3 className="text-xs font-bold text-ink/40 leading-tight mb-2 uppercase tracking-widest">{benefit}</h3>
+                                    <p className="text-xl md:text-2xl font-heading font-black text-ink uppercase tracking-tight italic">Premium Feature</p>
                                 </div>
 
                             ))

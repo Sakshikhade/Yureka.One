@@ -76,7 +76,7 @@ const JournalPage: React.FC = () => {
                                 <div className="w-1 h-1 bg-ink/20 rounded-full"></div>
                                 <span>{featured.date || new Date(featured.created_at || '').toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
                             </div>
-                            <h2 className="text-4xl md:text-5xl font-heading font-black leading-[1.1] text-ink mb-8 tracking-tight uppercase">
+                            <h2 className="text-2xl md:text-5xl font-heading font-black leading-[1.1] text-ink mb-8 tracking-tight uppercase">
                                 {featured.title}
                             </h2>
                             <p className="text-lg text-ink/60 font-sans font-medium leading-relaxed mb-12 border-l-4 border-clay pl-6">

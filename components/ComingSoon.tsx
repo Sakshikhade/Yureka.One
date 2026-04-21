@@ -300,7 +300,7 @@ const RewardXAnimation = () => {
                     </div>
                     <span className="text-[9px] font-medium tracking-[0.3em] text-orange-600 uppercase">Yield Script Pulse</span>
                 </motion.div>
-                <h3 className="text-3xl font-medium text-[#111111] tracking-tighter uppercase leading-tight">Executive<br />Protocol</h3>
+                <h3 className="text-2xl md:text-3xl font-medium text-[#111111] tracking-tighter uppercase leading-tight">Executive<br />Protocol</h3>
             </div>
             <div className="text-right">
                 <div className="text-[9px] font-medium text-[#111111]/30 tracking-widest uppercase mb-1">Total Yield Unlocked</div>
@@ -693,7 +693,7 @@ const ComingSoon: React.FC = () => {
     return (
         <section ref={containerRef} className="relative min-h-screen bg-[#FDFCF9] font-sans selection:bg-clay selection:text-white overflow-hidden py-20 md:py-48">
             {/* Global Grain & Texture Overlay */}
-            <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-[100] mix-blend-overlay" style={{ backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")' }} />
+            <div className="fixed inset-0 z-[110] pointer-events-none opacity-[0.03] mix-blend-overlay" style={{ backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")' }} />
             
             {/* Premium Background Elements */}
             <div className="absolute top-0 left-0 w-full h-[1000px] bg-gradient-to-b from-[#1B4D4B]/5 to-transparent pointer-events-none" />
@@ -702,7 +702,7 @@ const ComingSoon: React.FC = () => {
 
             <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
                 {/* Tactical Header Section */}
-                <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-12 md:gap-16 mb-24 md:mb-48">
+                <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-12 md:gap-16 mb-24 md:mb-32">
                     <motion.div 
                         initial={{ opacity: 0, y: 30 }}
                         animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -736,7 +736,7 @@ const ComingSoon: React.FC = () => {
                 </div>
 
                 {/* Vertical Feature Stack - Editorial Style */}
-                <div className="space-y-32 md:space-y-64">
+                <div className="space-y-20 md:space-y-32">
                     {features.map((feature, idx) => (
                         <div key={idx} className={`flex flex-col lg:flex-row gap-12 md:gap-32 items-center ${idx % 2 !== 0 ? 'lg:flex-row-reverse' : ''}`}>
                             {/* Visual Mockup Container */}
@@ -745,7 +745,7 @@ const ComingSoon: React.FC = () => {
                                 whileInView={{ opacity: 1, scale: 1, y: 0 }}
                                 viewport={{ once: true, margin: "-100px" }}
                                 transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                                className="w-full lg:w-3/5 group"
+                                className="w-full lg:w-3/5 group relative"
                             >
                                 <div className="relative aspect-[3/4] md:aspect-[4/5] max-w-full">
                                    {/* Advanced Glow */}
