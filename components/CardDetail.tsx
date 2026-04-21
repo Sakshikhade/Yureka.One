@@ -1,22 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { 
     ArrowLeft, Share2, MessageSquareShare, Star, CheckCircle2, 
     Zap, Info, ExternalLink, ShieldCheck, CreditCard, Landmark,
-    ArrowRight, Bookmark, Clock, Sparkles, Percent, Armchair,
-    Hotel, Plane, ShoppingBag, Smartphone
+    ArrowRight, Bookmark, Clock, Sparkles
 } from 'lucide-react';
 import { getCardBySlug } from '../services/supabaseService';
 import { Card } from '../types';
 import ImageWithLoader from './ImageWithLoader';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
+
 import SEO from './SEO';
 
 const CardDetail: React.FC = () => {
     const { slug } = useParams<{ slug: string }>();
-    const navigate = useNavigate();
     const [card, setCard] = useState<Card | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+
+    const cardSchema = card ? {
+      "@context": "https://schema.org",
+      "@type": "FinancialProduct",
+      "name": card.name,
+      "description": card.description,
+      "brand": {
+        "@type": "Brand",
+        "name": card.issuer || card.bank
+      },
+      "category": card.category || card.type,
+      "feesAndCommissionsSpecification": `Annual Fee: ${card.annualFee || card.annual_fee || 'N/A'}`
+    } : undefined;
+
 
     useEffect(() => {
         if (!slug) return;
@@ -30,227 +43,238 @@ const CardDetail: React.FC = () => {
 
     if (isLoading) {
         return (
-            <div className="min-h-screen bg-[#FDFCF9] flex items-center justify-center">
-                <div className="flex flex-col items-center gap-6">
-                    <motion.div 
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                        className="text-clay"
-                    >
-                        <Landmark size={48} />
-                    </motion.div>
-                    <p className="text-[10px] font-bold text-ink/30 uppercase tracking-[0.5em] animate-pulse">Decrypting instrument protocol...</p>
-                </div>
+            <div className="min-h-screen bg-cream flex items-center justify-center">
+                <div className="text-3xl font-serif italic animate-pulse text-ink/40">Loading Instrument Details...</div>
             </div>
         );
     }
 
     if (!card) {
         return (
-            <div className="min-h-screen bg-[#FDFCF9] flex flex-col items-center justify-center p-6 text-center">
-                <h1 className="text-4xl md:text-6xl font-serif text-ink mb-6 uppercase tracking-tighter">Instrument <br /><span className="italic font-light text-ink/30">not found</span></h1>
-                <Link to="/cards" className="text-clay font-bold uppercase tracking-[0.4em] text-[10px] border-b border-clay/30 pb-1">
-                    Return to Archives
+            <div className="min-h-screen bg-cream flex flex-col items-center justify-center p-6 text-center">
+                <h1 className="text-4xl font-serif italic text-ink mb-4">Instrument not found</h1>
+                <p className="text-ink/60 mb-8 max-w-md">The credit instrument you are looking for may have been delisted or moved.</p>
+                <Link to="/cards" className="bg-ink text-white px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px]">
+                    Return to Explorer
                 </Link>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-[#FDFCF9] font-serif selection:bg-clay selection:text-white pb-32">
+        <div className="min-h-screen bg-[#FDFCF9] pb-32 font-serif overflow-x-hidden">
             <SEO 
-                title={`${card.name} | Archives | Yureka`}
-                description={card.description || `Detailed analysis of the ${card.name} by ${card.bank || card.issuer}.`}
+                title={`${card.name} | Instrument Analysis`}
+                description={card.description || `Detailed review and rewards breakdown for the ${card.name} by ${card.bank || card.issuer}.`}
+                schema={cardSchema}
             />
+            {/* Sticky Sub-nav */}
 
-            {/* ── Fixed Editorial Navbar ── */}
-            <nav className="fixed top-0 left-0 right-0 z-[100] bg-[#FDFCF9]/80 backdrop-blur-xl border-b border-ink/5">
-                <div className="max-w-[1700px] mx-auto px-6 h-20 md:h-24 flex items-center justify-between">
-                    <div className="flex items-center gap-8">
-                        <button 
-                            onClick={() => navigate('/cards')}
-                            className="w-12 h-12 md:w-14 md:h-14 flex items-center justify-center bg-white border border-ink/10 rounded-full hover:border-clay/30 transition-all group"
-                        >
-                            <ArrowLeft size={20} className="text-ink group-hover:-translate-x-1 transition-transform" />
-                        </button>
-                        <div className="hidden md:block">
-                            <p className="text-[9px] font-bold text-ink/20 uppercase tracking-[0.4em] mb-1">Source Repository</p>
-                            <Link to="/" className="text-sm font-heading font-black tracking-tighter text-ink uppercase">
-                                YUREKA<span className="text-clay">.</span>MONEY
-                            </Link>
-                        </div>
-                    </div>
+            <div className="sticky top-[80px] md:top-[96px] z-40 bg-white/80 backdrop-blur-md border-b border-ink/5 px-6 py-3 md:py-4">
 
-                    <div className="flex items-center gap-4">
-                        <button className="hidden md:flex items-center gap-2 px-6 h-14 text-ink/40 hover:text-ink text-[10px] font-bold uppercase tracking-widest transition-colors">
-                            <Share2 size={14} /> Share Archive
-                        </button>
-                        {card.apply_link && (
-                            <a href={card.apply_link} target="_blank" rel="noopener noreferrer" className="px-8 md:px-12 h-12 md:h-14 bg-ink text-white rounded-full flex items-center justify-center text-[10px] font-bold uppercase tracking-[0.2em] shadow-xl hover:bg-clay transition-colors group">
-                                Apply Now <ArrowRight size={14} className="ml-3 group-hover:translate-x-1 transition-transform" />
-                            </a>
-                        )}
+                <div className="max-w-[1440px] mx-auto flex items-center justify-between">
+                    <Link to="/cards" className="flex items-center gap-2 text-ink/40 hover:text-clay transition-colors group">
+                        <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+                        <span className="text-[10px] font-bold uppercase tracking-widest">Back to Gallery</span>
+                    </Link>
+                    <div className="hidden md:flex items-center gap-8">
+                        <a href="#overview" className="text-[10px] font-bold uppercase tracking-widest text-ink/60 hover:text-ink">Overview</a>
+                        <a href="#benefits" className="text-[10px] font-bold uppercase tracking-widest text-ink/60 hover:text-ink">Benefits</a>
+                        <a href="#fees" className="text-[10px] font-bold uppercase tracking-widest text-ink/60 hover:text-ink">Fees</a>
                     </div>
+                    {card.apply_link ? (
+                        <a href={card.apply_link} target="_blank" rel="noopener noreferrer" className="bg-ink text-white px-6 py-2 rounded-full font-bold uppercase tracking-widest text-[9px] hover:bg-clay transition-colors shadow-lg block">
+                            Apply Now
+                        </a>
+                    ) : (
+                        <button className="bg-ink text-white px-6 py-2 rounded-full font-bold uppercase tracking-widest text-[9px] hover:bg-clay transition-colors shadow-lg">
+                            Apply Now
+                        </button>
+                    )}
                 </div>
-            </nav>
+            </div>
 
-            {/* ── Main Detail Content ── */}
-            <main className="max-w-[1700px] mx-auto px-6 pt-32 md:pt-48">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 md:gap-24">
-                    
-                    {/* Left Column: Fixed Info Pane */}
-                    <div className="lg:col-span-5 space-y-12">
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 1 }}
-                            className="relative aspect-[1.58/1] rounded-[3rem] overflow-hidden bg-white shadow-2xl border border-ink/5 p-12 md:p-16 flex items-center justify-center"
+            <div className="max-w-[1440px] mx-auto px-6 pt-12 md:pt-20">
+
+                {/* Hero Section */}
+                <section id="overview" className="grid grid-cols-1 lg:grid-cols-2 gap-20 mb-32 items-center">
+                    <div className="relative group">
+                        <div className="absolute inset-0 bg-clay/5 blur-[120px] rounded-full scale-125 group-hover:scale-150 transition-transform duration-1000 opacity-50"></div>
+                        <motion.div 
+                            whileHover={{ 
+                                rotateY: 5, 
+                                rotateX: -5,
+                                scale: 1.05
+                            }}
+                            style={{ perspective: 1500 }}
+                            className="relative aspect-[1.58/1] rounded-3xl overflow-hidden shadow-[0_50px_100px_-20px_rgba(36,36,36,0.25)] transition-all duration-700 border border-ink/5 bg-white"
                         >
-                            <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, black 1px, transparent 0)', backgroundSize: '40px 40px' }} />
                             <ImageWithLoader 
                                 src={card.image} 
                                 alt={card.name} 
-                                className="w-full h-full object-contain drop-shadow-[0_40px_60px_rgba(0,0,0,0.25)]"
+                                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                             />
                         </motion.div>
-
-                        <div className="grid grid-cols-2 gap-8 pt-8">
-                             <div className="space-y-1">
-                                <p className="text-[10px] font-bold text-ink/20 uppercase tracking-[0.4em]">Introductory Yield</p>
-                                <p className="text-xl md:text-2xl font-serif italic text-ink tracking-tight">{card.intro_offer || 'Premium Access'}</p>
-                             </div>
-                             <div className="space-y-1">
-                                <p className="text-[10px] font-bold text-ink/20 uppercase tracking-[0.4em]">Annual Portfolio Fee</p>
-                                <p className="text-xl md:text-2xl font-serif italic text-ink tracking-tight">₹{card.annual_fee?.replace(/[^0-9]/g, '') || '0'}</p>
-                             </div>
-                        </div>
-
-                        <div className="p-8 md:p-10 bg-white border border-ink/5 rounded-[2.5rem] shadow-sm space-y-8">
-                            <h3 className="text-[11px] font-bold text-ink uppercase tracking-[0.4em] border-b border-ink/5 pb-6">Neural Compatibility</h3>
-                            <div className="space-y-6">
-                                <div className="flex justify-between items-end">
-                                    <span className="text-[10px] font-bold text-ink/40 uppercase tracking-widest">Reward Structure</span>
-                                    <span className="text-lg font-serif italic text-ink">{card.rewards_rate || 'Peak-Tier'}</span>
+                        {/* Floating Badges */}
+                        <div className="absolute -bottom-8 -right-8 bg-white p-6 rounded-3xl shadow-2xl border border-ink/5 animate-fade-in-up">
+                            <div className="flex items-center gap-4">
+                                <div className="w-12 h-12 bg-cream rounded-2xl flex items-center justify-center">
+                                    <Star className="text-clay fill-clay/20" size={24} />
                                 </div>
-                                <div className="flex justify-between items-end">
-                                    <span className="text-[10px] font-bold text-ink/40 uppercase tracking-widest">Best For</span>
-                                    <span className="text-lg font-serif italic text-ink">{card.best_for || 'Elite Lifestyles'}</span>
-                                </div>
-                                <div className="flex justify-between items-end">
-                                    <span className="text-[10px] font-bold text-ink/40 uppercase tracking-widest">Rating Tier</span>
-                                    <div className="flex items-center gap-2">
-                                        <div className="flex gap-0.5">
-                                            {[1,2,3,4,5].map(i => <Star key={i} size={10} className={`${i <= (card.rating || 4) ? 'fill-clay text-clay' : 'fill-ink/5 text-ink/5'}`} />)}
-                                        </div>
-                                        <span className="text-lg font-serif italic text-ink">{card.rating?.toFixed(1) || '4.5'}</span>
-                                    </div>
+                                <div>
+                                    <p className="text-[8px] font-bold text-ink/40 uppercase tracking-widest">Elite Rating</p>
+                                    <p className="text-2xl font-serif italic text-ink">{card.elite_rating?.toFixed(1) || card.rating?.toFixed(1) || '4.5'}/5.0</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    {/* Right Column: Scrolling Detail */}
-                    <div className="lg:col-span-7 space-y-20 md:space-y-32">
-                        
-                        {/* Heading Section */}
-                        <motion.section 
-                            initial={{ opacity: 0, x: 30 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 1 }}
-                            className="space-y-8"
-                        >
-                            <div className="flex items-center gap-3">
-                                <div className="w-1.5 h-1.5 bg-clay rounded-full" />
-                                <span className="text-[11px] font-bold text-clay uppercase tracking-[0.5em]">{card.issuer || card.bank}</span>
+                    <div className="space-y-10">
+                        <div className="space-y-4">
+                            <div className="flex items-center gap-3 text-clay font-bold">
+                                <Landmark size={18} />
+                                <span className="text-xs uppercase tracking-[0.4em]">{card.issuer || card.bank}</span>
                             </div>
-                            <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif text-ink leading-[0.85] tracking-tighter uppercase">
-                                {card.name.split(' ').slice(0, 2).join(' ')}<br />
-                                <span className="italic font-light text-ink/40">{card.name.split(' ').slice(2).join(' ')}</span>
+                            <h1 className="text-5xl md:text-7xl font-heading font-black tracking-tighter text-ink leading-[1.1]">
+                                {card.name}
                             </h1>
-                            <p className="text-lg md:text-2xl font-serif italic text-ink/50 leading-relaxed max-w-2xl border-l-2 border-ink/5 pl-8">
-                                {card.description || `A detailed performance analysis of the ${card.name} within our rewards transfer matrix.`}
+                            <p className="text-xl md:text-2xl font-sans font-medium text-ink/40 leading-snug max-w-xl">
+                                {card.best_for} • {card.category} Portfolio
                             </p>
-                        </motion.section>
 
-                        {/* Benefits Grid */}
-                        <section className="space-y-12">
-                            <h2 className="text-[11px] font-bold text-ink/20 uppercase tracking-[0.5em] flex items-center gap-4">
-                                The Advantage <div className="h-px flex-1 bg-ink/5" />
-                            </h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
-                                {(card.benefit_items || []).length > 0 ? card.benefit_items?.map((benefit, i) => (
-                                    <div key={i} className="space-y-6 group">
-                                        <div className="w-12 h-12 bg-cream border border-ink/5 rounded-2xl flex items-center justify-center group-hover:bg-ink group-hover:text-white transition-all duration-500">
-                                            {i % 4 === 0 ? <Percent size={20} /> : i % 4 === 1 ? <Smartphone size={20} /> : i % 4 === 2 ? <Hotel size={20} /> : <Plane size={20} />}
-                                        </div>
-                                        <div>
-                                            <h4 className="text-[10px] font-bold text-ink/30 uppercase tracking-[0.3em] mb-2">{benefit.heading}</h4>
-                                            <p className="text-2xl font-serif text-ink tracking-tight italic leading-tight">{benefit.subheading}</p>
-                                        </div>
-                                    </div>
-                                )) : (card.benefits || []).map((benefit, i) => (
-                                    <div key={i} className="flex items-start gap-6 group">
-                                        <div className="w-10 h-10 bg-cream rounded-xl flex items-center justify-center shrink-0 border border-ink/5 mt-1">
-                                            <CheckCircle2 size={16} className="text-clay" />
-                                        </div>
-                                        <p className="text-xl font-serif italic text-ink leading-snug">{benefit}</p>
-                                    </div>
-                                ))}
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-8 pt-10 border-t border-ink/5">
+                            <div className="space-y-2">
+                                <p className="text-ink text-[11px] font-bold uppercase tracking-[0.3em]">Annual Fee</p>
+                                <p className="text-2xl font-heading font-black text-ink">₹{String(card.annual_fee).replace(/^₹/, '')}</p>
                             </div>
-                        </section>
+                            <div className="space-y-2">
+                                <p className="text-ink text-[11px] font-bold uppercase tracking-[0.3em]">Joining Fee</p>
+                                <p className="text-2xl font-heading font-black text-ink">₹{String(card.joining_fee || card.annual_fee).replace(/^₹/, '')}</p>
+                            </div>
 
-                        {/* The Verdict Page Section */}
-                        <section className="relative pt-20">
-                             <div className="bg-[#1A1A2E] rounded-[3rem] md:rounded-[4rem] p-12 md:p-20 text-white relative overflow-hidden">
-                                 {/* Grid Pattern */}
-                                 <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
-                                 
-                                 <div className="relative z-10 space-y-12">
-                                     <div className="inline-flex items-center gap-3 px-5 py-2 bg-white/5 rounded-full border border-white/10">
-                                        <Sparkles size={14} className="text-clay" />
-                                        <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-clay">Final Audit</span>
-                                     </div>
-                                     <h2 className="text-4xl md:text-6xl font-serif italic text-white/50 leading-none tracking-tighter uppercase">
-                                        The <br /><span className="text-white font-normal not-italic">Verdict.</span>
-                                     </h2>
-                                     <div className="space-y-8">
-                                         <p className="text-lg md:text-2xl font-serif italic text-white/70 leading-relaxed border-l-2 border-clay pl-8">
-                                            "{card.verdict || `The analysis concludes that this instrument holds a unique position in the current market, specifically for portfolios focused on travel liquidity and lifestyle leverage.`}"
-                                         </p>
-                                         <div className="flex items-center gap-6 pt-6 opacity-40">
-                                             <div className="flex -space-x-4">
-                                                 {[1,2,3].map(i => <div key={i} className="w-10 h-10 rounded-full border-2 border-[#1A1A2E] bg-white opacity-80" />)}
-                                             </div>
-                                             <span className="text-[10px] font-bold uppercase tracking-widest italic">Verified by Council 09.</span>
-                                         </div>
-                                     </div>
-                                 </div>
-                             </div>
-                        </section>
+                        </div>
 
+                        <div className="flex flex-wrap gap-4 pt-10">
+                            {card.apply_link ? (
+                                <a href={card.apply_link} target="_blank" rel="noopener noreferrer" className="bg-ink text-white px-10 py-5 rounded-full font-bold flex items-center justify-center gap-4 transition-all shadow-xl hover:bg-clay text-[10px] uppercase tracking-[0.3em]">
+                                    Apply Now <ArrowRight size={16} />
+                                </a>
+                            ) : (
+                                <button className="bg-ink text-white px-10 py-5 rounded-full font-bold flex items-center justify-center gap-4 transition-all shadow-xl hover:bg-clay text-[10px] uppercase tracking-[0.3em]">
+                                    Apply Now <ArrowRight size={16} />
+                                </button>
+                            )}
+                            <button className="bg-white border border-ink/10 text-ink px-10 py-5 rounded-full font-bold flex items-center justify-center gap-4 transition-all hover:bg-ink group text-[10px] uppercase tracking-[0.3em] hover:text-white">
+                                Ask Yureka AI <MessageSquareShare size={16} className="text-clay group-hover:text-white" />
+                            </button>
+                        </div>
                     </div>
-                </div>
-            </main>
+                </section>
 
-            {/* Redirection / Navigation Context Footer */}
-            <section className="mt-48 px-6 md:px-12 lg:px-20 border-t border-ink/5 pt-32">
-                <div className="max-w-[1700px] mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
-                     <div className="max-w-xl text-center md:text-left">
-                        <h3 className="text-3xl md:text-4xl font-serif text-ink tracking-tighter uppercase leading-[0.85] mb-6">
-                            Continue <br /><span className="italic font-light text-ink/40">the exploration.</span>
-                        </h3>
-                        <p className="text-ink/50 font-serif italic text-lg lg:max-w-md">Our archives are live-updated. Discover another instrument that might offer higher neural yield.</p>
-                     </div>
-                     <div className="flex flex-col sm:flex-row gap-6">
-                        <Link to="/cards" className="h-16 px-10 bg-white border border-ink/10 rounded-full flex items-center justify-center text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-ink hover:text-white transition-all shadow-sm">
-                            Card Archives
-                        </Link>
-                        <Link to="/rewards-calculator" className="h-16 px-10 bg-[#1A1A2E] text-white rounded-full flex items-center justify-center text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-clay transition-all shadow-xl">
-                            Audit Another Pair
-                        </Link>
-                     </div>
-                </div>
-            </section>
+                {/* Benefits Section */}
+                <section id="benefits" className="mb-32">
+                    <div className="flex items-end justify-between mb-16 border-b-2 border-ink pb-8">
+                         <div>
+                            <p className="text-clay text-[10px] font-bold uppercase tracking-[0.5em] mb-4">The Advantage</p>
+                            <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tighter text-ink uppercase">Elite Benefits Portfolio</h2>
+                        </div>
+
+                        <div className="hidden md:block text-right">
+                            <p className="text-ink/30 text-[10px] font-bold uppercase tracking-widest max-w-[200px]">Curated analysis of reward structures and lifestyle perks.</p>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1px bg-ink/10 border border-ink/10 rounded-[3rem] overflow-hidden shadow-2xl">
+                        {card.benefit_items && card.benefit_items.length > 0 && card.benefit_items[0].heading ? (
+                            card.benefit_items.map((benefit, idx) => (
+                                <div key={idx} className="bg-white p-8 md:p-10 hover:bg-cream/40 transition-colors group">
+                                    <div className="w-10 h-10 md:w-12 md:h-12 bg-cream rounded-2xl flex items-center justify-center mb-6 md:mb-8 border border-ink/5 group-hover:scale-110 transition-transform">
+                                        <CheckCircle2 className="text-teal" size={20} />
+                                    </div>
+                                     <h3 className="text-xs font-bold text-ink/40 leading-tight mb-2 uppercase tracking-widest">{benefit.heading}</h3>
+                                    <p className="text-xl md:text-2xl font-heading font-black text-ink uppercase tracking-tight">{benefit.subheading}</p>
+                                </div>
+
+
+                            ))
+                        ) : card.benefits && card.benefits.length > 0 && card.benefits[0] ? (
+                            card.benefits.map((benefit, idx) => (
+                                <div key={idx} className="bg-white p-8 md:p-10 hover:bg-cream/40 transition-colors group">
+                                    <div className="w-10 h-10 md:w-12 md:h-12 bg-cream rounded-2xl flex items-center justify-center mb-6 md:mb-8 border border-ink/5 group-hover:scale-110 transition-transform">
+                                        <CheckCircle2 className="text-teal" size={20} />
+                                    </div>
+                                    <h3 className="text-xs font-bold text-ink/40 leading-tight mb-2 uppercase tracking-widest">{benefit}</h3>
+                                    <p className="text-xl md:text-2xl font-heading font-black text-ink uppercase tracking-tight italic">Premium Feature</p>
+                                </div>
+
+                            ))
+                        ) : (
+                            <div className="col-span-full py-32 text-center bg-white">
+                                <Info className="mx-auto text-ink/10 mb-6" size={48} />
+                                <p className="text-ink/40 font-sans">Benefit breakdown currently under audit.</p>
+                            </div>
+                        )}
+                    </div>
+                </section>
+
+                {/* The Verdict - Editorial Context */}
+                <section className="bg-ink text-white rounded-[4rem] p-12 md:p-24 relative overflow-hidden mb-32 shadow-2xl">
+                    <div className="absolute top-0 right-0 w-1/2 h-full bg-white/5 skew-x-[-20deg] translate-x-20"></div>
+                    <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+                        <div className="lg:col-span-7 space-y-10">
+                            <div className="inline-block border border-clay px-4 py-2 rounded-full">
+                                <p className="text-clay text-[10px] font-bold uppercase tracking-[0.4em]">Yureka Insights</p>
+                            </div>
+                             <h2 className="text-4xl md:text-6xl font-heading font-black leading-none tracking-tighter uppercase">
+                                The <span className="text-white/40">Verdict</span>
+                             </h2>
+                             <p className="text-xl md:text-2xl font-sans font-medium text-white/60 leading-relaxed italic border-l-4 border-clay pl-8">
+                                "{card.verdict || `The ${card.name} remains a cornerstone of the ${card.issuer || card.bank} ecosystem. While the ${card.annual_fee} fee is significant, the projected savings of ${card.projected_savings || '₹12,000/yr'} creates an undeniable value proposition for high-spend portfolios.`}"
+                             </p>
+
+                            <div className="flex items-center gap-6 pt-10">
+                                <div className="flex -space-x-4">
+                                    {[1, 2, 3].map(i => (
+                                        <div key={i} className="w-10 h-10 md:w-12 md:h-12 border-2 border-clay/10 bg-white shadow-xl overflow-hidden rounded-full shrink-0">
+                                            <img src={`https://i.pravatar.cc/100?img=${i+10}`} alt={`Analysis specialist ${i+1}`} loading="lazy" />
+                                        </div>
+                                    ))}
+                                </div>
+                                <p className="text-xs font-bold uppercase tracking-widest text-white/40">Verified by Yureka Council</p>
+                            </div>
+                        </div>
+                        <div className="lg:col-span-5 bg-white/10 backdrop-blur-xl p-12 rounded-[3rem] border border-white/10 space-y-8 shadow-inner">
+                            <h3 className="text-xs font-bold uppercase tracking-[0.5em] text-clay">Technical Profile</h3>
+                            <div className="space-y-6">
+                                 <div className="flex justify-between items-center border-b border-white/5 pb-4">
+                                    <span className="text-lg font-bold text-white uppercase tracking-widest">Reward Rate</span>
+                                    <span className="text-xl font-heading font-bold text-white">{card.rewards_rate || '5% Base'}</span>
+                                </div>
+                                <div className="flex justify-between items-center border-b border-white/5 pb-4">
+                                    <span className="text-lg font-bold text-white uppercase tracking-widest">Best For</span>
+                                    <span className="text-xl font-heading font-bold text-white">{card.best_for}</span>
+                                </div>
+
+                                <div className="flex justify-between items-center border-b border-white/5 pb-4">
+                                    <span className="text-lg font-bold text-white uppercase tracking-widest">Status</span>
+                                    <div className="flex items-center gap-2 text-green-400">
+                                        <Zap size={14} className="fill-green-400" />
+                                        <span className="text-xs font-bold uppercase tracking-widest">Highly Liquid</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button className="w-full bg-white text-ink font-black py-7 rounded-[2rem] text-sm uppercase tracking-[0.3em] hover:bg-clay hover:text-white transition-all shadow-2xl">
+                                Request Full Audit
+                            </button>
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+
         </div>
     );
 };
