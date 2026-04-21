@@ -308,48 +308,7 @@ const CardExplorer: React.FC = () => {
                             </div>
                         </div>
 
-                            {/* Reward Category */}
-                            <div className="flex-1 px-6 py-3 border-b md:border-b-0 md:border-r border-white/10 text-left relative group">
-                                <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40 mb-1 block">Category</label>
-                                <select 
-                                    value={selectedCategories[0] || 'All Categories'}
-                                    onChange={(e) => setSelectedCategories(e.target.value === 'All Categories' ? [] : [e.target.value])}
-                                    className="bg-transparent text-white font-bold appearance-none outline-none w-full cursor-pointer pr-8"
-                                >
-                                    <option className="bg-[#1e1a4b]">All Categories</option>
-                                    {ALL_CATEGORIES.map(cat => (
-                                        <option key={cat.name} className="bg-[#1e1a4b]">{cat.name}</option>
-                                    ))}
-                                </select>
-                                <ChevronDown className="absolute right-6 top-1/2 -translate-y-1/2 text-white/20 pointer-events-none" size={16} />
-                            </div>
 
-                            {/* Card Type */}
-                            <div className="flex-1 px-6 py-3 text-left relative group">
-                                <label className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/40 mb-1 block">Card Type</label>
-                                <select 
-                                    value={cardType}
-                                    onChange={(e) => setCardType(e.target.value)}
-                                    className="bg-transparent text-white font-bold appearance-none outline-none w-full cursor-pointer pr-8"
-                                >
-                                    <option className="bg-[#1e1a4b]">All Types</option>
-                                    <option className="bg-[#1e1a4b]">Premium</option>
-                                    <option className="bg-[#1e1a4b]">Lifestyle</option>
-                                    <option className="bg-[#1e1a4b]">Entry-level</option>
-                                </select>
-                                <ChevronDown className="absolute right-6 top-1/2 -translate-y-1/2 text-white/20 pointer-events-none" size={16} />
-                            </div>
-
-                            {/* Toggles Mobile Hidden */}
-                            <div className="hidden lg:flex items-center gap-3 px-6 shrink-0">
-                                <div className="flex items-center gap-3 bg-white/10 px-5 py-3 rounded-full border border-white/5">
-                                    <span className="text-[10px] font-bold uppercase tracking-widest text-white/80">LTF Only</span>
-                                    <div className="w-8 h-4 bg-white/10 rounded-full relative">
-                                        <div className="absolute left-1 top-1 w-2 h-2 bg-white rounded-full"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
                         {/* Integration Banner (Flenting vs Renting Style) */}
                         <div className="mt-8">
