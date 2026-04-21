@@ -260,8 +260,8 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp })
   const ctaOpacity = useTransform(smoothProgress, [0.75, 0.88], [0, 1]);
 
   return (
-    <section ref={containerRef} className="relative bg-cream h-[300vh] border-t border-ink/10 z-10">
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center p-2 md:p-6 lg:p-8">
+    <section ref={containerRef} className="relative bg-cream h-[250vh] border-t border-ink/10 z-10">
+      <div className="sticky top-0 h-[85vh] w-full overflow-hidden flex items-center justify-center p-2 md:p-4 lg:p-6 pb-2 md:pb-4 lg:pb-6">
 
         <div className="relative w-full h-full max-w-[1700px] border border-ink/10 bg-paper flex flex-col shadow-xl">
 
