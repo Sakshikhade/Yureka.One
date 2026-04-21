@@ -3,6 +3,7 @@ import ImageWithLoader from './ImageWithLoader';
 import { Link } from 'react-router-dom';
 import { Globe, Sparkles } from 'lucide-react';
 import { motion } from 'motion/react';
+import GroupChatAudit from './GroupChatAudit';
 
 const Hero: React.FC = () => {
   const fadeInUp = {
@@ -167,59 +168,10 @@ const Hero: React.FC = () => {
                      </div>
                 </motion.div>
 
-                {/* Center: Hero Images (The "Photo") */}
-                <div className="md:col-span-1 lg:col-span-6 relative flex justify-center items-center pt-10 md:pt-16 pb-16 md:pb-24 lg:px-16 min-h-[450px] md:min-h-[600px] border-b md:border-b-0 lg:border-r-2 border-ink/10 overflow-hidden">
-                     <div className="relative w-[95%] max-w-[360px] sm:max-w-lg aspect-[4/5] md:aspect-auto md:h-[98%]">
-                        {/* Image 1 */}
-                        <motion.div 
-                            initial={{ opacity: 0, x: -50, rotate: -10 }}
-                            whileInView={{ opacity: 1, x: 0, rotate: -3 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
-                            className="absolute top-0 left-0 w-[95%] z-20 group"
-                        >
-                           <div className="bg-white p-4 md:p-5 pb-12 md:pb-20 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.1)] transition-all duration-1000 group-hover:rotate-0 group-hover:scale-105 border border-ink/5 rounded-sm">
-                                <div className="aspect-[4/5] bg-slate-100 transition-all duration-500 overflow-hidden border border-ink/5 rounded-sm grayscale group-hover:grayscale-0 transition-all duration-1000">
-                                     <ImageWithLoader 
-                                        src="https://images.unsplash.com/photo-1556742044-3c52d6e88c62?auto=format&fit=crop&q=80&w=800" 
-                                        className="w-full h-full object-cover sm:scale-110 group-hover:scale-100 transition-transform duration-[2s]" 
-                                        alt="Modern credit card payment experience"
-                                        priority={true}
-                                     />
-                                </div>
-                                <div className="mt-6 md:mt-12 flex justify-between items-end px-3">
-                                    <div>
-                                        <p className="text-ink font-serif italic text-sm md:text-lg mb-1">Fig 01. The Optimal Path</p>
-                                        <p className="text-[9px] font-medium text-ink/20 uppercase tracking-[0.2em]">Sensor Audit // 09.04.26</p>
-                                    </div>
-                                    <span className="text-[11px] font-medium text-ink/20 uppercase tracking-[0.3em]">Index // A</span>
-                                </div>
-                           </div>
-                        </motion.div>
-
-                        {/* Image 2 */}
-                        <motion.div 
-                            initial={{ opacity: 0, x: 50, rotate: 10 }}
-                            whileInView={{ opacity: 1, x: 0, rotate: 6 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.6 }}
-                            className="absolute top-[35%] right-0 w-[80%] z-10 group"
-                        >
-                           <div className="bg-stone-50 p-5 pb-12 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.05)] transition-all duration-1000 group-hover:rotate-0 group-hover:z-30 group-hover:scale-105 border border-ink/5 rounded-sm">
-                                <div className="aspect-square bg-slate-50 transition-all duration-500 overflow-hidden border border-ink/5 rounded-sm">
-                                     <ImageWithLoader 
-                                        src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=800" 
-                                        className="w-full h-full object-cover opacity-80 group-hover:opacity-100 scale-125 group-hover:scale-110 transition-transform duration-[3s]" 
-                                        alt="AI matching visualization"
-                                        priority={true}
-                                     />
-                                </div>
-                                <div className="mt-8 text-center px-4">
-                                    <p className="text-ink font-serif italic text-base mb-2">Fig 02. Neural Logic Check</p>
-                                    <div className="h-[1px] w-8 bg-ink/10 mx-auto" />
-                                </div>
-                           </div>
-                        </motion.div>
+                {/* Center: Mobile Group Chat Simulation */}
+                <div className="md:col-span-1 lg:col-span-6 relative flex justify-center items-center pt-8 md:pt-12 pb-16 md:pb-20 lg:px-6 min-h-[550px] md:min-h-[750px] border-b md:border-b-0 lg:border-r-2 border-ink/10 overflow-visible">
+                     <div className="relative w-full h-full flex items-center justify-center">
+                         <GroupChatAudit />
                      </div>
                 </div>
 
