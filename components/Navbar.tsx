@@ -46,7 +46,7 @@ const Navbar: React.FC = () => {
             <div className={`
                 flex flex-col relative z-10 group cursor-pointer mr-8
             `}>
-                <Link to="/" className="font-heading font-black tracking-tighter text-xl md:text-2xl text-ink leading-none hover:opacity-80 transition-opacity flex items-baseline uppercase">
+                <Link to="/" className="font-heading font-medium tracking-tighter text-lg md:text-xl text-ink leading-none hover:opacity-80 transition-opacity flex items-baseline uppercase">
                     Yureka<span className="text-clay">.</span>money
                 </Link>
 
@@ -72,7 +72,7 @@ const Navbar: React.FC = () => {
                             key={item.name}
                             to={item.path} 
                             className={`
-                                relative text-[11px] font-bold uppercase tracking-widest transition-all py-1
+                                relative text-[11px] font-medium uppercase tracking-widest transition-all py-1
                                 ${location.pathname === item.path ? 'text-ink border-b-2 border-clay' : 'text-ink/50 hover:text-ink'}
                             `}
                         >
@@ -85,14 +85,14 @@ const Navbar: React.FC = () => {
 
                 <div className="flex items-center gap-4 lg:gap-6">
                       <Link to="/yureka-ai" className={`
-                        text-ink font-sans font-bold text-sm lg:text-base hover:text-clay transition-colors whitespace-nowrap uppercase tracking-widest
+                        text-ink font-sans font-medium text-sm lg:text-base hover:text-clay transition-colors whitespace-nowrap uppercase tracking-widest
                       `}>
                         Yureka AI
                       </Link>
 
                     
                     <Link to="/coming-soon" className={`
-                        bg-ink text-white text-[10px] lg:text-xs font-bold uppercase tracking-widest px-6 lg:px-8 py-3 lg:py-3.5
+                        bg-ink text-white text-[10px] lg:text-xs font-medium uppercase tracking-widest px-6 lg:px-8 py-3 lg:py-3.5
                         flex items-center gap-2 group transition-all duration-500 rounded-full shrink-0 shadow-xl hover:shadow-clay/20 hover:-translate-y-0.5
                     `}>
                         <Sparkles size={14} className="text-clay" />
@@ -137,7 +137,7 @@ const Navbar: React.FC = () => {
                 className="absolute top-0 right-0 h-full w-[85%] max-w-[400px] bg-paper border-l border-ink/10 p-8 flex flex-col shadow-2xl"
               >
                   <div className="flex justify-between items-center mb-12 border-b border-ink/10 pb-6">
-                      <span className="font-sans text-3xl font-black text-ink flex items-end uppercase">
+                      <span className="font-sans text-2xl font-medium text-ink flex items-end uppercase">
                         Index<span className="text-clay ml-1">.</span>
                       </span>
 
@@ -165,7 +165,7 @@ const Navbar: React.FC = () => {
                                 onClick={() => setIsMobileMenuOpen(false)} 
                                 className="group block"
                             >
-                                <div className="text-2xl font-heading font-black text-ink group-hover:text-clay transition-colors mb-1 uppercase">{item.name}</div>
+                                <div className="text-xl font-heading font-medium text-ink group-hover:text-clay transition-colors mb-1 uppercase">{item.name}</div>
                                 <div className="text-[10px] font-sans uppercase tracking-[0.2em] text-ink/40 group-hover:text-ink/60">{item.desc}</div>
                             </Link>
 
@@ -178,7 +178,7 @@ const Navbar: React.FC = () => {
                       transition={{ delay: 0.6 }}
                       className="mt-4"
                     >
-                        <Link to="/coming-soon" onClick={() => setIsMobileMenuOpen(false)} className="w-full py-4 bg-ink text-white font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 transition-all rounded-full shadow-lg">
+                        <Link to="/coming-soon" onClick={() => setIsMobileMenuOpen(false)} className="w-full py-4 bg-ink text-white font-medium uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 transition-all rounded-full shadow-lg">
                             <Sparkles size={16} className="text-clay" />
                             Intelligence Lab
                         </Link>

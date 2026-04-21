@@ -16,37 +16,47 @@ const TextReveal: React.FC = () => {
   const words = bodyText.split(" ");
 
   return (
-    <section ref={containerRef} className="relative bg-cream h-[150vh] md:h-[200vh] z-20 flex items-start justify-center border-b border-black/10 text-ink">
+    <section ref={containerRef} className="relative bg-cream h-[250vh] md:h-[400vh] z-20 border-b border-black/10 text-ink overflow-visible">
+      {/* Background Micro-details */}
+      <div className="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/p6-mini.png')]" />
 
+      <div className="sticky top-0 h-screen flex flex-col items-center justify-center px-6 md:px-12 max-w-[1240px] mx-auto w-full overflow-hidden">
+        <div className="w-full border-l-2 border-clay/20 pl-8 md:pl-20 py-20 relative">
+            {/* Corner Deco */}
+            <div className="absolute top-0 left-0 w-8 h-px bg-clay/20"></div>
+            <div className="absolute top-0 left-0 w-px h-8 bg-clay/20"></div>
 
-      <div className="sticky top-0 h-screen flex flex-col items-center justify-center px-6 md:px-12 max-w-[1200px] mx-auto w-full">
-        <div className="w-full max-w-5xl border-l border-clay/30 pl-8 md:pl-16 py-12">
             <motion.div 
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="mb-12"
+              style={{ opacity: useTransform(scrollYProgress, [0, 0.05], [0, 1]) }}
+              className="mb-12 md:mb-16"
             >
-                <h3 className="text-ink/40 font-mono text-xs uppercase tracking-[0.3em] border-b border-clay/10 pb-4 inline-block">
-                    {headerText}
-                </h3>
+                <div className="flex items-center gap-4">
+                  <div className="h-px w-8 bg-clay/30"></div>
+                  <h3 className="text-ink font-medium text-[10px] uppercase tracking-[0.4em]">
+                      {headerText}
+                  </h3>
+                </div>
             </motion.div>
 
-            <div className="flex flex-wrap gap-x-3 gap-y-1 md:gap-x-4 md:gap-y-2 leading-tight">
+            <div className="flex flex-wrap gap-x-3 gap-y-1 md:gap-x-5 md:gap-y-3 leading-[1.1]">
             {words.map((word, i) => {
-                const start = (i / words.length) * 0.8; // Finish all words by 80% to give a buffer for the signature
+                // Precise word-by-word reveal timing
+                const start = (i / words.length) * 0.88; 
                 const end = start + 0.1;
 
+                // Color transition from grey to ink black
                 // eslint-disable-next-line react-hooks/rules-of-hooks
-                const opacity = useTransform(scrollYProgress, [start, end], [0.1, 1]);
-
+                const color = useTransform(
+                  scrollYProgress, 
+                  [start, end], 
+                  ["rgba(17, 17, 17, 0.08)", "rgba(17, 17, 17, 1)"]
+                );
 
                 return (
                 <motion.span
                     key={i}
-                    style={{ opacity }}
-                    className="font-serif text-2xl md:text-3xl lg:text-5xl text-ink"
+                    style={{ color }}
+                    className="font-heading font-medium text-2xl sm:text-3xl md:text-5xl lg:text-5xl xl:text-6xl uppercase tracking-tight"
                 >
                     {word}
                 </motion.span>
@@ -56,14 +66,18 @@ const TextReveal: React.FC = () => {
             
             <motion.div 
               style={{ 
-                opacity: useTransform(scrollYProgress, [0.8, 0.9], [0, 0.5]) 
+                opacity: useTransform(scrollYProgress, [0.94, 0.98], [0, 1])
               }}
-              className="mt-12"
+              className="mt-16 md:mt-20 pt-8 border-t border-clay/10 inline-block"
             >
-                <p className="font-mono text-xs uppercase tracking-widest text-ink/60">
-                    — The Editors
+                <p className="font-serif italic text-lg text-ink/40">
+                    — The Intelligence Bureau
                 </p>
             </motion.div>
+
+            {/* Bottom Deco */}
+            <div className="absolute bottom-0 left-0 w-8 h-px bg-clay/20"></div>
+            <div className="absolute bottom-0 left-0 w-px h-8 bg-clay/20"></div>
 
         </div>
       </div>

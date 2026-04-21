@@ -21,10 +21,10 @@ const WindowFrame: React.FC<{ children: React.ReactNode, title?: string, color?:
         </div>
         {title && (
           <div className="flex items-center gap-2">
-            <span className={`text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em] ${dark ? 'text-white/40' : 'text-ink/40'}`}>{title}</span>
+            <span className={`text-[9px] md:text-[10px] font-medium uppercase tracking-[0.2em] ${dark ? 'text-white/40' : 'text-ink/40'}`}>{title}</span>
           </div>
         )}
-        <div className={`text-[8px] md:text-[9px] font-black italic tracking-wider ${dark ? 'text-white/10' : 'text-ink/10'}`}>V.2.4B</div>
+        <div className={`text-[8px] md:text-[9px] font-medium italic tracking-wider ${dark ? 'text-white/10' : 'text-ink/10'}`}>V.2.4B</div>
       </div>
       <div className="flex-1 relative overflow-hidden">
         {children}
@@ -160,7 +160,7 @@ const YurekaAIAnimation = () => {
                 >
                   {msg.type === 'user' ? <Search size={16} className="text-white/60" /> : <Cpu size={18} className="text-white" />}
                 </motion.div>
-                <div className={`max-w-[85%] px-6 py-5 rounded-[2rem] tracking-tight text-[12px] md:text-[14px] font-bold leading-relaxed shadow-[0_20px_50px_-10px_rgba(0,0,0,0.12)] border ${
+                <div className={`max-w-[85%] px-6 py-5 rounded-[2rem] tracking-tight text-[12px] md:text-[14px] font-medium leading-relaxed shadow-[0_20px_50px_-10px_rgba(0,0,0,0.12)] border ${
                   msg.type === 'user' ? 'bg-white border-black/5 text-[#111111] rounded-br-none' : 'bg-[#111111] border-transparent text-white rounded-bl-none'
                 }`}>
                   {msg.type === 'ai' ? (
@@ -193,7 +193,7 @@ const YurekaAIAnimation = () => {
                      />
                    ))}
                 </div>
-                <span className="text-[10px] font-black uppercase text-[#1B4D4B]/40 tracking-[0.2em] animate-pulse">Computing Yield Path...</span>
+                <span className="text-[10px] font-medium uppercase text-[#1B4D4B]/40 tracking-[0.2em] animate-pulse">Computing Yield Path...</span>
               </motion.div>
             )}
           </AnimatePresence>
@@ -206,7 +206,7 @@ const YurekaAIAnimation = () => {
                 {userInputStatus === "Typing" && (
                     <motion.div animate={{ opacity: [0.2, 1, 0.2] }} transition={{ repeat: Infinity, duration: 1.5 }} className="w-2.5 h-2.5 bg-[#1B4D4B] rounded-full shrink-0" />
                 )}
-                <span className={`text-[12px] md:text-base font-bold transition-all duration-500 truncate ${userInputStatus === "Typing" ? 'text-[#1B4D4B]' : 'text-[#111111]/20'}`}>
+                <span className={`text-[12px] md:text-base font-medium transition-all duration-500 truncate ${userInputStatus === "Typing" ? 'text-[#1B4D4B]' : 'text-[#111111]/20'}`}>
                     {userInputStatus === "Typing" ? "Analyzing Reward Transfer Matrix..." : "Ask Yureka Neural Assistant..."}
                 </span>
              </div>
@@ -298,13 +298,13 @@ const RewardXAnimation = () => {
                     <div className="flex gap-1">
                        {[0, 1, 2].map(i => <motion.div key={i} animate={{ opacity: [0.2, 1, 0.2] }} transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2 }} className="w-1 h-1 rounded-full bg-orange-600" />)}
                     </div>
-                    <span className="text-[9px] font-black tracking-[0.3em] text-orange-600 uppercase">Yield Script Pulse</span>
+                    <span className="text-[9px] font-medium tracking-[0.3em] text-orange-600 uppercase">Yield Script Pulse</span>
                 </motion.div>
-                <h3 className="text-4xl font-black text-[#111111] tracking-tighter uppercase leading-tight">Executive<br />Protocol</h3>
+                <h3 className="text-3xl font-medium text-[#111111] tracking-tighter uppercase leading-tight">Executive<br />Protocol</h3>
             </div>
             <div className="text-right">
-                <div className="text-[9px] font-black text-[#111111]/30 tracking-widest uppercase mb-1">Total Yield Unlocked</div>
-                <div className="text-3xl font-black text-orange-600 tracking-tighter tabular-nums">₹{savings.toLocaleString()}</div>
+                <div className="text-[9px] font-medium text-[#111111]/30 tracking-widest uppercase mb-1">Total Yield Unlocked</div>
+                <div className="text-2xl font-medium text-orange-600 tracking-tighter tabular-nums">₹{savings.toLocaleString()}</div>
             </div>
         </div>
 
@@ -331,19 +331,19 @@ const RewardXAnimation = () => {
                       {s.icon}
                     </motion.div>
                     <div>
-                      <div className="text-[14px] font-black text-[#111111] uppercase tracking-tight">{s.label}</div>
-                      <div className="text-[10px] font-bold text-[#111111]/40 uppercase tracking-[0.2em] flex items-center gap-2">
+                      <div className="text-[14px] font-medium text-[#111111] uppercase tracking-tight">{s.label}</div>
+                      <div className="text-[10px] font-medium text-[#111111]/40 uppercase tracking-[0.2em] flex items-center gap-2">
                         {i === 0 ? 'Source Node' : i < step ? 'Yield Executed' : 'Optimizing Logic...'}
-                        {i === step && <motion.span animate={{ opacity: [1, 0, 1] }} className="text-orange-500 font-black">●</motion.span>}
+                        {i === step && <motion.span animate={{ opacity: [1, 0, 1] }} className="text-orange-500 font-medium">●</motion.span>}
                       </div>
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className={`text-lg font-black tracking-tight ${s.type === 'base' ? 'text-[#111111]' : 'text-orange-600'}`}>
+                    <div className={`text-base font-medium tracking-tight ${s.type === 'base' ? 'text-[#111111]' : 'text-orange-600'}`}>
                       {s.value > 0 ? '' : '−'}₹{Math.abs(s.value).toLocaleString()}
                     </div>
                     {s.badge && (
-                      <div className="inline-block px-2.5 py-1 mt-1 bg-orange-600 text-white text-[9px] font-black rounded-lg tracking-tight shadow-sm">
+                      <div className="inline-block px-2.5 py-1 mt-1 bg-orange-600 text-white text-[9px] font-medium rounded-lg tracking-tight shadow-sm">
                         {s.badge}
                       </div>
                     )}
@@ -360,12 +360,12 @@ const RewardXAnimation = () => {
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-orange-500/20 to-transparent translate-x-[-100%] animate-[shimmer_3s_infinite]" />
                 <div className="relative z-10">
-                    <div className="text-[10px] font-black text-white/40 uppercase tracking-[0.4em] mb-2">Settlement Pipeline Value</div>
-                    <div className="text-5xl font-black tracking-[-0.05em]">₹{count.toLocaleString()}</div>
+                    <div className="text-[10px] font-medium text-white/40 uppercase tracking-[0.4em] mb-2">Settlement Pipeline Value</div>
+                    <div className="text-4xl font-medium tracking-tight">₹{count.toLocaleString()}</div>
                 </div>
                 <div className="relative z-10 bg-orange-600 px-6 py-4 rounded-[1.5rem] shadow-xl rotate-3 group-hover:rotate-0 transition-all duration-500 border-2 border-white/10">
-                   <div className="text-[10px] font-black text-white/60 uppercase tracking-widest mb-1 text-center">Net Yield</div>
-                   <div className="text-3xl font-black tabular-nums tracking-tighter">19.2%</div>
+                   <div className="text-[10px] font-medium text-white/60 uppercase tracking-widest mb-1 text-center">Net Yield</div>
+                   <div className="text-2xl font-medium tabular-nums tracking-tighter">19.2%</div>
                 </div>
               </motion.div>
             )}
@@ -381,9 +381,9 @@ const RewardXAnimation = () => {
                         </div>
                     ))}
                 </div>
-                <div className="text-[9px] font-black text-[#111111]/30 uppercase tracking-[0.3em] animate-pulse">Running Optimized Swipe Path v4.9.2</div>
+                <div className="text-[9px] font-medium text-[#111111]/30 uppercase tracking-[0.3em] animate-pulse">Running Optimized Swipe Path v4.9.2</div>
             </div>
-            <div className="text-[9px] font-black text-[#111111] uppercase tracking-[0.3em]">Code: RX-VAULT-7</div>
+            <div className="text-[9px] font-medium text-[#111111] uppercase tracking-[0.3em]">Code: RX-VAULT-7</div>
         </div>
       </div>
     </WindowFrame>
@@ -422,8 +422,8 @@ const ExtensionAnimation = () => {
                         <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-black/[0.03]">
                             <div className="w-10 h-10 border-2 border-teal-500/20 border-t-teal-500 rounded-full animate-spin" />
                             <div>
-                                <div className="text-[10px] font-black uppercase text-ink/40 tracking-widest">Protocol 1</div>
-                                <div className="text-[12px] font-black text-ink">Scanning Merchant Data...</div>
+                                <div className="text-[10px] font-medium uppercase text-ink/40 tracking-widest">Protocol 1</div>
+                                <div className="text-[12px] font-medium text-ink">Scanning Merchant Data...</div>
                             </div>
                         </div>
                         <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
@@ -440,8 +440,8 @@ const ExtensionAnimation = () => {
                             ))}
                         </div>
                         <div>
-                            <div className="text-[10px] font-black uppercase text-ink/40 tracking-widest">Protocol 2</div>
-                            <div className="text-[14px] font-black text-ink">Analyzing 4 saved Credit Cards...</div>
+                            <div className="text-[10px] font-medium uppercase text-ink/40 tracking-widest">Protocol 2</div>
+                            <div className="text-[14px] font-medium text-ink">Analyzing 4 saved Credit Cards...</div>
                         </div>
                     </motion.div>
                 );
@@ -451,14 +451,14 @@ const ExtensionAnimation = () => {
                          <div className="flex flex-col gap-2">
                             {[0, 1, 2].map(i => (
                                 <motion.div key={i} initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: i * 0.3 }} className="h-8 bg-amber-50 border border-amber-100 rounded-xl flex items-center px-4 justify-between">
-                                    <div className="text-[9px] font-black text-amber-700 uppercase">Voucher Node #{i+102}</div>
+                                    <div className="text-[9px] font-medium text-amber-700 uppercase">Voucher Node #{i+102}</div>
                                     <Zap size={10} className="text-amber-500" />
                                 </motion.div>
                             ))}
                         </div>
                         <div>
-                            <div className="text-[10px] font-black uppercase text-ink/40 tracking-widest">Protocol 3</div>
-                            <div className="text-[14px] font-black text-ink">Auditing institutional gift cards...</div>
+                            <div className="text-[10px] font-medium uppercase text-ink/40 tracking-widest">Protocol 3</div>
+                            <div className="text-[14px] font-medium text-ink">Auditing institutional gift cards...</div>
                         </div>
                     </motion.div>
                 );
@@ -469,8 +469,8 @@ const ExtensionAnimation = () => {
                             <Star size={32} />
                         </motion.div>
                         <div>
-                            <div className="text-[11px] font-black uppercase text-emerald-600 tracking-widest mb-2">Optimal Path Logged</div>
-                            <div className="text-lg font-black text-ink leading-tight">Match: HDFC Infinia + High-Yield Voucher</div>
+                            <div className="text-[11px] font-medium uppercase text-emerald-600 tracking-widest mb-2">Optimal Path Logged</div>
+                            <div className="text-lg font-medium text-ink leading-tight">Match: HDFC Infinia + High-Yield Voucher</div>
                         </div>
                     </motion.div>
                 );
@@ -479,8 +479,8 @@ const ExtensionAnimation = () => {
                     <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
                         <div className="p-5 bg-emerald-50 rounded-[2rem] border border-emerald-100 flex items-center justify-between shadow-sm">
                             <div>
-                                <div className="text-[10px] font-black text-emerald-700 uppercase tracking-widest mb-1">Final Result</div>
-                                <div className="text-3xl font-black text-emerald-900 tracking-tighter">₹12,840.00</div>
+                                <div className="text-[10px] font-medium text-emerald-700 uppercase tracking-widest mb-1">Final Result</div>
+                                <div className="text-2xl font-medium text-emerald-900 tracking-tighter">₹12,840.00</div>
                             </div>
                             <motion.div animate={{ rotate: 360 }} transition={{ duration: 4, repeat: Infinity, ease: 'linear' }} className="w-12 h-12 bg-white rounded-full flex items-center justify-center border border-emerald-100 text-emerald-600">
                                 <Sparkles size={20} />
@@ -495,9 +495,9 @@ const ExtensionAnimation = () => {
                                 <div key={i} className="flex justify-between items-center p-3.5 bg-slate-50/50 rounded-2xl border border-black/[0.03]">
                                     <div className="flex items-center gap-3">
                                         <div className="text-teal-600">{row.icon}</div>
-                                        <span className="text-[10px] font-black text-ink/30 uppercase tracking-tight">{row.label}</span>
+                                        <span className="text-[10px] font-medium text-ink/30 uppercase tracking-tight">{row.label}</span>
                                     </div>
-                                    <span className="text-[11px] font-black text-ink">{row.val}</span>
+                                    <span className="text-[11px] font-medium text-ink">{row.val}</span>
                                 </div>
                              ))}
                         </div>
@@ -505,7 +505,7 @@ const ExtensionAnimation = () => {
                         <motion.button 
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
-                            className="w-full h-16 bg-[#1B4D4B] text-white rounded-[1.5rem] text-[11px] font-black uppercase tracking-[0.2em] shadow-2xl shadow-teal-900/30 flex items-center justify-center gap-3 relative group overflow-hidden"
+                            className="w-full h-16 bg-[#1B4D4B] text-white rounded-[1.5rem] text-[11px] font-medium uppercase tracking-[0.2em] shadow-2xl shadow-teal-900/30 flex items-center justify-center gap-3 relative group overflow-hidden"
                         >
                             <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 -translate-x-[100%] group-hover:translate-x-[100%] transition-transform duration-700" />
                             Apply Protocol <MousePointer size={14} className="opacity-40" />
@@ -518,7 +518,7 @@ const ExtensionAnimation = () => {
                         <div className="w-16 h-16 bg-slate-50 rounded-3xl mx-auto flex items-center justify-center text-slate-200">
                             <Sparkles size={32} />
                         </div>
-                        <div className="text-[11px] font-black text-ink/20 uppercase tracking-[0.3em]">Agent in standby</div>
+                        <div className="text-[11px] font-medium text-ink/20 uppercase tracking-[0.3em]">Agent in standby</div>
                     </div>
                 );
         }
@@ -563,7 +563,7 @@ const ExtensionAnimation = () => {
                 <div className="flex-1 p-6 md:p-10 relative overflow-hidden">
                     <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div className="md:col-span-2 space-y-6">
-                            <div className="text-sm font-black text-ink/80 tracking-tight mb-4 flex justify-between">
+                            <div className="text-sm font-medium text-ink/80 tracking-tight mb-4 flex justify-between">
                                 <span>Shopping Cart (2 items)</span>
                                 <span className="text-ink/20">Price</span>
                             </div>
@@ -577,27 +577,27 @@ const ExtensionAnimation = () => {
                                     </div>
                                     <div className="flex-1 justify-between flex">
                                         <div className="space-y-1">
-                                            <div className="text-sm font-black text-ink">{item.name}</div>
-                                            <div className="text-[10px] font-bold text-ink/30 uppercase tracking-widest">{item.spec}</div>
-                                            <div className="text-[10px] text-emerald-500 font-bold mt-2 lowercase">In Stock</div>
+                                            <div className="text-sm font-medium text-ink">{item.name}</div>
+                                            <div className="text-[10px] font-medium text-ink/30 uppercase tracking-widest">{item.spec}</div>
+                                            <div className="text-[10px] text-emerald-500 font-medium mt-2 lowercase">In Stock</div>
                                         </div>
-                                        <div className="text-sm font-black text-ink">{item.price}</div>
+                                        <div className="text-sm font-medium text-ink">{item.price}</div>
                                     </div>
                                 </div>
                             ))}
                         </div>
                         <div className="bg-white p-6 rounded-3xl border border-black/[0.05] shadow-sm h-fit space-y-6">
-                             <div className="text-xs font-black text-ink uppercase tracking-widest">Order Summary</div>
+                             <div className="text-xs font-medium text-ink uppercase tracking-widest">Order Summary</div>
                              <div className="space-y-3">
-                                <div className="flex justify-between text-[11px] font-bold text-ink/40 uppercase"><span>Subtotal</span><span>₹1,54,890</span></div>
-                                <div className="flex justify-between text-[11px] font-bold text-ink/40 uppercase"><span>Shipping</span><span className="text-emerald-500">FREE</span></div>
+                                <div className="flex justify-between text-[11px] font-medium text-ink/40 uppercase"><span>Subtotal</span><span>₹1,54,890</span></div>
+                                <div className="flex justify-between text-[11px] font-medium text-ink/40 uppercase"><span>Shipping</span><span className="text-emerald-500">FREE</span></div>
                              </div>
                              <div className="h-[1px] bg-black/5" />
                              <div className="flex justify-between items-end">
-                                <div className="text-[10px] font-black text-ink uppercase tracking-widest leading-none mb-1">Total</div>
-                                <div className="text-xl font-black text-ink tracking-tight">₹1,54,890</div>
+                                <div className="text-[10px] font-medium text-ink uppercase tracking-widest leading-none mb-1">Total</div>
+                                <div className="text-xl font-medium text-ink tracking-tight">₹1,54,890</div>
                              </div>
-                             <motion.div animate={journeyStep === 5 ? { opacity: 0.5, scale: 0.95 } : {}} className="w-full h-12 bg-amber-400 rounded-xl flex items-center justify-center text-[10px] font-black uppercase tracking-widest text-ink shadow-lg shadow-amber-400/20">
+                             <motion.div animate={journeyStep === 5 ? { opacity: 0.5, scale: 0.95 } : {}} className="w-full h-12 bg-amber-400 rounded-xl flex items-center justify-center text-[10px] font-medium uppercase tracking-widest text-ink shadow-lg shadow-amber-400/20">
                                 Proceed to Buy
                              </motion.div>
                         </div>
@@ -629,11 +629,11 @@ const ExtensionAnimation = () => {
                                         <Sparkles size={20} className="relative z-10" />
                                     </div>
                                     <div>
-                                       <span className="text-[14px] font-black uppercase tracking-widest text-[#1B4D4B] block leading-none mb-1">Hyperagent v2</span>
-                                       <span className="text-[9px] font-black text-black/30 uppercase tracking-[0.3em] font-mono">Neural Node Audit</span>
+                                       <span className="text-[14px] font-medium uppercase tracking-widest text-[#1B4D4B] block leading-none mb-1">Hyperagent v2</span>
+                                       <span className="text-[9px] font-medium text-black/30 uppercase tracking-[0.3em] font-mono">Neural Node Audit</span>
                                     </div>
                                 </div>
-                                <div className="px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest bg-emerald-500 text-white shadow-lg shadow-emerald-500/20">
+                                <div className="px-5 py-2 rounded-xl text-[10px] font-medium uppercase tracking-widest bg-emerald-500 text-white shadow-lg shadow-emerald-500/20">
                                    Protocol {journeyStep}/5
                                 </div>
                             </div>
@@ -652,7 +652,7 @@ const ExtensionAnimation = () => {
                 <div className="p-5 bg-white border-t border-black/[0.03] flex justify-between items-center shrink-0">
                     <div className="flex items-center gap-3">
                         <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                        <span className="text-[10px] font-black uppercase tracking-widest text-black/30">Stable Uplink</span>
+                        <span className="text-[10px] font-medium uppercase tracking-widest text-black/30">Stable Uplink</span>
                     </div>
                 </div>
             </div>
@@ -711,9 +711,9 @@ const ComingSoon: React.FC = () => {
                     >
                         <div className="inline-flex items-center gap-3 px-4 py-1.5 mb-6 md:mb-10 bg-white border border-black/5 rounded-full shadow-sm backdrop-blur-xl">
                             <span className="w-2 h-2 rounded-full bg-clay animate-pulse" />
-                            <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] text-ink/60">Intelligence Pipeline / v0.9.4B</span>
+                            <span className="text-[9px] md:text-[10px] font-medium uppercase tracking-[0.2em] text-ink/60">Intelligence Pipeline / v0.9.4B</span>
                         </div>
-                        <h2 className="text-5xl md:text-9xl font-black tracking-tighter leading-[0.85] text-ink uppercase">
+                        <h2 className="text-4xl md:text-7xl font-medium tracking-tight leading-[0.9] text-ink uppercase">
                             The <br />
                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-clay via-[#1B4D4B] to-ink italic font-thin serif">Elite</span><br />
                            Standard.
@@ -729,7 +729,7 @@ const ComingSoon: React.FC = () => {
                         <div className="w-12 h-12 md:w-16 md:h-16 bg-white rounded-[1.2rem] md:rounded-3xl flex items-center justify-center shadow-2xl border border-black/5 rotate-3 hover:rotate-0 transition-transform duration-500 backdrop-blur-xl">
                             <Lock className="text-clay" size={24} />
                         </div>
-                        <p className="text-ink/40 text-xs md:text-sm font-bold leading-relaxed tracking-tight max-w-xs">
+                        <p className="text-ink/40 text-xs md:text-sm font-medium leading-relaxed tracking-tight max-w-xs">
                            Our system interprets 10^7 variables per second to render "guessing" obsolete. This is the automation of financial superiority.
                         </p>
                     </motion.div>
@@ -764,10 +764,10 @@ const ComingSoon: React.FC = () => {
                             >
                                 <div className="space-y-4">
                                    <div className="flex items-center gap-3">
-                                      <span className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.4em] text-ink/20">{feature.label}</span>
+                                      <span className="text-[9px] md:text-[10px] font-medium uppercase tracking-[0.3em] text-ink/20">{feature.label}</span>
                                       <div className="h-[1px] w-8 md:w-12 bg-ink/5" />
                                    </div>
-                                   <h3 className="text-4xl md:text-7xl font-black text-ink tracking-tighter uppercase leading-none">
+                                   <h3 className="text-3xl md:text-5xl font-medium text-ink tracking-tight uppercase leading-none">
                                       {feature.title}
                                    </h3>
                                 </div>
@@ -775,12 +775,12 @@ const ComingSoon: React.FC = () => {
                                    {feature.desc}
                                 </p>
                                 <div className="pt-4 flex flex-col sm:flex-row items-start sm:items-center gap-6">
-                                   <button className="h-12 md:h-14 px-8 md:px-10 bg-ink text-white rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] shadow-2xl shadow-black/10 hover:bg-clay hover:-translate-y-1 transition-all active:scale-95 group shrink-0">
+                                   <button className="h-12 md:h-14 px-8 md:px-10 bg-ink text-white rounded-full text-[9px] md:text-[10px] font-medium uppercase tracking-[0.2em] shadow-2xl shadow-black/10 hover:bg-clay hover:-translate-y-1 transition-all active:scale-95 group shrink-0">
                                       Join Internal Test <ChevronRight size={14} className="inline-block ml-2 group-hover:translate-x-1 transition-transform" />
                                    </button>
                                    <div className="flex flex-col">
-                                      <span className="text-[8px] md:text-[9px] font-black text-ink/10 uppercase tracking-widest">Availability</span>
-                                      <span className="text-[9px] md:text-[10px] font-bold text-clay uppercase italic">Limited Access Nodes</span>
+                                      <span className="text-[8px] md:text-[9px] font-medium text-ink/10 uppercase tracking-widest">Availability</span>
+                                      <span className="text-[9px] md:text-[10px] font-medium text-clay uppercase italic">Limited Access Nodes</span>
                                    </div>
                                 </div>
                             </motion.div>
@@ -798,31 +798,30 @@ const ComingSoon: React.FC = () => {
                     {/* Dark Grain Overlay */}
                     <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #fff 1px, transparent 0)', backgroundSize: '40px 40px' }} />
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-clay/10 blur-[160px] rounded-full pointer-events-none" />
-
-                    <div className="relative z-10">
-                        <Sparkles className="mx-auto mb-8 md:mb-12 text-clay" size={48} md={64} />
-                        <h4 className="text-4xl md:text-8xl font-black text-white mb-8 md:mb-10 tracking-tighter leading-[0.9] uppercase">
-                           Initialize Your <br /><span className="text-white/20 italic font-thin serif">Elite Status.</span>
+                    
+                    <div className="relative z-10 max-w-4xl mx-auto">
+                        <Sparkles className="mx-auto mb-8 md:mb-12 text-clay" size={32} />
+                        <h4 className="text-3xl md:text-6xl font-medium text-white mb-8 md:mb-10 tracking-tight leading-[1] uppercase">
+                            Secure the <span className="italic font-thin serif text-clay">Neural Node</span> before public release.
                         </h4>
-                        <p className="text-white/40 text-base md:text-xl font-medium max-w-2xl mx-auto mb-10 md:mb-16 leading-relaxed">
-                           Our ecosystem is currently invite-only. Apply for the Registry to secure one of the 500 alpha testing nodes.
-                        </p>
                         
-                        <div className="max-w-xl mx-auto flex flex-col md:flex-row gap-4 md:gap-5">
-                            <input 
-                                type="email" 
-                                placeholder="ACCESS_KEY@EMAIL.COM" 
-                                className="w-full h-14 md:h-16 bg-white/5 border border-white/10 rounded-xl md:rounded-2xl px-6 md:px-8 text-white outline-none focus:border-clay/50 focus:bg-white/10 transition-all font-bold placeholder:text-white/10 text-xs md:text-sm tracking-widest uppercase" 
-                            />
-                            <button className="w-full md:w-auto h-14 md:h-16 px-10 md:px-12 bg-white text-ink font-black uppercase tracking-widest text-[9px] md:text-[10px] rounded-xl md:rounded-2xl hover:bg-clay hover:text-white transition-all shadow-2xl active:scale-95 shrink-0">
-                                Enter Registry
+                        <div className="flex flex-col md:flex-row items-center justify-center gap-6">
+                            <div className="w-full md:flex-1 relative">
+                                <input 
+                                    type="email" 
+                                    placeholder="Enter institutional email..." 
+                                    className="w-full h-14 md:h-16 px-8 bg-white/5 border border-white/10 rounded-xl md:rounded-2xl text-white placeholder:text-white/20 focus:outline-none focus:border-clay/50 transition-all text-xs uppercase tracking-widest"
+                                />
+                            </div>
+                            <button className="w-full md:w-auto h-14 md:h-16 px-10 md:px-12 bg-white text-ink font-medium uppercase tracking-widest text-[9px] md:text-[10px] rounded-xl md:rounded-2xl hover:bg-clay hover:text-white transition-all shadow-2xl active:scale-95 shrink-0">
+                                Register Interest
                             </button>
                         </div>
                         
-                        <div className="mt-16 md:mt-20 pt-10 md:pt-16 border-t border-white/5 flex flex-wrap justify-center gap-6 md:gap-12 text-[8px] md:text-[10px] font-black uppercase tracking-[0.3em] text-white/10">
-                           <div className="flex items-center gap-2 md:gap-3"><Shield size={12} md={14} /> Encrypted</div>
-                           <div className="flex items-center gap-2 md:gap-3"><Cpu size={12} md={14} /> Accelerated</div>
-                           <div className="flex items-center gap-2 md:gap-3"><Globe size={12} md={14} /> Priority</div>
+                        <div className="mt-16 md:mt-20 pt-10 md:pt-16 border-t border-white/5 flex flex-wrap justify-center gap-6 md:gap-12 text-[8px] md:text-[10px] font-medium uppercase tracking-[0.3em] text-white/10">
+                            <div className="flex items-center gap-2 md:gap-3"><Shield size={14} /> Encrypted</div>
+                            <div className="flex items-center gap-2 md:gap-3"><Cpu size={14} /> Accelerated</div>
+                            <div className="flex items-center gap-2 md:gap-3"><Globe size={14} /> Priority</div>
                         </div>
                     </div>
                 </motion.div>
