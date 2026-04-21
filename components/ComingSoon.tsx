@@ -290,7 +290,6 @@ const RewardXAnimation = () => {
   return (
     <WindowFrame title="Adaptive Yield Engine" color="orange">
       <div className="h-full flex flex-col bg-white relative overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
         
         <div className="p-10 md:p-14 pb-4 flex justify-between items-start relative z-20 shrink-0">
             <div>
@@ -692,8 +691,6 @@ const ComingSoon: React.FC = () => {
 
     return (
         <section ref={containerRef} className="relative min-h-screen bg-[#FDFCF9] font-sans selection:bg-clay selection:text-white overflow-hidden py-20 md:py-48">
-            {/* Global Grain & Texture Overlay */}
-            <div className="fixed inset-0 z-[110] pointer-events-none opacity-[0.03] mix-blend-overlay" style={{ backgroundImage: 'linear-gradient(45deg, #242424 25%, transparent 25%), linear-gradient(-45deg, #242424 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #242424 75%), linear-gradient(-45deg, transparent 75%, #242424 75%)', backgroundSize: '20px 20px', backgroundPosition: '0 0, 0 10px, 10px -10px, -10px 0px' }} />
             
             {/* Premium Background Elements */}
             <div className="absolute top-0 left-0 w-full h-[1000px] bg-gradient-to-b from-[#1B4D4B]/5 to-transparent pointer-events-none" />

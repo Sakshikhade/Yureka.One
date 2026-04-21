@@ -44,14 +44,6 @@ const Stats: React.FC = () => {
 
   return (
     <section className="py-12 md:py-20 bg-cream px-4 md:px-8 border-y border-ink/10 relative overflow-hidden">
-      {/* Background Grid Pattern for Financial Look */}
-      <div className="absolute inset-0 pointer-events-none opacity-[0.03]" 
-           style={{ 
-             backgroundImage: 'linear-gradient(to right, #242424 1px, transparent 1px), linear-gradient(to bottom, #242424 1px, transparent 1px)', 
-             backgroundSize: '40px 40px' 
-           }}>
-      </div>
-
       <div className="max-w-[1440px] mx-auto relative z-10 text-ink">
         
         {/* Header - Financial Section Style */}

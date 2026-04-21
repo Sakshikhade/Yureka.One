@@ -97,8 +97,7 @@ const Security: React.FC = () => {
                          </div>
                     </motion.div>
                     
-                    {/* Grid Pattern Overlay */}
-                    <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{ backgroundSize: '60px 60px', backgroundImage: 'linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px)' }}></div>
+                    {/* Grid Pattern Overlay Removed */}
 
                 </motion.div>
             </div>
