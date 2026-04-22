@@ -16,7 +16,7 @@ const TextReveal: React.FC = () => {
   const words = bodyText.split(" ");
 
   return (
-    <section ref={containerRef} className="relative bg-cream h-[180vh] md:h-[280vh] z-20 border-b border-black/10 text-[#242424] overflow-visible">
+    <section ref={containerRef} className="relative bg-cream h-[120vh] md:h-[150vh] z-20 border-b border-black/10 text-[#242424] overflow-visible">
       {/* Background Micro-details */}
       <div className="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/p6-mini.png')]" />
 
