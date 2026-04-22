@@ -2,8 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { getReviews } from '../services/supabaseService';
 import { Review } from '../types';
 import { Star, Quote, Apple, Play, CheckCircle } from 'lucide-react';
-import { motion, useScroll, useTransform } from 'motion/react';
-import ImageWithLoader from './ImageWithLoader';
+import { motion, useScroll } from 'motion/react';
 
 const fallbackReviews: Review[] = [
   {

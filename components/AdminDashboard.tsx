@@ -57,7 +57,7 @@ const DEFAULT_CARD_FORM = {
 
 const DEFAULT_REVIEW_FORM: Partial<Review> = {
   author: '', role: '', company: '', company_logo: '', image: 'https://picsum.photos/seed/review/300/400',
-  quote: '', rotation: 0, status: 'published'
+  quote: '', rating: 5, source: 'Direct', featured: false, status: 'published'
 };
 
 const DEFAULT_TEAM_FORM = { email: '', role: 'writer' };
@@ -320,8 +320,12 @@ const AdminDashboard: React.FC = () => {
           role: reviewForm.role || '',
           company: reviewForm.company || '',
           company_logo: reviewForm.company_logo || '',
+          avatar: reviewForm.avatar || '',
           image: reviewForm.image || '',
           quote: reviewForm.quote || '',
+          rating: reviewForm.rating || 5,
+          source: reviewForm.source || 'Direct',
+          featured: reviewForm.featured || false,
           status: reviewForm.status || 'published'
         });
       }
