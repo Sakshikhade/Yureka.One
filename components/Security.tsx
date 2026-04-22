@@ -22,9 +22,9 @@ const Security: React.FC = () => {
     };
 
     return (
-        <section className="py-32 bg-cream border-t border-black/10 relative flex items-center justify-center overflow-hidden">
+        <section className="py-24 md:py-32 bg-cream border-t border-black/10 relative flex items-center justify-center overflow-hidden w-full">
             
-            <div className="max-w-4xl mx-auto w-full px-6 text-[#242424]">
+            <div className="w-full relative z-10 text-[#242424]">
                 
                 {/* Confidential Stamp Header */}
                 <motion.div 

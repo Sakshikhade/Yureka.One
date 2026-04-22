@@ -16,11 +16,11 @@ const Hero: React.FC = () => {
   return (
     <section id="hero" className="relative w-full min-h-screen flex flex-col items-center pt-4 md:pt-8 pb-12 bg-cream border-b border-ink/10 overflow-hidden text-[#242424] scroll-mt-32">
 
-        {/* Background Grid/Lines */}
+        {/* Background Grid/Lines - Flowing within the 3-column Core */}
         <div className="absolute inset-0 pointer-events-none">
-            <div className="w-full h-full max-w-[1440px] mx-auto border-x border-ink/5 relative">
-                 <div className="absolute top-0 left-[20%] bottom-0 w-px bg-[#242424]/5 hidden lg:block"></div>
-                 <div className="absolute top-0 right-[20%] bottom-0 w-px bg-[#242424]/5 hidden lg:block"></div>
+            <div className="w-full h-full border-x border-ink/5 relative opacity-30">
+                 <div className="absolute top-0 left-[33%] bottom-0 w-px bg-[#242424]/5 hidden lg:block"></div>
+                 <div className="absolute top-0 right-[33%] bottom-0 w-px bg-[#242424]/5 hidden lg:block"></div>
             </div>
         </div>
 

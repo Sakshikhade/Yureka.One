@@ -31,7 +31,7 @@ const CalculatorCTA: React.FC = () => {
            }} 
       />
       
-      <div className="max-w-5xl mx-auto px-6 relative z-10">
+      <div className="w-full relative z-10 px-4 md:px-0">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

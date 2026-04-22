@@ -43,8 +43,8 @@ const Stats: React.FC = () => {
   };
 
   return (
-    <section className="py-12 md:py-20 bg-cream px-4 md:px-8 border-y border-ink/10 relative overflow-hidden">
-      <div className="max-w-[1440px] mx-auto relative z-10 text-[#242424]">
+    <section className="py-12 md:py-20 bg-cream px-4 md:px-8 border-y border-ink/10 relative overflow-hidden w-full">
+      <div className="w-full relative z-10 text-[#242424]">
         
         {/* Header - Financial Section Style */}
         <div className="border-b-4 border-double border-ink/10 mb-8 md:mb-12 pb-6">

@@ -243,35 +243,35 @@ const ComparisonWidget: React.FC = () => {
 // ─────────────────────────────────────────────────────────────
 const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp }) => {
   return (
-    <section className="relative bg-cream border-t border-ink/10 z-10 py-12 md:py-20 lg:py-32">
-      <div className="w-full h-full flex items-center justify-center p-2 md:p-6 lg:p-10">
-        <div className="relative w-full max-w-[1700px] border border-ink/10 bg-paper flex flex-col shadow-xl overflow-hidden min-h-[600px] lg:min-h-[800px]">
+    <section className="relative bg-cream border-t border-ink/10 z-10 py-12 md:py-20 lg:py-32 w-full">
+      <div className="w-full h-full flex items-center justify-center p-2 md:p-6">
+        <div className="relative w-full border border-ink/10 bg-paper flex flex-col shadow-xl overflow-hidden min-h-[600px] lg:min-h-[800px]">
 
           {/* Background Vellum Grid */}
           <div className="absolute inset-0 opacity-[0.02] pointer-events-none" 
-               style={{ backgroundImage: 'linear-gradient(to right, #242424 1px, transparent 1px), linear-gradient(to bottom, #242424 1px, transparent 1px)', backgroundSize: '100px 100px' }} 
+               style={{ backgroundImage: 'linear-gradient(to right, #242424 1px, transparent 1px), linear-gradient(to bottom, #242424 1px, transparent 1px)', backgroundSize: '60px 60px' }} 
           />
           
           <div className="w-full h-full relative z-10 text-[#242424]">
             <div className="flex flex-col lg:grid lg:grid-cols-2 h-full min-h-[600px] lg:min-h-[800px]">
 
               {/* ── LEFT: copy ── */}
-              <div className="h-auto lg:h-full flex flex-col justify-center px-6 lg:px-20 py-12 lg:py-0 relative z-20 pointer-events-none border-b lg:border-b-0 lg:border-r border-ink/5">
+              <div className="h-auto lg:h-full flex flex-col justify-center px-6 lg:px-16 py-12 lg:py-0 relative z-20 border-b lg:border-b-0 lg:border-r border-ink/5">
                 <motion.div
                   initial={{ opacity: 0, x: -30 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, margin: "-100px" }}
                   transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                  className="pointer-events-auto py-10"
+                  className="py-10"
                 >
                   <span className="block text-[#047857] text-[11px] font-bold uppercase tracking-[0.4em] mb-4">
                     How It Works
                   </span>
-                  <h2 className="text-4xl md:text-6xl lg:text-7xl font-serif text-[#242424] mb-8 leading-[0.82] tracking-tighter uppercase">
+                  <h2 className="text-4xl md:text-5xl lg:text-[clamp(1.5rem,4.5vw,5.5rem)] font-serif text-[#242424] mb-8 leading-[0.85] tracking-tighter uppercase">
                     We Compare <br />
                     <span className="italic font-light text-[#047857]">For You.</span>
                   </h2>
-                  <p className="text-[#242424]/80 text-lg md:text-xl font-serif italic leading-snug mb-10 border-l-2 border-clay/30 pl-8 max-w-md">
+                  <p className="text-[#242424]/80 text-base md:text-lg lg:text-xl font-serif italic leading-snug mb-10 border-l-2 border-clay/30 pl-8 max-w-md">
                     "We don't just list cards. We scan 200+ options to find the one that fits your life perfectly."
                   </p>
                   <div className="flex items-center gap-6 text-[11px] font-bold tracking-[0.3em] uppercase text-[#242424]/30">

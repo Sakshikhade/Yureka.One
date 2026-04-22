@@ -40,16 +40,16 @@ const MainPage: React.FC = () => {
         schema={homeSchema}
       />
       
-      <div className="flex flex-col bg-cream overflow-x-hidden">
-        {/* Core Layout Wrapper with Buffer Margins */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_minmax(320px,1400px)_1fr] w-full">
+      <div className="flex flex-col bg-cream min-h-screen">
+        {/* 5-PART SYMMETRICAL ARCHITECTURE */}
+        <div className="grid grid-cols-1 lg:grid-cols-5 w-full relative">
             
-            {/* Left Gutter */}
-            <div className="hidden lg:block border-r border-black/[0.03] bg-cream/50" />
+            {/* COLUMN 1: EMPTY GHOST BUFFER */}
+            <div className="hidden lg:block border-r border-ink/5 sticky top-0 h-screen bg-cream/50 z-0" />
 
-            {/* Central Intelligence Core */}
-            <div className="px-4 md:px-8 lg:px-12 flex flex-col gap-0 border-x border-black/[0.01]">
-                <Suspense fallback={<div className="h-20" />}>
+            {/* COLUMNS 2, 3, 4: THE INTELLIGENCE CORE */}
+            <div className="lg:col-span-3 min-w-0 flex flex-col relative z-10 overflow-x-hidden">
+                <Suspense fallback={<SkeletonHero />}>
                     <Hero />
                 </Suspense>
                 
@@ -63,7 +63,7 @@ const MainPage: React.FC = () => {
                     </Suspense>
                 </section>
 
-                <div className="py-12">
+                <div className="py-12 px-4 md:px-8">
                     <Suspense fallback={<div className="h-40 animate-pulse bg-paper/50" />}>
                         <CalculatorCTA />
                     </Suspense>
@@ -100,10 +100,13 @@ const MainPage: React.FC = () => {
                         <FAQ />
                     </Suspense>
                 </section>
+                
+                {/* FOOTER ANCHORED TO CORE */}
+                <Footer />
             </div>
 
-            {/* Right Gutter */}
-            <div className="hidden lg:block border-l border-black/[0.03] bg-cream/50" />
+            {/* COLUMN 5: EMPTY GHOST BUFFER */}
+            <div className="hidden lg:block border-l border-ink/5 sticky top-0 h-screen bg-cream/50 z-0" />
         </div>
       </div>
     </>

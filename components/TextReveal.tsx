@@ -20,7 +20,7 @@ const TextReveal: React.FC = () => {
       {/* Background Micro-details */}
       <div className="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/p6-mini.png')]" />
 
-      <div className="sticky top-0 h-screen flex flex-col items-center justify-center px-6 md:px-12 max-w-[1240px] mx-auto w-full overflow-hidden">
+      <div className="sticky top-0 h-screen flex flex-col items-center justify-center px-6 md:px-12 w-full overflow-hidden">
         <div className="w-full border-l border-clay/30 pl-8 md:pl-16 py-16 relative">
             {/* Corner Deco */}
             <div className="absolute top-0 left-0 w-8 h-px bg-[#047857]/20"></div>
