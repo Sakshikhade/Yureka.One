@@ -192,7 +192,7 @@ const AppContent: React.FC = () => {
         </Suspense>
       </main>
 
-      {!isAdminRoute && <Footer />}
+      {!isAdminRoute && location.pathname !== '/' && <Footer />}
       {!isAdminRoute && <BottomBanner />}
 
       {!isAdminRoute && (

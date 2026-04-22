@@ -14,6 +14,7 @@ const Community = lazy(() => import('./Community'));
 const ComingSoon = lazy(() => import('./ComingSoon'));
 const FAQ = lazy(() => import('./FAQ'));
 const CalculatorCTA = lazy(() => import('./CalculatorCTA'));
+const Footer = lazy(() => import('./Footer'));
 
 const MainPage: React.FC = () => {
   const { cards } = useSupabase();
@@ -102,7 +103,9 @@ const MainPage: React.FC = () => {
                 </section>
                 
                 {/* FOOTER ANCHORED TO CORE */}
-                <Footer />
+                <Suspense fallback={<div className="h-40" />}>
+                    <Footer />
+                </Suspense>
             </div>
 
             {/* COLUMN 5: EMPTY GHOST BUFFER */}
