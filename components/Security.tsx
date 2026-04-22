@@ -120,7 +120,7 @@ const Security: React.FC = () => {
                                             {[...Array(5)].map((_, i) => (
                                                 <div key={i} className="flex gap-2 whitespace-nowrap">
                                                     <span className="text-[8px] md:text-[10px] font-mono text-emerald-400">0x{Math.random().toString(16).slice(2, 8).toUpperCase()}</span>
-                                                    <span className="text-[8px] md:text-[10px] font-mono text-emerald-400/30">>> BLOCK_{i}_STABLE</span>
+                                                    <span className="text-[8px] md:text-[10px] font-mono text-emerald-400/30">{" >> "} BLOCK_{i}_STABLE</span>
                                                 </div>
                                             ))}
                                         </div>
