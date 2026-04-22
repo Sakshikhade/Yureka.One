@@ -41,7 +41,7 @@ const MainPage: React.FC = () => {
         schema={homeSchema}
       />
       
-      <div className="flex flex-col bg-cream min-h-screen">
+      <div className="flex flex-col bg-cream min-h-screen overflow-x-hidden">
         {/* 5-PART SYMMETRICAL ARCHITECTURE */}
         <div className="grid grid-cols-1 lg:grid-cols-5 w-full relative">
             
@@ -49,7 +49,7 @@ const MainPage: React.FC = () => {
             <div className="hidden lg:block border-r border-ink/5 sticky top-0 h-screen bg-cream/50 z-0" />
 
             {/* COLUMNS 2, 3, 4: THE INTELLIGENCE CORE */}
-            <div className="lg:col-span-3 min-w-0 flex flex-col relative z-10 overflow-x-hidden">
+            <div className="lg:col-span-3 min-w-0 flex flex-col relative z-10">
                 <Suspense fallback={<SkeletonHero />}>
                     <Hero />
                 </Suspense>
