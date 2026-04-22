@@ -46,9 +46,20 @@ const Navbar: React.FC = () => {
             <div className={`
                 flex flex-col relative z-10 group cursor-pointer
             `}>
-                <Link to="/" className="font-heading font-medium tracking-tighter text-base md:text-[17px] text-[#242424] leading-none hover:opacity-75 transition-opacity flex items-baseline uppercase">
-                    Yureka<span className="text-[#047857]">.</span>money
-                </Link>
+                <div className="flex items-center gap-3">
+                    <Link to="/" className="font-heading font-medium tracking-tighter text-base md:text-[17px] text-[#242424] leading-none hover:opacity-75 transition-opacity flex items-baseline uppercase">
+                        Yureka<span className="text-[#047857]">.</span>money
+                    </Link>
+                    {/* Neural Status Indicator */}
+                    <div className="flex items-center gap-1.5 px-2 py-0.5 bg-[#047857]/5 border border-[#047857]/10 rounded-full">
+                        <motion.div 
+                            animate={{ opacity: [0.4, 1, 0.4] }}
+                            transition={{ duration: 2, repeat: Infinity }}
+                            className="w-1.5 h-1.5 bg-[#047857] rounded-full shadow-[0_0_8px_rgba(4,120,87,0.5)]"
+                        />
+                        <span className="text-[7px] font-bold text-[#047857] uppercase tracking-widest hidden md:block">Neural Active</span>
+                    </div>
+                </div>
 
                 {!isScrolled && (
                      <span className="hidden md:block text-[9px] uppercase tracking-[0.3em] text-[#242424]/40 mt-1 font-sans">

@@ -155,17 +155,21 @@ const Community: React.FC = () => {
   const col3 = regular.filter((_, i) => i % 3 === 2);
 
   return (
-    <section ref={sectionRef} className="bg-[#FAF9F6] pt-12 pb-32 md:pb-48 overflow-hidden">
+    <section ref={sectionRef} className="bg-cream pt-12 pb-32 md:pb-48 overflow-hidden relative">
+        {/* Subtle Archival Stamp Background */}
+        <div className="absolute top-20 right-0 opacity-[0.03] select-none pointer-events-none rotate-90 origin-right">
+            <span className="text-[12rem] font-heading font-black tracking-tighter uppercase whitespace-nowrap">VOX POPULI</span>
+        </div>
         
-        {/* ─── TRI-STREAM MARQUEE GRID (IMAGE 3) ─── */}
-        <div className="w-full">
+        {/* ── TRI-STREAM MARQUEE GRID (IMAGE 3) ── */}
+        <div className="w-full relative z-10 text-[#242424]">
             <div className="text-center mb-16 space-y-4">
                 <div className="inline-flex items-center gap-2 bg-[#047857]/5 px-6 py-2 rounded-full border border-[#047857]/10 text-[#047857] text-[10px] font-black uppercase tracking-[0.4em]">
-                    <CheckCircle size={14} /> Social Validation
+                    <ShieldCheck size={14} className="animate-pulse" /> Verified Intelligence
                 </div>
-                <h2 className="text-5xl md:text-6xl lg:text-[clamp(1.5rem,5.5vw,6rem)] font-heading font-black tracking-tighter text-[#242424] leading-[0.85] uppercase">
+                <h2 className="text-4xl md:text-5xl lg:text-[clamp(1.5rem,5.5vw,6rem)] font-serif font-black text-[#242424] leading-[0.85] uppercase tracking-tighter">
                     Real Stories, <br />
-                    <span className="text-[#047857] italic serif font-light lowercase">Real</span> Trust
+                    <span className="text-[#047857] italic font-light lowercase">Real</span> Yield.
                 </h2>
             </div>
 
