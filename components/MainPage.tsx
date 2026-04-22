@@ -65,11 +65,9 @@ const MainPage: React.FC = () => {
                     </Suspense>
                 </section>
 
-                <div className="py-12 px-4 md:px-8">
-                    <Suspense fallback={<div className="h-32 animate-pulse bg-paper/50" />}>
-                        <CalculatorCTA />
-                    </Suspense>
-                </div>
+                <Suspense fallback={<div className="h-32 animate-pulse bg-paper/50" />}>
+                    <CalculatorCTA />
+                </Suspense>
 
                 <section id="stats" className="scroll-mt-24">
                     <Suspense fallback={<div className="h-48 bg-slate-50/50 animate-pulse" />}>
@@ -77,27 +75,27 @@ const MainPage: React.FC = () => {
                     </Suspense>
                 </section>
 
-                <div className="w-full relative py-12 border-y border-ink/5">
+                <div className="w-full relative border-y border-ink/5">
                     <Marquee />
                 </div>
 
                 <section id="security" className="scroll-mt-24">
-                    <Suspense fallback={<div className="h-48 bg-[#242424] animate-pulse" />}>
+                    <Suspense fallback={<div className="h-48 bg-[#1A2F2F] animate-pulse" />}>
                         <Security />
                     </Suspense>
                 </section>
 
-                <section id="reviews" className="scroll-mt-24 py-16">
+                <section id="reviews" className="scroll-mt-24">
                     <Suspense fallback={<div className="h-48" />}>
                         <Community />
                     </Suspense>
                 </section>
 
-                <div className="py-16">
+                <Suspense fallback={<div className="h-48" />}>
                     <ComingSoon />
-                </div>
+                </Suspense>
 
-                <section id="faq" className="scroll-mt-24 pb-32">
+                <section id="faq" className="scroll-mt-24">
                     <Suspense fallback={<div className="h-48" />}>
                         <FAQ />
                     </Suspense>
