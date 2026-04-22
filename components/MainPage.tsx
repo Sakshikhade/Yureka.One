@@ -40,51 +40,62 @@ const MainPage: React.FC = () => {
         schema={homeSchema}
       />
       
-      <Suspense fallback={<div className="h-20" />}>
-        <Hero />
-      </Suspense>
-      
-      <Suspense fallback={<div className="h-20" />}>
-        <TextReveal />
-      </Suspense>
+      <div className="grid grid-cols-1 lg:grid-cols-5 bg-cream">
+        {/* Left Buffer (Column 1) */}
+        <div className="hidden lg:block lg:col-span-1 border-r border-black/[0.03]" />
 
-      <section id="showcase" className="scroll-mt-24">
-        <Suspense fallback={<div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-6 py-10"><SkeletonCard /><SkeletonCard /><SkeletonCard /></div>}>
-          <ShowcaseCarousel cards={cards} />
-        </Suspense>
-      </section>
+        {/* Content Core (Column 2, 3, 4) */}
+        <div className="lg:col-span-3 min-h-screen flex flex-col">
+            <Suspense fallback={<div className="h-20" />}>
+                <Hero />
+            </Suspense>
+            
+            <Suspense fallback={<div className="h-20" />}>
+                <TextReveal />
+            </Suspense>
 
-      <Suspense fallback={<div className="h-40 animate-pulse bg-paper/50" />}>
-        <CalculatorCTA />
-      </Suspense>
+            <section id="showcase" className="scroll-mt-24">
+                <Suspense fallback={<div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-6 py-10"><SkeletonCard /><SkeletonCard /><SkeletonCard /></div>}>
+                <ShowcaseCarousel cards={cards} />
+                </Suspense>
+            </section>
 
-      <section id="stats" className="scroll-mt-24">
-        <Suspense fallback={<div className="h-64 bg-slate-50/50 animate-pulse" />}>
-          <Stats />
-        </Suspense>
-      </section>
+            <Suspense fallback={<div className="h-40 animate-pulse bg-paper/50" />}>
+                <CalculatorCTA />
+            </Suspense>
 
-      <Marquee />
+            <section id="stats" className="scroll-mt-24">
+                <Suspense fallback={<div className="h-64 bg-slate-50/50 animate-pulse" />}>
+                <Stats />
+                </Suspense>
+            </section>
 
-      <section id="security" className="scroll-mt-24">
-        <Suspense fallback={<div className="h-64 bg-slate-900 animate-pulse" />}>
-          <Security />
-        </Suspense>
-      </section>
+            <Marquee />
 
-      <section id="reviews" className="scroll-mt-24">
-        <Suspense fallback={<div className="h-64" />}>
-          <Community />
-        </Suspense>
-      </section>
+            <section id="security" className="scroll-mt-24">
+                <Suspense fallback={<div className="h-64 bg-slate-900 animate-pulse" />}>
+                <Security />
+                </Suspense>
+            </section>
 
-      <ComingSoon />
+            <section id="reviews" className="scroll-mt-24">
+                <Suspense fallback={<div className="h-64" />}>
+                <Community />
+                </Suspense>
+            </section>
 
-      <section id="faq" className="scroll-mt-24">
-        <Suspense fallback={<div className="h-64" />}>
-          <FAQ />
-        </Suspense>
-      </section>
+            <ComingSoon />
+
+            <section id="faq" className="scroll-mt-24">
+                <Suspense fallback={<div className="h-64" />}>
+                <FAQ />
+                </Suspense>
+            </section>
+        </div>
+
+        {/* Right Buffer (Column 5) */}
+        <div className="hidden lg:block lg:col-span-1 border-l border-black/[0.03]" />
+      </div>
     </>
   );
 };
