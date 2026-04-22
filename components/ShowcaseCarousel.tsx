@@ -243,7 +243,7 @@ const ComparisonWidget: React.FC = () => {
 // ─────────────────────────────────────────────────────────────
 const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp }) => {
   return (
-    <section className="relative bg-cream border-t border-ink/10 z-10 py-12 md:py-20 lg:py-32 w-full">
+    <section className="relative bg-cream border-t border-ink/10 z-10 py-10 md:py-16 lg:py-24 w-full">
       <div className="w-full h-full flex items-center justify-center p-2 md:p-6">
         <div className="relative w-full border border-ink/10 bg-paper flex flex-col shadow-xl overflow-hidden min-h-[600px] lg:min-h-[800px]">
 

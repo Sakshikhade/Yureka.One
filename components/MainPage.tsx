@@ -60,45 +60,45 @@ const MainPage: React.FC = () => {
                 </Suspense>
 
                 <section id="showcase" className="scroll-mt-24">
-                    <Suspense fallback={<div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-6 py-10"><SkeletonCard /><SkeletonCard /><SkeletonCard /></div>}>
+                    <Suspense fallback={<div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-6 py-6"><SkeletonCard /><SkeletonCard /><SkeletonCard /></div>}>
                         <ShowcaseCarousel cards={cards} />
                     </Suspense>
                 </section>
 
-                <div className="py-24 px-4 md:px-8">
-                    <Suspense fallback={<div className="h-40 animate-pulse bg-paper/50" />}>
+                <div className="py-12 px-4 md:px-8">
+                    <Suspense fallback={<div className="h-32 animate-pulse bg-paper/50" />}>
                         <CalculatorCTA />
                     </Suspense>
                 </div>
 
                 <section id="stats" className="scroll-mt-24">
-                    <Suspense fallback={<div className="h-64 bg-slate-50/50 animate-pulse" />}>
+                    <Suspense fallback={<div className="h-48 bg-slate-50/50 animate-pulse" />}>
                         <Stats />
                     </Suspense>
                 </section>
 
-                <div className="w-full relative py-20 border-y border-ink/5">
+                <div className="w-full relative py-12 border-y border-ink/5">
                     <Marquee />
                 </div>
 
                 <section id="security" className="scroll-mt-24">
-                    <Suspense fallback={<div className="h-64 bg-[#242424] animate-pulse" />}>
+                    <Suspense fallback={<div className="h-48 bg-[#242424] animate-pulse" />}>
                         <Security />
                     </Suspense>
                 </section>
 
-                <section id="reviews" className="scroll-mt-24 py-24">
-                    <Suspense fallback={<div className="h-64" />}>
+                <section id="reviews" className="scroll-mt-24 py-16">
+                    <Suspense fallback={<div className="h-48" />}>
                         <Community />
                     </Suspense>
                 </section>
 
-                <div className="py-24">
+                <div className="py-16">
                     <ComingSoon />
                 </div>
 
-                <section id="faq" className="scroll-mt-24 pb-48">
-                    <Suspense fallback={<div className="h-64" />}>
+                <section id="faq" className="scroll-mt-24 pb-32">
+                    <Suspense fallback={<div className="h-48" />}>
                         <FAQ />
                     </Suspense>
                 </section>
