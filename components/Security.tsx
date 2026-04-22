@@ -121,13 +121,22 @@ const Security: React.FC = () => {
                                         </div>
 
                                         <div className="space-y-1 md:space-y-2 opacity-50 overflow-hidden relative z-10">
-                                            {[...Array(4)].map((_, i) => (
+                                            {/* Primary Branding Encoding */}
+                                            <div className="flex gap-2 whitespace-nowrap items-center mb-2">
+                                                <div className="w-1.5 h-1.5 rounded-sm bg-[#047857] animate-ping" />
+                                                <span className="text-[10px] md:text-[12px] font-mono font-bold text-emerald-400">
+                                                    YUREKA<span className="opacity-40">.</span>MONEY
+                                                </span>
+                                                <span className="text-[8px] md:text-[10px] font-mono text-emerald-400/20">{" >> "} KEY_SIG_ACTIVE</span>
+                                            </div>
+
+                                            {[...Array(3)].map((_, i) => (
                                                 <div key={i} className="flex gap-2 whitespace-nowrap items-center">
                                                     <div className="w-1.5 h-1.5 rounded-sm bg-emerald-500/30 animate-pulse" />
                                                     <span className="text-[8px] md:text-[10px] font-mono text-emerald-400">
-                                                        0x<EncryptedText text={Math.random().toString(16).slice(2, 8).toUpperCase()} />
+                                                        0x<EncryptedText text={i === 0 ? "YUREKA" : Math.random().toString(16).slice(2, 8).toUpperCase()} />
                                                     </span>
-                                                    <span className="text-[8px] md:text-[10px] font-mono text-emerald-400/20">{" >> "} HASH_BLOCK_{i * 128}</span>
+                                                    <span className="text-[8px] md:text-[10px] font-mono text-emerald-400/20">{" >> "} HASH_BLOCK_{i * 256}</span>
                                                 </div>
                                             ))}
                                         </div>
