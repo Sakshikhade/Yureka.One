@@ -4,7 +4,10 @@ import {
   Trash2,
   Quote,
   CheckCircle2,
-  Clock
+  Clock,
+  Star,
+  Apple,
+  Play
 } from 'lucide-react';
 import { Review } from '../../types';
 import { useSupabase } from '../SupabaseProvider';
@@ -74,12 +77,30 @@ export const AdminReviewsTab: React.FC<AdminReviewsTabProps> = ({
                   </div>
                 </td>
                 <td className="px-8 py-6">
-                  <span className={`px-2.5 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider flex items-center gap-2 w-fit ${
-                    review.status === 'published' ? 'bg-green-50 text-green-600 border border-green-100' : 'bg-amber-50 text-amber-600 border border-amber-100'
-                  }`}>
-                    {review.status === 'published' ? <CheckCircle2 size={12} /> : <Clock size={12} />}
-                    {review.status}
-                  </span>
+                  <div className="flex flex-col gap-2">
+                    <div className="flex items-center gap-1">
+                        {[...Array(5)].map((_, i) => (
+                            <Star key={i} size={10} className={`${i < (review.rating || 5) ? 'text-[#047857] fill-[#047857]' : 'text-gray-200'}`} />
+                        ))}
+                    </div>
+                    <div className="flex items-center gap-2">
+                        {review.source === 'App Store' ? <Apple size={12} className="text-black/40" /> : <Play size={12} className="text-black/40" />}
+                        <span className="text-[9px] font-black uppercase tracking-widest text-black/40">{review.source || 'Direct'}</span>
+                    </div>
+                  </div>
+                </td>
+                <td className="px-8 py-6">
+                  <div className="flex items-center gap-2">
+                    {review.featured && (
+                        <span className="px-2 py-0.5 rounded-full bg-clay text-white text-[8px] font-black uppercase tracking-[0.2em] shadow-sm">Hero Featured</span>
+                    )}
+                    <span className={`px-2.5 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider flex items-center gap-2 w-fit ${
+                        review.status === 'published' ? 'bg-green-50 text-green-600 border border-green-100' : 'bg-amber-50 text-amber-600 border border-amber-100'
+                    }`}>
+                        {review.status === 'published' ? <CheckCircle2 size={12} /> : <Clock size={12} />}
+                        {review.status}
+                    </span>
+                  </div>
                 </td>
                 <td className="px-8 py-6 text-right">
                   <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">

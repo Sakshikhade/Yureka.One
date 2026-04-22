@@ -100,8 +100,47 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
               />
             </div>
           </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Rating (1-5)</label>
+              <input 
+                type="number" min="1" max="5"
+                value={form.rating || 5}
+                onChange={e => setForm({...form, rating: parseInt(e.target.value)})}
+                className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Source</label>
+              <select 
+                value={form.source || 'Direct'}
+                onChange={e => setForm({...form, source: e.target.value})}
+                className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+              >
+                <option value="Direct">Direct</option>
+                <option value="App Store">App Store</option>
+                <option value="Google Play">Google Play</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-4 py-4">
+             <label className="flex items-center gap-3 cursor-pointer group">
+                <div className={`w-12 h-6 rounded-full p-1 transition-all ${form.featured ? 'bg-[#047857]' : 'bg-black/10'}`}>
+                    <div className={`w-4 h-4 bg-white rounded-full transition-all ${form.featured ? 'translate-x-6' : 'translate-x-0'}`} />
+                </div>
+                <input 
+                    type="checkbox"
+                    className="hidden"
+                    checked={form.featured || false}
+                    onChange={e => setForm({...form, featured: e.target.checked})}
+                />
+                <span className="text-xs font-bold uppercase tracking-widest text-black/40 group-hover:text-black transition-colors">Featured Hero Story</span>
+             </label>
+          </div>
+
           <div>
-            <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Quote</label>
+            <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Quote / Content</label>
             <textarea 
               required
               value={form.quote}

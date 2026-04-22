@@ -96,8 +96,12 @@ export interface Review {
   role: string;
   company: string;
   company_logo?: string;
+  avatar?: string;
   image: string;
   quote: string;
+  rating?: number;
+  source?: 'App Store' | 'Google Play' | 'Direct';
+  featured?: boolean;
   rotation?: number;
   status?: 'draft' | 'published';
   created_at?: string;

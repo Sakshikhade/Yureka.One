@@ -1,298 +1,209 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { getReviews } from '../services/supabaseService';
 import { Review } from '../types';
+import { Star, Quote, Apple, Play, CheckCircle } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'motion/react';
+import ImageWithLoader from './ImageWithLoader';
 
 const fallbackReviews: Review[] = [
-  {
-    author: "Paras",
-    role: 'Tech Lead',
-    company: 'Swiggy',
-    company_logo: 'https://upload.wikimedia.org/wikipedia/en/1/12/Swiggy_logo.svg',
-    image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    quote: "I thought I knew credit cards, but Yureka found a hidden gem that saves me ₹20k/year on flights.",
-    rotation: -2
-  },
-  {
-    author: "Deepankar",
-    role: 'Founder',
-    company: 'D2C Brand',
-    company_logo: 'https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg',
-    image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    quote: "Finally, a platform that doesn't spam me. The AI chat felt like talking to a financial expert.",
-    rotation: 1.5
-  },
-  {
-    author: "Riya",
-    role: 'Freelance Designer',
-    company: 'Self',
-    company_logo: 'https://upload.wikimedia.org/wikipedia/en/7/7c/Cred_club_logo.png',
-    image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-    quote: "The Chrome extension is a game changer. It automatically applies the best card for every transaction.",
-    rotation: -1
-  },
   {
     author: "Karan",
     role: 'Marketing VP',
     company: 'Zepto',
-    company_logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Zepto_Logo.jpg/800px-Zepto_Logo.jpg', 
-    image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
     quote: "I used the Voucher Hub to stack rewards on my new laptop. 18% savings total. Insane.",
-    rotation: 2
+    featured: true,
+    rating: 5,
+    source: 'Direct'
+  },
+  {
+    author: "Saurav Gangurde",
+    role: 'User',
+    company: 'Google Play',
+    image: '',
+    avatar: 'https://i.pravatar.cc/100?u=saurav',
+    quote: "The CheQ App is a smart and hassle-free solution for managing and paying your credit card bills in one place. The interface is clean, intuitive, and easy to use.",
+    rating: 5,
+    source: 'Google Play',
+    created_at: '2025-06-24T00:00:00Z'
+  },
+  {
+    author: "Shital Rathod",
+    role: 'User',
+    company: 'App Store',
+    image: '',
+    avatar: 'https://i.pravatar.cc/100?u=shital',
+    quote: "CheQ app is a great platform for managing and paying credit card bills on time. It's fast, secure, and offers rewards like cashback and vouchers.",
+    rating: 5,
+    source: 'Google Play',
+    created_at: '2025-06-25T00:00:00Z'
+  },
+  {
+      author: "Vignesh V",
+      role: 'User',
+      company: 'App Store',
+      avatar: 'https://i.pravatar.cc/100?u=vignesh',
+      quote: "CheQ is a user-friendly credit bill payment app that offers rewards and timely reminders. Earn 1% CheQ Chips on every transaction.",
+      rating: 4,
+      source: 'Google Play',
+      message: "Highly recommend 👍",
+      created_at: '2025-06-18T00:00:00Z'
+  },
+  {
+    author: "AB BABY 13",
+    role: 'User',
+    company: 'App Store',
+    avatar: 'https://i.pravatar.cc/100?u=abbaby',
+    quote: "Using it for some time now. Processing fee is waived off again. That was the USP. So happy to use for card payment.",
+    rating: 5,
+    source: 'App Store',
+    created_at: '2025-04-23T00:00:00Z'
   }
 ];
 
-function easeOutCubic(x: number): number {
-  return 1 - Math.pow(1 - x, 3);
-}
-
-interface DraggableCardPairProps {
-  review: Review;
-  index: number;
-  progress: number;
-  totalCards: number;
-}
-
-const DraggableCardPair: React.FC<DraggableCardPairProps> = ({ review, index, progress }) => {
-  const [dragPosition, setDragPosition] = useState({ x: 0, y: 0 });
-  const [isDragging, setIsDragging] = useState(false);
-  const dragStartRef = useRef({ x: 0, y: 0 });
-
-  const pairStart = 0.35 + (index * 0.15);
-  const pairDuration = 0.15;
-  const pairProgressRaw = (progress - pairStart) / pairDuration;
-  const pairProgress = Math.min(1, Math.max(0, pairProgressRaw));
-  
-  const profileProgressRaw = pairProgress / 0.5;
-  const profileProgress = Math.min(1, Math.max(0, profileProgressRaw));
-  const profileEase = easeOutCubic(profileProgress);
-  
-  const quoteProgressRaw = (pairProgress - 0.5) / 0.5;
-  const quoteProgress = Math.min(1, Math.max(0, quoteProgressRaw));
-  const quoteEase = easeOutCubic(quoteProgress);
-
-  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-  const distance = isMobile ? 400 : 1200;
-
-  const profileTranslateX = (1 - profileEase) * -distance; 
-  const quoteTranslateX = (1 - quoteEase) * distance;
-  const profileOpacity = profileEase;
-  const quoteOpacity = quoteEase;
-  const wrapperScale = isMobile ? (0.75 + (pairProgress * 0.15)) : (0.85 + (pairProgress * 0.15)); 
-
-  const handleMouseDown = (e: React.MouseEvent | React.TouchEvent) => {
-    if (pairProgress < 0.9) return;
-    setIsDragging(true);
-    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
-    dragStartRef.current = { x: clientX - dragPosition.x, y: clientY - dragPosition.y };
-  };
-
-  const handleMouseMove = (e: MouseEvent | TouchEvent) => {
-    if (!isDragging) return;
-    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
-    setDragPosition({
-      x: clientX - dragStartRef.current.x,
-      y: clientY - dragStartRef.current.y
-    });
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-    if (Math.abs(dragPosition.x) < 100 && Math.abs(dragPosition.y) < 100) {
-        setDragPosition({ x: 0, y: 0 });
-    }
-  };
-
-  useEffect(() => {
-    if (isDragging) {
-      window.addEventListener('mousemove', handleMouseMove);
-      window.addEventListener('mouseup', handleMouseUp);
-      window.addEventListener('touchmove', handleMouseMove);
-      window.addEventListener('touchend', handleMouseUp);
-    }
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
-      window.removeEventListener('touchmove', handleMouseMove);
-      window.removeEventListener('touchend', handleMouseUp);
-    };
-  }, [isDragging]);
-
-  const wrapperStyle: React.CSSProperties = {
-    transform: `translate3d(${dragPosition.x}px, ${dragPosition.y}px, 0) scale(${wrapperScale}) rotate(${(review.rotation || 0) + (dragPosition.x * 0.05)}deg)`,
-    zIndex: index + 10,
-    cursor: isDragging ? 'grabbing' : (pairProgress > 0.9 ? 'grab' : 'default'),
-    transition: isDragging ? 'none' : 'transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)'
-  };
-
-  return (
-    <div 
-        className="absolute inset-0 flex items-center justify-center pointer-events-none"
-        style={{ perspective: '1000px' }}
-    >
-        <div 
-            className="flex flex-col md:flex-row gap-4 md:gap-8 w-[90%] md:w-auto max-w-[1000px] pointer-events-auto items-center justify-center"
-            style={wrapperStyle}
-            onMouseDown={handleMouseDown}
-            onTouchStart={handleMouseDown}
+const AppStoreCard: React.FC<{ review: Review }> = ({ review }) => {
+    return (
+        <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="bg-white p-6 md:p-8 rounded-[2.5rem] shadow-[0_20px_50px_-10px_rgba(0,0,0,0.05)] border border-black/[0.03] space-y-4 hover:shadow-2xl hover:scale-[1.02] transition-all duration-500 group"
         >
-            {/* Profile Card - Photo ID Style */}
-            <div 
-                className="bg-cream p-3 w-full md:w-[320px] h-auto shadow-2xl border border-black/10 select-none will-change-transform transform rotate-[-2deg]"
-                style={{ 
-                    transform: `translate3d(${profileTranslateX}px, 0, 0)`,
-                    opacity: profileOpacity,
-                    transition: isDragging ? 'none' : 'transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.5s ease-out' 
-                }}
-            >
-                 <div className="w-full aspect-[4/5] bg-gray-200 overflow-hidden grayscale contrast-125 mb-4 border border-black/10">
-                     <img 
-                        src={review.image} 
-                        alt={review.role}
-                        loading="lazy" 
-                        className="w-full h-full object-cover mix-blend-multiply" 
-                        draggable={false}
-                     />
-                 </div>
-                 <div className="text-center pb-4">
-                    <h3 className="text-xl font-serif font-bold text-black">{review.author}</h3>
-                    <p className="text-xs font-mono uppercase tracking-widest text-black/50 mt-1">{review.role}</p>
-                 </div>
-            </div>
-
-            {/* Quote Card - Premium Stationery Style */}
-            <div 
-                className={`
-                    bg-[#F2EFE9] text-black
-                    p-8 md:p-16 w-full md:w-[500px] h-auto min-h-[340px]
-                    shadow-[15px_15px_40px_rgba(0,0,0,0.15)]
-                    border border-black/5
-                    flex flex-col items-start justify-center text-left relative select-none will-change-transform transform rotate-[1deg]
-                `}
-                style={{
-                    transform: `translate3d(${quoteTranslateX}px, 0, 0)`,
-                    opacity: quoteOpacity,
-                    transition: isDragging ? 'none' : 'transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.5s ease-out'
-                }}
-            >
-                 {/* Premium paper texture overlay */}
-                 <div className="absolute inset-0 opacity-[0.4] pointer-events-none mix-blend-multiply" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.15'/%3E%3C/svg%3E")` }}></div>
-
-                 <div className="mb-6 relative z-10">
-                    <span className="text-8xl font-serif text-black/10 leading-none absolute -top-8 -left-4">“</span>
-                 </div>
-                 <p className="text-xl md:text-2xl font-serif text-black leading-snug mb-8 relative z-10 italic">
-                     {review.quote}
-                 </p>
-                 <div className="mt-auto pt-6 border-t border-black/10 w-full relative z-10">
-                    <div className="flex items-center gap-2 justify-between w-full">
-                        <span className="font-mono text-[10px] uppercase tracking-widest text-black/40">From the desk of</span>
-                        <span className="font-serif font-bold text-lg italic text-black">{review.company}</span>
+            <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full overflow-hidden bg-cream grayscale border border-black/5">
+                        <img src={review.avatar || `https://ui-avatars.com/api/?name=${review.author}&background=random`} alt={review.author} className="w-full h-full object-cover" />
                     </div>
-                 </div>
+                    <div className="flex flex-col">
+                        <h4 className="text-[14px] font-bold text-[#242424] uppercase tracking-wider">{review.author}</h4>
+                        <div className="flex items-center gap-1 text-[#242424]/40 text-[10px] uppercase font-bold tracking-widest mt-0.5">
+                             <span>{review.source || 'Verified User'}</span>
+                             {review.source && (
+                                 review.source === 'App Store' ? <Apple size={10} className="fill-current" /> : <Play size={10} className="fill-current" />
+                             )}
+                        </div>
+                    </div>
+                </div>
+                <div className="w-8 h-8 bg-cream rounded-xl flex items-center justify-center opacity-40 group-hover:opacity-100 transition-opacity">
+                    {review.source === 'App Store' ? <Apple size={16} /> : <Play size={16} />}
+                </div>
             </div>
-        </div>
-    </div>
-  );
+
+            <div className="flex items-center gap-1 py-1">
+                {[...Array(5)].map((_, i) => (
+                    <Star key={i} size={12} className={`${i < (review.rating || 5) ? 'text-[#047857] fill-[#047857]' : 'text-gray-200'}`} />
+                ))}
+                <span className="text-[10px] font-bold text-[#242424]/40 ml-2 uppercase tracking-widest">
+                    {new Date(review.created_at || Date.now()).toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' })}
+                </span>
+            </div>
+
+            <p className="text-[15px] text-[#242424]/70 leading-relaxed font-sans">
+                {review.quote}
+            </p>
+        </motion.div>
+    );
 };
 
 const Community: React.FC = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [liveReviews, setLiveReviews] = useState<Review[]>([]);
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+      target: sectionRef,
+      offset: ["start end", "end start"]
+  });
+
+  const featuredScale = useTransform(scrollYProgress, [0, 0.4], [0.9, 1]);
+  const featuredOpacity = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
 
   useEffect(() => {
-    // Real-time subscription and initial fetch
     const unsubscribe = getReviews((data) => {
-      setLiveReviews(data.length > 0 ? data : fallbackReviews);
+      setReviews(data.length > 0 ? data : fallbackReviews);
     });
-
-    const handleScroll = () => {
-      if (!containerRef.current) return;
-      const { top, height } = containerRef.current.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-      
-      const start = 0;
-      const end = height - viewportHeight;
-      const current = -top;
-
-      let progress = current / end;
-      progress = Math.max(0, Math.min(1, progress));
-      setScrollProgress(progress);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      if (typeof unsubscribe === 'function') unsubscribe();
-    };
+    return () => { if (typeof unsubscribe === 'function') unsubscribe(); };
   }, []);
-  
-  const textAnimEnd = 0.35;
-  const textGlobalProgress = Math.min(1, Math.max(0, scrollProgress / textAnimEnd));
-  const holdThreshold = 0.2;
-  
-  let zoomProgress = 0;
-  if (textGlobalProgress > holdThreshold) {
-      zoomProgress = (textGlobalProgress - holdThreshold) / (1 - holdThreshold);
-  }
-  
-  const easeZoom = easeOutCubic(zoomProgress);
-  const textScale = 1 + (easeZoom * 50); 
-  
-  const fadeStartThreshold = 0.6;
-  let opacityVal = 1;
-  if (zoomProgress > fadeStartThreshold) {
-      const fadeProgress = (zoomProgress - fadeStartThreshold) / (1 - fadeStartThreshold);
-      opacityVal = 1 - Math.pow(fadeProgress, 2); 
-  }
-  
-  const textOpacity = Math.max(0, opacityVal);
-  const textBlur = (1 - textOpacity) * 20;
+
+  const featured = reviews.find(r => r.featured) || fallbackReviews[0];
+  const regular = reviews.filter(r => r !== featured);
 
   return (
-    <section 
-        ref={containerRef} 
-        className="relative bg-cream my-12 border-y border-black/10"
-        style={{ height: '350vh' }} 
-    >
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
+    <section ref={sectionRef} className="bg-[#FAF9F6] pt-12 pb-32 md:pb-48 overflow-hidden">
+        
+        {/* ─── POLAROID HERO SHOWCASE (IMAGE 1) ─── */}
+        <div className="max-w-[1400px] mx-auto px-6 mb-32 relative">
+            <motion.div 
+                style={{ scale: featuredScale, opacity: featuredOpacity }}
+                className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-1px relative z-10"
+            >
+                {/* Image Card (Polaroid Left) */}
+                <motion.div 
+                    initial={{ rotate: -4, x: -50, opacity: 0 }}
+                    whileInView={{ rotate: -2, x: 0, opacity: 1 }}
+                    viewport={{ once: true }}
+                    className="bg-cream p-4 pb-8 w-full md:w-[380px] shadow-[0_50px_100px_-30px_rgba(0,0,0,0.15)] border border-black/[0.05] relative z-20"
+                >
+                    <div className="aspect-[4/5] bg-gray-200 overflow-hidden grayscale contrast-125 mb-6 border border-black/5">
+                        <ImageWithLoader 
+                            src={featured.image || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80'} 
+                            alt={featured.author} 
+                            className="w-full h-full object-cover mix-blend-multiply" 
+                        />
+                    </div>
+                    <div className="text-center">
+                        <h3 className="text-2xl font-serif font-black text-[#242424]">{featured.author}</h3>
+                        <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#242424]/30 mt-1">{featured.role}</p>
+                    </div>
+                </motion.div>
 
-        <div 
-            className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none text-center px-4"
-            style={{ 
-                opacity: textOpacity,
-                transform: `scale(${textScale}) translate3d(0,0,0)`,
-                filter: `blur(${textBlur}px)`,
-                transformOrigin: 'center center',
-                willChange: 'transform, opacity, filter',
-                visibility: textOpacity <= 0.01 ? 'hidden' : 'visible'
-            }}
-        >
-            <div className="max-w-[90vw] md:max-w-5xl">
-                <span className="text-teal font-mono text-[10px] uppercase tracking-widest mb-4 block">Section 3: Community</span>
-                <h2 className="text-2xl md:text-4xl lg:text-5xl font-serif text-black leading-[1.0] tracking-tight">
-                    Join <br />
-                    <span className="italic font-light">thousands</span> who <br />
-                    actually <span className="italic font-light">earn more.</span>
+                {/* Quote Card (Polaroid Right) */}
+                <motion.div 
+                    initial={{ rotate: 2, x: 50, opacity: 0 }}
+                    whileInView={{ rotate: 1, x: 0, opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.1 }}
+                    className="bg-white p-12 md:p-20 w-full md:w-[600px] shadow-[20px_40px_80px_-20px_rgba(0,0,0,0.1)] border border-black/[0.03] flex flex-col justify-center min-h-[400px] relative mt-[-20px] md:mt-0 md:ml-[-20px] z-10"
+                >
+                    <Quote className="text-[#242424]/10 absolute top-12 left-12" size={80} />
+                    <div className="space-y-12 relative z-10">
+                        <p className="text-3xl md:text-5xl font-heading font-black text-[#242424] tracking-tighter leading-tight italic">
+                            "{featured.quote}"
+                        </p>
+                        <div className="pt-8 border-t border-[#242424]/5 flex items-center justify-between">
+                            <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-[#242424]/20">From the desk of</span>
+                            <span className="text-2xl font-serif italic font-medium text-[#242424]">{featured.company}</span>
+                        </div>
+                    </div>
+                </motion.div>
+            </motion.div>
+        </div>
+
+        {/* ─── REAL STORIES GRID (IMAGE 2) ─── */}
+        <div className="max-w-[1400px] mx-auto px-6">
+            <div className="text-center mb-24 space-y-4">
+                <div className="inline-flex items-center gap-2 bg-[#047857]/5 px-6 py-2 rounded-full border border-[#047857]/10 text-[#047857] text-[10px] font-black uppercase tracking-[0.4em]">
+                    <CheckCircle size={14} /> Social Validation
+                </div>
+                <h2 className="text-5xl md:text-8xl font-heading font-black tracking-tighter text-[#242424] leading-none uppercase">
+                    Real Stories, <br />
+                    <span className="text-[#047857] italic serif font-light lowercase">Real</span> Trust
                 </h2>
             </div>
-        </div>
 
-        <div className="relative z-30 w-full h-full">
-            {liveReviews.map((review, index) => (
-                <DraggableCardPair 
-                    key={review.id || index}
-                    review={review}
-                    index={index}
-                    progress={scrollProgress}
-                    totalCards={liveReviews.length}
-                />
-            ))}
+            <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-8 space-y-8">
+                {regular.map((review, idx) => (
+                    <div key={review.id || idx} className="break-inside-avoid">
+                        <AppStoreCard review={review} />
+                    </div>
+                ))}
+            </div>
+
+            <div className="mt-24 text-center">
+                <button className="bg-[#242424] text-white px-12 py-6 rounded-full text-xs font-bold uppercase tracking-[0.4em] shadow-2xl hover:bg-[#047857] hover:scale-105 transition-all active:scale-95">
+                    Share Your Journey →
+                </button>
+            </div>
         </div>
-      </div>
     </section>
   );
 };
