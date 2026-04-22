@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { getReviews } from '../services/supabaseService';
 import { Review } from '../types';
-import { Star, Apple, Play, CheckCircle } from 'lucide-react';
+import { Star, Apple, Play, CheckCircle, ShieldCheck } from 'lucide-react';
 import { motion, useScroll } from 'motion/react';
 
 const fallbackReviews: Review[] = [
