@@ -93,16 +93,16 @@ const Security: React.FC = () => {
                             {/* BASE CONTAINER */}
                             <div className="relative w-[300px] h-[180px] md:w-[480px] md:h-[280px]">
                                 
-                                {/* 1. THE REVEALED ENCRYPTED CARD (Background Layer) */}
+                                {/* LAYER 1: THE REVEALED ENCRYPTED CARD (Full Background) */}
                                 <div className="absolute inset-0 bg-[#0F1D1D] rounded-xl border border-emerald-500/30 overflow-hidden shadow-[0_0_50px_rgba(52,211,153,0.1)]">
                                     <div className="p-6 md:p-10 h-full flex flex-col justify-between relative">
                                         <div className="flex justify-between items-start">
                                             <div className="w-10 h-8 md:w-12 md:h-10 bg-emerald-500/20 rounded-md border border-emerald-500/40" />
-                                            <div className="text-[8px] md:text-[10px] font-mono text-emerald-400/60 tracking-widest uppercase">ENCRYPTED_ID_884</div>
+                                            <div className="text-[8px] md:text-[10px] font-mono text-emerald-400/60 tracking-widest uppercase">SECURE_PROC_ID</div>
                                         </div>
                                         
                                         {/* SCROLLING TERMINAL FEED */}
-                                        <div className="absolute right-0 top-0 bottom-0 w-1/3 opacity-20 pointer-events-none overflow-hidden">
+                                        <div className="absolute left-0 top-0 bottom-0 w-1/3 opacity-20 pointer-events-none overflow-hidden">
                                             <motion.div 
                                                 animate={{ y: [0, -500] }}
                                                 transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
@@ -120,7 +120,7 @@ const Security: React.FC = () => {
                                             {[...Array(5)].map((_, i) => (
                                                 <div key={i} className="flex gap-2 whitespace-nowrap">
                                                     <span className="text-[8px] md:text-[10px] font-mono text-emerald-400">0x{Math.random().toString(16).slice(2, 8).toUpperCase()}</span>
-                                                    <span className="text-[8px] md:text-[10px] font-mono text-emerald-400/30">>> {Math.random().toString(36).slice(2, 12)}</span>
+                                                    <span className="text-[8px] md:text-[10px] font-mono text-emerald-400/30">>> ENCRYPTED_BLOCK_{i}</span>
                                                 </div>
                                             ))}
                                         </div>
@@ -134,12 +134,12 @@ const Security: React.FC = () => {
                                     />
                                 </div>
 
-                                {/* 2. THE VISIBLE WHITE CARD (Top Layer - Clipped) */}
+                                {/* LAYER 2: THE VISIBLE WHITE CARD (Top Layer - Clipped from the left) */}
                                 <motion.div 
-                                    initial={{ width: '100%' }}
-                                    animate={isInView ? { width: '55%' } : { width: '100%' }}
+                                    initial={{ clipPath: 'inset(0 0 0 0%)' }}
+                                    animate={isInView ? { clipPath: 'inset(0 0 0 45%)' } : { clipPath: 'inset(0 0 0 0%)' }}
                                     transition={{ delay: 0.8, duration: 2.5, ease: [0.65, 0, 0.35, 1] }}
-                                    className="absolute inset-0 bg-white rounded-xl shadow-2xl overflow-hidden z-10 border border-gray-200"
+                                    className="absolute inset-0 bg-white rounded-xl shadow-2xl overflow-hidden z-10 border border-gray-200 pointer-events-none"
                                 >
                                     <div className="p-6 md:p-10 h-full flex flex-col justify-between w-[300px] md:w-[480px]">
                                         <div className="flex justify-between items-start">
@@ -155,7 +155,7 @@ const Security: React.FC = () => {
                                             </div>
                                         </div>
                                         <div className="flex justify-between items-end">
-                                             <div className="text-[8px] md:text-[10px] text-gray-300 font-mono italic">valid thru 04/28</div>
+                                             <div className="text-[8px] md:text-[10px] text-gray-300 font-mono italic">EXP: 04/28</div>
                                              <div className="flex -space-x-2">
                                                  <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-red-500/20 border border-red-500/10" />
                                                  <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-orange-500/20 border border-orange-500/10" />
@@ -164,10 +164,10 @@ const Security: React.FC = () => {
                                     </div>
                                 </motion.div>
 
-                                {/* 3. THE SCANNING BEAM */}
+                                {/* LAYER 3: THE SCANNING BEAM (Moves Left to Right) */}
                                 <motion.div 
-                                    initial={{ left: '100%' }}
-                                    animate={isInView ? { left: '55%' } : { left: '100%' }}
+                                    initial={{ left: '0%' }}
+                                    animate={isInView ? { left: '45%' } : { left: '0%' }}
                                     transition={{ delay: 0.8, duration: 2.5, ease: [0.65, 0, 0.35, 1] }}
                                     className="absolute top-[-15%] bottom-[-15%] w-[3px] bg-emerald-400 z-30 shadow-[0_0_15px_#34d399,0_0_30px_#34d399]"
                                 >
