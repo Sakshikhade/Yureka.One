@@ -140,9 +140,6 @@ const Community: React.FC = () => {
       offset: ["start end", "end start"]
   });
 
-  const featuredScale = useTransform(scrollYProgress, [0, 0.4], [0.9, 1]);
-  const featuredOpacity = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
-
   useEffect(() => {
     const unsubscribe = getReviews((data) => {
       setReviews(data.length > 0 ? data : fallbackReviews);
@@ -161,54 +158,6 @@ const Community: React.FC = () => {
   return (
     <section ref={sectionRef} className="bg-[#FAF9F6] pt-12 pb-32 md:pb-48 overflow-hidden">
         
-        {/* ─── POLAROID HERO SHOWCASE (IMAGE 1) ─── */}
-        <div className="max-w-[1400px] mx-auto px-6 mb-32 relative">
-            <motion.div 
-                style={{ scale: featuredScale, opacity: featuredOpacity }}
-                className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-1px relative z-10"
-            >
-                {/* Image Card (Polaroid Left) */}
-                <motion.div 
-                    initial={{ rotate: -4, x: -50, opacity: 0 }}
-                    whileInView={{ rotate: -2, x: 0, opacity: 1 }}
-                    viewport={{ once: true }}
-                    className="bg-cream p-4 pb-8 w-full md:w-[380px] shadow-[0_50px_100px_-30px_rgba(0,0,0,0.15)] border border-black/[0.05] relative z-20"
-                >
-                    <div className="aspect-[4/5] bg-gray-200 overflow-hidden grayscale contrast-125 mb-6 border border-black/5">
-                        <ImageWithLoader 
-                            src={featured.image || 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80'} 
-                            alt={featured.author} 
-                            className="w-full h-full object-cover mix-blend-multiply" 
-                        />
-                    </div>
-                    <div className="text-center">
-                        <h3 className="text-2xl font-serif font-black text-[#242424]">{featured.author}</h3>
-                        <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#242424]/30 mt-1">{featured.role}</p>
-                    </div>
-                </motion.div>
-
-                {/* Quote Card (Polaroid Right) */}
-                <motion.div 
-                    initial={{ rotate: 2, x: 50, opacity: 0 }}
-                    whileInView={{ rotate: 1, x: 0, opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.1 }}
-                    className="bg-white p-12 md:p-20 w-full md:w-[600px] shadow-[20px_40px_80px_-20px_rgba(0,0,0,0.1)] border border-black/[0.03] flex flex-col justify-center min-h-[400px] relative mt-[-20px] md:mt-0 md:ml-[-20px] z-10"
-                >
-                    <Quote className="text-[#242424]/10 absolute top-12 left-12" size={80} />
-                    <div className="space-y-12 relative z-10">
-                        <p className="text-3xl md:text-5xl font-heading font-black text-[#242424] tracking-tighter leading-tight italic">
-                            "{featured.quote}"
-                        </p>
-                        <div className="pt-8 border-t border-[#242424]/5 flex items-center justify-between">
-                            <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-[#242424]/20">From the desk of</span>
-                            <span className="text-2xl font-serif italic font-medium text-[#242424]">{featured.company}</span>
-                        </div>
-                    </div>
-                </motion.div>
-            </motion.div>
-        </div>
-
         {/* ─── TRI-STREAM MARQUEE GRID (IMAGE 3) ─── */}
         <div className="w-full px-6 md:px-12">
             <div className="text-center mb-24 space-y-4">
