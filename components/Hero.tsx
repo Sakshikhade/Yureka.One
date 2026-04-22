@@ -24,7 +24,7 @@ const Hero: React.FC = () => {
             </div>
         </div>
 
-        <div className="relative z-10 w-full max-w-[1440px] px-6 flex flex-col items-center">
+        <div className="relative z-10 w-full px-6 flex flex-col items-center">
             
             {/* --- NEWSPAPER HEADER SECTION --- */}
             
@@ -37,9 +37,9 @@ const Hero: React.FC = () => {
                 className="w-full flex flex-col md:flex-row justify-between items-center md:items-end border-b-4 border-double border-ink/20 pb-6 mb-2"
             >
                 {/* Left Ear - Keyword Rich Context */}
-                <div className="hidden md:block w-64 text-left border-r border-ink/10 pr-6 h-full">
+                <div className="hidden md:block w-48 lg:w-64 text-left border-r border-ink/10 pr-4 lg:pr-6 h-full">
                     <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#242424]/70 mb-2">Est. 2026 • Alpha V.1</p>
-                    <p className="text-sm font-serif italic text-[#242424]/80 leading-tight">
+                    <p className="text-xs lg:text-sm font-serif italic text-[#242424]/80 leading-tight">
                         "The automation of financial superiority."
                     </p>
                 </div>
@@ -47,14 +47,14 @@ const Hero: React.FC = () => {
                 {/* Masthead - Brand Name */}
                 <div className="flex-1 text-center px-4 md:px-8 mb-4 md:mb-0 group overflow-hidden">
                     <div className="text-[10px] font-medium uppercase tracking-[0.5em] text-[#047857] mb-3 opacity-0 group-hover:opacity-100 transition-all duration-700 -translate-y-2 group-hover:translate-y-0 text-[#047857]">The Intelligence Edition</div>
-                    <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-heading font-medium tracking-tight leading-[0.88] text-[#242424] uppercase">
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[clamp(1.5rem,4vw,3.25rem)] font-heading font-medium tracking-tight leading-[0.88] text-[#242424] uppercase">
                         Yureka<span className="text-[#047857]"> Times.</span>
                     </h1>
                 </div>
 
 
                 {/* Right Ear - Metadata */}
-                <div className="hidden md:block w-72 text-right border-l border-ink/10 pl-8 h-full">
+                <div className="hidden md:block w-48 lg:w-72 text-right border-l border-ink/10 pl-4 lg:pl-8 h-full">
                      <div className="flex items-center justify-end gap-3 text-[#242424]/70 mb-2">
                         <Globe size={14} className="animate-spin-slow text-[#047857]" />
                         <span className="text-xs font-sans font-medium uppercase tracking-widest text-[9px]">Neural Network Stable</span>
@@ -74,7 +74,7 @@ const Hero: React.FC = () => {
                 transition={{ ...fadeInUp.transition, delay: 0.1 }}
                 className="w-full border-b border-ink/10 py-4 mb-12 md:mb-20 grid grid-cols-1 md:grid-cols-3 items-center px-4 gap-y-4 md:gap-y-0"
             >
-                <div className="text-[10px] md:text-xs font-medium uppercase tracking-[0.1em] text-[#242424]/40 flex gap-4 justify-center md:justify-start">
+                <div className="text-[10px] md:text-xs font-medium uppercase tracking-[0.1em] text-[#242424]/40 flex gap-2 lg:gap-4 justify-center md:justify-start">
                     <span>Bengaluru Node</span>
                     <span className="text-[#047857]">/</span>
                     <span className="text-[#047857]">234,402 Cards Audited</span>
@@ -101,7 +101,7 @@ const Hero: React.FC = () => {
                      <span className="text-[#242424] font-medium text-[10px] md:text-xs uppercase tracking-[0.4em]">The Automation of Wealth</span>
                      <div className="h-[1px] bg-[#047857]/20 w-12 md:w-24"></div>
                 </div>
-                <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-[3.25rem] leading-[0.95] font-heading font-medium text-[#242424] uppercase tracking-tight">
+                <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-[clamp(1.5rem,5vw,3.25rem)] leading-[0.95] font-heading font-medium text-[#242424] uppercase tracking-tight">
                     Stop Guessing. <br className="hidden md:block" /> Start Winning.
                 </h2>
                 <h3 className="text-sm md:text-base lg:text-lg font-sans font-medium text-[#242424]/60 mt-8 md:mt-10 max-w-3xl mx-auto leading-relaxed tracking-tight uppercase">
@@ -110,7 +110,7 @@ const Hero: React.FC = () => {
 
                 
                 <div className="mt-14 md:mt-20 flex flex-col md:flex-row items-center justify-center gap-8">
-                    <Link to="/yureka-ai" className="group relative px-14 py-6 bg-[#242424] text-cream overflow-hidden rounded-full w-full md:w-auto shadow-2xl transition-all hover:-translate-y-1">
+                    <Link to="/yureka-ai" className="group relative px-14 py-6 bg-[#242424] text-cream overflow-hidden rounded-full w-full md:w-auto shadow-2xl transition-all hover:-translate-y-1 text-center">
                         <div className="absolute inset-0 w-full h-full bg-[#047857]/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
                         <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-[100%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-in-out" />
                         <span className="relative z-10 font-medium text-[11px] uppercase tracking-[0.3em] flex items-center justify-center gap-4 text-cream">
@@ -135,15 +135,15 @@ const Hero: React.FC = () => {
                     whileInView={fadeInUp.whileInView}
                     viewport={{ once: true }}
                     transition={{ ...fadeInUp.transition, delay: 0.3 }}
-                    className="md:col-span-1 lg:col-span-3 lg:border-r-2 border-ink/10 lg:pr-10 pt-12 hidden lg:block"
+                    className="md:col-span-1 lg:col-span-3 border-ink/10 lg:pr-8 pt-12 hidden lg:block"
                 >
-                 <div className="flex items-center gap-4 mb-12">
-                        <span className="text-7xl font-heading font-medium leading-none text-[#242424]">E</span>
+                  <div className="flex items-center gap-4 mb-12">
+                        <span className="text-6xl lg:text-7xl font-heading font-medium leading-none text-[#242424]">E</span>
                         <h4 className="font-medium text-[11px] uppercase tracking-[0.3em] text-[#242424]/20 pt-6">Editorial Dispatch</h4>
                      </div>
 
                      
-                      <h5 className="font-heading font-medium text-3xl text-[#242424] leading-[0.88] mb-6 uppercase tracking-tight">Financial <br />Absolute.</h5>
+                      <h5 className="font-heading font-medium text-2xl lg:text-3xl text-[#242424] leading-[0.88] mb-6 uppercase tracking-tight">Financial <br />Absolute.</h5>
 
                      
                      <div className="flex justify-between items-center text-[10px] text-[#242424]/20 font-medium uppercase tracking-[0.4em] mb-8 border-b border-ink/10 pb-4 text-[#242424]/20">
@@ -152,24 +152,24 @@ const Hero: React.FC = () => {
                      </div>
                      
                      <p className="text-justify font-sans text-[#242424]/60 leading-relaxed text-sm mb-12 border-b border-ink/10 pb-12 italic">
-                        The Indian credit landscape has reached peak entropy. With 200+ fragmented card products, manual selection is statistically impossible. Our engine audits the entire matrix.
+                        The Indian credit landscape has reached entropy. Fragmented products make manual selection impossible. Our engine audits the matrix.
                      </p>
                      
-                     <div className="bg-[#047857]/5 p-10 border border-clay/10 rounded-[3rem] shadow-sm group hover:bg-[#047857]/10 transition-colors duration-500">
+                     <div className="bg-[#047857]/5 p-6 lg:p-10 border border-clay/10 rounded-[3rem] shadow-sm group hover:bg-[#047857]/10 transition-colors duration-500">
                          <h5 className="font-medium text-[11px] uppercase tracking-[0.4em] text-[#047857] mb-8 font-medium">Yield Probability</h5>
-                         <div className="flex justify-between text-xs font-medium text-[#242424]/40 border-b border-ink/5 py-5 uppercase tracking-widest leading-loose">
+                         <div className="flex justify-between text-xs font-medium text-[#242424]/40 border-b border-ink/5 py-5 uppercase tracking-widest leading-loose gap-2">
                              <span>Avg Yield</span>
-                             <span className="text-[#242424] font-medium">₹15,400.00</span>
+                             <span className="text-[#242424] font-medium whitespace-nowrap">₹15,400.00</span>
                          </div>
-                         <div className="flex justify-between text-xs font-medium text-[#242424]/40 py-5 uppercase tracking-widest leading-loose">
+                         <div className="flex justify-between text-xs font-medium text-[#242424]/40 py-5 uppercase tracking-widest leading-loose gap-2">
                              <span>Top Cluster</span>
-                             <span className="text-[#242424] font-medium">₹48,920.00</span>
+                             <span className="text-[#242424] font-medium whitespace-nowrap">₹48,920.00</span>
                          </div>
                      </div>
                 </motion.div>
 
                 {/* Center: Mobile Group Chat Simulation */}
-                <div className="md:col-span-1 lg:col-span-6 relative flex justify-center items-center pt-8 md:pt-12 pb-16 md:pb-20 lg:px-6 min-h-[550px] md:min-h-[750px] border-b md:border-b-0 lg:border-r-2 border-ink/10 overflow-visible">
+                <div className="md:col-span-1 lg:col-span-6 relative flex justify-center items-center pt-8 md:pt-12 pb-16 md:pb-20 lg:px-4 min-h-[550px] md:min-h-[750px] border-l lg:border-l-2 lg:border-r-2 border-ink/10 overflow-visible">
                      <div className="relative w-full h-full flex items-center justify-center">
                          <GroupChatAudit />
                      </div>
@@ -181,23 +181,23 @@ const Hero: React.FC = () => {
                     whileInView={fadeInUp.whileInView}
                     viewport={{ once: true }}
                     transition={{ ...fadeInUp.transition, delay: 0.7 }}
-                    className="md:col-span-2 lg:col-span-3 border-t lg:border-t-0 lg:border-l-2 border-ink/10 pl-0 lg:pl-12 pt-12 flex flex-col justify-between"
+                    className="md:col-span-2 lg:col-span-3 border-t lg:border-t-0 pl-0 lg:pl-10 pt-12 flex flex-col justify-between"
                 >
                      <div>
                         <h4 className="font-medium text-[11px] uppercase tracking-[0.4em] mb-12 text-[#242424]/20 border-b border-ink/5 pb-6 uppercase">In This Dispatch</h4>
                         <ul className="space-y-0 text-[#242424]/20">
                             {[
-                                { title: "Neural Matcher", page: "01", link: "/yureka-ai", desc: "Conversational Logic" },
-                                { title: "Audit Engine", page: "05", link: "/free-tools", desc: "Mathematical Parity" },
-                                { title: "Card Explorer", page: "09", link: "/cards", desc: "The Full Matrix" },
-                                { title: "Manifesto", page: "14", link: "/manifesto", desc: "Internal Alpha" }
+                                { title: "Neural", page: "01", link: "/yureka-ai", desc: "Logic" },
+                                { title: "Audit", page: "05", link: "/free-tools", desc: "Parity" },
+                                { title: "Explorer", page: "09", link: "/cards", desc: "Matrix" },
+                                { title: "Manifesto", page: "14", link: "/manifesto", desc: "Alpha" }
                             ].map((item, i) => (
                                 <li key={i} className="border-b border-ink/5 last:border-0 font-sans group">
-                                    <Link to={item.link} className="flex justify-between items-start py-6 md:py-8 cursor-pointer relative overflow-hidden px-6 -mx-6 transition-all duration-700">
+                                    <Link to={item.link} className="flex justify-between items-start py-6 md:py-8 cursor-pointer relative overflow-hidden px-4 lg:px-6 -mx-4 lg:-mx-6 transition-all duration-700">
                                         <div className="absolute inset-0 bg-[#242424]/[0.02] -translate-x-full group-hover:translate-x-0 transition-transform duration-700" />
                                         <div className="relative z-10">
                                             <span className="block font-heading font-medium text-lg md:text-xl text-[#242424] group-hover:text-[#047857] transition-colors mb-1 uppercase tracking-tight">{item.title}</span>
-                                            <span className="block text-[11px] font-medium uppercase tracking-[0.2em] text-[#242424]/30 group-hover:text-[#242424]/60">{item.desc}</span>
+                                            <span className="block text-[10px] font-medium uppercase tracking-[0.2em] text-[#242424]/30">{item.desc}</span>
                                         </div>
                                         <span className="relative z-10 font-mono text-xs md:text-sm text-[#242424]/10 font-medium group-hover:text-[#242424]/30 transition-colors">.{item.page}</span>
                                     </Link>
@@ -210,12 +210,12 @@ const Hero: React.FC = () => {
                          <motion.div 
                             whileHover={{ y: -6, boxShadow: '0 32px 64px -12px rgba(0,0,0,0.14)' }}
                             transition={{ duration: 0.4, ease: [0.25, 0.8, 0.25, 1] }}
-                            className="border border-ink/8 p-7 md:p-8 text-center bg-cream shadow-[0_8px_40px_-12px_rgba(0,0,0,0.12)] relative overflow-hidden rounded-[2rem]"
+                            className="border border-ink/8 p-6 lg:p-8 text-center bg-cream shadow-[0_8px_40px_-12px_rgba(0,0,0,0.12)] relative overflow-hidden rounded-[2rem]"
                          >
                              <div className="absolute top-0 right-0 p-4 opacity-[0.06]">
                                 <Sparkles size={32} className="text-[#242424]" />
                              </div>
-                             <h4 className="font-serif text-lg italic mb-6 text-[#242424] leading-snug">"The definitive way to <br /> audit credit cards."</h4>
+                             <h4 className="font-serif text-base lg:text-lg italic mb-6 text-[#242424] leading-snug">"The definitive way to <br /> audit credit cards."</h4>
                              <Link to="/join-waitlist" className="block w-full bg-[#047857] hover:bg-[#242424] text-cream text-center py-4 rounded-xl font-medium uppercase tracking-[0.25em] text-[10px] transition-all duration-300">
                                  Join Registry
                              </Link>

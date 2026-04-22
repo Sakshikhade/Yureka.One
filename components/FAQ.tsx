@@ -162,53 +162,53 @@ const FAQ: React.FC = () => {
               style={{ backgroundImage: 'radial-gradient(#047857 0.5px, transparent 0.5px)', backgroundSize: '20px 20px' }}>
          </div>
 
-         <div className="max-w-[1440px] mx-auto px-6 relative z-10 text-[#242424]">
-             
-             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-start">
-                 
-                 {/* Left Column: Sticky Header with SEO Keywords */}
-                 <div className="lg:col-span-5 lg:sticky lg:top-32">
-                     <motion.div 
-                        initial={{ opacity: 0, x: -30 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8 }}
-                        className="text-left mb-8"
-                     >
-                        <span className="block text-[#047857] text-[10px] md:text-xs font-bold uppercase tracking-[0.4em] mb-6">Help & Support</span>
-                        <h2 className="text-5xl md:text-8xl font-serif font-bold text-[#242424] mb-6 leading-[0.8] tracking-tighter uppercase">
-                            Common <br className="hidden md:block" /> Questions
-                        </h2>
-                        <h3 className="text-4xl md:text-7xl font-serif font-bold text-[#242424] leading-[0.9] tracking-tighter uppercase opacity-30 italic">
-                            Deciphered.
-                        </h3>
-                     </motion.div>
-                     <motion.p 
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 0.7 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.4, duration: 1 }}
-                        className="text-base md:text-lg text-[#242424] font-serif italic max-w-md border-l-2 border-clay pl-6"
-                     >
-                         Navigating the world of credit rewards shouldn't be a mystery. We've clarified the most common queries about the Yureka.money matching engine.
-                     </motion.p>
-                 </div>
+          <div className="w-full relative z-10 text-[#242424]">
+              
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+                  
+                  {/* Left Column: Sticky Header with SEO Keywords */}
+                  <div className="lg:col-span-5 lg:sticky lg:top-32">
+                      <motion.div 
+                         initial={{ opacity: 0, x: -30 }}
+                         whileInView={{ opacity: 1, x: 0 }}
+                         viewport={{ once: true }}
+                         transition={{ duration: 0.8 }}
+                         className="text-left mb-8"
+                      >
+                         <span className="block text-[#047857] text-[10px] md:text-xs font-bold uppercase tracking-[0.4em] mb-6">Help & Support</span>
+                         <h2 className="text-4xl md:text-5xl lg:text-[clamp(1.5rem,4vw,5rem)] font-serif font-bold text-[#242424] mb-4 leading-[0.9] tracking-tighter uppercase">
+                             Common <br className="hidden md:block" /> Questions
+                         </h2>
+                         <h3 className="text-3xl md:text-4xl lg:text-[clamp(1.2rem,3.5vw,4.5rem)] font-serif font-bold text-[#242424] leading-[0.9] tracking-tighter uppercase opacity-30 italic">
+                             Deciphered.
+                         </h3>
+                      </motion.div>
+                      <motion.p 
+                         initial={{ opacity: 0 }}
+                         whileInView={{ opacity: 0.7 }}
+                         viewport={{ once: true }}
+                         transition={{ delay: 0.4, duration: 1 }}
+                         className="text-sm md:text-base lg:text-lg text-[#242424] font-serif italic max-w-md border-l-2 border-clay pl-6"
+                      >
+                          Navigating the world of credit rewards shouldn't be a mystery. We've clarified the most common queries about the Yureka.money matching engine.
+                      </motion.p>
+                  </div>
 
-                 {/* Right Column: Glassmorphism Accordions */}
-                 <div className="lg:col-span-7 w-full">
-                     {faqData.map((category, idx) => (
-                          <FAQCategory 
-                            key={idx} 
-                            index={idx}
-                            icon={category.icon} 
-                            title={category.title} 
-                            questions={category.questions} 
-                          />
-                     ))}
-                 </div>
+                  {/* Right Column: Glassmorphism Accordions */}
+                  <div className="lg:col-span-7 w-full">
+                      {faqData.map((category, idx) => (
+                           <FAQCategory 
+                             key={idx} 
+                             index={idx}
+                             icon={category.icon} 
+                             title={category.title} 
+                             questions={category.questions} 
+                           />
+                      ))}
+                  </div>
 
-             </div>
-         </div>
+              </div>
+          </div>
     </section>
   );
 };

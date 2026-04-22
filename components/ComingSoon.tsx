@@ -697,20 +697,20 @@ const ComingSoon: React.FC = () => {
             <div className="absolute top-[20%] right-[-10%] w-[600px] h-[600px] bg-[#047857]/5 blur-[120px] rounded-full pointer-events-none" />
             <div className="absolute bottom-[10%] left-[-5%] w-[800px] h-[800px] bg-teal-500/5 blur-[160px] rounded-full pointer-events-none" />
 
-            <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+            <div className="w-full relative z-10">
                 {/* Tactical Header Section */}
-                <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-12 md:gap-16 mb-24 md:mb-32">
+                <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-12 mb-24 md:mb-32">
                     <motion.div 
                         initial={{ opacity: 0, y: 30 }}
                         animate={isInView ? { opacity: 1, y: 0 } : {}}
                         transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                        className="max-w-4xl"
+                        className="max-w-3xl"
                     >
                         <div className="inline-flex items-center gap-3 px-4 py-1.5 mb-6 md:mb-10 bg-cream border border-black/5 rounded-full shadow-sm backdrop-blur-xl">
                             <span className="w-2 h-2 rounded-full bg-[#047857] animate-pulse" />
                             <span className="text-[9px] md:text-[10px] font-medium uppercase tracking-[0.2em] text-[#242424]/60">Intelligence Pipeline / v0.9.4B</span>
                         </div>
-                        <h2 className="text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight leading-[0.9] text-[#242424] uppercase">
+                        <h2 className="text-4xl md:text-5xl lg:text-[clamp(1.5rem,5vw,5rem)] font-medium tracking-tight leading-[0.9] text-[#242424] uppercase">
                             The <br />
                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-clay via-[#047857] to-ink italic font-thin serif">Elite</span><br />
                            Standard.
@@ -721,30 +721,30 @@ const ComingSoon: React.FC = () => {
                         initial={{ opacity: 0, x: 20 }}
                         animate={isInView ? { opacity: 1, x: 0 } : {}}
                         transition={{ duration: 1, delay: 0.3 }}
-                        className="lg:max-w-xs space-y-6 md:space-y-8 pb-4"
+                        className="lg:max-w-[280px] space-y-6 md:space-y-8 pb-4"
                     >
-                        <div className="w-12 h-12 md:w-16 md:h-16 bg-cream rounded-[1.2rem] md:rounded-3xl flex items-center justify-center shadow-2xl border border-black/5 rotate-3 hover:rotate-0 transition-transform duration-500 backdrop-blur-xl">
+                        <div className="w-12 h-12 bg-cream rounded-[1.2rem] flex items-center justify-center shadow-2xl border border-black/5 rotate-3 hover:rotate-0 transition-transform duration-500 backdrop-blur-xl">
                             <Lock className="text-[#047857]" size={24} />
                         </div>
-                        <p className="text-[#242424]/40 text-xs md:text-sm font-medium leading-relaxed tracking-tight max-w-xs">
-                           Our system interprets 10^7 variables per second to render "guessing" obsolete. This is the automation of financial superiority.
+                        <p className="text-[#242424]/40 text-xs md:text-sm font-medium leading-relaxed tracking-tight">
+                           Our system interprets 10^7 variables per second to render "guessing" obsolete. This is the automation of superiority.
                         </p>
                     </motion.div>
                 </div>
 
                 {/* Vertical Feature Stack - Editorial Style */}
-                <div className="space-y-16 md:space-y-24">
+                <div className="space-y-16 md:space-y-32">
                     {features.map((feature, idx) => (
-                        <div key={idx} className={`flex flex-col lg:flex-row gap-12 md:gap-32 items-center ${idx % 2 !== 0 ? 'lg:flex-row-reverse' : ''}`}>
+                        <div key={idx} className={`flex flex-col lg:flex-row gap-12 md:gap-20 items-center ${idx % 2 !== 0 ? 'lg:flex-row-reverse' : ''}`}>
                             {/* Visual Mockup Container */}
                             <motion.div 
                                 initial={{ opacity: 0, scale: 0.98, y: 60 }}
                                 whileInView={{ opacity: 1, scale: 1, y: 0 }}
                                 viewport={{ once: true, margin: "-100px" }}
                                 transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                                className="w-full lg:w-3/5 group relative"
+                                className="w-full lg:w-1/2 group relative"
                             >
-                                <div className="relative aspect-[3/4] md:aspect-[4/5] max-w-full">
+                                <div className="relative aspect-[3/4] md:aspect-[4/5] max-w-full lg:max-w-none">
                                    {/* Advanced Glow */}
                                    <div className={`absolute -inset-10 bg-gradient-to-br from-clay/5 to-transparent blur-[120px] opacity-0 group-hover:opacity-100 transition-opacity duration-1000`} />
                                    {feature.component}
@@ -757,18 +757,18 @@ const ComingSoon: React.FC = () => {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 1 }}
-                                className="w-full lg:w-2/5 space-y-6 md:space-y-10"
+                                className="w-full lg:w-1/2 space-y-6 md:space-y-8 px-4"
                             >
                                 <div className="space-y-4">
                                    <div className="flex items-center gap-3">
                                       <span className="text-[9px] md:text-[10px] font-medium uppercase tracking-[0.3em] text-[#242424]/20">{feature.label}</span>
                                       <div className="h-[1px] w-8 md:w-12 bg-[#242424]/5" />
                                    </div>
-                                   <h3 className="text-3xl md:text-4xl font-medium text-[#242424] tracking-tight uppercase leading-none">
+                                   <h3 className="text-3xl md:text-4xl lg:text-[clamp(1.5rem,3.5vw,4.5rem)] font-medium text-[#242424] tracking-tight uppercase leading-none">
                                       {feature.title}
                                    </h3>
                                 </div>
-                                <p className="text-[#242424]/50 text-sm md:text-lg font-medium leading-relaxed max-w-sm">
+                                <p className="text-[#242424]/50 text-sm md:text-lg font-medium leading-relaxed max-w-md">
                                    {feature.desc}
                                 </p>
                                 <div className="pt-4 flex flex-col sm:flex-row items-start sm:items-center gap-6">
@@ -790,22 +790,12 @@ const ComingSoon: React.FC = () => {
                     initial={{ opacity: 0, y: 60 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="mt-32 md:mt-64 p-8 md:p-32 bg-[#242424] rounded-[2.5rem] md:rounded-[4rem] text-center relative overflow-hidden group border border-cream/5"
+                    className="mt-32 md:mt-48 p-8 md:p-24 bg-[#242424] rounded-[2.5rem] md:rounded-[4rem] text-center relative overflow-hidden group border border-cream/5"
                 >
                     {/* Dark Grain Overlay */}
                     <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #fff 1px, transparent 0)', backgroundSize: '40px 40px' }} />
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#047857]/10 blur-[160px] rounded-full pointer-events-none" />
                     
-                    <div className="relative z-10 max-w-4xl mx-auto">
-                        <Sparkles className="mx-auto mb-8 md:mb-12 text-[#047857]" size={32} />
-                        <h4 className="text-3xl md:text-6xl font-medium text-cream mb-8 md:mb-10 tracking-tight leading-[1] uppercase">
-                            Secure the <span className="italic font-thin serif text-[#047857]">Neural Node</span> before public release.
-                        </h4>
-                        
-                        <div className="flex flex-col md:flex-row items-center justify-center gap-6">
-                            <div className="w-full md:flex-1 relative">
-                                <input 
-                                    type="email" 
                                     placeholder="Enter institutional email..." 
                                     className="w-full h-14 md:h-16 px-8 bg-cream/5 border border-cream/10 rounded-xl md:rounded-2xl text-cream placeholder:text-cream/20 focus:outline-none focus:border-clay/50 transition-all text-xs uppercase tracking-widest"
                                 />

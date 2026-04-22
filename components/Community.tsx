@@ -158,33 +158,27 @@ const Community: React.FC = () => {
     <section ref={sectionRef} className="bg-[#FAF9F6] pt-12 pb-32 md:pb-48 overflow-hidden">
         
         {/* ─── TRI-STREAM MARQUEE GRID (IMAGE 3) ─── */}
-        <div className="w-full px-6 md:px-12">
+        <div className="w-full">
             <div className="text-center mb-16 space-y-4">
                 <div className="inline-flex items-center gap-2 bg-[#047857]/5 px-6 py-2 rounded-full border border-[#047857]/10 text-[#047857] text-[10px] font-black uppercase tracking-[0.4em]">
                     <CheckCircle size={14} /> Social Validation
                 </div>
-                <h2 className="text-5xl md:text-8xl font-heading font-black tracking-tighter text-[#242424] leading-none uppercase">
+                <h2 className="text-5xl md:text-6xl lg:text-[clamp(1.5rem,5.5vw,6rem)] font-heading font-black tracking-tighter text-[#242424] leading-[0.85] uppercase">
                     Real Stories, <br />
                     <span className="text-[#047857] italic serif font-light lowercase">Real</span> Trust
                 </h2>
             </div>
 
-            {/* 5-Column Display */}
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-6 items-start max-w-[1600px] mx-auto">
-                {/* Column 1: Empty */}
-                <div className="hidden md:block" />
-
-                {/* Column 2: Upwards (Faster) */}
+            {/* 3-Stream Display (Syncs with global cols 2-3-4) */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start w-full">
+                {/* Column 1: Upwards (Faster) */}
                 <InfiniteColumn reviews={col1} speed={35} reverse={false} />
 
-                {/* Column 3: Downwards (Slightly slower for parallax effect) */}
+                {/* Column 2: Downwards */}
                 <InfiniteColumn reviews={col2} speed={45} reverse={true} />
 
-                {/* Column 4: Upwards (Medium) */}
+                {/* Column 3: Upwards (Medium) */}
                 <InfiniteColumn reviews={col3} speed={40} reverse={false} />
-
-                {/* Column 5: Empty */}
-                <div className="hidden md:block" />
             </div>
 
             <div className="mt-16 text-center">
