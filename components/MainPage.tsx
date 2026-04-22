@@ -12,7 +12,6 @@ const Marquee = lazy(() => import('./Marquee'));
 const Security = lazy(() => import('./Security'));
 const Community = lazy(() => import('./Community'));
 const ComingSoon = lazy(() => import('./ComingSoon'));
-const SocialProof = lazy(() => import('./SocialProof'));
 const FAQ = lazy(() => import('./FAQ'));
 const CalculatorCTA = lazy(() => import('./CalculatorCTA'));
 
@@ -80,7 +79,6 @@ const MainPage: React.FC = () => {
       </section>
 
       <ComingSoon />
-      <SocialProof />
 
       <section id="faq" className="scroll-mt-24">
         <Suspense fallback={<div className="h-64" />}>
