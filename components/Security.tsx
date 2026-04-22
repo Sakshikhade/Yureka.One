@@ -93,27 +93,24 @@ const Security: React.FC = () => {
                             {/* BASE CONTAINER (Defines the card area) */}
                             <div className="relative w-[300px] h-[180px] md:w-[480px] md:h-[280px]">
                                 
-                                {/* LAYER 1: THE ENCRYPTED CARD (Back Layer - revealed on the left) */}
-                                <div className="absolute inset-0 bg-[#0F1D1D] rounded-xl border border-emerald-500/30 overflow-hidden shadow-[0_0_50px_rgba(52,211,153,0.1)]">
-                                    <div className="p-6 md:p-10 h-full flex flex-col justify-between relative">
-                                        <div className="flex justify-between items-start">
-                                            <div className="w-10 h-8 md:w-12 md:h-10 bg-emerald-500/20 rounded-md border border-emerald-500/40" />
+                                {/* LAYER 1: THE ENCRYPTED VAULT (Bottom Layer) */}
+                                <div className="absolute inset-0 bg-[#0A1A1A] rounded-xl border border-emerald-500/30 overflow-hidden shadow-inner">
+                                    {/* Terminal Background */}
+                                    <div className="absolute inset-0 flex flex-col p-4 opacity-70">
+                                        <div className="flex justify-between items-center mb-4">
                                             <div className="text-[8px] md:text-[10px] font-mono text-emerald-400/60 tracking-widest uppercase">SECURE_PROC_ID</div>
+                                            <div className="flex gap-1">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                                                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/20" />
+                                            </div>
                                         </div>
-                                        
-                                        {/* SCROLLING TERMINAL FEED */}
-                                        <div className="absolute left-0 top-0 bottom-0 w-1/3 opacity-10 pointer-events-none overflow-hidden">
-                                            <motion.div 
-                                                animate={{ y: [0, -500] }}
-                                                transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-                                                className="flex flex-col gap-1 p-4"
-                                            >
-                                                {[...Array(40)].map((_, i) => (
-                                                    <div key={i} className="text-[6px] md:text-[8px] font-mono text-emerald-400 whitespace-nowrap">
-                                                        {Math.random().toString(16).slice(2, 18).toUpperCase()}
-                                                    </div>
-                                                ))}
-                                            </motion.div>
+
+                                        <div className="space-y-0.5 mb-6">
+                                            {[...Array(40)].map((_, i) => (
+                                                <div key={i} className="text-[6px] md:text-[8px] font-mono text-emerald-400 whitespace-nowrap">
+                                                    {Math.random().toString(16).slice(2, 18).toUpperCase()}
+                                                </div>
+                                            ))}
                                         </div>
 
                                         <div className="space-y-1 md:space-y-2 opacity-40 overflow-hidden relative z-10">
@@ -124,7 +121,7 @@ const Security: React.FC = () => {
                                                 </div>
                                             ))}
                                         </div>
-                                        <div className="text-xl md:text-3xl font-mono text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.5)] tracking-[0.2em] relative z-10">
+                                        <div className="text-xl md:text-3xl font-mono text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.5)] tracking-[0.2em] relative z-10 mt-auto">
                                             <EncryptedText text="**** **** **** 8421" />
                                         </div>
                                     </div>
@@ -134,11 +131,10 @@ const Security: React.FC = () => {
                                     />
                                 </div>
 
-                                {/* LAYER 2: THE REVEALER CONTAINER (Top Layer) */}
-                                {/* This container moves left-to-right to hide itself from the left */}
+                                {/* LAYER 2: THE WHITE CARD (Top Layer with Animated Clip-Path) */}
                                 <motion.div 
-                                    initial={{ left: '0%' }}
-                                    animate={isInView ? { left: '100%' } : { left: '0%' }}
+                                    initial={{ clipPath: 'inset(0 0 0 0%)' }}
+                                    animate={isInView ? { clipPath: 'inset(0 0 0 100%)' } : { clipPath: 'inset(0 0 0 0%)' }}
                                     transition={{ 
                                         delay: 1, 
                                         duration: 3, 
@@ -146,46 +142,32 @@ const Security: React.FC = () => {
                                         repeat: Infinity,
                                         repeatDelay: 2
                                     }}
-                                    className="absolute inset-0 overflow-hidden z-20 pointer-events-none"
+                                    className="absolute inset-0 bg-white rounded-xl shadow-2xl border border-gray-200 z-20 pointer-events-none"
                                 >
-                                    {/* THE WHITE CARD (Fixed position relative to BASE, offset within REVEALER) */}
-                                    <motion.div 
-                                        initial={{ left: '0%' }}
-                                        animate={isInView ? { left: '-100%' } : { left: '0%' }}
-                                        transition={{ 
-                                            delay: 1, 
-                                            duration: 3, 
-                                            ease: "easeInOut",
-                                            repeat: Infinity,
-                                            repeatDelay: 2
-                                        }}
-                                        className="absolute inset-y-0 w-[300px] h-[180px] md:w-[480px] md:h-[280px] bg-white rounded-xl shadow-2xl border border-gray-200"
-                                    >
-                                        <div className="p-6 md:p-10 h-full flex flex-col justify-between">
-                                            <div className="flex justify-between items-start">
-                                                <div className="w-10 h-8 md:w-12 md:h-10 bg-orange-100 rounded-md border border-orange-200" />
-                                                <div className="text-[8px] md:text-[10px] font-bold text-gray-300 tracking-widest uppercase">CREDIT CARD</div>
+                                    <div className="p-6 md:p-10 h-full flex flex-col justify-between">
+                                        <div className="flex justify-between items-start">
+                                            <div className="w-10 h-8 md:w-12 md:h-10 bg-orange-100 rounded-md border border-orange-200" />
+                                            <div className="text-[8px] md:text-[10px] font-bold text-gray-300 tracking-widest uppercase">CREDIT CARD</div>
+                                        </div>
+                                        <div className="space-y-2 md:space-y-4">
+                                            <div className="text-xl md:text-3xl font-mono tracking-widest text-[#1A2F2F]">
+                                                5371 1823 4402 8421
                                             </div>
-                                            <div className="space-y-2 md:space-y-4">
-                                                <div className="text-xl md:text-3xl font-mono tracking-widest text-[#1A2F2F]">
-                                                    5371 1823 4402 8421
-                                                </div>
-                                                <div className="text-[8px] md:text-[10px] font-bold text-gray-400 tracking-widest uppercase">
-                                                    ATUL KUMAR
-                                                </div>
-                                            </div>
-                                            <div className="flex justify-between items-end">
-                                                <div className="text-[8px] md:text-[10px] text-gray-300 font-mono italic">EXP: 04/28</div>
-                                                <div className="flex -space-x-2">
-                                                    <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-red-500/20" />
-                                                    <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-orange-500/20" />
-                                                </div>
+                                            <div className="text-[8px] md:text-[10px] font-bold text-gray-400 tracking-widest uppercase">
+                                                ATUL KUMAR
                                             </div>
                                         </div>
-                                    </motion.div>
+                                        <div className="flex justify-between items-end">
+                                            <div className="text-[8px] md:text-[10px] text-gray-300 font-mono italic">EXP: 04/28</div>
+                                            <div className="flex -space-x-2">
+                                                <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-red-500/20" />
+                                                <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-orange-500/20" />
+                                            </div>
+                                        </div>
+                                    </div>
                                 </motion.div>
 
-                                {/* LAYER 3: THE SCANNING BEAM (Moves with the REVEALER edge) */}
+                                {/* LAYER 3: THE SCANNING BEAM (Moves exactly with the Clip-Path inset) */}
                                 <motion.div 
                                     initial={{ left: '0%' }}
                                     animate={isInView ? { left: '100%' } : { left: '0%' }}
