@@ -244,8 +244,8 @@ const ComparisonWidget: React.FC = () => {
 const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp }) => {
   return (
     <section className="relative bg-cream border-t border-ink/10 z-10 w-full">
-      <div className="w-full h-full flex items-center justify-center p-2 md:p-6">
-        <div className="relative w-full border border-ink/10 bg-paper flex flex-col shadow-xl overflow-hidden min-h-[600px] lg:min-h-[800px]">
+      <div className="w-full h-full flex items-center justify-center">
+        <div className="relative w-full border-x-0 border-b border-ink/10 bg-paper flex flex-col shadow-xl overflow-hidden min-h-[600px] lg:min-h-[800px]">
 
           {/* Background Vellum Grid */}
           <div className="absolute inset-0 opacity-[0.02] pointer-events-none" 

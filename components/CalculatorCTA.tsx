@@ -22,7 +22,7 @@ const CalculatorCTA: React.FC = () => {
   const results = calculateSavings();
 
   return (
-    <section className="relative pt-0 pb-12 md:pb-24 bg-[#F2EFE9] overflow-hidden">
+    <section className="relative bg-[#F2EFE9] overflow-hidden border-t border-ink/10">
       {/* Geometric Background Pattern */}
       <div className="absolute inset-0 opacity-[0.04] pointer-events-none" 
            style={{ 
@@ -31,7 +31,7 @@ const CalculatorCTA: React.FC = () => {
            }} 
       />
       
-      <div className="w-full relative z-10 px-4 md:px-0">
+      <div className="w-full relative z-10 px-4 md:px-8 py-8 md:py-12">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
