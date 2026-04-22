@@ -137,8 +137,8 @@ const Security: React.FC = () => {
                                 {/* LAYER 2: THE VISIBLE WHITE CARD (Top Layer - Clipped from the left) */}
                                 <motion.div 
                                     initial={{ clipPath: 'inset(0 0 0 0%)' }}
-                                    animate={isInView ? { clipPath: 'inset(0 0 0 45%)' } : { clipPath: 'inset(0 0 0 0%)' }}
-                                    transition={{ delay: 0.8, duration: 2.5, ease: [0.65, 0, 0.35, 1] }}
+                                    animate={isInView ? { clipPath: 'inset(0 0 0 100%)' } : { clipPath: 'inset(0 0 0 0%)' }}
+                                    transition={{ delay: 0.8, duration: 3, ease: [0.65, 0, 0.35, 1] }}
                                     className="absolute inset-0 bg-white rounded-xl shadow-2xl overflow-hidden z-10 border border-gray-200 pointer-events-none"
                                 >
                                     <div className="p-6 md:p-10 h-full flex flex-col justify-between w-[300px] md:w-[480px]">
@@ -167,8 +167,8 @@ const Security: React.FC = () => {
                                 {/* LAYER 3: THE SCANNING BEAM (Moves Left to Right) */}
                                 <motion.div 
                                     initial={{ left: '0%' }}
-                                    animate={isInView ? { left: '45%' } : { left: '0%' }}
-                                    transition={{ delay: 0.8, duration: 2.5, ease: [0.65, 0, 0.35, 1] }}
+                                    animate={isInView ? { left: '100%' } : { left: '0%' }}
+                                    transition={{ delay: 0.8, duration: 3, ease: [0.65, 0, 0.35, 1] }}
                                     className="absolute top-[-15%] bottom-[-15%] w-[3px] bg-emerald-400 z-30 shadow-[0_0_15px_#34d399,0_0_30px_#34d399]"
                                 >
                                     {/* Laser Glow Heads */}
