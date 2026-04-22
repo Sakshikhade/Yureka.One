@@ -4,9 +4,10 @@ import { motion, useScroll, useTransform } from 'motion/react';
 const TextReveal: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   
-  // Scroll progress is mapped across the full 300vh height of the section.
-  // "start start" = when top of container hits top of viewport (progress = 0)
-  // "end end"     = when bottom of container hits bottom of viewport (progress = 1)
+  // 220vh tall section gives 120vh of scroll-animation runway.
+  // Sticky inner stays pinned the entire time. At 120vh of scroll
+  // (220vh − 100vh viewport) the sticky unpins and the next section
+  // immediately comes into view — no dead space.
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end end'],
@@ -23,7 +24,7 @@ const TextReveal: React.FC = () => {
     <section
       ref={containerRef}
       className="relative bg-cream z-20 border-b border-black/10 text-[#242424]"
-      style={{ height: '300vh' }}
+      style={{ height: '220vh' }}
     >
       {/* Background Micro-details */}
       <div className="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/p6-mini.png')]" />
@@ -51,9 +52,9 @@ const TextReveal: React.FC = () => {
           {/* Word-by-word reveal */}
           <div className="flex flex-wrap gap-x-3 gap-y-1 md:gap-x-5 md:gap-y-3 leading-[1.1]">
             {words.map((word, i) => {
-              // Spread reveals evenly across 0 → 0.9 of scrollYProgress
-              const start = (i / words.length) * 0.9;
-              const end = Math.min(start + 0.08, 0.98);
+              // Spread reveals evenly across 0 → 0.92 of scrollYProgress
+              const start = (i / words.length) * 0.92;
+              const end = Math.min(start + 0.07, 0.99);
 
               // eslint-disable-next-line react-hooks/rules-of-hooks
               const color = useTransform(

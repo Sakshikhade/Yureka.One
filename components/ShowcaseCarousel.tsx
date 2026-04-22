@@ -253,10 +253,10 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp })
           />
           
           <div className="w-full h-full relative z-10 text-[#242424]">
-            <div className="flex flex-col lg:grid lg:grid-cols-2 h-full min-h-[600px] lg:min-h-[800px]">
+            <div className="flex flex-col lg:grid lg:grid-cols-2">
 
               {/* ── LEFT: copy ── */}
-              <div className="h-auto lg:h-full flex flex-col justify-start px-6 lg:px-16 pt-12 pb-8 lg:pt-16 lg:pb-12 relative z-20 border-b lg:border-b-0 lg:border-r border-ink/5">
+              <div className="flex flex-col justify-start px-6 lg:px-16 pt-10 pb-8 lg:pt-12 lg:pb-12 relative z-20 border-b lg:border-b-0 lg:border-r border-ink/5">
                 <motion.div
                   initial={{ opacity: 0, x: -30 }}
                   whileInView={{ opacity: 1, x: 0 }}
@@ -286,7 +286,7 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp })
               </div>
 
               {/* ── RIGHT: comparison widget ── */}
-              <div className="h-auto lg:h-full flex items-start justify-center overflow-hidden bg-cream/20 pt-8 pb-12 px-6 lg:pt-12 lg:pb-12">
+              <div className="flex items-start justify-center overflow-hidden bg-cream/20 pt-8 pb-10 px-6 lg:pt-10 lg:pb-12">
                 <motion.div 
                   initial={{ opacity: 0, scale: 0.95 }}
                   whileInView={{ opacity: 1, scale: 1 }}
