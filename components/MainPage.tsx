@@ -41,20 +41,21 @@ const MainPage: React.FC = () => {
         schema={homeSchema}
       />
       
-      <div className="flex flex-col bg-cream min-h-screen overflow-x-hidden">
-        {/* 5-PART SYMMETRICAL ARCHITECTURE */}
+      <div className="bg-cream min-h-screen overflow-x-hidden selection:bg-clay/10">
+        {/* EDITORIAL 5-COLUMN ARCHITECTURE */}
         <div className="grid grid-cols-1 lg:grid-cols-5 w-full relative">
             
-            {/* COLUMN 1: EMPTY GHOST BUFFER */}
-            <div className="hidden lg:block border-r border-ink/5 sticky top-0 h-screen bg-cream/50 z-0" />
+            {/* COLUMN 1: LEFT MARGIN */}
+            <div className="hidden lg:block border-r border-ink/5 bg-cream/30 h-full min-h-screen" />
 
-            {/* COLUMNS 2, 3, 4: THE INTELLIGENCE CORE */}
-            <div className="lg:col-span-3 min-w-0 flex flex-col relative z-10">
+            {/* COLUMNS 2, 3, 4: THE INTELLIGENCE CORE (60% WIDTH) */}
+            <div className="col-span-1 lg:col-span-3 flex flex-col items-stretch relative z-10 min-w-0">
+                
                 <Suspense fallback={<SkeletonHero />}>
                     <Hero />
                 </Suspense>
                 
-                <Suspense fallback={<div className="h-20" />}>
+                <Suspense fallback={<div className="h-40" />}>
                     <TextReveal />
                 </Suspense>
 
@@ -64,7 +65,7 @@ const MainPage: React.FC = () => {
                     </Suspense>
                 </section>
 
-                <div className="py-12 px-4 md:px-8">
+                <div className="py-24 px-4 md:px-8">
                     <Suspense fallback={<div className="h-40 animate-pulse bg-paper/50" />}>
                         <CalculatorCTA />
                     </Suspense>
@@ -76,27 +77,27 @@ const MainPage: React.FC = () => {
                     </Suspense>
                 </section>
 
-                <div className="w-full relative py-12">
+                <div className="w-full relative py-20 border-y border-ink/5">
                     <Marquee />
                 </div>
 
                 <section id="security" className="scroll-mt-24">
-                    <Suspense fallback={<div className="h-64 bg-slate-900 animate-pulse" />}>
+                    <Suspense fallback={<div className="h-64 bg-[#242424] animate-pulse" />}>
                         <Security />
                     </Suspense>
                 </section>
 
-                <section id="reviews" className="scroll-mt-24 py-12">
+                <section id="reviews" className="scroll-mt-24 py-24">
                     <Suspense fallback={<div className="h-64" />}>
                         <Community />
                     </Suspense>
                 </section>
 
-                <div className="py-12">
+                <div className="py-24">
                     <ComingSoon />
                 </div>
 
-                <section id="faq" className="scroll-mt-24 pb-32">
+                <section id="faq" className="scroll-mt-24 pb-48">
                     <Suspense fallback={<div className="h-64" />}>
                         <FAQ />
                     </Suspense>
@@ -108,8 +109,8 @@ const MainPage: React.FC = () => {
                 </Suspense>
             </div>
 
-            {/* COLUMN 5: EMPTY GHOST BUFFER */}
-            <div className="hidden lg:block border-l border-ink/5 sticky top-0 h-screen bg-cream/50 z-0" />
+            {/* COLUMN 5: RIGHT MARGIN */}
+            <div className="hidden lg:block border-l border-ink/5 bg-cream/30 h-full min-h-screen" />
         </div>
       </div>
     </>
