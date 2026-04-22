@@ -27,7 +27,7 @@ const Marquee: React.FC = () => {
           </div>
 
           {/* Row 2: Left to Right */}
-          <div className="bg-teal text-cream py-3 border-y border-black/10 transform rotate-1 scale-105 shadow-xl origin-center mt-[-8px] z-20">
+          <div className="bg-[#047857] text-[#F2EFE9] py-3 border-y border-black/10 transform rotate-1 scale-105 shadow-xl origin-center mt-[-8px] z-20">
              <div className="flex whitespace-nowrap animate-marquee w-max" style={{ animationDuration: '50s', animationDirection: 'reverse' }}>
                  {[...Array(6)].map((_, i) => (
                     <div key={i} className="flex items-center gap-10 px-6">
