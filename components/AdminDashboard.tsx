@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { supabase, supabaseAdmin } from '../supabase';
 import { 
   Zap,
@@ -61,9 +62,6 @@ const DEFAULT_REVIEW_FORM: Partial<Review> = {
 };
 
 const DEFAULT_TEAM_FORM = { email: '', role: 'writer' };
-
-import { motion, AnimatePresence } from 'motion/react';
-
 
 const AdminDashboard: React.FC = () => {
   const { 
