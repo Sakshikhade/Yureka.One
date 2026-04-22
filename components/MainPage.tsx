@@ -6,7 +6,6 @@ import { SkeletonCard, SkeletonHero } from './SkeletonLoaders';
 // Lazy load non-critical sections for performance
 const Hero = lazy(() => import('./Hero'));
 const TextReveal = lazy(() => import('./TextReveal'));
-const ShowcaseCarousel = lazy(() => import('./ShowcaseCarousel'));
 const Stats = lazy(() => import('./Stats'));
 const Marquee = lazy(() => import('./Marquee'));
 const Security = lazy(() => import('./Security'));
@@ -58,12 +57,6 @@ const MainPage: React.FC = () => {
                 <Suspense fallback={<div className="h-40" />}>
                     <TextReveal />
                 </Suspense>
-
-                <section id="showcase" className="scroll-mt-24">
-                    <Suspense fallback={<div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-6 py-6"><SkeletonCard /><SkeletonCard /><SkeletonCard /></div>}>
-                        <ShowcaseCarousel cards={cards} />
-                    </Suspense>
-                </section>
 
                 <Suspense fallback={<div className="h-32 animate-pulse bg-paper/50" />}>
                     <CalculatorCTA />
