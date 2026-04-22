@@ -105,6 +105,32 @@ const AppStoreCard: React.FC<{ review: Review }> = ({ review }) => {
     );
 };
 
+const InfiniteColumn: React.FC<{ reviews: Review[]; speed?: number; reverse?: boolean }> = ({ reviews, speed = 40, reverse = false }) => {
+    // Duplicate reviews to create seamless loop
+    const duplicatedReviews = [...reviews, ...reviews, ...reviews];
+    
+    return (
+        <div className="flex-1 overflow-hidden relative h-[800px] md:h-[1000px] mask-gradient-v">
+            <motion.div 
+                initial={{ y: reverse ? "-50%" : "0%" }}
+                animate={{ y: reverse ? "0%" : "-50%" }}
+                transition={{ 
+                    duration: speed, 
+                    repeat: Infinity, 
+                    ease: "linear" 
+                }}
+                className="flex flex-col gap-8"
+            >
+                {duplicatedReviews.map((review, idx) => (
+                    <div key={`${review.id}-${idx}`} className="px-2">
+                        <AppStoreCard review={review} />
+                    </div>
+                ))}
+            </motion.div>
+        </div>
+    );
+};
+
 const Community: React.FC = () => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -126,6 +152,11 @@ const Community: React.FC = () => {
 
   const featured = reviews.find(r => r.featured) || fallbackReviews[0];
   const regular = reviews.filter(r => r !== featured);
+  
+  // Distribute regular reviews into 3 columns
+  const col1 = regular.filter((_, i) => i % 3 === 0);
+  const col2 = regular.filter((_, i) => i % 3 === 1);
+  const col3 = regular.filter((_, i) => i % 3 === 2);
 
   return (
     <section ref={sectionRef} className="bg-[#FAF9F6] pt-12 pb-32 md:pb-48 overflow-hidden">
@@ -178,8 +209,8 @@ const Community: React.FC = () => {
             </motion.div>
         </div>
 
-        {/* ─── REAL STORIES GRID (IMAGE 2) ─── */}
-        <div className="max-w-[1400px] mx-auto px-6">
+        {/* ─── TRI-STREAM MARQUEE GRID (IMAGE 3) ─── */}
+        <div className="w-full px-6 md:px-12">
             <div className="text-center mb-24 space-y-4">
                 <div className="inline-flex items-center gap-2 bg-[#047857]/5 px-6 py-2 rounded-full border border-[#047857]/10 text-[#047857] text-[10px] font-black uppercase tracking-[0.4em]">
                     <CheckCircle size={14} /> Social Validation
@@ -190,15 +221,25 @@ const Community: React.FC = () => {
                 </h2>
             </div>
 
-            <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-8 space-y-8">
-                {regular.map((review, idx) => (
-                    <div key={review.id || idx} className="break-inside-avoid">
-                        <AppStoreCard review={review} />
-                    </div>
-                ))}
+            {/* 5-Column Display */}
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-8 items-start">
+                {/* Column 1: Empty */}
+                <div className="hidden md:block" />
+
+                {/* Column 2: Upwards */}
+                <InfiniteColumn reviews={col1} speed={60} reverse={false} />
+
+                {/* Column 3: Downwards */}
+                <InfiniteColumn reviews={col2} speed={70} reverse={true} />
+
+                {/* Column 4: Upwards */}
+                <InfiniteColumn reviews={col3} speed={65} reverse={false} />
+
+                {/* Column 5: Empty */}
+                <div className="hidden md:block" />
             </div>
 
-            <div className="mt-24 text-center">
+            <div className="mt-24 text-center pb-24">
                 <button className="bg-[#242424] text-white px-12 py-6 rounded-full text-xs font-bold uppercase tracking-[0.4em] shadow-2xl hover:bg-[#047857] hover:scale-105 transition-all active:scale-95">
                     Share Your Journey →
                 </button>
