@@ -105,26 +105,49 @@ const Security: React.FC = () => {
                                             </div>
                                         </div>
 
-                                        <div className="space-y-0.5 mb-6">
-                                            {[...Array(40)].map((_, i) => (
-                                                <div key={i} className="text-[6px] md:text-[8px] font-mono text-emerald-400 whitespace-nowrap">
-                                                    {Math.random().toString(16).slice(2, 18).toUpperCase()}
+                                        {/* STREAMING HEX DATA FEED */}
+                                        <div className="absolute left-0 top-0 bottom-0 w-1/3 opacity-10 pointer-events-none overflow-hidden select-none">
+                                            <motion.div 
+                                                animate={{ y: [0, -500] }}
+                                                transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                                                className="flex flex-col gap-1 p-4"
+                                            >
+                                                {[...Array(60)].map((_, i) => (
+                                                    <div key={i} className="text-[6px] md:text-[8px] font-mono text-emerald-400 whitespace-nowrap">
+                                                        {Math.random().toString(16).slice(2, 18).toUpperCase()}
+                                                    </div>
+                                                ))}
+                                            </motion.div>
+                                        </div>
+
+                                        <div className="space-y-1 md:space-y-2 opacity-50 overflow-hidden relative z-10">
+                                            {[...Array(4)].map((_, i) => (
+                                                <div key={i} className="flex gap-2 whitespace-nowrap items-center">
+                                                    <div className="w-1.5 h-1.5 rounded-sm bg-emerald-500/30 animate-pulse" />
+                                                    <span className="text-[8px] md:text-[10px] font-mono text-emerald-400">
+                                                        0x<EncryptedText text={Math.random().toString(16).slice(2, 8).toUpperCase()} />
+                                                    </span>
+                                                    <span className="text-[8px] md:text-[10px] font-mono text-emerald-400/20">{" >> "} HASH_BLOCK_{i * 128}</span>
                                                 </div>
                                             ))}
                                         </div>
 
-                                        <div className="space-y-1 md:space-y-2 opacity-40 overflow-hidden relative z-10">
-                                            {[...Array(5)].map((_, i) => (
-                                                <div key={i} className="flex gap-2 whitespace-nowrap">
-                                                    <span className="text-[8px] md:text-[10px] font-mono text-emerald-400">0x{Math.random().toString(16).slice(2, 8).toUpperCase()}</span>
-                                                    <span className="text-[8px] md:text-[10px] font-mono text-emerald-400/30">{" >> "} BLOCK_{i}_STABLE</span>
-                                                </div>
-                                            ))}
-                                        </div>
-                                        <div className="text-xl md:text-3xl font-mono text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.5)] tracking-[0.2em] relative z-10 mt-auto">
+                                        <div className="text-xl md:text-3xl font-mono text-emerald-400 drop-shadow-[0_0_15px_rgba(52,211,153,0.4)] tracking-[0.2em] relative z-10 mt-auto border-l-2 border-emerald-500/40 pl-4 py-1 bg-emerald-500/5">
                                             <EncryptedText text="**** **** **** 8421" />
                                         </div>
                                     </div>
+                                    
+                                    {/* INTERFERENCE PULSE */}
+                                    <motion.div 
+                                        animate={{ 
+                                            opacity: [0.05, 0.15, 0.05],
+                                            backgroundPosition: ['0% 0%', '100% 100%']
+                                        }}
+                                        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                                        className="absolute inset-x-0 h-20 bg-gradient-to-b from-transparent via-emerald-400/20 to-transparent pointer-events-none z-10"
+                                        style={{ top: '30%' }}
+                                    />
+
                                     {/* Circuit Grid Pattern */}
                                     <div className="absolute inset-0 opacity-10 pointer-events-none" 
                                         style={{ backgroundImage: 'radial-gradient(circle, #34d399 1px, transparent 1px)', backgroundSize: '15px 15px' }} 
