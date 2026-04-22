@@ -245,7 +245,7 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp })
   return (
     <section className="relative bg-cream border-t border-ink/10 z-10 w-full">
       <div className="w-full h-full flex items-center justify-center">
-        <div className="relative w-full border-x-0 border-b border-ink/10 bg-paper flex flex-col shadow-xl overflow-hidden min-h-[600px] lg:min-h-[800px]">
+        <div className="relative w-full border-x-0 border-b border-ink/10 bg-paper flex flex-col shadow-xl overflow-hidden">
 
           {/* Background Vellum Grid */}
           <div className="absolute inset-0 opacity-[0.02] pointer-events-none" 
@@ -256,13 +256,13 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp })
             <div className="flex flex-col lg:grid lg:grid-cols-2 h-full min-h-[600px] lg:min-h-[800px]">
 
               {/* ── LEFT: copy ── */}
-              <div className="h-auto lg:h-full flex flex-col justify-center px-6 lg:px-16 py-12 lg:py-0 relative z-20 border-b lg:border-b-0 lg:border-r border-ink/5">
+              <div className="h-auto lg:h-full flex flex-col justify-start px-6 lg:px-16 pt-12 pb-8 lg:pt-16 lg:pb-12 relative z-20 border-b lg:border-b-0 lg:border-r border-ink/5">
                 <motion.div
                   initial={{ opacity: 0, x: -30 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, margin: "-100px" }}
                   transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                  className="py-10"
+                  className=""
                 >
                   <span className="block text-[#047857] text-[11px] font-bold uppercase tracking-[0.4em] mb-4">
                     How It Works
@@ -286,7 +286,7 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp })
               </div>
 
               {/* ── RIGHT: comparison widget ── */}
-              <div className="h-auto lg:h-full flex items-center justify-center overflow-hidden bg-cream/20 py-12 lg:py-0">
+              <div className="h-auto lg:h-full flex items-start justify-center overflow-hidden bg-cream/20 pt-8 pb-12 px-6 lg:pt-12 lg:pb-12">
                 <motion.div 
                   initial={{ opacity: 0, scale: 0.95 }}
                   whileInView={{ opacity: 1, scale: 1 }}
