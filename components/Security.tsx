@@ -11,11 +11,12 @@ const EncryptedText: React.FC<{ text: string }> = ({ text }) => {
             setDisplay(prev => 
                 prev.split('').map((char, i) => {
                     if (char === ' ') return ' ';
-                    if (Math.random() > 0.9) return chars[Math.floor(Math.random() * chars.length)];
+                    // Higher frequency of cycling for the "live" feel
+                    if (Math.random() > 0.7) return chars[Math.floor(Math.random() * chars.length)];
                     return char;
                 }).join('')
             );
-        }, 150);
+        }, 80); // Faster cycle
         return () => clearInterval(interval);
     }, [text]);
 
@@ -99,7 +100,23 @@ const Security: React.FC = () => {
                                             <div className="w-10 h-8 md:w-12 md:h-10 bg-emerald-500/20 rounded-md border border-emerald-500/40" />
                                             <div className="text-[8px] md:text-[10px] font-mono text-emerald-400/60 tracking-widest uppercase">ENCRYPTED_ID_884</div>
                                         </div>
-                                        <div className="space-y-1 md:space-y-2 opacity-40 overflow-hidden">
+                                        
+                                        {/* SCROLLING TERMINAL FEED */}
+                                        <div className="absolute right-0 top-0 bottom-0 w-1/3 opacity-20 pointer-events-none overflow-hidden">
+                                            <motion.div 
+                                                animate={{ y: [0, -500] }}
+                                                transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                                                className="flex flex-col gap-1 p-4"
+                                            >
+                                                {[...Array(40)].map((_, i) => (
+                                                    <div key={i} className="text-[6px] md:text-[8px] font-mono text-emerald-400 whitespace-nowrap">
+                                                        {Math.random().toString(16).slice(2, 18).toUpperCase()}
+                                                    </div>
+                                                ))}
+                                            </motion.div>
+                                        </div>
+
+                                        <div className="space-y-1 md:space-y-2 opacity-40 overflow-hidden relative z-10">
                                             {[...Array(5)].map((_, i) => (
                                                 <div key={i} className="flex gap-2 whitespace-nowrap">
                                                     <span className="text-[8px] md:text-[10px] font-mono text-emerald-400">0x{Math.random().toString(16).slice(2, 8).toUpperCase()}</span>
@@ -107,7 +124,7 @@ const Security: React.FC = () => {
                                                 </div>
                                             ))}
                                         </div>
-                                        <div className="text-xl md:text-3xl font-mono text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.5)] tracking-[0.2em]">
+                                        <div className="text-xl md:text-3xl font-mono text-emerald-400 drop-shadow-[0_0_10px_rgba(52,211,153,0.5)] tracking-[0.2em] relative z-10">
                                             <EncryptedText text="**** **** **** 8421" />
                                         </div>
                                     </div>
@@ -158,6 +175,13 @@ const Security: React.FC = () => {
                                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-4 h-4 bg-emerald-400 blur-sm rounded-full" />
                                     <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-4 bg-emerald-400 blur-sm rounded-full" />
                                     
+                                    {/* INTERFERENCE SHIMMER */}
+                                    <motion.div 
+                                        animate={{ opacity: [0, 0.4, 0], scaleY: [1, 1.2, 1] }}
+                                        transition={{ duration: 0.1, repeat: Infinity }}
+                                        className="absolute inset-0 bg-white/40 blur-sm"
+                                    />
+
                                     {/* Lock Attachment */}
                                     <motion.div 
                                         initial={{ scale: 0, x: -10, opacity: 0 }}
@@ -212,7 +236,6 @@ const Security: React.FC = () => {
                     </div>
                 </motion.div>
                 
-                {/* Visual anchor dots (Editorial touch) */}
                 <div className="mt-8 flex justify-center gap-1">
                     {[1, 2, 3].map(i => <div key={i} className="w-1 h-1 rounded-full bg-ink/10" />)}
                 </div>
