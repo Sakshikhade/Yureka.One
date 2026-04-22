@@ -115,9 +115,9 @@ const Security: React.FC = () => {
                                 className="absolute right-[5%] w-[40%] h-full flex flex-col justify-center items-start text-xs font-mono text-emerald-400/40 pointer-events-none select-none overflow-hidden text-left"
                             >
                                 <p>0xFB4D9S#AXECNN</p>
-                                <p>7BB3>SX10\BB</p>
+                                <p>7BB3{'>'}SX10{'\\'}BB</p>
                                 <p>SJJ7UJJK0JKJ+SLFF</p>
-                                <p>H{{'$'}}/$#D(DH2LLL)</p>
+                                <p>H{'$'}/$#D(DH2LLL)</p>
                                 <p>GA4A00A GNNG GNG2</p>
                                 <p>6EE?5X S6B00S</p>
                                 <p>W00AN0 NWF##</p>
