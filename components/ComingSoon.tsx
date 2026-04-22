@@ -795,20 +795,23 @@ const ComingSoon: React.FC = () => {
                     {/* Dark Grain Overlay */}
                     <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #fff 1px, transparent 0)', backgroundSize: '40px 40px' }} />
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#047857]/10 blur-[160px] rounded-full pointer-events-none" />
-                    
-                                    placeholder="Enter institutional email..." 
-                                    className="w-full h-14 md:h-16 px-8 bg-cream/5 border border-cream/10 rounded-xl md:rounded-2xl text-cream placeholder:text-cream/20 focus:outline-none focus:border-clay/50 transition-all text-xs uppercase tracking-widest"
-                                />
-                            </div>
-                            <button className="w-full md:w-auto h-14 md:h-16 px-10 md:px-12 bg-cream text-[#242424] font-medium uppercase tracking-widest text-[9px] md:text-[10px] rounded-xl md:rounded-2xl hover:bg-[#047857] hover:text-cream transition-all shadow-2xl active:scale-95 shrink-0">
-                                Register Interest
+                    <div className="relative z-10 max-w-3xl mx-auto">
+                        <Sparkles className="mx-auto mb-8 text-[#047857]" size={32} />
+                        <h2 className="text-4xl md:text-6xl font-medium tracking-tight text-white uppercase mb-8 leading-[0.85]">
+                            Secure Your <br />
+                            <span className="text-clay italic serif font-thin">Access.</span>
+                        </h2>
+                        <p className="text-cream/50 text-xs md:text-sm font-medium uppercase tracking-[0.3em] mb-12 max-w-lg mx-auto leading-relaxed">
+                            Phase 1 deployment is capped at 5,000 nodes. priority is given to institutional waitlist members.
+                        </p>
+                        <div className="flex flex-col items-center gap-6">
+                            <button className="h-16 px-16 bg-cream text-ink rounded-full text-xs font-bold uppercase tracking-[0.4em] hover:bg-[#047857] hover:text-cream hover:scale-105 transition-all duration-500 shadow-2xl group flex items-center gap-4">
+                                Enter The Registry <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
                             </button>
-                        </div>
-                        
-                        <div className="mt-16 md:mt-20 pt-10 md:pt-16 border-t border-cream/5 flex flex-wrap justify-center gap-6 md:gap-12 text-[8px] md:text-[10px] font-medium uppercase tracking-[0.3em] text-cream/10">
-                            <div className="flex items-center gap-2 md:gap-3"><Shield size={14} /> Encrypted</div>
-                            <div className="flex items-center gap-2 md:gap-3"><Cpu size={14} /> Accelerated</div>
-                            <div className="flex items-center gap-2 md:gap-3"><Globe size={14} /> Priority</div>
+                             <div className="flex items-center gap-4 text-[9px] font-black uppercase tracking-[0.5em] text-cream/20">
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#047857]" /> Encrypted Connection
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#047857]" /> SSL 256-Bit
+                            </div>
                         </div>
                     </div>
                 </motion.div>
