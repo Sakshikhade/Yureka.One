@@ -87,13 +87,13 @@ const Security: React.FC = () => {
                             <span className="text-emerald-400">away</span>, even from us
                         </h3>
 
-                        {/* ADVANCED SCANNING CARD GRAPHIC */}
+                        {/* PERFECTED SCANNING CARD GRAPHIC */}
                         <div className="relative h-[250px] md:h-[400px] w-full max-w-4xl mx-auto mb-16 flex items-center justify-center">
                             
-                            {/* BASE CONTAINER */}
+                            {/* BASE CONTAINER (Defines the card area) */}
                             <div className="relative w-[300px] h-[180px] md:w-[480px] md:h-[280px]">
                                 
-                                {/* LAYER 1: THE REVEALED ENCRYPTED CARD (Full Background) */}
+                                {/* LAYER 1: THE ENCRYPTED CARD (Back Layer - revealed on the left) */}
                                 <div className="absolute inset-0 bg-[#0F1D1D] rounded-xl border border-emerald-500/30 overflow-hidden shadow-[0_0_50px_rgba(52,211,153,0.1)]">
                                     <div className="p-6 md:p-10 h-full flex flex-col justify-between relative">
                                         <div className="flex justify-between items-start">
@@ -102,7 +102,7 @@ const Security: React.FC = () => {
                                         </div>
                                         
                                         {/* SCROLLING TERMINAL FEED */}
-                                        <div className="absolute left-0 top-0 bottom-0 w-1/3 opacity-20 pointer-events-none overflow-hidden">
+                                        <div className="absolute left-0 top-0 bottom-0 w-1/3 opacity-10 pointer-events-none overflow-hidden">
                                             <motion.div 
                                                 animate={{ y: [0, -500] }}
                                                 transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
@@ -120,7 +120,7 @@ const Security: React.FC = () => {
                                             {[...Array(5)].map((_, i) => (
                                                 <div key={i} className="flex gap-2 whitespace-nowrap">
                                                     <span className="text-[8px] md:text-[10px] font-mono text-emerald-400">0x{Math.random().toString(16).slice(2, 8).toUpperCase()}</span>
-                                                    <span className="text-[8px] md:text-[10px] font-mono text-emerald-400/30">>> ENCRYPTED_BLOCK_{i}</span>
+                                                    <span className="text-[8px] md:text-[10px] font-mono text-emerald-400/30">>> BLOCK_{i}_STABLE</span>
                                                 </div>
                                             ))}
                                         </div>
@@ -134,79 +134,94 @@ const Security: React.FC = () => {
                                     />
                                 </div>
 
-                                {/* LAYER 2: THE VISIBLE WHITE CARD (Top Layer - Clipped from the left) */}
-                                <motion.div 
-                                    initial={{ clipPath: 'inset(0 0 0 0%)' }}
-                                    animate={isInView ? { clipPath: 'inset(0 0 0 100%)' } : { clipPath: 'inset(0 0 0 0%)' }}
-                                    transition={{ delay: 0.8, duration: 3, ease: [0.65, 0, 0.35, 1] }}
-                                    className="absolute inset-0 bg-white rounded-xl shadow-2xl overflow-hidden z-10 border border-gray-200 pointer-events-none"
-                                >
-                                    <div className="p-6 md:p-10 h-full flex flex-col justify-between w-[300px] md:w-[480px]">
-                                        <div className="flex justify-between items-start">
-                                            <div className="w-10 h-8 md:w-12 md:h-10 bg-orange-100 rounded-md border border-orange-200" />
-                                            <div className="text-[8px] md:text-[10px] font-bold text-gray-300 tracking-widest uppercase">CREDIT CARD</div>
-                                        </div>
-                                        <div className="space-y-2 md:space-y-4">
-                                            <div className="text-xl md:text-3xl font-mono tracking-widest text-[#1A2F2F]">
-                                                5371 1823 4402 8421
-                                            </div>
-                                            <div className="text-[8px] md:text-[10px] font-bold text-gray-400 tracking-widest uppercase">
-                                                ATUL KUMAR
-                                            </div>
-                                        </div>
-                                        <div className="flex justify-between items-end">
-                                             <div className="text-[8px] md:text-[10px] text-gray-300 font-mono italic">EXP: 04/28</div>
-                                             <div className="flex -space-x-2">
-                                                 <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-red-500/20 border border-red-500/10" />
-                                                 <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-orange-500/20 border border-orange-500/10" />
-                                             </div>
-                                        </div>
-                                    </div>
-                                </motion.div>
-
-                                {/* LAYER 3: THE SCANNING BEAM (Moves Left to Right) */}
+                                {/* LAYER 2: THE REVEALER CONTAINER (Top Layer) */}
+                                {/* This container moves left-to-right to hide itself from the left */}
                                 <motion.div 
                                     initial={{ left: '0%' }}
                                     animate={isInView ? { left: '100%' } : { left: '0%' }}
-                                    transition={{ delay: 0.8, duration: 3, ease: [0.65, 0, 0.35, 1] }}
-                                    className="absolute top-[-15%] bottom-[-15%] w-[3px] bg-emerald-400 z-30 shadow-[0_0_15px_#34d399,0_0_30px_#34d399]"
+                                    transition={{ 
+                                        delay: 1, 
+                                        duration: 3, 
+                                        ease: "easeInOut",
+                                        repeat: Infinity,
+                                        repeatDelay: 2
+                                    }}
+                                    className="absolute inset-0 overflow-hidden z-20 pointer-events-none"
+                                >
+                                    {/* THE WHITE CARD (Fixed position relative to BASE, offset within REVEALER) */}
+                                    <motion.div 
+                                        initial={{ left: '0%' }}
+                                        animate={isInView ? { left: '-100%' } : { left: '0%' }}
+                                        transition={{ 
+                                            delay: 1, 
+                                            duration: 3, 
+                                            ease: "easeInOut",
+                                            repeat: Infinity,
+                                            repeatDelay: 2
+                                        }}
+                                        className="absolute inset-y-0 w-[300px] h-[180px] md:w-[480px] md:h-[280px] bg-white rounded-xl shadow-2xl border border-gray-200"
+                                    >
+                                        <div className="p-6 md:p-10 h-full flex flex-col justify-between">
+                                            <div className="flex justify-between items-start">
+                                                <div className="w-10 h-8 md:w-12 md:h-10 bg-orange-100 rounded-md border border-orange-200" />
+                                                <div className="text-[8px] md:text-[10px] font-bold text-gray-300 tracking-widest uppercase">CREDIT CARD</div>
+                                            </div>
+                                            <div className="space-y-2 md:space-y-4">
+                                                <div className="text-xl md:text-3xl font-mono tracking-widest text-[#1A2F2F]">
+                                                    5371 1823 4402 8421
+                                                </div>
+                                                <div className="text-[8px] md:text-[10px] font-bold text-gray-400 tracking-widest uppercase">
+                                                    ATUL KUMAR
+                                                </div>
+                                            </div>
+                                            <div className="flex justify-between items-end">
+                                                <div className="text-[8px] md:text-[10px] text-gray-300 font-mono italic">EXP: 04/28</div>
+                                                <div className="flex -space-x-2">
+                                                    <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-red-500/20" />
+                                                    <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-orange-500/20" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                </motion.div>
+
+                                {/* LAYER 3: THE SCANNING BEAM (Moves with the REVEALER edge) */}
+                                <motion.div 
+                                    initial={{ left: '0%' }}
+                                    animate={isInView ? { left: '100%' } : { left: '0%' }}
+                                    transition={{ 
+                                        delay: 1, 
+                                        duration: 3, 
+                                        ease: "easeInOut",
+                                        repeat: Infinity,
+                                        repeatDelay: 2
+                                    }}
+                                    className="absolute top-[-10%] bottom-[-10%] w-[3px] bg-emerald-400 z-30 shadow-[0_0_15px_#34d399,0_0_30px_rgba(52,211,153,0.5)]"
                                 >
                                     {/* Laser Glow Heads */}
                                     <div className="absolute top-0 left-1/2 -translate-x-1/2 w-4 h-4 bg-emerald-400 blur-sm rounded-full" />
                                     <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-4 bg-emerald-400 blur-sm rounded-full" />
                                     
-                                    {/* INTERFERENCE SHIMMER */}
-                                    <motion.div 
-                                        animate={{ opacity: [0, 0.4, 0], scaleY: [1, 1.2, 1] }}
-                                        transition={{ duration: 0.1, repeat: Infinity }}
-                                        className="absolute inset-0 bg-white/40 blur-sm"
-                                    />
-
                                     {/* Lock Attachment */}
-                                    <motion.div 
-                                        initial={{ scale: 0, x: -10, opacity: 0 }}
-                                        animate={isInView ? { scale: 1, x: 0, opacity: 1 } : {}}
-                                        transition={{ delay: 2.8, type: "spring", stiffness: 200 }}
-                                        className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-[#1A2F2F] border-2 border-emerald-400 p-2 md:p-3 rounded-lg md:rounded-xl shadow-[0_0_40px_rgba(52,211,153,0.5)] text-emerald-400 z-40"
-                                    >
-                                        <Lock size={28} className="md:w-10 md:h-10 drop-shadow-[0_0_8px_rgba(52,211,153,0.8)]" />
-                                    </motion.div>
+                                    <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 bg-[#1A2F2F] border-2 border-emerald-400 p-2 md:p-3 rounded-lg md:rounded-xl shadow-2xl text-emerald-400 z-40 transform scale-75 md:scale-100">
+                                        <Lock size={24} className="md:w-8 md:h-8" />
+                                    </div>
                                 </motion.div>
                             </div>
 
                             {/* DECORATIVE FLOATING PARTICLES */}
-                            {[...Array(12)].map((_, i) => (
+                            {[...Array(8)].map((_, i) => (
                                 <motion.div
                                     key={i}
                                     className="absolute w-1 h-1 bg-emerald-500/40 rounded-full"
                                     initial={{ 
-                                        x: (Math.random() - 0.5) * 800, 
-                                        y: (Math.random() - 0.5) * 400,
+                                        x: (Math.random() - 0.5) * 600, 
+                                        y: (Math.random() - 0.5) * 200,
                                         opacity: 0 
                                     }}
                                     animate={isInView ? { 
                                         opacity: [0, 1, 0],
-                                        y: [(Math.random() - 0.5) * 400, (Math.random() - 0.5) * 400 - 150],
+                                        y: [(Math.random() - 0.5) * 200, (Math.random() - 0.5) * 200 - 100],
                                     } : {}}
                                     transition={{ 
                                         duration: 3 + Math.random() * 2, 
