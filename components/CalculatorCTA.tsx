@@ -22,7 +22,7 @@ const CalculatorCTA: React.FC = () => {
   const results = calculateSavings();
 
   return (
-    <section className="relative py-12 md:py-24 bg-[#F2EFE9] overflow-hidden">
+    <section className="relative pt-0 pb-12 md:pb-24 bg-[#F2EFE9] overflow-hidden">
       {/* Geometric Background Pattern */}
       <div className="absolute inset-0 opacity-[0.04] pointer-events-none" 
            style={{ 
