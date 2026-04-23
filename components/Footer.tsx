@@ -28,28 +28,73 @@ const Footer: React.FC = () => {
 
         {/* Top Section: Branding & Slogan */}
 
-        <div className="max-w-[1440px] mx-auto px-6 mb-12 md:mb-20 border-b border-black/10 pb-12 md:pb-20">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12">
-                <div className="lg:col-span-8">
-                    <span className="block text-[#047857] text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] mb-4 md:mb-6">Yureka.money • AI-Driven Credit Card Platform</span>
-                    <h2 className="text-2xl md:text-4xl lg:text-5xl font-serif leading-[0.88] tracking-tighter mb-4 md:mb-5 uppercase">
-                        Yureka<span className="text-[#047857]">.</span>
-                    </h2>
-                    <p className="text-sm md:text-base font-serif italic text-[#242424]/60 max-w-2xl leading-relaxed">
-                        "Why settle for a card when you can optimize your wealth? AI-matched rewards, zero fees, and financial freedom."
-                    </p>
-                </div>
-                <div className="lg:col-span-4 flex flex-col justify-end items-start lg:items-end">
-                    <div className="border border-clay/20 p-6 md:p-8 w-full max-w-sm hover:bg-[#047857] hover:text-cream transition-all group cursor-pointer bg-cream shadow-sm hover:shadow-xl">
-                        <h3 className="text-base md:text-lg font-serif mb-2">Fintech Founders</h3>
-                        <p className="text-xs md:text-sm opacity-60 mb-4 md:mb-5 group-hover:opacity-100">Partner with us to reach 200M+ credit-ready users in India. Launching Q2 2026.</p>
-                        <div className="flex justify-between items-center border-t border-current pt-4">
-                            <span className="text-[10px] md:text-xs font-bold uppercase tracking-widest">Partner With Us</span>
-                            <ArrowUpRight size={16} />
-                        </div>
-                    </div>
-                </div>
-            </div>
+        {/* Top Section: Impact Stats Block (Image 2 Redesign) */}
+        <div className="max-w-[1440px] mx-auto px-6 mb-16 md:mb-24">
+           <div className="bg-[#151515] rounded-[2rem] w-full p-8 md:p-12 lg:p-12 flex flex-col lg:flex-row gap-12 lg:gap-8 justify-between text-white shadow-2xl relative overflow-hidden group">
+               
+               {/* Orbital Background Accent */}
+               <div className="absolute top-0 right-0 w-full h-full pointer-events-none opacity-10">
+                   <div className="absolute -top-[50%] -right-[10%] w-[800px] h-[800px] rounded-full border border-white/20"></div>
+                   <div className="absolute -top-[45%] -right-[5%] w-[700px] h-[700px] rounded-full border border-white/20"></div>
+               </div>
+
+               {/* Left Column: Brand & Tagline */}
+               <div className="flex flex-col justify-center max-w-xs relative z-10">
+                   <div className="flex items-center gap-2 mb-8">
+                       <span className="text-xl md:text-2xl font-sans font-light tracking-wide text-white/80">Built with</span>
+                       <span className="text-2xl animate-pulse">🧡</span>
+                       <span className="text-xl md:text-2xl font-sans font-light tracking-wide text-white/80">by</span>
+                       <span className="text-2xl md:text-3xl font-serif font-bold italic tracking-tighter ml-1">YUREKA.</span>
+                   </div>
+                   <p className="text-white/60 text-sm md:text-base font-sans leading-relaxed tracking-wide">
+                       Curating India's Top 1% Credit Portfolios
+                   </p>
+               </div>
+
+               {/* Middle Column: Stats */}
+               <div className="flex flex-col justify-center space-y-10 lg:pl-16 lg:pr-8 relative z-10 lg:min-w-[280px]">
+                   <div>
+                       <div className="flex items-baseline gap-1 mb-1">
+                           <span className="text-3xl md:text-4xl font-sans tracking-tight text-white/90">200</span>
+                           <span className="text-2xl md:text-3xl font-sans text-orange-500 font-light">+</span>
+                       </div>
+                       <p className="text-[11px] md:text-xs text-white/40 font-sans tracking-wider uppercase">Premium Cards Scanned</p>
+                   </div>
+                   
+                   <div>
+                       <div className="flex items-baseline gap-1 mb-1">
+                           <span className="text-3xl md:text-4xl font-sans tracking-tight text-white/90">15<span className="text-2xl md:text-3xl font-sans text-orange-500 font-light">%</span></span>
+                           <span className="text-xl md:text-2xl font-sans text-white/60 font-light">/yr</span>
+                       </div>
+                       <p className="text-[11px] md:text-xs text-white/40 font-sans tracking-wider uppercase">Avg. Yield Increase</p>
+                   </div>
+
+                   <div>
+                       <div className="flex items-baseline gap-2 mb-1">
+                           <span className="text-xl md:text-2xl font-sans text-orange-500 font-light">INR</span>
+                           <span className="text-3xl md:text-4xl font-sans tracking-tight text-white/90">45K</span>
+                       </div>
+                       <p className="text-[11px] md:text-xs text-white/40 font-sans tracking-wider uppercase">Avg. Savings per User</p>
+                   </div>
+               </div>
+
+               {/* Right Column: Imagery Grid */}
+               <div className="w-full lg:w-[480px] grid grid-cols-2 grid-rows-2 gap-[3px] h-[300px] md:h-[350px] shrink-0 overflow-hidden rounded-[1.5rem] border border-white/10 shadow-2xl relative z-10">
+                   <div className="col-span-1 row-span-1 overflow-hidden bg-black">
+                       <img src="https://images.unsplash.com/photo-1556742049-02e49f9d2a10?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Premium Card" className="w-full h-full object-cover hover:scale-110 transition-transform duration-[2s] opacity-90 hover:opacity-100" />
+                   </div>
+                   <div className="col-span-1 row-span-1 overflow-hidden bg-black">
+                       <img src="https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Lifestyle Lounge" className="w-full h-full object-cover hover:scale-110 transition-transform duration-[2s] opacity-90 hover:opacity-100" />
+                   </div>
+                   <div className="col-span-1 row-span-1 overflow-hidden bg-black">
+                       <img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Premium Dining" className="w-full h-full object-cover hover:scale-110 transition-transform duration-[2s] opacity-90 hover:opacity-100" />
+                   </div>
+                   <div className="col-span-1 row-span-1 overflow-hidden bg-black">
+                       <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Lux Travel" className="w-full h-full object-cover hover:scale-110 transition-transform duration-[2s] opacity-90 hover:opacity-100" />
+                   </div>
+               </div>
+               
+           </div>
         </div>
 
         {/* Middle Section: Links Grid (Newspaper Columns) */}
