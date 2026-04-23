@@ -815,6 +815,59 @@ const ComingSoon: React.FC = () => {
                         </div>
                     </div>
                 </motion.div>
+
+                {/* App Download CTA - "Image 2" */}
+                <motion.div 
+                    initial={{ opacity: 0, y: 60 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="mt-6 p-8 md:p-12 lg:p-16 bg-[#1a1a1a] rounded-[2.5rem] relative overflow-hidden group border border-cream/5 shadow-2xl"
+                >
+                    {/* Concentric Wireframe background */}
+                    <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-20">
+                        <div className="absolute -left-[10%] -top-[50%] w-[600px] h-[600px] border border-white/10 rounded-full"></div>
+                        <div className="absolute -left-[5%] -top-[45%] w-[550px] h-[550px] border border-white/10 rounded-full"></div>
+                        <div className="absolute left-[0%] -top-[40%] w-[500px] h-[500px] border border-white/10 rounded-full"></div>
+                    </div>
+
+                    <div className="relative z-10 flex flex-col h-full">
+                        {/* Top Row */}
+                        <div className="flex justify-between items-start mb-16 lg:mb-24">
+                           <h2 className="text-3xl md:text-4xl text-white/90 font-sans tracking-tight font-light">
+                               Get the App
+                           </h2>
+                           <span className="text-4xl text-white font-serif font-bold italic leading-none">Y.</span>
+                        </div>
+
+                        {/* Bottom Row */}
+                        <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-start lg:items-end">
+                           {/* QR Box */}
+                           <div className="w-48 h-48 bg-black rounded-3xl p-4 relative border border-white/10 flex items-center justify-center shrink-0 shadow-2xl">
+                               <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://yureka.money&bgcolor=000&color=fff&margin=0" alt="App QR" className="w-full h-full object-contain opacity-90 rounded-xl" />
+                               {/* Center Logo Cutout */}
+                               <div className="absolute inset-0 m-auto w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(0,0,0,0.8)] border border-black/10">
+                                   <span className="text-xl font-bold font-serif text-black italic">Y.</span>
+                               </div>
+                           </div>
+
+                           {/* Copy and Buttons */}
+                           <div className="flex flex-col flex-1 w-full gap-8">
+                               <p className="text-white/60 text-sm md:text-base font-sans tracking-wide leading-relaxed max-w-lg">
+                                   Get the Yureka app to make earning simpler, faster, and stress-free. Scan the QR or tap below to download and get started.
+                               </p>
+                               <div className="flex flex-col sm:flex-row items-center gap-8 w-full pt-6">
+                                   <button className="w-full sm:w-auto px-10 py-4 bg-[#111] border border-white/20 text-white/90 rounded-xl text-xs font-semibold hover:border-white/50 hover:bg-white/5 transition-all shadow-lg active:scale-95">
+                                       Download on App store
+                                   </button>
+                                   <span className="text-xs text-white/30 cursor-not-allowed">
+                                       Download on Play store (coming soon)
+                                   </span>
+                               </div>
+                           </div>
+                        </div>
+                    </div>
+                </motion.div>
+
             </div>
         </section>
     );
