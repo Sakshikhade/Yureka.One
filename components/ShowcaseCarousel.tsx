@@ -192,7 +192,7 @@ const ComparisonWidget: React.FC = () => {
               >
                 {[...WITHOUT_ROW1, ...WITHOUT_ROW2].slice(0, 8).map((pill, i) => {
                   // Ordered layout positions (center grid)
-                  const gridX = (i % 2 === 0 ? -160 : 20);
+                  const gridX = (i % 2 === 0 ? -170 : 10);
                   const gridY = Math.floor(i / 2) * 45;
                   
                   // Shattered layout positions (random on bottom, constrained)
