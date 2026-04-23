@@ -56,15 +56,15 @@ const MainPage: React.FC = () => {
                     <Hero />
                 </Suspense>
                 
-                <Suspense fallback={<div className="h-40" />}>
-                    <TextReveal />
-                </Suspense>
-
                 <section id="showcase" className="scroll-mt-24">
                     <Suspense fallback={<div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-6 py-6"><SkeletonCard /><SkeletonCard /><SkeletonCard /></div>}>
                         <ShowcaseCarousel cards={cards} />
                     </Suspense>
                 </section>
+
+                <Suspense fallback={<div className="h-40" />}>
+                    <TextReveal />
+                </Suspense>
 
                 <section id="secured" className="scroll-mt-24">
                     <Suspense fallback={<div className="h-48" />}>
