@@ -50,7 +50,7 @@ const RentalProtection: React.FC = () => {
             YOU INVESTED CRORES INTO <span className="text-white border-b border-[#047857] pb-0.5">THAT HOME</span>
           </p>
           
-          <h2 className="text-4xl md:text-6xl lg:text-7xl font-mono text-white tracking-tighter leading-[0.95] max-w-4xl">
+          <h2 className="text-4xl md:text-6xl lg:text-7xl font-heading text-white tracking-tighter leading-[0.95] max-w-4xl">
             Yet, your rental income is just one event away from disruption
           </h2>
 
