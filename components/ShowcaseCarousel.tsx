@@ -244,7 +244,7 @@ const ComparisonWidget: React.FC = () => {
 const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp }) => {
   return (
     <section className="relative bg-cream border-t border-ink/10 z-10 w-full">
-      <div className="w-full h-full flex items-center justify-center">
+      <div className="w-full flex justify-center flex-col">
         <div className="relative w-full border-x-0 border-b border-ink/10 bg-paper flex flex-col shadow-xl overflow-hidden">
 
           {/* Background Vellum Grid */}
@@ -299,9 +299,11 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp })
               </div>
 
             </div>
+          </div>
+        </div>
 
-             {/* ── BOTTOM: REAL CARD CAROUSEL (The "Lookbook") ── */}
-             <div className="border-t border-ink/5 bg-paper/50 py-12 md:py-20">
+        {/* ── BOTTOM: REAL CARD CAROUSEL (The "Lookbook") ── */}
+        <div className="relative w-full bg-paper shadow-sm py-16 md:py-24 border-y border-ink/5 mt-20">
                 <div className="px-6 lg:px-16 mb-12 flex justify-between items-end">
                     <div>
                         <span className="text-[#047857] text-[10px] font-bold uppercase tracking-[0.4em] mb-4 block">Intelligence Portfolio</span>
@@ -383,9 +385,6 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp })
                     </div>
                 </div>
              </div>
-
-          </div>
-        </div>
       </div>
     </section>
   );
