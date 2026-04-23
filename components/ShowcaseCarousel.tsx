@@ -196,8 +196,8 @@ const ComparisonWidget: React.FC = () => {
                   const gridY = Math.floor(i / 2) * 45;
                   
                   // Shattered layout positions (random on bottom, constrained)
-                  const shatterX = (Math.random() * 160) - 80;
-                  const shatterY = 160 + (Math.random() * 60);
+                  const shatterX = (Math.random() * 140) - 70;
+                  const shatterY = 100 + (Math.random() * 40);
                   const shatterRotate = (Math.random() * 40) - 20;
 
                   return (
