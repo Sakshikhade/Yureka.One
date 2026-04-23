@@ -75,6 +75,7 @@ const Navbar: React.FC = () => {
                 <div className="flex items-center gap-6">
                     {[
                         { name: 'Cards', path: '/cards' },
+                        { name: 'Secured', path: '/#secured' },
                         { name: 'Manifesto', path: '/manifesto' },
                         { name: 'Free Tools', path: '/free-tools' },
                         { name: 'Blogs', path: '/blogs' }
@@ -158,6 +159,7 @@ const Navbar: React.FC = () => {
                   <nav className="flex flex-col gap-8">
                     {[
                         { name: 'Card Explorer', path: '/cards', desc: 'Curated Matches' },
+                        { name: 'Secured', path: '/#secured', desc: 'Home Protection' },
                         { name: 'Manifesto', path: '/manifesto', desc: 'Our Mission' },
                         { name: 'Free Tools', path: '/free-tools', desc: 'Financial Engine' },
                         { name: 'Blogs', path: '/blogs', desc: 'Credit Insights' },

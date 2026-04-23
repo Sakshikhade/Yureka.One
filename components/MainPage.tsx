@@ -66,9 +66,11 @@ const MainPage: React.FC = () => {
                     </Suspense>
                 </section>
 
-                <Suspense fallback={<div className="h-48" />}>
-                    <RentalProtection />
-                </Suspense>
+                <section id="secured" className="scroll-mt-24">
+                    <Suspense fallback={<div className="h-48" />}>
+                        <RentalProtection />
+                    </Suspense>
+                </section>
 
                 <Suspense fallback={<div className="h-32 animate-pulse bg-paper/50" />}>
                     <CalculatorCTA />
