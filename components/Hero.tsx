@@ -155,7 +155,7 @@ const Hero: React.FC = () => {
                         The Indian credit landscape has reached entropy. Fragmented products make manual selection impossible. Our engine audits the matrix.
                      </p>
                      
-                     <div className="bg-[#047857]/5 p-6 lg:p-10 border border-clay/10 rounded-[3rem] shadow-sm group hover:bg-[#047857]/10 transition-colors duration-500">
+                     <div className="bg-cream/60 backdrop-blur-3xl border border-white/60 rounded-[3rem] shadow-xl shadow-black/5 group hover:bg-cream/80 hover:shadow-2xl transition-all duration-500 p-6 lg:p-10">
                          <h5 className="font-medium text-[11px] uppercase tracking-[0.4em] text-[#047857] mb-8 font-medium">Yield Probability</h5>
                          <div className="flex justify-between text-xs font-medium text-[#242424]/40 border-b border-ink/5 py-5 uppercase tracking-widest leading-loose gap-2">
                              <span>Avg Yield</span>

@@ -37,7 +37,7 @@ const Navbar: React.FC = () => {
                 flex items-center justify-between
                 transition-all duration-700 cubic-bezier(0.25, 0.8, 0.25, 1)
                 ${isScrolled 
-                    ? 'w-[92%] md:w-[90%] lg:w-[80%] max-w-7xl pointer-events-auto px-4 md:px-6 py-2 bg-paper/90 glass-panel rounded-full shadow-2xl border border-ink/10 filter backdrop-blur-md' 
+                    ? 'w-[92%] md:w-[90%] lg:w-[80%] max-w-7xl pointer-events-auto px-4 md:px-6 py-2 bg-cream/40 rounded-full shadow-lg shadow-black/10 border border-white/50 backdrop-blur-xl' 
                     : 'w-full max-w-[1440px] bg-transparent border-b border-ink/10 px-4 md:px-6 py-5 md:py-6 rounded-none shadow-none border-x-0 border-t-0'
                 }
             `}
@@ -143,7 +143,7 @@ const Navbar: React.FC = () => {
                 animate={{ x: 0 }}
                 exit={{ x: '100%' }}
                 transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                className="absolute top-0 right-0 h-full w-[85%] max-w-[400px] bg-paper border-l border-ink/10 p-8 flex flex-col shadow-2xl"
+                className="absolute top-0 right-0 h-full w-[85%] max-w-[400px] bg-cream/80 backdrop-blur-3xl border-l border-white/40 p-8 flex flex-col shadow-2xl"
               >
                   <div className="flex justify-between items-center mb-12 border-b border-ink/10 pb-6">
                       <span className="font-sans text-2xl font-medium text-[#242424] flex items-end uppercase">

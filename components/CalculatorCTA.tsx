@@ -36,7 +36,7 @@ const CalculatorCTA: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="bg-cream border border-black/10 rounded-[2.5rem] p-6 md:px-12 md:py-10 flex flex-col md:flex-row items-center justify-between gap-8 shadow-sm hover:shadow-xl transition-all duration-700 group"
+          className="bg-white/40 backdrop-blur-2xl border border-white/60 rounded-[2.5rem] p-6 md:px-12 md:py-10 flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl shadow-black/5 hover:shadow-2xl hover:shadow-[#047857]/10 transition-all duration-700 group"
         >
           <div className="flex items-center gap-8">
             {/* Full-Fledged Animated Calculator Icon */}
@@ -127,7 +127,7 @@ const CalculatorCTA: React.FC = () => {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-paper border border-cream/20 w-full max-w-2xl rounded-[3rem] overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)]"
+              className="bg-cream/90 backdrop-blur-3xl border border-white/60 w-full max-w-2xl rounded-[3rem] overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)]"
             >
               <div className="p-8 md:p-12">
                 <div className="flex justify-between items-center mb-10">
