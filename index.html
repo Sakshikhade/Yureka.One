@@ -62,7 +62,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Optimization: swap display for fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;800;900&family=Inter:wght@300;400;500;600;700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;700&family=Inter:wght@300;400;500;600;700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
     <style>
       html {
         scroll-behavior: smooth;
@@ -86,23 +86,26 @@
 
       /* Heading modular scale and hierarchy */
       h1, .font-heading {
-        font-family: 'Outfit', sans-serif;
-        font-weight: 900;
+        font-family: 'Pixelify Sans', sans-serif;
+        font-weight: 700;
         line-height: 1.125;
         letter-spacing: -0.02em;
+        text-transform: uppercase;
       }
 
       h2 {
-        font-family: 'Outfit', sans-serif;
-        font-weight: 800;
+        font-family: 'Pixelify Sans', sans-serif;
+        font-weight: 700;
         line-height: 1.15;
         letter-spacing: -0.01em;
+        text-transform: uppercase;
       }
 
       h3 {
-        font-family: 'Outfit', sans-serif;
+        font-family: 'Pixelify Sans', sans-serif;
         font-weight: 700;
         line-height: 1.2;
+        text-transform: uppercase;
       }
 
       /* Global Heading Sizes */
@@ -111,7 +114,7 @@
       h3 { font-size: clamp(16px, 3.5vw, 22px); }
 
       .font-serif {
-        font-family: 'Outfit', sans-serif; /* Pointing serif to Outfit for uniformity */
+        font-family: 'Pixelify Sans', sans-serif; 
       }
       
       .font-blackletter {
@@ -267,8 +270,8 @@
             },
             fontFamily: {
               sans: ['Inter', 'sans-serif'],
-              heading: ['Outfit', 'sans-serif'],
-              serif: ['Outfit', 'sans-serif'], // Redirecting for uniformity in existing code
+              heading: ['Pixelify Sans', 'sans-serif'],
+              serif: ['Pixelify Sans', 'sans-serif'], 
               blackletter: ['UnifrakturMaguntia', 'serif'],
             },
             lineHeight: {
