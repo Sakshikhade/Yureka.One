@@ -68,7 +68,7 @@ const MainPage: React.FC = () => {
 
                 <section id="secured" className="scroll-mt-24">
                     <Suspense fallback={<div className="h-48" />}>
-                        <RentalProtection />
+                        <RentalProtection cards={cards} />
                     </Suspense>
                 </section>
 

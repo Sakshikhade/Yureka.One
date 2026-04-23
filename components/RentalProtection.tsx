@@ -1,31 +1,21 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Shield, Home, Key, Gauge } from 'lucide-react';
+import { Card } from '../supabase';
+import { Star, Zap, TrendingUp, ShieldCheck } from 'lucide-react';
 
-const PROTECTION_CARDS = [
-  {
-    title: "Zero-Cost Vacancy Cover",
-    icon: Shield,
-    delay: 0.1
-  },
-  {
-    title: "Zero-cost tenant background verification",
-    icon: Home,
-    delay: 0.2
-  },
-  {
-    title: "Loan Against Rental Income",
-    icon: Key,
-    delay: 0.3
-  },
-  {
-    title: "Property Damage Cover",
-    icon: Gauge,
-    delay: 0.4
-  }
-];
+interface RentalProtectionProps {
+  cards: Card[];
+}
 
-const RentalProtection: React.FC = () => {
+const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
+  // Select top 4 elite cards or fallback to first 4 if elites aren't marked
+  const displayCards = cards
+    .filter(c => c.elite_rating && c.elite_rating >= 4.5)
+    .slice(0, 4);
+    
+  // Final fallback if no elite cards match filter
+  const finalCards = displayCards.length === 4 ? displayCards : cards.slice(0, 4);
+
   return (
     <section className="bg-[#141414] py-32 px-6 relative overflow-hidden">
       {/* Background Vertical Grid Lines */}
@@ -35,58 +25,48 @@ const RentalProtection: React.FC = () => {
 
       <div className="max-w-6xl mx-auto flex flex-col items-center text-center relative z-10">
         
-        {/* Dotted House Illustration (Simplified Vector Approximation) */}
-        <div className="mb-12 opacity-40">
-           <svg width="180" height="150" viewBox="0 0 180 150" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M90 20L150 70V130H30V70L90 20Z" stroke="white" strokeWidth="1" strokeDasharray="3 3"/>
-              <rect x="75" y="100" width="30" height="30" stroke="white" strokeWidth="1" strokeDasharray="2 2"/>
-              <circle cx="90" cy="50" r="10" stroke="white" strokeWidth="1" strokeDasharray="2 2"/>
-              <path d="M10 70L90 10L170 70" stroke="white" strokeWidth="1" strokeDasharray="3 3"/>
-           </svg>
-        </div>
-
         <div className="space-y-6 mb-24">
           <p className="text-white/40 text-[10px] md:text-xs font-bold uppercase tracking-[0.4em]">
             YOU INVESTED CRORES INTO <span className="text-white border-b border-[#047857] pb-0.5">THAT HOME</span>
           </p>
           
-          <h2 className="text-4xl md:text-6xl lg:text-7xl font-heading text-white tracking-tighter leading-[0.95] max-w-4xl">
-            Yet, your rental income is just one event away from disruption
+          <h2 className="text-4xl md:text-6xl lg:text-7xl font-heading text-white tracking-tighter leading-[0.95] max-w-4xl uppercase">
+            SECURE YOUR ASSET. <br/>MULTIPLY YOUR YIELD.
           </h2>
 
           <p className="text-white/40 text-sm md:text-base font-sans max-w-2xl mx-auto leading-relaxed">
-            Secured is a protection stack built around your rental asset. It starts with vacancy cover today and expands into smarter tools that future-proof your rental income for whatever comes next.
+            Secured maps your real estate portfolio to the world's most powerful credit engines. We identify the elite financial instruments that protect your cashflow and unlock hidden yield within your rental assets.
           </p>
         </div>
 
         {/* Card Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full mb-24">
-           {PROTECTION_CARDS.map((card, i) => (
+           {finalCards.map((card, i) => (
              <motion.div
-               key={i}
+               key={card.id || i}
                initial={{ opacity: 0, y: 20 }}
                whileInView={{ 
                  opacity: 1, 
                  y: 0,
                  rotate: [
-                   (i - 1.5) * 2 - 1.5, // Start slightly left of center
-                   (i - 1.5) * 2 + 1.5, // Swing right
-                   (i - 1.5) * 2 - 1.5  // Swing back left
+                   (i - 1.5) * 2 - 1.5,
+                   (i - 1.5) * 2 + 1.5,
+                   (i - 1.5) * 2 - 1.5
                  ]
                }}
                viewport={{ once: true }}
                transition={{ 
-                 opacity: { delay: card.delay, duration: 0.8 },
-                 y: { delay: card.delay, duration: 0.8 },
+                 opacity: { delay: i * 0.1, duration: 0.8 },
+                 y: { delay: i * 0.1, duration: 0.8 },
                  rotate: {
-                   delay: card.delay + 0.8,
-                   duration: 4 + Math.random() * 2, // Varied speeds for organic feel
+                   delay: i * 0.1 + 0.8,
+                   duration: 4 + Math.random() * 2,
                    repeat: Infinity,
                    ease: "easeInOut"
                  }
                }}
                style={{ 
-                 transformOrigin: "32px 32px", // Pivot exactly on the indicator dot
+                 transformOrigin: "32px 32px",
                  rotate: `${(i - 1.5) * 2}deg` 
                }} 
                className="group relative"
@@ -98,31 +78,46 @@ const RentalProtection: React.FC = () => {
                   ))}
                </div>
 
-               <div className="bg-[#1a1a1a] rounded-2xl p-8 pt-16 min-h-[360px] flex flex-col items-center justify-between border border-white/5 hover:border-[#047857]/40 transition-all duration-700 relative overflow-hidden group-hover:bg-[#1f1f1f]">
+               <div className="bg-[#1a1a1a] rounded-2xl p-8 pt-16 min-h-[420px] flex flex-col items-center justify-between border border-white/5 hover:border-[#047857]/40 transition-all duration-700 relative overflow-hidden group-hover:bg-[#1f1f1f]">
                  
                  {/* Top Indicator Dot (The "Nail") */}
                  <div className="absolute top-8 left-8 w-2.5 h-2.5 rounded-full bg-[#047857] shadow-[0_0_15px_#047857] z-30" />
 
-                 {/* Tactical Icon Wrapper */}
-                 <div className="relative mb-8">
-                    <div className="absolute inset-0 bg-[#047857]/20 blur-3xl rounded-full scale-150 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    <div className="relative z-10 w-20 h-20 border border-white/5 rounded-full flex items-center justify-center group-hover:border-[#047857]/30 transition-colors">
-                        <div className="absolute inset-0 flex items-center justify-center opacity-20">
-                            {/* Dotted Starburst logic */}
-                            <div className="w-10 h-px bg-[#047857]" />
-                            <div className="h-10 w-px bg-[#047857]" />
+                 {/* Card Preview Branding */}
+                 <div className="w-full text-left space-y-1">
+                    <p className="text-[8px] font-mono text-[#047857] uppercase tracking-widest font-bold">Elite Instrument</p>
+                    <h3 className="text-white text-lg font-heading leading-tight uppercase line-clamp-2">
+                       {card.name}
+                    </h3>
+                    <p className="text-white/30 text-[9px] font-mono uppercase tracking-wider">{card.bank_name}</p>
+                 </div>
+
+                 {/* Tactical Data Preview */}
+                 <div className="w-full space-y-4 my-8">
+                    <div className="flex justify-between items-end border-b border-white/5 pb-2">
+                        <span className="text-[8px] text-white/20 uppercase tracking-[0.2em]">Yield Potential</span>
+                        <span className="text-xs font-mono text-[#047857] font-bold">+{card.yield_potential || '12.5'}%</span>
+                    </div>
+                    <div className="flex justify-between items-end border-b border-white/5 pb-2">
+                        <span className="text-[8px] text-white/20 uppercase tracking-[0.2em]">Security Tier</span>
+                        <span className="text-xs font-mono text-white/80">Lvl.{Math.floor(card.rating || 4)}</span>
+                    </div>
+                    <div className="flex justify-between items-end">
+                        <span className="text-[8px] text-white/20 uppercase tracking-[0.2em]">Elite Rating</span>
+                        <div className="flex gap-0.5">
+                            {[...Array(5)].map((_, j) => (
+                                <Star key={j} size={8} className={j < Math.floor(card.elite_rating || 4) ? "text-[#047857] fill-[#047857]" : "text-white/10"} />
+                            ))}
                         </div>
-                        <card.icon className="text-[#047857] w-8 h-8 z-20 group-hover:scale-110 transition-transform" strokeWidth={1} />
                     </div>
                  </div>
 
-                 <h3 className="text-white/40 text-[10px] md:text-xs font-mono uppercase tracking-[0.3em] leading-relaxed text-center group-hover:text-white/80 transition-colors">
-                    {card.title}
-                 </h3>
-
-                 {/* Bottom ID label */}
-                 <div className="mt-8 text-[8px] font-mono text-white/10 uppercase tracking-widest">
-                    PROT.V2.{i+1}00
+                 <div className="w-full pt-4 border-t border-white/5 flex items-center justify-between">
+                    <div className="flex flex-col">
+                        <span className="text-[7px] text-white/10 uppercase tracking-widest">Protocol ID</span>
+                        <span className="text-[8px] font-mono text-white/30 tracking-widest">{card.id?.slice(0, 8).toUpperCase() || 'YR-88-SEC'}</span>
+                    </div>
+                    <TrendingUp size={14} className="text-[#047857] opacity-40" />
                  </div>
                </div>
              </motion.div>
@@ -134,7 +129,7 @@ const RentalProtection: React.FC = () => {
           whileTap={{ scale: 0.95 }}
           className="bg-white text-black px-12 py-5 rounded-full text-[10px] font-bold uppercase tracking-[0.4em] shadow-2xl hover:bg-[#047857] hover:text-white transition-all"
         >
-          Get Started With Secured →
+          Explore Elite Catalog →
         </motion.button>
 
       </div>
