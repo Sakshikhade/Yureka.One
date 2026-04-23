@@ -62,10 +62,6 @@ const MainPage: React.FC = () => {
                     </Suspense>
                 </section>
 
-                <Suspense fallback={<div className="h-40" />}>
-                    <TextReveal />
-                </Suspense>
-
                 <section id="secured" className="scroll-mt-24">
                     <Suspense fallback={<div className="h-48" />}>
                         <RentalProtection />
@@ -85,6 +81,10 @@ const MainPage: React.FC = () => {
                 <div className="w-full relative border-y border-ink/5">
                     <Marquee />
                 </div>
+
+                <Suspense fallback={<div className="h-40" />}>
+                    <TextReveal />
+                </Suspense>
 
                 <section id="security" className="scroll-mt-24">
                     <Suspense fallback={<div className="h-48 bg-[#1A2F2F] animate-pulse" />}>
