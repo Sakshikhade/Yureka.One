@@ -221,17 +221,17 @@ const HowItWorksStepper: React.FC = () => {
            {STEPS.map((step, index) => {
              const isActive = activeStep === step.id;
              return (
-               <div 
-                  key={step.id}
-                  onClick={() => setActiveStep(step.id)}
-                  className={`
-                    cursor-pointer transition-all duration-500 rounded-2xl p-6 lg:p-8
-                    ${isActive 
-                        ? 'bg-white border border-ink/5 shadow-lg' 
-                        : 'bg-transparent border border-transparent hover:bg-white/50 opacity-50 hover:opacity-100'
-                    }
-                  `}
-               >
+                <div 
+                   key={step.id}
+                   onClick={() => setActiveStep(step.id)}
+                   className={`
+                     cursor-pointer transition-all duration-500 rounded-2xl p-6 lg:p-8 backdrop-blur-xl
+                     ${isActive 
+                         ? 'bg-white/80 border border-white shadow-xl scale-[1.02]' 
+                         : 'bg-transparent border border-transparent hover:bg-white/40 opacity-50 hover:opacity-100'
+                     }
+                   `}
+                >
                  <div className="flex gap-4">
                     <span className={`text-[11px] font-bold mt-1 ${isActive ? 'text-[#047857]' : 'text-[#242424]/50'}`}>
                       {index + 1}.

@@ -64,7 +64,7 @@ const FAQCategory: React.FC<FAQCategoryProps> = ({ icon: Icon, title, questions,
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.1, duration: 0.8 }}
-      className={`glass-panel rounded-3xl transition-all duration-500 overflow-hidden mb-6 ${isOpen ? 'shadow-2xl ring-1 ring-clay/20 bg-cream/60' : 'shadow-sm hover:shadow-md'}`}
+      className={`rounded-3xl transition-all duration-500 overflow-hidden mb-6 backdrop-blur-3xl border border-white/60 ${isOpen ? 'shadow-2xl ring-1 ring-[#047857]/10 bg-white/70' : 'bg-white/40 shadow-sm hover:shadow-md'}`}
     >
       
       {/* Category Header */}

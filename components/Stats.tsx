@@ -78,68 +78,76 @@ const Stats: React.FC = () => {
             </div>
         </div>
 
-        {/* Newspaper Grid */}
+        {/* Newspaper Grid (Upgraded with Glassmorphism) */}
         <motion.div 
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
             onViewportEnter={() => setHasAnimated(true)}
             variants={containerVariants}
-            className="grid grid-cols-1 md:grid-cols-3 border border-ink/10 bg-paper"
+            className="grid grid-cols-1 md:grid-cols-3 border border-ink/10 relative overflow-hidden"
         >
+            {/* Background Texture/Gradient for the grid */}
+            <div className="absolute inset-0 bg-paper/50 backdrop-blur-3xl -z-10" />
             
             {/* Stat 1 */}
-            <motion.div variants={itemVariants} className="col-span-1 p-8 md:p-12 border-b md:border-b-0 md:border-r border-ink/10 relative group hover:bg-[#242424]/[0.02] transition-colors">
-                <div className="flex justify-between items-start mb-8 text-[#242424]">
-                     <span className="text-[10px] font-bold uppercase tracking-widest text-[#047857] border border-clay/30 px-3 py-1.5 bg-[#047857]/5 rounded-sm">Cards</span>
-                     <span className="text-[10px] font-mono text-[#242424]/30">DAT.01</span>
+            <motion.div variants={itemVariants} className="col-span-1 p-8 md:p-12 border-b md:border-b-0 md:border-r border-ink/10 relative group hover:bg-[#047857]/[0.02] transition-all duration-500">
+                <div className="flex justify-between items-start mb-10 text-[#242424]">
+                     <span className="text-[10px] font-bold uppercase tracking-widest text-[#047857] border border-[#047857]/20 px-4 py-2 bg-[#047857]/5 rounded-full backdrop-blur-sm shadow-sm group-hover:scale-105 transition-transform">Cards</span>
+                     <span className="text-[10px] font-mono text-[#242424]/20">DAT.01</span>
                 </div>
-                <div className="text-4xl md:text-5xl text-[#242424] mb-3 tracking-tighter leading-none font-serif">
+                <div className="text-5xl md:text-6xl text-[#242424] mb-4 tracking-tighter leading-none font-serif flex items-baseline gap-1">
                     <Counter end={248} suffix="" trigger={hasAnimated} />
+                    <span className="text-lg opacity-20 italic">nodes</span>
                 </div>
-                <h4 className="text-xs font-bold uppercase tracking-widest text-[#242424] mb-3 border-t border-ink/10 pt-4 flex justify-between items-center w-full">
+                <h4 className="text-[11px] font-bold uppercase tracking-[0.3em] text-[#242424] mb-4 border-t border-ink/10 pt-6 flex justify-between items-center w-full">
                     <span>Cards Scanned</span>
-                    <span className="text-[10px] lowercase font-normal italic opacity-40">Live Feed</span>
+                    <span className="text-[9px] lowercase font-normal italic opacity-30">Live Lab Feed</span>
                 </h4>
-                <p className="text-[#242424]/70 text-sm font-sans leading-relaxed max-w-xs">
-                    We check fees and rewards for over 200+ credit cards across all major Indian banks. No bias, just data.
+                <p className="text-[#242424]/60 text-sm font-sans leading-relaxed max-w-xs transition-opacity group-hover:opacity-100">
+                    We check fees and rewards for over 200+ credit cards across all major Indian banks. No bias, just pure neural data.
                 </p>
+                {/* Subtle Hover Gradient */}
+                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/0 via-transparent to-emerald-500/0 group-hover:from-emerald-500/[0.03] transition-all duration-700 pointer-events-none" />
             </motion.div>
 
             {/* Stat 2 */}
-            <motion.div variants={itemVariants} className="col-span-1 p-8 md:p-12 border-b md:border-b-0 md:border-r border-ink/10 relative group hover:bg-[#242424]/[0.02] transition-colors">
-                <div className="flex justify-between items-start mb-8 text-[#242424]">
-                     <span className="text-[10px] font-bold uppercase tracking-widest text-[#242424] border border-ink/30 px-3 py-1.5 rounded-sm">Accuracy</span>
-                     <span className="text-[10px] font-mono text-[#242424]/30">ALG.02</span>
+            <motion.div variants={itemVariants} className="col-span-1 p-8 md:p-12 border-b md:border-b-0 md:border-r border-ink/10 relative group hover:bg-clay/[0.02] transition-all duration-500">
+                <div className="flex justify-between items-start mb-10 text-[#242424]">
+                     <span className="text-[10px] font-bold uppercase tracking-widest text-[#242424] border border-ink/10 px-4 py-2 bg-paper/50 rounded-full backdrop-blur-sm shadow-sm group-hover:scale-105 transition-transform">Accuracy</span>
+                     <span className="text-[10px] font-mono text-[#242424]/20">ALG.02</span>
                 </div>
-                <div className="text-4xl md:text-5xl text-[#242424] mb-3 tracking-tighter leading-none font-serif">
+                <div className="text-5xl md:text-6xl text-[#242424] mb-4 tracking-tighter leading-none font-serif">
                     <Counter end={100} prefix="" suffix="%" trigger={hasAnimated} />
                 </div>
-                <h4 className="text-xs font-bold uppercase tracking-widest text-[#242424] mb-3 border-t border-ink/10 pt-4 flex justify-between items-center w-full">
+                <h4 className="text-[11px] font-bold uppercase tracking-[0.3em] text-[#242424] mb-4 border-t border-ink/10 pt-6 flex justify-between items-center w-full">
                     <span>Precision Matching</span>
-                    <span className="text-[10px] lowercase font-normal italic opacity-40">AI-Verified</span>
+                    <span className="text-[9px] lowercase font-normal italic opacity-30">AI-Verified</span>
                 </h4>
-                <p className="text-[#242424]/70 text-sm font-sans leading-relaxed max-w-xs">
-                    We look at 50+ spending patterns to make sure the card fits your unique lifestyle perfectly.
+                <p className="text-[#242424]/60 text-sm font-sans leading-relaxed max-w-xs transition-opacity group-hover:opacity-100">
+                    We scan 50+ unique spending patterns to make sure every recommendation fits your lifestyle with surgical precision.
                 </p>
+                <div className="absolute inset-0 bg-gradient-to-br from-clay/0 via-transparent to-clay/0 group-hover:from-clay/[0.03] transition-all duration-700 pointer-events-none" />
             </motion.div>
 
             {/* Stat 3 */}
-            <motion.div variants={itemVariants} className="col-span-1 p-8 md:p-12 relative group hover:bg-[#242424]/[0.02] transition-colors">
-                <div className="flex justify-between items-start mb-8 text-[#242424]">
-                     <span className="text-[10px] font-bold uppercase tracking-widest text-[#047857] border border-clay/30 px-3 py-1.5 bg-[#047857]/5 rounded-sm">Savings</span>
-                     <span className="text-[10px] font-mono text-[#242424]/30">RES.03</span>
+            <motion.div variants={itemVariants} className="col-span-1 p-8 md:p-12 relative group hover:bg-[#047857]/[0.02] transition-all duration-500">
+                <div className="flex justify-between items-start mb-10 text-[#242424]">
+                     <span className="text-[10px] font-bold uppercase tracking-widest text-[#047857] border border-[#047857]/20 px-4 py-2 bg-[#047857]/5 rounded-full backdrop-blur-sm shadow-sm group-hover:scale-105 transition-transform">Savings</span>
+                     <span className="text-[10px] font-mono text-[#242424]/20">RES.03</span>
                 </div>
-                <div className="text-4xl md:text-5xl text-[#242424] mb-3 tracking-tighter leading-none font-serif">
+                <div className="text-5xl md:text-6xl text-[#242424] mb-4 tracking-tighter leading-none font-serif flex items-baseline gap-1">
                     <Counter end={15} prefix="₹" suffix="k" trigger={hasAnimated} />
+                    <span className="text-lg opacity-20 italic">yield</span>
                 </div>
-                <h4 className="text-xs font-bold uppercase tracking-widest text-[#242424] mb-3 border-t border-ink/10 pt-4 flex justify-between items-center w-full">
+                <h4 className="text-[11px] font-bold uppercase tracking-[0.3em] text-[#242424] mb-4 border-t border-ink/10 pt-6 flex justify-between items-center w-full">
                     <span>Average Savings</span>
-                    <span className="text-[10px] lowercase font-normal italic opacity-40">Pro-Rated</span>
+                    <span className="text-[9px] lowercase font-normal italic opacity-30">Annualized</span>
                 </h4>
-                <p className="text-[#242424]/70 text-sm font-sans leading-relaxed max-w-xs">
-                    Users save an average of ₹15,000 per year by optimizing their voucher and reward strategies with us.
+                <p className="text-[#242424]/60 text-sm font-sans leading-relaxed max-w-xs transition-opacity group-hover:opacity-100">
+                    Users unlock an average of ₹15,000 per year by optimizing their core spending through our intelligence report.
                 </p>
+                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/0 via-transparent to-emerald-500/0 group-hover:from-emerald-500/[0.03] transition-all duration-700 pointer-events-none" />
             </motion.div>
 
         </motion.div>

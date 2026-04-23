@@ -168,11 +168,73 @@ const Footer: React.FC = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="max-w-[1440px] mx-auto px-6">
+        <div className="max-w-[1440px] mx-auto px-6 mb-20">
             <div className="border-t border-black/10 pt-8 flex flex-col md:flex-row justify-between items-center text-[#242424]/60 text-[10px] md:text-xs font-mono uppercase tracking-widest text-center md:text-left">
                 <p>© 2026 Yureka Technologies Pvt Ltd. All Rights Reserved.</p>
                 <p className="mt-4 md:mt-0">Made with Pride in India</p>
             </div>
+        </div>
+
+        {/* IMAGE 2: THE "RIGHT SIDE" SUB-FOOTER */}
+        <div className="w-full bg-[#0a0a0a] min-h-[700px] flex flex-col items-center justify-center relative overflow-hidden py-32 px-6">
+            {/* Dotted Starfield Background */}
+            <div className="absolute inset-0 opacity-[0.15]" 
+                 style={{ 
+                    backgroundImage: 'radial-gradient(circle, #fff 0.5px, transparent 0.5px)', 
+                    backgroundSize: '30px 30px' 
+                 }}>
+            </div>
+            
+            {/* Logo */}
+            <motion.div 
+               initial={{ opacity: 0, y: 20 }}
+               whileInView={{ opacity: 1, y: 0 }}
+               viewport={{ once: true }}
+               className="relative z-10 mb-16"
+            >
+                <span className="text-6xl text-white font-serif font-bold italic tracking-tighter">Y.</span>
+            </motion.div>
+
+            {/* Quick Links */}
+            <div className="relative z-10 flex flex-col gap-3 w-full max-w-[400px] mb-20">
+                 <button className="w-full h-14 bg-white/5 border border-white/10 text-white/40 rounded-2xl text-sm font-light tracking-widest hover:bg-white/10 hover:text-white transition-all uppercase">
+                    Explore
+                 </button>
+                 <button className="w-full h-14 bg-white/5 border border-white/10 text-white/40 rounded-2xl text-sm font-light tracking-widest hover:bg-white/10 hover:text-white transition-all uppercase">
+                    Contact
+                 </button>
+            </div>
+
+            {/* Vertical Line and Diamond */}
+            <div className="relative z-10 flex flex-col items-center mb-16">
+                 <div className="w-px h-24 bg-gradient-to-b from-transparent to-orange-400" />
+                 <div className="w-2.5 h-2.5 bg-orange-400 rotate-45 border border-orange-400 shadow-[0_0_15px_#fb923c]" />
+            </div>
+
+            {/* Pixel Headline */}
+            <div className="relative z-10 text-center mb-4">
+                <h2 className="text-2xl md:text-4xl text-white/20 font-mono tracking-tight mb-2">Welcome to the</h2>
+                <h2 className="text-4xl md:text-7xl font-mono text-orange-400/90 tracking-tighter uppercase relative">
+                   <span className="relative z-10">right side of earning</span>
+                   {/* Pixel-like Glow effect */}
+                   <div className="absolute inset-0 blur-[25px] bg-orange-400/10 -z-10" />
+                </h2>
+            </div>
+            
+            <p className="relative z-10 text-[10px] md:text-xs font-mono tracking-[0.4em] text-white/20 uppercase mb-20">
+               © 2026 YUREKA. MONEY. ALL RIGHTS RESERVED.
+            </p>
+
+            {/* User Switcher (Tenant/Landlord replacement) */}
+            <div className="relative z-10 flex bg-white/5 p-1 rounded-full border border-white/10">
+                 <button className="px-6 md:px-8 py-3 text-[10px] md:text-xs font-bold text-white/40 hover:text-white uppercase tracking-widest transition-colors">
+                    I'm an Earner
+                 </button>
+                 <button className="px-6 md:px-8 py-3 text-[10px] md:text-xs font-bold text-black bg-orange-400 rounded-full uppercase tracking-widest shadow-xl">
+                    I'm a Founder
+                 </button>
+            </div>
+
         </div>
       </motion.div>
     </footer>

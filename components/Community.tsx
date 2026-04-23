@@ -66,7 +66,7 @@ const AppStoreCard: React.FC<{ review: Review }> = ({ review }) => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-white p-6 md:p-8 rounded-[2.5rem] shadow-[0_20px_50px_-10px_rgba(0,0,0,0.05)] border border-black/[0.03] space-y-4 hover:shadow-2xl hover:scale-[1.02] transition-all duration-500 group"
+            className="bg-white/70 backdrop-blur-2xl p-6 md:p-8 rounded-[2.5rem] shadow-[0_20px_50px_-10px_rgba(36,36,36,0.05)] border border-white/60 space-y-4 hover:shadow-2xl hover:scale-[1.02] transition-all duration-500 group"
         >
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
