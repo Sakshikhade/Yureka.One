@@ -19,7 +19,7 @@ const CategoryIcon = ({ type }: { type: string }) => {
         case 'Travel': return <Plane className="text-blue-500" size={32} />;
         case 'Shopping': return <ShoppingBag className="text-pink-500" size={32} />;
         case 'Cashback': return <Landmark className="text-purple-500" size={32} />;
-        case 'Fuel': return <Fuel className="text-orange-500" size={32} />;
+        case 'Fuel': return <Fuel className="text-emerald-500" size={32} />;
         case 'Dining': return <Coffee className="text-red-500" size={32} />;
         case 'Business': return <Briefcase className="text-blue-500" size={32} />;
         case 'Lounge Access': return <Armchair className="text-teal-500" size={32} />;

@@ -178,7 +178,7 @@ const Security: React.FC = () => {
                                 >
                                     <div className="p-6 md:p-10 h-full flex flex-col justify-between">
                                         <div className="flex justify-between items-start">
-                                            <div className="w-10 h-8 md:w-12 md:h-10 bg-orange-100 rounded-md border border-orange-200" />
+                                            <div className="w-10 h-8 md:w-12 md:h-10 bg-emerald-100 rounded-md border border-emerald-200" />
                                             <div className="text-[8px] md:text-[10px] font-bold text-gray-300 tracking-widest uppercase">CREDIT CARD</div>
                                         </div>
                                         <div className="space-y-2 md:space-y-4">
@@ -193,7 +193,7 @@ const Security: React.FC = () => {
                                             <div className="text-[8px] md:text-[10px] text-gray-300 font-mono italic">EXP: 04/28</div>
                                             <div className="flex -space-x-2">
                                                 <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-red-500/20" />
-                                                <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-orange-500/20" />
+                                                <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-emerald-500/20" />
                                             </div>
                                         </div>
                                     </div>

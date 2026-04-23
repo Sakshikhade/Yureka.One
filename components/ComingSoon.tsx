@@ -288,22 +288,22 @@ const RewardXAnimation = () => {
   }, [step]);
 
   return (
-    <WindowFrame title="Adaptive Yield Engine" color="orange">
+    <WindowFrame title="Adaptive Yield Engine" color="emerald">
       <div className="h-full flex flex-col bg-cream relative overflow-hidden">
         
         <div className="p-10 md:p-14 pb-4 flex justify-between items-start relative z-20 shrink-0">
             <div>
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-3 mb-2">
                     <div className="flex gap-1">
-                       {[0, 1, 2].map(i => <motion.div key={i} animate={{ opacity: [0.2, 1, 0.2] }} transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2 }} className="w-1 h-1 rounded-full bg-orange-600" />)}
+                       {[0, 1, 2].map(i => <motion.div key={i} animate={{ opacity: [0.2, 1, 0.2] }} transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2 }} className="w-1 h-1 rounded-full bg-emerald-600" />)}
                     </div>
-                    <span className="text-[9px] font-medium tracking-[0.3em] text-orange-600 uppercase">Yield Script Pulse</span>
+                    <span className="text-[9px] font-medium tracking-[0.3em] text-emerald-600 uppercase">Yield Script Pulse</span>
                 </motion.div>
                 <h3 className="text-2xl md:text-3xl font-medium text-[#242424] tracking-tighter uppercase leading-tight">Executive<br />Protocol</h3>
             </div>
             <div className="text-right">
                 <div className="text-[9px] font-medium text-[#242424]/30 tracking-widest uppercase mb-1">Total Yield Unlocked</div>
-                <div className="text-2xl font-medium text-orange-600 tracking-tighter tabular-nums">₹{savings.toLocaleString()}</div>
+                <div className="text-2xl font-medium text-emerald-600 tracking-tighter tabular-nums">₹{savings.toLocaleString()}</div>
             </div>
         </div>
 
@@ -317,14 +317,14 @@ const RewardXAnimation = () => {
                   initial={{ opacity: 0, y: 15, filter: 'blur(10px)' }}
                   animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                   className={`flex items-center justify-between p-5 rounded-[2rem] border-2 transition-all duration-700 ${
-                    i === step ? 'bg-orange-50/50 border-orange-500/20 shadow-xl shadow-orange-500/5' : 'bg-cream border-[#242424]/[0.03]'
+                    i === step ? 'bg-emerald-50/50 border-emerald-500/20 shadow-xl shadow-emerald-500/5' : 'bg-cream border-[#242424]/[0.03]'
                   }`}
                 >
                   <div className="flex items-center gap-5">
                     <motion.div 
                         animate={i === step ? { scale: [1, 1.1, 1] } : {}}
                         className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg ${
-                            i === 0 ? 'bg-[#242424] text-cream' : 'bg-orange-500 text-cream shadow-orange-500/30'
+                            i === 0 ? 'bg-[#242424] text-cream' : 'bg-emerald-500 text-cream shadow-emerald-500/30'
                         }`}
                     >
                       {s.icon}
@@ -333,16 +333,16 @@ const RewardXAnimation = () => {
                       <div className="text-[14px] font-medium text-[#242424] uppercase tracking-tight">{s.label}</div>
                       <div className="text-[10px] font-medium text-[#242424]/40 uppercase tracking-[0.2em] flex items-center gap-2">
                         {i === 0 ? 'Source Node' : i < step ? 'Yield Executed' : 'Optimizing Logic...'}
-                        {i === step && <motion.span animate={{ opacity: [1, 0, 1] }} className="text-orange-500 font-medium">●</motion.span>}
+                        {i === step && <motion.span animate={{ opacity: [1, 0, 1] }} className="text-emerald-500 font-medium">●</motion.span>}
                       </div>
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className={`text-base font-medium tracking-tight ${s.type === 'base' ? 'text-[#242424]' : 'text-orange-600'}`}>
+                    <div className={`text-base font-medium tracking-tight ${s.type === 'base' ? 'text-[#242424]' : 'text-emerald-600'}`}>
                       {s.value > 0 ? '' : '−'}₹{Math.abs(s.value).toLocaleString()}
                     </div>
                     {s.badge && (
-                      <div className="inline-block px-2.5 py-1 mt-1 bg-orange-600 text-cream text-[9px] font-medium rounded-lg tracking-tight shadow-sm">
+                      <div className="inline-block px-2.5 py-1 mt-1 bg-emerald-600 text-cream text-[9px] font-medium rounded-lg tracking-tight shadow-sm">
                         {s.badge}
                       </div>
                     )}
@@ -355,14 +355,14 @@ const RewardXAnimation = () => {
               <motion.div
                 initial={{ opacity: 0, y: 30, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                className="p-8 bg-[#242424] rounded-[3rem] text-cream flex items-center justify-between shadow-2xl relative overflow-hidden group border-4 border-orange-500/10 mt-6"
+                className="p-8 bg-[#242424] rounded-[3rem] text-cream flex items-center justify-between shadow-2xl relative overflow-hidden group border-4 border-emerald-500/10 mt-6"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-orange-500/20 to-transparent translate-x-[-100%] animate-[shimmer_3s_infinite]" />
+                <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/20 to-transparent translate-x-[-100%] animate-[shimmer_3s_infinite]" />
                 <div className="relative z-10">
                     <div className="text-[10px] font-medium text-cream/40 uppercase tracking-[0.4em] mb-2">Settlement Pipeline Value</div>
                     <div className="text-4xl font-medium tracking-tight">₹{count.toLocaleString()}</div>
                 </div>
-                <div className="relative z-10 bg-orange-600 px-6 py-4 rounded-[1.5rem] shadow-xl rotate-3 group-hover:rotate-0 transition-all duration-500 border-2 border-cream/10">
+                <div className="relative z-10 bg-emerald-600 px-6 py-4 rounded-[1.5rem] shadow-xl rotate-3 group-hover:rotate-0 transition-all duration-500 border-2 border-cream/10">
                    <div className="text-[10px] font-medium text-cream/60 uppercase tracking-widest mb-1 text-center">Net Yield</div>
                    <div className="text-2xl font-medium tabular-nums tracking-tighter">19.2%</div>
                 </div>
@@ -679,7 +679,7 @@ const ComingSoon: React.FC = () => {
             label: 'Yield Stack',
             desc: 'The definitive voucher engine. Stack institutional discounts with card multipliers for double-digit savings.',
             component: <RewardXAnimation />,
-            color: 'orange'
+            color: 'emerald'
         },
         {
             title: 'Browser Extension',

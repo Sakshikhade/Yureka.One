@@ -37,7 +37,7 @@ const WITHOUT_ROW1 = [
   { icon: '💸', text: 'Missing cashback',          bg: 'bg-amber-100 text-amber-900 border border-amber-200' },
   { icon: '😤', text: 'Bank rep bias',             bg: 'bg-yellow-100 text-yellow-900 border border-yellow-200' },
   { icon: '📋', text: '200+ cards to compare',    bg: 'bg-yellow-50 text-yellow-900 border border-yellow-200' },
-  { icon: '⚠️', text: 'Wrong card fees',           bg: 'bg-orange-100 text-orange-900 border border-orange-200' },
+  { icon: '⚠️', text: 'Wrong card fees',           bg: 'bg-emerald-100 text-emerald-900 border border-emerald-200' },
   { icon: '😓', text: 'Confusing reward math',    bg: 'bg-yellow-100 text-yellow-900 border border-yellow-200' },
 ];
 const WITHOUT_ROW2 = [
@@ -45,7 +45,7 @@ const WITHOUT_ROW2 = [
   { icon: '💀', text: 'Trapped in low rewards',   bg: 'bg-amber-100 text-amber-900 border border-amber-200' },
   { icon: '📉', text: 'No savings strategy',      bg: 'bg-yellow-100 text-yellow-900 border border-yellow-200' },
   { icon: '🏦', text: 'Bank-first advice',        bg: 'bg-yellow-50 text-yellow-900 border border-yellow-200' },
-  { icon: '❌', text: 'Missed joining bonus',     bg: 'bg-orange-100 text-orange-900 border border-orange-200' },
+  { icon: '❌', text: 'Missed joining bonus',     bg: 'bg-emerald-100 text-emerald-900 border border-emerald-200' },
   { icon: '📱', text: 'Manual reward tracking',   bg: 'bg-yellow-100 text-yellow-900 border border-yellow-200' },
   { icon: '😡', text: 'Hidden annual fees',       bg: 'bg-amber-100 text-amber-900 border border-amber-200' },
 ];

@@ -45,7 +45,7 @@ const CAPABILITIES = [
     title: 'RewardX Shopping',
     desc: 'Stack gift card discounts with card rewards and Yureka AI cashback. Get 8-15% off across 500+ top Indian brands.',
     stat: '8–15% extra discount',
-    color: 'orange',
+    color: 'emerald',
   },
   {
     icon: BarChart3,
@@ -67,7 +67,7 @@ const COLOR_MAP: Record<string, { bg: string; text: string; glow: string; border
   clay:   { bg: 'bg-[#047857]/10',   text: 'text-[#047857]',   glow: 'shadow-clay/20',   border: 'border-clay/20' },
   teal:   { bg: 'bg-teal/10',   text: 'text-teal',   glow: 'shadow-teal/20',   border: 'border-teal/20' },
   purple: { bg: 'bg-purple-500/10', text: 'text-purple-500', glow: 'shadow-purple-500/20', border: 'border-purple-500/20' },
-  orange: { bg: 'bg-orange-500/10', text: 'text-orange-500', glow: 'shadow-orange-500/20', border: 'border-orange-500/20' },
+  emerald: { bg: 'bg-emerald-500/10', text: 'text-emerald-500', glow: 'shadow-emerald-500/20', border: 'border-emerald-500/20' },
   blue:   { bg: 'bg-blue-500/10',   text: 'text-blue-500',   glow: 'shadow-blue-500/20',   border: 'border-blue-500/20' },
   rose:   { bg: 'bg-rose-500/10',   text: 'text-rose-500',   glow: 'shadow-rose-500/20',   border: 'border-rose-500/20' },
 };
@@ -480,18 +480,18 @@ const YurekaAIPage: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="relative rounded-[3rem] overflow-hidden border border-orange-500/10 bg-cream p-10 md:p-20 shadow-2xl shadow-black/5"
+            className="relative rounded-[3rem] overflow-hidden border border-emerald-500/10 bg-cream p-10 md:p-20 shadow-2xl shadow-black/5"
           >
-            <div className="absolute top-0 right-0 w-96 h-96 bg-orange-500/5 rounded-full blur-[100px] pointer-events-none" />
+            <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-[100px] pointer-events-none" />
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
               <div>
-                <div className="inline-flex items-center gap-2 px-4 py-2 mb-8 bg-orange-500/10 border border-orange-500/20 rounded-full">
-                  <ShoppingBag size={12} className="text-orange-600" />
-                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-orange-600">Built into Yureka AI</span>
+                <div className="inline-flex items-center gap-2 px-4 py-2 mb-8 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
+                  <ShoppingBag size={12} className="text-emerald-600" />
+                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-emerald-600">Built into Yureka AI</span>
                 </div>
                 <h2 className="text- ink 4xl md:text-6xl font-sans font-black text-[#242424] tracking-tighter leading-tight mb-6">
-                  RewardX <br /><span className="text-orange-600">by Yureka</span>
+                  RewardX <br /><span className="text-emerald-600">by Yureka</span>
                 </h2>
                 <p className="text-[#242424]/60 text-xl leading-relaxed mb-10">
                   Shop smarter with AI-powered gift card stacking. Average checkout saving: <strong className="text-[#242424]">11.5%</strong>.
@@ -507,11 +507,11 @@ const YurekaAIPage: React.FC = () => {
                   ].map(b => (
                     <div key={b.brand} className="flex items-center justify-between p-3 bg-slate-50 border border-black/5 rounded-xl">
                       <span className="text-[#242424]/70 text-sm font-bold">{b.brand}</span>
-                      <span className="text-orange-600 text-[10px] font-black uppercase tracking-widest">Save {b.saving}</span>
+                      <span className="text-emerald-600 text-[10px] font-black uppercase tracking-widest">Save {b.saving}</span>
                     </div>
                   ))}
                 </div>
-                <Link to="/join-waitlist" className="inline-flex items-center gap-3 px-8 py-4 bg-orange-600 text-cream rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-orange-500 transition-colors group shadow-lg shadow-orange-600/20">
+                <Link to="/join-waitlist" className="inline-flex items-center gap-3 px-8 py-4 bg-emerald-600 text-cream rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-emerald-500 transition-colors group shadow-lg shadow-emerald-600/20">
                   Get RewardX Access <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
@@ -531,23 +531,23 @@ const YurekaAIPage: React.FC = () => {
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: i * 0.1 }}
-                      className={`flex items-center justify-between p-4 rounded-2xl border ${i === 3 ? 'bg-orange-600/5 border-orange-600/20' : 'bg-cream border-black/5'}`}
+                      className={`flex items-center justify-between p-4 rounded-2xl border ${i === 3 ? 'bg-emerald-600/5 border-emerald-600/20' : 'bg-cream border-black/5'}`}
                     >
                       <div className="flex items-center gap-3">
-                        <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-black ${i === 3 ? 'bg-orange-600 text-cream' : 'bg-black/5 text-[#242424]/40'}`}>{row.step}</div>
+                        <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-black ${i === 3 ? 'bg-emerald-600 text-cream' : 'bg-black/5 text-[#242424]/40'}`}>{row.step}</div>
                         <div>
-                          <div className={`text-sm font-bold ${i === 3 ? 'text-orange-600' : 'text-[#242424]/70'}`}>{row.action}</div>
+                          <div className={`text-sm font-bold ${i === 3 ? 'text-emerald-600' : 'text-[#242424]/70'}`}>{row.action}</div>
                           <div className="text-[#242424]/30 text-[10px] uppercase tracking-widest">{row.note}</div>
                         </div>
                       </div>
-                      <div className={`font-black text-sm ${i === 0 ? 'text-[#242424]' : 'text-orange-600'}`}>{row.amount}</div>
+                      <div className={`font-black text-sm ${i === 0 ? 'text-[#242424]' : 'text-emerald-600'}`}>{row.amount}</div>
                     </motion.div>
                   ))}
-                  <div className="flex items-center justify-between p-5 rounded-2xl bg-cream border-2 border-orange-600/20 shadow-xl shadow-orange-600/5">
+                  <div className="flex items-center justify-between p-5 rounded-2xl bg-cream border-2 border-emerald-600/20 shadow-xl shadow-emerald-600/5">
                     <span className="text-[#242424] font-black text-lg">You Pay</span>
                     <div className="text-right">
                       <div className="text-[#242424] font-black text-2xl">₹3,546</div>
-                      <div className="text-orange-600 text-[10px] font-bold uppercase tracking-widest">You saved ₹654 · 15.6%</div>
+                      <div className="text-emerald-600 text-[10px] font-bold uppercase tracking-widest">You saved ₹654 · 15.6%</div>
                     </div>
                   </div>
                 </div>

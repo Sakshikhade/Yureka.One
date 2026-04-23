@@ -56,14 +56,14 @@ const Footer: React.FC = () => {
                    <div>
                        <div className="flex items-baseline gap-1 mb-1">
                            <span className="text-3xl md:text-4xl font-sans tracking-tight text-white/90">200</span>
-                           <span className="text-2xl md:text-3xl font-sans text-orange-500 font-light">+</span>
+                           <span className="text-2xl md:text-3xl font-sans text-emerald-500 font-light">+</span>
                        </div>
                        <p className="text-[11px] md:text-xs text-white/40 font-sans tracking-wider uppercase">Premium Cards Scanned</p>
                    </div>
                    
                    <div>
                        <div className="flex items-baseline gap-1 mb-1">
-                           <span className="text-3xl md:text-4xl font-sans tracking-tight text-white/90">15<span className="text-2xl md:text-3xl font-sans text-orange-500 font-light">%</span></span>
+                           <span className="text-3xl md:text-4xl font-sans tracking-tight text-white/90">15<span className="text-2xl md:text-3xl font-sans text-emerald-500 font-light">%</span></span>
                            <span className="text-xl md:text-2xl font-sans text-white/60 font-light">/yr</span>
                        </div>
                        <p className="text-[11px] md:text-xs text-white/40 font-sans tracking-wider uppercase">Avg. Yield Increase</p>
@@ -71,7 +71,7 @@ const Footer: React.FC = () => {
 
                    <div>
                        <div className="flex items-baseline gap-2 mb-1">
-                           <span className="text-xl md:text-2xl font-sans text-orange-500 font-light">INR</span>
+                           <span className="text-xl md:text-2xl font-sans text-emerald-500 font-light">INR</span>
                            <span className="text-3xl md:text-4xl font-sans tracking-tight text-white/90">45K</span>
                        </div>
                        <p className="text-[11px] md:text-xs text-white/40 font-sans tracking-wider uppercase">Avg. Savings per User</p>
@@ -207,17 +207,17 @@ const Footer: React.FC = () => {
 
             {/* Vertical Line and Diamond */}
             <div className="relative z-10 flex flex-col items-center mb-16">
-                 <div className="w-px h-24 bg-gradient-to-b from-transparent to-orange-400" />
-                 <div className="w-2.5 h-2.5 bg-orange-400 rotate-45 border border-orange-400 shadow-[0_0_15px_#fb923c]" />
+                 <div className="w-px h-24 bg-gradient-to-b from-transparent to-[#047857]" />
+                 <div className="w-2.5 h-2.5 bg-[#047857] rotate-45 border border-[#047857] shadow-[0_0_15px_#047857]" />
             </div>
 
             {/* Pixel Headline */}
             <div className="relative z-10 text-center mb-4">
                 <h2 className="text-2xl md:text-4xl text-white/20 font-mono tracking-tight mb-2">Welcome to the</h2>
-                <h2 className="text-4xl md:text-7xl font-mono text-orange-400/90 tracking-tighter uppercase relative">
+                <h2 className="text-4xl md:text-7xl font-mono text-[#047857]/90 tracking-tighter uppercase relative">
                    <span className="relative z-10">right side of earning</span>
                    {/* Pixel-like Glow effect */}
-                   <div className="absolute inset-0 blur-[25px] bg-orange-400/10 -z-10" />
+                   <div className="absolute inset-0 blur-[25px] bg-[#047857]/10 -z-10" />
                 </h2>
             </div>
             
@@ -230,7 +230,7 @@ const Footer: React.FC = () => {
                  <button className="px-6 md:px-8 py-3 text-[10px] md:text-xs font-bold text-white/40 hover:text-white uppercase tracking-widest transition-colors">
                     I'm an Earner
                  </button>
-                 <button className="px-6 md:px-8 py-3 text-[10px] md:text-xs font-bold text-black bg-orange-400 rounded-full uppercase tracking-widest shadow-xl">
+                 <button className="px-6 md:px-8 py-3 text-[10px] md:text-xs font-bold text-black bg-[#047857] rounded-full uppercase tracking-widest shadow-xl">
                     I'm a Founder
                  </button>
             </div>

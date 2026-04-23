@@ -35,7 +35,7 @@ const YurekaOsPage: React.FC = () => {
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-[-10%] left-[-5%] w-[40%] h-[40%] bg-[#047857]/5 rounded-full blur-[120px]" />
         <div className="absolute bottom-[10%] right-[-5%] w-[30%] h-[50%] bg-teal/5 rounded-full blur-[100px]" />
-        <div className="absolute top-[20%] right-[10%] w-[20%] h-[20%] bg-orange-200/5 rounded-full blur-[80px]" />
+        <div className="absolute top-[20%] right-[10%] w-[20%] h-[20%] bg-emerald-200/5 rounded-full blur-[80px]" />
         <div 
           className="absolute inset-0 opacity-[0.03] mix-blend-multiply pointer-events-none" 
           style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, #242424 1px, transparent 1px)', backgroundSize: '20px 20px' }} 

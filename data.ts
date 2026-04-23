@@ -48,7 +48,7 @@ export const featuredCards: Card[] = [
     joining_fee: '₹500',
     best_for: 'Foodies & Dineout',
     category: 'Food & Dining',
-    color: 'from-orange-500 to-red-600',
+    color: 'from-[#047857] to-[#065f46]',
     rewards_rate: '10%',
     projected_savings: '₹8,400/yr',
   },
