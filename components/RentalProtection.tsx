@@ -65,10 +65,30 @@ const RentalProtection: React.FC = () => {
              <motion.div
                key={i}
                initial={{ opacity: 0, y: 20 }}
-               whileInView={{ opacity: 1, y: 0 }}
+               whileInView={{ 
+                 opacity: 1, 
+                 y: 0,
+                 rotate: [
+                   (i - 1.5) * 2 - 1.5, // Start slightly left of center
+                   (i - 1.5) * 2 + 1.5, // Swing right
+                   (i - 1.5) * 2 - 1.5  // Swing back left
+                 ]
+               }}
                viewport={{ once: true }}
-               transition={{ delay: card.delay, duration: 0.8 }}
-               style={{ rotate: `${(i - 1.5) * 2}deg` }} // Subtle fan-out rotation
+               transition={{ 
+                 opacity: { delay: card.delay, duration: 0.8 },
+                 y: { delay: card.delay, duration: 0.8 },
+                 rotate: {
+                   delay: card.delay + 0.8,
+                   duration: 4 + Math.random() * 2, // Varied speeds for organic feel
+                   repeat: Infinity,
+                   ease: "easeInOut"
+                 }
+               }}
+               style={{ 
+                 transformOrigin: "32px 32px", // Pivot exactly on the indicator dot
+                 rotate: `${(i - 1.5) * 2}deg` 
+               }} 
                className="group relative"
              >
                {/* Serrated Tape/Header */}
@@ -80,8 +100,8 @@ const RentalProtection: React.FC = () => {
 
                <div className="bg-[#1a1a1a] rounded-2xl p-8 pt-16 min-h-[360px] flex flex-col items-center justify-between border border-white/5 hover:border-[#047857]/40 transition-all duration-700 relative overflow-hidden group-hover:bg-[#1f1f1f]">
                  
-                 {/* Top Indicator Dot */}
-                 <div className="absolute top-8 left-8 w-2.5 h-2.5 rounded-full bg-[#047857] shadow-[0_0_15px_#047857]" />
+                 {/* Top Indicator Dot (The "Nail") */}
+                 <div className="absolute top-8 left-8 w-2.5 h-2.5 rounded-full bg-[#047857] shadow-[0_0_15px_#047857] z-30" />
 
                  {/* Tactical Icon Wrapper */}
                  <div className="relative mb-8">
