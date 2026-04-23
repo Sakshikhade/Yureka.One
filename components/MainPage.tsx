@@ -14,6 +14,7 @@ const Community = lazy(() => import('./Community'));
 const ComingSoon = lazy(() => import('./ComingSoon'));
 const FAQ = lazy(() => import('./FAQ'));
 const CalculatorCTA = lazy(() => import('./CalculatorCTA'));
+const RentalProtection = lazy(() => import('./RentalProtection'));
 const Footer = lazy(() => import('./Footer'));
 
 const MainPage: React.FC = () => {
@@ -64,6 +65,10 @@ const MainPage: React.FC = () => {
                         <ShowcaseCarousel cards={cards} />
                     </Suspense>
                 </section>
+
+                <Suspense fallback={<div className="h-48" />}>
+                    <RentalProtection />
+                </Suspense>
 
                 <Suspense fallback={<div className="h-32 animate-pulse bg-paper/50" />}>
                     <CalculatorCTA />
