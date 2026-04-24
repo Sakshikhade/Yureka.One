@@ -151,8 +151,8 @@ const Navbar: React.FC = () => {
                         Index<span className="text-clay ml-1">.</span>
                       </span>
 
-                      <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 hover:bg-[#242424]/5 rounded-full transition-all">
-                          <X size={24} className="text-[#242424]" strokeWidth={1.5} />
+                      <button onClick={() => setIsMobileMenuOpen(false)} className="p-3 -mr-2 hover:bg-[#242424]/5 rounded-full transition-all">
+                          <X size={28} className="text-[#242424]" strokeWidth={1.5} />
                       </button>
                   </div>
                   

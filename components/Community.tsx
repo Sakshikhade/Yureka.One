@@ -178,11 +178,15 @@ const Community: React.FC = () => {
                 {/* Column 1: Upwards (Faster) */}
                 <InfiniteColumn reviews={col1} speed={35} reverse={false} />
 
-                {/* Column 2: Downwards */}
-                <InfiniteColumn reviews={col2} speed={45} reverse={true} />
+                {/* Column 2: Downwards - Hidden on Mobile */}
+                <div className="hidden md:block">
+                    <InfiniteColumn reviews={col2} speed={45} reverse={true} />
+                </div>
 
-                {/* Column 3: Upwards (Medium) */}
-                <InfiniteColumn reviews={col3} speed={40} reverse={false} />
+                {/* Column 3: Upwards (Medium) - Hidden on Mobile */}
+                <div className="hidden md:block">
+                    <InfiniteColumn reviews={col3} speed={40} reverse={false} />
+                </div>
             </div>
 
             <div className="mt-16 text-center">

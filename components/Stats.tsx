@@ -96,7 +96,7 @@ const Stats: React.FC = () => {
                      <span className="text-[10px] font-bold uppercase tracking-widest text-[#047857] border border-[#047857]/20 px-4 py-2 bg-[#047857]/5 rounded-full backdrop-blur-sm shadow-sm group-hover:scale-105 transition-transform">Cards</span>
                      <span className="text-[10px] font-mono text-[#242424]/20">DAT.01</span>
                 </div>
-                <div className="text-5xl md:text-6xl text-[#242424] mb-4 tracking-tighter leading-none font-serif flex items-baseline gap-1">
+                <div className="text-4xl sm:text-5xl md:text-6xl text-[#242424] mb-4 tracking-tighter leading-none font-serif flex items-baseline gap-1">
                     <Counter end={248} suffix="" trigger={hasAnimated} />
                     <span className="text-lg opacity-20 italic">nodes</span>
                 </div>
@@ -117,7 +117,7 @@ const Stats: React.FC = () => {
                      <span className="text-[10px] font-bold uppercase tracking-widest text-[#242424] border border-ink/10 px-4 py-2 bg-paper/50 rounded-full backdrop-blur-sm shadow-sm group-hover:scale-105 transition-transform">Accuracy</span>
                      <span className="text-[10px] font-mono text-[#242424]/20">ALG.02</span>
                 </div>
-                <div className="text-5xl md:text-6xl text-[#242424] mb-4 tracking-tighter leading-none font-serif">
+                <div className="text-4xl sm:text-5xl md:text-6xl text-[#242424] mb-4 tracking-tighter leading-none font-serif">
                     <Counter end={100} prefix="" suffix="%" trigger={hasAnimated} />
                 </div>
                 <h4 className="text-[11px] font-bold uppercase tracking-[0.3em] text-[#242424] mb-4 border-t border-ink/10 pt-6 flex justify-between items-center w-full">
@@ -136,7 +136,7 @@ const Stats: React.FC = () => {
                      <span className="text-[10px] font-bold uppercase tracking-widest text-[#047857] border border-[#047857]/20 px-4 py-2 bg-[#047857]/5 rounded-full backdrop-blur-sm shadow-sm group-hover:scale-105 transition-transform">Savings</span>
                      <span className="text-[10px] font-mono text-[#242424]/20">RES.03</span>
                 </div>
-                <div className="text-5xl md:text-6xl text-[#242424] mb-4 tracking-tighter leading-none font-serif flex items-baseline gap-1">
+                <div className="text-4xl sm:text-5xl md:text-6xl text-[#242424] mb-4 tracking-tighter leading-none font-serif flex items-baseline gap-1">
                     <Counter end={15} prefix="₹" suffix="k" trigger={hasAnimated} />
                     <span className="text-lg opacity-20 italic">yield</span>
                 </div>

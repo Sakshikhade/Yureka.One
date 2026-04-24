@@ -214,7 +214,7 @@ const Footer: React.FC = () => {
             {/* Pixel Headline */}
             <div className="relative z-10 text-center mb-4">
                 <h2 className="text-2xl md:text-4xl text-white/20 font-mono tracking-tight mb-2">Welcome to the</h2>
-                <h2 className="text-4xl md:text-7xl font-mono text-[#047857]/90 tracking-tighter uppercase relative">
+                <h2 className="text-2xl sm:text-4xl md:text-7xl font-mono text-[#047857]/90 tracking-tighter uppercase relative">
                    <span className="relative z-10">right side of earning</span>
                    {/* Pixel-like Glow effect */}
                    <div className="absolute inset-0 blur-[25px] bg-[#047857]/10 -z-10" />

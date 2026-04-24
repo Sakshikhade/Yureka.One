@@ -159,7 +159,7 @@ const LiveChatDemo = () => {
       </div>
 
       {/* Chat Area */}
-      <div ref={scrollRef} className="h-[380px] overflow-y-auto px-6 py-6 space-y-4 no-scrollbar">
+      <div ref={scrollRef} className="h-[320px] sm:h-[380px] overflow-y-auto px-6 py-6 space-y-4 no-scrollbar">
         {/* Welcome state */}
         {visibleMessages.length === 0 && !showTyping && (
           <div className="flex flex-col items-center justify-center h-full gap-4 opacity-40">
@@ -251,7 +251,7 @@ const YurekaAIPage: React.FC = () => {
               <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-teal">Yureka AI · Personalised Intelligence</span>
             </div>
 
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-sans font-black tracking-tighter text-[#242424] leading-[0.9] mb-8 max-w-5xl mx-auto">
+            <h1 className="text-3xl sm:text-6xl md:text-7xl lg:text-8xl font-sans font-black tracking-tighter text-[#242424] leading-[0.9] mb-8 max-w-5xl mx-auto">
               Your financial life,{' '}
               <span className="relative">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal to-cyan-600">
@@ -307,8 +307,8 @@ const YurekaAIPage: React.FC = () => {
 
           <div className="text-center mb-16">
             <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-teal mb-4">See it in action</p>
-            <h2 className="text-4xl md:text-6xl font-sans font-black text-[#242424] tracking-tighter leading-tight">
-              Ask anything. <span className="text-[#242424]/30 italic font-light">Get precision.</span>
+            <h2 className="text-3xl sm:text-6xl font-sans font-black text-[#242424] tracking-tighter leading-tight">
+              Ask anything. <br className="sm:hidden" /> <span className="text-[#242424]/30 italic font-light">Get precision.</span>
             </h2>
           </div>
 
@@ -350,8 +350,8 @@ const YurekaAIPage: React.FC = () => {
 
           <div className="text-center mb-20">
             <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#047857] mb-4">Full-spectrum Intelligence</p>
-            <h2 className="text-4xl md:text-6xl font-sans font-black text-[#242424] tracking-tighter leading-tight">
-              Every angle of your <br /><span className="text-[#242424]/30 italic font-light">financial life, covered.</span>
+            <h2 className="text-3xl sm:text-6xl font-sans font-black text-[#242424] tracking-tighter leading-tight">
+              Every angle of your <br className="hidden sm:block"/><span className="text-[#242424]/30 italic font-light">financial life, covered.</span>
             </h2>
           </div>
 
@@ -392,7 +392,7 @@ const YurekaAIPage: React.FC = () => {
               viewport={{ once: true }}
             >
               <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-purple-600 mb-6">Profile-to-Profile Intelligence</p>
-              <h2 className="text-4xl md:text-5xl font-sans font-black text-[#242424] tracking-tighter leading-tight mb-8">
+              <h2 className="text-3xl sm:text-5xl font-sans font-black text-[#242424] tracking-tighter leading-tight mb-8">
                 Not generic.<br /><span className="text-[#242424]/30 italic font-light">Yours specifically.</span>
               </h2>
               <p className="text-[#242424]/60 text-xl leading-relaxed mb-10">
@@ -490,7 +490,7 @@ const YurekaAIPage: React.FC = () => {
                   <ShoppingBag size={12} className="text-emerald-600" />
                   <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-emerald-600">Built into Yureka AI</span>
                 </div>
-                <h2 className="text- ink 4xl md:text-6xl font-sans font-black text-[#242424] tracking-tighter leading-tight mb-6">
+                <h2 className="text-4xl md:text-6xl font-sans font-black text-[#242424] tracking-tighter leading-tight mb-6">
                   RewardX <br /><span className="text-emerald-600">by Yureka</span>
                 </h2>
                 <p className="text-[#242424]/60 text-xl leading-relaxed mb-10">
@@ -571,7 +571,7 @@ const YurekaAIPage: React.FC = () => {
               <div className="inline-flex items-center justify-center w-20 h-20 bg-teal/5 border border-teal/10 rounded-[2rem] mb-10 mx-auto">
                 <Brain size={36} className="text-teal" />
               </div>
-              <h2 className="text-4xl md:text-7xl font-sans font-black text-[#242424] tracking-tighter leading-tight mb-8">
+              <h2 className="text-3xl sm:text-7xl font-sans font-black text-[#242424] tracking-tighter leading-tight mb-8">
                 Ready for your<br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal to-cyan-600">AI co-pilot?</span>
               </h2>

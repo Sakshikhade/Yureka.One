@@ -106,7 +106,7 @@ const BlogDetail: React.FC = () => {
                         <div className="w-1.5 h-1.5 bg-[#242424]/10 rounded-full"></div>
                         <span className="text-[#242424]/40">{blog.read_time || '5 min read'}</span>
                     </div>
-                    <h1 className="text-5xl md:text-8xl font-serif font-bold leading-[1.1] text-ink mb-12 tracking-tight">
+                    <h1 className="text-3xl sm:text-6xl md:text-8xl font-serif font-bold leading-[1.1] text-ink mb-12 tracking-tight">
                         {blog.title}
                     </h1>
                     <div className="flex flex-wrap items-center justify-between gap-8 pt-10 border-t border-ink/5">
@@ -147,7 +147,7 @@ const BlogDetail: React.FC = () => {
                     </aside>
 
                     <article className="lg:col-span-10 space-y-10 prose prose-lg prose-ink max-w-none prose-serif">
-                        <div className="text-2xl md:text-3xl italic text-ink/70 border-l-8 border-clay pl-10 mb-16 leading-relaxed font-serif font-medium">
+                        <div className="text-xl md:text-3xl italic text-ink/70 border-l-8 border-clay pl-6 md:pl-10 mb-12 md:mb-16 leading-relaxed font-serif font-medium">
                             <ReactMarkdown>{blog.excerpt}</ReactMarkdown>
                         </div>
                         
@@ -182,9 +182,9 @@ const BlogDetail: React.FC = () => {
                      <div className="inline-flex items-center gap-3 bg-[#047857]/10 px-6 py-2 rounded-full text-[#047857] font-bold text-[10px] uppercase tracking-widest">
                         <Sparkles size={14} /> Never miss a beat
                      </div>
-                     <h3 className="text-4xl md:text-6xl font-serif tracking-tighter leading-tight italic">
-                        The future of credit is <span className="text-[#047857]">conversational.</span>
-                     </h3>
+                      <h3 className="text-3xl md:text-6xl font-serif tracking-tighter leading-tight italic px-4">
+                         The future of credit is <span className="text-[#047857]">conversational.</span>
+                      </h3>
                      <p className="text-xl text-[#242424]/40 max-w-xl mx-auto font-serif italic">
                         Join 50,000+ others waiting for the AI-driven financial optimization engine.
                      </p>

@@ -93,8 +93,8 @@ const WaitlistPage: React.FC = () => {
             <div className="w-24 h-24 bg-[#047857] text-cream rounded-full flex items-center justify-center mb-10 shadow-2xl animate-pulse">
                 <Check size={48} strokeWidth={1.5} />
             </div>
-            <h1 className="text-5xl md:text-8xl italic tracking-tighter text-[#242424] mb-6">Confirmed.</h1>
-            <p className="text-xl md:text-2xl text-[#242424]/40 mb-16 max-w-xl mx-auto leading-relaxed">
+            <h1 className="text-4xl md:text-8xl italic tracking-tighter text-[#242424] mb-6">Confirmed.</h1>
+            <p className="text-lg md:text-2xl text-[#242424]/40 mb-16 max-w-xl mx-auto leading-relaxed">
                 You've been added to the inner circle. Expect an invite as we begin our phased rollout.
             </p>
             <Link to="/" className="bg-[#242424] text-cream px-12 py-5 text-[10px] font-bold uppercase tracking-[0.4em] hover:bg-[#047857] transition-all rounded-full shadow-2xl hover:scale-105 active:scale-95">
@@ -115,10 +115,10 @@ const WaitlistPage: React.FC = () => {
          {/* Form Section */}
          <div className="w-full max-w-4xl mx-auto relative z-10 transition-all duration-1000">
              
-             <div className="text-center mb-20">
-                <p className="text-[#047857] font-bold text-[10px] uppercase tracking-[0.6em] mb-6">Join the ecosystem</p>
-                <h1 className="text-6xl md:text-8xl italic tracking-tighter text-[#242424] leading-tight mb-4">The VIP Waitlist</h1>
-                <p className="text-[#242424]/40 text-lg md:text-xl italic max-w-xl mx-auto">Founding membership for the next generation of credit card mastery.</p>
+             <div className="text-center mb-12 md:mb-20">
+                <p className="text-[#047857] font-bold text-[10px] uppercase tracking-[0.6em] mb-4 md:mb-6">Join the ecosystem</p>
+                <h1 className="text-4xl sm:text-6xl md:text-8xl italic tracking-tighter text-[#242424] leading-tight mb-4">The VIP Waitlist</h1>
+                <p className="text-[#242424]/40 text-base md:text-xl italic max-w-xl mx-auto">Founding membership for the next generation of credit card mastery.</p>
              </div>
 
              <div className="relative group">
@@ -136,8 +136,8 @@ const WaitlistPage: React.FC = () => {
                                 <User size={32} strokeWidth={1} className={role === 'user' ? 'text-[#047857]' : 'text-[#242424]/20 group-hover/role:text-[#047857]/60'} />
                                 {role === 'user' && <Check size={20} className="text-[#047857]" />}
                              </div>
-                             <h3 className="text-2xl italic tracking-tight mb-2">Member</h3>
-                             <p className="text-[10px] font-bold uppercase tracking-[0.2em] opacity-40">Access to matching engine</p>
+                             <h3 className="text-xl sm:text-2xl italic tracking-tight mb-2">Member</h3>
+                             <p className="text-[9px] font-bold uppercase tracking-[0.2em] opacity-40">Access to matching engine</p>
                          </button>
 
                          <button 
@@ -148,8 +148,8 @@ const WaitlistPage: React.FC = () => {
                                 <Building size={32} strokeWidth={1} className={role === 'partner' ? 'text-[#047857]' : 'text-[#242424]/20 group-hover/role:text-[#047857]/60'} />
                                 {role === 'partner' && <Check size={20} className="text-[#047857]" />}
                              </div>
-                             <h3 className="text-2xl italic tracking-tight mb-2">Partner</h3>
-                             <p className="text-[10px] font-bold uppercase tracking-[0.2em] opacity-40">Insights & Collaborations</p>
+                             <h3 className="text-xl sm:text-2xl italic tracking-tight mb-2">Partner</h3>
+                             <p className="text-[9px] font-bold uppercase tracking-[0.2em] opacity-40">Insights & Collaborations</p>
                          </button>
                      </div>
 

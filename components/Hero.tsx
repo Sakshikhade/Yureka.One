@@ -101,10 +101,10 @@ const Hero: React.FC = () => {
                      <span className="text-ink font-bold text-xs uppercase tracking-[0.4em]">The Automation of Wealth</span>
                      <div className="h-[1px] bg-clay/20 w-12 md:w-24"></div>
                 </div>
-                <h2 className="text-4xl sm:text-6xl md:text-7xl lg:text-[clamp(2.5rem,7vw,8rem)] leading-[0.9] font-heading font-extrabold text-ink uppercase tracking-tight">
+                <h2 className="text-3xl sm:text-6xl md:text-7xl lg:text-[clamp(2.5rem,7vw,8rem)] leading-[0.9] font-heading font-extrabold text-ink uppercase tracking-tight">
                     Stop Guessing. <br className="hidden md:block" /> Start Winning.
                 </h2>
-                <h3 className="text-sm md:text-base lg:text-lg font-sans font-semibold text-ink/60 mt-8 md:mt-10 max-w-3xl mx-auto leading-relaxed tracking-tight uppercase">
+                <h3 className="text-xs sm:text-base lg:text-lg font-sans font-semibold text-ink/60 mt-6 md:mt-10 max-w-3xl mx-auto leading-relaxed tracking-tight uppercase px-4 sm:px-0">
                     We audit <span className="text-ink">200+ elite credit cards</span> through the RewardX Neural Engine <br className="hidden lg:block" /> to reveal your highest possible yield path.
                 </h3>
 

@@ -208,7 +208,7 @@ const JournalPage: React.FC = () => {
                 >
                     <div className="max-w-3xl mx-auto space-y-12">
                         <Landmark className="mx-auto text-clay" size={48} />
-                        <h2 className="text-4xl md:text-7xl font-heading font-extrabold text-white uppercase tracking-tighter leading-none italic">
+                        <h2 className="text-3xl sm:text-6xl md:text-7xl font-heading font-extrabold text-white uppercase tracking-tighter leading-none italic">
                             The <span className="text-clay serif font-light lowercase">Intelligence</span> <br/> Sunday Dispatch.
                         </h2>
                         <p className="text-xl md:text-2xl text-white/50 font-serif italic max-w-xl mx-auto leading-relaxed font-medium">

@@ -152,7 +152,7 @@ const CalculatorCTA: React.FC = () => {
                         <label className="text-[10px] font-bold uppercase tracking-widest text-[#242424]/40 mb-3 block">Monthly Credit Spend</label>
                         <div className="flex items-baseline gap-2 mb-4">
                           <span className="text-3xl font-serif text-[#242424]">₹</span>
-                          <span className="text-5xl md:text-6xl font-serif font-bold text-[#242424] tracking-tighter">
+                          <span className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-[#242424] tracking-tighter">
                             {monthlySpend.toLocaleString('en-IN')}
                           </span>
                         </div>
@@ -201,7 +201,7 @@ const CalculatorCTA: React.FC = () => {
 
                         <div className="mb-8">
                            <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-600 mb-1">Yureka Optimized</p>
-                           <h5 className="text-5xl font-serif font-bold text-[#242424] tracking-tight">₹{results.yureka}<span className="text-base ml-1">/yr</span></h5>
+                           <h5 className="text-4xl sm:text-5xl font-serif font-bold text-[#242424] tracking-tight">₹{results.yureka}<span className="text-base ml-1">/yr</span></h5>
                         </div>
                       </div>
 

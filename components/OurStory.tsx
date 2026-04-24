@@ -53,8 +53,8 @@ const OurStory: React.FC = () => {
                 <span>Price: Free</span>
             </div>
             {/* Masthead */}
-            <div className="py-2 text-center relative">
-                <h1 className="font-blackletter text-4xl md:text-6xl lg:text-[5rem] leading-none text-black">Yureka.money</h1>
+            <div className="py-2 text-center relative px-2">
+                <h1 className="font-blackletter text-3xl sm:text-6xl lg:text-[5rem] leading-none text-black break-words">Yureka.money</h1>
             </div>
             {/* Categories */}
             <div className="border-t-2 border-b border-black py-1.5 flex justify-center flex-wrap gap-4 md:gap-8 text-[10px] md:text-xs font-bold uppercase tracking-[0.15em] text-black">
@@ -90,8 +90,8 @@ const OurStory: React.FC = () => {
             {/* Center Column: Main Story */}
             <div className="lg:col-span-7">
                 <div className="mb-6">
-                    <h3 className="font-sans text-xs font-bold uppercase tracking-widest text-black/60 mb-2">Making credit cards simple for everyone.</h3>
-                    <h2 className="font-heading text-4xl md:text-5xl lg:text-5xl font-black leading-[1.1] text-black mb-6 uppercase">
+                    <h3 className="font-sans text-[10px] sm:text-xs font-bold uppercase tracking-widest text-black/60 mb-2">Making credit cards simple for everyone.</h3>
+                    <h2 className="font-heading text-2xl sm:text-5xl lg:text-5xl font-black leading-[1.1] text-black mb-6 uppercase">
                         Credit cards are complicated. We make them simple.
                     </h2>
                 </div>
@@ -191,7 +191,7 @@ const OurStory: React.FC = () => {
 
          <div className="bg-[#242424] text-cream p-6 md:p-10 flex flex-col md:flex-row justify-between items-start md:items-end border-b border-black">
             <div>
-                <h1 className="text-4xl md:text-6xl lg:text-7xl font-heading font-black tracking-tighter leading-tight uppercase">
+                <h1 className="text-3xl sm:text-6xl lg:text-7xl font-heading font-black tracking-tighter leading-tight uppercase">
                     our mission<span className="text-teal">.</span>
                 </h1>
             </div>
@@ -210,7 +210,7 @@ const OurStory: React.FC = () => {
 
          <div className="p-6 md:p-12 border-b border-black/10">
             <FadeInSection>
-                <h2 className="text-3xl md:text-5xl lg:text-6xl font-heading font-black leading-[1.1] text-black tracking-tight mb-4 uppercase">
+                <h2 className="text-2xl sm:text-5xl lg:text-6xl font-heading font-black leading-[1.1] text-black tracking-tight mb-4 uppercase">
                     Credit cards are confusing. <br className="hidden md:block"/> <span className="text-[#047857]">We make them simple.</span>
                 </h2>
             </FadeInSection>
@@ -476,8 +476,8 @@ const OurStory: React.FC = () => {
             <FadeInSection>
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 border-y-2 border-black py-16 bg-cream shadow-2xl">
                     <div className="lg:col-span-12 text-center mb-8 px-6">
-                        <h2 className="text-5xl md:text-7xl font-heading font-black tracking-tighter mb-4 uppercase">The Stack Behind the Strategy.</h2>
-                        <p className="max-w-2xl mx-auto font-sans text-xl font-medium text-black/60">Built for 99.9% precision in a world of 100% financial noise.</p>
+                        <h2 className="text-2xl sm:text-7xl font-heading font-black tracking-tighter mb-4 uppercase">The Stack Behind the Strategy.</h2>
+                        <p className="max-w-2xl mx-auto font-sans text-sm sm:text-xl font-medium text-black/60">Built for 99.9% precision in a world of 100% financial noise.</p>
                     </div>
 
                     <div className="lg:col-span-4 px-12 border-r border-black/5">

@@ -93,7 +93,7 @@ const CareersPage: React.FC = () => {
             {/* Job List - Table Style */}
             <div className="lg:col-span-8">
                 <div className="border border-black/10 bg-cream shadow-sm">
-                    <div className="grid grid-cols-12 border-b border-black/10 bg-black/5 text-[10px] font-bold uppercase tracking-widest py-3 px-4 text-black/50">
+                    <div className="hidden md:grid grid-cols-12 border-b border-black/10 bg-black/5 text-[10px] font-bold uppercase tracking-widest py-3 px-4 text-black/50">
                         <div className="col-span-2">Ref ID</div>
                         <div className="col-span-5">Position</div>
                         <div className="col-span-3">Department</div>
@@ -102,15 +102,15 @@ const CareersPage: React.FC = () => {
                     
                     {roles.map((role, idx) => (
                         <FadeInSection key={idx} delay={idx * 50}>
-                            <div className="grid grid-cols-12 border-b border-black/10 hover:bg-black hover:text-cream transition-colors py-6 px-4 items-center group cursor-pointer text-black">
-                                <div className="col-span-2 font-mono text-xs opacity-50">{role.id}</div>
-                                <div className="col-span-5">
+                            <div className="flex flex-col md:grid md:grid-cols-12 border-b border-black/10 hover:bg-black hover:text-cream transition-colors py-6 px-4 md:items-center group cursor-pointer text-black">
+                                <div className="md:col-span-2 font-mono text-xs opacity-50 mb-2 md:mb-0">{role.id}</div>
+                                <div className="md:col-span-5 mb-4 md:mb-0">
                                     <h3 className="text-xl font-bold font-serif">{role.title}</h3>
                                     <span className="text-xs uppercase tracking-wider opacity-60">{role.location} • {role.type}</span>
                                 </div>
-                                <div className="col-span-3 text-sm font-medium opacity-80">{role.dept}</div>
-                                <div className="col-span-2 text-right">
-                                    <button className="w-8 h-8 border border-current rounded-full flex items-center justify-center ml-auto group-hover:rotate-45 transition-transform">
+                                <div className="md:col-span-3 text-sm font-medium opacity-80 mb-4 md:mb-0">{role.dept}</div>
+                                <div className="md:col-span-2 text-left md:text-right">
+                                    <button className="w-8 h-8 border border-current rounded-full flex items-center justify-center md:ml-auto group-hover:rotate-45 transition-transform">
                                         <ArrowUpRight size={14} />
                                     </button>
                                 </div>

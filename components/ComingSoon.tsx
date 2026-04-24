@@ -160,7 +160,7 @@ const YurekaAIAnimation = () => {
                 >
                   {msg.type === 'user' ? <Search size={16} className="text-cream/60" /> : <Cpu size={18} className="text-cream" />}
                 </motion.div>
-                <div className={`max-w-[85%] px-6 py-5 rounded-[2rem] tracking-tight text-[12px] md:text-[14px] font-medium leading-relaxed shadow-[0_20px_50px_-10px_rgba(0,0,0,0.12)] border ${
+                <div className={`max-w-[90%] md:max-w-[85%] px-4 py-3 md:px-6 md:py-5 rounded-[1.5rem] md:rounded-[2rem] tracking-tight text-[11px] md:text-[14px] font-medium leading-relaxed shadow-[0_15px_35px_-5px_rgba(0,0,0,0.1)] border ${
                   msg.type === 'user' ? 'bg-cream border-black/5 text-[#242424] rounded-br-none' : 'bg-[#242424] border-transparent text-cream rounded-bl-none'
                 }`}>
                   {msg.type === 'ai' ? (
@@ -206,8 +206,8 @@ const YurekaAIAnimation = () => {
                 {userInputStatus === "Typing" && (
                     <motion.div animate={{ opacity: [0.2, 1, 0.2] }} transition={{ repeat: Infinity, duration: 1.5 }} className="w-2.5 h-2.5 bg-[#047857] rounded-full shrink-0" />
                 )}
-                <span className={`text-[12px] md:text-base font-medium transition-all duration-500 truncate ${userInputStatus === "Typing" ? 'text-[#047857]' : 'text-[#242424]/20'}`}>
-                    {userInputStatus === "Typing" ? "Analyzing Reward Transfer Matrix..." : "Ask Yureka Neural Assistant..."}
+                <span className={`text-[10px] md:text-base font-medium transition-all duration-500 truncate ${userInputStatus === "Typing" ? 'text-[#047857]' : 'text-[#242424]/20'}`}>
+                    {userInputStatus === "Typing" ? "Analyzing Reward Matrix..." : "Ask Yureka Neural Assistant..."}
                 </span>
              </div>
              <div className="flex items-center gap-4">
@@ -710,7 +710,7 @@ const ComingSoon: React.FC = () => {
                             <span className="w-2 h-2 rounded-full bg-[#047857] animate-pulse" />
                             <span className="text-[9px] md:text-[10px] font-medium uppercase tracking-[0.2em] text-[#242424]/60">Intelligence Pipeline / v0.9.4B</span>
                         </div>
-                        <h2 className="text-4xl md:text-5xl lg:text-[clamp(1.5rem,5vw,5rem)] font-medium tracking-tight leading-[0.9] text-[#242424] uppercase">
+                        <h2 className="text-3xl sm:text-5xl lg:text-[clamp(1.5rem,5vw,5rem)] font-medium tracking-tight leading-[0.9] text-[#242424] uppercase">
                             The <br />
                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-clay via-[#047857] to-ink italic font-thin serif">Elite</span><br />
                            Standard.

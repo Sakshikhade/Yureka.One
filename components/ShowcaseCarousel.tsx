@@ -127,7 +127,7 @@ const ComparisonWidget: React.FC = () => {
         </button>
       </div>
 
-      <div className="w-full max-w-md relative min-h-[400px]">
+      <div className="w-full max-w-md relative min-h-[350px] sm:min-h-[400px]">
         {/* ── Headline ── */}
         <AnimatePresence mode="wait">
           <motion.div

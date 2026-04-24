@@ -184,7 +184,7 @@ const CardExplorer: React.FC = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
                     >
-                        <h1 className="text-5xl md:text-8xl font-heading font-black text-[#242424] tracking-tight mb-6 leading-none">
+                        <h1 className="text-4xl sm:text-6xl md:text-8xl font-heading font-black text-[#242424] tracking-tight mb-6 leading-none">
                             Start your <br className="md:hidden" /> <span className="text-[#047857] italic serif font-light">search</span> here
                         </h1>
                         <p className="text-[#242424]/60 text-lg md:text-xl font-medium max-w-2xl mx-auto leading-relaxed mb-16">
