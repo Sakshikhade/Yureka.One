@@ -47,8 +47,8 @@ const JournalPage: React.FC = () => {
                 <section className="mb-24">
                     <div className="flex items-center justify-between border-b border-white/10 pb-6 mb-12">
                         <div className="space-y-1">
-                            <h2 className="text-[14px] font-heading font-black uppercase tracking-[0.2em] text-white">Silicon Valley History</h2>
-                            <p className="text-[12px] text-white/40 font-serif">Deep dives into the architectures and minds that built the foundations.</p>
+                            <h2 className="text-[15px] font-heading font-extrabold uppercase tracking-[0.2em] text-white">Silicon Valley History</h2>
+                            <p className="text-[14px] text-white/50 font-serif font-medium">Deep dives into the architectures and minds that built the foundations.</p>
                         </div>
                         <ArrowRight size={20} className="text-white/20" />
                     </div>
@@ -80,7 +80,7 @@ const JournalPage: React.FC = () => {
                                                     </span>
                                                 ))}
                                             </h3>
-                                            <p className="text-[14px] text-white/60 leading-relaxed line-clamp-2 font-serif font-light">
+                                            <p className="text-base text-white/70 leading-relaxed line-clamp-2 font-serif font-medium">
                                                 {post.excerpt}
                                             </p>
                                             <div className="flex items-center gap-3 pt-2">
@@ -104,7 +104,7 @@ const JournalPage: React.FC = () => {
                 {/* ─── SECTION: FROM OUR COLUMNISTS ─── */}
                 <section className="mb-24 pt-12 border-t border-white/10">
                     <div className="flex items-center justify-between pb-12">
-                        <h2 className="text-[14px] font-heading font-black uppercase tracking-[0.2em] text-white">From Our Columnists</h2>
+                        <h2 className="text-[15px] font-heading font-extrabold uppercase tracking-[0.2em] text-white">From Our Columnists</h2>
                         <ArrowRight size={20} className="text-white/20" />
                     </div>
 
@@ -118,8 +118,8 @@ const JournalPage: React.FC = () => {
                                              <img src={`https://i.pravatar.cc/300?u=${author}`} alt={author} className="w-full h-full object-cover" />
                                         </div>
                                         <div className="space-y-3">
-                                            <h4 className="text-[18px] font-heading font-black uppercase text-white">{author}</h4>
-                                            <p className="text-[13px] text-white/50 leading-relaxed font-serif">
+                                            <h4 className="text-xl font-heading font-extrabold uppercase text-white">{author}</h4>
+                                            <p className="text-sm text-white/60 leading-relaxed font-serif font-medium">
                                                 Leading writer at Yureka. Exploring the architecture of credit and the neural pathways of rewards in his weekly Journal.
                                             </p>
                                         </div>
@@ -139,16 +139,16 @@ const JournalPage: React.FC = () => {
                                                     <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors" />
                                                 </div>
                                                 <div className="space-y-3">
-                                                    <span className="text-[9px] font-bold uppercase tracking-widest text-[#047857]">{new Date(post.created_at || '').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
-                                                    <h3 className="text-[20px] font-serif leading-[1.2] text-white group-hover:text-clay transition-colors">
+                                                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#047857]">{new Date(post.created_at || '').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                                                    <h3 className="text-2xl font-serif font-semibold leading-[1.2] text-white group-hover:text-clay transition-colors">
                                                          {post.title}
-                                                    </h3>
-                                                    <p className="text-[13px] text-white/50 leading-relaxed line-clamp-3 font-serif font-light italic">
-                                                        {post.excerpt}
-                                                    </p>
+                                                     </h3>
+                                                     <p className="text-base text-white/60 leading-relaxed line-clamp-3 font-serif font-medium italic">
+                                                         {post.excerpt}
+                                                     </p>
                                                     <div className="flex items-center gap-2 pt-2 grayscale opacity-40">
                                                         <div className="w-5 h-5 rounded-full bg-white/10" />
-                                                        <span className="text-[9px] font-bold uppercase tracking-widest">{author}</span>
+                                                        <span className="text-[10px] font-bold uppercase tracking-widest">{author}</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -185,7 +185,7 @@ const JournalPage: React.FC = () => {
                                                 <div className="w-1 h-1 bg-white/10 rounded-full" />
                                                 <span className="text-[9px] font-bold uppercase tracking-widest text-white/20">{post.read_time || '5m'} Read</span>
                                             </div>
-                                            <h3 className="text-[19px] font-serif leading-[1.3] text-white/90 group-hover:text-white transition-colors">
+                                            <h3 className="text-xl font-serif font-semibold leading-[1.3] text-white/90 group-hover:text-white transition-colors">
                                                 {post.title}
                                             </h3>
                                             <div className="flex items-center gap-3 pt-2">
@@ -208,10 +208,10 @@ const JournalPage: React.FC = () => {
                 >
                     <div className="max-w-3xl mx-auto space-y-12">
                         <Landmark className="mx-auto text-clay" size={48} />
-                        <h2 className="text-4xl md:text-7xl font-heading font-black text-white uppercase tracking-tighter leading-none italic">
+                        <h2 className="text-4xl md:text-7xl font-heading font-extrabold text-white uppercase tracking-tighter leading-none italic">
                             The <span className="text-clay serif font-light lowercase">Intelligence</span> <br/> Sunday Dispatch.
                         </h2>
-                        <p className="text-xl md:text-2xl text-white/40 font-serif italic max-w-xl mx-auto leading-relaxed">
+                        <p className="text-xl md:text-2xl text-white/50 font-serif italic max-w-xl mx-auto leading-relaxed font-medium">
                             Deep analysis of credit markets and reward loops, delivered to your encrypted inbox every Sunday.
                         </p>
                         <form className="flex flex-col md:flex-row gap-4 max-w-2xl mx-auto" onSubmit={(e) => e.preventDefault()}>

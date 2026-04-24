@@ -135,9 +135,9 @@ const CardDetail: React.FC = () => {
                                 <Landmark size={18} />
                                 <span className="text-xs uppercase tracking-[0.4em]">{card.issuer || card.bank}</span>
                             </div>
-                            <h1 className="text-5xl md:text-7xl font-heading font-black tracking-tighter text-[#242424] leading-[1.1]">
-                                {card.name}
-                            </h1>
+                             <h1 className="text-5xl md:text-7xl font-heading font-extrabold tracking-tighter text-ink leading-[1.1]">
+                                 {card.name}
+                             </h1>
                             <p className="text-xl md:text-2xl font-sans font-medium text-[#242424]/40 leading-snug max-w-xl">
                                 {card.best_for} • {card.category} Portfolio
                             </p>
@@ -147,11 +147,11 @@ const CardDetail: React.FC = () => {
                         <div className="grid grid-cols-2 gap-8 pt-10 border-t border-ink/5">
                             <div className="space-y-2">
                                 <p className="text-[#242424] text-[11px] font-bold uppercase tracking-[0.3em]">Annual Fee</p>
-                                <p className="text-2xl font-heading font-black text-[#242424]">₹{String(card.annual_fee).replace(/^₹/, '')}</p>
+                                 <p className="text-2xl font-heading font-extrabold text-ink">₹{String(card.annual_fee).replace(/^₹/, '')}</p>
                             </div>
                             <div className="space-y-2">
                                 <p className="text-[#242424] text-[11px] font-bold uppercase tracking-[0.3em]">Joining Fee</p>
-                                <p className="text-2xl font-heading font-black text-[#242424]">₹{String(card.joining_fee || card.annual_fee).replace(/^₹/, '')}</p>
+                                 <p className="text-2xl font-heading font-extrabold text-ink">₹{String(card.joining_fee || card.annual_fee).replace(/^₹/, '')}</p>
                             </div>
 
                         </div>
@@ -178,7 +178,7 @@ const CardDetail: React.FC = () => {
                     <div className="flex items-end justify-between mb-16 border-b-2 border-ink pb-8">
                          <div>
                             <p className="text-[#047857] text-[10px] font-bold uppercase tracking-[0.5em] mb-4">The Advantage</p>
-                            <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tighter text-[#242424] uppercase">Elite Benefits Portfolio</h2>
+                             <h2 className="text-4xl md:text-5xl font-heading font-extrabold tracking-tighter text-ink uppercase">Elite Benefits Portfolio</h2>
                         </div>
 
                         <div className="hidden md:block text-right">
@@ -193,8 +193,8 @@ const CardDetail: React.FC = () => {
                                     <div className="w-10 h-10 md:w-12 md:h-12 bg-cream rounded-2xl flex items-center justify-center mb-6 md:mb-8 border border-ink/5 group-hover:scale-110 transition-transform">
                                         <CheckCircle2 className="text-teal" size={20} />
                                     </div>
-                                     <h3 className="text-xs font-bold text-[#242424]/40 leading-tight mb-2 uppercase tracking-widest">{benefit.heading}</h3>
-                                    <p className="text-xl md:text-2xl font-heading font-black text-[#242424] uppercase tracking-tight">{benefit.subheading}</p>
+                                     <h3 className="text-xs font-bold text-ink/40 leading-tight mb-2 uppercase tracking-widest">{benefit.heading}</h3>
+                                    <p className="text-xl md:text-2xl font-heading font-extrabold text-ink uppercase tracking-tight">{benefit.subheading}</p>
                                 </div>
 
 
@@ -205,8 +205,8 @@ const CardDetail: React.FC = () => {
                                     <div className="w-10 h-10 md:w-12 md:h-12 bg-cream rounded-2xl flex items-center justify-center mb-6 md:mb-8 border border-ink/5 group-hover:scale-110 transition-transform">
                                         <CheckCircle2 className="text-teal" size={20} />
                                     </div>
-                                    <h3 className="text-xs font-bold text-[#242424]/40 leading-tight mb-2 uppercase tracking-widest">{benefit}</h3>
-                                    <p className="text-xl md:text-2xl font-heading font-black text-[#242424] uppercase tracking-tight italic">Premium Feature</p>
+                                    <h3 className="text-xs font-bold text-ink/40 leading-tight mb-2 uppercase tracking-widest">{benefit}</h3>
+                                    <p className="text-xl md:text-2xl font-heading font-extrabold text-ink uppercase tracking-tight italic">Premium Feature</p>
                                 </div>
 
                             ))
@@ -227,10 +227,10 @@ const CardDetail: React.FC = () => {
                             <div className="inline-block border border-clay px-4 py-2 rounded-full">
                                 <p className="text-[#047857] text-[10px] font-bold uppercase tracking-[0.4em]">Yureka Insights</p>
                             </div>
-                             <h2 className="text-4xl md:text-6xl font-heading font-black leading-none tracking-tighter uppercase">
-                                The <span className="text-cream/40">Verdict</span>
-                             </h2>
-                             <p className="text-xl md:text-2xl font-sans font-medium text-cream/60 leading-relaxed italic border-l-4 border-clay pl-8">
+                             <h2 className="text-4xl md:text-6xl font-heading font-extrabold leading-none tracking-tighter uppercase">
+                                 The <span className="text-ink/30">Verdict</span>
+                              </h2>
+                             <p className="text-xl md:text-2xl font-sans font-semibold text-ink/70 leading-relaxed italic border-l-4 border-clay pl-8">
                                 "{card.verdict || `The ${card.name} remains a cornerstone of the ${card.issuer || card.bank} ecosystem. While the ${card.annual_fee} fee is significant, the projected savings of ${card.projected_savings || '₹12,000/yr'} creates an undeniable value proposition for high-spend portfolios.`}"
                              </p>
 

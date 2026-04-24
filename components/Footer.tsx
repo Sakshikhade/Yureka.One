@@ -18,7 +18,7 @@ const Footer: React.FC = () => {
                 initial={{ y: 0 }}
                 animate={{ y: [-15, 15, -15] }}
                 transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-                className="text-[8rem] md:text-[15rem] lg:text-[22rem] font-heading font-black tracking-tighter text-[#242424]/[0.08] select-none blur-[1px] backdrop-blur-[1px] whitespace-nowrap leading-none"
+                className="text-[8rem] md:text-[15rem] lg:text-[22rem] font-heading font-extrabold tracking-tighter text-ink/[0.08] select-none blur-[1px] backdrop-blur-[1px] whitespace-nowrap leading-none"
             >
 
 
@@ -40,12 +40,12 @@ const Footer: React.FC = () => {
 
                {/* Left Column: Brand & Tagline */}
                <div className="flex flex-col justify-center max-w-xs relative z-10">
-                   <div className="flex items-center gap-2 mb-8">
-                       <span className="text-xl md:text-2xl font-sans font-light tracking-wide text-white/80">Built with</span>
-                       <span className="text-2xl animate-pulse">🧡</span>
-                       <span className="text-xl md:text-2xl font-sans font-light tracking-wide text-white/80">by</span>
-                       <span className="text-2xl md:text-3xl font-serif font-bold italic tracking-tighter ml-1">YUREKA.</span>
-                   </div>
+                    <div className="flex items-center gap-2 mb-8">
+                        <span className="text-xl md:text-2xl font-sans font-semibold tracking-wide text-white/80">Built with</span>
+                        <span className="text-2xl animate-pulse">🧡</span>
+                        <span className="text-xl md:text-2xl font-sans font-semibold tracking-wide text-white/80">by</span>
+                        <span className="text-2xl md:text-3xl font-serif font-bold italic tracking-tighter ml-1">YUREKA.</span>
+                    </div>
                    <p className="text-white/60 text-sm md:text-base font-sans leading-relaxed tracking-wide">
                        Curating India's Top 1% Credit Portfolios
                    </p>
@@ -103,7 +103,7 @@ const Footer: React.FC = () => {
                 
                 {/* Column 1 - Core Pages */}
                 <div className="pl-6 md:pl-8 border-r border-black/10 min-h-[150px] md:min-h-[200px]">
-                    <h4 className="font-bold text-[10px] md:text-xs uppercase tracking-[0.2em] mb-4 md:mb-8 text-black/40">Explore</h4>
+                    <h4 className="font-bold text-xs uppercase tracking-[0.2em] mb-4 md:mb-8 text-ink/40">Explore</h4>
                     <ul className="space-y-3 md:space-y-4">
                         <li><Link to="/cards" className="hover:text-[#047857] font-serif text-xs md:text-sm transition-colors">Card Explorer</Link></li>
                         <li><Link to="/yureka-ai" className="hover:text-[#047857] font-serif text-xs md:text-sm transition-colors">Yureka AI</Link></li>
@@ -114,7 +114,7 @@ const Footer: React.FC = () => {
 
                 {/* Column 2 - Resources */}
                 <div className="pl-6 md:pl-8 border-r border-black/10 min-h-[150px] md:min-h-[200px]">
-                    <h4 className="font-bold text-[10px] md:text-xs uppercase tracking-[0.2em] mb-4 md:mb-8 text-black/40">Resources</h4>
+                    <h4 className="font-bold text-xs uppercase tracking-[0.2em] mb-4 md:mb-8 text-ink/40">Resources</h4>
                     <ul className="space-y-3 md:space-y-4">
                         <li><Link to="/blogs" className="hover:text-[#047857] font-serif text-xs md:text-sm transition-colors">Blogs</Link></li>
                         <li><Link to="/jobs" className="hover:text-[#047857] font-serif text-xs md:text-sm transition-colors">Careers at Yureka</Link></li>
@@ -126,7 +126,7 @@ const Footer: React.FC = () => {
 
                 {/* Column 3 - Legal */}
                 <div className="pl-6 md:pl-8 border-r border-black/10 min-h-[150px] md:min-h-[200px]">
-                    <h4 className="font-bold text-[10px] md:text-xs uppercase tracking-[0.2em] mb-4 md:mb-8 text-black/40">Legal & Privacy</h4>
+                    <h4 className="font-bold text-xs uppercase tracking-[0.2em] mb-4 md:mb-8 text-ink/40">Legal & Privacy</h4>
                     <ul className="space-y-3 md:space-y-4">
                         <li><Link to="/terms-of-service" className="hover:text-[#047857] font-serif text-xs md:text-sm transition-colors">Terms of Service</Link></li>
                         <li><Link to="/privacy-policy" className="hover:text-[#047857] font-serif text-xs md:text-sm transition-colors">Privacy Policy</Link></li>
@@ -137,7 +137,7 @@ const Footer: React.FC = () => {
 
                 {/* Column 4 - Contact */}
                 <div className="pl-6 md:pl-8 border-r border-black/10 min-h-[150px] md:min-h-[200px] col-span-1 sm:col-span-2 md:col-span-1 lg:col-span-2">
-                    <h4 className="font-bold text-[10px] md:text-xs uppercase tracking-[0.2em] mb-4 md:mb-8 text-black/60">Contact Bureau</h4>
+                    <h4 className="font-bold text-xs uppercase tracking-[0.2em] mb-4 md:mb-8 text-ink/60">Contact Bureau</h4>
                     <div className="mb-6 md:mb-8">
                         <p className="text-[10px] uppercase tracking-wider text-[#242424]/70 mb-1">User Support (Pan-India)</p>
                         <a href="mailto:support@yureka.money" className="text-base md:text-lg font-serif hover:text-[#047857] transition-colors group">

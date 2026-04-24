@@ -106,7 +106,7 @@ const BlogDetail: React.FC = () => {
                         <div className="w-1.5 h-1.5 bg-[#242424]/10 rounded-full"></div>
                         <span className="text-[#242424]/40">{blog.read_time || '5 min read'}</span>
                     </div>
-                    <h1 className="text-5xl md:text-8xl font-serif leading-[1.1] text-[#242424] mb-12 tracking-tight">
+                    <h1 className="text-5xl md:text-8xl font-serif font-bold leading-[1.1] text-ink mb-12 tracking-tight">
                         {blog.title}
                     </h1>
                     <div className="flex flex-wrap items-center justify-between gap-8 pt-10 border-t border-ink/5">
@@ -147,11 +147,11 @@ const BlogDetail: React.FC = () => {
                     </aside>
 
                     <article className="lg:col-span-10 space-y-10 prose prose-lg prose-ink max-w-none prose-serif">
-                        <div className="text-2xl md:text-3xl italic text-[#242424]/60 border-l-8 border-clay pl-10 mb-16 leading-relaxed prose prose-2xl prose-serif max-w-none">
+                        <div className="text-2xl md:text-3xl italic text-ink/70 border-l-8 border-clay pl-10 mb-16 leading-relaxed font-serif font-medium">
                             <ReactMarkdown>{blog.excerpt}</ReactMarkdown>
                         </div>
                         
-                        <div className="article-content text-xl leading-[1.8] text-[#242424]/80 markdown-body">
+                        <div className="article-content text-xl leading-[1.8] text-ink/90 font-serif font-medium">
                             <ReactMarkdown>{blog.content}</ReactMarkdown>
                         </div>
 
@@ -164,7 +164,7 @@ const BlogDetail: React.FC = () => {
                                 </div>
                                 <div className="space-y-4">
                                     <h4 className="text-sm font-bold uppercase tracking-[0.3em] text-[#242424] font-sans">About the Author</h4>
-                                    <p className="text-xl italic text-[#242424]/60 max-w-xl">
+                                    <p className="text-xl italic text-ink/70 max-w-xl font-medium font-serif">
                                         {blog.author} is a senior financial analyst and a regular contributor to the Yureka Journal, specializing in Indian credit ecosystems.
                                     </p>
                                     <div className="flex gap-4 pt-2">

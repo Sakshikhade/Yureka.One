@@ -47,24 +47,24 @@ const Navbar: React.FC = () => {
                 flex flex-col relative z-10 group cursor-pointer
             `}>
                 <div className="flex items-center gap-3">
-                    <Link to="/" className="font-heading font-medium tracking-tighter text-base md:text-[17px] text-[#242424] leading-none hover:opacity-75 transition-opacity flex items-baseline uppercase">
-                        Yureka<span className="text-[#047857]">.</span>money
+                    <Link to="/" className="font-heading font-extrabold tracking-tighter text-base md:text-[17px] text-ink leading-none hover:opacity-75 transition-opacity flex items-baseline uppercase">
+                        Yureka<span className="text-clay">.</span>money
                     </Link>
                     {/* Neural Status Indicator */}
                     <div className="flex items-center gap-1.5 px-2 py-0.5 bg-[#047857]/5 border border-[#047857]/10 rounded-full">
                         <motion.div 
                             animate={{ opacity: [0.4, 1, 0.4] }}
                             transition={{ duration: 2, repeat: Infinity }}
-                            className="w-1.5 h-1.5 bg-[#047857] rounded-full shadow-[0_0_8px_rgba(4,120,87,0.5)]"
+                            className="w-1.5 h-1.5 bg-clay rounded-full shadow-[0_0_8px_rgba(4,120,87,0.5)]"
                         />
-                        <span className="text-[7px] font-bold text-[#047857] uppercase tracking-widest hidden md:block">Neural Active</span>
+                        <span className="text-[8px] font-extrabold text-clay uppercase tracking-widest hidden md:block">Neural Active</span>
                     </div>
                 </div>
 
                 {!isScrolled && (
-                     <span className="hidden md:block text-[9px] uppercase tracking-[0.3em] text-[#242424]/40 mt-1 font-sans">
+                      <span className="hidden md:block text-[10px] uppercase tracking-[0.3em] text-ink/40 mt-1 font-sans font-bold">
                         AI-Driven Intelligence • Est. 2026
-                     </span>
+                      </span>
                 )}
             </div>
 
@@ -84,8 +84,8 @@ const Navbar: React.FC = () => {
                             key={item.name}
                             to={item.path} 
                             className={`
-                                relative text-[11px] font-medium uppercase tracking-widest transition-all py-1
-                                ${location.pathname === item.path ? 'text-[#242424] border-b-2 border-clay' : 'text-[#242424]/50 hover:text-[#242424]'}
+                                 relative text-[11px] font-bold uppercase tracking-widest transition-all py-1
+                                ${location.pathname === item.path ? 'text-ink border-b-2 border-clay' : 'text-ink/50 hover:text-ink'}
                             `}
                         >
                             {item.name}
