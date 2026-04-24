@@ -26,103 +26,40 @@ const Hero: React.FC = () => {
 
         <div className="relative z-10 w-full px-6 flex flex-col items-center">
             
-            {/* --- NEWSPAPER HEADER SECTION --- */}
-            
-            {/* Ear Pieces (Top corners) & Masthead */}
-            <motion.div 
-                initial={fadeInUp.initial}
-                whileInView={fadeInUp.whileInView}
-                viewport={fadeInUp.viewport}
-                transition={fadeInUp.transition}
-                className="w-full flex flex-col lg:flex-row justify-between items-center lg:items-end border-b-4 border-double border-ink/20 pb-8 px-4 gap-8 lg:gap-0"
-            >
-                {/* Left Ear - Keyword Rich Context */}
-                <div className="hidden lg:block w-64 text-left border-r border-ink/10 pr-6 h-full">
-                    <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-ink/70 mb-2">Est. 2026 • Alpha V.1</p>
-                    <p className="text-sm lg:text-base font-serif italic text-ink/80 leading-tight">
-                        "The automation of financial superiority."
-                    </p>
-                </div>
-
-                {/* Masthead - Brand Name */}
-                <div className="flex-1 text-center px-2 md:px-4 group overflow-visible">
-                    <div className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.5em] text-clay mb-2 md:mb-3 opacity-0 group-hover:opacity-100 transition-all duration-700 -translate-y-2 group-hover:translate-y-0">The Intelligence Edition</div>
-                    <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-[clamp(2.5rem,4.5vw,5.5rem)] font-heading font-extrabold tracking-tight leading-[0.85] text-ink uppercase whitespace-nowrap">
-                        Yureka<span className="text-clay"> Times.</span>
-                    </h1>
-                </div>
-
-
-                {/* Right Ear - Metadata */}
-                <div className="hidden lg:block w-72 text-right border-l border-ink/10 pl-8 h-full">
-                     <div className="flex items-center justify-end gap-3 text-ink/70 mb-2">
-                        <Globe size={14} className="animate-spin-slow text-clay" />
-                        <span className="text-xs font-sans font-medium uppercase tracking-widest text-[9px]">Neural Network Stable</span>
-                     </div>
-                      <div className="flex justify-end gap-4 text-[11px] font-bold uppercase tracking-[0.3em] text-ink/60">
-                        <span>Digital Ed.</span>
-                        <span>Vol. 09</span>
-                      </div>
-                </div>
-            </motion.div>
-
-            {/* Date Line & Key Value Props */}
-            <motion.div 
-                initial={fadeInUp.initial}
-                whileInView={fadeInUp.whileInView}
-                viewport={fadeInUp.viewport}
-                transition={{ ...fadeInUp.transition, delay: 0.1 }}
-                className="w-full border-b border-ink/10 py-4 mb-12 md:mb-20 grid grid-cols-1 md:grid-cols-12 items-center px-4 gap-y-4 md:gap-y-0"
-            >
-                <div className="md:col-span-4 text-xs font-bold uppercase tracking-[0.1em] text-ink/40 flex gap-2 lg:gap-4 justify-center md:justify-start">
-                    <span>Bengaluru Node</span>
-                    <span className="text-clay">/</span>
-                    <span className="text-clay">234,402 Cards Audited</span>
-                </div>
-                <div className="md:col-span-4 text-xs font-bold uppercase tracking-[0.2em] text-ink/60 text-center">
-                    {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-                </div>
-                <div className="md:col-span-4 text-xs font-bold uppercase tracking-[0.2em] text-ink/40 text-center md:text-right">
-                    <span className="md:hidden">Elite Standard • Alpha</span>
-                    <span className="hidden md:inline">Institutional Grade • Alpha Protocol v0.9.4</span>
-                </div>
-            </motion.div>
-
-            {/* --- MAIN HEADLINE SECTION (H2 for SEO) --- */}
+            {/* --- MAIN HEADLINE SECTION (H1 for SEO) --- */}
             <motion.div 
                 initial={fadeInUp.initial}
                 whileInView={fadeInUp.whileInView}
                 viewport={fadeInUp.viewport}
                 transition={{ ...fadeInUp.transition, delay: 0.2 }}
-                className="w-full text-center mb-16 md:mb-24 px-6"
+                className="w-full text-center mb-10 md:mb-16 px-6 pt-10"
             >
-                <div className="flex justify-center items-center gap-6 mb-8 md:mb-12">
+                <div className="flex justify-center items-center gap-6 mb-4 md:mb-6">
                      <div className="h-[1px] bg-clay/20 w-12 md:w-24"></div>
                      <span className="text-ink font-bold text-xs uppercase tracking-[0.4em]">The Automation of Wealth</span>
                      <div className="h-[1px] bg-clay/20 w-12 md:w-24"></div>
                 </div>
-                <h2 className="text-3xl sm:text-6xl md:text-7xl lg:text-[clamp(2.5rem,7vw,8rem)] leading-[0.9] font-heading font-extrabold text-ink uppercase tracking-tight">
+                <h1 className="text-3xl sm:text-6xl md:text-7xl lg:text-[clamp(2.5rem,7vw,8rem)] leading-[0.9] font-heading font-extrabold text-ink uppercase tracking-tight">
                     Stop Guessing. <br className="hidden md:block" /> Start Winning.
-                </h2>
-                <h3 className="text-xs sm:text-base xl:text-lg font-sans font-semibold text-ink/60 mt-6 md:mt-10 max-w-3xl mx-auto leading-relaxed tracking-tight uppercase px-4 sm:px-0">
+                </h1>
+                <h3 className="text-xs sm:text-base xl:text-lg font-sans font-semibold text-ink/60 mt-4 md:mt-6 max-w-3xl mx-auto leading-relaxed tracking-tight uppercase px-4 sm:px-0">
                     We audit <span className="text-ink">200+ elite credit cards</span> through the RewardX Neural Engine <br className="hidden lg:block" /> to reveal your highest possible yield path.
                 </h3>
 
                 
-                <div className="mt-14 md:mt-20 flex flex-col md:flex-row items-center justify-center gap-8">
-                    <Link to="/yureka-ai" className="group relative px-14 py-6 bg-[#242424] text-cream overflow-hidden rounded-full w-full md:w-auto shadow-2xl transition-all hover:-translate-y-1 text-center">
+                <div className="mt-10 md:mt-14 mb-16 md:mb-20 flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 px-4">
+                    <Link to="/yureka-ai" className="group relative px-8 py-5 md:px-12 md:py-6 bg-[#242424] text-cream overflow-hidden rounded-full w-full sm:w-auto shadow-[0_8px_40px_-12px_rgba(0,0,0,0.5)] transition-all hover:-translate-y-1 hover:shadow-2xl text-center border border-transparent">
                         <div className="absolute inset-0 w-full h-full bg-[#047857]/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
-                        <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-[100%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-in-out" />
-                        <span className="relative z-10 font-medium text-[11px] uppercase tracking-[0.3em] flex items-center justify-center gap-4 text-cream">
+                        <span className="relative z-10 font-bold text-[10px] md:text-[11px] uppercase tracking-[0.3em] flex items-center justify-center gap-3 text-cream">
                             <Sparkles size={16} className="text-[#047857] animate-pulse" /> Launch Neural Matcher
                         </span>
                     </Link>
-                    <div className="flex flex-col items-center md:items-start">
-                        <span className="text-[10px] font-medium text-[#242424]/20 uppercase tracking-[0.4em]">Protocol Status</span>
-                        <span className="text-[11px] font-medium text-[#047857] uppercase italic tracking-widest flex items-center gap-2">
-                           <div className="w-1.5 h-1.5 rounded-full bg-[#047857] animate-ping" /> Synchronized
+                    
+                    <Link to="/join-waitlist" className="group px-8 py-5 md:px-12 md:py-6 bg-transparent text-[#242424] rounded-full w-full sm:w-auto border-2 border-ink/10 hover:border-ink/30 hover:bg-[#242424]/5 transition-all hover:-translate-y-1 text-center backdrop-blur-sm">
+                        <span className="font-bold text-[10px] md:text-[11px] uppercase tracking-[0.3em] flex items-center justify-center gap-3">
+                            Join The VIP Waitlist
                         </span>
-                    </div>
+                    </Link>
                 </div>
             </motion.div>
 
