@@ -98,7 +98,7 @@ const GroupChatAudit: React.FC = () => {
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="mx-auto w-full max-w-[300px] sm:max-w-[320px] aspect-[9/18.5] bg-[#242424] rounded-[3rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] border-[8px] border-[#242424] relative overflow-hidden flex flex-col"
+        className="mx-auto w-full max-w-[280px] sm:max-w-[320px] aspect-[9/18.5] bg-[#242424] rounded-[3rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] border-[8px] border-[#242424] relative overflow-hidden flex flex-col"
       >
         {/* Notch */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-[#242424] rounded-b-2xl z-50 flex items-center justify-center">

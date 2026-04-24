@@ -187,7 +187,7 @@ const CardExplorer: React.FC = () => {
                         <h1 className="text-4xl sm:text-6xl md:text-8xl font-heading font-black text-[#242424] tracking-tight mb-6 leading-none">
                             Start your <br className="md:hidden" /> <span className="text-[#047857] italic serif font-light">search</span> here
                         </h1>
-                        <p className="text-[#242424]/60 text-lg md:text-xl font-medium max-w-2xl mx-auto leading-relaxed mb-16">
+                        <p className="text-[#242424]/60 text-base md:text-xl font-medium max-w-2xl mx-auto leading-relaxed mb-12 md:mb-16 px-4">
                             Choose your preferences and spend habits to see the <br className="hidden md:block" /> absolute best credit instruments available.
                         </p>
                     </motion.div>
@@ -317,12 +317,12 @@ const CardExplorer: React.FC = () => {
                                     <div className="w-14 h-14 bg-emerald-50 rounded-2xl flex items-center justify-center border border-emerald-100">
                                         <Calculator className="text-emerald-500" size={24} />
                                     </div>
-                                    <div className="text-left">
-                                        <h4 className="text-xl md:text-2xl font-heading font-black text-[#242424] leading-tight uppercase">Yureka vs Standard</h4>
-                                        <p className="text-[10px] font-bold uppercase tracking-widest text-[#242424]/40">Guaranteed rewards delta. See for yourself!</p>
+                                    <div className="text-left flex-1 min-w-0">
+                                        <h4 className="text-lg sm:text-2xl font-heading font-black text-[#242424] leading-tight uppercase truncate">Yureka vs Standard</h4>
+                                        <p className="text-[9px] font-bold uppercase tracking-widest text-[#242424]/40 truncate">Guaranteed rewards delta.</p>
                                     </div>
                                 </div>
-                                <button className="bg-[#242424] text-cream px-8 py-3 rounded-2xl text-[10px] font-bold uppercase tracking-[0.2em] shadow-xl group-hover:bg-[#047857] transition-all">
+                                <button className="bg-[#242424] text-cream px-6 py-3 rounded-2xl text-[9px] font-bold uppercase tracking-[0.2em] shadow-xl group-hover:bg-[#047857] transition-all whitespace-nowrap">
                                     Calculate
                                 </button>
                              </div>

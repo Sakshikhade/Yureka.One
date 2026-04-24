@@ -45,9 +45,9 @@ const Hero: React.FC = () => {
                 </div>
 
                 {/* Masthead - Brand Name */}
-                <div className="flex-1 text-center px-4 md:px-8 group overflow-hidden">
-                    <div className="text-[11px] font-bold uppercase tracking-[0.5em] text-clay mb-3 opacity-0 group-hover:opacity-100 transition-all duration-700 -translate-y-2 group-hover:translate-y-0">The Intelligence Edition</div>
-                    <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[clamp(3rem,8vw,10rem)] font-heading font-extrabold tracking-tight leading-[0.85] text-ink uppercase">
+                <div className="flex-1 text-center px-2 md:px-4 group overflow-visible">
+                    <div className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.5em] text-clay mb-2 md:mb-3 opacity-0 group-hover:opacity-100 transition-all duration-700 -translate-y-2 group-hover:translate-y-0">The Intelligence Edition</div>
+                    <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-[clamp(2.5rem,4.5vw,5.5rem)] font-heading font-extrabold tracking-tight leading-[0.85] text-ink uppercase whitespace-nowrap">
                         Yureka<span className="text-clay"> Times.</span>
                     </h1>
                 </div>
@@ -72,17 +72,17 @@ const Hero: React.FC = () => {
                 whileInView={fadeInUp.whileInView}
                 viewport={fadeInUp.viewport}
                 transition={{ ...fadeInUp.transition, delay: 0.1 }}
-                className="w-full border-b border-ink/10 py-4 mb-12 md:mb-20 grid grid-cols-1 md:grid-cols-3 items-center px-4 gap-y-4 md:gap-y-0"
+                className="w-full border-b border-ink/10 py-4 mb-12 md:mb-20 grid grid-cols-1 md:grid-cols-12 items-center px-4 gap-y-4 md:gap-y-0"
             >
-                <div className="text-xs font-bold uppercase tracking-[0.1em] text-ink/40 flex gap-2 lg:gap-4 justify-center md:justify-start">
+                <div className="md:col-span-4 text-xs font-bold uppercase tracking-[0.1em] text-ink/40 flex gap-2 lg:gap-4 justify-center md:justify-start">
                     <span>Bengaluru Node</span>
                     <span className="text-clay">/</span>
                     <span className="text-clay">234,402 Cards Audited</span>
                 </div>
-                <div className="text-xs font-bold uppercase tracking-[0.2em] text-ink/60 text-center">
+                <div className="md:col-span-4 text-xs font-bold uppercase tracking-[0.2em] text-ink/60 text-center">
                     {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                 </div>
-                <div className="text-xs font-bold uppercase tracking-[0.2em] text-ink/40 text-center md:text-right">
+                <div className="md:col-span-4 text-xs font-bold uppercase tracking-[0.2em] text-ink/40 text-center md:text-right">
                     <span className="md:hidden">Elite Standard • Alpha</span>
                     <span className="hidden md:inline">Institutional Grade • Alpha Protocol v0.9.4</span>
                 </div>
@@ -104,7 +104,7 @@ const Hero: React.FC = () => {
                 <h2 className="text-3xl sm:text-6xl md:text-7xl lg:text-[clamp(2.5rem,7vw,8rem)] leading-[0.9] font-heading font-extrabold text-ink uppercase tracking-tight">
                     Stop Guessing. <br className="hidden md:block" /> Start Winning.
                 </h2>
-                <h3 className="text-xs sm:text-base lg:text-lg font-sans font-semibold text-ink/60 mt-6 md:mt-10 max-w-3xl mx-auto leading-relaxed tracking-tight uppercase px-4 sm:px-0">
+                <h3 className="text-xs sm:text-base xl:text-lg font-sans font-semibold text-ink/60 mt-6 md:mt-10 max-w-3xl mx-auto leading-relaxed tracking-tight uppercase px-4 sm:px-0">
                     We audit <span className="text-ink">200+ elite credit cards</span> through the RewardX Neural Engine <br className="hidden lg:block" /> to reveal your highest possible yield path.
                 </h3>
 
@@ -127,7 +127,7 @@ const Hero: React.FC = () => {
             </motion.div>
 
             {/* --- CONTENT COLUMNS --- */}
-            <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-0 border-t-2 border-ink/10 bg-cream/20 backdrop-blur-sm rounded-t-[3rem]">
+            <div className="w-full grid grid-cols-1 md:grid-cols-1 xl:grid-cols-12 gap-12 xl:gap-0 border-t-2 border-ink/10 bg-cream/20 backdrop-blur-sm rounded-t-[3rem]">
                 
                 {/* Left Column: Story & SEO Context */}
                 <motion.div 
@@ -135,15 +135,15 @@ const Hero: React.FC = () => {
                     whileInView={fadeInUp.whileInView}
                     viewport={{ once: true }}
                     transition={{ ...fadeInUp.transition, delay: 0.3 }}
-                    className="md:col-span-1 lg:col-span-3 border-ink/10 lg:pr-8 pt-12 hidden lg:block"
+                    className="xl:col-span-3 border-ink/10 xl:pr-8 pt-12 hidden xl:block"
                 >
                   <div className="flex items-center gap-4 mb-12">
-                        <span className="text-6xl lg:text-7xl font-heading font-medium leading-none text-[#242424]">E</span>
+                        <span className="text-6xl xl:text-7xl font-heading font-medium leading-none text-[#242424]">E</span>
                         <h4 className="font-medium text-[11px] uppercase tracking-[0.3em] text-[#242424]/20 pt-6">Editorial Dispatch</h4>
                      </div>
 
                      
-                      <h5 className="font-heading font-bold text-2xl lg:text-3xl text-ink leading-[0.88] mb-6 uppercase tracking-tight">Financial <br />Absolute.</h5>
+                      <h5 className="font-heading font-bold text-2xl xl:text-3xl text-ink leading-[0.88] mb-6 uppercase tracking-tight">Financial <br />Absolute.</h5>
 
                      
                      <div className="flex justify-between items-center text-[11px] text-ink/40 font-bold uppercase tracking-[0.4em] mb-8 border-b border-ink/10 pb-4 text-ink/20">
@@ -155,21 +155,21 @@ const Hero: React.FC = () => {
                         The Indian credit landscape has reached entropy. Fragmented products make manual selection impossible. Our engine audits the matrix.
                      </p>
                      
-                     <div className="bg-cream/60 backdrop-blur-3xl border border-white/60 rounded-[3rem] shadow-xl shadow-black/5 group hover:bg-cream/80 hover:shadow-2xl transition-all duration-500 p-6 lg:p-10">
-                         <h5 className="font-medium text-[11px] uppercase tracking-[0.4em] text-[#047857] mb-8 font-medium">Yield Probability</h5>
-                         <div className="flex justify-between text-xs font-medium text-[#242424]/40 border-b border-ink/5 py-5 uppercase tracking-widest leading-loose gap-2">
+                     <div className="bg-cream/60 backdrop-blur-3xl border border-white/60 rounded-[3rem] shadow-xl shadow-black/5 group hover:bg-cream/80 hover:shadow-2xl transition-all duration-500 p-6 xl:p-8 overflow-hidden">
+                         <h5 className="font-medium text-[11px] uppercase tracking-[0.2em] text-[#047857] mb-6">Yield Probability</h5>
+                         <div className="flex flex-wrap justify-between items-center text-[11px] font-medium text-[#242424]/50 border-b border-ink/5 py-4 uppercase tracking-[0.1em] gap-2">
                              <span>Avg Yield</span>
-                              <span className="text-ink font-bold whitespace-nowrap">₹15,400.00</span>
+                              <span className="text-ink font-bold whitespace-nowrap text-sm">₹15,400.00</span>
                          </div>
-                         <div className="flex justify-between text-xs font-medium text-[#242424]/40 py-5 uppercase tracking-widest leading-loose gap-2">
+                         <div className="flex flex-wrap justify-between items-center text-[11px] font-medium text-[#242424]/50 py-4 uppercase tracking-[0.1em] gap-2">
                              <span>Top Cluster</span>
-                              <span className="text-ink font-bold whitespace-nowrap">₹48,920.00</span>
+                              <span className="text-ink font-bold whitespace-nowrap text-sm">₹48,920.00</span>
                          </div>
                      </div>
                 </motion.div>
 
                 {/* Center: Mobile Group Chat Simulation */}
-                <div className="md:col-span-1 lg:col-span-6 relative flex justify-center items-center pt-8 md:pt-12 pb-16 md:pb-20 lg:px-4 min-h-[550px] md:min-h-[750px] border-l lg:border-l-2 lg:border-r-2 border-ink/10 overflow-visible">
+                <div className="md:col-span-1 xl:col-span-6 relative flex justify-center items-center pt-8 md:pt-12 pb-16 md:pb-20 xl:px-4 min-h-[550px] md:min-h-[750px] border-l xl:border-l-2 xl:border-r-2 border-ink/10 overflow-visible">
                      <div className="relative w-full h-full flex items-center justify-center">
                          <GroupChatAudit />
                      </div>
@@ -181,7 +181,7 @@ const Hero: React.FC = () => {
                     whileInView={fadeInUp.whileInView}
                     viewport={{ once: true }}
                     transition={{ ...fadeInUp.transition, delay: 0.7 }}
-                    className="md:col-span-2 lg:col-span-3 border-t lg:border-t-0 pl-0 lg:pl-10 pt-12 flex flex-col justify-between"
+                    className="md:col-span-1 xl:col-span-3 border-t xl:border-t-0 pl-0 xl:pl-10 pt-12 flex flex-col justify-between"
                 >
                      <div>
                         <h4 className="font-bold text-[11px] uppercase tracking-[0.4em] mb-12 text-ink/40 border-b border-ink/5 pb-6 uppercase">In This Dispatch</h4>
@@ -210,12 +210,12 @@ const Hero: React.FC = () => {
                          <motion.div 
                             whileHover={{ y: -6, boxShadow: '0 32px 64px -12px rgba(0,0,0,0.14)' }}
                             transition={{ duration: 0.4, ease: [0.25, 0.8, 0.25, 1] }}
-                            className="border border-ink/8 p-6 lg:p-8 text-center bg-cream shadow-[0_8px_40px_-12px_rgba(0,0,0,0.12)] relative overflow-hidden rounded-[2rem]"
+                            className="border border-ink/8 p-6 xl:p-8 text-center bg-cream shadow-[0_8px_40px_-12px_rgba(0,0,0,0.12)] relative overflow-hidden rounded-[2rem]"
                          >
                              <div className="absolute top-0 right-0 p-4 opacity-[0.06]">
                                 <Sparkles size={32} className="text-[#242424]" />
                              </div>
-                             <h4 className="font-serif text-base lg:text-lg italic mb-6 text-[#242424] leading-snug">"The definitive way to <br /> audit credit cards."</h4>
+                             <h4 className="font-serif text-base xl:text-lg italic mb-6 text-[#242424] leading-snug">"The definitive way to <br /> audit credit cards."</h4>
                              <Link to="/join-waitlist" className="block w-full bg-[#047857] hover:bg-[#242424] text-cream text-center py-4 rounded-xl font-medium uppercase tracking-[0.25em] text-[10px] transition-all duration-300">
                                  Join Registry
                              </Link>

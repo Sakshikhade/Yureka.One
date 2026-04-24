@@ -127,7 +127,7 @@ const ComparisonWidget: React.FC = () => {
         </button>
       </div>
 
-      <div className="w-full max-w-md relative min-h-[350px] sm:min-h-[400px]">
+      <div className="w-full max-w-md relative min-h-[500px] md:min-h-[700px]">
         {/* ── Headline ── */}
         <AnimatePresence mode="wait">
           <motion.div
@@ -193,8 +193,8 @@ const ComparisonWidget: React.FC = () => {
               >
                 {[...WITHOUT_ROW1, ...WITHOUT_ROW2].slice(0, 8).map((pill, i) => {
                   // Ordered layout positions (center grid)
-                  const gridX = (i % 2 === 0 ? -190 : -10);
-                  const gridY = Math.floor(i / 2) * 45;
+                  const gridX = (i % 2 === 0 ? -140 : 10);
+                  const gridY = Math.floor(i / 2) * 50;
                   
                   // Shattered layout positions (random on bottom, constrained)
                   const shatterX = gridX + ((Math.random() * 120) - 60);

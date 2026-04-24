@@ -168,10 +168,10 @@ const HowItWorksStepper: React.FC = () => {
         />
       </div>
 
-      <div className="max-w-[1400px] mx-auto px-6 grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-8 items-center relative z-10">
+      <div className="max-w-[1400px] mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center relative z-10">
         
         {/* LEFT COLUMN: Titles */}
-        <div className="md:col-span-3 text-center md:text-left order-1">
+        <div className="lg:col-span-3 text-center lg:text-left order-1">
           <p className="text-[10px] text-[#242424]/30 uppercase tracking-[0.3em] font-bold mb-4 font-sans">
             How does it work?
           </p>
@@ -181,8 +181,8 @@ const HowItWorksStepper: React.FC = () => {
         </div>
 
         {/* CENTER COLUMN: Phone Mockup */}
-        <div className="md:col-span-4 lg:col-span-5 flex justify-center order-2 lg:order-2 my-8 lg:my-0">
-          <div className="relative w-[280px] h-[580px] rounded-[3rem] border-[8px] border-white bg-cream shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] overflow-hidden ring-1 ring-ink/5 shrink-0">
+        <div className="lg:col-span-4 xl:col-span-5 flex justify-center order-2 lg:order-2 my-8 lg:my-0">
+          <div className="relative w-[260px] sm:w-[280px] h-[540px] sm:h-[580px] rounded-[3rem] border-[8px] border-white bg-cream shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] overflow-hidden ring-1 ring-ink/5 shrink-0">
              
              {/* Phone Notch/Dynamic Island */}
              <div className="absolute top-0 inset-x-0 h-7 flex justify-center z-50">
@@ -217,7 +217,7 @@ const HowItWorksStepper: React.FC = () => {
         </div>
 
         {/* RIGHT COLUMN: Stepper list */}
-        <div className="md:col-span-5 lg:col-span-4 order-3 flex flex-col gap-4">
+        <div className="lg:col-span-5 xl:col-span-4 order-3 flex flex-col gap-4">
            {STEPS.map((step, index) => {
              const isActive = activeStep === step.id;
              return (

@@ -54,7 +54,7 @@ const OurStory: React.FC = () => {
             </div>
             {/* Masthead */}
             <div className="py-2 text-center relative px-2">
-                <h1 className="font-blackletter text-3xl sm:text-6xl lg:text-[5rem] leading-none text-black break-words">Yureka.money</h1>
+                <h1 className="font-blackletter text-3xl sm:text-6xl md:text-8xl leading-none text-black break-words">Yureka.money</h1>
             </div>
             {/* Categories */}
             <div className="border-t-2 border-b border-black py-1.5 flex justify-center flex-wrap gap-4 md:gap-8 text-[10px] md:text-xs font-bold uppercase tracking-[0.15em] text-black">
@@ -476,7 +476,7 @@ const OurStory: React.FC = () => {
             <FadeInSection>
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 border-y-2 border-black py-16 bg-cream shadow-2xl">
                     <div className="lg:col-span-12 text-center mb-8 px-6">
-                        <h2 className="text-2xl sm:text-7xl font-heading font-black tracking-tighter mb-4 uppercase">The Stack Behind the Strategy.</h2>
+                        <h2 className="text-3xl sm:text-6xl md:text-8xl font-heading font-black tracking-tighter mb-4 uppercase">The Stack Behind the Strategy.</h2>
                         <p className="max-w-2xl mx-auto font-sans text-sm sm:text-xl font-medium text-black/60">Built for 99.9% precision in a world of 100% financial noise.</p>
                     </div>
 

@@ -151,8 +151,8 @@ const Navbar: React.FC = () => {
                         Index<span className="text-clay ml-1">.</span>
                       </span>
 
-                      <button onClick={() => setIsMobileMenuOpen(false)} className="p-3 -mr-2 hover:bg-[#242424]/5 rounded-full transition-all">
-                          <X size={28} className="text-[#242424]" strokeWidth={1.5} />
+                      <button onClick={() => setIsMobileMenuOpen(false)} className="p-4 -mr-4 hover:bg-[#242424]/5 rounded-full transition-all">
+                          <X size={32} className="text-[#242424]" strokeWidth={1} />
                       </button>
                   </div>
                   
@@ -176,8 +176,8 @@ const Navbar: React.FC = () => {
                                 onClick={() => setIsMobileMenuOpen(false)} 
                                 className="group block"
                             >
-                                <div className="text-2xl font-heading font-extrabold text-ink group-hover:text-clay transition-colors mb-1 uppercase tracking-tight">{item.name}</div>
-                                <div className="text-[11px] font-sans font-bold uppercase tracking-[0.3em] text-ink/40 group-hover:text-ink/60">{item.desc}</div>
+                                <div className="text-xl sm:text-2xl font-heading font-extrabold text-ink group-hover:text-clay transition-colors mb-1 uppercase tracking-tight">{item.name}</div>
+                                <div className="text-[10px] sm:text-[11px] font-sans font-bold uppercase tracking-[0.3em] text-ink/40 group-hover:text-ink/60">{item.desc}</div>
                             </Link>
 
                         </motion.div>
@@ -189,7 +189,7 @@ const Navbar: React.FC = () => {
                       transition={{ delay: 0.6 }}
                       className="mt-4"
                     >
-                        <Link to="/coming-soon" onClick={() => setIsMobileMenuOpen(false)} className="w-full py-4 bg-[#242424] text-cream font-medium uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 transition-all rounded-full shadow-lg">
+                        <Link to="/coming-soon" onClick={() => setIsMobileMenuOpen(false)} className="w-full py-3 md:py-4 bg-[#242424] text-cream font-medium uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 transition-all rounded-full shadow-lg">
                             <Sparkles size={16} className="text-[#047857]" />
                             Intelligence Lab
                         </Link>

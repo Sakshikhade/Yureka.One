@@ -103,7 +103,7 @@ const AppContent: React.FC = () => {
   const isAdminRoute = location.pathname.startsWith('/admin');
 
   return (
-    <div className={`min-h-screen bg-cream font-sans text-ink relative ${isAdminRoute ? 'pt-0' : 'pt-32 md:pt-28'}`}>
+    <div className={`min-h-screen bg-cream font-sans text-ink relative ${isAdminRoute ? 'pt-0' : 'pt-24 md:pt-28'}`}>
       {!isAdminRoute && <Preloader />}
 
       <ScrollToTop />
