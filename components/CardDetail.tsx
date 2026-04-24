@@ -97,7 +97,7 @@ const CardDetail: React.FC = () => {
             <div className="max-w-[1440px] mx-auto px-6 pt-12 md:pt-20">
 
                 {/* Hero Section */}
-                <section id="overview" className="grid grid-cols-1 lg:grid-cols-2 gap-20 mb-32 items-center">
+                <section id="overview" className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 mb-32 items-center">
                     <div className="relative group">
                         <div className="absolute inset-0 bg-[#047857]/5 blur-[120px] rounded-full scale-125 group-hover:scale-150 transition-transform duration-1000 opacity-50"></div>
                         <motion.div 
@@ -144,7 +144,7 @@ const CardDetail: React.FC = () => {
 
                         </div>
 
-                        <div className="grid grid-cols-2 gap-8 pt-10 border-t border-ink/5">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-10 border-t border-ink/5">
                             <div className="space-y-2">
                                 <p className="text-[#242424] text-[11px] font-bold uppercase tracking-[0.3em]">Annual Fee</p>
                                  <p className="text-2xl font-heading font-extrabold text-ink">₹{String(card.annual_fee).replace(/^₹/, '')}</p>
@@ -186,7 +186,7 @@ const CardDetail: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1px bg-[#242424]/10 border border-ink/10 rounded-[3rem] overflow-hidden shadow-2xl">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1px bg-ink/10 border border-ink/10 rounded-[3rem] overflow-hidden shadow-2xl">
                         {card.benefit_items && card.benefit_items.length > 0 && card.benefit_items[0].heading ? (
                             card.benefit_items.map((benefit, idx) => (
                                 <div key={idx} className="bg-cream p-8 md:p-10 hover:bg-cream/40 transition-colors group">

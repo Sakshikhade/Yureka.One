@@ -104,10 +104,10 @@ const Navbar: React.FC = () => {
 
                     
                     <Link to="/coming-soon" className={`
-                        bg-[#242424] text-cream text-[10px] font-medium uppercase tracking-widest px-5 lg:px-7 py-2.5 lg:py-3
+                        bg-ink text-cream text-[10px] font-bold uppercase tracking-[0.2em] px-5 lg:px-7 py-2.5 lg:py-3
                         flex items-center gap-2 group transition-all duration-500 rounded-full shrink-0 shadow-lg hover:shadow-clay/20 hover:-translate-y-0.5
                     `}>
-                        <Sparkles size={14} className="text-[#047857]" />
+                        <Sparkles size={14} className="text-clay" />
                         <span>Intelligence Lab</span>
                         <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                     </Link>
@@ -116,11 +116,11 @@ const Navbar: React.FC = () => {
 
              {/* Mobile Toggle */}
              <div className="md:hidden flex items-center ml-auto gap-4">
-                 <button 
-                    className="p-1.5 text-[#242424] hover:text-[#047857] transition-colors"
+                  <button 
+                    className="p-2 text-ink hover:text-clay transition-colors"
                     onClick={() => setIsMobileMenuOpen(true)}
                 >
-                    <Menu size={20} strokeWidth={2} />
+                    <Menu size={24} strokeWidth={2} />
                 </button>
             </div>
 
@@ -147,8 +147,8 @@ const Navbar: React.FC = () => {
                 className="absolute top-0 right-0 h-full w-[85%] max-w-[400px] bg-cream/80 backdrop-blur-3xl border-l border-white/40 p-8 flex flex-col shadow-2xl"
               >
                   <div className="flex justify-between items-center mb-12 border-b border-ink/10 pb-6">
-                      <span className="font-sans text-2xl font-medium text-[#242424] flex items-end uppercase">
-                        Index<span className="text-[#047857] ml-1">.</span>
+                      <span className="font-heading text-2xl font-extrabold text-ink flex items-end uppercase tracking-tighter">
+                        Index<span className="text-clay ml-1">.</span>
                       </span>
 
                       <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 hover:bg-[#242424]/5 rounded-full transition-all">
@@ -176,8 +176,8 @@ const Navbar: React.FC = () => {
                                 onClick={() => setIsMobileMenuOpen(false)} 
                                 className="group block"
                             >
-                                <div className="text-xl font-heading font-medium text-[#242424] group-hover:text-[#047857] transition-colors mb-1 uppercase">{item.name}</div>
-                                <div className="text-[10px] font-sans uppercase tracking-[0.2em] text-[#242424]/40 group-hover:text-[#242424]/60">{item.desc}</div>
+                                <div className="text-2xl font-heading font-extrabold text-ink group-hover:text-clay transition-colors mb-1 uppercase tracking-tight">{item.name}</div>
+                                <div className="text-[11px] font-sans font-bold uppercase tracking-[0.3em] text-ink/40 group-hover:text-ink/60">{item.desc}</div>
                             </Link>
 
                         </motion.div>

@@ -108,7 +108,7 @@ const JournalPage: React.FC = () => {
                         <ArrowRight size={20} className="text-white/20" />
                     </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-stretch">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 items-stretch">
                         {/* Columnist Bio Card (Iterate unique authors) */}
                         {uniqueAuthors.map((author, aIdx) => (
                             <React.Fragment key={author}>
@@ -163,7 +163,7 @@ const JournalPage: React.FC = () => {
 
                 {/* ─── SECTION: THE ARCHIVE (GENERAL) ─── */}
                 <section className="mt-32 pt-16 border-t border-white/5">
-                    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-24">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-24">
                         {regularArticles.map((post, idx) => (
                             <motion.div 
                                 key={post.id}

@@ -34,10 +34,10 @@ const Hero: React.FC = () => {
                 whileInView={fadeInUp.whileInView}
                 viewport={fadeInUp.viewport}
                 transition={fadeInUp.transition}
-                className="w-full flex flex-col md:flex-row justify-between items-center md:items-end border-b-4 border-double border-ink/20 pb-6 mb-2"
+                className="w-full flex flex-col lg:flex-row justify-between items-center lg:items-end border-b-4 border-double border-ink/20 pb-8 px-4 gap-8 lg:gap-0"
             >
                 {/* Left Ear - Keyword Rich Context */}
-                <div className="hidden md:block w-48 lg:w-64 text-left border-r border-ink/10 pr-4 lg:pr-6 h-full">
+                <div className="hidden lg:block w-64 text-left border-r border-ink/10 pr-6 h-full">
                     <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-ink/70 mb-2">Est. 2026 • Alpha V.1</p>
                     <p className="text-sm lg:text-base font-serif italic text-ink/80 leading-tight">
                         "The automation of financial superiority."
@@ -45,18 +45,18 @@ const Hero: React.FC = () => {
                 </div>
 
                 {/* Masthead - Brand Name */}
-                <div className="flex-1 text-center px-4 md:px-8 mb-4 md:mb-0 group overflow-hidden">
+                <div className="flex-1 text-center px-4 md:px-8 group overflow-hidden">
                     <div className="text-[11px] font-bold uppercase tracking-[0.5em] text-clay mb-3 opacity-0 group-hover:opacity-100 transition-all duration-700 -translate-y-2 group-hover:translate-y-0">The Intelligence Edition</div>
-                    <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[clamp(1.5rem,4vw,3.5rem)] font-heading font-extrabold tracking-tight leading-[0.88] text-ink uppercase">
+                    <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[clamp(3rem,8vw,10rem)] font-heading font-extrabold tracking-tight leading-[0.85] text-ink uppercase">
                         Yureka<span className="text-clay"> Times.</span>
                     </h1>
                 </div>
 
 
                 {/* Right Ear - Metadata */}
-                <div className="hidden md:block w-48 lg:w-72 text-right border-l border-ink/10 pl-4 lg:pl-8 h-full">
-                     <div className="flex items-center justify-end gap-3 text-[#242424]/70 mb-2">
-                        <Globe size={14} className="animate-spin-slow text-[#047857]" />
+                <div className="hidden lg:block w-72 text-right border-l border-ink/10 pl-8 h-full">
+                     <div className="flex items-center justify-end gap-3 text-ink/70 mb-2">
+                        <Globe size={14} className="animate-spin-slow text-clay" />
                         <span className="text-xs font-sans font-medium uppercase tracking-widest text-[9px]">Neural Network Stable</span>
                      </div>
                       <div className="flex justify-end gap-4 text-[11px] font-bold uppercase tracking-[0.3em] text-ink/60">
@@ -101,7 +101,7 @@ const Hero: React.FC = () => {
                      <span className="text-ink font-bold text-xs uppercase tracking-[0.4em]">The Automation of Wealth</span>
                      <div className="h-[1px] bg-clay/20 w-12 md:w-24"></div>
                 </div>
-                <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-[clamp(1.5rem,5vw,3.5rem)] leading-[0.95] font-heading font-extrabold text-ink uppercase tracking-tight">
+                <h2 className="text-4xl sm:text-6xl md:text-7xl lg:text-[clamp(2.5rem,7vw,8rem)] leading-[0.9] font-heading font-extrabold text-ink uppercase tracking-tight">
                     Stop Guessing. <br className="hidden md:block" /> Start Winning.
                 </h2>
                 <h3 className="text-sm md:text-base lg:text-lg font-sans font-semibold text-ink/60 mt-8 md:mt-10 max-w-3xl mx-auto leading-relaxed tracking-tight uppercase">
@@ -127,7 +127,7 @@ const Hero: React.FC = () => {
             </motion.div>
 
             {/* --- CONTENT COLUMNS --- */}
-            <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-0 border-t-2 border-ink/10 bg-cream/20 backdrop-blur-sm rounded-t-[3rem]">
+            <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-0 border-t-2 border-ink/10 bg-cream/20 backdrop-blur-sm rounded-t-[3rem]">
                 
                 {/* Left Column: Story & SEO Context */}
                 <motion.div 

@@ -18,7 +18,7 @@ const Footer: React.FC = () => {
                 initial={{ y: 0 }}
                 animate={{ y: [-15, 15, -15] }}
                 transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-                className="text-[8rem] md:text-[15rem] lg:text-[22rem] font-heading font-extrabold tracking-tighter text-ink/[0.08] select-none blur-[1px] backdrop-blur-[1px] whitespace-nowrap leading-none"
+                className="text-[6rem] md:text-[12rem] lg:text-[22rem] font-heading font-extrabold tracking-tighter text-ink/[0.08] select-none blur-[1px] backdrop-blur-[1px] whitespace-nowrap leading-none"
             >
 
 
@@ -99,7 +99,7 @@ const Footer: React.FC = () => {
 
         {/* Middle Section: Links Grid (Newspaper Columns) */}
         <div className="max-w-[1440px] mx-auto px-6 mb-12 md:mb-20">
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 border-l border-black/10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 border-l border-black/10">
                 
                 {/* Column 1 - Core Pages */}
                 <div className="pl-6 md:pl-8 border-r border-black/10 min-h-[150px] md:min-h-[200px]">
