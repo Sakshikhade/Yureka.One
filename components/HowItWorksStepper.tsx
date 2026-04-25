@@ -1,389 +1,379 @@
 import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'motion/react';
-import { CheckCircle2, Search, Zap, ArrowRight, ShieldCheck, Cpu } from 'lucide-react';
+import { CheckCircle2, Search, Zap, ArrowRight, ShieldCheck, Cpu, Globe, MessageSquare, Layers, Sparkles } from 'lucide-react';
 
 const STEPS = [
   {
     id: 1,
-    label: 'Step 01',
-    tag: 'Neural Intake',
-    title: 'Securely link your accounts or upload statements.',
-    description: 'Our system uses bank-grade encryption to ingest your spending patterns without ever storing sensitive credentials.',
+    tag: 'Pulse V2',
+    title: 'Yureka AI',
+    description: 'A neural layer for your wallet. It decodes thousands of rewards rules in milliseconds to find your optimal swipe.',
+    cta: 'Join Internal Test',
+    availability: 'Limited Access Nodes',
+    side: 'left' // Phone on left
   },
   {
     id: 2,
-    label: 'Step 02',
-    tag: 'Matrix Audit',
-    title: 'Our neural engine audits 200+ premium cards.',
-    description: 'We scan the entire Indian credit landscape in real-time, calculating exact reward yields against your actual spend.',
+    tag: 'Yield Stack',
+    title: 'RewardX',
+    description: 'The definitive voucher engine. Stack institutional discounts with card multipliers for double-digit savings.',
+    cta: 'Join Internal Test',
+    availability: 'Limited Access Nodes',
+    side: 'right' // Phone on right
   },
   {
     id: 3,
-    label: 'Step 03',
-    tag: 'Yield Mapping',
-    title: 'Review your personalized intelligence report.',
-    description: 'No generic lists. You get a precision-mapped portfolio designed to extract maximum value from every Rupee.',
+    tag: 'Ghostwriter',
+    title: 'Browser Extension',
+    description: 'Your checkout companion. It lives on your toolbar and applies the magic moment you hit any payment page.',
+    cta: 'Join Internal Test',
+    availability: 'Limited Access Nodes',
+    side: 'left' // Phone on left
   },
   {
     id: 4,
-    label: 'Step 04',
-    tag: 'Deployment',
-    title: 'Apply seamlessly and start earning 15% more.',
-    description: 'One-click application with pre-filled intelligence. Your new elite status is just a signature away.',
+    tag: 'The Registry',
+    title: 'Waitlist',
+    description: 'Secure your spot in the ecosystem. We are rolling out access in controlled nodes to maintain protocol integrity.',
+    cta: 'Join Waitlist',
+    availability: 'Open Protocol',
+    side: 'right' // Phone on right
   }
 ];
 
-// ── Premium Screen 1: Intake ─────────────────────────────────────────────
-const ScanScreen = () => (
-  <div className="w-full h-full flex flex-col justify-center items-center px-6 relative overflow-hidden">
-    <motion.div 
-      initial={{ opacity: 0, scale: 0.8 }} 
-      animate={{ opacity: 1, scale: 1 }}
-      className="absolute inset-0 bg-gradient-to-br from-[#047857]/5 to-transparent pointer-events-none" 
-    />
-    <motion.div
-      animate={{ rotate: 360 }}
-      transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-      className="absolute -top-20 -right-20 w-40 h-40 border border-[#047857]/10 rounded-full"
-    />
-    
-    <div className="relative z-10 text-center">
-      <motion.div
-        initial={{ y: 10, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#047857]/10 border border-[#047857]/20 text-[9px] font-bold text-[#047857] uppercase tracking-widest mb-6"
-      >
-        <ShieldCheck size={10} />
-        Bank-Grade Secure
+// ── UI Components for the "Phones" ────────────────────────────────────────
+
+const AIChatScreen = () => (
+  <div className="w-full h-full bg-[#f8f7f2] p-6 flex flex-col font-sans">
+    <div className="flex items-center justify-between mb-8">
+      <div className="flex gap-1.5">
+        <div className="w-2 h-2 rounded-full bg-red-400/20" />
+        <div className="w-2 h-2 rounded-full bg-amber-400/20" />
+        <div className="w-2 h-2 rounded-full bg-emerald-400/20" />
+      </div>
+      <span className="text-[10px] font-mono text-black/20 uppercase tracking-widest">Yureka Neural Engine  v.2.4b</span>
+    </div>
+
+    <div className="space-y-6">
+      {/* User Message */}
+      <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="flex gap-3 items-start max-w-[90%]">
+        <div className="w-7 h-7 rounded-full bg-emerald-100 flex items-center justify-center shrink-0 border border-emerald-200">
+           <div className="w-1.5 h-1.5 rounded-full bg-[#047857]" />
+        </div>
+        <div className="bg-white p-4 rounded-2xl rounded-tl-none shadow-sm border border-black/5">
+          <p className="text-[11px] text-black/70 leading-relaxed font-medium">Ready to pull the trigger on the MacBook 16. Should I stick with my Amex Gold?</p>
+        </div>
       </motion.div>
-      
-      <h3 className="text-3xl font-serif text-[#242424] mb-2 leading-tight">
-        Neural<br/><span className="text-[#047857] italic font-light">Intake</span>
-      </h3>
-      
-      <div className="w-full max-w-[160px] mx-auto h-32 rounded-2xl border border-black/5 bg-white shadow-sm mt-8 relative overflow-hidden flex items-center justify-center group">
-        <div className="absolute inset-0 bg-gradient-to-t from-black/[0.02] to-transparent" />
+
+      {/* AI Message */}
+      <motion.div initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }} className="flex gap-3 flex-row-reverse items-start max-w-[95%]">
+        <div className="w-7 h-7 rounded-full bg-[#242424] flex items-center justify-center shrink-0 shadow-lg">
+           <Cpu size={12} className="text-[#047857]" />
+        </div>
+        <div className="bg-[#242424] p-4 rounded-2xl rounded-tr-none shadow-xl text-white">
+          <p className="text-[11px] leading-relaxed">Hold up! Love the upgrade, but let's be strategic. Direct swipe on Amex is okay, but I've found a much better yield path for your specific wallet.</p>
+        </div>
+      </motion.div>
+
+      {/* User Message 2 */}
+      <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.4 }} className="flex gap-3 items-start max-w-[90%]">
+        <div className="w-7 h-7 rounded-full bg-emerald-100 flex items-center justify-center shrink-0 border border-emerald-200">
+           <div className="w-1.5 h-1.5 rounded-full bg-[#047857]" />
+        </div>
+        <div className="bg-white p-4 rounded-2xl rounded-tl-none shadow-sm border border-black/5">
+          <p className="text-[11px] text-black/70 leading-relaxed font-medium">Better than 5x points? How?</p>
+        </div>
+      </motion.div>
+    </div>
+
+    <div className="mt-auto pt-4 flex items-center justify-between border-t border-black/5">
+       <div className="flex items-center gap-2">
+          <div className="w-2 h-2 rounded-full bg-[#047857] animate-pulse" />
+          <span className="text-[9px] font-bold text-black/20 uppercase tracking-widest">Neural Active</span>
+       </div>
+       <Search size={14} className="text-black/20" />
+    </div>
+  </div>
+);
+
+const RewardXScreen = () => (
+  <div className="w-full h-full bg-white p-6 flex flex-col">
+    <div className="flex justify-between items-center mb-8">
+      <span className="text-[10px] font-bold text-black/20 uppercase tracking-[0.3em]">Adaptive Yield Engine</span>
+      <div className="w-8 h-8 rounded-lg bg-black flex items-center justify-center text-white text-[10px] italic">Y</div>
+    </div>
+
+    <h3 className="text-2xl font-serif text-[#242424] mb-1">Executive Protocol</h3>
+    <div className="flex justify-between items-center mb-8">
+       <span className="text-[10px] font-mono text-[#047857] uppercase tracking-widest">Yield Script Pulse</span>
+       <span className="text-xl font-medium text-[#047857]">₹9,500</span>
+    </div>
+
+    <div className="space-y-3">
+      {[
+        { icon: <Layers size={14}/>, label: 'Merchant Cart', sub: 'Source Node', val: '₹50,000', color: 'bg-black text-white' },
+        { icon: <Zap size={14}/>, label: 'RewardX Voucher', sub: 'Yield Executed', val: '-₹4,500', color: 'bg-[#047857] text-white', tag: '9% Instant' },
+        { icon: <Sparkles size={14}/>, label: 'Axis Magnus Multiplier', sub: 'Yield Executed', val: '-₹3,050', color: 'bg-emerald-500 text-white', tag: '10x Points' },
+      ].map((item, i) => (
         <motion.div 
-          className="absolute inset-x-0 h-0.5 bg-[#047857] shadow-[0_0_15px_#047857] z-20"
-          animate={{ top: ['0%', '100%', '0%'] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <Search className="text-[#047857]/20 w-12 h-12 group-hover:scale-110 transition-transform duration-700" />
-      </div>
-      
-      <p className="mt-8 text-[10px] text-[#242424]/40 font-mono tracking-tighter animate-pulse">
-        WAITING FOR SOURCE...
-      </p>
-    </div>
-  </div>
-);
-
-// ── Premium Screen 2: Audit ──────────────────────────────────────────────
-const ProcessingScreen = () => (
-  <div className="w-full h-full flex flex-col justify-center px-6 relative bg-[#0a0a0a] text-white overflow-hidden">
-    <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(#fff 0.5px, transparent 0.5px)', backgroundSize: '20px 20px' }} />
-    
-    <div className="relative z-10">
-      <div className="flex items-center gap-2 mb-8">
-        <Cpu size={14} className="text-[#047857]" />
-        <span className="text-[10px] font-mono tracking-widest text-[#047857]">MATRIX_AUDIT.v2</span>
-      </div>
-      
-      <div className="space-y-5">
-        {[
-          { label: 'Ingesting Statements', val: 100 },
-          { label: 'Scanning 200+ Cards', val: 74 },
-          { label: 'Yield Simulation', val: 0 },
-        ].map((item, i) => (
-          <div key={item.label} className="space-y-2">
-            <div className="flex justify-between text-[9px] uppercase tracking-widest text-white/40">
-              <span>{item.label}</span>
-              <span className="font-mono">{item.val}%</span>
+          key={item.label}
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: i * 0.1 }}
+          className="p-4 rounded-2xl bg-[#fcfcf9] border border-black/5 flex items-center gap-4"
+        >
+          <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${item.color}`}>{item.icon}</div>
+          <div className="flex-1">
+            <div className="flex justify-between items-center mb-0.5">
+              <span className="text-xs font-bold text-black/80">{item.label}</span>
+              <span className={`text-xs font-medium ${item.val.startsWith('-') ? 'text-[#047857]' : 'text-black/40'}`}>{item.val}</span>
             </div>
-            <div className="h-1 w-full bg-white/10 rounded-full overflow-hidden">
-              <motion.div 
-                initial={{ width: 0 }}
-                animate={{ width: `${item.val}%` }}
-                transition={{ duration: 1.5, delay: i * 0.2 }}
-                className="h-full bg-[#047857]" 
-              />
+            <div className="flex justify-between items-center">
+              <span className="text-[9px] text-black/30 uppercase tracking-widest">{item.sub}</span>
+              {item.tag && <span className="text-[8px] font-bold px-1.5 py-0.5 bg-[#047857]/10 text-[#047857] rounded uppercase">{item.tag}</span>}
             </div>
           </div>
-        ))}
-      </div>
-      
-      <div className="mt-12 flex justify-center">
-        <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center relative">
-          <motion.div 
-            animate={{ rotate: 360 }}
-            transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-            className="absolute inset-0 border-t-2 border-[#047857] rounded-full" 
-          />
-          <Zap size={16} className="text-[#047857]" />
-        </div>
-      </div>
+        </motion.div>
+      ))}
     </div>
   </div>
 );
 
-// ── Premium Screen 3: Result ─────────────────────────────────────────────
-const MatchScreen = () => (
-  <div className="w-full h-full flex flex-col justify-center px-6 bg-cream relative">
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="absolute top-0 right-0 p-8 text-[60px] font-serif italic text-black/[0.03] pointer-events-none"
-    >
-      98
-    </motion.div>
-    
-    <div className="relative z-10">
-      <p className="text-[10px] font-bold text-[#047857] uppercase tracking-[0.3em] mb-8">Intelligence Report</p>
+const ExtensionScreen = () => (
+  <div className="w-full h-full bg-[#fcfcf9] p-6 flex flex-col">
+    <div className="w-full h-8 bg-white border border-black/5 rounded-t-xl flex items-center px-4 gap-2 mb-6">
+      <div className="flex gap-1">
+        <div className="w-1.5 h-1.5 rounded-full bg-black/5" />
+        <div className="w-1.5 h-1.5 rounded-full bg-black/5" />
+      </div>
+      <div className="flex-1 h-4 bg-black/5 rounded-full px-3 flex items-center">
+        <span className="text-[7px] text-black/20 font-mono">amazon.in/cart/checkout</span>
+      </div>
+    </div>
+
+    <div className="flex-1 bg-white rounded-2xl p-4 shadow-sm border border-black/5 relative overflow-hidden">
+      <h4 className="text-xs font-bold text-black/30 uppercase tracking-widest mb-4">Shopping Cart (2 items)</h4>
       
-      <motion.div
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        className="bg-white rounded-3xl p-6 shadow-2xl border border-black/5 relative"
+      <div className="space-y-4">
+        <div className="flex gap-3">
+          <div className="w-12 h-12 bg-black/5 rounded-lg shrink-0" />
+          <div className="flex-1">
+            <div className="flex justify-between text-[10px] font-bold text-black/70">
+              <span>iPhone 15 Pro</span>
+              <span>₹1,24,900</span>
+            </div>
+            <span className="text-[8px] text-black/30 block mb-2">Natural Titanium • In Stock</span>
+          </div>
+        </div>
+
+        <div className="pt-4 border-t border-black/5">
+          <div className="flex justify-between items-center mb-1">
+             <span className="text-[10px] text-black/40">Subtotal</span>
+             <span className="text-[10px] font-medium">₹1,54,890</span>
+          </div>
+          <div className="flex justify-between items-center mb-4">
+             <span className="text-[10px] text-black/40">Shipping</span>
+             <span className="text-[10px] font-bold text-[#047857]">FREE</span>
+          </div>
+          <div className="flex justify-between items-center py-3 border-y border-black/5">
+             <span className="text-xs font-bold">Total</span>
+             <span className="text-sm font-bold text-[#242424]">₹1,54,890</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Floating Extension Popup */}
+      <motion.div 
+        initial={{ x: 50, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ delay: 0.5, type: 'spring' }}
+        className="absolute top-1/2 -right-4 -translate-y-1/2 w-32 bg-[#242424] text-white p-4 rounded-2xl shadow-2xl z-20"
       >
-        <div className="w-10 h-10 bg-black rounded-xl mb-6 flex items-center justify-center text-white font-serif italic">Y</div>
-        <h4 className="text-xl font-serif text-[#242424] leading-tight mb-2">HDFC Diners Club Black Metal</h4>
-        <p className="text-[10px] text-black/40 uppercase tracking-widest mb-6">Elite Tier • Unlimited Lounge</p>
-        
-        <div className="pt-6 border-t border-black/5 flex justify-between items-end">
-          <div>
-            <p className="text-[9px] text-black/30 uppercase mb-1">Annual Value</p>
-            <p className="text-lg font-medium text-[#047857]">₹54,200</p>
-          </div>
-          <ArrowRight className="text-[#047857]/40" size={18} />
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-5 h-5 rounded bg-[#047857] flex items-center justify-center text-[8px] font-serif italic">Y</div>
+          <span className="text-[8px] font-bold tracking-widest uppercase">Yureka+</span>
         </div>
+        <p className="text-[9px] leading-tight mb-3">Found ₹5,400 in hidden vouchers.</p>
+        <button className="w-full py-1.5 bg-[#047857] text-[8px] font-bold uppercase tracking-widest rounded-lg">Apply Yield</button>
       </motion.div>
     </div>
   </div>
 );
 
-// ── Premium Screen 4: Success ────────────────────────────────────────────
-const SuccessScreen = () => (
-  <div className="w-full h-full flex flex-col justify-center items-center px-8 text-center bg-white relative">
-    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#047857]/5 via-transparent to-transparent opacity-50" />
+const WaitlistScreen = () => (
+  <div className="w-full h-full bg-[#242424] flex flex-col justify-center items-center p-8 text-center relative overflow-hidden">
+    <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
     
-    <motion.div
-      initial={{ scale: 0.8, opacity: 0 }}
+    <motion.div 
+      initial={{ scale: 0.9, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
-      className="w-20 h-20 rounded-full bg-[#047857] flex items-center justify-center mb-8 shadow-[0_20px_40px_rgba(4,120,87,0.3)]"
+      className="w-20 h-20 rounded-full border border-white/10 flex items-center justify-center relative z-10"
     >
-      <CheckCircle2 size={32} className="text-white" />
+      <motion.div 
+        animate={{ rotate: 360 }}
+        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+        className="absolute inset-0 border-t border-[#047857] rounded-full"
+      />
+      <CheckCircle2 className="text-[#047857]" size={32} />
     </motion.div>
+
+    <h3 className="text-2xl font-serif text-white mt-8 mb-2">Protocol Access</h3>
+    <p className="text-[10px] text-white/40 uppercase tracking-[0.3em] font-mono">Status: Awaiting Node Allocation</p>
     
-    <h3 className="text-3xl font-serif text-[#242424] mb-4">You're In.</h3>
-    <p className="text-xs text-[#242424]/50 leading-relaxed mb-10">
-      Your neural strategy is deployed. Welcome to the elite 1% of earners.
-    </p>
-    
-    <button className="w-full py-4 bg-[#242424] text-white rounded-2xl text-[10px] font-bold uppercase tracking-widest hover:bg-[#047857] transition-colors shadow-lg">
-      Enter Dashboard
-    </button>
+    <div className="mt-12 w-full space-y-2">
+      <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
+        <motion.div animate={{ width: ['0%', '75%'] }} className="h-full bg-[#047857]" />
+      </div>
+      <div className="flex justify-between text-[8px] font-mono text-white/20">
+        <span>ENCRYPTING...</span>
+        <span>75%</span>
+      </div>
+    </div>
   </div>
 );
 
-// ── Main Component ─────────────────────────────────────────────────────────
+// ── Main Stepper Component ──────────────────────────────────────────────────
+
 const HowItWorksStepper: React.FC = () => {
   const [activeStep, setActiveStep] = useState(1);
   const containerRef = useRef<HTMLDivElement>(null);
-
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end end'],
   });
 
-  // Use springs for smoother motion
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
 
-  const updateStep = (v: number) => {
-    const step = Math.min(Math.floor(v * 4) + 1, 4);
-    setActiveStep(step);
-  };
-
-  useLayoutEffect(() => {
-    updateStep(scrollYProgress.get());
-  }, [scrollYProgress]);
-
   useEffect(() => {
-    return scrollYProgress.on('change', updateStep);
+    return scrollYProgress.on('change', (v) => {
+      const step = Math.min(Math.floor(v * STEPS.length) + 1, STEPS.length);
+      setActiveStep(step);
+    });
   }, [scrollYProgress]);
-
-  // Parallax transform for the text list to keep active item prominent
-  const listY = useTransform(smoothProgress, [0, 1], ['0%', '-75%']);
-
-  const screens: Record<number, React.ReactNode> = {
-    1: <ScanScreen />,
-    2: <ProcessingScreen />,
-    3: <MatchScreen />,
-    4: <SuccessScreen />,
-  };
 
   return (
-    <div ref={containerRef} className="relative w-full" style={{ height: '350vh' }}>
-      <div
-        style={{ position: 'sticky', top: '0', height: '100vh' }}
-        className="w-full bg-paper border-y border-ink/10 overflow-hidden z-40 flex flex-col pt-20"
-      >
-        {/* Subtle texture overlay */}
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-multiply" 
-             style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/p6.png")' }} />
+    <div ref={containerRef} className="relative w-full bg-cream" style={{ height: '500vh' }}>
+      {/* Scroll-jacked sections */}
+      {STEPS.map((step, index) => {
+        // Calculate scroll range for each step
+        const start = index / STEPS.length;
+        const end = (index + 1) / STEPS.length;
+        
+        // We use transformations to fade in/out each section
+        const opacity = useTransform(smoothProgress, [start, start + 0.05, end - 0.05, end], [0, 1, 1, 0]);
+        const y = useTransform(smoothProgress, [start, start + 0.05, end - 0.05, end], [40, 0, 0, -40]);
+        const scale = useTransform(smoothProgress, [start, start + 0.05, end - 0.05, end], [0.95, 1, 1, 0.95]);
 
-        <div className="max-w-[1400px] mx-auto px-6 w-full h-full flex flex-col relative z-10">
-          {/* Header */}
-          <div className="mb-12 text-center lg:text-left">
-            <motion.div
-               initial={{ opacity: 0, y: 10 }}
-               whileInView={{ opacity: 1, y: 0 }}
-               viewport={{ once: true }}
-               className="inline-block px-4 py-1.5 rounded-full border border-black/5 bg-white/50 backdrop-blur-sm text-[10px] font-bold text-black/30 uppercase tracking-[0.4em] mb-6"
-            >
-              The Yureka Protocol
-            </motion.div>
-            <h2 className="text-4xl md:text-6xl font-serif text-[#242424] leading-tight tracking-tighter">
-              Master your yield in <span className="italic font-light text-[#047857]">minutes.</span>
-            </h2>
-          </div>
+        const phoneX = useTransform(
+          smoothProgress, 
+          [start, start + 0.05], 
+          [step.side === 'left' ? -100 : 100, 0]
+        );
 
-          <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center pb-20">
-            {/* LEFT: Phone - Premium Depth */}
-            <div className="lg:col-span-5 flex justify-center items-center relative">
-              {/* Dynamic Glow behind phone */}
-              <motion.div 
-                className="absolute w-[300px] h-[500px] bg-[#047857]/10 blur-[100px] rounded-full"
-                animate={{ 
-                  scale: [1, 1.2, 1],
-                  opacity: [0.3, 0.5, 0.3]
-                }}
-                transition={{ duration: 8, repeat: Infinity }}
-              />
+        const contentX = useTransform(
+          smoothProgress, 
+          [start, start + 0.05], 
+          [step.side === 'left' ? 100 : -100, 0]
+        );
+
+        return (
+          <motion.div
+            key={step.id}
+            style={{ 
+                opacity, 
+                y, 
+                scale,
+                position: 'sticky',
+                top: 0,
+                height: '100vh',
+                zIndex: 10 + index
+            }}
+            className="w-full flex items-center justify-center overflow-hidden"
+          >
+            <div className="max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
               
-              <div className="relative w-[240px] h-[480px] sm:w-[260px] sm:h-[520px] rounded-[3.5rem] border-[10px] border-[#242424] bg-white shadow-[0_50px_100px_-20px_rgba(0,0,0,0.3)] overflow-hidden ring-1 ring-white/20">
-                {/* Screen reflection/glass effect */}
-                <div className="absolute inset-0 z-50 pointer-events-none bg-gradient-to-tr from-transparent via-white/[0.05] to-white/[0.1]" />
-                
-                {/* Notch */}
-                <div className="absolute top-0 inset-x-0 h-8 flex justify-center z-[60]">
-                  <div className="w-24 h-6 bg-[#242424] rounded-b-3xl" />
-                </div>
-                
-                {/* Status Bar */}
-                <div className="absolute top-0 inset-x-0 h-14 flex justify-between items-center px-8 z-[55] pointer-events-none text-[10px] font-bold text-black/20">
-                  <span>9:41</span>
-                  <div className="flex gap-1.5 items-center">
-                    <div className="w-4 h-2 bg-black/10 rounded-sm" />
-                    <div className="w-2.5 h-2.5 bg-black/10 rounded-full" />
-                  </div>
-                </div>
-
-                {/* Internal Screen Content */}
-                <div className="absolute inset-0">
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={activeStep}
-                      initial={{ opacity: 0, x: 20, filter: 'blur(10px)' }}
-                      animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-                      exit={{ opacity: 0, x: -20, filter: 'blur(10px)' }}
-                      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                      className="w-full h-full"
-                    >
-                      {screens[activeStep]}
-                    </motion.div>
-                  </AnimatePresence>
-                </div>
-              </div>
-            </div>
-
-            {/* RIGHT: Sophisticated List with Parallax / Sliding Lens */}
-            <div className="lg:col-span-7 h-[400px] relative overflow-hidden flex flex-col justify-center">
-              {/* Vertical Guide Line */}
-              <div className="absolute left-6 top-0 bottom-0 w-px bg-black/5" />
-              
-              <motion.div 
-                className="space-y-24"
-                style={{ y: listY }}
-              >
-                {STEPS.map((step, index) => {
-                  const isActive = activeStep === step.id;
-                  const isPast = activeStep > step.id;
+              {/* Phone Mockup Column */}
+              <div className={`${step.side === 'right' ? 'lg:order-2' : 'lg:order-1'} flex justify-center`}>
+                <motion.div style={{ x: phoneX }} className="relative">
+                  {/* Premium Depth Shadow */}
+                  <div className="absolute inset-0 bg-[#047857]/10 blur-[120px] rounded-full scale-125 opacity-40" />
                   
-                  return (
-                    <motion.div
-                      key={step.id}
-                      animate={{
-                        opacity: isActive ? 1 : 0.15,
-                        scale: isActive ? 1 : 0.95,
-                        x: isActive ? 0 : 20,
-                        filter: isActive ? 'blur(0px)' : 'blur(2px)'
-                      }}
-                      transition={{ duration: 0.6 }}
-                      className="flex gap-10 items-start pl-1.5"
-                    >
-                      {/* Sophisticated Index */}
-                      <div className="relative shrink-0 mt-1">
-                        <div className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all duration-700 ${isActive ? 'bg-[#242424] border-[#242424] shadow-xl' : 'bg-transparent border-black/10'}`}>
-                           {isPast && !isActive ? (
-                             <CheckCircle2 size={16} className="text-[#047857]" />
-                           ) : (
-                             <span className={`text-xs font-bold ${isActive ? 'text-white' : 'text-black/20'}`}>{String(index + 1).padStart(2, '0')}</span>
-                           )}
-                        </div>
-                        {isActive && (
-                          <motion.div 
-                            layoutId="lens"
-                            className="absolute -inset-4 border border-black/5 rounded-full pointer-events-none"
-                          />
-                        )}
-                      </div>
-                      
-                      <div className="flex-1 max-w-md">
-                        <motion.span 
-                          animate={{ opacity: isActive ? 1 : 0 }}
-                          className="inline-block text-[9px] font-bold text-[#047857] uppercase tracking-[0.4em] mb-3"
-                        >
-                          {step.tag}
-                        </motion.span>
-                        <h3 className={`text-2xl md:text-3xl font-serif mb-4 transition-all duration-700 ${isActive ? 'text-[#242424]' : 'text-black/10'}`}>
-                          {step.title}
-                        </h3>
-                        <p className={`text-sm leading-relaxed font-sans transition-all duration-700 ${isActive ? 'text-[#242424]/60' : 'text-black/5'}`}>
-                          {step.description}
-                        </p>
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </motion.div>
+                  {/* Phone Hardware */}
+                  <div className="relative w-[280px] h-[580px] sm:w-[320px] sm:h-[640px] rounded-[3.5rem] border-[12px] border-[#242424] bg-white shadow-[0_80px_160px_-40px_rgba(0,0,0,0.4)] overflow-hidden ring-1 ring-white/20">
+                    {/* Glass Reflection */}
+                    <div className="absolute inset-0 z-50 pointer-events-none bg-gradient-to-tr from-transparent via-white/[0.03] to-white/[0.1]" />
+                    
+                    {/* Notch */}
+                    <div className="absolute top-0 inset-x-0 h-9 flex justify-center z-[60]">
+                      <div className="w-28 h-7 bg-[#242424] rounded-b-[2rem]" />
+                    </div>
 
-              {/* Sophisticated Scroll Hint */}
-              <AnimatePresence>
-                {activeStep === 1 && (
-                  <motion.div 
-                    initial={{ opacity: 0 }} 
-                    animate={{ opacity: 1 }} 
-                    exit={{ opacity: 0 }} 
-                    className="absolute bottom-4 left-24 flex items-center gap-4"
-                  >
-                    <div className="w-12 h-px bg-black/10" />
-                    <span className="text-[9px] font-bold text-black/20 uppercase tracking-[0.4em] animate-pulse">Scroll to Initiate</span>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                    {/* Content Component Mapping */}
+                    <div className="absolute inset-0 pt-8">
+                       {step.id === 1 && <AIChatScreen />}
+                       {step.id === 2 && <RewardXScreen />}
+                       {step.id === 3 && <ExtensionScreen />}
+                       {step.id === 4 && <WaitlistScreen />}
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+
+              {/* Text Content Column */}
+              <div className={`${step.side === 'right' ? 'lg:order-1 text-right items-end' : 'lg:order-2 text-left items-start'} flex flex-col`}>
+                <motion.div style={{ x: contentX }} className="max-w-xl">
+                  <span className="block text-[#047857] text-[11px] font-bold uppercase tracking-[0.5em] mb-6">
+                    {step.tag}
+                  </span>
+                  
+                  <h2 className="text-5xl md:text-7xl font-serif text-[#242424] mb-8 leading-[0.9] tracking-tighter uppercase">
+                    {step.title.split(' ').map((word, i) => (
+                      <span key={i} className={i % 2 !== 0 ? 'italic font-light text-[#047857]' : ''}>
+                        {word}{' '}
+                      </span>
+                    ))}
+                  </h2>
+
+                  <p className={`text-[#242424]/60 text-lg md:text-xl font-sans leading-relaxed mb-12 max-w-md ${step.side === 'right' ? 'ml-auto' : ''}`}>
+                    {step.description}
+                  </p>
+
+                  <div className={`flex flex-col gap-6 ${step.side === 'right' ? 'items-end' : 'items-start'}`}>
+                    <button className="group relative px-8 py-4 bg-[#242424] text-white rounded-full text-[10px] font-bold uppercase tracking-[0.3em] overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-2xl">
+                      <span className="relative z-10 flex items-center gap-2">
+                        {step.cta} <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                      </span>
+                      <div className="absolute inset-0 bg-[#047857] translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                    </button>
+
+                    <div className="flex items-center gap-3">
+                       <div className="w-1.5 h-1.5 rounded-full bg-[#047857] animate-pulse" />
+                       <span className="text-[10px] font-bold text-black/20 uppercase tracking-[0.3em]">
+                         Availability: <span className="text-black/40">{step.availability}</span>
+                       </span>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+
             </div>
-          </div>
-        </div>
+          </motion.div>
+        );
+      })}
+
+      {/* Progress Trackers (Dots on the side) */}
+      <div className="fixed right-10 top-1/2 -translate-y-1/2 z-[100] hidden lg:flex flex-col gap-4">
+        {STEPS.map((_, i) => (
+          <motion.div
+            key={i}
+            className="w-1.5 h-1.5 rounded-full bg-black/10"
+            animate={{ 
+                scale: activeStep === i + 1 ? 2.5 : 1,
+                backgroundColor: activeStep === i + 1 ? '#047857' : 'rgba(0,0,0,0.1)'
+            }}
+          />
+        ))}
       </div>
-      
-      <style dangerouslySetInnerHTML={{__html: `
-        @keyframes scan {
-          0% { top: 0%; opacity: 0; }
-          10% { opacity: 1; }
-          90% { opacity: 1; }
-          100% { top: 98%; opacity: 0; }
-        }
-      `}} />
     </div>
   );
 };
