@@ -127,7 +127,7 @@ const ComparisonWidget: React.FC = () => {
         </button>
       </div>
 
-      <div className="w-full max-w-md relative min-h-[500px] md:min-h-[700px]">
+      <div className="w-full max-w-md relative">
         {/* ── Headline ── */}
         <AnimatePresence mode="wait">
           <motion.div
@@ -169,7 +169,7 @@ const ComparisonWidget: React.FC = () => {
         </AnimatePresence>
 
         {/* ── CONTENT AREA ── */}
-        <div className="relative w-full h-[300px] overflow-hidden">
+        <div className="relative w-full h-[260px] overflow-hidden">
           <AnimatePresence mode="wait">
             {mode === 'with' ? (
               <motion.div
@@ -254,16 +254,15 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp })
           />
           
           <div className="w-full h-full relative z-10 text-[#242424]">
-            <div className="flex flex-col lg:grid lg:grid-cols-2">
+      <div className="flex flex-col lg:grid lg:grid-cols-2">
 
               {/* ── LEFT: copy ── */}
-              <div className="flex flex-col justify-start px-6 lg:px-16 pt-10 pb-8 lg:pt-12 lg:pb-12 relative z-20 border-b lg:border-b-0 lg:border-r border-ink/5">
+              <div className="flex flex-col justify-center px-6 lg:px-16 py-10 lg:py-14 relative z-20 border-b lg:border-b-0 lg:border-r border-ink/5">
                 <motion.div
                   initial={{ opacity: 0, x: -30 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                  className=""
+                  transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
                 >
                   <span className="block text-[#047857] text-[11px] font-bold uppercase tracking-[0.4em] mb-4">
                     How It Works
@@ -287,13 +286,13 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp })
               </div>
 
               {/* ── RIGHT: comparison widget ── */}
-              <div className="flex items-start justify-center overflow-hidden bg-cream/20 pt-8 pb-10 px-6 lg:pt-10 lg:pb-12">
+              <div className="flex items-center justify-center overflow-hidden bg-cream/20 py-8 px-6 lg:py-10">
                 <motion.div 
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
+                  initial={{ opacity: 0, scale: 0.92, y: 20 }}
+                  whileInView={{ opacity: 1, scale: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                  className="w-full max-w-xl scale-100 lg:scale-110"
+                  transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
+                  className="w-full max-w-xl"
                 >
                   <ComparisonWidget />
                 </motion.div>
