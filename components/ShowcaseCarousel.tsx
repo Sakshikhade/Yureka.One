@@ -298,13 +298,11 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp })
                 </motion.div>
               </div>
 
-            </div>
           </div>
         </div>
-
-        </div>
       </div>
-    </section>
+    </div>
+  </section>
   );
 };
 
