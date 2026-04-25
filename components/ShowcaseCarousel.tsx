@@ -192,13 +192,14 @@ const ComparisonWidget: React.FC = () => {
                 className="w-full h-full pt-4 relative"
               >
                 {[...WITHOUT_ROW1, ...WITHOUT_ROW2].slice(0, 8).map((pill, i) => {
-                  // Ordered layout positions (center grid)
-                  const gridX = (i % 2 === 0 ? -140 : 10);
-                  const gridY = Math.floor(i / 2) * 50;
+                  // Dynamic grid for mobile vs desktop - using wider spacing to avoid overlap
+                  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+                  const gridX = isMobile ? (i % 2 === 0 ? -100 : 100) : (i % 2 === 0 ? -180 : 180);
+                  const gridY = Math.floor(i / 2) * (isMobile ? 50 : 65);
                   
-                  // Shattered layout positions (random on bottom, constrained)
-                  const shatterX = gridX + ((Math.random() * 120) - 60);
-                  const shatterY = 100 + (Math.random() * 40);
+                  // Shattered layout positions with improved distribution
+                  const shatterX = gridX + ((Math.random() * 100) - 50);
+                  const shatterY = (isMobile ? 130 : 180) + (Math.random() * 40);
                   const shatterRotate = (Math.random() * 40) - 20;
 
                   return (

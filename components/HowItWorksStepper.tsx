@@ -296,10 +296,10 @@ const HowItWorksStepper: React.FC = () => {
             }}
             className="w-full flex items-center justify-center overflow-hidden"
           >
-            <div className="max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-center">
+            <div className="max-w-7xl mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-32 items-center">
               
               {/* Phone Column */}
-              <div className={`${step.side === 'right' ? 'lg:order-2' : 'lg:order-1'} flex justify-center`}>
+              <div className={`flex justify-center ${step.side === 'right' ? 'lg:order-2' : 'lg:order-1'}`}>
                 <div className="relative">
                   <motion.div 
                     animate={{ scale: [1, 1.05, 1], opacity: [0.2, 0.4, 0.2] }}
@@ -337,7 +337,7 @@ const HowItWorksStepper: React.FC = () => {
               </div>
 
               {/* Text Column */}
-              <div className={`${step.side === 'right' ? 'lg:order-1 text-right items-end' : 'lg:order-2 text-left items-start'} flex flex-col`}>
+              <div className={`flex flex-col ${step.side === 'right' ? 'lg:order-1 lg:items-end text-center lg:text-right' : 'lg:order-2 lg:items-start text-center lg:text-left'}`}>
                 <div className="max-w-xl">
                   <span className="block text-[#047857] text-[11px] font-bold uppercase tracking-[0.5em] mb-6">
                     {step.tag}
@@ -351,7 +351,7 @@ const HowItWorksStepper: React.FC = () => {
                     ))}
                   </h2>
 
-                  <p className={`text-[#242424]/60 text-lg md:text-xl font-sans leading-relaxed mb-10 max-w-md ${step.side === 'right' ? 'ml-auto' : ''}`}>
+                  <p className={`text-[#242424]/80 text-lg md:text-xl font-sans leading-relaxed mb-10 max-w-md ${step.side === 'right' ? 'lg:ml-auto' : ''}`}>
                     {step.description}
                   </p>
 

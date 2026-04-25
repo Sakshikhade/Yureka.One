@@ -198,7 +198,7 @@ const AppContent: React.FC = () => {
       {!isAdminRoute && (
         <Link 
           to="/coming-soon"
-          className="fixed bottom-14 right-6 z-[70] bg-[#047857] text-cream p-4 rounded-full shadow-2xl hover:scale-110 transition-transform cursor-pointer border border-cream/20"
+          className="fixed bottom-14 right-6 z-[100] bg-[#047857] text-cream p-4 rounded-full shadow-2xl hover:scale-110 transition-transform cursor-pointer border border-cream/20"
           aria-label="Launch Intelligence Lab"
         >
           <button className="cursor-pointer" aria-hidden="true" tabIndex={-1}>

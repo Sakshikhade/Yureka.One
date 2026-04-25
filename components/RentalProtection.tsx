@@ -127,15 +127,15 @@ const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
 
                   {/* Stats */}
                   <div className="w-full space-y-3 mb-5">
-                    <div className="flex justify-between items-end border-b border-white/5 pb-2">
-                      <span className="text-[8px] text-white/20 uppercase tracking-[0.2em]">Yield Potential</span>
+                    <div className="flex justify-between items-end border-b border-white/10 pb-2">
+                      <span className="text-[8px] text-white/50 uppercase tracking-[0.2em]">Yield Potential</span>
                       <span className="text-xs font-mono text-[#047857] font-bold">
                         +{card.rewards_rate || '—'}
                       </span>
                     </div>
-                    <div className="flex justify-between items-end border-b border-white/5 pb-2">
-                      <span className="text-[8px] text-white/20 uppercase tracking-[0.2em]">Annual Fee</span>
-                      <span className="text-xs font-mono text-white/70">
+                    <div className="flex justify-between items-end border-b border-white/10 pb-2">
+                      <span className="text-[8px] text-white/50 uppercase tracking-[0.2em]">Annual Fee</span>
+                      <span className="text-xs font-mono text-white/90">
                         ₹{String(card.annual_fee ?? '0').replace(/[^0-9]/g, '') || '0'}
                       </span>
                     </div>

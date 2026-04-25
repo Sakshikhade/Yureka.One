@@ -258,7 +258,7 @@ const Security: React.FC = () => {
                                 >
                                     <div className="mb-4 transform group-hover:scale-110 transition-transform duration-300">{f.icon}</div>
                                     <h4 className="text-white font-bold text-lg mb-2">{f.title}</h4>
-                                    <p className="text-white/40 text-sm leading-relaxed">{f.desc}</p>
+                                    <p className="text-white/80 text-sm leading-relaxed">{f.desc}</p>
                                 </motion.div>
                             ))}
                         </div>
