@@ -256,21 +256,6 @@ const HowItWorksStepper: React.FC = () => {
 
   return (
     <div ref={containerRef} className="relative w-full bg-cream" style={{ height: '500vh' }}>
-      {/* Background Dots Navigator */}
-      <div className="fixed right-10 top-1/2 -translate-y-1/2 z-[100] hidden lg:flex flex-col gap-4">
-        {STEPS.map((_, i) => (
-          <motion.div
-            key={i}
-            className="w-1.5 h-1.5 rounded-full bg-black/10"
-            animate={{ 
-                scale: activeStep === i + 1 ? 2.5 : 1,
-                backgroundColor: activeStep === i + 1 ? '#047857' : 'rgba(0,0,0,0.1)'
-            }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-          />
-        ))}
-      </div>
-
       {STEPS.map((step, index) => {
         const start = index / STEPS.length;
         const end = (index + 1) / STEPS.length;
