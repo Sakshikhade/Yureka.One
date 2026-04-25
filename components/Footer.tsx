@@ -78,22 +78,7 @@ const Footer: React.FC = () => {
                    </div>
                </div>
 
-               {/* Right Column: Imagery Grid */}
-               <div className="w-full lg:w-[480px] grid grid-cols-2 grid-rows-2 gap-[3px] h-[300px] md:h-[350px] shrink-0 overflow-hidden rounded-[1.5rem] border border-white/10 shadow-2xl relative z-10">
-                   <div className="col-span-1 row-span-1 overflow-hidden bg-black">
-                       <img src="https://images.unsplash.com/photo-1556742049-02e49f9d2a10?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Premium Card" className="w-full h-full object-cover hover:scale-110 transition-transform duration-[2s] opacity-90 hover:opacity-100" />
-                   </div>
-                   <div className="col-span-1 row-span-1 overflow-hidden bg-black">
-                       <img src="https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Lifestyle Lounge" className="w-full h-full object-cover hover:scale-110 transition-transform duration-[2s] opacity-90 hover:opacity-100" />
-                   </div>
-                   <div className="col-span-1 row-span-1 overflow-hidden bg-black">
-                       <img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Premium Dining" className="w-full h-full object-cover hover:scale-110 transition-transform duration-[2s] opacity-90 hover:opacity-100" />
-                   </div>
-                   <div className="col-span-1 row-span-1 overflow-hidden bg-black">
-                       <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Lux Travel" className="w-full h-full object-cover hover:scale-110 transition-transform duration-[2s] opacity-90 hover:opacity-100" />
-                   </div>
-               </div>
-               
+               {/* Right Column: Imagery Grid - removed broken image */}
            </div>
         </div>
 
@@ -197,12 +182,12 @@ const Footer: React.FC = () => {
 
             {/* Quick Links */}
             <div className="relative z-10 flex flex-col gap-3 w-full max-w-[400px] mb-20">
-                 <button className="w-full h-14 bg-white/5 border border-white/10 text-white/40 rounded-2xl text-sm font-light tracking-widest hover:bg-white/10 hover:text-white transition-all uppercase">
-                    Explore
-                 </button>
-                 <button className="w-full h-14 bg-white/5 border border-white/10 text-white/40 rounded-2xl text-sm font-light tracking-widest hover:bg-white/10 hover:text-white transition-all uppercase">
-                    Contact
-                 </button>
+                 <Link to="/free-tools" className="w-full h-14 bg-white/5 border border-white/10 text-white/40 rounded-2xl text-sm font-light tracking-widest hover:bg-white/10 hover:text-white transition-all uppercase flex items-center justify-center">
+                    Checkout Free Tools
+                 </Link>
+                 <Link to="/cards" className="w-full h-14 bg-white/5 border border-white/10 text-white/40 rounded-2xl text-sm font-light tracking-widest hover:bg-white/10 hover:text-white transition-all uppercase flex items-center justify-center">
+                    Cards
+                 </Link>
             </div>
 
             {/* Vertical Line and Diamond */}
@@ -227,12 +212,12 @@ const Footer: React.FC = () => {
 
             {/* User Switcher (Tenant/Landlord replacement) */}
             <div className="relative z-10 flex bg-white/5 p-1 rounded-full border border-white/10">
-                 <button className="px-6 md:px-8 py-3 text-[10px] md:text-xs font-bold text-white/40 hover:text-white uppercase tracking-widest transition-colors">
-                    I'm an Earner
-                 </button>
-                 <button className="px-6 md:px-8 py-3 text-[10px] md:text-xs font-bold text-black bg-[#047857] rounded-full uppercase tracking-widest shadow-xl">
-                    I'm a Founder
-                 </button>
+                 <Link to="/join-waitlist" className="px-6 md:px-8 py-3 text-[10px] md:text-xs font-bold text-white/40 hover:text-white uppercase tracking-widest transition-colors">
+                    Join Waitlist
+                 </Link>
+                 <Link to="/yureka-ai" className="px-6 md:px-8 py-3 text-[10px] md:text-xs font-bold text-black bg-[#047857] rounded-full uppercase tracking-widest shadow-xl hover:bg-[#036045] transition-colors">
+                    Yureka AI
+                 </Link>
             </div>
 
         </div>

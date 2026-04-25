@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { motion } from 'motion/react';
-import { Card } from '../supabase';
+import { Card } from '../types';
 import { Star, TrendingUp, ArrowUpRight, Link as LinkIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import ImageWithLoader from './ImageWithLoader';
@@ -65,20 +65,24 @@ const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 w-full mb-16">
           {displayCards.map((card, i) => {
             const slug = card.slug || generateSlug(card.name, card.bank || card.issuer || '');
+            const swingDurations = [4.2, 5.1, 4.7, 5.5];
             return (
               <motion.div
                 key={card.id || i}
-                initial={{ opacity: 0, y: 40, rotate: tilts[i] }}
+                initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                whileHover={{ y: -8, scale: 1.03, rotate: 0 }}
                 viewport={{ once: true }}
+                transition={{ delay: i * 0.12, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              >
+              <motion.div
+                animate={{ rotate: [tilts[i] - 1.2, tilts[i] + 1.2, tilts[i] - 1.2] }}
+                whileHover={{ y: -8, scale: 1.03, rotate: 0 }}
                 transition={{
-                  opacity: { delay: i * 0.12, duration: 0.7 },
-                  y: { delay: i * 0.12, duration: 0.7, ease: [0.16, 1, 0.3, 1] },
-                  rotate: { delay: i * 0.12, duration: 0.7 },
-                  hover: { duration: 0.4, ease: [0.16, 1, 0.3, 1] }
+                  rotate: { delay: i * 0.15 + 0.8, duration: swingDurations[i], repeat: Infinity, ease: "easeInOut" },
+                  y: { duration: 0.4 },
+                  scale: { duration: 0.4 },
                 }}
-                style={{ rotate: tilts[i] }}
+                style={{ rotate: `${tilts[i]}deg` }}
                 className="group relative"
               >
                 {/* Serrated Tape Header */}
@@ -163,6 +167,7 @@ const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
                     </Link>
                   </div>
                 </div>
+              </motion.div>
               </motion.div>
             );
           })}
