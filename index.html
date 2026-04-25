@@ -244,6 +244,49 @@
         line-height: 1.8 !important;
       }
       
+      @keyframes glass-shine {
+        0% { transform: translateX(-100%) skewX(-20deg); opacity: 0; }
+        20% { opacity: 0.5; }
+        50% { opacity: 0.5; }
+        80% { opacity: 0.5; }
+        100% { transform: translateX(200%) skewX(-20deg); opacity: 0; }
+      }
+
+      .animate-glass-shine {
+        animation: glass-shine 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      }
+
+      .glass-dark {
+        background: rgba(18, 18, 18, 0.85);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .glass-shine-container {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .glass-shine-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 60%;
+        height: 100%;
+        background: linear-gradient(
+          to right,
+          transparent 0%,
+          rgba(255, 255, 255, 0.04) 50%,
+          transparent 100%
+        );
+        transform: skewX(-20deg);
+        animation: glass-shine 10s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        pointer-events: none;
+        z-index: 1;
+      }
+
       .mask-gradient-v {
         mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
         -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);

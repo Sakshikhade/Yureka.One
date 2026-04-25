@@ -790,7 +790,7 @@ const ComingSoon: React.FC = () => {
                     initial={{ opacity: 0, y: 60 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="mt-32 md:mt-48 p-8 md:p-24 bg-[#242424] rounded-[2.5rem] md:rounded-[4rem] text-center relative overflow-hidden group border border-cream/5"
+                    className="mt-32 md:mt-48 p-8 md:p-24 glass-dark glass-shine-container rounded-[2.5rem] md:rounded-[5rem] text-center relative overflow-hidden group border border-white/5 shadow-2xl"
                 >
                     {/* Dark Grain Overlay */}
                     <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #fff 1px, transparent 0)', backgroundSize: '40px 40px' }} />

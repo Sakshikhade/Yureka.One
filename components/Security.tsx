@@ -75,7 +75,7 @@ const Security: React.FC = () => {
                     initial={{ opacity: 0, scale: 0.98 }}
                     animate={isInView ? { opacity: 1, scale: 1 } : {}}
                     transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                    className="relative bg-[#1A2F2F] rounded-2xl overflow-hidden shadow-2xl p-8 md:p-16 lg:p-24"
+                    className="relative glass-dark glass-shine-container rounded-[2.5rem] md:rounded-[4rem] overflow-hidden shadow-2xl p-8 md:p-16 lg:p-24"
                 >
                     {/* Atmospheric background detail */}
                     <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />

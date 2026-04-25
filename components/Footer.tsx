@@ -161,7 +161,7 @@ const Footer: React.FC = () => {
         </div>
 
         {/* IMAGE 2: THE "RIGHT SIDE" SUB-FOOTER */}
-        <div className="w-full bg-[#0a0a0a] min-h-[700px] flex flex-col items-center justify-center relative overflow-hidden py-32 px-6">
+        <div className="w-full glass-dark glass-shine-container min-h-[700px] flex flex-col items-center justify-center relative overflow-hidden py-32 px-6 border-t border-white/5">
             {/* Dotted Starfield Background */}
             <div className="absolute inset-0 opacity-[0.15]" 
                  style={{ 

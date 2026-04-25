@@ -27,7 +27,8 @@ const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
   const tilts = [-3, 1.5, -1, 2.5];
 
   return (
-    <section className="bg-[#141414] py-20 md:py-28 px-6 relative overflow-hidden">
+    <section className="bg-[#141414] py-20 md:py-28 px-6 relative overflow-hidden glass-shine-container">
+      <div className="absolute inset-0 glass-dark opacity-90" />
       {/* Background grid */}
       <div
         className="absolute inset-0 opacity-[0.03] pointer-events-none"
@@ -95,7 +96,7 @@ const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
                 {/* Glow on hover */}
                 <div className="absolute inset-0 rounded-2xl bg-[#047857]/0 group-hover:bg-[#047857]/5 transition-all duration-700 blur-xl" />
 
-                <div className="bg-[#1a1a1a] rounded-2xl pt-12 pb-6 px-6 flex flex-col items-center border border-white/5 group-hover:border-[#047857]/30 transition-all duration-700 relative overflow-hidden">
+                <div className="glass-dark rounded-[2.5rem] pt-12 pb-6 px-6 flex flex-col items-center border border-white/5 group-hover:border-[#047857]/30 transition-all duration-700 relative overflow-hidden">
 
                   {/* Indicator dot */}
                   <div className="absolute top-7 left-6 w-2.5 h-2.5 rounded-full bg-[#047857] shadow-[0_0_12px_#047857] z-30 animate-pulse" />

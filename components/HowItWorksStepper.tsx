@@ -84,8 +84,8 @@ const AIChatScreen = ({ isActive }: { isActive: boolean }) => (
               </div>
               <div className="bg-white p-4 rounded-2xl rounded-tl-none shadow-sm border border-black/5">
                 <p className="text-[11px] text-black/70 leading-relaxed font-medium">Better than 5x points? How?</p>
-              </motion.div>
-            </div>
+              </div>
+            </motion.div>
           </div>
         )}
       </AnimatePresence>
@@ -235,7 +235,7 @@ const WaitlistScreen = ({ isActive }: { isActive: boolean }) => (
     </div>
 
     <h3 className="text-2xl font-serif text-white mt-8 mb-2">Protocol Access</h3>
-    <motion.p animate={{ opacity: [0.3, 0.6, 0.3] }} transition={{ repeat: Infinity, duration: 4 }} className="text-[10px] text-white/40 uppercase tracking-[0.3em] font-mono">Status: Awaiting Node Allocation</p>
+    <motion.p animate={{ opacity: [0.3, 0.6, 0.3] }} transition={{ repeat: Infinity, duration: 4 }} className="text-[10px] text-white/40 uppercase tracking-[0.3em] font-mono">Status: Awaiting Node Allocation</motion.p>
     
     <div className="mt-12 w-full space-y-2">
       <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
