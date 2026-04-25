@@ -307,7 +307,7 @@ const RewardXAnimation = () => {
             </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto no-scrollbar relative z-10 px-8 md:px-12 pt-4 pb-40" ref={scrollRef}>
+        <div className="flex-1 overflow-y-auto no-scrollbar relative z-10 px-8 md:px-12 pt-4 pb-6" ref={scrollRef}>
           <div className="space-y-3">
             {steps.map((s, i) => (
               i <= step && (
@@ -619,7 +619,7 @@ const ExtensionAnimation = () => {
                             animate={{ opacity: 1, y: 0, x: 0, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.95, y: -20 }}
                             transition={{ type: 'spring', damping: 20, stiffness: 120 }}
-                            className="absolute top-[68px] right-6 w-[360px] bg-cream/70 backdrop-blur-3xl rounded-[2.5rem] shadow-[0_48px_100px_-15px_rgba(0,0,0,0.35)] border border-cream/50 z-50 overflow-hidden flex flex-col"
+                            className="absolute top-[68px] right-3 w-[320px] sm:w-[340px] bg-cream/90 backdrop-blur-3xl rounded-[2rem] shadow-[0_48px_100px_-15px_rgba(0,0,0,0.35)] border border-cream/50 z-50 overflow-hidden flex flex-col max-h-[calc(100%-80px)]"
                         >
                             <div className="p-6 bg-cream/20 border-b border-black/[0.03] flex items-center justify-between flex-shrink-0 backdrop-blur-md">
                                 <div className="flex items-center gap-4">
@@ -636,7 +636,7 @@ const ExtensionAnimation = () => {
                                    Protocol {journeyStep}/5
                                 </div>
                             </div>
-                            <div className="flex-1 p-10 min-h-[340px] flex flex-col justify-center">
+                            <div className="flex-1 p-6 md:p-8 overflow-y-auto">
                                 <AnimatePresence mode="wait">
                                     <motion.div key={journeyStep} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.5 }}>
                                         {renderJourneyContent()}
@@ -744,7 +744,7 @@ const ComingSoon: React.FC = () => {
                                 transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                                 className="w-full lg:w-1/2 group relative"
                             >
-                                <div className="relative aspect-[3/4] md:aspect-[4/5] max-w-full lg:max-w-none">
+                                <div className="relative w-full min-h-[480px] md:min-h-[560px] max-h-[680px] overflow-hidden rounded-[2rem] shadow-2xl">
                                    {/* Advanced Glow */}
                                    <div className={`absolute -inset-10 bg-gradient-to-br from-clay/5 to-transparent blur-[120px] opacity-0 group-hover:opacity-100 transition-opacity duration-1000`} />
                                    {feature.component}
