@@ -268,7 +268,7 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp })
                   <span className="block text-[#047857] text-[11px] font-bold uppercase tracking-[0.4em] mb-4">
                     How It Works
                   </span>
-                  <h2 className="text-4xl md:text-5xl lg:text-[clamp(1.5rem,4.5vw,5.5rem)] font-serif text-[#242424] mb-8 leading-[0.85] tracking-tighter uppercase">
+                  <h2 className="text-4xl md:text-5xl lg:text-[clamp(1.5rem,3.5vw,4.5rem)] font-serif text-[#242424] mb-8 leading-[0.85] tracking-tighter uppercase">
                     We Compare <br />
                     <span className="italic font-light text-[#047857]">For You.</span>
                   </h2>

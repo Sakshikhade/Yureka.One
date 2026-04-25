@@ -710,7 +710,7 @@ const ComingSoon: React.FC = () => {
                             <span className="w-2 h-2 rounded-full bg-[#047857] animate-pulse" />
                             <span className="text-[9px] md:text-[10px] font-medium uppercase tracking-[0.2em] text-[#242424]/60">Intelligence Pipeline / v0.9.4B</span>
                         </div>
-                        <h2 className="text-3xl sm:text-5xl lg:text-[clamp(1.5rem,5vw,5rem)] font-medium tracking-tight leading-[0.9] text-[#242424] uppercase">
+                        <h2 className="text-3xl sm:text-5xl lg:text-[clamp(1.5rem,4vw,4.5rem)] font-medium tracking-tight leading-[0.9] text-[#242424] uppercase">
                             The <br />
                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-clay via-[#047857] to-ink italic font-thin serif">Elite</span><br />
                            Standard.
@@ -764,7 +764,7 @@ const ComingSoon: React.FC = () => {
                                       <span className="text-[9px] md:text-[10px] font-medium uppercase tracking-[0.3em] text-[#242424]/20">{feature.label}</span>
                                       <div className="h-[1px] w-8 md:w-12 bg-[#242424]/5" />
                                    </div>
-                                   <h3 className="text-3xl md:text-4xl lg:text-[clamp(1.5rem,3.5vw,4.5rem)] font-medium text-[#242424] tracking-tight uppercase leading-none">
+                                   <h3 className="text-3xl md:text-4xl lg:text-[clamp(1.5rem,3vw,4rem)] font-medium text-[#242424] tracking-tight uppercase leading-none">
                                       {feature.title}
                                    </h3>
                                 </div>
@@ -797,7 +797,7 @@ const ComingSoon: React.FC = () => {
                     <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#047857]/10 blur-[160px] rounded-full pointer-events-none" />
                     <div className="relative z-10 max-w-3xl mx-auto">
                         <Sparkles className="mx-auto mb-8 text-[#047857]" size={32} />
-                        <h2 className="text-4xl md:text-6xl font-medium tracking-tight text-white uppercase mb-8 leading-[0.85]">
+                        <h2 className="text-4xl md:text-5xl font-medium tracking-tight text-white uppercase mb-8 leading-[0.85]">
                             Secure Your <br />
                             <span className="text-clay italic serif font-thin">Access.</span>
                         </h2>

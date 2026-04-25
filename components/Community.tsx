@@ -167,7 +167,7 @@ const Community: React.FC = () => {
                 <div className="inline-flex items-center gap-2 bg-[#047857]/5 px-6 py-2 rounded-full border border-[#047857]/10 text-[#047857] text-[10px] font-black uppercase tracking-[0.4em]">
                     <ShieldCheck size={14} className="animate-pulse" /> Verified Intelligence
                 </div>
-                <h2 className="text-4xl md:text-5xl lg:text-[clamp(1.5rem,5.5vw,6rem)] font-serif font-black text-[#242424] leading-[0.85] uppercase tracking-tighter">
+                <h2 className="text-4xl md:text-5xl lg:text-[clamp(1.5rem,4vw,4.5rem)] font-serif font-black text-[#242424] leading-[0.85] uppercase tracking-tighter">
                     Real Stories, <br />
                     <span className="text-[#047857] italic font-light lowercase">Real</span> Yield.
                 </h2>

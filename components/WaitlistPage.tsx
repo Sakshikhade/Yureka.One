@@ -93,7 +93,7 @@ const WaitlistPage: React.FC = () => {
             <div className="w-24 h-24 bg-[#047857] text-cream rounded-full flex items-center justify-center mb-10 shadow-2xl animate-pulse">
                 <Check size={48} strokeWidth={1.5} />
             </div>
-            <h1 className="text-4xl md:text-8xl italic tracking-tighter text-[#242424] mb-6">Confirmed.</h1>
+            <h1 className="text-4xl md:text-7xl italic tracking-tighter text-[#242424] mb-6">Confirmed.</h1>
             <p className="text-lg md:text-2xl text-[#242424]/40 mb-16 max-w-xl mx-auto leading-relaxed">
                 You've been added to the inner circle. Expect an invite as we begin our phased rollout.
             </p>
@@ -117,7 +117,7 @@ const WaitlistPage: React.FC = () => {
              
              <div className="text-center mb-12 md:mb-20">
                 <p className="text-[#047857] font-bold text-[10px] uppercase tracking-[0.6em] mb-4 md:mb-6">Join the ecosystem</p>
-                <h1 className="text-3xl sm:text-6xl md:text-8xl italic tracking-tighter text-[#242424] leading-[0.85] mb-4">The VIP Waitlist</h1>
+                <h1 className="text-3xl sm:text-6xl md:text-7xl italic tracking-tighter text-[#242424] leading-[0.85] mb-4">The VIP Waitlist</h1>
                 <p className="text-[#242424]/40 text-base md:text-xl italic max-w-xl mx-auto">Founding membership for the next generation of credit card mastery.</p>
              </div>
 

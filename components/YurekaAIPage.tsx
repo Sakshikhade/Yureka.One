@@ -251,7 +251,7 @@ const YurekaAIPage: React.FC = () => {
               <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-teal">Yureka AI · Personalised Intelligence</span>
             </div>
 
-            <h1 className="text-3xl sm:text-6xl md:text-7xl lg:text-8xl font-sans font-black tracking-tighter text-[#242424] leading-[0.9] mb-8 max-w-5xl mx-auto">
+            <h1 className="text-3xl sm:text-6xl md:text-7xl font-sans font-black tracking-tighter text-[#242424] leading-[0.9] mb-8 max-w-5xl mx-auto">
               Your financial life,{' '}
               <span className="relative">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal to-cyan-600">
@@ -571,7 +571,7 @@ const YurekaAIPage: React.FC = () => {
               <div className="inline-flex items-center justify-center w-20 h-20 bg-teal/5 border border-teal/10 rounded-[2rem] mb-10 mx-auto">
                 <Brain size={36} className="text-teal" />
               </div>
-              <h2 className="text-3xl sm:text-7xl font-sans font-black text-[#242424] tracking-tighter leading-tight mb-8">
+              <h2 className="text-3xl sm:text-6xl font-sans font-black text-[#242424] tracking-tighter leading-tight mb-8">
                 Ready for your<br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal to-cyan-600">AI co-pilot?</span>
               </h2>

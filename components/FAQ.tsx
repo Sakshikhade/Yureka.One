@@ -176,10 +176,10 @@ const FAQ: React.FC = () => {
                          className="text-left mb-8"
                       >
                          <span className="block text-[#047857] text-[10px] md:text-xs font-bold uppercase tracking-[0.4em] mb-6">Help & Support</span>
-                         <h2 className="text-4xl md:text-5xl lg:text-[clamp(1.5rem,4vw,5rem)] font-serif font-bold text-[#242424] mb-4 leading-[0.9] tracking-tighter uppercase">
+                         <h2 className="text-4xl md:text-5xl lg:text-[clamp(1.5rem,3.5vw,4rem)] font-serif font-bold text-[#242424] mb-4 leading-[0.9] tracking-tighter uppercase">
                              Common <br className="hidden md:block" /> Questions
                          </h2>
-                         <h3 className="text-3xl md:text-4xl lg:text-[clamp(1.2rem,3.5vw,4.5rem)] font-serif font-bold text-[#242424] leading-[0.9] tracking-tighter uppercase opacity-30 italic">
+                         <h3 className="text-3xl md:text-4xl lg:text-[clamp(1.2rem,3vw,3.5rem)] font-serif font-bold text-[#242424] leading-[0.9] tracking-tighter uppercase opacity-30 italic">
                              Deciphered.
                          </h3>
                       </motion.div>

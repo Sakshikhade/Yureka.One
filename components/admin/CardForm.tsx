@@ -344,7 +344,7 @@ export const CardForm: React.FC<CardFormProps> = ({
         <button 
           type="submit" 
           disabled={uploading || saving}
-          className="bg-teal text-cream px-10 py-4 rounded-xl font-bold hover:bg-teal/90 transition-all shadow-lg disabled:opacity-50 flex items-center gap-2"
+          className="bg-[#047857] text-cream px-10 py-4 rounded-xl font-bold hover:bg-[#047857]/90 transition-all shadow-lg disabled:opacity-50 flex items-center gap-2"
         >
           {(uploading || saving) ? <Loader2 className="animate-spin" size={20} /> : <Check size={20} />}
           Save Card

@@ -75,7 +75,6 @@ const Navbar: React.FC = () => {
                 <div className="flex items-center gap-6">
                     {[
                         { name: 'Cards', path: '/cards' },
-                        { name: 'Secured', path: '/#secured' },
                         { name: 'Manifesto', path: '/manifesto' },
                         { name: 'Free Tools', path: '/free-tools' },
                         { name: 'Blogs', path: '/blogs' }
@@ -103,12 +102,12 @@ const Navbar: React.FC = () => {
                       </Link>
 
                     
-                    <Link to="/coming-soon" className={`
+                    <Link to="/join-waitlist" className={`
                         bg-ink text-cream text-[10px] font-bold uppercase tracking-[0.2em] px-5 lg:px-7 py-2.5 lg:py-3
                         flex items-center gap-2 group transition-all duration-500 rounded-full shrink-0 shadow-lg hover:shadow-clay/20 hover:-translate-y-0.5
                     `}>
                         <Sparkles size={14} className="text-clay" />
-                        <span>Intelligence Lab</span>
+                        <span>Join Waitlist Now</span>
                         <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                     </Link>
                 </div>
@@ -159,7 +158,6 @@ const Navbar: React.FC = () => {
                   <nav className="flex flex-col gap-8">
                     {[
                         { name: 'Card Explorer', path: '/cards', desc: 'Curated Matches' },
-                        { name: 'Secured', path: '/#secured', desc: 'Home Protection' },
                         { name: 'Manifesto', path: '/manifesto', desc: 'Our Mission' },
                         { name: 'Free Tools', path: '/free-tools', desc: 'Financial Engine' },
                         { name: 'Blogs', path: '/blogs', desc: 'Credit Insights' },
@@ -189,9 +187,9 @@ const Navbar: React.FC = () => {
                       transition={{ delay: 0.6 }}
                       className="mt-4"
                     >
-                        <Link to="/coming-soon" onClick={() => setIsMobileMenuOpen(false)} className="w-full py-3 md:py-4 bg-[#242424] text-cream font-medium uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 transition-all rounded-full shadow-lg">
+                        <Link to="/join-waitlist" onClick={() => setIsMobileMenuOpen(false)} className="w-full py-3 md:py-4 bg-[#242424] text-cream font-medium uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 transition-all rounded-full shadow-lg">
                             <Sparkles size={16} className="text-[#047857]" />
-                            Intelligence Lab
+                            Join Waitlist Now
                         </Link>
                     </motion.div>
                   </nav>

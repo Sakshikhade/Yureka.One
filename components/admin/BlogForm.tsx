@@ -321,7 +321,7 @@ export const BlogForm: React.FC<BlogFormProps> = ({
         <button 
           type="submit" 
           disabled={saving}
-          className="bg-black text-cream px-16 py-5 rounded-full font-bold hover:bg-teal transition-all shadow-2xl flex items-center gap-3 text-[10px] uppercase tracking-[0.2em]"
+          className="bg-black text-cream px-16 py-5 rounded-full font-bold hover:bg-[#047857] transition-all shadow-2xl flex items-center gap-3 text-[10px] uppercase tracking-[0.2em]"
         >
           {saving ? <Loader2 className="animate-spin" size={20} /> : <Zap size={18} className="fill-clay" />}
           {saving ? 'Transmitting...' : 'Confirm Publication'}
