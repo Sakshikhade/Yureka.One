@@ -231,7 +231,10 @@ const CardDetail: React.FC = () => {
                                  The <span className="text-ink/30">Verdict</span>
                               </h2>
                              <p className="text-xl md:text-2xl font-sans font-semibold text-ink/70 leading-relaxed italic border-l-4 border-clay pl-8">
-                                "{card.verdict || `The ${card.name} remains a cornerstone of the ${card.issuer || card.bank} ecosystem. While the ${card.annual_fee} fee is significant, the projected savings of ${card.projected_savings || '₹12,000/yr'} creates an undeniable value proposition for high-spend portfolios.`}"
+                                "{card.verdict
+                                    ? card.verdict
+                                    : `The ${card.name} remains a cornerstone of the ${card.issuer || card.bank} ecosystem. While the ${card.annual_fee} fee is significant, the projected savings of ${card.projected_savings || '₹12,000/yr'} creates an undeniable value proposition for high-spend portfolios.`
+                                }"
                              </p>
 
                             <div className="flex items-center gap-6 pt-10">

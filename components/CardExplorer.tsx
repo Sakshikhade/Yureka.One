@@ -375,7 +375,8 @@ const CardExplorer: React.FC = () => {
                                     transition={{ duration: 0.6, delay: index * 0.05 }}
                                     className="group relative"
                                 >
-                                    <div className="bg-cream rounded-[3rem] border border-ink/5 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.05)] overflow-hidden hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.12)] transition-all duration-700 h-full flex flex-col">
+                                    <Link to={`/cards/${cardSlug}`} className="block h-full">
+                                    <div className="bg-cream rounded-[3rem] border border-ink/5 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.05)] overflow-hidden hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.12)] transition-all duration-700 h-full flex flex-col cursor-pointer">
                                         
                                         {/* Card Visual Header */}
                                         <div className="relative p-6 pb-0">
@@ -397,14 +398,14 @@ const CardExplorer: React.FC = () => {
 
                                         {/* Meta Information */}
                                         <div className="p-10 pt-8 flex-1 flex flex-col">
-                                            <h3 className="text-3xl font-heading font-black text-[#242424] mb-4 group-hover:text-[#047857] transition-colors uppercase leading-[0.9] tracking-tighter">
-                                                {card.name.length > 20 ? card.name.substring(0, 20) + '...' : card.name}
+                                            <h3 className="text-2xl font-heading font-black text-[#242424] mb-4 group-hover:text-[#047857] transition-colors uppercase leading-tight tracking-tighter break-words">
+                                                {card.name}
                                             </h3>
                                             
                                             <div className="flex items-center gap-2 mb-8">
                                                 <div className="flex items-center gap-2 bg-emerald-50 px-3 py-1 rounded-full">
                                                     <Zap size={10} className="text-emerald-500" />
-                                                    <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">Available Now</span>
+                                                    <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-widest">{card.category || 'General'}</span>
                                                 </div>
                                             </div>
 
@@ -416,7 +417,9 @@ const CardExplorer: React.FC = () => {
                                                     </div>
                                                     <div>
                                                         <p className="text-[9px] font-bold uppercase tracking-widest text-[#242424]/40 leading-none mb-1">LTF Potential</p>
-                                                        <p className="text-xs font-semibold text-[#242424]">Conditional</p>
+                                                        <p className="text-xs font-semibold text-[#242424]">
+                                                            {card.joining_fee && String(card.joining_fee).replace(/[^0-9]/g,'') === '0' ? 'Yes (LTF)' : 'Conditional'}
+                                                        </p>
                                                     </div>
                                                 </div>
                                                 <div className="flex items-center gap-3">
@@ -425,7 +428,7 @@ const CardExplorer: React.FC = () => {
                                                     </div>
                                                     <div>
                                                         <p className="text-[9px] font-bold uppercase tracking-widest text-[#242424]/40 leading-none mb-1">Rating</p>
-                                                        <p className="text-xs font-semibold text-[#242424]">{card.rating?.toFixed(1) || '4.2'} / 5.0</p>
+                                                        <p className="text-xs font-semibold text-[#242424]">{card.rating?.toFixed(1) ?? '—'} / 5.0</p>
                                                     </div>
                                                 </div>
                                                 <div className="flex items-center gap-3">
@@ -434,7 +437,7 @@ const CardExplorer: React.FC = () => {
                                                     </div>
                                                     <div>
                                                         <p className="text-[9px] font-bold uppercase tracking-widest text-[#242424]/40 leading-none mb-1">Annual Fee</p>
-                                                        <p className="text-xs font-semibold text-[#242424]">₹{String(card.annual_fee).replace(/[^0-9]/g, '')}</p>
+                                                        <p className="text-xs font-semibold text-[#242424]">₹{String(card.annual_fee ?? '0').replace(/[^0-9]/g, '') || '0'}</p>
                                                     </div>
                                                 </div>
                                                 <div className="flex items-center gap-3">
@@ -443,7 +446,7 @@ const CardExplorer: React.FC = () => {
                                                     </div>
                                                     <div>
                                                         <p className="text-[9px] font-bold uppercase tracking-widest text-[#242424]/40 leading-none mb-1">Net Yield</p>
-                                                        <p className="text-xs font-semibold text-[#242424]">{card.rewards_rate || 'Peak'}</p>
+                                                        <p className="text-xs font-semibold text-[#242424]">{card.rewards_rate || '—'}</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -453,17 +456,16 @@ const CardExplorer: React.FC = () => {
                                                 <div>
                                                     <p className="text-[10px] font-bold text-[#242424]/40 uppercase tracking-[0.2em] mb-1">Expected Yield</p>
                                                     <p className="text-3xl font-heading font-black text-[#242424] tracking-tight">
-                                                        ₹12,400 <span className="text-xs font-serif italic text-[#242424]/30 font-medium lowercase">/annual</span>
+                                                        {card.projected_savings || '—'} <span className="text-xs font-serif italic text-[#242424]/30 font-medium lowercase">/annual</span>
                                                     </p>
                                                 </div>
-                                                <Link to={`/cards/${cardSlug}`}>
-                                                    <button className="w-14 h-14 bg-[#242424] text-cream rounded-[1.5rem] flex items-center justify-center hover:bg-[#047857] hover:scale-105 transition-all shadow-xl shadow-ink/10 cursor-pointer">
-                                                        <ArrowRight size={24} />
-                                                    </button>
-                                                </Link>
+                                                <div className="w-14 h-14 bg-[#242424] text-cream rounded-[1.5rem] flex items-center justify-center group-hover:bg-[#047857] group-hover:scale-105 transition-all shadow-xl shadow-ink/10">
+                                                    <ArrowRight size={24} />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                    </Link>
                                 </motion.div>
                             );
                         })}
