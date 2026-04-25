@@ -187,21 +187,36 @@ const HowItWorksStepper: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  // Scroll-sync: observe which step is most in view
+  // Scroll-sync: debounced IntersectionObserver so the phone only
+  // switches screen after the user has paused on a step for 350ms
   useEffect(() => {
     const observers: IntersectionObserver[] = [];
+    let debounceTimer: ReturnType<typeof setTimeout> | null = null;
+
     stepRefs.current.forEach((el, idx) => {
       if (!el) return;
       const obs = new IntersectionObserver(
         ([entry]) => {
-          if (entry.isIntersecting) setActiveStep(idx + 1);
+          if (entry.isIntersecting) {
+            // Cancel any pending update and start a new 350ms countdown
+            if (debounceTimer) clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+              setActiveStep(idx + 1);
+            }, 350);
+          }
         },
-        { threshold: 0.6 }
+        {
+          threshold: 0.55,
+          rootMargin: '-10% 0px -10% 0px'
+        }
       );
       obs.observe(el);
       observers.push(obs);
     });
-    return () => observers.forEach(o => o.disconnect());
+    return () => {
+      if (debounceTimer) clearTimeout(debounceTimer);
+      observers.forEach(o => o.disconnect());
+    };
   }, []);
 
   const screens: Record<number, React.ReactNode> = {
@@ -260,7 +275,7 @@ const HowItWorksStepper: React.FC = () => {
                         initial={{ opacity: 0, y: 20, scale: 0.97 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: -20, scale: 0.97 }}
-                        transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                        transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
                         className="w-full h-full"
                      >
                         {screens[activeStep]}
