@@ -1,4 +1,5 @@
 import React, { Suspense, lazy } from 'react';
+import HowItWorksStepper from './HowItWorksStepper';
 import SEO from './SEO';
 import { SupabaseProvider, useSupabase } from './SupabaseProvider';
 import { SkeletonCard, SkeletonHero } from './SkeletonLoaders';
@@ -42,7 +43,7 @@ const MainPage: React.FC = () => {
         schema={homeSchema}
       />
       
-      <div className="bg-cream min-h-screen overflow-x-hidden selection:bg-clay/10">
+      <div className="bg-cream min-h-screen selection:bg-clay/10">
         {/* EDITORIAL 5-COLUMN ARCHITECTURE */}
         <div className="grid grid-cols-1 lg:grid-cols-5 w-full relative">
             
@@ -65,6 +66,8 @@ const MainPage: React.FC = () => {
                         <ShowcaseCarousel cards={cards} />
                     </Suspense>
                 </section>
+
+                <HowItWorksStepper />
 
                 <section id="secured" className="scroll-mt-24">
                     <Suspense fallback={<div className="h-48" />}>

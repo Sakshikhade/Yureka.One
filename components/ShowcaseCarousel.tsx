@@ -302,7 +302,7 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp })
           </div>
         </div>
 
-        <HowItWorksStepper />
+        </div>
       </div>
     </section>
   );
