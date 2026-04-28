@@ -246,7 +246,10 @@ export const getCardBySlug = async (slugOrId: string): Promise<Card | null> => {
   return result.data;
 };
 
-export const checkIfAdmin = async (userId: string | undefined, userEmail: string | undefined) => {
+export const getUserRole = async (email: string | undefined): Promise<string> => {
+  if (!email) return 'user';
+  
+  // Super admin check
   const superAdmins = [
     "toanweshbiswas@gmail.com", 
     "buildwithjupyter.network@gmail.com",
@@ -254,13 +257,30 @@ export const checkIfAdmin = async (userId: string | undefined, userEmail: string
     "info.sachisiva@gmail.com",
     "tiwari.sansrite@gmail.com"
   ];
-  
-  if (userEmail && superAdmins.includes(userEmail.toLowerCase().trim())) return true;
-  if (!userEmail) return false;
-  
-  // Use supabaseAdmin to bypass RLS for the auth check
-  const { data } = await supabaseAdmin.from('users').select('role').eq('email', userEmail.toLowerCase().trim()).single();
-  return data ? ['admin', 'editor', 'writer'].includes(data.role) : false;
+  if (superAdmins.includes(email.toLowerCase().trim())) return 'admin';
+
+  try {
+    const { data, error } = await supabaseAdmin
+      .from('users')
+      .select('role')
+      .eq('email', email.toLowerCase().trim())
+      .maybeSingle(); // maybeSingle handles 0 rows without error
+    
+    if (error) {
+      console.error("Error fetching user role:", error);
+      return 'user';
+    }
+    
+    return data?.role || 'user';
+  } catch (err) {
+    console.error("Failed to fetch role:", err);
+    return 'user';
+  }
+};
+
+export const checkIfAdmin = async (userId: string | undefined, userEmail: string | undefined) => {
+  const role = await getUserRole(userEmail);
+  return ['admin', 'editor', 'writer'].includes(role);
 };
 
 export const joinWaitlist = async (entry: any) => {

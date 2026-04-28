@@ -16,7 +16,7 @@ import {
   deleteWaitlistEntry, updateWaitlistStatus,
   inviteTeamMember, updateUserRole, deleteUser,
   addReview, updateReview, deleteReview,
-  withRetry, cleanData, checkIfAdmin
+  withRetry, cleanData, checkIfAdmin, getUserRole
 } from '../services/supabaseService';
 import { Blog, Card, WaitlistEntry, Review } from '../types';
 import { useSupabase } from './SupabaseProvider';
@@ -185,15 +185,12 @@ const AdminDashboard: React.FC = () => {
       
       if (currentUser) {
         try {
-          const isUserAdmin = await checkIfAdmin(currentUser.id, currentUser.email);
+          // Use the consolidated service helper for both check and role
+          const role = await getUserRole(currentUser.email);
+          const isUserAdmin = ['admin', 'editor', 'writer'].includes(role);
           
-          if (isUserAdmin) {
-            const { data } = await supabase.from('users').select('role').eq('email', currentUser.email?.toLowerCase().trim()).single();
-            setUserRole(data?.role || 'admin');
-            setIsAdmin(true);
-          } else {
-            setIsAdmin(false);
-          }
+          setUserRole(role);
+          setIsAdmin(isUserAdmin);
         } catch (err) {
           console.error("Critical Auth Verification Error:", err);
           setIsAdmin(false);
