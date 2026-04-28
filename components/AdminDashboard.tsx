@@ -170,7 +170,16 @@ const AdminDashboard: React.FC = () => {
 
   // --- Core Auth Logic ---
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    const initAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        handleAuth(session);
+      } else {
+        setLoading(false);
+      }
+    };
+
+    const handleAuth = async (session: any) => {
       const currentUser = session?.user || null;
       setUser(currentUser);
       
@@ -179,7 +188,6 @@ const AdminDashboard: React.FC = () => {
           const isUserAdmin = await checkIfAdmin(currentUser.id, currentUser.email);
           
           if (isUserAdmin) {
-            // Using standard client with a fallback to 'admin' role if specific role fetch fails
             const { data } = await supabase.from('users').select('role').eq('email', currentUser.email?.toLowerCase().trim()).single();
             setUserRole(data?.role || 'admin');
             setIsAdmin(true);
@@ -194,6 +202,12 @@ const AdminDashboard: React.FC = () => {
         setIsAdmin(false);
       }
       setLoading(false);
+    };
+
+    initAuth();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      handleAuth(session);
     });
     return () => subscription.unsubscribe();
   }, []);
