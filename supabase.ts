@@ -10,10 +10,14 @@ export const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Admin client using service_role key — bypasses RLS
 // ONLY used in AdminDashboard for storage bucket creation and file uploads
-export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
-  auth: { 
-    autoRefreshToken: false, 
-    persistSession: false,
-    detectSessionInUrl: false
-  }
-});
+// If the service role key is missing (e.g. in production config), it falls back to the anon client
+// to prevent the application from crashing.
+export const supabaseAdmin = supabaseServiceKey 
+  ? createClient(supabaseUrl, supabaseServiceKey, {
+      auth: { 
+        autoRefreshToken: false, 
+        persistSession: false,
+        detectSessionInUrl: false
+      }
+    })
+  : supabase; // Safe fallback to prevent crashes
