@@ -285,8 +285,6 @@ export const CardForm: React.FC<CardFormProps> = ({
               </button>
           </div>
         </div>
-
-          </div>
       </div>
 
       {/* NEW: Review & Detailed Analysis Section */}
@@ -480,8 +478,10 @@ export const CardForm: React.FC<CardFormProps> = ({
             </div>
           </div>
         </div>
+      </div>
 
-        <div>
+      <div className="space-y-8 pt-8 border-t border-black/5">
+          <div>
             <div className="flex items-center justify-between mb-2">
                 <label className="block text-xs font-bold uppercase tracking-widest text-black/40">Editorial Verdict</label>
                 <button 
