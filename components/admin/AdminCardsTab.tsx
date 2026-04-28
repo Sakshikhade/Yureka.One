@@ -49,18 +49,25 @@ export const AdminCardsTab: React.FC<AdminCardsTabProps> = ({
   }
 
   const filteredCards = cards.filter(card => {
-    const matchesSearch = card.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          card.bank.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesBank = bankFilter === 'All Banks' || card.bank === bankFilter;
-    const matchesType = typeFilter === 'All Types' || card.type === typeFilter;
-    const matchesStatus = statusFilter === 'All Status' || card.status === statusFilter.toLowerCase();
+    const name = card?.name || '';
+    const bank = card?.bank || '';
+    const type = card?.type || '';
+    const status = card?.status || 'published';
+
+    const matchesSearch = name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          bank.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesBank = bankFilter === 'All Banks' || bank === bankFilter;
+    const matchesType = typeFilter === 'All Types' || type === typeFilter;
+    const matchesStatus = statusFilter === 'All Status' || status === statusFilter.toLowerCase();
     return matchesSearch && matchesBank && matchesType && matchesStatus;
   }).sort((a, b) => {
     let comparison = 0;
     if (sortBy === 'name') {
-      comparison = a.name.localeCompare(b.name);
+      comparison = (a.name || '').localeCompare(b.name || '');
     } else if (sortBy === 'created_at') {
-      comparison = new Date(a.created_at || 0).getTime() - new Date(b.created_at || 0).getTime();
+      const dateA = a.created_at ? new Date(a.created_at).getTime() : 0;
+      const dateB = b.created_at ? new Date(b.created_at).getTime() : 0;
+      comparison = dateA - dateB;
     }
     return sortOrder === 'asc' ? comparison : -comparison;
   });
