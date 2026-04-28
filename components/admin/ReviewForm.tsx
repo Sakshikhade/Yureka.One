@@ -13,6 +13,7 @@ interface ReviewFormProps {
   onFileUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
   uploading: boolean;
   saving: boolean;
+  error?: string | null;
 }
 
 export const ReviewForm: React.FC<ReviewFormProps> = ({
@@ -21,7 +22,8 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
   onSubmit,
   onFileUpload,
   uploading,
-  saving
+  saving,
+  error
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -142,7 +144,6 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
           <div>
             <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Quote / Content</label>
             <textarea 
-              required
               value={form.quote}
               onChange={e => setForm({...form, quote: e.target.value})}
               className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all h-32"
@@ -151,11 +152,19 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
         </div>
       </div>
       
-      <div className="flex justify-end pt-8 border-t border-black/5">
+      <div className="flex justify-between items-center pt-8 border-t border-black/5 mt-8">
+        <div className="flex-1 pr-4">
+          {error && (
+            <div className="p-3 bg-red-50 text-red-500 rounded-xl flex items-start gap-2 text-xs font-bold border border-red-100">
+              <X size={14} className="mt-0.5 shrink-0" />
+              <span className="leading-tight">{error}</span>
+            </div>
+          )}
+        </div>
         <button 
           type="submit" 
           disabled={uploading || saving}
-          className="bg-[#047857] text-cream px-10 py-4 rounded-xl font-bold hover:bg-[#047857]/90 transition-all shadow-lg disabled:opacity-50 flex items-center gap-2"
+          className="bg-[#047857] text-cream px-10 py-4 rounded-xl font-bold hover:bg-[#047857]/90 transition-all shadow-lg disabled:opacity-50 flex items-center gap-2 shrink-0"
         >
           {(uploading || saving) ? <Loader2 className="animate-spin" size={20} /> : <Check size={20} />}
           Save Review

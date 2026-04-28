@@ -157,6 +157,7 @@ export const AdminModals: React.FC<AdminModalsProps> = ({
                   onFileUpload={onFileUpload}
                   uploading={helpers.uploading}
                   saving={helpers.saving}
+                  error={helpers.error}
                 />
               )}
 
@@ -165,7 +166,9 @@ export const AdminModals: React.FC<AdminModalsProps> = ({
                   form={forms.team || {}} 
                   setForm={setForms.setTeam} 
                   onSubmit={onSave}
+                  uploading={helpers.uploading}
                   saving={helpers.saving}
+                  error={helpers.error}
                 />
               )}
             </div>

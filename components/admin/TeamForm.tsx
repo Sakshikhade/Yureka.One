@@ -11,13 +11,17 @@ interface TeamFormProps {
   setForm: (form: any) => void;
   onSubmit: (e: React.FormEvent) => void;
   saving: boolean;
+  uploading?: boolean;
+  error?: string | null;
 }
 
 export const TeamForm: React.FC<TeamFormProps> = ({
   form,
   setForm,
   onSubmit,
-  saving
+  saving,
+  uploading,
+  error
 }) => {
   return (
     <form onSubmit={onSubmit} className="space-y-6">
@@ -56,13 +60,21 @@ export const TeamForm: React.FC<TeamFormProps> = ({
         </div>
       </div>
       
-      <div className="flex justify-end pt-8 border-t border-black/5">
+      <div className="flex justify-between items-center pt-8 border-t border-black/5 mt-8">
+        <div className="flex-1 pr-4">
+          {error && (
+            <div className="p-3 bg-red-50 text-red-500 rounded-xl flex items-start gap-2 text-xs font-bold border border-red-100">
+              <X size={14} className="mt-0.5 shrink-0" />
+              <span className="leading-tight">{error}</span>
+            </div>
+          )}
+        </div>
         <button 
           type="submit" 
-          disabled={saving}
-          className="bg-[#047857] text-cream px-10 py-4 rounded-xl font-bold hover:bg-[#047857]/90 transition-all shadow-lg disabled:opacity-50 flex items-center gap-2"
+          disabled={saving || uploading}
+          className="bg-black text-cream px-10 py-4 rounded-xl font-bold hover:bg-[#047857] transition-all shadow-lg disabled:opacity-50 flex items-center gap-2 shrink-0"
         >
-          {saving ? <Loader2 className="animate-spin text-cream" size={20} /> : <Check size={20} />}
+          {(saving || uploading) ? <Loader2 className="animate-spin" size={20} /> : <Check size={20} />}
           {saving ? 'Inviting...' : 'Invite to Platform'}
         </button>
       </div>

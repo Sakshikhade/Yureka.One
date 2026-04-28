@@ -317,11 +317,19 @@ export const BlogForm: React.FC<BlogFormProps> = ({
       </section>
 
       {/* 5. COMMITMENT */}
-      <div className="flex justify-end pt-10 border-t border-black/5">
+      <div className="flex justify-between items-center pt-10 border-t border-black/5 mt-8">
+        <div className="flex-1 pr-4">
+          {error && (
+            <div className="p-3 bg-red-50 text-red-500 rounded-xl flex items-start gap-2 text-xs font-bold border border-red-100">
+              <X size={14} className="mt-0.5 shrink-0" />
+              <span className="leading-tight">{error}</span>
+            </div>
+          )}
+        </div>
         <button 
           type="submit" 
           disabled={saving}
-          className="bg-black text-cream px-16 py-5 rounded-full font-bold hover:bg-[#047857] transition-all shadow-2xl flex items-center gap-3 text-[10px] uppercase tracking-[0.2em]"
+          className="bg-black text-cream px-16 py-5 rounded-full font-bold hover:bg-[#047857] transition-all shadow-2xl flex items-center gap-3 text-[10px] uppercase tracking-[0.2em] shrink-0"
         >
           {saving ? <Loader2 className="animate-spin" size={20} /> : <Zap size={18} className="fill-clay" />}
           {saving ? 'Transmitting...' : 'Confirm Publication'}
