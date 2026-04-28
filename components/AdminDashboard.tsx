@@ -401,19 +401,19 @@ const AdminDashboard: React.FC = () => {
       }
       else if (activeTab === 'reviews') {
         collection = 'reviews';
-        payload = cleanData({
+        // Explicit allowlist — only columns confirmed in the reviews table schema
+        payload = {
           author: reviewForm.author || '',
           role: reviewForm.role || '',
           company: reviewForm.company || '',
           company_logo: reviewForm.company_logo || '',
-          avatar: reviewForm.avatar || '',
-          image: reviewForm.image || '',
+          image: reviewForm.image || reviewForm.avatar || '',
           quote: reviewForm.quote || '',
-          rating: reviewForm.rating || 5,
+          rating: Number(reviewForm.rating) || 5,
           source: reviewForm.source || 'Direct',
-          featured: reviewForm.featured || false,
-          status: reviewForm.status || 'published'
-        });
+          featured: reviewForm.featured ?? false,
+          status: reviewForm.status || 'published',
+        };
       }
       else if (activeTab === 'settings') {
         collection = 'users';
