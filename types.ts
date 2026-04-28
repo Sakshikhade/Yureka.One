@@ -43,6 +43,29 @@ export interface Card {
   created_at?: string;
   updated_at?: string;
   status?: 'draft' | 'published';
+  
+  // Enhanced review fields
+  description?: string;
+  updated_on?: string;
+  author?: string;
+  reward_type?: string;
+  welcome_benefits?: string;
+  product_details?: string[];
+  pros?: string[];
+  cons?: string[];
+  detailed_features?: { title: string; content: string }[];
+  cashback_details?: string[];
+  redemption_table?: { category: string; value: string }[];
+  exclusions?: string[];
+  eligibility_criteria?: { criteria: string; salaried: string; self_employed: string }[];
+  comparison_cards?: string[];
+  latest_news?: string[];
+  final_review_image?: string;
+  final_verdict_text?: string;
+  
+  // Specific benefits grid
+  grid_benefits?: { title: string; value: string }[];
+  grid_fees?: { title: string; value: string }[];
 }
 
 export interface WaitlistEntry {

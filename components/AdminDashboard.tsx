@@ -53,7 +53,45 @@ const DEFAULT_CARD_FORM = {
   rating: 4.5, elite_rating: 4.5, benefits: [''], benefit_items: [{ heading: '', subheading: '' }],
   verdict: '', slug: '', apply_link: '', annual_fee: '₹0', joining_fee: '₹0', intro_offer: '',
   best_for: 'Shopping', category: 'Shopping', categories: [] as string[],
-  color: 'from-blue-600 to-indigo-700', rewards_rate: '5%', projected_savings: '₹12,000/yr', status: 'published'
+  color: 'from-blue-600 to-indigo-700', rewards_rate: '5%', projected_savings: '₹12,000/yr', status: 'published',
+  
+  // Review fields
+  description: '', updated_on: '', author: 'Yureka Research Team', 
+  reward_type: 'Cashback', welcome_benefits: '',
+  product_details: [''], pros: [''], cons: [''],
+  detailed_features: [{ title: '', content: '' }],
+  cashback_details: [''],
+  redemption_table: [
+    { category: 'Product Catalog', value: '₹0.25' },
+    { category: 'Flights/Hotels', value: '₹0.30' },
+    { category: 'Cashback', value: '₹1.00' },
+    { category: 'Airmiles', value: '0.30 Miles' }
+  ],
+  exclusions: [''],
+  eligibility_criteria: [
+    { criteria: 'Age', salaried: '21 – 60 Years', self_employed: '21 – 65 Years' },
+    { criteria: 'Income', salaried: '₹25,000 / Month', self_employed: '₹6,00,000 / Annum' }
+  ],
+  comparison_cards: [] as string[],
+  latest_news: [''],
+  final_review_image: '',
+  final_verdict_text: '',
+  grid_benefits: [
+    { title: 'Movie & Dining', value: '' },
+    { title: 'Rewards Rate', value: '' },
+    { title: 'Reward Redemption', value: '' },
+    { title: 'Travel', value: '' },
+    { title: 'Lounge Access', value: '' },
+    { title: 'Insurance Benefits', value: '' }
+  ],
+  grid_fees: [
+    { title: 'Spend-Based Waiver', value: '' },
+    { title: 'Rewards Redemption Fee', value: '' },
+    { title: 'Foreign Currency Markup', value: '' },
+    { title: 'Fuel Surcharge Waiver', value: '' },
+    { title: 'Cash Advance Charges', value: '' },
+    { title: 'Interest Rates', value: '' }
+  ]
 };
 
 const DEFAULT_REVIEW_FORM: Partial<Review> = {

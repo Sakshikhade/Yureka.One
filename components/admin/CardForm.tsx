@@ -286,6 +286,201 @@ export const CardForm: React.FC<CardFormProps> = ({
           </div>
         </div>
 
+          </div>
+      </div>
+
+      {/* NEW: Review & Detailed Analysis Section */}
+      <div className="space-y-8 pt-8 border-t border-black/5">
+        <div className="bg-slate-50 p-6 rounded-2xl border border-black/5">
+          <h3 className="text-sm font-black uppercase tracking-[0.2em] text-blue-600 mb-6 flex items-center gap-2">
+            <Sparkles size={18} />
+            Review & Detailed Analysis
+          </h3>
+          
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Review Author</label>
+                <input 
+                  type="text" 
+                  value={form.author || ''}
+                  onChange={e => setForm({...form, author: e.target.value})}
+                  className="w-full bg-white border border-black/5 rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Reward Type (Text)</label>
+                <input 
+                  type="text" 
+                  value={form.reward_type || ''}
+                  onChange={e => setForm({...form, reward_type: e.target.value})}
+                  className="w-full bg-white border border-black/5 rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Introductory Description (Markdown Supported)</label>
+              <textarea 
+                value={form.description || ''}
+                onChange={e => setForm({...form, description: e.target.value})}
+                className="w-full bg-white border border-black/5 rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition-all h-24"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Grid Benefits (Fixed 6) */}
+              <div className="space-y-4">
+                <label className="block text-xs font-black uppercase tracking-widest text-blue-600">Benefits Grid (Top Analysis)</label>
+                <div className="space-y-3">
+                  {(form.grid_benefits || []).map((b: any, idx: number) => (
+                    <div key={idx} className="flex gap-2">
+                      <input type="text" readOnly value={b.title} className="w-1/3 bg-black/5 border-none rounded-lg p-2 text-[10px] font-bold" />
+                      <input 
+                        type="text" 
+                        value={b.value || ''} 
+                        onChange={e => {
+                          const next = [...form.grid_benefits];
+                          next[idx].value = e.target.value;
+                          setForm({...form, grid_benefits: next});
+                        }}
+                        className="w-2/3 bg-white border border-black/5 rounded-lg p-2 text-xs focus:ring-2 focus:ring-blue-500 outline-none" 
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Grid Fees (Fixed 6) */}
+              <div className="space-y-4">
+                <label className="block text-xs font-black uppercase tracking-widest text-blue-600">Fees Grid (Technical Profile)</label>
+                <div className="space-y-3">
+                  {(form.grid_fees || []).map((f: any, idx: number) => (
+                    <div key={idx} className="flex gap-2">
+                      <input type="text" readOnly value={f.title} className="w-1/3 bg-black/5 border-none rounded-lg p-2 text-[10px] font-bold" />
+                      <input 
+                        type="text" 
+                        value={f.value || ''} 
+                        onChange={e => {
+                          const next = [...form.grid_fees];
+                          next[idx].value = e.target.value;
+                          setForm({...form, grid_fees: next});
+                        }}
+                        className="w-2/3 bg-white border border-black/5 rounded-lg p-2 text-xs focus:ring-2 focus:ring-blue-500 outline-none" 
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Pros & Cons */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <label className="block text-xs font-black uppercase tracking-widest text-emerald-600">Pros List</label>
+                  <button type="button" onClick={() => setForm({...form, pros: [...(form.pros || []), '']})} className="text-emerald-600"><Plus size={14} /></button>
+                </div>
+                {(form.pros || []).map((p: string, i: number) => (
+                  <div key={i} className="flex gap-2">
+                    <input 
+                      type="text" value={p} 
+                      onChange={e => {
+                        const next = [...form.pros];
+                        next[i] = e.target.value;
+                        setForm({...form, pros: next});
+                      }}
+                      className="flex-1 bg-white border border-emerald-100 rounded-lg p-2 text-xs" 
+                    />
+                    <button type="button" onClick={() => setForm({...form, pros: form.pros.filter((_:any, j:number) => i!==j)})}><X size={14} /></button>
+                  </div>
+                ))}
+              </div>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <label className="block text-xs font-black uppercase tracking-widest text-rose-600">Cons List</label>
+                  <button type="button" onClick={() => setForm({...form, cons: [...(form.cons || []), '']})} className="text-rose-600"><Plus size={14} /></button>
+                </div>
+                {(form.cons || []).map((p: string, i: number) => (
+                  <div key={i} className="flex gap-2">
+                    <input 
+                      type="text" value={p} 
+                      onChange={e => {
+                        const next = [...form.cons];
+                        next[i] = e.target.value;
+                        setForm({...form, cons: next});
+                      }}
+                      className="flex-1 bg-white border border-rose-100 rounded-lg p-2 text-xs" 
+                    />
+                    <button type="button" onClick={() => setForm({...form, cons: form.cons.filter((_:any, j:number) => i!==j)})}><X size={14} /></button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Product Details (Bullets) */}
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <label className="block text-xs font-black uppercase tracking-widest text-blue-600">Product Details (Bullet Points)</label>
+                <button type="button" onClick={() => setForm({...form, product_details: [...(form.product_details || []), '']})} className="text-blue-600"><Plus size={14} /></button>
+              </div>
+              {(form.product_details || []).map((p: string, i: number) => (
+                <div key={i} className="flex gap-2">
+                  <input 
+                    type="text" value={p} 
+                    onChange={e => {
+                      const next = [...form.product_details];
+                      next[i] = e.target.value;
+                      setForm({...form, product_details: next});
+                    }}
+                    className="flex-1 bg-white border border-black/5 rounded-lg p-2 text-xs" 
+                  />
+                  <button type="button" onClick={() => setForm({...form, product_details: form.product_details.filter((_:any, j:number) => i!==j)})}><X size={14} /></button>
+                </div>
+              ))}
+            </div>
+
+            {/* Redemption Table */}
+            <div className="space-y-4">
+              <label className="block text-xs font-black uppercase tracking-widest text-blue-600">Point Redemption Values</label>
+              <div className="grid grid-cols-2 gap-4">
+                {(form.redemption_table || []).map((r: any, i: number) => (
+                  <div key={i} className="flex gap-2">
+                    <input type="text" readOnly value={r.category} className="w-1/2 bg-black/5 border-none rounded-lg p-2 text-[10px] font-bold" />
+                    <input type="text" value={r.value} onChange={el => {
+                      const next = [...form.redemption_table];
+                      next[i].value = el.target.value;
+                      setForm({...form, redemption_table: next});
+                    }} className="w-1/2 bg-white border border-black/5 rounded-lg p-2 text-xs" />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Latest News */}
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <label className="block text-xs font-black uppercase tracking-widest text-blue-600">Latest News & Updates</label>
+                <button type="button" onClick={() => setForm({...form, latest_news: [...(form.latest_news || []), '']})} className="text-blue-600"><Plus size={14} /></button>
+              </div>
+              {(form.latest_news || []).map((n: string, i: number) => (
+                <div key={i} className="flex gap-2">
+                  <input 
+                    type="text" value={n} 
+                    onChange={e => {
+                      const next = [...form.latest_news];
+                      next[i] = e.target.value;
+                      setForm({...form, latest_news: next});
+                    }}
+                    className="flex-1 bg-white border border-black/5 rounded-lg p-2 text-xs" 
+                  />
+                  <button type="button" onClick={() => setForm({...form, latest_news: form.latest_news.filter((_:any, j:number) => i!==j)})}><X size={14} /></button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
         <div>
             <div className="flex items-center justify-between mb-2">
                 <label className="block text-xs font-bold uppercase tracking-widest text-black/40">Editorial Verdict</label>
@@ -317,7 +512,7 @@ export const CardForm: React.FC<CardFormProps> = ({
                       });
                       const result = await response.json();
                       const summary = result.candidates[0].content.parts[0].text;
-                      setForm({...form, verdict: summary.trim()});
+                      setForm({...form, verdict: summary.trim(), final_verdict_text: summary.trim()});
                     } catch (err: any) {
                       alert(`AI Error: ${err.message}. Please ensure VITE_GEMINI_API_KEY is in your .env`);
                     } finally {
