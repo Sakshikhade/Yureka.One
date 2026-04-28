@@ -16,7 +16,7 @@ import {
   deleteWaitlistEntry, updateWaitlistStatus,
   inviteTeamMember, updateUserRole, deleteUser,
   addReview, updateReview, deleteReview,
-  withRetry, cleanData
+  withRetry, cleanData, checkIfAdmin
 } from '../services/supabaseService';
 import { Blog, Card, WaitlistEntry, Review } from '../types';
 import { useSupabase } from './SupabaseProvider';
@@ -117,6 +117,17 @@ const AdminDashboard: React.FC = () => {
   );
   const [waitlistFilter, setWaitlistFilter] = useState<'pending' | 'accepted' | 'rejected' | 'on_hold' | 'all'>('pending');
 
+  // Critical Loading Timeout to prevent permanent spinner
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (loading) {
+        console.warn("⚠️ Admin Auth timed out. Forcing UI state.");
+        setLoading(false);
+      }
+    }, 6000);
+    return () => clearTimeout(timer);
+  }, [loading]);
+
   useEffect(() => {
     localStorage.setItem('yureka_admin_tab', activeTab);
     setError(null);
@@ -160,20 +171,16 @@ const AdminDashboard: React.FC = () => {
   // --- Core Auth Logic ---
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      const user = session?.user || null;
-      setUser(user);
+      const currentUser = session?.user || null;
+      setUser(currentUser);
       
-      if (user) {
+      if (currentUser) {
         try {
-          // Use the robust checkIfAdmin helper from our service layer
-          // This uses supabaseAdmin to bypass RLS and ensures ground truth
-          const { checkIfAdmin } = await import('../services/supabaseService');
-          const isUserAdmin = await checkIfAdmin(user.id, user.email);
+          const isUserAdmin = await checkIfAdmin(currentUser.id, currentUser.email);
           
           if (isUserAdmin) {
-            // Fetch the specific role for UI customization
-            const { supabaseAdmin } = await import('../supabase');
-            const { data } = await supabaseAdmin.from('users').select('role').eq('email', user.email?.toLowerCase().trim()).single();
+            // Using standard client with a fallback to 'admin' role if specific role fetch fails
+            const { data } = await supabase.from('users').select('role').eq('email', currentUser.email?.toLowerCase().trim()).single();
             setUserRole(data?.role || 'admin');
             setIsAdmin(true);
           } else {
