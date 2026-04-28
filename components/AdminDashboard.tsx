@@ -56,7 +56,7 @@ const DEFAULT_CARD_FORM = {
   color: 'from-blue-600 to-indigo-700', rewards_rate: '5%', projected_savings: '₹12,000/yr', status: 'published',
   
   // Review fields
-  description: '', updated_on: '', author: 'Yureka Research Team', 
+  description: '', author: 'Yureka Research Team', 
   reward_type: 'Cashback', welcome_benefits: '',
   product_details: [''], pros: [''], cons: [''],
   detailed_features: [{ title: '', content: '' }],
@@ -360,12 +360,44 @@ const AdminDashboard: React.FC = () => {
       } 
       else if (activeTab === 'cards') {
         collection = 'cards';
-        const cardPayload = { ...cardForm };
-        if (!cardPayload.slug) {
-          cardPayload.slug = generateSlug(cardPayload.name, cardPayload.bank) || `card-${Date.now()}`;
-        }
-        // Remove UI-specific or non-DB fields if any exist
-        payload = cleanData(cardPayload);
+        const c = cardForm;
+        if (!c.slug) c.slug = generateSlug(c.name, c.bank) || `card-${Date.now()}`;
+        // Explicitly map only columns that exist in the DB schema
+        payload = {
+          name: c.name || '',
+          bank: c.bank || '',
+          issuer: c.issuer || '',
+          type: c.type || 'Rewards',
+          image: c.image || '',
+          slug: c.slug || '',
+          status: c.status || 'published',
+          color: c.color || '',
+          apply_link: c.apply_link || '',
+          best_for: c.best_for || '',
+          category: c.category || '',
+          categories: c.categories || [],
+          rating: Number(c.rating) || 0,
+          elite_rating: Number(c.elite_rating) || 0,
+          rewards_rate: c.rewards_rate || '',
+          projected_savings: c.projected_savings || '',
+          annual_fee: c.annual_fee || '',
+          joining_fee: c.joining_fee || '',
+          intro_offer: c.intro_offer || '',
+          benefits: Array.isArray(c.benefits) ? c.benefits.filter((b: string) => b?.trim()) : [],
+          benefit_items: Array.isArray(c.benefit_items) ? c.benefit_items.filter((b: any) => b?.heading?.trim()) : [],
+          verdict: c.verdict || '',
+          description: c.description || '',
+          author: c.author || '',
+          reward_type: c.reward_type || '',
+          product_details: Array.isArray(c.product_details) ? c.product_details.filter((x: string) => x?.trim()) : [],
+          pros: Array.isArray(c.pros) ? c.pros.filter((x: string) => x?.trim()) : [],
+          cons: Array.isArray(c.cons) ? c.cons.filter((x: string) => x?.trim()) : [],
+          redemption_table: Array.isArray(c.redemption_table) ? c.redemption_table : [],
+          latest_news: Array.isArray(c.latest_news) ? c.latest_news.filter((x: string) => x?.trim()) : [],
+          grid_benefits: Array.isArray(c.grid_benefits) ? c.grid_benefits : [],
+          grid_fees: Array.isArray(c.grid_fees) ? c.grid_fees : [],
+          final_verdict_text: c.final_verdict_text || '',
+        };
       }
       else if (activeTab === 'reviews') {
         collection = 'reviews';
@@ -400,6 +432,8 @@ const AdminDashboard: React.FC = () => {
       delete finalPayload.id;
       delete finalPayload.created_at;
       delete finalPayload.updated_at;
+      delete finalPayload.updated_on;
+      delete finalPayload.avatar; // not a cards column
 
       console.log(`📤 Saving to ${collection}:`, finalPayload);
 
