@@ -10,6 +10,7 @@ import BottomBanner from './components/BottomBanner';
 import TopBanner from './components/TopBanner';
 import { SupabaseProvider } from './components/SupabaseProvider';
 import { SkeletonCard } from './components/SkeletonLoaders';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 // Lazy Loaded Pages
 const MainPage = lazy(() => import('./components/MainPage'));
@@ -159,7 +160,11 @@ const AppContent: React.FC = () => {
                </>
             } />
             
-            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin" element={
+              <ErrorBoundary>
+                <AdminDashboard />
+              </ErrorBoundary>
+            } />
             <Route path="/coming-soon" element={<ComingSoon />} />
             
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
