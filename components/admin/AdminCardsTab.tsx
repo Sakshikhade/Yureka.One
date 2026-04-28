@@ -13,6 +13,7 @@ import {
   Layers,
   ArrowUpDown
 } from 'lucide-react';
+import React from 'react';
 import { Card } from '../../types';
 import { useSupabase } from '../SupabaseProvider';
 import { SkeletonTable } from '../SkeletonLoaders';
