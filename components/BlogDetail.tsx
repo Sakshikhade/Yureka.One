@@ -1,59 +1,84 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { 
-    ArrowLeft, Share2, Bookmark, Clock, Calendar, 
-    User, ChevronRight, Sparkles, MessageSquare,
-    Facebook, Twitter, Linkedin
+    ArrowLeft, Share2, Bookmark, Clock, 
+    Twitter, Linkedin, Link as LinkIcon,
+    ChevronUp, BookOpen
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
-import { getBlogBySlug } from '../services/supabaseService';
+import remarkGfm from 'remark-gfm';
+import { getBlogBySlug, fetchBlogsPublic } from '../services/supabaseService';
 import { Blog } from '../types';
 import ImageWithLoader from './ImageWithLoader';
-
+import { motion, AnimatePresence } from 'motion/react';
 import SEO from './SEO';
 
 const BlogDetail: React.FC = () => {
     const { slug } = useParams<{ slug: string }>();
     const [blog, setBlog] = useState<Blog | null>(null);
+    const [related, setRelated] = useState<Blog[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [readingProgress, setReadingProgress] = useState(0);
+    const [bookmarked, setBookmarked] = useState(false);
+    const [copied, setCopied] = useState(false);
+    const [showScrollTop, setShowScrollTop] = useState(false);
+    const articleRef = useRef<HTMLDivElement>(null);
 
     const blogSchema = blog ? {
-      "@context": "https://schema.org",
-      "@type": "BlogPosting",
-      "headline": blog.title,
-      "image": [blog.image],
-      "datePublished": blog.created_at,
-      "author": [{
-          "@type": "Person",
-          "name": blog.author
-        }]
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": blog.title,
+        "image": [blog.image],
+        "datePublished": blog.created_at,
+        "author": [{ "@type": "Person", "name": blog.author }]
     } : undefined;
-
 
     useEffect(() => {
         if (!slug) return;
+        setIsLoading(true);
         const fetchBlog = async () => {
             const data = await getBlogBySlug(slug);
             setBlog(data);
             setIsLoading(false);
+            if (data) {
+                const all = await fetchBlogsPublic();
+                setRelated((all || []).filter(b => b.id !== data.id && b.category === data.category).slice(0, 3));
+            }
         };
         fetchBlog();
-
-        const handleScroll = () => {
-            const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const progress = (window.scrollY / totalHeight) * 100;
-            setReadingProgress(progress);
-        };
-
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
+        window.scrollTo(0, 0);
     }, [slug]);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const el = articleRef.current;
+            if (!el) return;
+            const rect = el.getBoundingClientRect();
+            const totalHeight = el.offsetHeight;
+            const scrolled = Math.max(0, -rect.top);
+            const progress = Math.min(100, (scrolled / totalHeight) * 100);
+            setReadingProgress(progress);
+            setShowScrollTop(window.scrollY > 600);
+        };
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    const handleShare = async () => {
+        try {
+            await navigator.clipboard.writeText(window.location.href);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        } catch {}
+    };
 
     if (isLoading) {
         return (
             <div className="min-h-screen bg-cream flex items-center justify-center">
-                <div className="text-3xl font-serif italic animate-pulse text-[#242424]/40">Opening Journal...</div>
+                <div className="space-y-4 text-center">
+                    <div className="w-12 h-12 border-2 border-[#047857]/30 border-t-[#047857] rounded-full animate-spin mx-auto" />
+                    <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#242424]/30">Opening Article</p>
+                </div>
             </div>
         );
     }
@@ -61,140 +86,231 @@ const BlogDetail: React.FC = () => {
     if (!blog) {
         return (
             <div className="min-h-screen bg-cream flex flex-col items-center justify-center p-6 text-center">
-                <h1 className="text-4xl font-serif italic text-[#242424] mb-4">Article not found</h1>
-                <p className="text-[#242424]/60 mb-8 max-w-md">The story you are looking for may have been archived or moved.</p>
-                <Link to="/blogs" className="bg-[#242424] text-cream px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px]">
-                    Return to Journal
+                <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#047857] mb-6">404 Not Found</p>
+                <h1 className="text-5xl font-heading font-extrabold text-[#242424] mb-4 tracking-tight">Article Not Found</h1>
+                <p className="text-[#242424]/50 mb-10 max-w-md font-serif italic text-lg">The story you are looking for may have been archived or moved.</p>
+                <Link to="/blogs" className="bg-[#242424] text-cream px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-[#047857] transition-all">
+                    Back to Journal
                 </Link>
             </div>
         );
     }
 
+    // Estimate word count for reading time display
+    const wordCount = (blog.content || '').split(/\s+/).length;
+    const readTime = blog.read_time || `${Math.ceil(wordCount / 200)} min read`;
+
     return (
-        <div className="min-h-screen bg-cream pb-32 font-serif">
-            <SEO 
+        <div className="min-h-screen bg-cream pb-32 font-serif" ref={articleRef}>
+            <SEO
                 title={`${blog.title} | Yureka Journal`}
-                description={blog.excerpt || `Read the latest insights on ${blog.category} and credit card optimization by ${blog.author}.`}
+                description={blog.excerpt || `Read the latest insights on ${blog.category} from ${blog.author}.`}
                 schema={blogSchema}
             />
-            {/* Reading Progress Bar */}
 
-            <div 
-                className="fixed top-[104px] md:top-20 left-0 h-1 bg-[#047857] z-[85] transition-all duration-100" 
+            {/* ── READING PROGRESS BAR ── */}
+            <div
+                className="fixed top-0 left-0 h-0.5 bg-gradient-to-r from-[#047857] to-[#34d399] z-[100] transition-all duration-75"
                 style={{ width: `${readingProgress}%` }}
             />
 
-            {/* Top Navigation */}
-            <div className="sticky top-[104px] md:top-20 z-40 bg-cream/80 backdrop-blur-md border-b border-ink/5 px-6 py-3 md:py-4">
-                <div className="max-w-[1000px] mx-auto flex items-center justify-between">
-                    <Link to="/blogs" className="flex items-center gap-2 text-[#242424]/40 hover:text-[#047857] transition-colors group">
-                        <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-                        <span className="text-[10px] font-bold uppercase tracking-widest font-sans">Back to Journal</span>
+            {/* ── TOP NAV ── */}
+            <div className="sticky top-[104px] md:top-20 z-40 bg-cream/90 backdrop-blur-xl border-b border-black/5">
+                <div className="max-w-[780px] mx-auto px-6 h-14 flex items-center justify-between">
+                    <Link to="/blogs" className="flex items-center gap-2 text-[#242424]/40 hover:text-[#047857] transition-colors group text-[11px] font-bold uppercase tracking-widest font-sans">
+                        <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
+                        Journal
                     </Link>
-                    <div className="flex items-center gap-4">
-                        <button className="p-2 text-[#242424]/40 hover:text-[#047857] transition-colors"><Share2 size={18} /></button>
-                        <button className="p-2 text-[#242424]/40 hover:text-[#047857] transition-colors"><Bookmark size={18} /></button>
+                    <div className="flex items-center gap-1">
+                        <AnimatePresence>
+                            {copied && (
+                                <motion.span
+                                    initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0 }}
+                                    className="text-[10px] font-bold text-[#047857] uppercase tracking-widest mr-2"
+                                >
+                                    Copied!
+                                </motion.span>
+                            )}
+                        </AnimatePresence>
+                        <button onClick={handleShare} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-black/5 text-[#242424]/40 hover:text-[#047857] transition-all">
+                            <Share2 size={16} />
+                        </button>
+                        <button onClick={() => setBookmarked(!bookmarked)} className={`w-9 h-9 flex items-center justify-center rounded-full hover:bg-black/5 transition-all ${bookmarked ? 'text-[#047857]' : 'text-[#242424]/40 hover:text-[#047857]'}`}>
+                            <Bookmark size={16} fill={bookmarked ? 'currentColor' : 'none'} />
+                        </button>
                     </div>
                 </div>
             </div>
 
-            <div className="max-w-[1000px] mx-auto px-6 pt-8 md:pt-16">
-                {/* Article Header */}
-                <header className="mb-16">
-                    <div className="flex items-center gap-4 text-[10px] font-bold uppercase tracking-[0.4em] text-[#047857] mb-8 font-sans">
-                        <span>{blog.category}</span>
-                        <div className="w-1.5 h-1.5 bg-[#242424]/10 rounded-full"></div>
-                        <span className="text-[#242424]/40">{blog.read_time || '5 min read'}</span>
+            <div className="max-w-[780px] mx-auto px-6 pt-12 md:pt-20">
+
+                {/* ── ARTICLE HEADER ── */}
+                <header className="mb-12">
+                    {/* Meta */}
+                    <div className="flex items-center flex-wrap gap-3 mb-8 font-sans">
+                        <span className="bg-[#047857]/10 text-[#047857] text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full">
+                            {blog.category}
+                        </span>
+                        <div className="flex items-center gap-1.5 text-[#242424]/40 text-[10px] font-bold uppercase tracking-widest">
+                            <Clock size={11} />{readTime}
+                        </div>
+                        <div className="flex items-center gap-1.5 text-[#242424]/30 text-[10px] font-bold uppercase tracking-widest">
+                            <BookOpen size={11} />{wordCount.toLocaleString()} words
+                        </div>
                     </div>
-                    <h1 className="text-3xl sm:text-6xl md:text-8xl font-serif font-bold leading-[1.1] text-ink mb-12 tracking-tight">
+
+                    {/* Title */}
+                    <h1 className="text-4xl sm:text-6xl font-heading font-extrabold leading-[1.05] text-[#242424] mb-8 tracking-tight">
                         {blog.title}
                     </h1>
-                    <div className="flex flex-wrap items-center justify-between gap-8 pt-10 border-t border-ink/5">
+
+                    {/* Author row */}
+                    <div className="flex items-center justify-between flex-wrap gap-6 pt-8 border-t border-black/8">
                         <div className="flex items-center gap-4">
-                            <div className="w-14 h-14 bg-[#242424] text-cream rounded-full flex items-center justify-center text-xl italic shadow-xl">
-                                {blog.author[0]}
+                            <div className="w-12 h-12 bg-[#242424] text-cream rounded-full flex items-center justify-center text-lg font-bold shadow-md shrink-0">
+                                {blog.author?.[0] || 'Y'}
                             </div>
                             <div>
-                                <p className="text-[10px] font-bold uppercase tracking-widest text-[#242424]/40 font-sans">Written By</p>
-                                <p className="text-xl italic font-medium text-[#242424]">{blog.author}</p>
+                                <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-[#242424]/40 font-sans">Written By</p>
+                                <p className="text-base font-bold text-[#242424] font-sans">{blog.author || 'Yureka Editorial'}</p>
                             </div>
                         </div>
-                        <div className="flex items-center gap-8">
-                             <div className="text-right">
-                                <p className="text-[10px] font-bold uppercase tracking-widest text-[#242424]/40 font-sans">Published</p>
-                                <p className="text-lg italic text-[#242424]">{new Date(blog.created_at || Date.now()).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
-                             </div>
+                        <div className="text-right">
+                            <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-[#242424]/40 font-sans">Published</p>
+                            <p className="text-base font-bold text-[#242424] font-sans">
+                                {new Date(blog.created_at || Date.now()).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                            </p>
                         </div>
                     </div>
                 </header>
 
-                {/* Featured Image */}
-                <div className="relative aspect-[21/9] rounded-[3rem] overflow-hidden mb-20 shadow-2xl skew-x-[-1deg] hover:skew-x-0 transition-transform duration-1000">
-                    <ImageWithLoader 
-                        src={blog.image} 
-                        alt={blog.title} 
-                        className="w-full h-full object-cover grayscale-[0.2] hover:grayscale-0 transition-all duration-1000"
+                {/* ── HERO IMAGE ── */}
+                <div className="relative aspect-[16/9] rounded-2xl overflow-hidden mb-14 shadow-2xl">
+                    <ImageWithLoader
+                        src={blog.image}
+                        alt={blog.title}
+                        className="w-full h-full object-cover"
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                 </div>
 
-                {/* Article Content */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 relative">
-                    {/* Social Share Sidebar */}
-                    <aside className="hidden lg:block lg:col-span-1 sticky top-48 h-fit space-y-8">
-                        <button className="w-12 h-12 flex items-center justify-center rounded-full bg-cream border border-ink/5 text-[#242424]/30 hover:text-[#242424] transition-colors shadow-sm"><Twitter size={18} /></button>
-                        <button className="w-12 h-12 flex items-center justify-center rounded-full bg-cream border border-ink/5 text-[#242424]/30 hover:text-[#242424] transition-colors shadow-sm"><Facebook size={18} /></button>
-                        <button className="w-12 h-12 flex items-center justify-center rounded-full bg-cream border border-ink/5 text-[#242424]/30 hover:text-[#242424] transition-colors shadow-sm"><Linkedin size={18} /></button>
-                    </aside>
-
-                    <article className="lg:col-span-10 space-y-10 prose prose-lg prose-ink max-w-none prose-serif">
-                        <div className="text-xl md:text-3xl italic text-ink/70 border-l-8 border-clay pl-6 md:pl-10 mb-12 md:mb-16 leading-relaxed font-serif font-medium">
-                            <ReactMarkdown>{blog.excerpt}</ReactMarkdown>
+                {/* ── ARTICLE BODY ── */}
+                <article>
+                    {/* Pull quote / excerpt */}
+                    {blog.excerpt && (
+                        <div className="relative pl-6 border-l-4 border-[#047857] mb-12">
+                            <p className="text-xl md:text-2xl italic text-[#242424]/70 leading-relaxed font-serif font-medium">
+                                {blog.excerpt}
+                            </p>
                         </div>
-                        
-                        <div className="article-content text-xl leading-[1.8] text-ink/90 font-serif font-medium">
-                            <ReactMarkdown>{blog.content}</ReactMarkdown>
-                        </div>
+                    )}
 
-                        {/* Article Footer */}
-                        <footer className="pt-20 mt-20 border-t border-ink/10">
-                            <div className="bg-cream p-12 rounded-[3.5rem] border border-ink/5 flex flex-col md:flex-row items-center gap-10 shadow-2xl relative overflow-hidden group">
-                                <div className="absolute top-0 right-0 w-32 h-32 bg-[#047857]/5 rounded-full -m-16 group-hover:scale-150 transition-transform"></div>
-                                <div className="w-24 h-24 bg-[#242424] text-cream rounded-full flex items-center justify-center text-4xl italic shrink-0 shadow-lg">
-                                    {blog.author[0]}
-                                </div>
-                                <div className="space-y-4">
-                                    <h4 className="text-sm font-bold uppercase tracking-[0.3em] text-[#242424] font-sans">About the Author</h4>
-                                    <p className="text-xl italic text-ink/70 max-w-xl font-medium font-serif">
-                                        {blog.author} is a senior financial analyst and a regular contributor to the Yureka Journal, specializing in Indian credit ecosystems.
-                                    </p>
-                                    <div className="flex gap-4 pt-2">
-                                        <button className="text-[#047857] font-bold uppercase tracking-widest text-[9px] font-sans hover:text-[#242424] transition-colors">View Profile</button>
-                                        <button className="text-[#242424]/30 font-bold uppercase tracking-widest text-[9px] font-sans hover:text-[#242424] transition-colors">Contact</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </footer>
-                    </article>
+                    {/* Main content */}
+                    <div className="prose prose-lg max-w-none
+                        prose-headings:font-heading prose-headings:font-extrabold prose-headings:tracking-tight prose-headings:text-[#242424]
+                        prose-h2:text-3xl prose-h2:mt-16 prose-h2:mb-6 prose-h2:pb-4 prose-h2:border-b prose-h2:border-black/8
+                        prose-h3:text-2xl prose-h3:mt-12 prose-h3:mb-4
+                        prose-p:text-[#242424]/80 prose-p:leading-[1.85] prose-p:text-[17px] prose-p:font-serif
+                        prose-a:text-[#047857] prose-a:no-underline hover:prose-a:underline
+                        prose-blockquote:border-l-4 prose-blockquote:border-[#047857] prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-[#242424]/60 prose-blockquote:not-italic
+                        prose-strong:text-[#242424] prose-strong:font-bold
+                        prose-code:bg-[#047857]/8 prose-code:text-[#047857] prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:font-mono
+                        prose-img:rounded-xl prose-img:shadow-lg
+                        prose-ul:space-y-2 prose-li:text-[#242424]/75 prose-li:font-serif prose-li:text-[17px]
+                        prose-hr:border-black/8 prose-hr:my-16
+                    ">
+                        <ReactMarkdown remarkPlugins={[remarkGfm]}>{blog.content}</ReactMarkdown>
+                    </div>
+                </article>
+
+                {/* ── SHARE ROW ── */}
+                <div className="mt-20 pt-10 border-t border-black/8 flex items-center justify-between flex-wrap gap-6">
+                    <div>
+                        <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-[#242424]/40 font-sans mb-2">Share this article</p>
+                        <div className="flex gap-2">
+                            <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(blog.title)}&url=${encodeURIComponent(window.location.href)}`} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-black/5 flex items-center justify-center text-[#242424]/50 hover:bg-[#242424] hover:text-white transition-all">
+                                <Twitter size={16} />
+                            </a>
+                            <a href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(window.location.href)}&title=${encodeURIComponent(blog.title)}`} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-black/5 flex items-center justify-center text-[#242424]/50 hover:bg-[#0077b5] hover:text-white transition-all">
+                                <Linkedin size={16} />
+                            </a>
+                            <button onClick={handleShare} className="w-10 h-10 rounded-full bg-black/5 flex items-center justify-center text-[#242424]/50 hover:bg-[#047857] hover:text-white transition-all">
+                                <LinkIcon size={16} />
+                            </button>
+                        </div>
+                    </div>
+                    <button onClick={() => setBookmarked(!bookmarked)} className={`flex items-center gap-2 px-5 py-3 rounded-full border text-[11px] font-bold uppercase tracking-widest transition-all font-sans ${bookmarked ? 'border-[#047857] text-[#047857] bg-[#047857]/5' : 'border-black/10 text-[#242424]/40 hover:border-[#047857] hover:text-[#047857]'}`}>
+                        <Bookmark size={14} fill={bookmarked ? 'currentColor' : 'none'} />
+                        {bookmarked ? 'Saved' : 'Save Article'}
+                    </button>
                 </div>
-                
-                {/* Related CTA */}
-                <div className="mt-40 text-center space-y-8">
-                     <div className="inline-flex items-center gap-3 bg-[#047857]/10 px-6 py-2 rounded-full text-[#047857] font-bold text-[10px] uppercase tracking-widest">
-                        <Sparkles size={14} /> Never miss a beat
-                     </div>
-                      <h3 className="text-3xl md:text-6xl font-serif tracking-tighter leading-tight italic px-4">
-                         The future of credit is <span className="text-[#047857]">conversational.</span>
-                      </h3>
-                     <p className="text-xl text-[#242424]/40 max-w-xl mx-auto font-serif italic">
-                        Join 50,000+ others waiting for the AI-driven financial optimization engine.
-                     </p>
-                     <div className="pt-8">
-                        <Link to="/join-waitlist" className="bg-[#242424] text-cream px-12 py-6 rounded-full font-bold uppercase tracking-[0.3em] text-[10px] hover:bg-[#047857] transition-all shadow-2xl inline-block">
-                             Join VIP Waitlist
+
+                {/* ── AUTHOR CARD ── */}
+                <div className="mt-12 p-8 md:p-10 rounded-2xl bg-[#f8f6f1] border border-black/5 flex gap-6 items-start">
+                    <div className="w-16 h-16 bg-[#242424] text-cream rounded-full flex items-center justify-center text-2xl font-bold shrink-0 shadow-md">
+                        {blog.author?.[0] || 'Y'}
+                    </div>
+                    <div className="space-y-3">
+                        <div>
+                            <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-[#242424]/40 font-sans">About the Author</p>
+                            <p className="text-xl font-bold text-[#242424] font-sans mt-1">{blog.author || 'Yureka Editorial'}</p>
+                        </div>
+                        <p className="text-[#242424]/60 leading-relaxed font-serif italic text-[15px]">
+                            Senior analyst at Yureka, specializing in Indian credit ecosystems, reward optimization, and fintech strategy. Published weekly in The Yureka Journal.
+                        </p>
+                        <Link to="/blogs" className="inline-flex items-center gap-2 text-[#047857] text-[11px] font-bold uppercase tracking-widest font-sans hover:gap-3 transition-all">
+                            More articles <ArrowLeft size={12} className="rotate-180" />
                         </Link>
-                     </div>
+                    </div>
+                </div>
+
+                {/* ── RELATED ARTICLES ── */}
+                {related.length > 0 && (
+                    <div className="mt-20">
+                        <div className="flex items-center gap-4 mb-10">
+                            <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#242424]/40 font-sans shrink-0">Related Articles</p>
+                            <div className="flex-1 h-px bg-black/8" />
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                            {related.map(post => (
+                                <Link key={post.id} to={`/blogs/${post.slug}`} className="group block">
+                                    <div className="aspect-[4/3] rounded-xl overflow-hidden mb-4">
+                                        <ImageWithLoader src={post.image} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                    </div>
+                                    <span className="text-[9px] font-bold uppercase tracking-widest text-[#047857] font-sans">{post.category}</span>
+                                    <h4 className="text-base font-bold text-[#242424] leading-[1.3] mt-1 group-hover:text-[#047857] transition-colors font-sans line-clamp-2">{post.title}</h4>
+                                    <p className="text-[#242424]/40 text-sm font-serif italic mt-2 line-clamp-2">{post.excerpt}</p>
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                {/* ── CTA ── */}
+                <div className="mt-24 rounded-2xl bg-gradient-to-br from-[#047857] to-[#065f46] p-10 text-center">
+                    <p className="text-white/60 text-[10px] font-bold uppercase tracking-[0.4em] font-sans mb-4">Never miss a dispatch</p>
+                    <h3 className="text-3xl md:text-4xl font-heading font-extrabold text-white tracking-tight mb-3">
+                        The future of credit is <span className="italic font-serif font-light">conversational.</span>
+                    </h3>
+                    <p className="text-white/60 font-serif italic mb-8">Join 50,000+ others on the AI-driven financial optimization platform.</p>
+                    <Link to="/join-waitlist" className="inline-block bg-white text-[#047857] px-10 py-4 rounded-full font-bold uppercase tracking-widest text-[11px] font-sans hover:bg-[#242424] hover:text-white transition-all shadow-lg">
+                        Join VIP Waitlist →
+                    </Link>
                 </div>
             </div>
+
+            {/* ── SCROLL TO TOP ── */}
+            <AnimatePresence>
+                {showScrollTop && (
+                    <motion.button
+                        initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.8 }}
+                        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                        className="fixed bottom-8 right-8 w-12 h-12 bg-[#242424] text-cream rounded-full shadow-2xl flex items-center justify-center hover:bg-[#047857] transition-all z-50"
+                    >
+                        <ChevronUp size={20} />
+                    </motion.button>
+                )}
+            </AnimatePresence>
         </div>
     );
 };
