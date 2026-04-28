@@ -108,37 +108,44 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
     const setup = async () => {
       setIsLoading(true);
-      
-      if (isAdminRoute) {
-        subs.push(getCardsAdmin((data) => setCards(data)));
-        await new Promise(r => setTimeout(r, 100));
-        subs.push(getBlogsAdmin((data) => setBlogs(data)));
-        await new Promise(r => setTimeout(r, 100));
-        subs.push(getReviewsAdmin((data) => setReviews(data)));
-        await new Promise(r => setTimeout(r, 100));
-        subs.push(getWaitlist((data) => setWaitlist(data)));
-        await new Promise(r => setTimeout(r, 100));
-        subs.push(getTeamMembersAdmin((data) => setTeam(data)));
-        await new Promise(r => setTimeout(r, 100));
-        subs.push(getAuditLogsAdmin((data) => setLogs(data)));
-        
-        setIsAdminDataLoaded(true);
-      } else {
-        subs.push(getCards(
-          (data) => { 
-            setCards(data.length > 0 ? data : featuredCards); 
-          },
-          () => setSyncStatus('error')
-        ));
-        subs.push(getBlogs(
-          (data) => setBlogs(data.filter(b => b.id && b.title && b.title !== 'Untitled Journal')), 
-          () => setSyncStatus('error')
-        ));
-        subs.push(getReviews((data) => setReviews(data), () => setSyncStatus('error')));
+      try {
+        if (isAdminRoute) {
+          // Check for session before attempting admin fetches
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session) {
+            subs.push(getCardsAdmin((data) => setCards(data)));
+            await new Promise(r => setTimeout(r, 100));
+            subs.push(getBlogsAdmin((data) => setBlogs(data)));
+            await new Promise(r => setTimeout(r, 100));
+            subs.push(getReviewsAdmin((data) => setReviews(data)));
+            await new Promise(r => setTimeout(r, 100));
+            subs.push(getWaitlist((data) => setWaitlist(data)));
+            await new Promise(r => setTimeout(r, 100));
+            subs.push(getTeamMembersAdmin((data) => setTeam(data)));
+            await new Promise(r => setTimeout(r, 100));
+            subs.push(getAuditLogsAdmin((data) => setLogs(data)));
+            setIsAdminDataLoaded(true);
+          }
+        } else {
+          subs.push(getCards(
+            (data) => { 
+              setCards(data.length > 0 ? data : featuredCards); 
+            },
+            () => setSyncStatus('error')
+          ));
+          subs.push(getBlogs(
+            (data) => setBlogs(data.filter(b => b.id && b.title && b.title !== 'Untitled Journal')), 
+            () => setSyncStatus('error')
+          ));
+          subs.push(getReviews((data) => setReviews(data), () => setSyncStatus('error')));
+        }
+      } catch (err) {
+        console.error("Supabase Setup Error:", err);
+        setSyncStatus('error');
+      } finally {
+        setIsLoading(false);
+        clearTimeout(fallbackTimer);
       }
-      
-      setIsLoading(false);
-      clearTimeout(fallbackTimer);
     };
 
     setup();
@@ -151,7 +158,8 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   useEffect(() => {
     const { data: { subscription: authSub } } = supabase.auth.onAuthStateChange((event) => {
-      if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+      if (event === 'SIGNED_IN') {
+        refreshAll();
         if (window.location.hash) {
           setTimeout(() => {
             window.history.replaceState(null, '', window.location.pathname + window.location.search);
