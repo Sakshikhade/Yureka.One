@@ -1,7 +1,9 @@
--- SQL Script to upgrade the "cards" table to support the new Detailed Review layout
--- Run this in your Supabase SQL Editor
+-- FINAL UPGRADE SCRIPT FOR CARDS TABLE
+-- Run this exactly as written in your Supabase SQL Editor
 
 ALTER TABLE cards
+  ADD COLUMN IF NOT EXISTS author text,
+  ADD COLUMN IF NOT EXISTS description text,
   ADD COLUMN IF NOT EXISTS reward_type text,
   ADD COLUMN IF NOT EXISTS welcome_benefits text,
   ADD COLUMN IF NOT EXISTS product_details jsonb DEFAULT '[]'::jsonb,
@@ -17,4 +19,15 @@ ALTER TABLE cards
   ADD COLUMN IF NOT EXISTS final_review_image text,
   ADD COLUMN IF NOT EXISTS final_verdict_text text,
   ADD COLUMN IF NOT EXISTS grid_benefits jsonb DEFAULT '[]'::jsonb,
-  ADD COLUMN IF NOT EXISTS grid_fees jsonb DEFAULT '[]'::jsonb;
+  ADD COLUMN IF NOT EXISTS grid_fees jsonb DEFAULT '[]'::jsonb,
+  ADD COLUMN IF NOT EXISTS verdict text,
+  ADD COLUMN IF NOT EXISTS joining_fee numeric,
+  ADD COLUMN IF NOT EXISTS annual_fee numeric,
+  ADD COLUMN IF NOT EXISTS rewards_rate numeric,
+  ADD COLUMN IF NOT EXISTS rating numeric,
+  ADD COLUMN IF NOT EXISTS elite_rating numeric,
+  ADD COLUMN IF NOT EXISTS intro_offer text,
+  ADD COLUMN IF NOT EXISTS projected_savings text,
+  ADD COLUMN IF NOT EXISTS apply_link text,
+  ADD COLUMN IF NOT EXISTS benefit_items jsonb DEFAULT '[]'::jsonb,
+  ADD COLUMN IF NOT EXISTS best_for text;

@@ -3,7 +3,8 @@ import {
   Loader2, 
   Upload, 
   Image as ImageIcon,
-  Check
+  Check,
+  X
 } from 'lucide-react';
 
 interface ReviewFormProps {
