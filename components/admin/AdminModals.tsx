@@ -142,6 +142,7 @@ export const AdminModals: React.FC<AdminModalsProps> = ({
                   onFileUpload={onFileUpload}
                   uploading={helpers.uploading}
                   saving={helpers.saving}
+                  error={helpers.error}
                   banks={helpers.banks || []}
                   categories={helpers.categories || []}
                   generateSlug={helpers.generateSlug}
