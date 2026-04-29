@@ -698,7 +698,7 @@ const ComingSoon: React.FC = () => {
             <div className="absolute top-[20%] right-[-10%] w-[600px] h-[600px] bg-[#34d399]/5 blur-[120px] rounded-full pointer-events-none" />
             <div className="absolute bottom-[10%] left-[-5%] w-[800px] h-[800px] bg-teal-500/5 blur-[160px] rounded-full pointer-events-none" />
 
-            <div className="w-full relative z-10">
+            <div className="w-full relative z-10 px-6 md:px-12 lg:px-20">
                 {/* Tactical Header Section */}
                 <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-12 mb-24 md:mb-32">
                     <motion.div 

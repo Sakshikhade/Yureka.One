@@ -162,7 +162,7 @@ const FAQ: React.FC = () => {
               style={{ backgroundImage: 'radial-gradient(#34d399 0.5px, transparent 0.5px)', backgroundSize: '20px 20px' }}>
          </div>
 
-          <div className="w-full relative z-10 text-white">
+          <div className="w-full relative z-10 text-white px-6 md:px-12 lg:px-16">
               
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
                   
