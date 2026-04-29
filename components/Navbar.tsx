@@ -7,6 +7,7 @@ const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const isDarkPage = location.pathname.startsWith('/blogs') || location.pathname.startsWith('/cards') || location.pathname.startsWith('/security-protocol');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,8 +38,8 @@ const Navbar: React.FC = () => {
                 flex items-center justify-between
                 transition-all duration-700 cubic-bezier(0.25, 0.8, 0.25, 1)
                 ${isScrolled 
-                    ? 'w-[92%] md:w-[90%] lg:w-[80%] max-w-7xl pointer-events-auto px-4 md:px-6 py-2 bg-cream/40 rounded-full shadow-lg shadow-black/10 border border-white/50 backdrop-blur-xl' 
-                    : 'w-full max-w-[1440px] bg-transparent border-b border-ink/10 px-4 md:px-6 py-5 md:py-6 rounded-none shadow-none border-x-0 border-t-0'
+                    ? `w-[92%] md:w-[90%] lg:w-[80%] max-w-7xl pointer-events-auto px-4 md:px-6 py-2 ${isDarkPage ? 'bg-[#1a1a1a]/40 border-white/10' : 'bg-cream/40 border-white/50'} rounded-full shadow-lg shadow-black/10 backdrop-blur-xl border` 
+                    : `w-full max-w-[1440px] ${isDarkPage ? 'bg-transparent border-white/5' : 'bg-transparent border-ink/10'} px-4 md:px-6 py-5 md:py-6 rounded-none shadow-none border-b border-x-0 border-t-0`
                 }
             `}
         >
@@ -47,22 +48,22 @@ const Navbar: React.FC = () => {
                 flex flex-col relative z-10 group cursor-pointer
             `}>
                 <div className="flex items-center gap-3">
-                    <Link to="/" className="font-heading font-extrabold tracking-tighter text-base md:text-[17px] text-ink leading-none hover:opacity-75 transition-opacity flex items-baseline uppercase">
+                    <Link to="/" className={`font-heading font-extrabold tracking-tighter text-base md:text-[17px] ${isDarkPage ? 'text-cream' : 'text-ink'} leading-none hover:opacity-75 transition-opacity flex items-baseline uppercase`}>
                         Yureka<span className="text-clay">.</span>money
                     </Link>
                     {/* Neural Status Indicator */}
-                    <div className="flex items-center gap-1.5 px-2 py-0.5 bg-[#047857]/5 border border-[#047857]/10 rounded-full">
+                    <div className={`flex items-center gap-1.5 px-2 py-0.5 ${isDarkPage ? 'bg-[#047857]/20 border-white/10' : 'bg-[#047857]/5 border-[#047857]/10'} rounded-full`}>
                         <motion.div 
                             animate={{ opacity: [0.4, 1, 0.4] }}
                             transition={{ duration: 2, repeat: Infinity }}
                             className="w-1.5 h-1.5 bg-clay rounded-full shadow-[0_0_8px_rgba(4,120,87,0.5)]"
                         />
-                        <span className="text-[8px] font-extrabold text-clay uppercase tracking-widest hidden md:block">Neural Active</span>
+                        <span className={`text-[8px] font-extrabold text-clay uppercase tracking-widest hidden md:block`}>Neural Active</span>
                     </div>
                 </div>
 
                 {!isScrolled && (
-                      <span className="hidden md:block text-[10px] uppercase tracking-[0.3em] text-ink/40 mt-1 font-sans font-bold">
+                      <span className={`hidden md:block text-[10px] uppercase tracking-[0.3em] ${isDarkPage ? 'text-white/20' : 'text-ink/40'} mt-1 font-sans font-bold`}>
                         AI-Driven Intelligence • Est. 2026
                       </span>
                 )}
@@ -84,7 +85,7 @@ const Navbar: React.FC = () => {
                             to={item.path} 
                             className={`
                                  relative text-[11px] font-bold uppercase tracking-widest transition-all py-1
-                                ${location.pathname === item.path ? 'text-ink border-b-2 border-clay' : 'text-ink/50 hover:text-ink'}
+                                ${location.pathname === item.path ? (isDarkPage ? 'text-[#047857] border-b-2 border-[#047857]' : 'text-ink border-b-2 border-clay') : (isDarkPage ? 'text-white/40 hover:text-white' : 'text-ink/50 hover:text-ink')}
                             `}
                         >
                             {item.name}
@@ -96,7 +97,7 @@ const Navbar: React.FC = () => {
 
                 <div className="flex items-center gap-4 lg:gap-6">
                       <Link to="/yureka-ai" className={`
-                        text-[#242424] font-sans font-medium text-[11px] hover:text-[#047857] transition-colors whitespace-nowrap uppercase tracking-widest
+                        ${isDarkPage ? 'text-white/60 hover:text-white' : 'text-[#242424] hover:text-[#047857]'} font-sans font-medium text-[11px] transition-colors whitespace-nowrap uppercase tracking-widest
                       `}>
                         Yureka AI
                       </Link>
@@ -116,7 +117,7 @@ const Navbar: React.FC = () => {
              {/* Mobile Toggle */}
              <div className="md:hidden flex items-center ml-auto gap-4">
                   <button 
-                    className="p-2 text-ink hover:text-clay transition-colors"
+                    className={`p-2 ${isDarkPage ? 'text-white' : 'text-ink'} hover:text-clay transition-colors`}
                     onClick={() => setIsMobileMenuOpen(true)}
                 >
                     <Menu size={24} strokeWidth={2} />

@@ -1,134 +1,151 @@
 import React, { useEffect } from 'react';
-import { Shield, ChevronRight } from 'lucide-react';
+import { Shield, ChevronRight, Lock, EyeOff, ShieldCheck, Cpu, AlertCircle } from 'lucide-react';
+import { motion } from 'motion/react';
+import SEO from './SEO';
 
 const SecurityProtocolPage: React.FC = () => {
-    // Scroll to top on mount
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
 
     return (
-        <div className="bg-cream min-h-screen text-[#242424] pb-32">
-            {/* Header Section */}
-            <div className="pt-6 md:pt-16 pb-16 md:pb-24 border-b border-black/10 px-6">
-                <div className="max-w-4xl mx-auto">
-                    <div className="flex items-center gap-2 text-[#047857] mb-6">
-                        <Shield size={18} strokeWidth={2.5} />
-                        <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Legal Compendium</span>
-                    </div>
-                    <h1 className="text-5xl md:text-8xl font-serif leading-[0.9] tracking-tighter mb-8 uppercase">
-                        Security Protocol
-                    </h1>
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                        <p className="text-xl md:text-2xl font-serif italic text-[#242424]/60">
-                            The architecture of financial privacy.
-                        </p>
-                        <div className="text-left md:text-right">
-                            <p className="text-[10px] uppercase tracking-widest font-bold">Protocol Revision</p>
-                            <p className="text-sm font-mono mt-1 text-[#242424]/60 border-b border-clay inline-block pb-1">v4.0.1 (April 2026)</p>
+        <div className="bg-[#0f0f0f] min-h-screen text-cream pb-32 selection:bg-[#047857] selection:text-white">
+            <SEO title="Security Protocol | Yureka Infrastructure" description="Detailed technical documentation of Yureka's security architecture, cryptographic standards, and data privacy protocols." />
+
+            {/* ── HERO ── */}
+            <div className="relative pt-24 md:pt-40 pb-20 border-b border-white/5 overflow-hidden">
+                <div className="absolute inset-0 opacity-[0.05] pointer-events-none" 
+                    style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h100v100H0V0zm1 1v98h98V1H1z' fill='%23fff'/%3E%3C/svg%3E")` }} 
+                />
+                
+                <div className="max-w-[1200px] mx-auto px-6 relative z-10">
+                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+                        <div className="flex items-center gap-3 text-[#047857] mb-8">
+                            <Shield size={18} />
+                            <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Infrastructure Desk</span>
                         </div>
-                    </div>
+                        <h1 className="text-6xl md:text-8xl font-heading font-extrabold tracking-tighter text-white leading-[0.9] mb-12 uppercase">
+                            Security <br /><span className="text-[#047857] italic font-serif font-light">Protocol.</span>
+                        </h1>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 pt-10 border-t border-white/5">
+                            <p className="text-xl md:text-2xl font-serif italic text-white/50 leading-relaxed">
+                                The architecture of financial privacy. Our system is designed so that even we cannot see your raw data.
+                            </p>
+                            <div className="flex flex-col justify-end items-start md:items-end gap-2">
+                                <p className="text-[10px] uppercase tracking-widest font-bold text-white/30">Protocol Revision</p>
+                                <p className="text-sm font-mono text-[#047857] bg-[#047857]/10 px-4 py-1 rounded-full border border-[#047857]/20">v4.0.1_STABLE</p>
+                            </div>
+                        </div>
+                    </motion.div>
                 </div>
             </div>
 
-            {/* Content Section */}
-            <div className="max-w-4xl mx-auto px-6 pt-16 md:pt-24 font-serif text-lg md:text-xl leading-relaxed text-[#242424]/80 space-y-16">
-                
-                <section>
-                    <p className="first-letter:text-6xl first-letter:font-bold first-letter:text-[#047857] first-letter:mr-2 first-letter:float-left">
-                        At Yureka.Money, we recognize that financial data is your most sensitive asset. Our architecture is built upon a simple, unwavering philosophy: Your financial data is none of our business. We exist to optimise your rewards, not to monetise your privacy.
-                    </p>
-                    <p className="mt-6">
-                        This Security Protocol details the cryptographic standards, network architecture, and compliance frameworks utilised to ensure the absolute isolation and integrity of your data.
-                    </p>
-                </section>
-
-                <section className="space-y-6">
-                    <h2 className="text-3xl font-bold uppercase tracking-tight text-[#242424] border-b-2 border-black pb-4">1. Cryptographic Standards</h2>
-                    <p>
-                        All user data in transit and at rest is secured using military-grade encryption primitives.
-                    </p>
-                    <ul className="space-y-4 list-none pl-0">
-                        <li className="pl-6 relative">
-                            <span className="absolute left-0 top-1 text-[#047857] font-bold">&bull;</span>
-                            <strong className="text-[#242424] tracking-tight uppercase text-sm mr-2">Data At Rest:</strong> Databases are encrypted using the AES-256 standard. Sensitive identifiers (such as parsed statement data or identity tokens) are additionally hashed using Argon2id before storage.
-                        </li>
-                        <li className="pl-6 relative">
-                            <span className="absolute left-0 top-1 text-[#047857] font-bold">&bull;</span>
-                            <strong className="text-[#242424] tracking-tight uppercase text-sm mr-2">Data In Transit:</strong> All communications between the Yureka.Money client application and our servers are encrypted via TLS 1.3, utilizing Perfect Forward Secrecy (PFS).
-                        </li>
-                    </ul>
-                </section>
-
-                <section className="space-y-6">
-                    <h2 className="text-3xl font-bold uppercase tracking-tight text-[#242424] border-b-2 border-black pb-4">2. Zero-Knowledge Analytics</h2>
-                    <p>
-                        We provide reward optimisation insights without human visibility into your specific transactions.
-                    </p>
-                    <div className="bg-[#242424] text-cream p-8 mt-6 shadow-xl relative overflow-hidden">
-                        <span className="absolute top-0 left-0 w-1 h-full bg-[#047857]"></span>
-                        <p className="font-mono text-sm tracking-wide">
-                            Our proprietary analytics engine processes credit card statements directly in a secure, ephemeral container. Once the reward extraction logic is complete, the raw statement data is permanently purged from active memory. We store only the resulting metadata (e.g., total reward points accumulated), meaning even in the event of a theoretical database compromise, your raw transaction history does not exist to be stolen.
+            {/* ── CONTENT ── */}
+            <div className="max-w-[800px] mx-auto px-6 mt-20 md:mt-32">
+                <article className="space-y-24">
+                    
+                    {/* Intro */}
+                    <section>
+                        <p className="text-2xl md:text-3xl font-serif italic text-white/80 leading-relaxed">
+                            At Yureka.Money, we recognize that financial data is your most sensitive asset. Our architecture is built upon a simple, unwavering philosophy: <span className="text-white font-bold not-italic">Your financial data is none of our business.</span>
                         </p>
-                    </div>
-                </section>
+                        <p className="mt-8 text-white/50 leading-relaxed font-sans">
+                            This document details the cryptographic standards, network architecture, and compliance frameworks utilized to ensure the absolute isolation and integrity of your data within the Yureka Neural Engine.
+                        </p>
+                    </section>
 
-                <section className="space-y-6">
-                    <h2 className="text-3xl font-bold uppercase tracking-tight text-[#242424] border-b-2 border-black pb-4">3. DPDP Rule 6 Compliance</h2>
-                    <p>
-                        Pursuant to Rule 6 of the Digital Personal Data Protection (DPDP) Rules, Yureka.Money implements rigorous security safeguards.
-                    </p>
-                    <ul className="list-decimal pl-8 space-y-3 font-mono text-sm tracking-wide bg-black/5 p-6 md:p-8 rounded-sm">
-                        <li><strong>Access Controls:</strong> Database clusters reside in private VPC subnets. Access is restricted exclusively to essential infrastructure engineers via VPN tunnels requiring multi-factor authentication (MFA).</li>
-                        <li><strong>Intrusion Detection:</strong> Constant automated monitoring for anomalous traffic patterns or unauthorized database queries.</li>
-                        <li><strong>Incident Response:</strong> A retained rapid-response security firm is on standby. In the event of a breach, impacted users will be notified within 72 hours, as per DPDP mandates.</li>
-                    </ul>
-                </section>
+                    {/* Section 1 */}
+                    <section className="space-y-10">
+                        <div className="flex items-center gap-4 group">
+                            <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-[#047857] group-hover:scale-110 transition-transform">
+                                <Lock size={20} />
+                            </div>
+                            <h2 className="text-2xl font-heading font-extrabold uppercase tracking-tight text-white">01. Cryptographic Standards</h2>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div className="bg-white/5 border border-white/5 p-8 rounded-[2rem] space-y-4">
+                                <p className="text-[10px] font-bold uppercase tracking-widest text-[#047857]">Data At Rest</p>
+                                <p className="text-sm text-white/60 leading-relaxed font-sans">
+                                    All databases are encrypted using the <strong className="text-white">AES-256-GCM</strong> standard. Sensitive identifiers are additionally hashed using <strong className="text-white">Argon2id</strong> before persistent storage.
+                                </p>
+                            </div>
+                            <div className="bg-white/5 border border-white/5 p-8 rounded-[2rem] space-y-4">
+                                <p className="text-[10px] font-bold uppercase tracking-widest text-[#047857]">Data In Transit</p>
+                                <p className="text-sm text-white/60 leading-relaxed font-sans">
+                                    Communications between the client and our servers are secured via <strong className="text-white">TLS 1.3</strong>, utilizing <strong className="text-white">Perfect Forward Secrecy (PFS)</strong> to ensure past traffic remains secure.
+                                </p>
+                            </div>
+                        </div>
+                    </section>
 
-                <section className="space-y-6">
-                    <h2 className="text-3xl font-bold uppercase tracking-tight text-[#242424] border-b-2 border-black pb-4">4. Payment Gateway Infrastructure</h2>
-                    <p>
-                        When facilitating credit card bill payments, Yureka.Money never stores your full card number, CVV, or bank credentials.
-                    </p>
-                    <p className="italic text-base bg-cream p-6 border border-black/10">
-                        All financial transactions are handled via RBI-compliant, PCI-DSS Level 1 certified payment gateways. Yureka.Money operates strictly as a secure conduit, exchanging only encrypted, single-use payment tokens to authorise transactions.
-                    </p>
-                </section>
-                
-                <section className="space-y-6">
-                    <h2 className="text-3xl font-bold uppercase tracking-tight text-[#242424] border-b-2 border-black pb-4">5. User Authentication</h2>
-                    <ul className="space-y-4 list-none pl-0">
-                        <li className="pl-6 relative">
-                            <span className="absolute left-0 top-1 text-[#047857] font-bold">&bull;</span>
-                            <strong className="text-[#242424] tracking-tight uppercase text-sm mr-2">Session Management:</strong> Active user sessions employ secure, httpOnly JWTs (JSON Web Tokens) with aggressive expiration windows to mitigate session hijacking.
-                        </li>
-                        <li className="pl-6 relative">
-                            <span className="absolute left-0 top-1 text-[#047857] font-bold">&bull;</span>
-                            <strong className="text-[#242424] tracking-tight uppercase text-sm mr-2">Inactivity Nullification:</strong> The platform enforces strict state nullification upon user inactivity or explicit logout, immediately terminating access to sensitive dashboards.
-                        </li>
-                    </ul>
-                </section>
+                    {/* Section 2 */}
+                    <section className="space-y-10">
+                        <div className="flex items-center gap-4 group">
+                            <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-[#047857] group-hover:scale-110 transition-transform">
+                                <EyeOff size={20} />
+                            </div>
+                            <h2 className="text-2xl font-heading font-extrabold uppercase tracking-tight text-white">02. Zero-Knowledge Logic</h2>
+                        </div>
+                        <div className="relative p-10 bg-[#1a1a1a] rounded-[2.5rem] border border-white/5 overflow-hidden">
+                            <div className="absolute top-0 right-0 w-32 h-32 bg-[#047857]/10 blur-3xl rounded-full" />
+                            <p className="text-lg font-serif italic text-white/70 leading-relaxed relative z-10">
+                                Our proprietary analytics engine processes credit card statements directly in a <span className="text-[#047857] font-bold not-italic uppercase tracking-widest text-xs ml-1">Secure Ephemeral Container</span>. Once the reward extraction logic is complete, the raw statement data is permanently purged from active memory.
+                            </p>
+                            <div className="mt-8 flex items-center gap-4 text-[10px] font-bold uppercase tracking-[0.3em] text-[#047857]">
+                                <Cpu size={14} />
+                                <span>Memory-Level Isolation Enabled</span>
+                            </div>
+                        </div>
+                    </section>
 
-                <section className="border-t-4 border-black pt-16 mt-16 text-center space-y-8">
-                     <p className="text-sm md:text-base font-mono uppercase tracking-widest">
-                         Vulnerability Disclosure: If you are a security researcher and believe you have discovered a vulnerability on the Yureka platform, we ask that you practice responsible disclosure. We run a private bug bounty program for validated, critical exploits.
-                     </p>
-                     
-                     <div className="pt-8">
-                         <h3 className="text-2xl font-bold uppercase tracking-tight text-[#242424] mb-4">Report an Incident</h3>
-                         <p className="italic text-[#242424]/60 mb-6">If you suspect your account has been compromised, contact our InfoSec team immediately.</p>
-                         <a href="mailto:security@yureka.money" className="inline-flex items-center gap-2 bg-black text-cream px-8 py-4 uppercase font-bold tracking-[0.2em] text-xs hover:bg-[#047857] hover:scale-105 transition-all">
-                             Contact InfoSec <ChevronRight size={14} />
-                         </a>
-                     </div>
-                </section>
+                    {/* Section 3 */}
+                    <section className="space-y-10">
+                        <div className="flex items-center gap-4 group">
+                            <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-[#047857] group-hover:scale-110 transition-transform">
+                                <ShieldCheck size={20} />
+                            </div>
+                            <h2 className="text-2xl font-heading font-extrabold uppercase tracking-tight text-white">03. DPDP Compliance</h2>
+                        </div>
+                        <div className="space-y-6">
+                            <p className="text-white/50 leading-relaxed">Pursuant to the Digital Personal Data Protection (DPDP) Rules, Yureka.Money implements rigorous security safeguards:</p>
+                            <div className="grid gap-4">
+                                {[
+                                    { title: 'Access Control', desc: 'Database clusters reside in private VPC subnets with MFA-only VPN tunnels.' },
+                                    { title: 'Intrusion Detection', desc: 'Real-time automated monitoring for anomalous traffic patterns.' },
+                                    { title: 'Rapid Response', desc: 'Incident response protocol with a 72-hour notification mandate.' }
+                                ].map((item, i) => (
+                                    <div key={i} className="flex gap-6 p-6 bg-white/5 border border-white/5 rounded-2xl items-start">
+                                        <span className="text-[#047857] font-mono text-sm">{i+1}.</span>
+                                        <div>
+                                            <h4 className="text-xs font-bold uppercase tracking-widest text-white mb-1">{item.title}</h4>
+                                            <p className="text-sm text-white/40 leading-relaxed font-sans">{item.desc}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
 
+                    {/* Reporting */}
+                    <section className="pt-16 border-t border-white/10 text-center">
+                        <AlertCircle className="mx-auto text-red-500 mb-8" size={40} />
+                        <h3 className="text-3xl font-heading font-extrabold text-white uppercase tracking-tight mb-4">Report an Incident</h3>
+                        <p className="text-white/40 font-serif italic mb-10 max-w-md mx-auto">
+                            If you believe you have discovered a vulnerability or suspect your account has been compromised, contact our InfoSec team immediately.
+                        </p>
+                        <a href="mailto:security@yureka.money" className="inline-flex items-center gap-4 bg-white text-[#0f0f0f] px-10 py-5 rounded-full font-bold uppercase tracking-[0.2em] text-[10px] hover:bg-[#047857] hover:text-white transition-all shadow-xl">
+                            Contact InfoSec <ChevronRight size={14} />
+                        </a>
+                    </section>
+
+                </article>
             </div>
-            
-            <div className="max-w-4xl mx-auto px-6 mt-24 flex items-center justify-center gap-4 text-xs font-mono uppercase tracking-widest text-[#242424]/30">
-                <span>Infrastructure Desk</span>
-                <span>•</span>
+
+            {/* Footer Tag */}
+            <div className="max-w-[1200px] mx-auto px-6 mt-32 pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-bold uppercase tracking-[0.4em] text-white/20">
                 <span>Yureka.Money Security Command</span>
+                <span className="hidden md:block">•</span>
+                <span>Audit Level: High-Assurance</span>
             </div>
         </div>
     );

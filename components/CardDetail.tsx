@@ -4,9 +4,9 @@ import {
     ArrowLeft, Share2, Star, CheckCircle2, 
     Zap, ExternalLink, ShieldCheck, CreditCard,
     ArrowRight, Clock, Sparkles, ChevronRight,
-    TrendingUp, AlertCircle, Info, ChevronDown
+    TrendingUp, Info, ChevronDown, Landmark, Globe, Trophy
 } from 'lucide-react';
-import { getCardBySlug } from '../services/supabaseService';
+import { getCardBySlug, fetchCardsPublic } from '../services/supabaseService';
 import { Card } from '../types';
 import ImageWithLoader from './ImageWithLoader';
 import { motion, AnimatePresence } from 'motion/react';
@@ -15,6 +15,7 @@ import SEO from './SEO';
 const CardDetail: React.FC = () => {
     const { slug } = useParams<{ slug: string }>();
     const [card, setCard] = useState<Card | null>(null);
+    const [related, setRelated] = useState<Card[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [openSections, setOpenSections] = useState<Record<string, boolean>>({
         benefits: true,
@@ -25,12 +26,18 @@ const CardDetail: React.FC = () => {
 
     useEffect(() => {
         if (!slug) return;
+        setIsLoading(true);
         const fetchCard = async () => {
             const data = await getCardBySlug(slug);
             setCard(data);
             setIsLoading(false);
+            if (data) {
+                const all = await fetchCardsPublic();
+                setRelated((all || []).filter(c => c.id !== data.id && c.bank === data.bank).slice(0, 3));
+            }
         };
         fetchCard();
+        window.scrollTo(0, 0);
     }, [slug]);
 
     const toggleSection = (section: string) => {
@@ -39,10 +46,10 @@ const CardDetail: React.FC = () => {
 
     if (isLoading) {
         return (
-            <div className="min-h-screen bg-white flex items-center justify-center">
-                <div className="flex flex-col items-center gap-4">
-                    <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-                    <div className="text-sm font-bold uppercase tracking-widest text-slate-400">Analyzing Instrument...</div>
+            <div className="min-h-screen bg-[#0f0f0f] flex items-center justify-center">
+                <div className="space-y-4 text-center">
+                    <div className="w-12 h-12 border-2 border-[#047857]/30 border-t-[#047857] rounded-full animate-spin mx-auto" />
+                    <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/30">Analyzing Protocol</p>
                 </div>
             </div>
         );
@@ -50,482 +57,243 @@ const CardDetail: React.FC = () => {
 
     if (!card) {
         return (
-            <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6 text-center">
-                <h1 className="text-4xl font-bold text-slate-900 mb-4 tracking-tight">Instrument Not Found</h1>
-                <p className="text-slate-500 mb-8 max-w-md">The financial node you are looking for may have been delisted or archived.</p>
-                <Link to="/cards" className="bg-blue-600 text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest text-[10px] hover:bg-blue-700 transition-all shadow-lg">
+            <div className="min-h-screen bg-[#0f0f0f] flex flex-col items-center justify-center p-6 text-center">
+                <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#047857] mb-6">404 Node Missing</p>
+                <h1 className="text-5xl font-heading font-extrabold text-white mb-4 tracking-tight uppercase">Instrument Not Found</h1>
+                <p className="text-white/40 mb-10 max-w-md font-serif italic text-lg leading-relaxed">The financial node you are looking for may have been delisted or archived.</p>
+                <Link to="/cards" className="bg-white text-[#0f0f0f] px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-[#047857] hover:text-white transition-all">
                     Return to Explorer
                 </Link>
             </div>
         );
     }
 
-    // Fallback data for empty fields
     const updatedOn = card.updated_on || new Date(card.updated_at || Date.now()).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-    const author = card.author || 'Yureka Research Team';
     
     return (
-        <div className="min-h-screen bg-white text-slate-900 font-sans selection:bg-blue-100 selection:text-blue-900 pb-20">
+        <div className="min-h-screen bg-[#0f0f0f] text-cream font-sans selection:bg-[#047857] selection:text-white pb-32">
             <SEO 
-                title={`${card.name} | Review & Analysis`}
-                description={card.description || `Comprehensive review of ${card.name} by ${card.bank}. Analyze rewards, fees, and eligibility.`}
+                title={`${card.name} | Review & Intelligence Analysis`}
+                description={card.description || `Comprehensive yield analysis of ${card.name} by ${card.bank}. Rewards, fees, and eligibility data.`}
             />
 
-            {/* Top Navigation Bar */}
-            <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-100">
-                <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-                    <Link to="/cards" className="flex items-center gap-2 text-slate-400 hover:text-blue-600 transition-colors group">
-                        <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
-                        <span className="text-[10px] font-bold uppercase tracking-widest">Back</span>
+            {/* ── TOP NAV ── */}
+            <div className="sticky top-[104px] md:top-20 z-[45] bg-[#0f0f0f]/90 backdrop-blur-xl border-b border-white/5">
+                <div className="max-w-[1200px] mx-auto px-6 h-16 flex items-center justify-between">
+                    <Link to="/cards" className="flex items-center gap-2 text-white/40 hover:text-[#047857] transition-colors group text-[10px] font-bold uppercase tracking-widest">
+                        <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
+                        Explorer
                     </Link>
-                    <div className="flex items-center gap-6">
-                        <button className="text-slate-400 hover:text-blue-600 transition-colors"><Share2 size={18} /></button>
-                        <a href={card.apply_link || "#"} target="_blank" rel="noopener noreferrer" className="bg-blue-600 text-white px-6 py-2.5 rounded-lg font-bold text-[10px] uppercase tracking-widest hover:bg-blue-700 transition-all shadow-md shadow-blue-200">
+                    <div className="flex items-center gap-4">
+                        <button className="text-white/40 hover:text-white transition-colors"><Share2 size={16} /></button>
+                        <a href={card.apply_link || "#"} target="_blank" rel="noopener noreferrer" className="bg-[#047857] text-white px-6 py-2.5 rounded-full font-bold text-[10px] uppercase tracking-widest hover:scale-105 transition-all shadow-lg shadow-[#047857]/20">
                             Apply Now
                         </a>
                     </div>
                 </div>
             </div>
 
-            <div className="max-w-6xl mx-auto px-6 pt-12 md:pt-16">
+            <div className="max-w-[1200px] mx-auto px-6 pt-12 md:pt-24">
                 
-                {/* 1. Main Header */}
-                <header className="mb-10">
-                    <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 mb-6 leading-tight">
+                {/* ── HEADER ── */}
+                <header className="mb-16">
+                    <div className="flex items-center gap-3 mb-8">
+                        <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#047857]">{card.bank || card.issuer || 'Prime'}</span>
+                        <div className="w-1 h-1 rounded-full bg-white/10" />
+                        <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/30">Protocol v2.1</span>
+                    </div>
+                    <h1 className="text-5xl md:text-8xl font-heading font-extrabold tracking-tighter text-white leading-[0.9] mb-12">
                         {card.name}
                     </h1>
-                    <div className="flex flex-wrap items-center gap-x-8 gap-y-3 text-[11px] font-bold uppercase tracking-widest text-slate-400">
-                        <div className="flex items-center gap-2">
-                            <span>Updated On:</span>
-                            <span className="text-blue-600">{updatedOn}</span>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-10 border-t border-white/5">
+                        <div>
+                            <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-white/30 mb-2">Analysis Updated</p>
+                            <p className="text-sm font-bold text-white">{updatedOn}</p>
                         </div>
-                        <div className="flex items-center gap-2">
-                            <span>Published by:</span>
-                            <span className="text-blue-600">{author}</span>
+                        <div>
+                            <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-white/30 mb-2">Verdict Status</p>
+                            <div className="flex items-center gap-2">
+                                <CheckCircle2 size={14} className="text-[#047857]" />
+                                <p className="text-sm font-bold text-white uppercase tracking-tight">Verified Tier-1 Asset</p>
+                            </div>
+                        </div>
+                        <div>
+                            <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-white/30 mb-2">Author</p>
+                            <p className="text-sm font-bold text-white">{card.author || 'Yureka Research'}</p>
                         </div>
                     </div>
                 </header>
 
-                {/* 2. Intro Description */}
-                <div className="prose prose-slate max-w-none mb-12">
-                    <p className="text-lg text-slate-600 leading-relaxed font-medium">
-                        {card.description || `The ${card.name} by ${card.bank} is a powerful ${card.type.toLowerCase()} tool designed for modern users. With an annual fee of ${card.annual_fee}, it offers a balanced approach to rewards and benefits.`}
-                    </p>
-                    {card.verdict && (
-                        <p className="text-lg text-slate-600 leading-relaxed font-medium mt-4">
-                            {card.verdict}
-                        </p>
-                    )}
-                </div>
-
-                {/* 3. Summary Card (Main Card Widget) */}
-                <div className="bg-white rounded-3xl border border-slate-200 shadow-2xl shadow-slate-100 overflow-hidden mb-16">
-                    <div className="p-8 md:p-10 border-b border-slate-100 flex flex-wrap items-center justify-between gap-6">
-                        <div className="space-y-2">
-                            <h2 className="text-2xl font-extrabold text-slate-900">{card.name}</h2>
-                            <div className="flex items-center gap-3">
-                                <div className="flex text-amber-400">
-                                    {[...Array(5)].map((_, i) => (
-                                        <Star key={i} size={16} fill={i < Math.floor(card.rating || 4.5) ? "currentColor" : "none"} />
-                                    ))}
+                {/* ── CORE STATS GRID ── */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-24">
+                    {/* Visual Node */}
+                    <div className="lg:col-span-5 flex flex-col gap-6">
+                        <div className="aspect-[1.58/1] rounded-[2.5rem] bg-white/[0.03] border border-white/5 p-10 flex items-center justify-center relative overflow-hidden group">
+                            <div className="absolute inset-0 bg-[#047857]/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                            <ImageWithLoader src={card.image} alt={card.name} className="w-full h-full object-contain relative z-10 group-hover:scale-105 transition-transform duration-700" />
+                        </div>
+                        <div className="bg-[#1a1a1a] rounded-[2rem] border border-white/5 p-8 space-y-6">
+                            <div className="flex items-center justify-between">
+                                <span className="text-[10px] font-bold uppercase tracking-widest text-white/30">Elite Rating</span>
+                                <div className="flex items-center gap-2 text-[#047857]">
+                                    <Trophy size={16} />
+                                    <span className="text-2xl font-heading font-extrabold tracking-tight">{card.elite_rating || card.rating || '4.8'}</span>
+                                    <span className="text-white/20 text-xs font-bold">/ 5.0</span>
                                 </div>
-                                <span className="text-sm font-bold text-slate-400">( {card.rating || '4.8'} / 5 )</span>
                             </div>
-                        </div>
-                        <a href={card.apply_link || "#"} target="_blank" rel="noopener noreferrer" className="bg-blue-600 text-white px-10 py-4 rounded-xl font-bold text-xs uppercase tracking-[0.2em] hover:bg-blue-700 transition-all shadow-xl shadow-blue-100 flex items-center gap-3 group">
-                            Apply Now <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
-                        </a>
-                    </div>
-
-                    <div className="p-8 md:p-12 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-                        {/* Card Image */}
-                        <div className="lg:col-span-4 flex justify-center">
-                            <div className="w-full max-w-[340px] aspect-[1.58/1] rounded-2xl overflow-hidden shadow-2xl shadow-blue-900/10 border border-slate-100">
-                                <img src={card.image} alt={card.name} className="w-full h-full object-cover" />
-                            </div>
-                        </div>
-
-                        {/* Summary Details Table */}
-                        <div className="lg:col-span-4 space-y-6">
-                            <div className="grid grid-cols-2 gap-y-4">
-                                <span className="text-[11px] font-bold uppercase tracking-widest text-blue-600/60">Joining Fee</span>
-                                <span className="text-[13px] font-bold text-slate-900 text-right">₹{String(card.joining_fee || card.annual_fee).replace(/[^0-9,]/g, '')} + GST</span>
-                                
-                                <span className="text-[11px] font-bold uppercase tracking-widest text-blue-600/60">Annual Fee</span>
-                                <span className="text-[13px] font-bold text-slate-900 text-right">₹{String(card.annual_fee).replace(/[^0-9,]/g, '')} + GST</span>
-                                
-                                <span className="text-[11px] font-bold uppercase tracking-widest text-blue-600/60">Best Suited For</span>
-                                <span className="text-[13px] font-bold text-slate-900 text-right">{card.best_for}</span>
-                                
-                                <span className="text-[11px] font-bold uppercase tracking-widest text-blue-600/60">Reward Type</span>
-                                <span className="text-[13px] font-bold text-slate-900 text-right">{card.reward_type || card.type}</span>
-                            </div>
-                        </div>
-
-                        {/* Summary Rewards Column */}
-                        <div className="lg:col-span-4 space-y-8 pl-0 lg:pl-12 lg:border-l border-slate-100">
-                            <div className="space-y-2">
-                                <h4 className="text-[11px] font-black uppercase tracking-widest text-blue-600">Rewards Rate</h4>
-                                <p className="text-sm font-medium text-slate-600 leading-relaxed">
-                                    {card.rewards_rate || "Accelerated reward structure across key merchant categories and travel spend."}
-                                </p>
-                            </div>
-                            <div className="space-y-2">
-                                <h4 className="text-[11px] font-black uppercase tracking-widest text-blue-600">Welcome Benefits</h4>
-                                <p className="text-sm font-medium text-slate-600 leading-relaxed">
-                                    {card.welcome_benefits || "Premium vouchers and membership activation upon fee payment."}
+                            <div className="space-y-4">
+                                <div className="h-2 bg-white/5 rounded-full overflow-hidden">
+                                    <div className="h-full bg-[#047857] rounded-full" style={{ width: `${((card.elite_rating || card.rating || 4.8) / 5) * 100}%` }} />
+                                </div>
+                                <p className="text-[11px] text-white/40 font-serif italic leading-relaxed">
+                                    Top 2% of surveyed instruments in the {card.category || 'General'} sector based on net yield and usability.
                                 </p>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                {/* 4. Rewards and Benefits Grid Section */}
-                <div className="mb-8 overflow-hidden rounded-2xl border border-slate-100 shadow-sm">
-                    <button 
-                        onClick={() => toggleSection('benefits')}
-                        className="w-full px-8 py-6 bg-slate-50 flex items-center justify-between group"
-                    >
-                        <h3 className="text-lg font-bold text-slate-800 uppercase tracking-tight">Rewards and Benefits</h3>
-                        <ChevronRight className={`text-slate-400 transition-transform duration-300 ${openSections.benefits ? 'rotate-90' : ''}`} />
-                    </button>
-                    <AnimatePresence>
-                        {openSections.benefits && (
-                            <motion.div 
-                                initial={{ height: 0 }}
-                                animate={{ height: 'auto' }}
-                                exit={{ height: 0 }}
-                                className="overflow-hidden bg-white"
-                            >
-                                <div className="p-8 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
-                                    {(card.grid_benefits || [
-                                        { title: 'Movie & Dining', value: 'Accelerated savings on entertainment platforms and partner restaurants.' },
-                                        { title: 'Rewards Rate', value: card.rewards_rate || 'Standard base rewards with 5X boosters on select partners.' },
-                                        { title: 'Reward Redemption', value: 'Flexible redemption via portal for travel or direct statement credit.' },
-                                        { title: 'Travel', value: 'Complimentary access to premium travel networks.' },
-                                        { title: 'Lounge Access', value: 'Domestic and International lounge protocols included.' },
-                                        { title: 'Insurance Benefits', value: 'Comprehensive air accident and fraud liability cover.' }
-                                    ]).map((benefit, i) => (
-                                        <div key={i} className="space-y-1.5">
-                                            <h4 className="text-sm font-bold text-blue-600">{benefit.title}</h4>
-                                            <p className="text-sm text-slate-500 font-medium leading-relaxed">{benefit.value}</p>
-                                        </div>
-                                    ))}
+                    {/* Data Specs */}
+                    <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {[
+                            { label: 'Annual Fee', value: `₹${card.annual_fee?.replace(/[^0-9]/g, '') || '0'} + GST`, icon: <Landmark size={20} /> },
+                            { label: 'Joining Fee', value: `₹${card.joining_fee?.replace(/[^0-9]/g, '') || '0'} + GST`, icon: <CreditCard size={20} /> },
+                            { label: 'Reward Yield', value: card.rewards_rate || 'Accelerated', icon: <Zap size={20} /> },
+                            { label: 'Best Suited For', value: card.best_for || 'Lifestyle', icon: <Trophy size={20} /> },
+                            { label: 'Net Annual Savings', value: card.projected_savings || '₹12,000+', icon: <TrendingUp size={20} /> },
+                            { label: 'Waitlist Priority', value: 'Level 4 Alpha', icon: <Globe size={20} /> },
+                        ].map((spec, i) => (
+                            <div key={i} className="bg-white/5 border border-white/5 rounded-[2rem] p-8 flex flex-col justify-between hover:bg-white/[0.07] transition-all">
+                                <div className="w-10 h-10 rounded-2xl bg-white/5 flex items-center justify-center text-[#047857] mb-6">
+                                    {spec.icon}
                                 </div>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-                </div>
-
-                {/* 5. Fees & Charges Section */}
-                <div className="mb-16 overflow-hidden rounded-2xl border border-slate-100 shadow-sm">
-                    <button 
-                        onClick={() => toggleSection('fees')}
-                        className="w-full px-8 py-6 bg-slate-50 flex items-center justify-between group"
-                    >
-                        <h3 className="text-lg font-bold text-slate-800 uppercase tracking-tight">Fees & Charges</h3>
-                        <ChevronRight className={`text-slate-400 transition-transform duration-300 ${openSections.fees ? 'rotate-90' : ''}`} />
-                    </button>
-                    <AnimatePresence>
-                        {openSections.fees && (
-                            <motion.div 
-                                initial={{ height: 0 }}
-                                animate={{ height: 'auto' }}
-                                exit={{ height: 0 }}
-                                className="overflow-hidden bg-white"
-                            >
-                                <div className="p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-8">
-                                    {(card.grid_fees || [
-                                        { title: 'Spend-Based Waiver', value: `Annual fee waived on spends exceeding ${card.projected_savings || '₹1,00,000'} per year.` },
-                                        { title: 'Rewards Redemption Fee', value: '₹99 + GST per redemption request.' },
-                                        { title: 'Foreign Currency Markup', value: '3.5% + GST on international transactions.' },
-                                        { title: 'Fuel Surcharge Waiver', value: '1% waiver on transactions between ₹400 and ₹5,000.' },
-                                        { title: 'Cash Advance Charges', value: '2.5% of the transaction amount (Min ₹500).' },
-                                        { title: 'Interest Rates', value: '3.6% per month (43.2% Annually).' }
-                                    ]).map((fee, i) => (
-                                        <div key={i} className="space-y-1.5">
-                                            <h4 className="text-sm font-bold text-blue-600">{fee.title}</h4>
-                                            <p className="text-sm text-slate-500 font-medium leading-relaxed">{fee.value}</p>
-                                        </div>
-                                    ))}
+                                <div>
+                                    <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-white/30 mb-1">{spec.label}</p>
+                                    <p className="text-lg font-bold text-white tracking-tight">{spec.value}</p>
                                 </div>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-                </div>
-
-                {/* 6. Product Details (Bullets) */}
-                <div className="mb-16 overflow-hidden rounded-2xl border border-slate-100 shadow-sm">
-                    <button 
-                        onClick={() => toggleSection('details')}
-                        className="w-full px-8 py-6 bg-slate-50 flex items-center justify-between group"
-                    >
-                        <h3 className="text-lg font-bold text-slate-800 uppercase tracking-tight">Product Details</h3>
-                        <ChevronRight className={`text-slate-400 transition-transform duration-300 ${openSections.details ? 'rotate-90' : ''}`} />
-                    </button>
-                    <AnimatePresence>
-                        {openSections.details && (
-                            <motion.div 
-                                initial={{ height: 0 }}
-                                animate={{ height: 'auto' }}
-                                exit={{ height: 0 }}
-                                className="overflow-hidden bg-white"
-                            >
-                                <div className="p-8">
-                                    <ul className="space-y-4">
-                                        {(card.product_details || [
-                                            "Accelerated 5X points on top-tier online merchant categories.",
-                                            "Complimentary quarterly lounge access across major domestic hubs.",
-                                            "Annual fee waiver mechanism based on incremental spend milestones.",
-                                            "Integration with digital payment stacks for seamless reward tracking.",
-                                            "Exclusive access to partner-led fine dining and entertainment events."
-                                        ]).map((detail, i) => (
-                                            <li key={i} className="flex gap-4 text-sm text-slate-600 font-medium leading-relaxed">
-                                                <div className="w-1.5 h-1.5 rounded-full bg-blue-600 mt-2 shrink-0"></div>
-                                                {detail}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-                </div>
-
-                {/* 7. Pros & Cons Section */}
-                <div className="mb-24 overflow-hidden rounded-2xl border border-slate-100 shadow-sm">
-                    <button 
-                        onClick={() => toggleSection('proscons')}
-                        className="w-full px-8 py-6 bg-slate-50 flex items-center justify-between group"
-                    >
-                        <h3 className="text-lg font-bold text-slate-800 uppercase tracking-tight">Pros / Cons</h3>
-                        <ChevronRight className={`text-slate-400 transition-transform duration-300 ${openSections.proscons ? 'rotate-90' : ''}`} />
-                    </button>
-                    <AnimatePresence>
-                        {openSections.proscons && (
-                            <motion.div 
-                                initial={{ height: 0 }}
-                                animate={{ height: 'auto' }}
-                                exit={{ height: 0 }}
-                                className="overflow-hidden bg-white"
-                            >
-                                <div className="p-8 grid grid-cols-1 md:grid-cols-2 gap-12">
-                                    {/* Pros */}
-                                    <div className="space-y-6">
-                                        <h4 className="text-sm font-black uppercase tracking-widest text-emerald-600">Pros</h4>
-                                        <ul className="space-y-4">
-                                            {(card.pros || [
-                                                "Excellent rewards on online shopping and dining.",
-                                                "Easy to achieve annual fee waiver.",
-                                                "Modern app integration for instant redemptions."
-                                            ]).map((pro, i) => (
-                                                <li key={i} className="flex gap-4 text-sm text-slate-600 font-medium leading-relaxed">
-                                                    <div className="w-5 h-5 rounded-full bg-emerald-50 flex items-center justify-center shrink-0">
-                                                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
-                                                    </div>
-                                                    {pro}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                    {/* Cons */}
-                                    <div className="space-y-6">
-                                        <h4 className="text-sm font-black uppercase tracking-widest text-rose-600">Cons</h4>
-                                        <ul className="space-y-4">
-                                            {(card.cons || [
-                                                "Limited lounge access frequency compared to elite cards.",
-                                                "High interest rates on revolving credit.",
-                                                "Reward points capped on specific merchant categories."
-                                            ]).map((con, i) => (
-                                                <li key={i} className="flex gap-4 text-sm text-slate-600 font-medium leading-relaxed">
-                                                    <div className="w-5 h-5 rounded-full bg-rose-50 flex items-center justify-center shrink-0">
-                                                        <div className="w-1.5 h-1.5 rounded-full bg-rose-500"></div>
-                                                    </div>
-                                                    {con}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                </div>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-                </div>
-
-                {/* 8. Detailed Features & Benefits Section (Subheaded) */}
-                <section className="mb-24">
-                    <div className="pl-4 border-l-4 border-blue-600 mb-12">
-                        <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
-                            {card.name} Features and Benefits
-                        </h2>
-                    </div>
-                    
-                    <div className="space-y-12">
-                        {(card.detailed_features || [
-                            { title: 'Welcome Benefits', content: 'Receive premium activation vouchers and membership tiers upon successful payment of joining fees and first transaction.' },
-                            { title: 'Dining Benefits', content: 'Enjoy up to 20% savings at partner restaurants through the dedicated lifestyle concierge platform.' },
-                            { title: 'Quarterly Spend Benefit', content: 'Unlock milestone rewards including travel vouchers worth ₹1,000 for every ₹1 Lakh spent in a calendar quarter.' },
-                            { title: 'Fuel Surcharge Waiver', content: 'Maximize savings at all petrol stations with a 1% waiver capped at ₹250 per statement cycle.' }
-                        ]).map((feature, i) => (
-                            <div key={i} className="space-y-4">
-                                <h3 className="text-xl font-bold text-slate-900">{feature.title}</h3>
-                                <p className="text-base text-slate-500 font-medium leading-relaxed">
-                                    {feature.content}
-                                </p>
                             </div>
                         ))}
                     </div>
-                </section>
+                </div>
 
-                {/* 9. Redemption Table Section */}
-                <section className="mb-24">
-                    <div className="pl-4 border-l-4 border-blue-600 mb-12">
-                        <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
-                            Reward Point Redemption Value
-                        </h2>
-                    </div>
+                {/* ── ANALYSIS ── */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-32">
+                    <div className="lg:col-span-8">
+                        <div className="pl-6 border-l-4 border-[#047857] mb-12">
+                            <h2 className="text-3xl font-heading font-extrabold text-white uppercase tracking-tight">Intelligence Verdict</h2>
+                        </div>
+                        <div className="prose prose-invert prose-lg max-w-none prose-p:font-serif prose-p:italic prose-p:text-white/60 prose-p:leading-relaxed prose-p:text-xl">
+                            <p>{card.description || `The ${card.name} is a high-performance financial instrument deployed by ${card.bank || 'the issuer'}.`}</p>
+                            <p className="mt-6">{card.verdict || card.final_verdict_text}</p>
+                        </div>
 
-                    <div className="rounded-2xl border border-slate-100 overflow-hidden shadow-sm">
-                        <div className="bg-blue-600 px-6 py-4 text-center">
-                            <span className="text-[11px] font-bold text-white uppercase tracking-widest">Value of Points on Redemption</span>
-                        </div>
-                        <div className="grid grid-cols-4 bg-slate-50 border-b border-slate-100">
-                            {['Product Catalog', 'Travel / Hotel', 'Cashback', 'Airmiles'].map(h => (
-                                <div key={h} className="p-4 text-center border-r border-slate-100 last:border-r-0">
-                                    <span className="text-[10px] font-black uppercase text-slate-500 tracking-widest">{h}</span>
-                                </div>
-                            ))}
-                        </div>
-                        <div className="grid grid-cols-4 bg-white">
-                            {(card.redemption_table || [
-                                { category: 'Catalog', value: '₹0.25' },
-                                { category: 'Travel', value: '₹0.30' },
-                                { category: 'Cash', value: '₹1.00' },
-                                { category: 'Miles', value: '0.30 Miles' }
-                            ]).map((r, i) => (
-                                <div key={i} className="p-6 text-center border-r border-slate-100 last:border-r-0">
-                                    <span className="text-sm font-bold text-slate-900">{r.value}</span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                    
-                    <div className="mt-8 space-y-4">
-                        <ul className="space-y-2">
-                             {(card.exclusions || [
-                                "A minimum of 500 Reward Points are required for redemption against statement balance.",
-                                "Points are valid for a maximum of 2 years from date of accrual.",
-                                "A nominal fee of ₹99 is applicable on every redemption request."
-                             ]).map((ex, i) => (
-                                 <li key={i} className="flex gap-3 text-sm text-slate-400 font-medium leading-relaxed">
-                                     <div className="w-1.5 h-1.5 rounded-full bg-slate-200 mt-2 shrink-0"></div>
-                                     {ex}
-                                 </li>
-                             ))}
-                        </ul>
-                    </div>
-                </section>
-
-                {/* 10. Eligibility Section */}
-                <section className="mb-24">
-                    <div className="pl-4 border-l-4 border-blue-600 mb-12">
-                        <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
-                            Eligibility Criteria
-                        </h2>
-                    </div>
-
-                    <div className="rounded-2xl border border-slate-100 overflow-hidden shadow-sm">
-                        <div className="grid grid-cols-3 bg-blue-600">
-                            <div className="p-4 border-r border-white/10 flex items-center justify-center">
-                                <span className="text-[10px] font-bold text-white uppercase tracking-widest">Criteria</span>
-                            </div>
-                            <div className="p-4 border-r border-white/10 flex items-center justify-center">
-                                <span className="text-[10px] font-bold text-white uppercase tracking-widest">Salaried</span>
-                            </div>
-                            <div className="p-4 flex items-center justify-center">
-                                <span className="text-[10px] font-bold text-white uppercase tracking-widest">Self-Employed</span>
-                            </div>
-                        </div>
-                        <div className="divide-y divide-slate-100">
-                            {(card.eligibility_criteria || [
-                                { criteria: 'Age', salaried: '21 – 60 Years', self_employed: '21 – 65 Years' },
-                                { criteria: 'Income', salaried: '₹25,000 / Month', self_employed: '₹6,00,000 / Annum' }
-                            ]).map((e, i) => (
-                                <div key={i} className="grid grid-cols-3 bg-white">
-                                    <div className="p-6 text-center border-r border-slate-100 bg-slate-50/50">
-                                        <span className="text-xs font-bold text-slate-500 uppercase tracking-widest">{e.criteria}</span>
-                                    </div>
-                                    <div className="p-6 text-center border-r border-slate-100">
-                                        <span className="text-sm font-bold text-slate-900">{e.salaried}</span>
-                                    </div>
-                                    <div className="p-6 text-center">
-                                        <span className="text-sm font-bold text-slate-900">{e.self_employed}</span>
-                                    </div>
+                        {/* Expandable Sections */}
+                        <div className="mt-20 space-y-4">
+                            {[
+                                { id: 'benefits', title: 'Reward Protocols', data: card.grid_benefits || [] },
+                                { id: 'details', title: 'Product Architecture', data: card.product_details?.map((d: any) => ({ title: d, value: '' })) || [] },
+                                { id: 'fees', title: 'Fiscal Constraints (Fees)', data: card.grid_fees || [] },
+                            ].map((section) => (
+                                <div key={section.id} className="bg-[#1a1a1a] rounded-[2rem] border border-white/5 overflow-hidden">
+                                    <button onClick={() => toggleSection(section.id)} className="w-full px-10 py-8 flex items-center justify-between group">
+                                        <h3 className="text-sm font-bold uppercase tracking-[0.3em] text-white group-hover:text-[#047857] transition-colors">{section.title}</h3>
+                                        <ChevronDown className={`text-white/20 transition-transform duration-500 ${openSections[section.id] ? 'rotate-180' : ''}`} size={20} />
+                                    </button>
+                                    <AnimatePresence>
+                                        {openSections[section.id] && (
+                                            <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} className="overflow-hidden">
+                                                <div className="px-10 pb-10 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
+                                                    {section.data.length > 0 ? section.data.map((item: any, i: number) => (
+                                                        <div key={i} className="space-y-1.5">
+                                                            <h4 className="text-[11px] font-bold text-[#047857] uppercase tracking-widest">{item.title || item}</h4>
+                                                            {item.value && <p className="text-sm text-white/50 font-serif italic leading-relaxed">{item.value}</p>}
+                                                        </div>
+                                                    )) : <p className="text-white/20 text-xs italic">Protocol data pending update.</p>}
+                                                </div>
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
                                 </div>
                             ))}
                         </div>
                     </div>
-                </section>
 
-                {/* 11. Final Review Section */}
-                <section className="mb-16">
-                     <div className="pl-4 border-l-4 border-blue-600 mb-12">
-                        <h2 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight">
-                            The Final Verdict
-                        </h2>
-                    </div>
-
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                        <div className="rounded-3xl overflow-hidden shadow-2xl border border-slate-100 aspect-video relative group">
-                            <img 
-                                src={card.final_review_image || card.image} 
-                                alt="Final Review" 
-                                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent"></div>
-                        </div>
-                        <div className="space-y-8">
-                            <p className="text-lg text-slate-500 font-medium leading-relaxed italic">
-                                {card.final_verdict_text || `The ${card.name} stands as a definitive instrument for high-yield rewards. After rigorous audit, Yureka classifies this as a "Tier-1" asset for lifestyle optimization.`}
-                            </p>
-                            <div className="flex items-center gap-6">
-                                <div className="w-14 h-14 rounded-full border-4 border-blue-100 overflow-hidden">
-                                    <img src="https://i.pravatar.cc/150?u=yureka" alt="Chief Analyst" />
+                    <aside className="lg:col-span-4 space-y-8">
+                        {/* Pros/Cons Sidecard */}
+                        <div className="bg-[#1a1a1a] rounded-[2.5rem] border border-white/5 p-10 space-y-12 sticky top-48">
+                            <div className="space-y-6">
+                                <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-[#047857]">Optimizations</p>
+                                <div className="space-y-4">
+                                    {(card.pros || ['Accelerated rewards', 'LTF Potential', 'Premium Lounge Access']).map((p: any, i: number) => (
+                                        <div key={i} className="flex gap-4 items-start">
+                                            <div className="w-5 h-5 rounded-full bg-[#047857]/20 flex items-center justify-center shrink-0 text-[#047857]"><Sparkles size={10} /></div>
+                                            <p className="text-xs font-bold text-white/70 leading-tight">{p}</p>
+                                        </div>
+                                    ))}
                                 </div>
-                                <div>
-                                    <p className="text-sm font-black uppercase tracking-widest text-slate-900">Rajat Gaur</p>
-                                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-blue-600">Chief Investment Analyst</p>
+                            </div>
+                            <div className="space-y-6">
+                                <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-red-500/50">Constraints</p>
+                                <div className="space-y-4">
+                                    {(card.cons || ['High interest rate', 'Fee waiver milestone', 'Capped rewards']).map((c: any, i: number) => (
+                                        <div key={i} className="flex gap-4 items-start opacity-50">
+                                            <div className="w-5 h-5 rounded-full bg-red-500/10 flex items-center justify-center shrink-0 text-red-500"><Info size={10} /></div>
+                                            <p className="text-xs font-bold text-white/70 leading-tight">{c}</p>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </section>
+                    </aside>
+                </div>
 
-                {/* CTA Footer */}
-                <div className="mt-32 p-12 bg-slate-900 rounded-[3rem] text-center relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-blue-600/10 blur-[120px] rounded-full"></div>
-                    <div className="relative z-10 max-w-2xl mx-auto space-y-8">
-                        <h2 className="text-3xl md:text-5xl font-black text-white tracking-tight leading-none uppercase">
-                            Ready to <br /> <span className="text-blue-500 italic font-thin serif">Optimize?</span>
+                {/* ── RELATED ── */}
+                {related.length > 0 && (
+                    <section className="mt-32 pt-20 border-t border-white/5">
+                        <div className="flex items-center gap-4 mb-12">
+                            <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/20">Similar Nodes</span>
+                            <div className="flex-1 h-px bg-white/5" />
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                            {related.map(item => (
+                                <Link key={item.id} to={`/cards/${item.slug || item.id}`} className="group">
+                                    <div className="bg-white/5 border border-white/5 rounded-[2rem] p-6 hover:bg-white/10 transition-all">
+                                        <div className="aspect-[1.58/1] rounded-xl overflow-hidden mb-6 bg-white/5 p-4">
+                                            <ImageWithLoader src={item.image} alt="" className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
+                                        </div>
+                                        <h4 className="text-base font-bold text-white mb-2 group-hover:text-[#047857] transition-colors">{item.name}</h4>
+                                        <div className="flex items-center justify-between pt-4 border-t border-white/5">
+                                            <span className="text-[9px] font-bold uppercase tracking-widest text-white/30">{item.bank}</span>
+                                            <ArrowRight size={14} className="text-white/20 group-hover:text-white group-hover:translate-x-1 transition-all" />
+                                        </div>
+                                    </div>
+                                </Link>
+                            ))}
+                        </div>
+                    </section>
+                )}
+
+                {/* ── FINAL CTA ── */}
+                <div className="mt-48 bg-gradient-to-br from-[#047857] to-[#065f46] rounded-[3rem] p-12 md:p-24 text-center relative overflow-hidden">
+                    <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20L0 20z' fill='%23fff' fill-opacity='1'/%3E%3C/svg%3E")` }} />
+                    <div className="relative z-10 max-w-2xl mx-auto space-y-10">
+                        <p className="text-[10px] font-bold uppercase tracking-[0.5em] text-white/60">Final Protocol Action</p>
+                        <h2 className="text-4xl md:text-7xl font-heading font-extrabold text-white leading-[0.9] tracking-tighter">
+                            Ready to <br /><span className="text-black/30 italic font-serif font-light">Optimize?</span>
                         </h2>
-                        <p className="text-slate-400 text-sm font-medium uppercase tracking-[0.3em] leading-relaxed">
-                            Deploy the RewardX engine to unlock hidden yield paths for this instrument.
-                        </p>
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-4">
-                            <a href={card.apply_link || "#"} className="bg-blue-600 text-white px-12 py-5 rounded-full font-bold text-xs uppercase tracking-[0.3em] hover:bg-blue-700 transition-all shadow-2xl shadow-blue-900/20">
-                                Apply Now
+                        <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-6">
+                            <a href={card.apply_link || "#"} className="bg-white text-[#047857] px-12 py-5 rounded-full font-bold uppercase tracking-widest text-[11px] hover:bg-slate-900 hover:text-white transition-all shadow-2xl">
+                                Deploy Instrument
                             </a>
-                            <button className="bg-white/5 border border-white/10 text-white px-12 py-5 rounded-full font-bold text-xs uppercase tracking-[0.3em] hover:bg-white/10 transition-all">
-                                Request Demo
-                            </button>
+                            <Link to="/join-waitlist" className="bg-black/10 border border-white/20 text-white px-12 py-5 rounded-full font-bold uppercase tracking-widest text-[11px] hover:bg-white/5 transition-all">
+                                Request Alpha Access
+                            </Link>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     );
 };
 
 export default CardDetail;
-CardDetail;
