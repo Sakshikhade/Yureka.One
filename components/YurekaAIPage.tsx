@@ -18,6 +18,15 @@ const DEMO_CHAT: { role: 'user' | 'ai'; text: string; delay: number }[] = [
   { role: 'ai', text: 'Yes! Buy a ₹2,000 Amazon gift card via **RewardX** for ₹1,820 (9% off), then pay with your ICICI Amazon card for 5% cashback. Total effective discount: **14%** on this order.', delay: 1000 },
 ];
 
+const COLOR_MAP: Record<string, { bg: string; text: string; glow: string; border: string }> = {
+  clay:   { bg: 'bg-[#34d399]/10',   text: 'text-[#34d399]',   glow: 'shadow-[#34d399]/20',   border: 'border-[#34d399]/20' },
+  teal:   { bg: 'bg-[#34d399]/10',   text: 'text-[#34d399]',   glow: 'shadow-[#34d399]/20',   border: 'border-[#34d399]/20' },
+  purple: { bg: 'bg-purple-500/10', text: 'text-purple-500', glow: 'shadow-purple-500/20', border: 'border-purple-500/20' },
+  emerald: { bg: 'bg-emerald-500/10', text: 'text-emerald-500', glow: 'shadow-emerald-500/20', border: 'border-emerald-500/20' },
+  blue:   { bg: 'bg-blue-500/10',   text: 'text-blue-500',   glow: 'shadow-blue-500/20',   border: 'border-blue-500/20' },
+  rose:   { bg: 'bg-rose-500/10',   text: 'text-rose-500',   glow: 'shadow-rose-500/20',   border: 'border-rose-500/20' },
+};
+
 const CAPABILITIES = [
   {
     icon: CreditCard,
@@ -58,14 +67,10 @@ const CAPABILITIES = [
     icon: Target,
     title: 'Goal-Based Planning',
     desc: 'Planning a Maldives trip? Business class upgrade? Set a goal and the AI maps a personalised point accumulation strategy.',
-    stat: 'Goal achieved 2× faster',const COLOR_MAP: Record<string, { bg: string; text: string; glow: string; border: string }> = {
-  clay:   { bg: 'bg-[#34d399]/10',   text: 'text-[#34d399]',   glow: 'shadow-[#34d399]/20',   border: 'border-[#34d399]/20' },
-  teal:   { bg: 'bg-[#34d399]/10',   text: 'text-[#34d399]',   glow: 'shadow-[#34d399]/20',   border: 'border-[#34d399]/20' },
-  purple: { bg: 'bg-purple-500/10', text: 'text-purple-500', glow: 'shadow-purple-500/20', border: 'border-purple-500/20' },
-  emerald: { bg: 'bg-emerald-500/10', text: 'text-emerald-500', glow: 'shadow-emerald-500/20', border: 'border-emerald-500/20' },
-  blue:   { bg: 'bg-blue-500/10',   text: 'text-blue-500',   glow: 'shadow-blue-500/20',   border: 'border-blue-500/20' },
-  rose:   { bg: 'bg-rose-500/10',   text: 'text-rose-500',   glow: 'shadow-rose-500/20',   border: 'border-rose-500/20' },
-};
+    stat: 'Goal achieved 2× faster',
+    color: 'rose',
+  }
+];
 
 const STATS = [
   { label: 'Cards Analysed', value: '200+', icon: CreditCard },
