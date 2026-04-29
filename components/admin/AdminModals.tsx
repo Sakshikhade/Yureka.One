@@ -180,6 +180,5 @@ export const AdminModals: React.FC<AdminModalsProps> = ({
         </div>
       )}
     </>
-    </>
   );
 };
