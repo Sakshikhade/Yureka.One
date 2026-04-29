@@ -1,11 +1,7 @@
 import React from 'react';
-import { 
-  RefreshCw, 
-  Menu,
-  LogOut,
-  Plus
-} from 'lucide-react';
+import { RefreshCw, Menu, LogOut, Plus } from 'lucide-react';
 import { useSupabase } from '../SupabaseProvider';
+import { motion, AnimatePresence } from 'motion/react';
 
 interface AdminHeaderProps {
   user: any;
