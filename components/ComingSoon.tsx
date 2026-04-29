@@ -697,7 +697,7 @@ const ComingSoon: React.FC = () => {
                             Secure Your <br />
                             <span className="text-clay italic serif font-thin">Access.</span>
                         </h2>
-                        <p className="text-cream/50 text-xs md:text-sm font-medium uppercase tracking-[0.3em] mb-12 max-w-lg mx-auto leading-relaxed">
+                        <p className="text-white/50 text-xs md:text-sm font-medium uppercase tracking-[0.3em] mb-12 max-w-lg mx-auto leading-relaxed">
                             Phase 1 deployment is capped at 5,000 nodes. priority is given to institutional waitlist members.
                         </p>
                         <div className="flex flex-col items-center gap-6">
