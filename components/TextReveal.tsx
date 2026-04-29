@@ -8,7 +8,7 @@ const TextReveal: React.FC = () => {
   const words = bodyText.split(' ');
 
   return (
-    <section className="relative bg-cream border-b border-black/10 text-[#242424]">
+    <section className="relative bg-[#0a0a0a] border-b border-white/10 text-white">
       {/* Background Micro-details */}
       <div className="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/p6-mini.png')]" />
 
@@ -22,7 +22,7 @@ const TextReveal: React.FC = () => {
           <div className="mb-10 md:mb-14">
             <div className="flex items-center gap-4">
               <div className="h-px w-8 bg-[#047857]/30" />
-              <h3 className="text-[#242424] font-medium text-[10px] uppercase tracking-[0.4em]">
+              <h3 className="text-white font-medium text-[10px] uppercase tracking-[0.4em]">
                 {headerText}
               </h3>
             </div>
@@ -33,7 +33,7 @@ const TextReveal: React.FC = () => {
             {words.map((word, i) => (
               <span
                 key={i}
-                className="font-heading font-medium text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-[2.75rem] uppercase tracking-tight text-[#242424]"
+                className="font-heading font-medium text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-[2.75rem] uppercase tracking-tight text-white"
               >
                 {word}
               </span>
@@ -42,7 +42,7 @@ const TextReveal: React.FC = () => {
 
           {/* Sign-off */}
           <div className="mt-12 md:mt-16 pt-8 border-t border-clay/10 inline-block">
-            <p className="font-serif italic text-sm text-[#242424]/40">
+            <p className="font-serif italic text-sm text-white/40">
               — The Intelligence Bureau
             </p>
           </div>

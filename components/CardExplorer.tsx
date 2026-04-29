@@ -67,7 +67,7 @@ const CardExplorer: React.FC = () => {
 
     if (isLoading && cardsList.length === 0) {
         return (
-            <div className="min-h-screen bg-[#0f0f0f] pt-32 px-6">
+            <div className="min-h-screen bg-[#0a0a0a] pt-32 px-6">
                 <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {[1,2,3,4,5,6].map(i => <SkeletonCard key={i} />)}
                 </div>
@@ -76,7 +76,7 @@ const CardExplorer: React.FC = () => {
     }
 
     return (
-        <div className="min-h-screen bg-[#0f0f0f] pb-32 overflow-x-hidden text-cream selection:bg-[#047857] selection:text-white">
+        <div className="min-h-screen bg-[#0a0a0a] pb-32 overflow-x-hidden text-cream selection:bg-[#34d399] selection:text-[#0a0a0a]">
             <SEO title="Card Explorer | Yureka Credit Intelligence" description="Find the absolute best credit cards tailored to your spending habits using our advanced analysis engine." />
 
             {/* ── HERO ── */}
@@ -87,9 +87,9 @@ const CardExplorer: React.FC = () => {
                 
                 <div className="max-w-[1400px] mx-auto px-6 relative z-10 text-center">
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-                        <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#047857] mb-6">Financial Intelligence</p>
+                        <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#34d399] mb-6">Financial Intelligence</p>
                         <h1 className="text-5xl sm:text-7xl md:text-8xl font-heading font-extrabold text-white leading-[0.9] tracking-tighter mb-8">
-                            Deploy the<br /><span className="text-[#047857] italic font-serif font-light">Analyzer.</span>
+                            Deploy the<br /><span className="text-[#34d399] italic font-serif font-light">Analyzer.</span>
                         </h1>
                         <p className="text-white/50 text-base md:text-xl font-serif italic max-w-2xl mx-auto leading-relaxed mb-16">
                             Filtering {cardsList.length} global instruments to find your specific <br className="hidden md:block" /> path to maximum reward yield.
@@ -118,7 +118,7 @@ const CardExplorer: React.FC = () => {
                                                         const isSelected = bank === 'All Banks' ? selectedBanks.length === 0 : selectedBanks.includes(bank);
                                                         return (
                                                             <button key={bank} onClick={() => { if(bank === 'All Banks') { setSelectedBanks([]); setIsBankMenuOpen(false); } else { setSelectedBanks(prev => prev.includes(bank) ? prev.filter(b => b !== bank) : [...prev, bank]); } }}
-                                                                className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all ${isSelected ? 'bg-[#047857]/10 text-[#047857]' : 'text-white/40 hover:bg-white/5 hover:text-white'}`}
+                                                                className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all ${isSelected ? 'bg-[#34d399]/10 text-[#34d399]' : 'text-white/40 hover:bg-white/5 hover:text-white'}`}
                                                             >
                                                                 <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center p-1 overflow-hidden shrink-0">
                                                                     {BANK_LOGOS[bank] ? <img src={BANK_LOGOS[bank]} alt="" className="w-full h-full object-contain grayscale opacity-50" /> : <Landmark size={12} />}
@@ -163,7 +163,7 @@ const CardExplorer: React.FC = () => {
 
                             {/* CTA */}
                             <div className="px-4 shrink-0">
-                                <button className="w-full lg:w-auto bg-[#047857] text-white px-8 py-4 rounded-3xl text-[10px] font-bold uppercase tracking-[0.2em] shadow-xl shadow-[#047857]/20 hover:scale-105 transition-all">
+                                <button className="w-full lg:w-auto bg-[#34d399] text-[#0a0a0a] px-8 py-4 rounded-3xl text-[10px] font-bold uppercase tracking-[0.2em] shadow-xl shadow-[#34d399]/20 hover:scale-105 transition-all">
                                     Calculate Yield
                                 </button>
                             </div>
@@ -176,9 +176,9 @@ const CardExplorer: React.FC = () => {
             <div className="max-w-[1400px] mx-auto px-6 py-12">
                 <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-16">
                     <div className="relative w-full max-w-md group">
-                        <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-[#047857] transition-colors" size={18} />
+                        <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-white/20 group-focus-within:text-[#34d399] transition-colors" size={18} />
                         <input type="text" placeholder="Search archives..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-16 pr-8 py-5 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-[#047857] transition-all text-sm text-white"
+                            className="w-full pl-16 pr-8 py-5 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-[#34d399] transition-all text-sm text-white"
                         />
                     </div>
                     
@@ -187,7 +187,7 @@ const CardExplorer: React.FC = () => {
                         <div className="flex bg-white/5 p-1 rounded-2xl border border-white/5">
                             {(['featured', 'rewards', 'fees', 'rating'] as const).map((s) => (
                                 <button key={s} onClick={() => setSortBy(s)}
-                                    className={`px-5 py-2.5 rounded-xl text-[9px] font-bold uppercase tracking-widest transition-all ${sortBy === s ? 'bg-[#047857] text-white shadow-lg' : 'text-white/30 hover:text-white'}`}
+                                    className={`px-5 py-2.5 rounded-xl text-[9px] font-bold uppercase tracking-widest transition-all ${sortBy === s ? 'bg-[#34d399] text-[#0a0a0a] shadow-lg' : 'text-white/30 hover:text-white'}`}
                                 >
                                     {s}
                                 </button>
@@ -202,17 +202,17 @@ const CardExplorer: React.FC = () => {
                         {filteredCards.map((card, index) => (
                             <motion.div key={card.id} layout initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: (index % 4) * 0.05 }} className="group">
                                 <Link to={`/cards/${card.slug || card.id}`} className="block h-full">
-                                    <div className="bg-white/5 rounded-[2.5rem] border border-white/5 p-2 h-full flex flex-col hover:border-[#047857]/30 hover:bg-white/[0.07] transition-all duration-500 group">
-                                        <div className="relative aspect-[1.6/1] rounded-[2rem] overflow-hidden mb-6">
-                                            <ImageWithLoader src={card.image} alt={card.name} className="w-full h-full object-contain p-6 bg-white/[0.03] group-hover:scale-110 transition-transform duration-700" />
+                                    <div className="bg-white/5 rounded-[2.5rem] border border-white/5 p-2 h-full flex flex-col hover:border-[#34d399]/30 hover:bg-white/[0.07] transition-all duration-500 group">
+                                        <div className="relative aspect-[1.6/1] rounded-[2rem] overflow-hidden mb-6 bg-white/[0.03]">
+                                            <ImageWithLoader src={card.image} alt={card.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                                             <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 flex items-center gap-2">
-                                                <div className="w-1.5 h-1.5 rounded-full bg-[#047857]" />
+                                                <div className="w-1.5 h-1.5 rounded-full bg-[#34d399]" />
                                                 <span className="text-[9px] font-bold text-white/70 uppercase tracking-widest">{card.issuer || 'Prime'}</span>
                                             </div>
                                         </div>
 
                                         <div className="flex-1 px-6 pb-6 flex flex-col">
-                                            <h3 className="text-lg font-heading font-extrabold text-white leading-tight tracking-tight mb-4 group-hover:text-[#047857] transition-colors">{card.name}</h3>
+                                            <h3 className="text-lg font-heading font-extrabold text-white leading-tight tracking-tight mb-4 group-hover:text-[#34d399] transition-colors">{card.name}</h3>
                                             
                                             <div className="grid grid-cols-2 gap-4 mb-6 pt-4 border-t border-white/5">
                                                 <div>
@@ -221,7 +221,7 @@ const CardExplorer: React.FC = () => {
                                                 </div>
                                                 <div>
                                                     <p className="text-[8px] font-bold uppercase tracking-widest text-white/20 mb-1">Elite Rating</p>
-                                                    <p className="text-xs font-bold text-[#047857]">{card.elite_rating || card.rating || '4.5'}/5</p>
+                                                    <p className="text-xs font-bold text-[#34d399]">{card.elite_rating || card.rating || '4.5'}/5</p>
                                                 </div>
                                             </div>
 
@@ -232,7 +232,7 @@ const CardExplorer: React.FC = () => {
                                                         {card.projected_savings || '—'} <span className="text-[9px] font-serif italic text-white/20 lowercase">/yr</span>
                                                     </p>
                                                 </div>
-                                                <div className="w-10 h-10 rounded-2xl bg-white/5 flex items-center justify-center text-white/40 group-hover:bg-[#047857] group-hover:text-white transition-all">
+                                                <div className="w-10 h-10 rounded-2xl bg-white/5 flex items-center justify-center text-white/40 group-hover:bg-[#34d399] group-hover:text-[#0a0a0a] transition-all">
                                                     <ArrowRight size={18} />
                                                 </div>
                                             </div>
@@ -248,7 +248,7 @@ const CardExplorer: React.FC = () => {
                     <div className="text-center py-48">
                         <p className="text-[10px] font-bold uppercase tracking-[0.5em] text-white/20 italic">No instruments found matching criteria</p>
                         <button onClick={() => { setSelectedBanks([]); setSelectedCategories([]); setSearchQuery(''); setCardType('All Types'); }}
-                            className="mt-8 text-[#047857] text-[11px] font-bold uppercase tracking-widest hover:underline">Reset Protocols</button>
+                            className="mt-8 text-[#34d399] text-[11px] font-bold uppercase tracking-widest hover:underline">Reset Protocols</button>
                     </div>
                 )}
             </div>

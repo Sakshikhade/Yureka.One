@@ -27,16 +27,16 @@ const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
   const tilts = [-3, 1.5, -1, 2.5];
 
   return (
-    <section className="bg-[#141414] py-20 md:py-28 px-6 relative overflow-hidden glass-shine-container">
-      <div className="absolute inset-0 glass-dark opacity-90" />
+    <section className="bg-[#0a0a0a] py-20 md:py-28 px-6 relative overflow-hidden glass-shine-container">
+      <div className="absolute inset-0 glass-dark opacity-95" />
       {/* Background grid */}
       <div
-        className="absolute inset-0 opacity-[0.03] pointer-events-none"
+        className="absolute inset-0 opacity-[0.02] pointer-events-none"
         style={{ backgroundImage: 'linear-gradient(to right, #ffffff 1px, transparent 1px)', backgroundSize: '120px 100%' }}
       />
 
       {/* Ambient glow */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#047857]/10 blur-[160px] rounded-full pointer-events-none" />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#34d399]/5 blur-[160px] rounded-full pointer-events-none" />
 
       <div className="max-w-6xl mx-auto flex flex-col items-center text-center relative z-10">
 
@@ -48,9 +48,9 @@ const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="space-y-5 mb-16 md:mb-20 max-w-4xl"
         >
-          <p className="text-white/40 text-[10px] md:text-xs font-bold uppercase tracking-[0.4em]">
+          <p className="text-[#34d399] text-[10px] md:text-xs font-bold uppercase tracking-[0.4em]">
             YOU INVESTED CRORES INTO{' '}
-            <span className="text-white border-b border-[#047857] pb-0.5">THAT HOME</span>
+            <span className="text-white border-b border-[#34d399] pb-0.5">THAT HOME</span>
           </p>
 
           <h2 className="text-4xl md:text-6xl lg:text-7xl font-heading text-white tracking-tighter leading-[0.95] uppercase">
@@ -87,27 +87,27 @@ const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
                 className="group relative"
               >
                 {/* Serrated Tape Header */}
-                <div className="absolute top-0 left-0 right-0 h-3 bg-[#141414] z-20 overflow-hidden flex">
+                <div className="absolute top-0 left-0 right-0 h-3 bg-[#0a0a0a] z-20 overflow-hidden flex">
                   {[...Array(40)].map((_, j) => (
-                    <div key={j} className="w-1.5 h-1.5 bg-[#141414] rounded-full -translate-y-1/2 border border-white/5" />
+                    <div key={j} className="w-1.5 h-1.5 bg-[#0a0a0a] rounded-full -translate-y-1/2 border border-white/5" />
                   ))}
                 </div>
 
                 {/* Glow on hover */}
-                <div className="absolute inset-0 rounded-2xl bg-[#047857]/0 group-hover:bg-[#047857]/5 transition-all duration-700 blur-xl" />
+                <div className="absolute inset-0 rounded-2xl bg-[#34d399]/0 group-hover:bg-[#34d399]/5 transition-all duration-700 blur-xl" />
 
-                <div className="glass-dark rounded-[2.5rem] pt-12 pb-6 px-6 flex flex-col items-center border border-white/5 group-hover:border-[#047857]/30 transition-all duration-700 relative overflow-hidden">
+                <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] pt-12 pb-6 px-6 flex flex-col items-center border border-white/5 group-hover:border-[#34d399]/30 transition-all duration-700 relative overflow-hidden">
 
                   {/* Indicator dot */}
-                  <div className="absolute top-7 left-6 w-2.5 h-2.5 rounded-full bg-[#047857] shadow-[0_0_12px_#047857] z-30 animate-pulse" />
+                  <div className="absolute top-7 left-6 w-2.5 h-2.5 rounded-full bg-[#34d399] shadow-[0_0_12px_#34d399] z-30 animate-pulse" />
 
                   {/* Card image */}
-                  <div className="w-full aspect-[1.6/1] rounded-xl overflow-hidden bg-[#242424] mb-6 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.6)] group-hover:shadow-[0_30px_60px_-10px_rgba(4,120,87,0.3)] transition-all duration-700">
+                  <div className="w-full aspect-[1.6/1] rounded-xl overflow-hidden bg-[#111] mb-6 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.6)] group-hover:shadow-[0_30px_60px_-10px_rgba(52,211,153,0.15)] transition-all duration-700">
                     {card.image ? (
                       <img
                         src={card.image}
                         alt={card.name}
-                        className="w-full h-full object-contain p-3 transition-transform duration-700 group-hover:scale-105"
+                        className="w-full h-full object-contain p-3 transition-transform duration-700 group-hover:scale-105 grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100"
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center bg-[#1f1f1f]">
@@ -118,7 +118,7 @@ const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
 
                   {/* Card info */}
                   <div className="w-full text-left space-y-1 mb-5">
-                    <p className="text-[8px] font-mono text-[#047857] uppercase tracking-widest font-bold">Elite Instrument</p>
+                    <p className="text-[8px] font-mono text-[#34d399] uppercase tracking-widest font-bold">Elite Instrument</p>
                     <h3 className="text-white text-base font-heading leading-tight uppercase">
                       {card.name}
                     </h3>
@@ -129,7 +129,7 @@ const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
                   <div className="w-full space-y-3 mb-5">
                     <div className="flex justify-between items-end border-b border-white/10 pb-2">
                       <span className="text-[8px] text-white/50 uppercase tracking-[0.2em]">Yield Potential</span>
-                      <span className="text-xs font-mono text-[#047857] font-bold">
+                      <span className="text-xs font-mono text-[#34d399] font-bold">
                         +{card.rewards_rate || '—'}
                       </span>
                     </div>
@@ -146,7 +146,7 @@ const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
                           <Star
                             key={j}
                             size={8}
-                            className={j < Math.floor(card.elite_rating || card.rating || 4) ? 'text-[#047857] fill-[#047857]' : 'text-white/10'}
+                            className={j < Math.floor(card.elite_rating || card.rating || 4) ? 'text-[#34d399] fill-[#34d399]' : 'text-white/10'}
                           />
                         ))}
                       </div>
@@ -162,9 +162,9 @@ const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
                     <Link
                       to={`/cards/${slug}`}
                       onClick={(e) => e.stopPropagation()}
-                      className="w-7 h-7 rounded-lg bg-[#047857]/20 flex items-center justify-center hover:bg-[#047857] transition-colors group/btn"
+                      className="w-7 h-7 rounded-lg bg-[#34d399]/10 flex items-center justify-center hover:bg-[#34d399] transition-colors group/btn"
                     >
-                      <ArrowUpRight size={12} className="text-[#047857] group-hover/btn:text-white transition-colors" />
+                      <ArrowUpRight size={12} className="text-[#34d399] group-hover/btn:text-[#0a0a0a] transition-colors" />
                     </Link>
                   </div>
                 </div>
@@ -180,7 +180,7 @@ const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
         >
           <Link
             to="/cards"
-            className="inline-block bg-white text-black px-12 py-5 rounded-full text-[10px] font-bold uppercase tracking-[0.4em] shadow-2xl hover:bg-[#047857] hover:text-white transition-all duration-300"
+            className="inline-block bg-white text-[#0a0a0a] px-12 py-5 rounded-full text-[10px] font-bold uppercase tracking-[0.4em] shadow-2xl hover:bg-[#34d399] transition-all duration-300"
           >
             Explore Elite Catalog →
           </Link>

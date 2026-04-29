@@ -13,18 +13,18 @@ const FAQItem: React.FC<FAQItemProps> = ({ icon: Icon, question, answer }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className={`bg-cream/40 backdrop-blur-md rounded-3xl border transition-all duration-500 overflow-hidden ${isOpen ? 'border-clay/40 shadow-xl scale-[1.01]' : 'border-ink/5 shadow-sm'}`}>
+    <div className={`bg-white/[0.02] backdrop-blur-md rounded-3xl border transition-all duration-500 overflow-hidden ${isOpen ? 'border-white/10 shadow-xl scale-[1.01]' : 'border-white/5 shadow-sm'}`}>
       <button 
         onClick={() => setIsOpen(!isOpen)}
         className="w-full flex items-center justify-between p-6 md:p-8 text-left group"
       >
         <div className="flex items-center gap-6">
-           <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-500 shrink-0 ${isOpen ? 'bg-[#047857] text-cream rotate-6 shadow-xl' : 'bg-cream text-[#047857] border border-ink/5'}`}>
+           <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-500 shrink-0 ${isOpen ? 'bg-[#34d399] text-[#0a0a0a] rotate-6 shadow-xl' : 'bg-white/5 text-[#34d399] border border-white/10'}`}>
                <Icon size={24} strokeWidth={1.5} />
            </div>
-           <span className="font-serif italic text-xl md:text-2xl text-[#242424] tracking-tight group-hover:text-[#047857] transition-colors">{question}</span>
+           <span className="font-serif italic text-xl md:text-2xl text-white tracking-tight group-hover:text-[#34d399] transition-colors">{question}</span>
         </div>
-        <div className={`text-[#047857]/40 transition-all duration-500 transform ${isOpen ? 'rotate-180 text-[#047857]' : ''}`}>
+        <div className={`text-[#34d399]/40 transition-all duration-500 transform ${isOpen ? 'rotate-180 text-[#34d399]' : ''}`}>
           {isOpen ? <Minus size={28} strokeWidth={1} /> : <Plus size={28} strokeWidth={1} />}
         </div>
       </button>
@@ -32,8 +32,8 @@ const FAQItem: React.FC<FAQItemProps> = ({ icon: Icon, question, answer }) => {
         className={`overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] ${isOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}
       >
         <div className="px-8 pb-10 pl-16 md:pl-[6.5rem] pr-12">
-            <div className="w-full h-px bg-[#242424]/5 mb-8"></div>
-            <p className="text-[#242424]/60 text-lg leading-relaxed font-serif italic">{answer}</p>
+            <div className="w-full h-px bg-white/5 mb-8"></div>
+            <p className="text-white/40 text-lg leading-relaxed font-serif italic">{answer}</p>
         </div>
       </div>
     </div>
@@ -89,15 +89,15 @@ const WaitlistPage: React.FC = () => {
 
   if (isSuccess) {
     return (
-        <div className="min-h-screen bg-cream pt-4 md:pt-8 pb-20 px-6 flex flex-col items-center justify-center text-center font-serif">
-            <div className="w-24 h-24 bg-[#047857] text-cream rounded-full flex items-center justify-center mb-10 shadow-2xl animate-pulse">
+        <div className="min-h-screen bg-[#0a0a0a] pt-4 md:pt-8 pb-20 px-6 flex flex-col items-center justify-center text-center font-serif">
+            <div className="w-24 h-24 bg-[#34d399] text-[#0a0a0a] rounded-full flex items-center justify-center mb-10 shadow-2xl animate-pulse">
                 <Check size={48} strokeWidth={1.5} />
             </div>
-            <h1 className="text-4xl md:text-7xl italic tracking-tighter text-[#242424] mb-6">Confirmed.</h1>
-            <p className="text-lg md:text-2xl text-[#242424]/40 mb-16 max-w-xl mx-auto leading-relaxed">
+            <h1 className="text-4xl md:text-7xl italic tracking-tighter text-white mb-6">Confirmed.</h1>
+            <p className="text-lg md:text-2xl text-white/40 mb-16 max-w-xl mx-auto leading-relaxed">
                 You've been added to the inner circle. Expect an invite as we begin our phased rollout.
             </p>
-            <Link to="/" className="bg-[#242424] text-cream px-12 py-5 text-[10px] font-bold uppercase tracking-[0.4em] hover:bg-[#047857] transition-all rounded-full shadow-2xl hover:scale-105 active:scale-95">
+            <Link to="/" className="bg-white text-[#0a0a0a] px-12 py-5 text-[10px] font-bold uppercase tracking-[0.4em] hover:bg-[#34d399] hover:text-white transition-all rounded-full shadow-2xl hover:scale-105 active:scale-95">
                 Back to Archive
             </Link>
         </div>
@@ -105,35 +105,35 @@ const WaitlistPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-cream pt-4 md:pt-8 pb-32 px-6 overflow-hidden font-serif selection:bg-[#047857]/20">
+    <div className="min-h-screen bg-[#0a0a0a] pt-4 md:pt-8 pb-32 px-6 overflow-hidden font-serif selection:bg-[#34d399]/20">
          
          {/* Minimalist Grid Pattern */}
-         <div className="fixed inset-0 pointer-events-none opacity-[0.02]" 
-              style={{ backgroundImage: 'radial-gradient(#242424 1px, transparent 1px)', backgroundSize: '32px 32px' }}>
+         <div className="fixed inset-0 pointer-events-none opacity-[0.05]" 
+              style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '32px 32px' }}>
          </div>
 
          {/* Form Section */}
          <div className="w-full max-w-4xl mx-auto relative z-10 transition-all duration-1000">
              
              <div className="text-center mb-12 md:mb-20">
-                <p className="text-[#047857] font-bold text-[10px] uppercase tracking-[0.6em] mb-4 md:mb-6">Join the ecosystem</p>
-                <h1 className="text-3xl sm:text-6xl md:text-7xl italic tracking-tighter text-[#242424] leading-[0.85] mb-4">The VIP Waitlist</h1>
-                <p className="text-[#242424]/40 text-base md:text-xl italic max-w-xl mx-auto">Founding membership for the next generation of credit card mastery.</p>
+                <p className="text-[#34d399] font-bold text-[10px] uppercase tracking-[0.6em] mb-4 md:mb-6">Join the ecosystem</p>
+                <h1 className="text-3xl sm:text-6xl md:text-7xl italic tracking-tighter text-white leading-[0.85] mb-4">The VIP Waitlist</h1>
+                <p className="text-white/40 text-base md:text-xl italic max-w-xl mx-auto">Founding membership for the next generation of credit card mastery.</p>
              </div>
 
              <div className="relative group">
                  {/* Decorative background border */}
-                 <div className="absolute inset-0 bg-[#047857]/5 rounded-[3rem] -m-2 blur-2xl group-hover:m-[-3rem] transition-all duration-1000 opacity-50"></div>
+                 <div className="absolute inset-0 bg-[#34d399]/5 rounded-[3rem] -m-2 blur-2xl group-hover:m-[-3rem] transition-all duration-1000 opacity-50"></div>
                  
-                 <div className="relative bg-cream/60 backdrop-blur-2xl p-6 md:p-8 rounded-[3rem] border border-ink/5 shadow-2xl">
+                 <div className="relative bg-white/[0.02] backdrop-blur-2xl p-6 md:p-8 rounded-[3rem] border border-white/10 shadow-2xl">
                      
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
                          <button 
                             onClick={() => setRole('user')}
-                            className={`group/role p-6 md:p-8 rounded-3xl border-2 transition-all duration-500 text-left ${role === 'user' ? 'bg-[#242424] border-ink text-cream shadow-2xl scale-[1.02]' : 'bg-cream/40 border-ink/5 text-[#242424]/40 hover:border-clay/20 hover:text-[#242424]'}`}
+                            className={`group/role p-6 md:p-8 rounded-3xl border-2 transition-all duration-500 text-left ${role === 'user' ? 'bg-white border-white text-[#0a0a0a] shadow-2xl scale-[1.02]' : 'bg-white/5 border-white/5 text-white/40 hover:border-white/10 hover:text-white'}`}
                          >
                              <div className="flex justify-between items-start mb-10">
-                                <User size={32} strokeWidth={1} className={role === 'user' ? 'text-[#047857]' : 'text-[#242424]/20 group-hover/role:text-[#047857]/60'} />
+                                <User size={32} strokeWidth={1} className={role === 'user' ? 'text-[#047857]' : 'text-white/20 group-hover/role:text-[#34d399]/60'} />
                                 {role === 'user' && <Check size={20} className="text-[#047857]" />}
                              </div>
                              <h3 className="text-2xl md:text-3xl italic tracking-tight mb-2">Member</h3>
@@ -142,10 +142,10 @@ const WaitlistPage: React.FC = () => {
 
                          <button 
                             onClick={() => setRole('partner')}
-                            className={`group/role p-6 md:p-8 rounded-3xl border-2 transition-all duration-500 text-left ${role === 'partner' ? 'bg-[#242424] border-ink text-cream shadow-2xl scale-[1.02]' : 'bg-cream/40 border-ink/5 text-[#242424]/40 hover:border-clay/20 hover:text-[#242424]'}`}
+                            className={`group/role p-6 md:p-8 rounded-3xl border-2 transition-all duration-500 text-left ${role === 'partner' ? 'bg-white border-white text-[#0a0a0a] shadow-2xl scale-[1.02]' : 'bg-white/5 border-white/5 text-white/40 hover:border-white/10 hover:text-white'}`}
                          >
                              <div className="flex justify-between items-start mb-10">
-                                <Building size={32} strokeWidth={1} className={role === 'partner' ? 'text-[#047857]' : 'text-[#242424]/20 group-hover/role:text-[#047857]/60'} />
+                                <Building size={32} strokeWidth={1} className={role === 'partner' ? 'text-[#047857]' : 'text-white/20 group-hover/role:text-[#34d399]/60'} />
                                 {role === 'partner' && <Check size={20} className="text-[#047857]" />}
                              </div>
                              <h3 className="text-2xl md:text-3xl italic tracking-tight mb-2">Partner</h3>
@@ -157,45 +157,45 @@ const WaitlistPage: React.FC = () => {
                          <div className="space-y-12 animate-fade-in">
                              <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                                  <div className="space-y-2">
-                                     <label className="text-[10px] font-bold text-[#242424]/20 uppercase tracking-[0.4em]">First Identity</label>
+                                     <label className="text-[10px] font-bold text-white/20 uppercase tracking-[0.4em]">First Identity</label>
                                      <input 
                                        type="text" required placeholder="Jane"
                                        value={formData.firstName}
                                        onChange={(e) => setFormData({...formData, firstName: e.target.value})}
-                                       className="w-full bg-transparent border-b border-ink/10 py-4 text-2xl font-serif text-[#242424] outline-none focus:border-clay transition-all italic"
+                                       className="w-full bg-transparent border-b border-white/10 py-4 text-2xl font-serif text-white outline-none focus:border-[#34d399] transition-all italic"
                                      />
                                  </div>
                                  <div className="space-y-2">
-                                     <label className="text-[10px] font-bold text-[#242424]/20 uppercase tracking-[0.4em]">Last Identity</label>
+                                     <label className="text-[10px] font-bold text-white/20 uppercase tracking-[0.4em]">Last Identity</label>
                                      <input 
                                        type="text" placeholder="Doe"
                                        value={formData.lastName}
                                        onChange={(e) => setFormData({...formData, lastName: e.target.value})}
-                                       className="w-full bg-transparent border-b border-ink/10 py-4 text-2xl font-serif text-[#242424] outline-none focus:border-clay transition-all italic"
+                                       className="w-full bg-transparent border-b border-white/10 py-4 text-2xl font-serif text-white outline-none focus:border-[#34d399] transition-all italic"
                                      />
                                  </div>
                              </div>
 
                              <div className="space-y-2">
-                                 <label className="text-[10px] font-bold text-[#242424]/20 uppercase tracking-[0.4em]">Digital Address (Email)</label>
+                                 <label className="text-[10px] font-bold text-white/20 uppercase tracking-[0.4em]">Digital Address (Email)</label>
                                  <input 
                                    type="email" required placeholder="jane@journal.com"
                                    value={formData.email}
                                    onChange={(e) => setFormData({...formData, email: e.target.value})}
-                                   className="w-full bg-transparent border-b border-ink/10 py-4 text-2xl font-serif text-[#242424] outline-none focus:border-clay transition-all italic"
+                                   className="w-full bg-transparent border-b border-white/10 py-4 text-2xl font-serif text-white outline-none focus:border-[#34d399] transition-all italic"
                                  />
                              </div>
 
                              {role === 'user' ? (
                                  <div className="space-y-4">
-                                     <label className="text-[10px] font-bold text-[#242424]/20 uppercase tracking-[0.4em]">Primary Interest</label>
+                                     <label className="text-[10px] font-bold text-white/20 uppercase tracking-[0.4em]">Primary Interest</label>
                                      <div className="flex flex-wrap gap-3">
                                          {['Travel', 'Dining', 'Shopping', 'Business'].map(cat => (
                                              <button 
                                                 key={cat}
                                                 type="button"
                                                 onClick={() => setFormData({...formData, category: cat})}
-                                                className={`px-6 md:px-8 py-4 md:py-6 rounded-full border text-lg md:text-xl font-bold uppercase tracking-[0.2em] transition-all ${formData.category === cat ? 'bg-[#047857] border-clay text-cream' : 'bg-transparent border-ink/10 text-[#242424]/40 hover:border-ink/20'}`}
+                                                className={`px-6 md:px-8 py-4 md:py-6 rounded-full border text-lg md:text-xl font-bold uppercase tracking-[0.2em] transition-all ${formData.category === cat ? 'bg-[#34d399] border-[#34d399] text-[#0a0a0a]' : 'bg-transparent border-white/10 text-white/40 hover:border-white/20'}`}
                                              >
                                                  {cat}
                                              </button>
@@ -204,22 +204,22 @@ const WaitlistPage: React.FC = () => {
                                  </div>
                              ) : (
                                  <div className="space-y-2">
-                                     <label className="text-[10px] font-bold text-[#242424]/20 uppercase tracking-[0.4em]">Organization</label>
+                                     <label className="text-[10px] font-bold text-white/20 uppercase tracking-[0.4em]">Organization</label>
                                      <input 
                                        type="text" required placeholder="Foundry Inc."
                                        value={formData.company}
                                        onChange={(e) => setFormData({...formData, company: e.target.value})}
-                                       className="w-full bg-transparent border-b border-ink/10 py-4 text-2xl font-serif text-[#242424] outline-none focus:border-clay transition-all italic"
+                                       className="w-full bg-transparent border-b border-white/10 py-4 text-2xl font-serif text-white outline-none focus:border-[#34d399] transition-all italic"
                                      />
                                  </div>
                              )}
 
-                             {error && <p className="text-[#047857] text-[10px] font-bold uppercase tracking-widest text-center">{error}</p>}
+                             {error && <p className="text-[#34d399] text-[10px] font-bold uppercase tracking-widest text-center">{error}</p>}
 
                              <button 
                                 onClick={handleSubmit}
                                 disabled={isSubmitting}
-                                className="w-full bg-[#242424] text-cream px-6 md:px-8 py-4 md:py-6 rounded-2xl flex items-center justify-center gap-6 group hover:bg-[#047857] transition-all duration-700 shadow-2xl active:scale-95 disabled:opacity-50"
+                                className="w-full bg-white text-[#0a0a0a] px-6 md:px-8 py-4 md:py-6 rounded-2xl flex items-center justify-center gap-6 group hover:bg-[#34d399] transition-all duration-700 shadow-2xl active:scale-95 disabled:opacity-50"
                              >
                                  <span className="text-[11px] md:text-xs font-bold uppercase tracking-[0.6em]">{isSubmitting ? 'Processing...' : 'Reserve Access'}</span>
                                  {!isSubmitting && <ArrowRight size={20} className="group-hover:translate-x-3 transition-transform duration-700" />}
@@ -234,21 +234,22 @@ const WaitlistPage: React.FC = () => {
          <div className="w-full max-w-4xl mx-auto mt-40">
              <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8 px-6">
                 <div className="max-w-md">
-                    <p className="text-[#047857] font-bold text-[10px] uppercase tracking-[0.6em] mb-4">Support Hub</p>
-                    <h2 className="text-4xl md:text-5xl italic tracking-tighter text-[#242424] leading-none">Frequently asked inquiries.</h2>
+                    <p className="text-[#34d399] font-bold text-[10px] uppercase tracking-[0.6em] mb-4">Support Hub</p>
+                    <h2 className="text-4xl md:text-5xl italic tracking-tighter text-white leading-none">Frequently asked inquiries.</h2>
                 </div>
-                <p className="text-[#242424]/40 text-sm italic md:text-right max-w-[200px]">Everything you need to know about joining the inner circle.</p>
+                <p className="text-white/40 text-sm italic md:text-right max-w-[200px]">Everything you need to know about joining the inner circle.</p>
              </div>
              
              <div className="space-y-6">
                  {faqs.map((faq, idx) => (
-                      <FAQItem key={idx} icon={faq.icon} question={faq.question} answer={faq.answer} />
-                  ))}
+                       <FAQItem key={idx} icon={faq.icon} question={faq.question} answer={faq.answer} />
+                   ))}
              </div>
          </div>
 
     </div>
   );
 };
+
 
 export default WaitlistPage;

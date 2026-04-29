@@ -30,15 +30,15 @@ const YurekaOsPage: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#F2EFE9] overflow-x-hidden selection:bg-[#047857] selection:text-cream">
+    <div className="relative min-h-screen bg-[#0a0a0a] overflow-x-hidden selection:bg-[#34d399] selection:text-[#0a0a0a]">
       {/* Immersive Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-10%] left-[-5%] w-[40%] h-[40%] bg-[#047857]/5 rounded-full blur-[120px]" />
-        <div className="absolute bottom-[10%] right-[-5%] w-[30%] h-[50%] bg-teal/5 rounded-full blur-[100px]" />
+        <div className="absolute top-[-10%] left-[-5%] w-[40%] h-[40%] bg-[#34d399]/5 rounded-full blur-[120px]" />
+        <div className="absolute bottom-[10%] right-[-5%] w-[30%] h-[50%] bg-emerald-500/5 rounded-full blur-[100px]" />
         <div className="absolute top-[20%] right-[10%] w-[20%] h-[20%] bg-emerald-200/5 rounded-full blur-[80px]" />
         <div 
-          className="absolute inset-0 opacity-[0.03] mix-blend-multiply pointer-events-none" 
-          style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, #242424 1px, transparent 1px)', backgroundSize: '20px 20px' }} 
+          className="absolute inset-0 opacity-[0.03] mix-blend-screen pointer-events-none" 
+          style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, #ffffff 1px, transparent 1px)', backgroundSize: '20px 20px' }} 
         />
       </div>
 
@@ -55,15 +55,15 @@ const YurekaOsPage: React.FC = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="relative order-2 lg:order-1"
           >
-            <div className="relative h-[450px] md:h-[650px] rounded-[3rem] overflow-hidden shadow-[0_40px_100px_-20px_rgba(0,0,0,0.3)] group">
+            <div className="relative h-[450px] md:h-[650px] rounded-[3rem] overflow-hidden shadow-[0_40px_100px_-20px_rgba(0,0,0,0.8)] group border border-white/5">
               <img 
                 src="/assets/hero/eiffel-points.png" 
                 alt="Eiffel Tower representing global travel rewards" 
-                className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110"
+                className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110 opacity-70"
               />
               
               {/* Dynamic Glass Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/20 to-transparent flex flex-col justify-end p-8 md:p-16">
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/20 to-transparent flex flex-col justify-end p-8 md:p-16">
                 <motion.div 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -72,21 +72,21 @@ const YurekaOsPage: React.FC = () => {
                 >
                   <div className="flex -space-x-3 items-center mb-4">
                     {[1,2,3,4].map(i => (
-                      <div key={i} className="w-10 h-10 rounded-full border-2 border-cream/20 bg-slate-200 overflow-hidden shadow-lg backdrop-blur-sm">
+                      <div key={i} className="w-10 h-10 rounded-full border-2 border-white/10 bg-[#1a1a1a] overflow-hidden shadow-lg backdrop-blur-sm">
                         <img src={`https://i.pravatar.cc/100?img=${i+10}`} alt={`Community Member ${i+1}`} className="w-full h-full object-cover" />
                       </div>
                     ))}
-                    <div className="h-10 px-4 rounded-full border border-cream/20 bg-cream/10 backdrop-blur-md flex items-center justify-center text-[10px] font-bold text-cream uppercase tracking-widest ml-4">
+                    <div className="h-10 px-4 rounded-full border border-white/10 bg-white/5 backdrop-blur-md flex items-center justify-center text-[10px] font-bold text-white uppercase tracking-widest ml-4">
                       +5,400 members
                     </div>
                   </div>
                   
-                  <h2 className="text-5xl md:text-8xl font-sans font-bold text-cream leading-[0.85] tracking-tighter">
-                    Your Card <br /> <span className="text-cream/40 italic font-light">can unlock</span> <br /> wonders
+                  <h2 className="text-5xl md:text-8xl font-heading font-extrabold text-white leading-[0.85] tracking-tighter">
+                    Your Card <br /> <span className="text-white/20 italic font-light">can unlock</span> <br /> wonders
                   </h2>
-                  <div className="h-px w-full bg-cream/20" />
-                  <p className="text-cream/60 text-xs tracking-widest uppercase font-bold flex items-center gap-3">
-                    <span className="w-2 h-2 rounded-full bg-[#047857] animate-pulse" />
+                  <div className="h-px w-full bg-white/10" />
+                  <p className="text-white/40 text-[10px] tracking-widest uppercase font-bold flex items-center gap-3">
+                    <span className="w-2 h-2 rounded-full bg-[#34d399] animate-pulse shadow-[0_0_8px_#34d399]" />
                     Real-time valuations across 10+ partners
                   </p>
                 </motion.div>
@@ -94,10 +94,10 @@ const YurekaOsPage: React.FC = () => {
             </div>
 
             {/* Floating Decorative Elements */}
-            <div className="absolute top-10 -right-8 w-16 h-16 bg-cream rounded-2xl shadow-2xl flex items-center justify-center rotate-12 transition-transform hover:rotate-0 cursor-default hidden md:flex">
-              <Percent size={24} className="text-[#047857]" />
+            <div className="absolute top-10 -right-8 w-16 h-16 bg-[#111111] border border-white/10 rounded-2xl shadow-2xl flex items-center justify-center rotate-12 transition-transform hover:rotate-0 cursor-default hidden md:flex">
+              <Percent size={24} className="text-[#34d399]" />
             </div>
-            <div className="absolute bottom-20 -left-10 w-20 h-20 bg-teal text-cream rounded-[2rem] shadow-2xl flex items-center justify-center -rotate-6 transition-transform hover:rotate-0 cursor-default hidden md:flex">
+            <div className="absolute bottom-20 -left-10 w-20 h-20 bg-[#34d399] text-[#0a0a0a] rounded-[2rem] shadow-2xl flex items-center justify-center -rotate-6 transition-transform hover:rotate-0 cursor-default hidden md:flex">
               <Zap size={30} fill="currentColor" />
             </div>
           </motion.div>
@@ -111,18 +111,18 @@ const YurekaOsPage: React.FC = () => {
           >
             <div className="space-y-8">
               <div className="inline-flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#047857]/5 rounded-full border border-clay/10">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#047857] animate-ping" />
-                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#047857]">Limited Beta Access Live</span>
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#34d399]/10 rounded-full border border-[#34d399]/20">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#34d399] animate-ping" />
+                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#34d399]">Limited Beta Access Live</span>
                 </div>
-                <div className="text-[10px] font-black uppercase tracking-[0.4em] text-[#242424]/20">Project // FREE TOOLS</div>
+                <div className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20">Project // FREE TOOLS</div>
               </div>
               
               <div className="space-y-4">
-                <h1 className="text-5xl md:text-7xl font-sans font-black tracking-tighter text-[#242424] leading-[0.9] lg:max-w-md">
-                   Optimize your <br /> <span className="text-black/30 italic font-light">Reward</span> <br /> transfers.
+                <h1 className="text-5xl md:text-7xl font-heading font-extrabold tracking-tighter text-white leading-[0.9] lg:max-w-md">
+                   Optimize your <br /> <span className="text-white/20 italic font-light">Reward</span> <br /> transfers.
                 </h1>
-                <p className="text-[#242424]/50 font-sans text-xl font-medium max-w-sm leading-relaxed">
+                <p className="text-white/50 font-sans text-xl font-medium max-w-sm leading-relaxed">
                    Stop guessing. Our Free Tools audit the exact mathematical yield for your specific redemption goals.
                 </p>
               </div>
@@ -136,15 +136,15 @@ const YurekaOsPage: React.FC = () => {
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="aditya@example.com" 
                       required
-                      className="w-full px-6 py-5 rounded-2xl border border-black/10 focus:ring-4 focus:ring-clay/5 focus:border-clay/30 outline-none transition-all text-lg font-sans bg-cream shadow-inner group-hover:bg-slate-50/50"
+                      className="w-full px-6 py-5 rounded-2xl border border-white/10 focus:ring-4 focus:ring-[#34d399]/10 focus:border-[#34d399]/30 outline-none transition-all text-lg font-sans bg-[#111111] text-white shadow-inner placeholder:text-white/10"
                     />
                   </div>
                   <button 
                     type="submit"
                     disabled={loading}
-                    className="relative overflow-hidden bg-[#242424] text-cream px-10 py-5 rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-[#047857] active:scale-95 transition-all group shadow-2xl shadow-ink/20 shrink-0"
+                    className="relative overflow-hidden bg-[#34d399] text-[#0a0a0a] px-10 py-5 rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-white active:scale-95 transition-all group shadow-2xl shadow-[#34d399]/10 shrink-0"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                     {loading ? <Loader2 size={20} className="animate-spin" /> : (
                       <>
                         <span className="text-sm uppercase tracking-widest">Get access for Free</span>
@@ -157,8 +157,8 @@ const YurekaOsPage: React.FC = () => {
 
 
                 <div className="text-center md:text-left">
-                  <p className="text-[10px] text-[#242424]/30 font-sans tracking-wide">
-                    By continuing, you agree to our <Link to="/terms" className="text-[#242424] underline">Terms of Service</Link>
+                  <p className="text-[10px] text-white/30 font-sans tracking-wide">
+                    By continuing, you agree to our <Link to="/terms" className="text-white underline">Terms of Service</Link>
                   </p>
                 </div>
               </form>
@@ -169,15 +169,15 @@ const YurekaOsPage: React.FC = () => {
         {/* Feature Experience Grid */}
         <section className="mb-40">
            <div className="text-center mb-20">
-              <h2 className="text-sm font-bold uppercase tracking-[0.4em] text-teal mb-4">Precision Engineering</h2>
-              <h3 className="text-4xl md:text-6xl font-serif tracking-tight text-[#242424] leading-tight">Built for rewards maximizers.</h3>
+              <h2 className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#34d399] mb-4">Precision Engineering</h2>
+              <h3 className="text-4xl md:text-6xl font-heading font-extrabold tracking-tight text-white leading-tight">Built for rewards maximizers.</h3>
            </div>
            
            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
              {[
-               { icon: Zap, title: "Yield Engine", desc: "Instantly compare 3,600+ transfer paths to find the absolute highest value per point.", color: "bg-teal text-teal", profit: "+ ₹24,000/yr" },
-               { icon: Star, title: "Elite Vouchers", desc: "Stack savings with 500+ premium brands. Buy vouchers at bulk rates directly on your dashboard.", color: "bg-[#047857] text-[#047857]", profit: "8.5% Extra Saving" },
-               { icon: ShieldCheck, title: "Zero Commission", desc: "Our advice is purely mathematical. We don't accept kickbacks, ensuring your data remains unbiased.", color: "bg-[#242424] text-[#242424]", profit: "100% Transparent" }
+               { icon: Zap, title: "Yield Engine", desc: "Instantly compare 3,600+ transfer paths to find the absolute highest value per point.", color: "bg-[#34d399] text-[#34d399]", profit: "+ ₹24,000/yr" },
+               { icon: Star, title: "Elite Vouchers", desc: "Stack savings with 500+ premium brands. Buy vouchers at bulk rates directly on your dashboard.", color: "bg-[#34d399] text-[#34d399]", profit: "8.5% Extra Saving" },
+               { icon: ShieldCheck, title: "Zero Commission", desc: "Our advice is purely mathematical. We don't accept kickbacks, ensuring your data remains unbiased.", color: "bg-white text-white", profit: "100% Transparent" }
              ].map((feature, i) => (
                <motion.div 
                  key={feature.title} 
@@ -185,19 +185,19 @@ const YurekaOsPage: React.FC = () => {
                  whileInView={{ opacity: 1, y: 0 }}
                  viewport={{ once: true }}
                  transition={{ delay: i * 0.1 }}
-                 className="group relative p-10 bg-cream rounded-[2.5rem] border border-black/[0.03] hover:border-black/[0.08] transition-all hover:shadow-[0_30px_60px_-12px_rgba(0,0,0,0.05)]"
+                 className="group relative p-10 bg-white/[0.03] rounded-[2.5rem] border border-white/5 hover:border-[#34d399]/30 transition-all hover:shadow-[0_30px_60px_-12px_rgba(52,211,153,0.1)] backdrop-blur-md"
                >
                  <div className={`w-14 h-14 ${feature.color.split(' ')[0]}/10 rounded-2xl flex items-center justify-center ${feature.color.split(' ')[1]} mb-8 group-hover:scale-110 transition-transform duration-500`}>
                    <feature.icon size={28} />
                  </div>
-                 <h4 className="text-2xl font-serif mb-4 flex items-center gap-3">
+                 <h4 className="text-2xl font-heading font-extrabold text-white mb-4 flex items-center gap-3">
                     {feature.title}
                  </h4>
-                 <p className="text-[#242424]/50 leading-relaxed mb-6 font-medium sm:h-20">
+                 <p className="text-white/40 leading-relaxed mb-6 font-medium sm:h-20">
                     {feature.desc}
                  </p>
-                 <div className="flex items-center justify-between border-t border-black/[0.05] pt-6">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#242424]/40">Status: Verified</span>
+                 <div className="flex items-center justify-between border-t border-white/5 pt-6">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-white/20">Status: Verified</span>
                     <span className={`text-[10px] font-black uppercase tracking-widest ${feature.color.split(' ')[1]}`}>{feature.profit}</span>
                  </div>
                </motion.div>
@@ -208,26 +208,26 @@ const YurekaOsPage: React.FC = () => {
         {/* Global Access CTA */}
         <motion.section 
           whileHover={{ scale: 1.01 }}
-          className="bg-[#242424] rounded-[4rem] p-10 md:p-24 text-center text-cream relative overflow-hidden shadow-2xl shadow-ink/40"
+          className="bg-white/[0.03] border border-white/10 rounded-[4rem] p-10 md:p-24 text-center text-white relative overflow-hidden shadow-2xl backdrop-blur-xl"
         >
-          <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
-          <div className="absolute -top-24 -left-24 w-64 h-64 bg-[#047857]/20 rounded-full blur-[100px]" />
-          <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-teal/20 rounded-full blur-[100px]" />
+          <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
+          <div className="absolute -top-24 -left-24 w-64 h-64 bg-[#34d399]/10 rounded-full blur-[100px]" />
+          <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-[#34d399]/5 rounded-full blur-[100px]" />
           
           <div className="relative z-10 max-w-3xl mx-auto">
-            <h2 className="text-4xl md:text-7xl font-sans font-black mb-8 leading-[0.9] tracking-tighter">
-              Ready to win the <br /> <span className="text-[#047857] italic font-light">points game?</span>
+            <h2 className="text-4xl md:text-7xl font-heading font-extrabold mb-8 leading-[0.9] tracking-tighter">
+              Ready to win the <br /> <span className="text-[#34d399] italic font-light">points game?</span>
             </h2>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Link to="/join-waitlist" className="bg-[#047857] text-cream px-10 py-5 rounded-2xl font-bold uppercase tracking-widest text-[10px] transition-all hover:bg-cream hover:text-[#242424] flex items-center justify-center gap-3 group">
+              <Link to="/join-waitlist" className="bg-[#34d399] text-[#0a0a0a] px-10 py-5 rounded-2xl font-bold uppercase tracking-widest text-[10px] transition-all hover:bg-white flex items-center justify-center gap-3 group">
                 Reserve your spot <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </Link>
-              <Link to="/cards" className="border border-cream/20 hover:border-cream/40 text-cream px-10 py-5 rounded-2xl font-bold uppercase tracking-widest text-[10px] transition-all flex items-center justify-center">
+              <Link to="/cards" className="border border-white/10 hover:border-[#34d399]/30 text-white px-10 py-5 rounded-2xl font-bold uppercase tracking-widest text-[10px] transition-all flex items-center justify-center backdrop-blur-sm">
                 Review Top Card Combinations
               </Link>
             </div>
             
-            <p className="mt-12 text-cream/40 text-[10px] font-bold uppercase tracking-[0.5em]">
+            <p className="mt-12 text-white/20 text-[10px] font-bold uppercase tracking-[0.5em]">
                Joined by travelers from 43 countries
             </p>
           </div>

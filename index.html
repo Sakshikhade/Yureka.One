@@ -13,8 +13,8 @@
 
     <meta name="application-name" content="Yureka" />
     <meta name="apple-mobile-web-app-title" content="Yureka" />
-    <meta name="theme-color" content="#F2EFE9" />
-    <meta name="msapplication-TileColor" content="#F2EFE9" />
+    <meta name="theme-color" content="#0a0a0a" />
+    <meta name="msapplication-TileColor" content="#0a0a0a" />
     
     <!-- Structured Data: Organization -->
     <script type="application/ld+json">
@@ -66,15 +66,15 @@
     <style>
       html {
         scroll-behavior: smooth;
-        background-color: #F2EFE9;
+        background-color: #0a0a0a;
         -webkit-tap-highlight-color: transparent;
       }
       body {
         font-family: 'Inter', sans-serif;
         font-size: 16px;
         line-height: 1.6;
-        background-color: #F2EFE9;
-        color: #242424;
+        background-color: #0a0a0a;
+        color: rgba(255, 255, 255, 0.9);
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         overflow-x: hidden;
@@ -168,8 +168,8 @@
 
       /* Custom Selection Color (for inputs) */
       ::selection {
-        background: #047857; 
-        color: white;
+        background: #34d399; 
+        color: #0a0a0a;
       }
 
       /* Editorial Scrollbar */
@@ -177,16 +177,16 @@
         width: 6px;
       }
       ::-webkit-scrollbar-track {
-        background: #F2EFE9; 
-        border-left: 1px solid rgba(0,0,0,0.08);
+        background: #0a0a0a; 
+        border-left: 1px solid rgba(255,255,255,0.08);
       }
       ::-webkit-scrollbar-thumb {
-        background: #D1CDC4; 
-        border: 2px solid #F2EFE9;
+        background: #333333; 
+        border: 2px solid #0a0a0a;
         border-radius: 4px;
       }
       ::-webkit-scrollbar-thumb:hover {
-        background: #999; 
+        background: #555555; 
       }
 
       .no-scrollbar::-webkit-scrollbar {
@@ -237,7 +237,7 @@
       .prose-ink h1, .prose-ink h2, .prose-ink h3 {
         margin-top: 2rem !important;
         margin-bottom: 1rem !important;
-        color: #242424 !important;
+        color: rgba(255, 255, 255, 0.9) !important;
       }
       .prose-ink p {
         margin-bottom: 1.5rem !important;
@@ -310,9 +310,9 @@
         theme: {
           extend: {
             colors: {
-              cream: '#F2EFE9', 
-              ink: '#242424',   
-              clay: '#047857',  
+              cream: '#0a0a0a', 
+              ink: 'rgba(255, 255, 255, 0.9)',   
+              clay: '#34d399',  
             },
             fontFamily: {
               sans: ['Inter', 'sans-serif'],

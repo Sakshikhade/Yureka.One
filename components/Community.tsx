@@ -66,7 +66,7 @@ const AppStoreCard: React.FC<{ review: Review }> = ({ review }) => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-white/70 backdrop-blur-2xl p-6 md:p-8 rounded-[2.5rem] shadow-[0_20px_50px_-10px_rgba(36,36,36,0.05)] border border-white/60 space-y-4 hover:shadow-2xl hover:scale-[1.02] transition-all duration-500 group"
+            className="bg-white/5 backdrop-blur-2xl p-6 md:p-8 rounded-[2.5rem] shadow-[0_20px_50px_-10px_rgba(0,0,0,0.5)] border border-white/10 space-y-4 hover:shadow-2xl hover:scale-[1.02] transition-all duration-500 group"
         >
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -74,8 +74,8 @@ const AppStoreCard: React.FC<{ review: Review }> = ({ review }) => {
                         <img src={review.avatar || `https://ui-avatars.com/api/?name=${review.author}&background=random`} alt={review.author} className="w-full h-full object-cover" />
                     </div>
                     <div className="flex flex-col">
-                        <h4 className="text-[14px] font-bold text-[#242424] uppercase tracking-wider">{review.author}</h4>
-                        <div className="flex items-center gap-1 text-[#242424]/40 text-[10px] uppercase font-bold tracking-widest mt-0.5">
+                        <h4 className="text-[14px] font-bold text-white uppercase tracking-wider">{review.author}</h4>
+                        <div className="flex items-center gap-1 text-white/40 text-[10px] uppercase font-bold tracking-widest mt-0.5">
                              <span>{review.source || 'Verified User'}</span>
                              {review.source && (
                                  review.source === 'App Store' ? <Apple size={10} className="fill-current" /> : <Play size={10} className="fill-current" />
@@ -83,7 +83,7 @@ const AppStoreCard: React.FC<{ review: Review }> = ({ review }) => {
                         </div>
                     </div>
                 </div>
-                <div className="w-8 h-8 bg-cream rounded-xl flex items-center justify-center opacity-40 group-hover:opacity-100 transition-opacity">
+                <div className="w-8 h-8 bg-white/10 rounded-xl flex items-center justify-center opacity-40 group-hover:opacity-100 transition-opacity">
                     {review.source === 'App Store' ? <Apple size={16} /> : <Play size={16} />}
                 </div>
             </div>
@@ -92,12 +92,12 @@ const AppStoreCard: React.FC<{ review: Review }> = ({ review }) => {
                 {[...Array(5)].map((_, i) => (
                     <Star key={i} size={12} className={`${i < (review.rating || 5) ? 'text-[#047857] fill-[#047857]' : 'text-gray-200'}`} />
                 ))}
-                <span className="text-[10px] font-bold text-[#242424]/40 ml-2 uppercase tracking-widest">
+                <span className="text-[10px] font-bold text-white/40 ml-2 uppercase tracking-widest">
                     {new Date(review.created_at || Date.now()).toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' })}
                 </span>
             </div>
 
-            <p className="text-[15px] text-[#242424]/70 leading-relaxed font-sans">
+            <p className="text-[15px] text-white/90 leading-relaxed font-sans">
                 {review.quote}
             </p>
         </motion.div>
@@ -155,19 +155,19 @@ const Community: React.FC = () => {
   const col3 = regular.filter((_, i) => i % 3 === 2);
 
   return (
-    <section ref={sectionRef} className="bg-cream pt-12 pb-32 md:pb-48 overflow-hidden relative">
+    <section ref={sectionRef} className="bg-[#0a0a0a] pt-12 pb-32 md:pb-48 overflow-hidden relative">
         {/* Subtle Archival Stamp Background */}
         <div className="absolute top-20 right-0 opacity-[0.03] select-none pointer-events-none rotate-90 origin-right">
             <span className="text-[12rem] font-heading font-black tracking-tighter uppercase whitespace-nowrap">VOX POPULI</span>
         </div>
         
         {/* ── TRI-STREAM MARQUEE GRID (IMAGE 3) ── */}
-        <div className="w-full relative z-10 text-[#242424]">
+        <div className="w-full relative z-10 text-white">
             <div className="text-center mb-16 space-y-4">
                 <div className="inline-flex items-center gap-2 bg-[#047857]/5 px-6 py-2 rounded-full border border-[#047857]/10 text-[#047857] text-[10px] font-black uppercase tracking-[0.4em]">
                     <ShieldCheck size={14} className="animate-pulse" /> Verified Intelligence
                 </div>
-                <h2 className="text-4xl md:text-5xl lg:text-[clamp(1.5rem,4vw,4.5rem)] font-serif font-black text-[#242424] leading-[0.85] uppercase tracking-tighter">
+                <h2 className="text-4xl md:text-5xl lg:text-[clamp(1.5rem,4vw,4.5rem)] font-serif font-black text-white leading-[0.85] uppercase tracking-tighter">
                     Real Stories, <br />
                     <span className="text-[#047857] italic font-light lowercase">Real</span> Yield.
                 </h2>

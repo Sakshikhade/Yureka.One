@@ -43,12 +43,12 @@ const MainPage: React.FC = () => {
         schema={homeSchema}
       />
       
-      <div className="bg-cream min-h-screen selection:bg-clay/10">
+      <div className="bg-[#0a0a0a] min-h-screen selection:bg-clay/30">
         {/* EDITORIAL 5-COLUMN ARCHITECTURE */}
         <div className="grid grid-cols-1 lg:grid-cols-5 w-full relative">
             
             {/* COLUMN 1: LEFT MARGIN */}
-            <div className="hidden lg:block border-r border-ink/5 bg-cream/30 h-full min-h-screen" />
+            <div className="hidden lg:block border-r border-white/5 bg-white/[0.02] h-full min-h-screen" />
 
             {/* COLUMNS 2, 3, 4: THE INTELLIGENCE CORE (60% WIDTH) */}
             <div className="col-span-1 lg:col-span-3 flex flex-col items-stretch relative z-10 min-w-0">
@@ -75,17 +75,17 @@ const MainPage: React.FC = () => {
                     </Suspense>
                 </section>
 
-                <Suspense fallback={<div className="h-32 animate-pulse bg-paper/50" />}>
+                <Suspense fallback={<div className="h-32 animate-pulse bg-white/5" />}>
                     <CalculatorCTA />
                 </Suspense>
 
                 <section id="stats" className="scroll-mt-24">
-                    <Suspense fallback={<div className="h-48 bg-slate-50/50 animate-pulse" />}>
+                    <Suspense fallback={<div className="h-48 bg-white/5 animate-pulse" />}>
                         <Stats />
                     </Suspense>
                 </section>
 
-                <div className="w-full relative border-y border-ink/5">
+                <div className="w-full relative border-y border-white/5">
                     <Marquee />
                 </div>
 
@@ -120,7 +120,7 @@ const MainPage: React.FC = () => {
             </div>
 
             {/* COLUMN 5: RIGHT MARGIN */}
-            <div className="hidden lg:block border-l border-ink/5 bg-cream/30 h-full min-h-screen" />
+            <div className="hidden lg:block border-l border-white/5 bg-white/[0.02] h-full min-h-screen" />
         </div>
       </div>
     </>

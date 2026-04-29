@@ -107,42 +107,69 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }, 8000);
 
     const setup = async () => {
+      console.log('⚡️ SupabaseProvider setup initiated');
       setIsLoading(true);
       try {
         if (isAdminRoute) {
+          console.log('⚡️ Admin route detected. Fetching session...');
           // Check for session before attempting admin fetches
           const { data: { session } } = await supabase.auth.getSession();
           if (session) {
-            subs.push(getCardsAdmin((data) => setCards(data)));
+            console.log('⚡️ Admin session found. Initiating fetches...');
+            subs.push(getCardsAdmin((data) => { console.log('⚡️ Admin cards loaded'); setCards(data); }));
             await new Promise(r => setTimeout(r, 100));
-            subs.push(getBlogsAdmin((data) => setBlogs(data)));
+            subs.push(getBlogsAdmin((data) => { console.log('⚡️ Admin blogs loaded'); setBlogs(data); }));
             await new Promise(r => setTimeout(r, 100));
-            subs.push(getReviewsAdmin((data) => setReviews(data)));
+            subs.push(getReviewsAdmin((data) => { console.log('⚡️ Admin reviews loaded'); setReviews(data); }));
             await new Promise(r => setTimeout(r, 100));
-            subs.push(getWaitlist((data) => setWaitlist(data)));
+            subs.push(getWaitlist((data) => { console.log('⚡️ Admin waitlist loaded'); setWaitlist(data); }));
             await new Promise(r => setTimeout(r, 100));
-            subs.push(getTeamMembersAdmin((data) => setTeam(data)));
+            subs.push(getTeamMembersAdmin((data) => { console.log('⚡️ Admin team loaded'); setTeam(data); }));
             await new Promise(r => setTimeout(r, 100));
-            subs.push(getAuditLogsAdmin((data) => setLogs(data)));
+            subs.push(getAuditLogsAdmin((data) => { console.log('⚡️ Admin logs loaded'); setLogs(data); }));
             setIsAdminDataLoaded(true);
+            console.log('⚡️ Admin fetches complete.');
+          } else {
+            console.log('⚡️ No admin session found.');
           }
         } else {
+          console.log('⚡️ Public route detected. Initiating public fetches...');
           subs.push(getCards(
             (data) => { 
+              console.log('⚡️ Public cards loaded', data?.length);
               setCards(data.length > 0 ? data : featuredCards); 
             },
-            () => setSyncStatus('error')
+            (err) => {
+              console.error('⚡️ Public cards fetch failed', err);
+              setSyncStatus('error');
+            }
           ));
           subs.push(getBlogs(
-            (data) => setBlogs(data.filter(b => b.id && b.title && b.title !== 'Untitled Journal')), 
-            () => setSyncStatus('error')
+            (data) => {
+              console.log('⚡️ Public blogs loaded', data?.length);
+              setBlogs(data.filter(b => b.id && b.title && b.title !== 'Untitled Journal'));
+            }, 
+            (err) => {
+              console.error('⚡️ Public blogs fetch failed', err);
+              setSyncStatus('error');
+            }
           ));
-          subs.push(getReviews((data) => setReviews(data), () => setSyncStatus('error')));
+          subs.push(getReviews(
+            (data) => {
+              console.log('⚡️ Public reviews loaded', data?.length);
+              setReviews(data);
+            }, 
+            (err) => {
+              console.error('⚡️ Public reviews fetch failed', err);
+              setSyncStatus('error');
+            }
+          ));
         }
       } catch (err) {
         console.error("Supabase Setup Error:", err);
         setSyncStatus('error');
       } finally {
+        console.log('⚡️ SupabaseProvider setup complete.');
         setIsLoading(false);
         clearTimeout(fallbackTimer);
       }

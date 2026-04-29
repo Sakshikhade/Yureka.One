@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useInView } from 'motion/react';
+import { Link } from 'react-router-dom';
 import { 
   Sparkles, Zap, Brain, Rocket, ArrowRight, Bell, 
   Smartphone, Globe, Shield, Coins, MousePointer, 
@@ -9,22 +10,22 @@ import {
 
 /* --- PREMIUM UI WRAPPERS --- */
 
-const WindowFrame: React.FC<{ children: React.ReactNode, title?: string, color?: string, dark?: boolean }> = ({ children, title, color = "clay", dark = false }) => {
+const WindowFrame: React.FC<{ children: React.ReactNode, title?: string, color?: string, dark?: boolean }> = ({ children, title, color = "clay", dark = true }) => {
   return (
-    <div className={`w-full h-full ${dark ? 'bg-slate-900' : 'bg-cream'} rounded-[1.5rem] md:rounded-[2rem] overflow-hidden border border-black/[0.08] shadow-2xl transition-all duration-500 group-hover:shadow-${color}/10 group-hover:border-${color}/20 flex flex-col`}>
+    <div className={`w-full h-full bg-[#0a0a0a] rounded-[1.5rem] md:rounded-[2rem] overflow-hidden border border-white/5 shadow-2xl transition-all duration-500 group-hover:shadow-${color}/10 group-hover:border-${color}/20 flex flex-col`}>
       {/* Browser/OS Top Bar */}
-      <div className={`px-4 py-3 md:px-6 md:py-4 border-b ${dark ? 'border-cream/5 bg-cream/5' : 'border-black/5 bg-slate-50/50'} flex justify-between items-center backdrop-blur-md`}>
+      <div className={`px-4 py-3 md:px-6 md:py-4 border-b border-white/5 bg-white/5 flex justify-between items-center backdrop-blur-md`}>
         <div className="flex gap-1.5 md:gap-2">
-          <div className={`w-2 h-2 md:w-3 md:h-3 rounded-full ${dark ? 'bg-red-500/30' : 'bg-red-400/40'}`} />
-          <div className={`w-2 h-2 md:w-3 md:h-3 rounded-full ${dark ? 'bg-amber-500/30' : 'bg-amber-400/40'}`} />
-          <div className={`w-2 h-2 md:w-3 md:h-3 rounded-full ${dark ? 'bg-emerald-500/30' : 'bg-emerald-400/40'}`} />
+          <div className={`w-2 h-2 md:w-3 md:h-3 rounded-full bg-red-500/30`} />
+          <div className={`w-2 h-2 md:w-3 md:h-3 rounded-full bg-amber-500/30`} />
+          <div className={`w-2 h-2 md:w-3 md:h-3 rounded-full bg-emerald-500/30`} />
         </div>
         {title && (
           <div className="flex items-center gap-2">
-            <span className={`text-[9px] md:text-[10px] font-medium uppercase tracking-[0.2em] ${dark ? 'text-cream/40' : 'text-[#242424]/40'}`}>{title}</span>
+            <span className={`text-[9px] md:text-[10px] font-medium uppercase tracking-[0.2em] text-white/40`}>{title}</span>
           </div>
         )}
-        <div className={`text-[8px] md:text-[9px] font-medium italic tracking-wider ${dark ? 'text-cream/10' : 'text-[#242424]/10'}`}>V.2.4B</div>
+        <div className={`text-[8px] md:text-[9px] font-medium italic tracking-wider text-white/10`}>V.2.4B</div>
       </div>
       <div className="flex-1 relative overflow-hidden">
         {children}
@@ -123,7 +124,7 @@ const YurekaAIAnimation = () => {
 
   return (
     <WindowFrame title="Yureka Neural Engine" color="teal">
-      <div className="h-full flex flex-col bg-[#F2EFE9] relative overflow-hidden">
+      <div className="h-full flex flex-col bg-[#0a0a0a] relative overflow-hidden">
         {/* Dynamic Compute Pulse */}
         <AnimatePresence>
             {isThinking && (
@@ -131,14 +132,14 @@ const YurekaAIAnimation = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="absolute inset-0 bg-[#047857]/[0.05] pointer-events-none"
+                    className="absolute inset-0 bg-[#34d399]/[0.05] pointer-events-none"
                     style={{ filter: 'blur(60px)' }}
                 />
             )}
         </AnimatePresence>
 
         {/* Scroll Fade Indicator */}
-        <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-[#F2EFE9] to-transparent z-20 pointer-events-none" />
+        <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-[#0a0a0a] to-transparent z-20 pointer-events-none" />
 
         <div 
             ref={scrollRef}
@@ -156,12 +157,12 @@ const YurekaAIAnimation = () => {
               >
                 <motion.div 
                     animate={msg.type === 'user' ? { scale: [1, 1.1, 1] } : {}}
-                    className={`w-10 h-10 md:w-12 md:h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-xl ${msg.type === 'user' ? 'bg-[#047857]' : 'bg-[#242424]'}`}
+                    className={`w-10 h-10 md:w-12 md:h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-xl ${msg.type === 'user' ? 'bg-[#34d399]' : 'bg-white/5'}`}
                 >
-                  {msg.type === 'user' ? <Search size={16} className="text-cream/60" /> : <Cpu size={18} className="text-cream" />}
+                  {msg.type === 'user' ? <Search size={16} className="text-[#0a0a0a]" /> : <Cpu size={18} className="text-white/60" />}
                 </motion.div>
-                <div className={`max-w-[90%] md:max-w-[85%] px-4 py-3 md:px-6 md:py-5 rounded-[1.5rem] md:rounded-[2rem] tracking-tight text-[11px] md:text-[14px] font-medium leading-relaxed shadow-[0_15px_35px_-5px_rgba(0,0,0,0.1)] border ${
-                  msg.type === 'user' ? 'bg-cream border-black/5 text-[#242424] rounded-br-none' : 'bg-[#242424] border-transparent text-cream rounded-bl-none'
+                <div className={`max-w-[90%] md:max-w-[85%] px-4 py-3 md:px-6 md:py-5 rounded-[1.5rem] md:rounded-[2rem] tracking-tight text-[11px] md:text-[14px] font-medium leading-relaxed shadow-[0_15px_35px_-5px_rgba(0,0,0,0.4)] border ${
+                  msg.type === 'user' ? 'bg-white/5 border-white/5 text-white rounded-br-none' : 'bg-white/10 border-white/5 text-white rounded-bl-none'
                 }`}>
                   {msg.type === 'ai' ? (
                       <TypewriterText 
@@ -183,36 +184,36 @@ const YurekaAIAnimation = () => {
                 animate={{ opacity: 1, y: 0 }} 
                 className="flex items-center gap-4 px-12"
               >
-                <div className="flex gap-2 py-5 px-8 bg-slate-100 rounded-3xl rounded-bl-none border border-black/5">
+                <div className="flex gap-2 py-5 px-8 bg-white/5 rounded-3xl rounded-bl-none border border-white/5">
                    {[0, 1, 2].map(i => (
                      <motion.div 
                         key={i} 
                         animate={{ y: [0, -6, 0], opacity: [0.3, 1, 0.3] }}
                         transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.15 }}
-                        className="w-2 h-2 bg-[#047857] rounded-full" 
+                        className="w-2 h-2 bg-[#34d399] rounded-full" 
                      />
                    ))}
                 </div>
-                <span className="text-[10px] font-medium uppercase text-[#047857]/40 tracking-[0.2em] animate-pulse">Computing Yield Path...</span>
+                <span className="text-[10px] font-medium uppercase text-[#34d399]/40 tracking-[0.2em] animate-pulse">Computing Yield Path...</span>
               </motion.div>
             )}
           </AnimatePresence>
         </div>
 
         {/* Dynamic Chat Footer */}
-        <div className="p-8 border-t border-black/[0.03] bg-cream/80 backdrop-blur-md relative z-10">
-          <div className="h-14 md:h-16 bg-cream rounded-3xl flex items-center px-8 justify-between border border-black/[0.08] shadow-sm">
+        <div className="p-8 border-t border-white/5 bg-[#0a0a0a]/80 backdrop-blur-md relative z-10">
+          <div className="h-14 md:h-16 bg-white/5 rounded-3xl flex items-center px-8 justify-between border border-white/5 shadow-sm">
              <div className="flex items-center gap-4 overflow-hidden">
                 {userInputStatus === "Typing" && (
-                    <motion.div animate={{ opacity: [0.2, 1, 0.2] }} transition={{ repeat: Infinity, duration: 1.5 }} className="w-2.5 h-2.5 bg-[#047857] rounded-full shrink-0" />
+                    <motion.div animate={{ opacity: [0.2, 1, 0.2] }} transition={{ repeat: Infinity, duration: 1.5 }} className="w-2.5 h-2.5 bg-[#34d399] rounded-full shrink-0" />
                 )}
-                <span className={`text-[10px] md:text-base font-medium transition-all duration-500 truncate ${userInputStatus === "Typing" ? 'text-[#047857]' : 'text-[#242424]/20'}`}>
+                <span className={`text-[10px] md:text-base font-medium transition-all duration-500 truncate ${userInputStatus === "Typing" ? 'text-[#34d399]' : 'text-white/20'}`}>
                     {userInputStatus === "Typing" ? "Analyzing Reward Matrix..." : "Ask Yureka Neural Assistant..."}
                 </span>
              </div>
              <div className="flex items-center gap-4">
-                <div className="h-8 w-[1px] bg-black/[0.08]" />
-                <Rocket size={20} className={`transition-colors ${userInputStatus === "Typing" ? 'text-[#047857]' : 'text-[#242424]/10'}`} />
+                <div className="h-8 w-[1px] bg-white/5" />
+                <Rocket size={20} className={`transition-colors ${userInputStatus === "Typing" ? 'text-[#34d399]' : 'text-white/10'}`} />
              </div>
           </div>
         </div>
@@ -289,21 +290,21 @@ const RewardXAnimation = () => {
 
   return (
     <WindowFrame title="Adaptive Yield Engine" color="emerald">
-      <div className="h-full flex flex-col bg-cream relative overflow-hidden">
+      <div className="h-full flex flex-col bg-[#0a0a0a] relative overflow-hidden">
         
         <div className="p-10 md:p-14 pb-4 flex justify-between items-start relative z-20 shrink-0">
             <div>
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-3 mb-2">
                     <div className="flex gap-1">
-                       {[0, 1, 2].map(i => <motion.div key={i} animate={{ opacity: [0.2, 1, 0.2] }} transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2 }} className="w-1 h-1 rounded-full bg-emerald-600" />)}
+                       {[0, 1, 2].map(i => <motion.div key={i} animate={{ opacity: [0.2, 1, 0.2] }} transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2 }} className="w-1 h-1 rounded-full bg-[#34d399]" />)}
                     </div>
-                    <span className="text-[9px] font-medium tracking-[0.3em] text-emerald-600 uppercase">Yield Script Pulse</span>
+                    <span className="text-[9px] font-medium tracking-[0.3em] text-[#34d399] uppercase">Yield Script Pulse</span>
                 </motion.div>
-                <h3 className="text-2xl md:text-3xl font-medium text-[#242424] tracking-tighter uppercase leading-tight">Executive<br />Protocol</h3>
+                <h3 className="text-2xl md:text-3xl font-medium text-white tracking-tighter uppercase leading-tight">Executive<br />Protocol</h3>
             </div>
             <div className="text-right">
-                <div className="text-[9px] font-medium text-[#242424]/30 tracking-widest uppercase mb-1">Total Yield Unlocked</div>
-                <div className="text-2xl font-medium text-emerald-600 tracking-tighter tabular-nums">₹{savings.toLocaleString()}</div>
+                <div className="text-[9px] font-medium text-white/30 tracking-widest uppercase mb-1">Total Yield Unlocked</div>
+                <div className="text-2xl font-medium text-[#34d399] tracking-tighter tabular-nums">₹{savings.toLocaleString()}</div>
             </div>
         </div>
 
@@ -316,33 +317,33 @@ const RewardXAnimation = () => {
                   layout
                   initial={{ opacity: 0, y: 15, filter: 'blur(10px)' }}
                   animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                  className={`flex items-center justify-between p-5 rounded-[2rem] border-2 transition-all duration-700 ${
-                    i === step ? 'bg-emerald-50/50 border-emerald-500/20 shadow-xl shadow-emerald-500/5' : 'bg-cream border-[#242424]/[0.03]'
+                  className={`flex items-center justify-between p-5 rounded-[2rem] border transition-all duration-700 ${
+                    i === step ? 'bg-white/10 border-white/10 shadow-xl' : 'bg-white/5 border-white/5'
                   }`}
                 >
                   <div className="flex items-center gap-5">
                     <motion.div 
                         animate={i === step ? { scale: [1, 1.1, 1] } : {}}
                         className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg ${
-                            i === 0 ? 'bg-[#242424] text-cream' : 'bg-emerald-500 text-cream shadow-emerald-500/30'
+                            i === 0 ? 'bg-white text-[#0a0a0a]' : 'bg-[#34d399] text-[#0a0a0a] shadow-[#34d399]/20'
                         }`}
                     >
                       {s.icon}
                     </motion.div>
                     <div>
-                      <div className="text-[14px] font-medium text-[#242424] uppercase tracking-tight">{s.label}</div>
-                      <div className="text-[10px] font-medium text-[#242424]/40 uppercase tracking-[0.2em] flex items-center gap-2">
+                      <div className="text-[14px] font-medium text-white uppercase tracking-tight">{s.label}</div>
+                      <div className="text-[10px] font-medium text-white/40 uppercase tracking-[0.2em] flex items-center gap-2">
                         {i === 0 ? 'Source Node' : i < step ? 'Yield Executed' : 'Optimizing Logic...'}
-                        {i === step && <motion.span animate={{ opacity: [1, 0, 1] }} className="text-emerald-500 font-medium">●</motion.span>}
+                        {i === step && <motion.span animate={{ opacity: [1, 0, 1] }} className="text-[#34d399] font-medium">●</motion.span>}
                       </div>
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className={`text-base font-medium tracking-tight ${s.type === 'base' ? 'text-[#242424]' : 'text-emerald-600'}`}>
+                    <div className={`text-base font-medium tracking-tight ${s.type === 'base' ? 'text-white' : 'text-[#34d399]'}`}>
                       {s.value > 0 ? '' : '−'}₹{Math.abs(s.value).toLocaleString()}
                     </div>
                     {s.badge && (
-                      <div className="inline-block px-2.5 py-1 mt-1 bg-emerald-600 text-cream text-[9px] font-medium rounded-lg tracking-tight shadow-sm">
+                      <div className="inline-block px-2.5 py-1 mt-1 bg-[#34d399] text-[#0a0a0a] text-[9px] font-bold rounded-lg tracking-tight shadow-sm">
                         {s.badge}
                       </div>
                     )}
@@ -355,34 +356,34 @@ const RewardXAnimation = () => {
               <motion.div
                 initial={{ opacity: 0, y: 30, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                className="p-8 bg-[#242424] rounded-[3rem] text-cream flex items-center justify-between shadow-2xl relative overflow-hidden group border-4 border-emerald-500/10 mt-6"
+                className="p-8 bg-white/5 rounded-[3rem] text-white flex items-center justify-between shadow-2xl relative overflow-hidden group border border-white/10 mt-6"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/20 to-transparent translate-x-[-100%] animate-[shimmer_3s_infinite]" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#34d399]/20 to-transparent translate-x-[-100%] animate-[shimmer_3s_infinite]" />
                 <div className="relative z-10">
-                    <div className="text-[10px] font-medium text-cream/40 uppercase tracking-[0.4em] mb-2">Settlement Pipeline Value</div>
+                    <div className="text-[10px] font-medium text-white/40 uppercase tracking-[0.4em] mb-2">Settlement Pipeline Value</div>
                     <div className="text-4xl font-medium tracking-tight">₹{count.toLocaleString()}</div>
                 </div>
-                <div className="relative z-10 bg-emerald-600 px-6 py-4 rounded-[1.5rem] shadow-xl rotate-3 group-hover:rotate-0 transition-all duration-500 border-2 border-cream/10">
-                   <div className="text-[10px] font-medium text-cream/60 uppercase tracking-widest mb-1 text-center">Net Yield</div>
-                   <div className="text-2xl font-medium tabular-nums tracking-tighter">19.2%</div>
+                <div className="relative z-10 bg-[#34d399] px-6 py-4 rounded-[1.5rem] shadow-xl rotate-3 group-hover:rotate-0 transition-all duration-500 border border-white/10 text-[#0a0a0a]">
+                   <div className="text-[10px] font-bold uppercase tracking-widest mb-1 text-center">Net Yield</div>
+                   <div className="text-2xl font-bold tabular-nums tracking-tighter">19.2%</div>
                 </div>
               </motion.div>
             )}
           </div>
         </div>
 
-        <div className="p-12 pt-8 relative z-10 flex items-center justify-between border-t border-[#242424]/[0.03] bg-slate-50/30 shrink-0">
+        <div className="p-12 pt-8 relative z-10 flex items-center justify-between border-t border-white/5 bg-white/5 shrink-0">
             <div className="flex items-center gap-6">
                 <div className="flex -space-x-3">
                     {[0, 1, 2, 3].map(i => (
-                        <div key={i} className="w-8 h-8 rounded-full border-4 border-cream bg-slate-200 overflow-hidden shadow-sm">
-                            <div className="w-full h-full bg-gradient-to-br from-slate-400 to-slate-500" />
+                        <div key={i} className="w-8 h-8 rounded-full border-4 border-[#0a0a0a] bg-white/10 overflow-hidden shadow-sm">
+                            <div className="w-full h-full bg-gradient-to-br from-white/20 to-white/30" />
                         </div>
                     ))}
                 </div>
-                <div className="text-[9px] font-medium text-[#242424]/30 uppercase tracking-[0.3em] animate-pulse">Running Optimized Swipe Path v4.9.2</div>
+                <div className="text-[9px] font-medium text-white/30 uppercase tracking-[0.3em] animate-pulse">Running Optimized Swipe Path v4.9.2</div>
             </div>
-            <div className="text-[9px] font-medium text-[#242424] uppercase tracking-[0.3em]">Code: RX-VAULT-7</div>
+            <div className="text-[9px] font-medium text-white/40 uppercase tracking-[0.3em]">Code: RX-VAULT-7</div>
         </div>
       </div>
     </WindowFrame>
@@ -418,15 +419,15 @@ const ExtensionAnimation = () => {
             case 1:
                 return (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 py-4">
-                        <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-black/[0.03]">
-                            <div className="w-10 h-10 border-2 border-teal-500/20 border-t-teal-500 rounded-full animate-spin" />
+                        <div className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/5">
+                            <div className="w-10 h-10 border-2 border-[#34d399]/20 border-t-[#34d399] rounded-full animate-spin" />
                             <div>
-                                <div className="text-[10px] font-medium uppercase text-[#242424]/40 tracking-widest">Protocol 1</div>
-                                <div className="text-[12px] font-medium text-[#242424]">Scanning Merchant Data...</div>
+                                <div className="text-[10px] font-medium uppercase text-white/40 tracking-widest">Protocol 1</div>
+                                <div className="text-[12px] font-medium text-white">Scanning Merchant Data...</div>
                             </div>
                         </div>
-                        <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                            <motion.div initial={{ x: '-100%' }} animate={{ x: '0%' }} transition={{ duration: 2.5 }} className="h-full bg-teal-500 w-full" />
+                        <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+                            <motion.div initial={{ x: '-100%' }} animate={{ x: '0%' }} transition={{ duration: 2.5 }} className="h-full bg-[#34d399] w-full" />
                         </div>
                     </motion.div>
                 );
@@ -435,12 +436,12 @@ const ExtensionAnimation = () => {
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 py-4">
                         <div className="flex gap-4 items-center mb-4">
                             {[0, 1, 2].map(i => (
-                                <motion.div key={i} animate={{ rotateY: [0, 360], y: [0, -5, 0] }} transition={{ duration: 3, repeat: Infinity, delay: i * 0.4 }} className="w-12 h-8 bg-slate-900 rounded-md border border-cream/10" />
+                                <motion.div key={i} animate={{ rotateY: [0, 360], y: [0, -5, 0] }} transition={{ duration: 3, repeat: Infinity, delay: i * 0.4 }} className="w-12 h-8 bg-white/10 rounded-md border border-white/10" />
                             ))}
                         </div>
                         <div>
-                            <div className="text-[10px] font-medium uppercase text-[#242424]/40 tracking-widest">Protocol 2</div>
-                            <div className="text-[14px] font-medium text-[#242424]">Analyzing 4 saved Credit Cards...</div>
+                            <div className="text-[10px] font-medium uppercase text-white/40 tracking-widest">Protocol 2</div>
+                            <div className="text-[14px] font-medium text-white">Analyzing 4 saved Credit Cards...</div>
                         </div>
                     </motion.div>
                 );
@@ -449,39 +450,39 @@ const ExtensionAnimation = () => {
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 py-4">
                          <div className="flex flex-col gap-2">
                             {[0, 1, 2].map(i => (
-                                <motion.div key={i} initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: i * 0.3 }} className="h-8 bg-amber-50 border border-amber-100 rounded-xl flex items-center px-4 justify-between">
-                                    <div className="text-[9px] font-medium text-amber-700 uppercase">Voucher Node #{i+102}</div>
-                                    <Zap size={10} className="text-amber-500" />
+                                <motion.div key={i} initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: i * 0.3 }} className="h-8 bg-white/5 border border-white/10 rounded-xl flex items-center px-4 justify-between">
+                                    <div className="text-[9px] font-medium text-white/60 uppercase">Voucher Node #{i+102}</div>
+                                    <Zap size={10} className="text-[#34d399]" />
                                 </motion.div>
                             ))}
                         </div>
                         <div>
-                            <div className="text-[10px] font-medium uppercase text-[#242424]/40 tracking-widest">Protocol 3</div>
-                            <div className="text-[14px] font-medium text-[#242424]">Auditing institutional gift cards...</div>
+                            <div className="text-[10px] font-medium uppercase text-white/40 tracking-widest">Protocol 3</div>
+                            <div className="text-[14px] font-medium text-white">Auditing institutional gift cards...</div>
                         </div>
                     </motion.div>
                 );
             case 4:
                 return (
                     <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="space-y-6 py-4 text-center">
-                        <motion.div animate={{ scale: [1, 1.2, 1] }} className="w-20 h-20 bg-emerald-500 rounded-full mx-auto flex items-center justify-center text-cream shadow-2xl shadow-emerald-500/30">
+                        <motion.div animate={{ scale: [1, 1.2, 1] }} className="w-20 h-20 bg-[#34d399] rounded-full mx-auto flex items-center justify-center text-[#0a0a0a] shadow-2xl shadow-[#34d399]/20">
                             <Star size={32} />
                         </motion.div>
                         <div>
-                            <div className="text-[11px] font-medium uppercase text-emerald-600 tracking-widest mb-2">Optimal Path Logged</div>
-                            <div className="text-lg font-medium text-[#242424] leading-tight">Match: HDFC Infinia + High-Yield Voucher</div>
+                            <div className="text-[11px] font-bold uppercase text-[#34d399] tracking-widest mb-2">Optimal Path Logged</div>
+                            <div className="text-lg font-medium text-white leading-tight">Match: HDFC Infinia + High-Yield Voucher</div>
                         </div>
                     </motion.div>
                 );
             case 5:
                 return (
                     <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-                        <div className="p-5 bg-emerald-50 rounded-[2rem] border border-emerald-100 flex items-center justify-between shadow-sm">
+                        <div className="p-5 bg-white/5 rounded-[2rem] border border-white/10 flex items-center justify-between shadow-sm">
                             <div>
-                                <div className="text-[10px] font-medium text-emerald-700 uppercase tracking-widest mb-1">Final Result</div>
-                                <div className="text-2xl font-medium text-emerald-900 tracking-tighter">₹12,840.00</div>
+                                <div className="text-[10px] font-bold text-[#34d399] uppercase tracking-widest mb-1">Final Result</div>
+                                <div className="text-2xl font-medium text-white tracking-tighter">₹12,840.00</div>
                             </div>
-                            <motion.div animate={{ rotate: 360 }} transition={{ duration: 4, repeat: Infinity, ease: 'linear' }} className="w-12 h-12 bg-cream rounded-full flex items-center justify-center border border-emerald-100 text-emerald-600">
+                            <motion.div animate={{ rotate: 360 }} transition={{ duration: 4, repeat: Infinity, ease: 'linear' }} className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center border border-white/10 text-[#34d399]">
                                 <Sparkles size={20} />
                             </motion.div>
                         </div>
@@ -491,12 +492,12 @@ const ExtensionAnimation = () => {
                                 { label: 'Best Card', val: 'HDFC Infinia (16.2%)', icon: <CreditCard size={12} /> },
                                 { label: 'Gift Card Stack', val: 'Amazon Prime (₹4,500)', icon: <Zap size={12} /> }
                              ].map((row, i) => (
-                                <div key={i} className="flex justify-between items-center p-3.5 bg-slate-50/50 rounded-2xl border border-black/[0.03]">
+                                <div key={i} className="flex justify-between items-center p-3.5 bg-white/5 rounded-2xl border border-white/5">
                                     <div className="flex items-center gap-3">
-                                        <div className="text-teal-600">{row.icon}</div>
-                                        <span className="text-[10px] font-medium text-[#242424]/30 uppercase tracking-tight">{row.label}</span>
+                                        <div className="text-[#34d399]">{row.icon}</div>
+                                        <span className="text-[10px] font-medium text-white/30 uppercase tracking-tight">{row.label}</span>
                                     </div>
-                                    <span className="text-[11px] font-medium text-[#242424]">{row.val}</span>
+                                    <span className="text-[11px] font-medium text-white">{row.val}</span>
                                 </div>
                              ))}
                         </div>
@@ -504,7 +505,7 @@ const ExtensionAnimation = () => {
                         <motion.button 
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
-                            className="w-full h-16 bg-[#047857] text-cream rounded-[1.5rem] text-[11px] font-medium uppercase tracking-[0.2em] shadow-2xl shadow-teal-900/30 flex items-center justify-center gap-3 relative group overflow-hidden"
+                            className="w-full h-16 bg-[#34d399] text-[#0a0a0a] rounded-[1.5rem] text-[11px] font-bold uppercase tracking-[0.2em] shadow-2xl shadow-emerald-900/30 flex items-center justify-center gap-3 relative group overflow-hidden"
                         >
                             <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 -translate-x-[100%] group-hover:translate-x-[100%] transition-transform duration-700" />
                             Apply Protocol <MousePointer size={14} className="opacity-40" />
@@ -514,10 +515,10 @@ const ExtensionAnimation = () => {
             default:
                 return (
                     <div className="py-12 text-center space-y-4">
-                        <div className="w-16 h-16 bg-slate-50 rounded-3xl mx-auto flex items-center justify-center text-slate-200">
+                        <div className="w-16 h-16 bg-white/5 rounded-3xl mx-auto flex items-center justify-center text-white/10">
                             <Sparkles size={32} />
                         </div>
-                        <div className="text-[11px] font-medium text-[#242424]/20 uppercase tracking-[0.3em]">Agent in standby</div>
+                        <div className="text-[11px] font-medium text-white/20 uppercase tracking-[0.3em]">Agent in standby</div>
                     </div>
                 );
         }
@@ -525,35 +526,35 @@ const ExtensionAnimation = () => {
 
     return (
         <WindowFrame title="Hyper-Extension Protocol" color="teal">
-            <div className="h-full bg-slate-50 relative flex flex-col overflow-hidden">
+            <div className="h-full bg-[#0a0a0a] relative flex flex-col overflow-hidden">
                 {/* BROWSER HEADER */}
-                <div className="bg-[#F2EFE9] p-3 border-b border-black/[0.08] flex items-center gap-3 md:gap-5 shrink-0">
+                <div className="bg-white/5 p-3 border-b border-white/10 flex items-center gap-3 md:gap-5 shrink-0">
                     <div className="flex gap-2">
-                        <div className="w-6 h-6 rounded-full bg-cream shadow-sm flex items-center justify-center"><ChevronRight size={12} className="rotate-180 text-black/20" /></div>
-                        <div className="w-6 h-6 rounded-full bg-cream shadow-sm flex items-center justify-center"><ChevronRight size={12} className="text-black/20" /></div>
+                        <div className="w-6 h-6 rounded-full bg-white/5 shadow-sm flex items-center justify-center"><ChevronRight size={12} className="rotate-180 text-white/20" /></div>
+                        <div className="w-6 h-6 rounded-full bg-white/5 shadow-sm flex items-center justify-center"><ChevronRight size={12} className="text-white/20" /></div>
                     </div>
                     {/* Address Bar */}
-                    <div className="flex-1 h-8 bg-cream rounded-full border border-black/[0.04] px-4 flex items-center justify-between group">
+                    <div className="flex-1 h-8 bg-white/5 rounded-full border border-white/10 px-4 flex items-center justify-between group">
                         <div className="flex items-center gap-2 overflow-hidden">
                             <Lock size={10} className="text-emerald-500" />
-                            <span className="text-[11px] font-medium text-black/40 truncate">amazon.in/cart/checkout/review</span>
+                            <span className="text-[11px] font-medium text-white/40 truncate">amazon.in/cart/checkout/review</span>
                         </div>
-                        <Star size={12} className="text-black/10 group-hover:text-amber-400 transition-colors cursor-pointer" />
+                        <Star size={12} className="text-white/10 group-hover:text-amber-400 transition-colors cursor-pointer" />
                     </div>
                     {/* Extension Toolbar */}
                     <div className="flex items-center gap-3">
                         <motion.div 
                             animate={journeyStep > 0 ? { 
                                 scale: [1, 1.1, 1],
-                                backgroundColor: '#047857',
-                                boxShadow: '0 10px 20px -5px rgba(27, 77, 75, 0.4)'
+                                backgroundColor: '#34d399',
+                                boxShadow: '0 10px 20px -5px rgba(52, 211, 153, 0.4)'
                             } : {}}
-                            className="w-8 h-8 rounded-lg flex items-center justify-center transition-all bg-black/5"
+                            className="w-8 h-8 rounded-lg flex items-center justify-center transition-all bg-white/5"
                         >
-                            <Sparkles size={16} className={journeyStep > 0 ? 'text-cream' : 'text-black/20'} />
+                            <Sparkles size={16} className={journeyStep > 0 ? 'text-[#0a0a0a]' : 'text-white/20'} />
                         </motion.div>
-                        <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-cream shadow-sm">
-                            <div className="w-full h-full bg-slate-300" />
+                        <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-white/10 shadow-sm">
+                            <div className="w-full h-full bg-white/10" />
                         </div>
                     </div>
                 </div>
@@ -562,41 +563,41 @@ const ExtensionAnimation = () => {
                 <div className="flex-1 p-6 md:p-10 relative overflow-hidden">
                     <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div className="md:col-span-2 space-y-6">
-                            <div className="text-sm font-medium text-[#242424]/80 tracking-tight mb-4 flex justify-between">
+                            <div className="text-sm font-medium text-white/80 tracking-tight mb-4 flex justify-between">
                                 <span>Shopping Cart (2 items)</span>
-                                <span className="text-[#242424]/20">Price</span>
+                                <span className="text-white/20">Price</span>
                             </div>
                             {[
-                                { name: 'iPhone 15 Pro', spec: '128GB, Natural Titanium', price: '₹1,24,900', img: 'bg-slate-900' },
-                                { name: 'Sony WH-1000XM5', spec: 'Noise Canceling, Black', price: '₹29,990', img: 'bg-slate-200' }
+                                { name: 'iPhone 15 Pro', spec: '128GB, Natural Titanium', price: '₹1,24,900', img: 'bg-white/10' },
+                                { name: 'Sony WH-1000XM5', spec: 'Noise Canceling, Black', price: '₹29,990', img: 'bg-white/10' }
                             ].map((item, i) => (
-                                <div key={i} className="flex gap-6 border-b border-black/[0.04] pb-6">
+                                <div key={i} className="flex gap-6 border-b border-white/5 pb-6">
                                     <div className={`w-20 h-24 ${item.img} rounded-xl shadow-sm flex items-center justify-center`}>
-                                        <div className="w-10 h-10 bg-cream/20 rounded-full blur-xl" />
+                                        <div className="w-10 h-10 bg-white/5 rounded-full blur-xl" />
                                     </div>
                                     <div className="flex-1 justify-between flex">
                                         <div className="space-y-1">
-                                            <div className="text-sm font-medium text-[#242424]">{item.name}</div>
-                                            <div className="text-[10px] font-medium text-[#242424]/30 uppercase tracking-widest">{item.spec}</div>
-                                            <div className="text-[10px] text-emerald-500 font-medium mt-2 lowercase">In Stock</div>
+                                            <div className="text-sm font-medium text-white">{item.name}</div>
+                                            <div className="text-[10px] font-medium text-white/30 uppercase tracking-widest">{item.spec}</div>
+                                            <div className="text-[10px] text-[#34d399] font-medium mt-2 lowercase">In Stock</div>
                                         </div>
-                                        <div className="text-sm font-medium text-[#242424]">{item.price}</div>
+                                        <div className="text-sm font-medium text-white">{item.price}</div>
                                     </div>
                                 </div>
                             ))}
                         </div>
-                        <div className="bg-cream p-6 rounded-3xl border border-black/[0.05] shadow-sm h-fit space-y-6">
-                             <div className="text-xs font-medium text-[#242424] uppercase tracking-widest">Order Summary</div>
+                        <div className="bg-white/5 p-6 rounded-3xl border border-white/5 shadow-sm h-fit space-y-6">
+                             <div className="text-xs font-medium text-white uppercase tracking-widest">Order Summary</div>
                              <div className="space-y-3">
-                                <div className="flex justify-between text-[11px] font-medium text-[#242424]/40 uppercase"><span>Subtotal</span><span>₹1,54,890</span></div>
-                                <div className="flex justify-between text-[11px] font-medium text-[#242424]/40 uppercase"><span>Shipping</span><span className="text-emerald-500">FREE</span></div>
+                                <div className="flex justify-between text-[11px] font-medium text-white/40 uppercase"><span>Subtotal</span><span>₹1,54,890</span></div>
+                                <div className="flex justify-between text-[11px] font-medium text-white/40 uppercase"><span>Shipping</span><span className="text-[#34d399]">FREE</span></div>
                              </div>
-                             <div className="h-[1px] bg-black/5" />
+                             <div className="h-[1px] bg-white/5" />
                              <div className="flex justify-between items-end">
-                                <div className="text-[10px] font-medium text-[#242424] uppercase tracking-widest leading-none mb-1">Total</div>
-                                <div className="text-xl font-medium text-[#242424] tracking-tight">₹1,54,890</div>
+                                <div className="text-[10px] font-medium text-white uppercase tracking-widest leading-none mb-1">Total</div>
+                                <div className="text-xl font-medium text-white tracking-tight">₹1,54,890</div>
                              </div>
-                             <motion.div animate={journeyStep === 5 ? { opacity: 0.5, scale: 0.95 } : {}} className="w-full h-12 bg-amber-400 rounded-xl flex items-center justify-center text-[10px] font-medium uppercase tracking-widest text-[#242424] shadow-lg shadow-amber-400/20">
+                             <motion.div animate={journeyStep === 5 ? { opacity: 0.5, scale: 0.95 } : {}} className="w-full h-12 bg-[#34d399] rounded-xl flex items-center justify-center text-[10px] font-bold uppercase tracking-widest text-[#0a0a0a] shadow-lg shadow-[#34d399]/20">
                                 Proceed to Buy
                              </motion.div>
                         </div>
@@ -606,7 +607,7 @@ const ExtensionAnimation = () => {
                     <AnimatePresence>
                         {journeyStep === 1 && (
                             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-40 flex items-center justify-center pointer-events-none">
-                                <motion.div animate={{ scale: [1, 1.5, 1], opacity: [0.3, 0.6, 0.3] }} transition={{ duration: 1.5, repeat: Infinity }} className="w-64 h-64 border-4 border-teal-500/30 rounded-full blur-md" />
+                                <motion.div animate={{ scale: [1, 1.5, 1], opacity: [0.3, 0.6, 0.3] }} transition={{ duration: 1.5, repeat: Infinity }} className="w-64 h-64 border-4 border-[#34d399]/30 rounded-full blur-md" />
                             </motion.div>
                         )}
                     </AnimatePresence>
@@ -619,20 +620,20 @@ const ExtensionAnimation = () => {
                             animate={{ opacity: 1, y: 0, x: 0, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.95, y: -20 }}
                             transition={{ type: 'spring', damping: 20, stiffness: 120 }}
-                            className="absolute top-[68px] right-3 w-[320px] sm:w-[340px] bg-cream/90 backdrop-blur-3xl rounded-[2rem] shadow-[0_48px_100px_-15px_rgba(0,0,0,0.35)] border border-cream/50 z-50 overflow-hidden flex flex-col max-h-[calc(100%-80px)]"
+                            className="absolute top-[68px] right-3 w-[320px] sm:w-[340px] bg-[#121212] backdrop-blur-3xl rounded-[2rem] shadow-[0_48px_100px_-15px_rgba(0,0,0,0.6)] border border-white/10 z-50 overflow-hidden flex flex-col max-h-[calc(100%-80px)]"
                         >
-                            <div className="p-6 bg-cream/20 border-b border-black/[0.03] flex items-center justify-between flex-shrink-0 backdrop-blur-md">
+                            <div className="p-6 bg-white/5 border-b border-white/5 flex items-center justify-between flex-shrink-0 backdrop-blur-md">
                                 <div className="flex items-center gap-4">
-                                    <div className="w-11 h-11 bg-[#047857] rounded-2xl flex items-center justify-center text-cream shadow-2xl shadow-teal-900/40 relative group">
-                                        <div className="absolute inset-0 bg-cream/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                                    <div className="w-11 h-11 bg-[#34d399] rounded-2xl flex items-center justify-center text-[#0a0a0a] shadow-2xl shadow-teal-900/40 relative group">
+                                        <div className="absolute inset-0 bg-white/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
                                         <Sparkles size={20} className="relative z-10" />
                                     </div>
                                     <div>
-                                       <span className="text-[14px] font-medium uppercase tracking-widest text-[#047857] block leading-none mb-1">Hyperagent v2</span>
-                                       <span className="text-[9px] font-medium text-black/30 uppercase tracking-[0.3em] font-mono">Neural Node Audit</span>
+                                       <span className="text-[14px] font-bold uppercase tracking-widest text-[#34d399] block leading-none mb-1">Hyperagent v2</span>
+                                       <span className="text-[9px] font-medium text-white/30 uppercase tracking-[0.3em] font-mono">Neural Node Audit</span>
                                     </div>
                                 </div>
-                                <div className="px-5 py-2 rounded-xl text-[10px] font-medium uppercase tracking-widest bg-emerald-500 text-cream shadow-lg shadow-emerald-500/20">
+                                <div className="px-5 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest bg-[#34d399] text-[#0a0a0a] shadow-lg shadow-[#34d399]/20">
                                    Protocol {journeyStep}/5
                                 </div>
                             </div>
@@ -648,10 +649,10 @@ const ExtensionAnimation = () => {
                 </AnimatePresence>
 
                 {/* Status Bar */}
-                <div className="p-5 bg-cream border-t border-black/[0.03] flex justify-between items-center shrink-0">
+                <div className="p-5 bg-white/5 border-t border-white/5 flex justify-between items-center shrink-0">
                     <div className="flex items-center gap-3">
-                        <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                        <span className="text-[10px] font-medium uppercase tracking-widest text-black/30">Stable Uplink</span>
+                        <div className="w-2 h-2 rounded-full bg-[#34d399] animate-pulse" />
+                        <span className="text-[10px] font-medium uppercase tracking-widest text-white/30">Stable Uplink</span>
                     </div>
                 </div>
             </div>
@@ -690,11 +691,11 @@ const ComingSoon: React.FC = () => {
     ];
 
     return (
-        <section ref={containerRef} className="relative min-h-screen bg-[#F2EFE9] font-sans selection:bg-[#047857] selection:text-cream overflow-hidden py-16 md:py-32">
+        <section ref={containerRef} className="relative min-h-screen bg-[#0a0a0a] font-sans selection:bg-[#34d399] selection:text-[#0a0a0a] overflow-hidden py-16 md:py-32">
             
             {/* Premium Background Elements */}
-            <div className="absolute top-0 left-0 w-full h-[1000px] bg-gradient-to-b from-[#047857]/5 to-transparent pointer-events-none" />
-            <div className="absolute top-[20%] right-[-10%] w-[600px] h-[600px] bg-[#047857]/5 blur-[120px] rounded-full pointer-events-none" />
+            <div className="absolute top-0 left-0 w-full h-[1000px] bg-gradient-to-b from-[#34d399]/5 to-transparent pointer-events-none" />
+            <div className="absolute top-[20%] right-[-10%] w-[600px] h-[600px] bg-[#34d399]/5 blur-[120px] rounded-full pointer-events-none" />
             <div className="absolute bottom-[10%] left-[-5%] w-[800px] h-[800px] bg-teal-500/5 blur-[160px] rounded-full pointer-events-none" />
 
             <div className="w-full relative z-10">
@@ -706,13 +707,13 @@ const ComingSoon: React.FC = () => {
                         transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
                         className="max-w-3xl"
                     >
-                        <div className="inline-flex items-center gap-3 px-4 py-1.5 mb-6 md:mb-10 bg-cream border border-black/5 rounded-full shadow-sm backdrop-blur-xl">
-                            <span className="w-2 h-2 rounded-full bg-[#047857] animate-pulse" />
-                            <span className="text-[9px] md:text-[10px] font-medium uppercase tracking-[0.2em] text-[#242424]/60">Intelligence Pipeline / v0.9.4B</span>
+                        <div className="inline-flex items-center gap-3 px-4 py-1.5 mb-6 md:mb-10 bg-white/5 border border-white/10 rounded-full shadow-sm backdrop-blur-xl">
+                            <span className="w-2 h-2 rounded-full bg-[#34d399] animate-pulse" />
+                            <span className="text-[9px] md:text-[10px] font-medium uppercase tracking-[0.2em] text-white/40">Intelligence Pipeline / v0.9.4B</span>
                         </div>
-                        <h2 className="text-3xl sm:text-5xl lg:text-[clamp(1.5rem,4vw,4.5rem)] font-medium tracking-tight leading-[0.9] text-[#242424] uppercase">
+                        <h2 className="text-3xl sm:text-5xl lg:text-[clamp(1.5rem,4vw,4.5rem)] font-heading font-extrabold tracking-tight leading-[0.9] text-white uppercase">
                             The <br />
-                           <span className="text-transparent bg-clip-text bg-gradient-to-r from-clay via-[#047857] to-ink italic font-thin serif">Elite</span><br />
+                           <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#34d399] to-white/50 italic font-thin serif">Elite</span><br />
                            Standard.
                         </h2>
                     </motion.div>
@@ -723,10 +724,10 @@ const ComingSoon: React.FC = () => {
                         transition={{ duration: 1, delay: 0.3 }}
                         className="lg:max-w-[280px] space-y-6 md:space-y-8 pb-4"
                     >
-                        <div className="w-12 h-12 bg-cream rounded-[1.2rem] flex items-center justify-center shadow-2xl border border-black/5 rotate-3 hover:rotate-0 transition-transform duration-500 backdrop-blur-xl">
-                            <Lock className="text-[#047857]" size={24} />
+                        <div className="w-12 h-12 bg-white/5 rounded-[1.2rem] flex items-center justify-center shadow-2xl border border-white/10 rotate-3 hover:rotate-0 transition-transform duration-500 backdrop-blur-xl">
+                            <Lock className="text-[#34d399]" size={24} />
                         </div>
-                        <p className="text-[#242424]/40 text-xs md:text-sm font-medium leading-relaxed tracking-tight">
+                        <p className="text-white/40 text-xs md:text-sm font-medium leading-relaxed tracking-tight">
                            Our system interprets 10^7 variables per second to render "guessing" obsolete. This is the automation of superiority.
                         </p>
                     </motion.div>
@@ -746,7 +747,7 @@ const ComingSoon: React.FC = () => {
                             >
                                 <div className="relative w-full min-h-[480px] md:min-h-[560px] max-h-[680px] overflow-hidden rounded-[2rem] shadow-2xl">
                                    {/* Advanced Glow */}
-                                   <div className={`absolute -inset-10 bg-gradient-to-br from-clay/5 to-transparent blur-[120px] opacity-0 group-hover:opacity-100 transition-opacity duration-1000`} />
+                                   <div className={`absolute -inset-10 bg-gradient-to-br from-[#34d399]/5 to-transparent blur-[120px] opacity-0 group-hover:opacity-100 transition-opacity duration-1000`} />
                                    {feature.component}
                                 </div>
                             </motion.div>
@@ -761,23 +762,23 @@ const ComingSoon: React.FC = () => {
                             >
                                 <div className="space-y-4">
                                    <div className="flex items-center gap-3">
-                                      <span className="text-[9px] md:text-[10px] font-medium uppercase tracking-[0.3em] text-[#242424]/20">{feature.label}</span>
-                                      <div className="h-[1px] w-8 md:w-12 bg-[#242424]/5" />
+                                      <span className="text-[9px] md:text-[10px] font-medium uppercase tracking-[0.3em] text-white/20">{feature.label}</span>
+                                      <div className="h-[1px] w-8 md:w-12 bg-white/5" />
                                    </div>
-                                   <h3 className="text-3xl md:text-4xl lg:text-[clamp(1.5rem,3vw,4rem)] font-medium text-[#242424] tracking-tight uppercase leading-none">
+                                   <h3 className="text-3xl md:text-4xl lg:text-[clamp(1.5rem,3vw,4rem)] font-heading font-extrabold text-white tracking-tight uppercase leading-none">
                                       {feature.title}
                                    </h3>
                                 </div>
-                                <p className="text-[#242424]/50 text-sm md:text-lg font-medium leading-relaxed max-w-md">
+                                <p className="text-white/50 text-sm md:text-lg font-medium leading-relaxed max-w-md">
                                    {feature.desc}
                                 </p>
                                 <div className="pt-4 flex flex-col sm:flex-row items-start sm:items-center gap-6">
-                                   <button className="h-12 md:h-14 px-8 md:px-10 bg-[#242424] text-cream rounded-full text-[9px] md:text-[10px] font-medium uppercase tracking-[0.2em] shadow-2xl shadow-black/10 hover:bg-[#047857] hover:-translate-y-1 transition-all active:scale-95 group shrink-0">
+                                   <Link to="/join-waitlist" className="h-12 md:h-14 px-8 md:px-10 bg-white text-[#0a0a0a] rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em] shadow-2xl shadow-black/10 hover:bg-[#34d399] hover:text-white hover:-translate-y-1 transition-all active:scale-95 group shrink-0 flex items-center justify-center">
                                       Join Internal Test <ChevronRight size={14} className="inline-block ml-2 group-hover:translate-x-1 transition-transform" />
-                                   </button>
+                                   </Link>
                                    <div className="flex flex-col">
-                                      <span className="text-[8px] md:text-[9px] font-medium text-[#242424]/10 uppercase tracking-widest">Availability</span>
-                                      <span className="text-[9px] md:text-[10px] font-medium text-[#047857] uppercase italic">Limited Access Nodes</span>
+                                      <span className="text-[8px] md:text-[9px] font-medium text-white/10 uppercase tracking-widest">Availability</span>
+                                      <span className="text-[9px] md:text-[10px] font-bold text-[#34d399] uppercase italic">Limited Access Nodes</span>
                                    </div>
                                 </div>
                             </motion.div>
@@ -794,9 +795,9 @@ const ComingSoon: React.FC = () => {
                 >
                     {/* Dark Grain Overlay */}
                     <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #fff 1px, transparent 0)', backgroundSize: '40px 40px' }} />
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#047857]/10 blur-[160px] rounded-full pointer-events-none" />
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#34d399]/10 blur-[160px] rounded-full pointer-events-none" />
                     <div className="relative z-10 max-w-3xl mx-auto">
-                        <Sparkles className="mx-auto mb-8 text-[#047857]" size={32} />
+                        <Sparkles className="mx-auto mb-8 text-[#34d399]" size={32} />
                         <h2 className="text-4xl md:text-5xl font-medium tracking-tight text-white uppercase mb-8 leading-[0.85]">
                             Secure Your <br />
                             <span className="text-clay italic serif font-thin">Access.</span>
@@ -805,12 +806,12 @@ const ComingSoon: React.FC = () => {
                             Phase 1 deployment is capped at 5,000 nodes. priority is given to institutional waitlist members.
                         </p>
                         <div className="flex flex-col items-center gap-6">
-                            <button className="h-16 px-16 bg-cream text-ink rounded-full text-xs font-bold uppercase tracking-[0.4em] hover:bg-[#047857] hover:text-cream hover:scale-105 transition-all duration-500 shadow-2xl group flex items-center gap-4">
+                            <button className="h-16 px-16 bg-cream text-ink rounded-full text-xs font-bold uppercase tracking-[0.4em] hover:bg-[#34d399] hover:text-cream hover:scale-105 transition-all duration-500 shadow-2xl group flex items-center gap-4">
                                 Enter The Registry <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
                             </button>
                              <div className="flex items-center gap-4 text-[9px] font-black uppercase tracking-[0.5em] text-cream/20">
-                                <span className="w-1.5 h-1.5 rounded-full bg-[#047857]" /> Encrypted Connection
-                                <span className="w-1.5 h-1.5 rounded-full bg-[#047857]" /> SSL 256-Bit
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#34d399]" /> Encrypted Connection
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#34d399]" /> SSL 256-Bit
                             </div>
                         </div>
                     </div>

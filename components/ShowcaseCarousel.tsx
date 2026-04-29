@@ -32,22 +32,22 @@ const WITH_ROW2 = [
 ];
 
 const WITHOUT_ROW1 = [
-  { icon: '😵', text: 'Hours of research',        bg: 'bg-yellow-100 text-yellow-900 border border-yellow-200' },
-  { icon: '❓', text: 'Guessing the best card',   bg: 'bg-yellow-50 text-yellow-900 border border-yellow-200' },
-  { icon: '💸', text: 'Missing cashback',          bg: 'bg-amber-100 text-amber-900 border border-amber-200' },
-  { icon: '😤', text: 'Bank rep bias',             bg: 'bg-yellow-100 text-yellow-900 border border-yellow-200' },
-  { icon: '📋', text: '200+ cards to compare',    bg: 'bg-yellow-50 text-yellow-900 border border-yellow-200' },
-  { icon: '⚠️', text: 'Wrong card fees',           bg: 'bg-emerald-100 text-emerald-900 border border-emerald-200' },
-  { icon: '😓', text: 'Confusing reward math',    bg: 'bg-yellow-100 text-yellow-900 border border-yellow-200' },
+  { icon: '😵', text: 'Hours of research',        bg: 'bg-red-900/20 text-red-400 border border-red-900/30' },
+  { icon: '❓', text: 'Guessing the best card',   bg: 'bg-red-900/10 text-red-400 border border-red-900/30' },
+  { icon: '💸', text: 'Missing cashback',          bg: 'bg-red-900/20 text-red-400 border border-red-900/30' },
+  { icon: '😤', text: 'Bank rep bias',             bg: 'bg-red-900/10 text-red-400 border border-red-900/30' },
+  { icon: '📋', text: '200+ cards to compare',    bg: 'bg-red-900/20 text-red-400 border border-red-900/30' },
+  { icon: '⚠️', text: 'Wrong card fees',           bg: 'bg-red-900/10 text-red-400 border border-red-900/30' },
+  { icon: '😓', text: 'Confusing reward math',    bg: 'bg-red-900/20 text-red-400 border border-red-900/30' },
 ];
 const WITHOUT_ROW2 = [
-  { icon: '🔍', text: 'Weeks of comparison',      bg: 'bg-yellow-50 text-yellow-900 border border-yellow-200' },
-  { icon: '💀', text: 'Trapped in low rewards',   bg: 'bg-amber-100 text-amber-900 border border-amber-200' },
-  { icon: '📉', text: 'No savings strategy',      bg: 'bg-yellow-100 text-yellow-900 border border-yellow-200' },
-  { icon: '🏦', text: 'Bank-first advice',        bg: 'bg-yellow-50 text-yellow-900 border border-yellow-200' },
-  { icon: '❌', text: 'Missed joining bonus',     bg: 'bg-emerald-100 text-emerald-900 border border-emerald-200' },
-  { icon: '📱', text: 'Manual reward tracking',   bg: 'bg-yellow-100 text-yellow-900 border border-yellow-200' },
-  { icon: '😡', text: 'Hidden annual fees',       bg: 'bg-amber-100 text-amber-900 border border-amber-200' },
+  { icon: '🔍', text: 'Weeks of comparison',      bg: 'bg-red-900/10 text-red-400 border border-red-900/30' },
+  { icon: '💀', text: 'Trapped in low rewards',   bg: 'bg-red-900/20 text-red-400 border border-red-900/30' },
+  { icon: '📉', text: 'No savings strategy',      bg: 'bg-red-900/10 text-red-400 border border-red-900/30' },
+  { icon: '🏦', text: 'Bank-first advice',        bg: 'bg-red-900/20 text-red-400 border border-red-900/30' },
+  { icon: '❌', text: 'Missed joining bonus',     bg: 'bg-red-900/10 text-red-400 border border-red-900/30' },
+  { icon: '📱', text: 'Manual reward tracking',   bg: 'bg-red-900/20 text-red-400 border border-red-900/30' },
+  { icon: '😡', text: 'Hidden annual fees',       bg: 'bg-red-900/10 text-red-400 border border-red-900/30' },
 ];
 
 // ─────────────────────────────────────────────────────────────
@@ -104,23 +104,23 @@ const ComparisonWidget: React.FC = () => {
     <div className="w-full h-full flex flex-col items-center justify-center px-4 py-8 overflow-hidden select-none relative">
 
       {/* ── Toggle ── */}
-      <div className="flex items-center bg-cream/40 backdrop-blur-xl border border-white/60 rounded-full p-1 mb-8 shadow-[0_8px_32px_rgba(36,36,36,0.05)] relative z-50">
+      <div className="flex items-center bg-white/5 backdrop-blur-2xl border border-white/10 rounded-full p-1 mb-8 shadow-2xl relative z-50">
         <button
           onClick={() => setMode('with')}
-          className={`px-5 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all duration-300 ${
+          className={`px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-500 ${
             mode === 'with'
-              ? 'bg-[#242424] text-cream shadow'
-              : 'text-[#242424]/40 hover:text-[#242424]'
+              ? 'bg-[#34d399] text-[#0a0a0a] shadow-[0_0_20px_rgba(52,211,153,0.3)]'
+              : 'text-white/40 hover:text-white/60'
           }`}
         >
           With Yureka
         </button>
         <button
           onClick={() => setMode('without')}
-          className={`px-5 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all duration-300 ${
+          className={`px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-500 ${
             mode === 'without'
-              ? 'bg-[#242424] text-cream shadow'
-              : 'text-[#242424]/40 hover:text-[#242424]'
+              ? 'bg-white/10 text-white shadow-inner'
+              : 'text-white/40 hover:text-white/60'
           }`}
         >
           Without Yureka
@@ -146,22 +146,22 @@ const ComparisonWidget: React.FC = () => {
           >
             {mode === 'with' ? (
               <>
-                <h3 className="text-2xl md:text-3xl font-serif text-[#242424] leading-snug mb-1.5">
+                <h3 className="text-2xl md:text-3xl font-serif text-white leading-snug mb-1.5 uppercase tracking-tighter">
                   Just pick your card,<br />
-                  <span className="italic font-light text-[#047857]">and start earning.</span>
+                  <span className="italic font-light text-[#34d399]">and start earning.</span>
                 </h3>
-                <p className="text-[10px] text-[#242424]/35 font-sans uppercase tracking-[0.25em]">
-                  We do the heavy lifting. You earn more.
+                <p className="text-[10px] text-white/20 font-sans uppercase tracking-[0.3em] font-bold">
+                  The Protocol executes the complex math. You keep the yield.
                 </p>
               </>
             ) : (
               <>
-                <h3 className="text-2xl md:text-3xl font-serif text-[#242424] leading-snug mb-1.5">
-                  Why go through<br />
-                  <span className="italic font-light text-[#242424]/45 lowercase">all this?</span>
+                <h3 className="text-2xl md:text-3xl font-serif text-white leading-snug mb-1.5 uppercase tracking-tighter">
+                  Why settle for<br />
+                  <span className="italic font-light text-white/40 lowercase">sub-optimal?</span>
                 </h3>
-                <p className="text-[10px] text-[#242424]/35 font-sans uppercase tracking-[0.25em]">
-                  Weeks of research. Wrong card. Zero savings.
+                <p className="text-[10px] text-white/20 font-sans uppercase tracking-[0.3em] font-bold">
+                  Manual research is the slow lane to wealth.
                 </p>
               </>
             )}
@@ -192,41 +192,41 @@ const ComparisonWidget: React.FC = () => {
                 className="w-full h-full pt-4 relative"
               >
                 {[...WITHOUT_ROW1, ...WITHOUT_ROW2].slice(0, 8).map((pill, i) => {
-                  // Dynamic grid for mobile vs desktop - using wider spacing to avoid overlap
+                  // Constrained grid positions to stay within bounds
                   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-                  const gridX = isMobile ? (i % 2 === 0 ? -100 : 100) : (i % 2 === 0 ? -180 : 180);
-                  const gridY = Math.floor(i / 2) * (isMobile ? 50 : 65);
+                  const xOffset = isMobile ? (i % 2 === 0 ? -80 : 80) : (i % 2 === 0 ? -140 : 140);
+                  const yOffset = Math.floor(i / 2) * (isMobile ? 45 : 55);
                   
-                  // Shattered layout positions with improved distribution
-                  const shatterX = gridX + ((Math.random() * 100) - 50);
-                  const shatterY = (isMobile ? 130 : 180) + (Math.random() * 40);
-                  const shatterRotate = (Math.random() * 40) - 20;
+                  // Constrained shattered positions
+                  const shatterX = xOffset + ((Math.random() * 40) - 20);
+                  const shatterY = (isMobile ? 110 : 140) + (Math.random() * 30);
+                  const shatterRotate = (Math.random() * 30) - 15;
 
                   return (
                     <motion.span
                       key={pill.text}
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={isShattered 
-                        ? { opacity: 1, x: shatterX, y: shatterY, rotate: shatterRotate, scale: 0.9 }
-                        : { opacity: 1, x: gridX, y: gridY, rotate: 0, scale: 1 }
+                        ? { opacity: 1, x: shatterX, y: shatterY, rotate: shatterRotate, scale: 0.85 }
+                        : { opacity: 1, x: xOffset, y: yOffset, rotate: 0, scale: 1 }
                       }
                       transition={isShattered 
                         ? { 
                             type: "spring", 
-                            stiffness: 80, 
-                            damping: 10,
-                            delay: i * 0.05 // Staggered drop
+                            stiffness: 120, 
+                            damping: 12,
+                            delay: i * 0.03
                           } 
-                        : { duration: 0.6, delay: i * 0.05, ease: "easeOut" }
+                        : { duration: 0.5, delay: i * 0.04, ease: "easeOut" }
                       }
                       style={{ 
                         left: '50%',
-                        top: '15%',
+                        top: '10%',
                         transform: 'translate(-50%, -50%)' 
                       }}
-                      className={`absolute inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-[11px] font-bold shadow-sm whitespace-nowrap transition-colors border border-black/5 ${pill.bg}`}
+                      className={`absolute inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-[10px] font-bold shadow-sm whitespace-nowrap transition-colors border border-black/5 ${pill.bg}`}
                     >
-                      <span className="text-sm">{pill.icon}</span>
+                      <span className="text-xs">{pill.icon}</span>
                       {pill.text}
                     </motion.span>
                   );
@@ -245,41 +245,41 @@ const ComparisonWidget: React.FC = () => {
 // ─────────────────────────────────────────────────────────────
 const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp }) => {
   return (
-    <section className="relative bg-cream border-t border-ink/10 z-10 w-full">
+    <section className="relative bg-[#0a0a0a] border-t border-white/5 z-10 w-full">
       <div className="w-full flex justify-center flex-col">
-        <div className="relative w-full border-x-0 border-b border-ink/10 bg-paper flex flex-col shadow-xl overflow-hidden">
+        <div className="relative w-full border-x-0 border-b border-white/5 bg-white/[0.02] flex flex-col shadow-2xl overflow-hidden">
 
           {/* Background Vellum Grid */}
           <div className="absolute inset-0 opacity-[0.02] pointer-events-none" 
-               style={{ backgroundImage: 'linear-gradient(to right, #242424 1px, transparent 1px), linear-gradient(to bottom, #242424 1px, transparent 1px)', backgroundSize: '60px 60px' }} 
+               style={{ backgroundImage: 'linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px)', backgroundSize: '60px 60px' }} 
           />
           
-          <div className="w-full h-full relative z-10 text-[#242424]">
+          <div className="w-full h-full relative z-10 text-white">
       <div className="flex flex-col lg:grid lg:grid-cols-2">
 
               {/* ── LEFT: copy ── */}
-              <div className="flex flex-col justify-center px-6 lg:px-16 py-10 lg:py-14 relative z-20 border-b lg:border-b-0 lg:border-r border-ink/5">
+              <div className="flex flex-col justify-center px-6 lg:px-16 py-10 lg:py-14 relative z-20 border-b lg:border-b-0 lg:border-r border-white/5">
                 <motion.div
                   initial={{ opacity: 0, x: -30 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, margin: "-100px" }}
                   transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  <span className="block text-[#047857] text-[11px] font-bold uppercase tracking-[0.4em] mb-4">
+                  <span className="block text-[#34d399] text-[11px] font-bold uppercase tracking-[0.4em] mb-4">
                     How It Works
                   </span>
-                  <h2 className="text-4xl md:text-5xl lg:text-[clamp(1.5rem,3.5vw,4.5rem)] font-serif text-[#242424] mb-8 leading-[0.85] tracking-tighter uppercase">
+                  <h2 className="text-4xl md:text-5xl lg:text-[clamp(1.5rem,3.5vw,4.5rem)] font-serif text-white mb-8 leading-[0.85] tracking-tighter uppercase">
                     We Compare <br />
-                    <span className="italic font-light text-[#047857]">For You.</span>
+                    <span className="italic font-light text-[#34d399]">For You.</span>
                   </h2>
-                  <p className="text-[#242424]/80 text-base md:text-lg lg:text-xl font-serif italic leading-snug mb-10 border-l-2 border-clay/30 pl-8 max-w-md">
+                  <p className="text-white/60 text-base md:text-lg lg:text-xl font-serif italic leading-snug mb-10 border-l-2 border-[#34d399]/30 pl-8 max-w-md">
                     "We don't just list cards. We scan 200+ options to find the one that fits your life perfectly."
                   </p>
-                  <div className="flex items-center gap-6 text-[11px] font-bold tracking-[0.3em] uppercase text-[#242424]/30">
+                  <div className="flex items-center gap-6 text-[11px] font-bold tracking-[0.3em] uppercase text-white/20">
                     <motion.div
                       animate={{ width: [40, 80, 40] }}
                       transition={{ repeat: Infinity, duration: 2.5 }}
-                      className="h-px bg-[#047857]/50"
+                      className="h-px bg-[#34d399]/50"
                     />
                     Scroll to discover
                   </div>
@@ -287,7 +287,7 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp })
               </div>
 
               {/* ── RIGHT: comparison widget ── */}
-              <div className="flex items-center justify-center overflow-hidden bg-cream/20 py-8 px-6 lg:py-10">
+              <div className="flex items-center justify-center overflow-hidden bg-white/[0.01] py-8 px-6 lg:py-10">
                 <motion.div 
                   initial={{ opacity: 0, scale: 0.92, y: 20 }}
                   whileInView={{ opacity: 1, scale: 1, y: 0 }}
