@@ -10,7 +10,6 @@ export const AdminLogsTab: React.FC = () => {
   }
 
   return (
-  return (
     <div className="p-4 md:p-10">
       <div className="mb-10">
         <h3 className="text-2xl font-serif font-black text-white mb-1 uppercase tracking-tight">Audit Trail</h3>

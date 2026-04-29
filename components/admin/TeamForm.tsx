@@ -24,7 +24,6 @@ export const TeamForm: React.FC<TeamFormProps> = ({
   error
 }) => {
   return (
-  return (
     <form onSubmit={onSubmit} className="space-y-8">
       <div className="flex items-center gap-6 p-8 bg-white/5 rounded-[2rem] border border-white/5 mb-8 relative overflow-hidden backdrop-blur-xl">
         <div className="absolute top-0 right-0 w-32 h-32 bg-[#34d399]/5 blur-[40px] rounded-full -mr-16 -mt-16" />

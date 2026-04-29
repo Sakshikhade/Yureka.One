@@ -53,8 +53,6 @@ export const AdminModals: React.FC<AdminModalsProps> = ({
 }) => {
   return (
     <>
-  return (
-    <>
       {/* Delete Confirmation Modal */}
       {isDeleteModalOpen && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">

@@ -548,7 +548,6 @@ const AdminDashboard: React.FC = () => {
   }
 
   return (
-  return (
     <div className="flex min-h-screen bg-[#0a0a0a] selection:bg-[#34d399]/20 relative overflow-hidden">
       {/* CONTINUOUS AMBIENT ANIMATION NODES */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">

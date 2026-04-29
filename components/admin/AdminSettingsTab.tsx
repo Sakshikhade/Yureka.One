@@ -25,7 +25,6 @@ export const AdminSettingsTab: React.FC<AdminSettingsTabProps> = ({
   }
 
   return (
-  return (
     <div className="p-4 md:p-10">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-10">
         <div>
