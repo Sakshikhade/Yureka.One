@@ -13,41 +13,41 @@ interface ShowcaseCarouselProps {
 // Pill data
 // ─────────────────────────────────────────────────────────────
 const WITH_ROW1 = [
-  { icon: '⚡', text: 'AI-matched rewards',      bg: 'bg-[#047857] text-cream' },
-  { icon: '🎯', text: 'Zero hidden fees',         bg: 'bg-indigo-700 text-cream' },
-  { icon: '💳', text: '200+ cards analyzed',      bg: 'bg-[#047857] text-cream' },
-  { icon: '✅', text: 'Best card, guaranteed',    bg: 'bg-[#047857] text-cream' },
-  { icon: '🔄', text: 'Instant comparison',       bg: 'bg-slate-800 text-cream' },
-  { icon: '🤖', text: 'Neural matching',          bg: 'bg-violet-800 text-cream' },
-  { icon: '🎁', text: 'Max rewards unlocked',     bg: 'bg-[#047857] text-cream' },
+  { icon: '⚡', text: 'AI-matched rewards',      bg: 'bg-[#34d399] text-[#0a0a0a]' },
+  { icon: '🎯', text: 'Zero hidden fees',         bg: 'bg-white/10 text-white border border-white/10' },
+  { icon: '💳', text: '200+ cards analyzed',      bg: 'bg-[#34d399] text-[#0a0a0a]' },
+  { icon: '✅', text: 'Best card, guaranteed',    bg: 'bg-[#34d399] text-[#0a0a0a]' },
+  { icon: '🔄', text: 'Instant comparison',       bg: 'bg-white/5 text-white/60 border border-white/5' },
+  { icon: '🤖', text: 'Neural matching',          bg: 'bg-[#34d399] text-[#0a0a0a]' },
+  { icon: '🎁', text: 'Max rewards unlocked',     bg: 'bg-[#34d399] text-[#0a0a0a]' },
 ];
 const WITH_ROW2 = [
-  { icon: '💰', text: '₹15k average savings',    bg: 'bg-amber-700 text-cream' },
-  { icon: '📊', text: 'Reward math done for you', bg: 'bg-[#047857] text-cream' },
-  { icon: '🏆', text: 'Top cluster match',        bg: 'bg-indigo-600 text-cream' },
-  { icon: '🔐', text: 'Unbiased, always',         bg: 'bg-slate-700 text-cream' },
-  { icon: '📱', text: 'Chrome auto-apply',        bg: 'bg-[#047857] text-cream' },
-  { icon: '⚡', text: 'Real-time audit',          bg: 'bg-purple-800 text-cream' },
-  { icon: '🎯', text: 'Spend-matched card',       bg: 'bg-[#047857] text-cream' },
+  { icon: '💰', text: '₹15k average savings',    bg: 'bg-white/10 text-white border border-white/10' },
+  { icon: '📊', text: 'Reward math done for you', bg: 'bg-[#34d399] text-[#0a0a0a]' },
+  { icon: '🏆', text: 'Top cluster match',        bg: 'bg-white/10 text-white border border-white/10' },
+  { icon: '🔐', text: 'Unbiased, always',         bg: 'bg-white/5 text-white/60 border border-white/5' },
+  { icon: '📱', text: 'Chrome auto-apply',        bg: 'bg-[#34d399] text-[#0a0a0a]' },
+  { icon: '⚡', text: 'Real-time audit',          bg: 'bg-[#34d399] text-[#0a0a0a]' },
+  { icon: '🎯', text: 'Spend-matched card',       bg: 'bg-[#34d399] text-[#0a0a0a]' },
 ];
 
 const WITHOUT_ROW1 = [
-  { icon: '😵', text: 'Hours of research',        bg: 'bg-red-900/20 text-red-400 border border-red-900/30' },
-  { icon: '❓', text: 'Guessing the best card',   bg: 'bg-red-900/10 text-red-400 border border-red-900/30' },
-  { icon: '💸', text: 'Missing cashback',          bg: 'bg-red-900/20 text-red-400 border border-red-900/30' },
-  { icon: '😤', text: 'Bank rep bias',             bg: 'bg-red-900/10 text-red-400 border border-red-900/30' },
-  { icon: '📋', text: '200+ cards to compare',    bg: 'bg-red-900/20 text-red-400 border border-red-900/30' },
-  { icon: '⚠️', text: 'Wrong card fees',           bg: 'bg-red-900/10 text-red-400 border border-red-900/30' },
-  { icon: '😓', text: 'Confusing reward math',    bg: 'bg-red-900/20 text-red-400 border border-red-900/30' },
+  { icon: '😵', text: 'Hours of research',        bg: 'bg-red-500/10 text-red-400/80 border border-red-500/20' },
+  { icon: '❓', text: 'Guessing the best card',   bg: 'bg-red-500/5 text-red-400/60 border border-red-500/10' },
+  { icon: '💸', text: 'Missing cashback',          bg: 'bg-red-500/10 text-red-400/80 border border-red-500/20' },
+  { icon: '😤', text: 'Bank rep bias',             bg: 'bg-red-500/5 text-red-400/60 border border-red-500/10' },
+  { icon: '📋', text: '200+ cards to compare',    bg: 'bg-red-500/10 text-red-400/80 border border-red-500/20' },
+  { icon: '⚠️', text: 'Wrong card fees',           bg: 'bg-red-500/5 text-red-400/60 border border-red-500/10' },
+  { icon: '😓', text: 'Confusing reward math',    bg: 'bg-red-500/10 text-red-400/80 border border-red-500/20' },
 ];
 const WITHOUT_ROW2 = [
-  { icon: '🔍', text: 'Weeks of comparison',      bg: 'bg-red-900/10 text-red-400 border border-red-900/30' },
-  { icon: '💀', text: 'Trapped in low rewards',   bg: 'bg-red-900/20 text-red-400 border border-red-900/30' },
-  { icon: '📉', text: 'No savings strategy',      bg: 'bg-red-900/10 text-red-400 border border-red-900/30' },
-  { icon: '🏦', text: 'Bank-first advice',        bg: 'bg-red-900/20 text-red-400 border border-red-900/30' },
-  { icon: '❌', text: 'Missed joining bonus',     bg: 'bg-red-900/10 text-red-400 border border-red-900/30' },
-  { icon: '📱', text: 'Manual reward tracking',   bg: 'bg-red-900/20 text-red-400 border border-red-900/30' },
-  { icon: '😡', text: 'Hidden annual fees',       bg: 'bg-red-900/10 text-red-400 border border-red-900/30' },
+  { icon: '🔍', text: 'Weeks of comparison',      bg: 'bg-red-500/5 text-red-400/60 border border-red-500/10' },
+  { icon: '💀', text: 'Trapped in low rewards',   bg: 'bg-red-500/10 text-red-400/80 border border-red-500/20' },
+  { icon: '📉', text: 'No savings strategy',      bg: 'bg-red-500/5 text-red-400/60 border border-red-500/10' },
+  { icon: '🏦', text: 'Bank-first advice',        bg: 'bg-red-500/10 text-red-400/80 border border-red-500/20' },
+  { icon: '❌', text: 'Missed joining bonus',     bg: 'bg-red-500/5 text-red-400/60 border border-red-500/10' },
+  { icon: '📱', text: 'Manual reward tracking',   bg: 'bg-red-500/10 text-red-400/80 border border-red-500/20' },
+  { icon: '😡', text: 'Hidden annual fees',       bg: 'bg-red-500/5 text-red-400/60 border border-red-500/10' },
 ];
 
 // ─────────────────────────────────────────────────────────────
@@ -61,18 +61,18 @@ const PillRow: React.FC<{
   <div
     className="relative overflow-hidden flex w-full"
     style={{
-      WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%)',
-      maskImage:        'linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%)',
+      WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%)',
+      maskImage:        'linear-gradient(to right, transparent 0%, black 20%, black 80%, transparent 100%)',
     }}
   >
     <div
-      className="flex gap-2.5 whitespace-nowrap animate-marquee w-max"
+      className="flex gap-3 whitespace-nowrap animate-marquee w-max py-2"
       style={{ animationDuration: `${duration}s`, animationDirection: reverse ? 'reverse' : 'normal' }}
     >
-      {[...pills, ...pills].map((pill, i) => (
+      {[...pills, ...pills, ...pills].map((pill, i) => (
         <span
           key={i}
-          className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-[11px] font-semibold whitespace-nowrap shadow-sm ${pill.bg}`}
+          className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-[12px] font-bold whitespace-nowrap shadow-xl transition-all duration-500 hover:scale-105 ${pill.bg}`}
         >
           <span className="text-sm leading-none">{pill.icon}</span>
           {pill.text}
@@ -88,15 +88,18 @@ const PillRow: React.FC<{
 const ComparisonWidget: React.FC = () => {
   const [mode, setMode] = React.useState<'with' | 'without'>('with');
   const [isShattered, setIsShattered] = React.useState(false);
+  const [isScanning, setIsScanning] = React.useState(false);
 
-  // Reset/Trigger shatter effect when entering 'without' mode
   React.useEffect(() => {
     if (mode === 'without') {
       setIsShattered(false);
-      const timer = setTimeout(() => setIsShattered(true), 2400); // 2s delay + buffer
+      const timer = setTimeout(() => setIsShattered(true), 1200); 
       return () => clearTimeout(timer);
     } else {
       setIsShattered(false);
+      setIsScanning(true);
+      const timer = setTimeout(() => setIsScanning(false), 1500);
+      return () => clearTimeout(timer);
     }
   }, [mode]);
 

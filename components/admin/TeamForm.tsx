@@ -24,47 +24,49 @@ export const TeamForm: React.FC<TeamFormProps> = ({
   error
 }) => {
   return (
-    <form onSubmit={onSubmit} className="space-y-6">
-      <div className="flex items-center gap-4 p-6 bg-teal/5 rounded-2xl border border-teal/10 mb-6">
-        <div className="w-12 h-12 bg-teal/10 rounded-xl flex items-center justify-center text-teal">
-          <Users size={24} />
+  return (
+    <form onSubmit={onSubmit} className="space-y-8">
+      <div className="flex items-center gap-6 p-8 bg-white/5 rounded-[2rem] border border-white/5 mb-8 relative overflow-hidden backdrop-blur-xl">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-[#34d399]/5 blur-[40px] rounded-full -mr-16 -mt-16" />
+        <div className="w-14 h-14 bg-[#34d399]/10 rounded-2xl flex items-center justify-center text-[#34d399] border border-[#34d399]/20 shadow-[0_0_20px_rgba(52,211,153,0.1)]">
+          <Users size={28} />
         </div>
-        <div>
-          <h4 className="text-sm font-bold text-teal">Invite Team Member</h4>
-          <p className="text-[10px] text-teal/60 uppercase tracking-widest font-bold">Access Control Management</p>
+        <div className="relative z-10">
+          <h4 className="text-[11px] font-black uppercase tracking-[0.3em] text-[#34d399] mb-1">Access Provisioning</h4>
+          <p className="text-[10px] text-white/30 uppercase tracking-widest font-black">Neural Network Permissions</p>
         </div>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-6">
         <div>
-          <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Email Address</label>
+          <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-2 ml-1">Transmission Endpoint (Email)</label>
           <input 
             type="email" required
-            placeholder="colleague@yureka.money"
+            placeholder="identity@yureka.money"
             value={form.email}
             onChange={e => setForm({...form, email: e.target.value})}
-            className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all"
+            className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 focus:ring-2 focus:ring-[#34d399] outline-none transition-all text-white placeholder:text-white/10 font-bold"
           />
         </div>
         <div>
-          <label className="block text-xs font-bold uppercase tracking-widest text-black/40 mb-2">Administrative Role</label>
+          <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-2 ml-1">Hierarchy Designation</label>
           <select 
             value={form.role}
             onChange={e => setForm({...form, role: e.target.value})}
-            className="w-full bg-black/5 border-none rounded-xl p-4 focus:ring-2 focus:ring-teal outline-none transition-all font-bold"
+            className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 focus:ring-2 focus:ring-[#34d399] outline-none transition-all text-white font-black uppercase tracking-widest text-[10px] appearance-none"
           >
-            <option value="writer">Content Writer (Blogs only)</option>
-            <option value="editor">Editor (Blogs & Cards)</option>
-            <option value="admin">System Admin (Full Access)</option>
+            <option value="writer" className="bg-[#0a0a0a]">Manuscript Author (Blogs)</option>
+            <option value="editor" className="bg-[#0a0a0a]">Neural Curator (Blogs & Cards)</option>
+            <option value="admin" className="bg-[#0a0a0a]">Architect Prime (Full Access)</option>
           </select>
         </div>
       </div>
       
-      <div className="flex justify-between items-center pt-8 border-t border-black/5 mt-8">
-        <div className="flex-1 pr-4">
+      <div className="flex justify-between items-center pt-10 border-t border-white/5 mt-10">
+        <div className="flex-1 pr-6">
           {error && (
-            <div className="p-3 bg-red-50 text-red-500 rounded-xl flex items-start gap-2 text-xs font-bold border border-red-100">
-              <X size={14} className="mt-0.5 shrink-0" />
+            <div className="p-4 bg-red-500/10 text-red-500 rounded-2xl flex items-start gap-3 text-[11px] font-black uppercase tracking-wider border border-red-500/20">
+              <X size={16} className="mt-0.5 shrink-0" />
               <span className="leading-tight">{error}</span>
             </div>
           )}
@@ -72,10 +74,10 @@ export const TeamForm: React.FC<TeamFormProps> = ({
         <button 
           type="submit" 
           disabled={saving || uploading}
-          className="bg-black text-cream px-10 py-4 rounded-xl font-bold hover:bg-[#047857] transition-all shadow-lg disabled:opacity-50 flex items-center gap-2 shrink-0"
+          className="bg-white text-[#0a0a0a] px-16 py-5 rounded-[2rem] font-black hover:bg-[#34d399] hover:text-white transition-all shadow-2xl disabled:opacity-50 flex items-center gap-3 text-[11px] uppercase tracking-[0.2em] shrink-0 active:scale-95"
         >
-          {(saving || uploading) ? <Loader2 className="animate-spin" size={20} /> : <Check size={20} />}
-          {saving ? 'Inviting...' : 'Invite to Platform'}
+          {(saving || uploading) ? <Loader2 className="animate-spin" size={24} /> : <Check size={24} />}
+          {saving ? 'TRANSMITTING...' : 'COMMIT ACCESS'}
         </button>
       </div>
     </form>

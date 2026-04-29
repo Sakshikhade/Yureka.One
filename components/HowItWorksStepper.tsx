@@ -252,6 +252,15 @@ const WaitlistScreen = ({ isActive }: { isActive: boolean }) => (
 // ── Main Stepper Component ──────────────────────────────────────────────────
 
 const HowItWorksStepper: React.FC = () => {
+  const [loopKey, setLoopKey] = React.useState(0);
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setLoopKey(prev => prev + 1);
+    }, 8000); // 8 second cycle for all animations
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="relative w-full bg-[#0a0a0a] py-20 md:py-32">
       <div className="max-w-7xl mx-auto px-6 space-y-32 md:space-y-48">
@@ -284,10 +293,21 @@ const HowItWorksStepper: React.FC = () => {
 
                       <div className="absolute inset-0 pt-8">
                         <div className="w-full h-full">
-                          {step.id === 1 && <AIChatScreen isActive={true} />}
-                          {step.id === 2 && <RewardXScreen isActive={true} />}
-                          {step.id === 3 && <ExtensionScreen isActive={true} />}
-                          {step.id === 4 && <WaitlistScreen isActive={true} />}
+                          <AnimatePresence mode="wait">
+                            <motion.div 
+                                key={loopKey}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.5 }}
+                                className="w-full h-full"
+                            >
+                                {step.id === 1 && <AIChatScreen isActive={true} />}
+                                {step.id === 2 && <RewardXScreen isActive={true} />}
+                                {step.id === 3 && <ExtensionScreen isActive={true} />}
+                                {step.id === 4 && <WaitlistScreen isActive={true} />}
+                            </motion.div>
+                          </AnimatePresence>
                         </div>
                       </div>
                     </div>

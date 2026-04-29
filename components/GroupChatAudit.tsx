@@ -1,248 +1,204 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { User, Send, Smartphone, MoreHorizontal, Smile, Plus, Camera, Instagram, Globe } from 'lucide-react';
+import { CheckCheck, Plus, Mic } from 'lucide-react';
 
-const messages = [
-  { 
-    id: 1, 
-    sender: "Kabir", 
-    text: "Guys, need suggestions for a new card. Amazon Pay vs HDFC Swiggy? Too confused. 😵‍💫", 
-    color: "bg-blue-500", 
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Kabir" 
+const MESSAGES = [
+  {
+    id: 1, sender: 'Kabir',
+    text: "Europe trip next month, ₹2L budget. HDFC Infinia or Axis Magnus for best travel rewards?",
+    time: '9:42 AM', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Kabir', accent: '#5B8DEF', right: false,
   },
-  { 
-    id: 2, 
-    sender: "Zoya", 
-    text: "Wait, did you see this reel? This influencer is saying Axis Magnus is dead now...", 
-    color: "bg-purple-500", 
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Zoya",
-    isReel: true 
+  {
+    id: 2, sender: 'Zoya',
+    text: "Magnus! 35x points on travel + 12 lounge visits. Got business class to Singapore last month purely from points 🤯",
+    time: '9:44 AM', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Zoya', accent: '#A855F7', right: false, reaction: '🔥',
   },
-  { 
-    id: 3, 
-    sender: "Arjun", 
-    text: "Forget the reels and 'hacks'. Kabir, just check Yureka.money. It audits your actual spend and gives the best match based on math, not hype.", 
-    color: "bg-indigo-600", 
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Arjun" 
+  {
+    id: 3, sender: 'Arjun',
+    text: "Before you pick randomly — try Yureka.money. It audits your actual spend and gives the mathematically optimal card for YOUR profile. Not generic advice.",
+    time: '9:45 AM', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Arjun', accent: '#34d399', right: true,
   },
-  { 
-    id: 4, 
-    sender: "Kabir", 
-    text: "Wait, Yureka.money? Checking it out now...", 
-    color: "bg-blue-500", 
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Kabir" 
+  {
+    id: 4, sender: 'Kabir',
+    text: "bro this is wild. It's showing HDFC Infinia > Magnus for me. With my dining + fuel spend I earn ₹2,100/mo MORE 👀",
+    time: '9:47 AM', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Kabir', accent: '#5B8DEF', right: false,
   },
-  { 
-    id: 5, 
-    sender: "Zoya", 
-    text: "Is it actually free? I'm tired of those hidden subscription tools.", 
-    color: "bg-purple-500", 
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Zoya" 
+  {
+    id: 5, sender: 'Zoya',
+    text: "Checking mine... I've been on the wrong card for 2 years 😭 leaving ₹18k/yr on the table",
+    time: '9:48 AM', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Zoya', accent: '#A855F7', right: false,
   },
-  { 
-    id: 6, 
-    sender: "Arjun", 
-    text: "Completely free. It's the financial absolute. No BS.", 
-    color: "bg-indigo-600", 
-    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Arjun" 
+  {
+    id: 6, sender: 'Arjun',
+    text: "Zero bias, no bank sponsorship. Pure math. I've recovered ₹18k in missed rewards already 💰",
+    time: '9:49 AM', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Arjun', accent: '#34d399', right: true,
   },
 ];
 
 const GroupChatAudit: React.FC = () => {
-  const [visibleMessages, setVisibleMessages] = useState<number[]>([]);
+  const [visibleIds, setVisibleIds] = useState<number[]>([]);
   const [typingUser, setTypingUser] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    let timeout: NodeJS.Timeout;
-    const animateNextMessage = (index: number) => {
-      if (index < messages.length) {
-        // First show typing indicator for at least 3 seconds
-        setTypingUser(messages[index].sender);
-        
-        timeout = setTimeout(() => {
+    let t: NodeJS.Timeout;
+    const next = (i: number) => {
+      if (i < MESSAGES.length) {
+        setTypingUser(MESSAGES[i].sender);
+        t = setTimeout(() => {
           setTypingUser(null);
-          setVisibleMessages(prev => [...prev, messages[index].id]);
-          
-          // Wait a bit after message appears before starting next typing
-          timeout = setTimeout(() => {
-            animateNextMessage(index + 1);
-          }, 1000); 
-        }, 3000);
+          setVisibleIds(p => [...p, MESSAGES[i].id]);
+          t = setTimeout(() => next(i + 1), 750);
+        }, 2200);
       } else {
-        // Reset after final message
-        timeout = setTimeout(() => {
-          setVisibleMessages([]);
-          setTypingUser(null);
-          animateNextMessage(0);
-        }, 5000);
+        t = setTimeout(() => { setVisibleIds([]); setTypingUser(null); next(0); }, 5000);
       }
     };
-
-    animateNextMessage(0);
-    return () => clearTimeout(timeout);
+    next(0);
+    return () => clearTimeout(t);
   }, []);
 
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTo({
-        top: scrollRef.current.scrollHeight,
-        behavior: 'smooth'
-      });
-    }
-  }, [visibleMessages]);
+    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
+  }, [visibleIds, typingUser]);
 
   return (
     <div className="w-full h-full flex items-center justify-center p-4">
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="mx-auto w-full max-w-[280px] sm:max-w-[320px] aspect-[9/18.5] bg-[#242424] rounded-[3rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] border-[8px] border-[#242424] relative overflow-hidden flex flex-col"
+        transition={{ type: 'spring', damping: 22, stiffness: 180 }}
+        className="mx-auto w-full max-w-[280px] sm:max-w-[320px] aspect-[9/18.5] rounded-[3rem] border-[8px] border-[#1c1c1c] shadow-[0_60px_120px_-20px_rgba(0,0,0,0.9)] relative overflow-hidden flex flex-col"
+        style={{ background: 'linear-gradient(160deg,#141414 0%,#0c0c0c 100%)' }}
       >
         {/* Notch */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-[#242424] rounded-b-2xl z-50 flex items-center justify-center">
-            <div className="w-10 h-1 bg-white/10 rounded-full" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-5 bg-[#1c1c1c] rounded-b-2xl z-50 flex items-center justify-center">
+          <div className="w-8 h-1 bg-white/10 rounded-full" />
         </div>
 
-        <div className="pt-10 pb-6 px-6 bg-white/[0.03] backdrop-blur-3xl border-b border-white/10 flex flex-col items-center gap-3 shrink-0 relative overflow-hidden">
-          {/* Subtle Shine */}
-          <div className="absolute -top-24 -left-24 w-48 h-48 bg-[#34d399]/20 blur-[60px] rounded-full" />
-          
-          <div className="flex -space-x-2.5 mb-1 relative z-10">
-             {messages.slice(0, 3).map((m, i) => (
-               <motion.div 
-                 key={m.id} 
-                 initial={{ scale: 0.8, opacity: 0 }}
-                 animate={{ scale: 1, opacity: 1 }}
-                 transition={{ delay: i * 0.1 }}
-                 className={`w-10 h-10 rounded-full border-2 border-ink overflow-hidden shadow-2xl relative`}
-               >
-                 <img src={m.avatar} alt={m.sender} className="w-full h-full object-cover bg-slate-200" />
-                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-               </motion.div>
-             ))}
+        {/* Status bar */}
+        <div className="pt-7 px-5 pb-1 flex justify-between text-[9px] text-white/20 font-mono">
+          <span>9:49</span><span>▲▲ WiFi 🔋</span>
+        </div>
+
+        {/* Header */}
+        <div className="px-4 pb-3 pt-1 flex items-center gap-3 border-b border-white/[0.06] bg-white/[0.02] backdrop-blur-xl">
+          <div className="flex -space-x-2 shrink-0">
+            {MESSAGES.slice(0, 3).map((m, i) => (
+              <motion.div key={m.id} initial={{ scale: 0.5, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: i * 0.07, type: 'spring', stiffness: 400, damping: 18 }}
+                className="w-8 h-8 rounded-full overflow-hidden border-2 border-[#141414] shadow-lg"
+              >
+                <img src={m.avatar} alt={m.sender} className="w-full h-full bg-slate-700" />
+              </motion.div>
+            ))}
           </div>
-          <div className="text-center relative z-10">
-            <h4 className="text-white text-[13px] font-medium tracking-tight mb-0.5">The Yield Syndicate</h4>
-            <div className="flex items-center justify-center gap-2">
-                <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-[pulse_2s_infinite]" />
-                <span className="text-white/40 text-[9px] font-medium uppercase tracking-[0.2em]">
-                    3 Members Active
-                </span>
+          <div className="flex-1 min-w-0">
+            <p className="text-white text-[12px] font-bold leading-none truncate">The Yield Syndicate</p>
+            <div className="flex items-center gap-1.5 mt-1">
+              <motion.span animate={{ opacity: [1, 0.3, 1] }} transition={{ repeat: Infinity, duration: 2 }}
+                className="w-1.5 h-1.5 bg-[#34d399] rounded-full shrink-0" />
+              <span className="text-white/30 text-[9px] font-medium uppercase tracking-widest">3 members active</span>
             </div>
           </div>
         </div>
 
-        {/* Chat Content */}
-        <div 
+        {/* Chat */}
+        <div
           ref={scrollRef}
-          className="flex-1 overflow-y-auto p-5 space-y-6 scrollbar-hide flex flex-col pt-8"
+          className="flex-1 overflow-y-auto px-3 py-4 space-y-3.5 scrollbar-hide"
+          style={{ background: 'linear-gradient(to bottom, #0f150f 0%, #0c0c0c 60%)' }}
         >
           <AnimatePresence mode="popLayout">
-            {messages.filter(m => visibleMessages.includes(m.id)).map((msg) => (
-              <motion.div 
+            {MESSAGES.filter(m => visibleIds.includes(m.id)).map(msg => (
+              <motion.div
                 key={msg.id}
                 layout
-                initial={{ opacity: 0, y: 20, scale: 0.9, filter: "blur(10px)" }}
-                animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-                transition={{ type: "spring", damping: 25, stiffness: 120 }}
-                className={`flex flex-col ${msg.sender === 'Arjun' ? 'items-end' : 'items-start'}`}
+                initial={{ opacity: 0, y: 14, scale: 0.93, filter: 'blur(4px)' }}
+                animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+                transition={{ type: 'spring', damping: 24, stiffness: 300 }}
+                className={`flex flex-col ${msg.right ? 'items-end' : 'items-start'}`}
               >
-                <div className="flex items-center gap-2 mb-1.5 px-1">
-                    <span className="text-[9px] font-medium uppercase tracking-[0.15em] text-white/20">{msg.sender}</span>
-                </div>
-                
-                {msg.isReel ? (
-                  <div className="w-[200px] group cursor-pointer relative">
-                    <div className="absolute -inset-1 bg-gradient-to-r from-clay/20 to-purple-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                    <div className="relative rounded-[1.8rem] overflow-hidden border border-white/10 bg-white/5 p-2 backdrop-blur-sm">
-                        <div className="aspect-[9/16] bg-slate-900 rounded-[1.4rem] relative overflow-hidden">
-                            <img 
-                                src="https://images.unsplash.com/photo-1551818255-e6e10975bc17?auto=format&fit=crop&q=80&w=400" 
-                                className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-[3s]" 
-                            />
-                            <div className="absolute inset-0 bg-black/40" />
-                            <div className="absolute inset-0 flex items-center justify-center">
-                                <motion.div 
-                                    whileHover={{ scale: 1.1 }}
-                                    className="w-12 h-12 bg-white/10 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/20"
-                                >
-                                    <Instagram size={24} className="text-white" />
-                                </motion.div>
-                            </div>
-                            <div className="absolute top-3 left-3 flex items-center gap-2">
-                                <div className="px-2 py-0.5 bg-red-500 rounded-md text-[8px] font-bold text-white tracking-widest animate-pulse">REEL</div>
-                            </div>
-                        </div>
-                        <div className="p-3">
-                            <p className="text-[11px] text-white/60 leading-relaxed font-medium">
-                              {msg.text}
-                            </p>
-                        </div>
-                    </div>
-                  </div>
-                ) : (
-                  <div className={`
-                    max-w-[85%] rounded-[1.8rem] px-5 py-3.5 text-[12px] font-medium leading-relaxed shadow-2xl transition-all
-                    ${msg.sender === 'Arjun' 
-                        ? 'bg-[#34d399] text-white rounded-tr-[0.4rem] shadow-[#34d399]/20' 
-                        : 'bg-white/5 text-white/90 rounded-tl-[0.4rem] border border-white/10 backdrop-blur-2xl'
-                    }
-                  `}>
-                    {msg.text}
-                  </div>
+                {!msg.right && (
+                  <span className="text-[8px] font-bold uppercase tracking-widest mb-1 px-1" style={{ color: msg.accent + 'BB' }}>
+                    {msg.sender}
+                  </span>
                 )}
+                <div className={`max-w-[88%] relative flex flex-col ${msg.right ? 'items-end' : 'items-start'}`}>
+                  <motion.div
+                    whileInView={{ boxShadow: msg.right ? `0 8px 24px -4px ${msg.accent}30` : '0 4px 16px -4px rgba(0,0,0,0.4)' }}
+                    className={`px-3.5 py-2.5 text-[11px] leading-relaxed font-medium rounded-2xl ${
+                      msg.right
+                        ? 'bg-[#34d399] text-[#0a0a0a] rounded-br-[4px]'
+                        : 'bg-white/[0.07] text-white/85 rounded-bl-[4px] border border-white/[0.07]'
+                    }`}
+                  >
+                    {msg.text}
+                  </motion.div>
+                  <div className={`flex items-center gap-1 mt-1 px-1 ${msg.right ? 'flex-row' : 'flex-row'}`}>
+                    <span className="text-[8px] text-white/20">{msg.time}</span>
+                    {msg.right && <CheckCheck size={10} className="text-[#34d399]/50" />}
+                  </div>
+                  {msg.reaction && (
+                    <motion.div
+                      initial={{ scale: 0, y: 4 }} animate={{ scale: 1, y: 0 }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 16, delay: 0.3 }}
+                      className="absolute -bottom-2 -right-1 text-[10px] bg-white/8 rounded-full px-1.5 py-0.5 backdrop-blur-sm border border-white/10 shadow-sm"
+                    >
+                      {msg.reaction}
+                    </motion.div>
+                  )}
+                </div>
               </motion.div>
             ))}
           </AnimatePresence>
 
-          {/* Typing Indicator */}
+          {/* Typing indicator */}
           <AnimatePresence>
             {typingUser && (
-              <motion.div 
-                initial={{ opacity: 0, x: -10, filter: "blur(5px)" }}
-                animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-                exit={{ opacity: 0, x: -5, filter: "blur(5px)" }}
-                className={`flex flex-col ${typingUser === 'Arjun' ? 'items-end' : 'items-start'}`}
+              <motion.div
+                initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 6, scale: 0.95 }}
+                transition={{ type: 'spring', damping: 20, stiffness: 300 }}
+                className="flex flex-col items-start"
               >
-                 <span className="text-[9px] font-medium uppercase tracking-widest text-white/20 mb-2 ml-1 italic">{typingUser} is composing...</span>
-                 <div className="bg-white/5 border border-white/10 rounded-full px-5 py-2.5 flex gap-1.5 items-center backdrop-blur-xl shadow-xl">
-                    <motion.div animate={{ opacity: [0.2, 1, 0.2], scale: [0.8, 1.1, 0.8] }} transition={{ repeat: Infinity, duration: 1.2, delay: 0 }} className="w-1.5 h-1.5 bg-[#34d399] rounded-full" />
-                    <motion.div animate={{ opacity: [0.2, 1, 0.2], scale: [0.8, 1.1, 0.8] }} transition={{ repeat: Infinity, duration: 1.2, delay: 0.2 }} className="w-1.5 h-1.5 bg-white/40 rounded-full" />
-                    <motion.div animate={{ opacity: [0.2, 1, 0.2], scale: [0.8, 1.1, 0.8] }} transition={{ repeat: Infinity, duration: 1.2, delay: 0.4 }} className="w-1.5 h-1.5 bg-white/40 rounded-full" />
-                 </div>
+                <span className="text-[8px] font-bold uppercase tracking-widest mb-1 px-1 text-white/25">{typingUser}</span>
+                <div className="bg-white/[0.07] border border-white/[0.07] rounded-2xl rounded-bl-[4px] px-4 py-3 flex gap-1.5">
+                  {[0, 1, 2].map(i => (
+                    <motion.div key={i}
+                      animate={{ y: [0, -5, 0], opacity: [0.3, 1, 0.3] }}
+                      transition={{ duration: 0.85, repeat: Infinity, delay: i * 0.17, ease: 'easeInOut' }}
+                      className="w-1.5 h-1.5 bg-[#34d399]/60 rounded-full"
+                    />
+                  ))}
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
-
-          <div className="h-4 shrink-0" />
+          <div className="h-2 shrink-0" />
         </div>
 
-        {/* Input Bar */}
-        <div className="p-6 pt-2 bg-white/[0.03] backdrop-blur-3xl border-t border-white/10 flex items-center gap-4 shrink-0">
-          <motion.div whileHover={{ scale: 1.1 }} className="p-2 text-white/20 hover:text-[#34d399]/80 transition-colors cursor-pointer">
-            <Plus size={20} />
+        {/* Input bar */}
+        <div className="px-3 py-3 bg-[#111]/90 backdrop-blur-xl border-t border-white/[0.05] flex items-center gap-2 shrink-0">
+          <motion.div whileHover={{ scale: 1.12 }} className="p-2 text-white/20 cursor-pointer">
+            <Plus size={17} />
           </motion.div>
-          <div className="flex-1 h-11 bg-white/5 rounded-2xl px-5 flex items-center border border-white/5 shadow-inner backdrop-blur-md">
-            <span className="text-[11px] text-white/20 font-medium tracking-wide">Enter the Syndicate...</span>
+          <div className="flex-1 h-9 bg-white/[0.05] rounded-2xl px-4 flex items-center border border-white/[0.07]">
+            <span className="text-[10px] text-white/20">Enter the Syndicate…</span>
           </div>
-          <motion.div whileHover={{ scale: 1.1 }} className="w-10 h-10 bg-[#34d399]/10 text-[#34d399] rounded-2xl flex items-center justify-center border border-[#34d399]/20 shadow-lg shadow-[#34d399]/5 cursor-pointer">
-            <Smile size={20} />
+          <motion.div whileHover={{ scale: 1.12 }} className="w-9 h-9 bg-[#34d399]/12 text-[#34d399] rounded-2xl flex items-center justify-center border border-[#34d399]/20 cursor-pointer">
+            <Mic size={15} />
           </motion.div>
         </div>
 
-        <div className="h-8 w-full shrink-0 flex items-center justify-center">
-           <div className="w-32 h-1.5 bg-white/10 rounded-full" />
+        {/* Home indicator */}
+        <div className="h-6 flex items-center justify-center bg-[#111]/90">
+          <div className="w-24 h-1 bg-white/10 rounded-full" />
         </div>
       </motion.div>
-
-      {/* Hero Atmosphere Glow */}
-      <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-center pointer-events-none">
-          <div className="w-[400px] h-[700px] bg-[#34d399]/5 blur-[120px] rounded-full" />
-      </div>
-
-
     </div>
   );
 };

@@ -64,7 +64,7 @@ const Hero: React.FC = () => {
             </motion.div>
 
             {/* --- CONTENT COLUMNS --- */}
-            <div className="w-full grid grid-cols-1 md:grid-cols-1 xl:grid-cols-12 gap-12 xl:gap-0 border-t-2 border-white/10 bg-white/[0.02] backdrop-blur-sm rounded-t-[3rem]">
+            <div className="w-full grid grid-cols-1 md:grid-cols-1 xl:grid-cols-12 gap-12 xl:gap-0 border-t-2 border-white/10 bg-white/[0.02] backdrop-blur-md rounded-t-[3rem] shadow-2xl">
                 
                 {/* Left Column: Story & SEO Context */}
                 <motion.div 
@@ -72,41 +72,39 @@ const Hero: React.FC = () => {
                     whileInView={fadeInUp.whileInView}
                     viewport={{ once: true }}
                     transition={{ ...fadeInUp.transition, delay: 0.3 }}
-                    className="xl:col-span-3 border-white/10 xl:pr-8 pt-12 hidden xl:block"
+                    className="xl:col-span-3 border-white/10 xl:pr-10 pt-16 hidden xl:block pl-10"
                 >
-                  <div className="flex items-center gap-4 mb-12">
-                        <span className="text-6xl xl:text-7xl font-heading font-medium leading-none text-white">E</span>
-                        <h4 className="font-medium text-[11px] uppercase tracking-[0.3em] text-white/20 pt-6">Editorial Dispatch</h4>
+                  <div className="flex items-center gap-5 mb-14">
+                        <span className="text-7xl xl:text-8xl font-black leading-none text-white tracking-tighter">E</span>
+                        <h4 className="font-black text-[10px] uppercase tracking-[0.5em] text-white/20 pt-8">Dispatch Core</h4>
                      </div>
-
-                     
-                      <h5 className="font-heading font-bold text-2xl xl:text-3xl text-white leading-[0.88] mb-6 uppercase tracking-tight">Financial <br />Absolute.</h5>
-
-                     
-                     <div className="flex justify-between items-center text-[11px] text-white/40 font-bold uppercase tracking-[0.4em] mb-8 border-b border-white/10 pb-4 text-white/20">
+ 
+                     <h5 className="font-heading font-black text-3xl xl:text-4xl text-white leading-[0.85] mb-8 uppercase tracking-tighter">Financial <br />Absolute.</h5>
+ 
+                     <div className="flex justify-between items-center text-[10px] text-white/40 font-black uppercase tracking-[0.4em] mb-10 border-b border-white/5 pb-5">
                         <span>Dispatch 09.A</span>
-                        <span>Neural Logic</span>
+                        <span>Neural Core</span>
                      </div>
                      
-                     <p className="text-justify font-sans text-white/40 leading-relaxed text-base mb-12 border-b border-white/10 pb-12 italic font-medium">
-                        The Indian credit landscape has reached entropy. Fragmented products make manual selection impossible. Our engine audits the matrix.
+                     <p className="text-justify font-sans text-white/40 leading-relaxed text-[15px] mb-14 border-b border-white/5 pb-14 italic font-medium">
+                        The Indian credit landscape has reached peak entropy. Fragmented products make manual selection mathematically impossible. Our engine audits the matrix to render certainty.
                      </p>
                      
-                      <div className="bg-white/5 backdrop-blur-3xl border border-white/10 rounded-[3rem] shadow-xl shadow-black/20 group hover:bg-white/10 hover:shadow-2xl transition-all duration-500 p-6 xl:p-8 overflow-hidden">
-                         <h5 className="font-medium text-[11px] uppercase tracking-[0.2em] text-[#34d399] mb-6">Yield Probability</h5>
-                         <div className="flex flex-wrap justify-between items-center text-[11px] font-medium text-white/40 border-b border-white/5 py-4 uppercase tracking-[0.1em] gap-2">
+                      <div className="bg-white/5 backdrop-blur-3xl border border-white/10 rounded-[2.5rem] shadow-2xl shadow-black/40 group hover:bg-white/10 transition-all duration-700 p-8 overflow-hidden">
+                         <h5 className="font-black text-[10px] uppercase tracking-[0.3em] text-[#34d399] mb-8">Yield Probability</h5>
+                         <div className="flex flex-wrap justify-between items-center text-[10px] font-black text-white/40 border-b border-white/5 py-5 uppercase tracking-[0.1em] gap-2">
                              <span>Avg Yield</span>
-                              <span className="text-[#34d399] font-bold whitespace-nowrap text-sm">₹15,400.00</span>
+                              <span className="text-[#34d399] font-black whitespace-nowrap text-base">₹15,400.00</span>
                          </div>
-                         <div className="flex flex-wrap justify-between items-center text-[11px] font-medium text-white/20 py-4 uppercase tracking-[0.1em] gap-2">
+                         <div className="flex flex-wrap justify-between items-center text-[10px] font-black text-white/20 py-5 uppercase tracking-[0.1em] gap-2">
                              <span>Top Cluster</span>
-                              <span className="text-white font-bold whitespace-nowrap text-sm">₹48,920.00</span>
+                              <span className="text-white font-black whitespace-nowrap text-base">₹48,920.00</span>
                          </div>
                       </div>
                 </motion.div>
 
                 {/* Center: Mobile Group Chat Simulation */}
-                <div className="md:col-span-1 xl:col-span-6 relative flex justify-center items-center pt-8 md:pt-12 pb-16 md:pb-20 xl:px-4 min-h-[550px] md:min-h-[750px] border-l xl:border-l-2 xl:border-r-2 border-white/10 overflow-visible">
+                <div className="md:col-span-1 xl:col-span-6 relative flex justify-center items-center pt-12 md:pt-16 pb-20 md:pb-28 xl:px-4 min-h-[550px] md:min-h-[850px] border-l xl:border-l-2 xl:border-r-2 border-white/10 overflow-visible bg-white/[0.01]">
                      <div className="relative w-full h-full flex items-center justify-center">
                          <GroupChatAudit />
                      </div>
@@ -118,53 +116,54 @@ const Hero: React.FC = () => {
                     whileInView={fadeInUp.whileInView}
                     viewport={{ once: true }}
                     transition={{ ...fadeInUp.transition, delay: 0.7 }}
-                    className="md:col-span-1 xl:col-span-3 border-t xl:border-t-0 pl-0 xl:pl-10 pt-12 flex flex-col justify-between"
+                    className="md:col-span-1 xl:col-span-3 border-t xl:border-t-0 pl-0 xl:pl-12 pt-16 flex flex-col justify-between pr-10"
                 >
                      <div>
-                        <h4 className="font-bold text-[11px] uppercase tracking-[0.4em] mb-12 text-white/40 border-b border-white/5 pb-6 uppercase">In This Dispatch</h4>
-                        <ul className="space-y-0 text-[#242424]/20">
+                        <h4 className="font-black text-[10px] uppercase tracking-[0.5em] mb-14 text-white/30 border-b border-white/5 pb-6">Protocol Index</h4>
+                        <ul className="space-y-0">
                             {[
-                                { title: "Neural", page: "01", link: "/yureka-ai", desc: "Logic" },
-                                { title: "Audit", page: "05", link: "/free-tools", desc: "Parity" },
-                                { title: "Explorer", page: "09", link: "/cards", desc: "Matrix" },
-                                { title: "Manifesto", page: "14", link: "/manifesto", desc: "Alpha" }
+                                { title: "Neural", page: "01", link: "/yureka-ai", desc: "Logic Core" },
+                                { title: "Audit", page: "05", link: "/free-tools", desc: "Yield Parity" },
+                                { title: "Explorer", page: "09", link: "/cards", desc: "Selection Matrix" },
+                                { title: "Manifesto", page: "14", link: "/manifesto", desc: "Strategy Alpha" }
                             ].map((item, i) => (
-                                <li key={i} className="border-b border-white/5 last:border-0 font-sans group">
-                                    <Link to={item.link} className="flex justify-between items-start py-6 md:py-8 cursor-pointer relative overflow-hidden px-4 lg:px-6 -mx-4 lg:-mx-6 transition-all duration-700">
-                                        <div className="absolute inset-0 bg-white/[0.02] -translate-x-full group-hover:translate-x-0 transition-transform duration-700" />
+                                <li key={i} className="border-b border-white/5 last:border-0 group">
+                                    <Link to={item.link} className="flex justify-between items-start py-8 md:py-10 cursor-pointer relative overflow-hidden px-6 -mx-6 transition-all duration-1000">
+                                        <div className="absolute inset-0 bg-[#34d399]/5 -translate-x-full group-hover:translate-x-0 transition-transform duration-1000" />
                                         <div className="relative z-10">
-                                            <span className="block font-heading font-bold text-lg md:text-xl text-white group-hover:text-[#34d399] transition-colors mb-1 uppercase tracking-tight">{item.title}</span>
-                                            <span className="block text-[11px] font-bold uppercase tracking-[0.2em] text-white/30">{item.desc}</span>
+                                            <span className="block font-heading font-black text-xl md:text-2xl text-white group-hover:text-[#34d399] transition-colors mb-2 uppercase tracking-tighter">{item.title}</span>
+                                            <span className="block text-[10px] font-black uppercase tracking-[0.25em] text-white/30 group-hover:text-white/50">{item.desc}</span>
                                         </div>
-                                        <span className="relative z-10 font-mono text-xs md:text-sm text-white/10 font-medium group-hover:text-white/30 transition-colors">.{item.page}</span>
+                                        <span className="relative z-10 font-mono text-xs md:text-sm text-white/10 font-black group-hover:text-[#34d399]/40 transition-colors">.{item.page}</span>
                                     </Link>
                                 </li>
                             ))}
                         </ul>
                      </div>
 
-                     <div className="mt-16 mb-10 px-4 md:px-0">
+                     <div className="mt-20 mb-12 px-4 md:px-0">
                          <motion.div 
-                            whileHover={{ y: -6, boxShadow: '0 32px 64px -12px rgba(0,0,0,0.14)' }}
-                            transition={{ duration: 0.4, ease: [0.25, 0.8, 0.25, 1] }}
-                            className="border border-ink/8 p-6 xl:p-8 text-center bg-cream shadow-[0_8px_40px_-12px_rgba(0,0,0,0.12)] relative overflow-hidden rounded-[2rem]"
+                            whileHover={{ y: -8, scale: 1.02 }}
+                            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                            className="border border-white/10 p-10 text-center bg-white/[0.03] backdrop-blur-3xl rounded-[2.5rem] shadow-2xl relative overflow-hidden group"
                          >
-                             <div className="absolute top-0 right-0 p-4 opacity-[0.06]">
-                                <Sparkles size={32} className="text-[#242424]" />
+                             <div className="absolute top-0 right-0 p-6 opacity-[0.08] group-hover:rotate-12 transition-transform duration-700">
+                                <Sparkles size={40} className="text-[#34d399]" />
                              </div>
-                             <h4 className="font-serif text-base xl:text-lg italic mb-6 text-white leading-snug">"The definitive way to <br /> audit credit cards."</h4>
-                             <Link to="/join-waitlist" className="block w-full bg-[#34d399] text-[#0a0a0a] text-center py-4 rounded-xl font-bold uppercase tracking-[0.25em] text-[10px] transition-all duration-300 hover:scale-105">
-                                 Join Registry
+                             <h4 className="font-serif text-lg xl:text-xl italic mb-8 text-white/90 leading-snug">"The definitive way to <br /> audit credit cards."</h4>
+                             <Link to="/join-waitlist" className="block w-full bg-[#34d399] text-[#0a0a0a] text-center py-5 rounded-2xl font-black uppercase tracking-[0.3em] text-[11px] transition-all duration-500 hover:shadow-xl hover:shadow-[#34d399]/20">
+                                Join Registry
                              </Link>
-                             <p className="text-center text-[10px] text-[#242424]/30 mt-5 uppercase tracking-[0.4em] font-medium">
-                                 Launching Q2 2026
-                             </p>
+                             <div className="mt-6 flex items-center justify-center gap-2">
+                                <div className="w-1.5 h-1.5 bg-[#34d399] rounded-full animate-pulse" />
+                                <p className="text-[9px] text-white/20 uppercase tracking-[0.4em] font-black">
+                                    Q2 2026 DEPLOYMENT
+                                </p>
+                             </div>
                          </motion.div>
                      </div>
                 </motion.div>
-
             </div>
-
         </div>
     </section>
   );

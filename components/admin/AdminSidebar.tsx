@@ -55,15 +55,15 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
       </AnimatePresence>
 
       <aside className={`
-        w-72 bg-cream border-r border-black/5 flex flex-col fixed lg:sticky top-0 h-screen z-50 transition-all duration-500 ease-in-out shadow-2xl shadow-black/[0.02]
+        w-72 bg-[#0a0a0a] border-r border-white/5 flex flex-col fixed lg:sticky top-0 h-screen z-50 transition-all duration-500 ease-in-out shadow-2xl
         ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
-        <div className="p-8 border-b border-black/5">
+        <div className="p-8 border-b border-white/5">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 bg-black rounded-2xl flex items-center justify-center text-cream font-serif font-black shadow-xl">Y</div>
+            <div className="w-10 h-10 bg-white rounded-2xl flex items-center justify-center text-[#0a0a0a] font-serif font-black shadow-xl">Y</div>
             <div className="flex flex-col">
-              <span className="font-serif font-black text-lg tracking-tight text-[#242424] leading-tight uppercase">Yureka Admin</span>
-              <span className="text-[9px] uppercase font-black text-black/20 tracking-[0.2em] mt-1">Management Console</span>
+              <span className="font-serif font-black text-lg tracking-tight text-white leading-tight uppercase">Yureka Admin</span>
+              <span className="text-[9px] uppercase font-black text-white/20 tracking-[0.2em] mt-1">Management Console</span>
             </div>
           </div>
         </div>
@@ -78,18 +78,28 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
                 onClick={() => onTabChange(item.id)}
                 className={`w-full flex items-center gap-4 px-5 py-4 rounded-2xl transition-all duration-300 relative group ${
                   isActive 
-                    ? 'bg-[#242424] text-cream shadow-xl shadow-black/10' 
-                    : 'text-black/40 hover:bg-black/5 hover:text-black'
+                    ? 'bg-white/5 text-white shadow-xl border border-white/5' 
+                    : 'text-white/40 hover:bg-white/5 hover:text-white'
                 }`}
               >
-                <Icon size={20} className={isActive ? 'text-cream' : 'text-black/20 group-hover:text-black transition-colors'} /> 
-                <span className={`text-[11px] font-bold uppercase tracking-widest ${isActive ? 'text-cream' : 'text-black/60'}`}>
+                <Icon size={20} className={isActive ? 'text-[#34d399]' : 'text-white/20 group-hover:text-white transition-colors'} /> 
+                <span className={`text-[11px] font-bold uppercase tracking-widest ${isActive ? 'text-white' : 'text-white/40'}`}>
                   {item.label}
                 </span>
                 {isActive && (
                   <motion.div 
                     layoutId="active-indicator"
-                    className="absolute left-1 w-1 h-6 bg-teal rounded-full"
+                    initial={{ opacity: 0.5, scaleY: 0.8 }}
+                    animate={{ 
+                      opacity: [0.5, 1, 0.5],
+                      scaleY: [0.8, 1.2, 0.8],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                    className="absolute left-1 w-1.5 h-8 bg-[#34d399] rounded-full shadow-[0_0_15px_rgba(52,211,153,0.5)]"
                   />
                 )}
               </button>
@@ -97,19 +107,19 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
           })}
         </nav>
 
-        <div className="p-6 border-t border-black/5 bg-slate-50/50">
+        <div className="p-6 border-t border-white/5 bg-white/[0.02]">
           <div className="flex items-center gap-4 px-2 mb-6">
-            <div className="w-10 h-10 rounded-2xl bg-cream border border-black/5 flex items-center justify-center text-black/40 text-xs font-black shadow-sm ring-4 ring-black/[0.02]">
+            <div className="w-10 h-10 rounded-2xl bg-[#111] border border-white/5 flex items-center justify-center text-white/40 text-xs font-black shadow-sm">
               {user?.email?.[0].toUpperCase()}
             </div>
             <div className="overflow-hidden">
-              <p className="text-[11px] font-black text-[#242424] truncate uppercase tracking-tighter">{user?.email?.split('@')[0] || 'Admin User'}</p>
-              <p className="text-[9px] text-black/30 truncate font-bold">{user?.email}</p>
+              <p className="text-[11px] font-black text-white truncate uppercase tracking-tighter">{user?.email?.split('@')[0] || 'Admin User'}</p>
+              <p className="text-[9px] text-white/30 truncate font-bold">{user?.email}</p>
             </div>
           </div>
           <button 
             onClick={onLogout}
-            className="w-full flex items-center gap-3 px-5 py-4 rounded-2xl text-red-500 hover:bg-red-50 transition-all font-black text-[10px] uppercase tracking-widest border border-transparent hover:border-red-100 group shadow-sm bg-cream"
+            className="w-full flex items-center gap-3 px-5 py-4 rounded-2xl text-red-500 hover:bg-red-500/10 transition-all font-black text-[10px] uppercase tracking-widest border border-red-500/10 group shadow-sm bg-[#0a0a0a]"
           >
             <LogOut size={16} className="group-hover:-translate-x-1 transition-transform" /> 
             Sign Out Session

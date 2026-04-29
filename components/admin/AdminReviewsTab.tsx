@@ -33,15 +33,15 @@ export const AdminReviewsTab: React.FC<AdminReviewsTabProps> = ({
     <div className="flex-1 overflow-x-auto">
       <table className="w-full text-left border-collapse min-w-[900px]">
         <thead>
-          <tr className="bg-slate-50/50 border-b border-black/5">
-            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40">User Identity</th>
-            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40">Affiliation</th>
-            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40">Testimonial Context</th>
-            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40">Status</th>
-            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40 text-right">Management</th>
+          <tr className="bg-[#1a1a1a] border-b border-white/5">
+            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-[#1a1a1a]">User Identity</th>
+            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-[#1a1a1a]">Affiliation</th>
+            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-[#1a1a1a]">Testimonial Context</th>
+            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-[#1a1a1a]">Status</th>
+            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 text-right bg-[#1a1a1a]">Management</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-black/5">
+        <tbody className="divide-y divide-white/5">
           <AnimatePresence mode="popLayout">
             {reviews.map((review, idx) => (
               <motion.tr 
@@ -51,51 +51,51 @@ export const AdminReviewsTab: React.FC<AdminReviewsTabProps> = ({
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ delay: idx * 0.05 }}
                 key={review.id} 
-                className="group hover:bg-slate-50/50 transition-colors"
+                className="group hover:bg-white/[0.02] transition-colors"
               >
                 <td className="px-8 py-6">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-black/5 overflow-hidden border border-black/5 group-hover:scale-105 transition-transform shadow-sm">
+                    <div className="w-12 h-12 rounded-2xl bg-white/5 overflow-hidden border border-white/5 group-hover:scale-105 transition-transform shadow-sm">
                       <img src={review.image} alt={review.author} className="w-full h-full object-cover" />
                     </div>
                     <div>
-                      <div className="font-bold text-[#242424] leading-tight group-hover:text-teal transition-colors line-clamp-1">{review.author}</div>
-                      <div className="text-[10px] text-black/40 mt-1 uppercase font-bold tracking-tighter">{review.role}</div>
+                      <div className="font-bold text-white leading-tight group-hover:text-[#34d399] transition-colors line-clamp-1">{review.author}</div>
+                      <div className="text-[10px] text-white/40 mt-1 uppercase font-bold tracking-tighter">{review.role}</div>
                     </div>
                   </div>
                 </td>
                 <td className="px-8 py-6">
                   <div className="flex items-center gap-3">
                     <img src={review.company_logo} alt="" className="w-6 h-6 object-contain opacity-40 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all" />
-                    <span className="text-sm text-[#242424] font-bold">{review.company}</span>
+                    <span className="text-sm text-white font-bold">{review.company}</span>
                   </div>
                 </td>
                 <td className="px-8 py-6">
                   <div className="flex items-center gap-3 max-w-xs">
-                    <Quote size={14} className="text-teal/20 shrink-0" />
-                    <p className="text-[11px] text-[#242424]/60 line-clamp-2 italic leading-relaxed">"{review.quote}"</p>
+                    <Quote size={14} className="text-[#34d399]/20 shrink-0" />
+                    <p className="text-[11px] text-white/60 line-clamp-2 italic leading-relaxed">"{review.quote}"</p>
                   </div>
                 </td>
                 <td className="px-8 py-6">
                   <div className="flex flex-col gap-2">
                     <div className="flex items-center gap-1">
                         {[...Array(5)].map((_, i) => (
-                            <Star key={i} size={10} className={`${i < (review.rating || 5) ? 'text-[#047857] fill-[#047857]' : 'text-gray-200'}`} />
+                            <Star key={i} size={10} className={`${i < (review.rating || 5) ? 'text-[#34d399] fill-[#34d399]' : 'text-white/10'}`} />
                         ))}
                     </div>
                     <div className="flex items-center gap-2">
-                        {review.source === 'App Store' ? <Apple size={12} className="text-black/40" /> : <Play size={12} className="text-black/40" />}
-                        <span className="text-[9px] font-black uppercase tracking-widest text-black/40">{review.source || 'Direct'}</span>
+                        {review.source === 'App Store' ? <Apple size={12} className="text-white/40" /> : <Play size={12} className="text-white/40" />}
+                        <span className="text-[9px] font-black uppercase tracking-widest text-white/40">{review.source || 'Direct'}</span>
                     </div>
                   </div>
                 </td>
                 <td className="px-8 py-6">
                   <div className="flex items-center gap-2">
                     {review.featured && (
-                        <span className="px-2 py-0.5 rounded-full bg-clay text-white text-[8px] font-black uppercase tracking-[0.2em] shadow-sm">Hero Featured</span>
+                        <span className="px-2 py-0.5 rounded-full bg-white text-[#0a0a0a] text-[8px] font-black uppercase tracking-[0.2em] shadow-sm">Hero Featured</span>
                     )}
-                    <span className={`px-2.5 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider flex items-center gap-2 w-fit ${
-                        review.status === 'published' ? 'bg-green-50 text-green-600 border border-green-100' : 'bg-amber-50 text-amber-600 border border-amber-100'
+                    <span className={`px-2.5 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider flex items-center gap-2 w-fit border ${
+                        review.status === 'published' ? 'bg-[#34d399]/10 text-[#34d399] border-[#34d399]/20' : 'bg-amber-500/10 text-amber-500 border-amber-500/20'
                     }`}>
                         {review.status === 'published' ? <CheckCircle2 size={12} /> : <Clock size={12} />}
                         {review.status}
@@ -106,14 +106,14 @@ export const AdminReviewsTab: React.FC<AdminReviewsTabProps> = ({
                   <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                     <button 
                       onClick={() => onEdit(review)}
-                      className="p-2.5 text-teal hover:bg-teal/10 rounded-xl transition-all border border-transparent hover:border-teal/20 shadow-sm"
+                      className="p-2.5 text-[#34d399] hover:bg-[#34d399]/10 rounded-xl transition-all border border-transparent hover:border-[#34d399]/20 shadow-sm"
                       title="Edit Review"
                     >
                       <Edit2 size={18} />
                     </button>
                     <button 
                       onClick={() => onDelete('reviews', review.id!)}
-                      className="p-2.5 text-red-500 hover:bg-red-50 rounded-xl transition-all border border-transparent hover:border-red-100 shadow-sm"
+                      className="p-2.5 text-red-500 hover:bg-red-500/10 rounded-xl transition-all border border-transparent hover:border-red-500/20 shadow-sm"
                       title="Delete Entry"
                     >
                       <Trash2 size={18} />
@@ -126,8 +126,8 @@ export const AdminReviewsTab: React.FC<AdminReviewsTabProps> = ({
           {reviews.length === 0 && (
             <tr>
               <td colSpan={5} className="px-8 py-24 text-center">
-                <p className="text-[#242424] font-serif font-bold text-xl italic">No social proof available yet.</p>
-                <p className="text-black/40 text-xs mt-2 uppercase tracking-widest font-black">Curate your customer success stories here.</p>
+                <p className="text-white font-serif font-bold text-xl italic">No social proof available yet.</p>
+                <p className="text-white/40 text-xs mt-2 uppercase tracking-widest font-black">Curate your customer success stories here.</p>
               </td>
             </tr>
           )}

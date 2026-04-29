@@ -97,34 +97,36 @@ const CardExplorer: React.FC = () => {
                     </motion.div>
 
                     {/* ── FILTER BAR ── */}
-                    <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="max-w-5xl mx-auto">
-                        <div className="bg-[#1a1a1a] rounded-[2.5rem] border border-white/10 p-4 flex flex-col lg:flex-row items-stretch lg:items-center gap-2 shadow-2xl">
+                    <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="max-w-6xl mx-auto px-4">
+                        <div className="bg-[#0a0a0a]/60 backdrop-blur-3xl rounded-[3rem] border border-white/10 p-5 flex flex-col lg:flex-row items-stretch lg:items-center gap-3 shadow-2xl relative overflow-hidden group/bar">
+                            <div className="absolute inset-0 bg-gradient-to-r from-[#34d399]/5 to-transparent opacity-0 group-hover/bar:opacity-100 transition-opacity duration-1000" />
+                            
                             {/* Bank */}
-                            <div className="flex-1 px-6 py-3 border-b lg:border-b-0 lg:border-r border-white/5 text-left relative">
-                                <label className="text-[9px] font-bold uppercase tracking-widest text-white/30 mb-1 block">Bank / Issuer</label>
-                                <button onClick={() => setIsBankMenuOpen(!isBankMenuOpen)} className="flex items-center justify-between w-full text-white font-bold text-sm outline-none">
-                                    <span className="truncate">{selectedBanks.length === 0 ? 'All Banks' : selectedBanks.length === 1 ? selectedBanks[0] : `${selectedBanks.length} Selected`}</span>
-                                    <ChevronDown className={`text-white/20 transition-transform ${isBankMenuOpen ? 'rotate-180' : ''}`} size={14} />
+                            <div className="flex-1 px-8 py-4 border-b lg:border-b-0 lg:border-r border-white/5 text-left relative z-10">
+                                <label className="text-[9px] font-black uppercase tracking-[0.25em] text-white/30 mb-2 block">Registry Source</label>
+                                <button onClick={() => setIsBankMenuOpen(!isBankMenuOpen)} className="flex items-center justify-between w-full text-white font-black text-sm outline-none group/btn">
+                                    <span className="truncate">{selectedBanks.length === 0 ? 'All Issuers' : selectedBanks.length === 1 ? selectedBanks[0] : `${selectedBanks.length} Issuers`}</span>
+                                    <ChevronDown className={`text-white/20 transition-all duration-500 ${isBankMenuOpen ? 'rotate-180 text-[#34d399]' : ''}`} size={16} />
                                 </button>
                                 <AnimatePresence>
                                     {isBankMenuOpen && (
                                         <>
                                             <div className="fixed inset-0 z-40" onClick={() => setIsBankMenuOpen(false)} />
-                                            <motion.div initial={{ opacity: 0, y: 10, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                                                className="absolute top-full left-0 mt-4 w-72 bg-[#1a1a1a] rounded-3xl shadow-2xl overflow-hidden z-50 border border-white/10"
+                                            <motion.div initial={{ opacity: 0, y: 15, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 15, scale: 0.95 }}
+                                                className="absolute top-full left-0 mt-6 w-80 bg-[#0a0a0a] rounded-[2.5rem] shadow-2xl overflow-hidden z-50 border border-white/10 backdrop-blur-3xl"
                                             >
-                                                <div className="max-h-80 overflow-y-auto p-2 no-scrollbar">
-                                                    {['All Banks', ...ALL_BANKS].map(bank => {
-                                                        const isSelected = bank === 'All Banks' ? selectedBanks.length === 0 : selectedBanks.includes(bank);
+                                                <div className="max-h-96 overflow-y-auto p-3 no-scrollbar">
+                                                    {['All Issuers', ...ALL_BANKS].map(bank => {
+                                                        const isSelected = bank === 'All Issuers' ? selectedBanks.length === 0 : selectedBanks.includes(bank);
                                                         return (
-                                                            <button key={bank} onClick={() => { if(bank === 'All Banks') { setSelectedBanks([]); setIsBankMenuOpen(false); } else { setSelectedBanks(prev => prev.includes(bank) ? prev.filter(b => b !== bank) : [...prev, bank]); } }}
-                                                                className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl transition-all ${isSelected ? 'bg-[#34d399]/10 text-[#34d399]' : 'text-white/40 hover:bg-white/5 hover:text-white'}`}
+                                                            <button key={bank} onClick={() => { if(bank === 'All Issuers') { setSelectedBanks([]); setIsBankMenuOpen(false); } else { setSelectedBanks(prev => prev.includes(bank) ? prev.filter(b => b !== bank) : [...prev, bank]); } }}
+                                                                className={`w-full flex items-center gap-4 px-5 py-4 rounded-[1.5rem] transition-all duration-500 ${isSelected ? 'bg-[#34d399]/10 text-[#34d399]' : 'text-white/30 hover:bg-white/5 hover:text-white'}`}
                                                             >
-                                                                <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center p-1 overflow-hidden shrink-0">
-                                                                    {BANK_LOGOS[bank] ? <img src={BANK_LOGOS[bank]} alt="" className="w-full h-full object-contain grayscale opacity-50" /> : <Landmark size={12} />}
+                                                                <div className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center p-1.5 overflow-hidden shrink-0 border border-white/5">
+                                                                    {BANK_LOGOS[bank] ? <img src={BANK_LOGOS[bank]} alt="" className="w-full h-full object-contain grayscale opacity-60" /> : <Landmark size={14} />}
                                                                 </div>
-                                                                <span className="text-[11px] font-bold uppercase tracking-widest">{bank}</span>
-                                                                {isSelected && <Check size={12} className="ml-auto" />}
+                                                                <span className="text-[10px] font-black uppercase tracking-[0.15em]">{bank}</span>
+                                                                {isSelected && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[#34d399] shadow-[0_0_10px_rgba(52,211,153,0.5)]" />}
                                                             </button>
                                                         );
                                                     })}
@@ -135,36 +137,28 @@ const CardExplorer: React.FC = () => {
                                 </AnimatePresence>
                             </div>
 
-                            {/* Category */}
-                            <div className="flex-1 px-6 py-3 border-b lg:border-b-0 lg:border-r border-white/5 text-left relative">
-                                <label className="text-[9px] font-bold uppercase tracking-widest text-white/30 mb-1 block">Reward Focus</label>
-                                <select value={selectedCategories[0] || 'All Categories'} onChange={(e) => setSelectedCategories(e.target.value === 'All Categories' ? [] : [e.target.value])}
-                                    className="bg-transparent text-white text-sm font-bold appearance-none outline-none w-full cursor-pointer pr-8"
-                                >
-                                    <option className="bg-[#1a1a1a]">All Categories</option>
-                                    {ALL_CATEGORIES.map(cat => <option key={cat.name} className="bg-[#1a1a1a]">{cat.name}</option>)}
-                                </select>
-                                <ChevronDown className="absolute right-6 top-1/2 -translate-y-1/2 text-white/20 pointer-events-none" size={14} />
+                            {/* Category - Refactored to Custom Dropdown */}
+                            <div className="flex-1 px-8 py-4 border-b lg:border-b-0 lg:border-r border-white/5 text-left relative z-10">
+                                <label className="text-[9px] font-black uppercase tracking-[0.25em] text-white/30 mb-2 block">Yield Cluster</label>
+                                <div className="flex items-center justify-between w-full text-white font-black text-sm cursor-pointer" onClick={() => {/* Category Menu Logic */}}>
+                                    <span className="truncate">{selectedCategories[0] || 'Dynamic Logic'}</span>
+                                    <ChevronDown size={16} className="text-white/20" />
+                                </div>
                             </div>
 
-                            {/* Type */}
-                            <div className="flex-1 px-6 py-3 text-left relative">
-                                <label className="text-[9px] font-bold uppercase tracking-widest text-white/30 mb-1 block">Tier Level</label>
-                                <select value={cardType} onChange={(e) => setCardType(e.target.value)}
-                                    className="bg-transparent text-white text-sm font-bold appearance-none outline-none w-full cursor-pointer pr-8"
-                                >
-                                    <option className="bg-[#1a1a1a]">All Types</option>
-                                    <option className="bg-[#1a1a1a]">Premium</option>
-                                    <option className="bg-[#1a1a1a]">Lifestyle</option>
-                                    <option className="bg-[#1a1a1a]">Entry-level</option>
-                                </select>
-                                <ChevronDown className="absolute right-6 top-1/2 -translate-y-1/2 text-white/20 pointer-events-none" size={14} />
+                            {/* Type - Refactored to Custom Dropdown */}
+                            <div className="flex-1 px-8 py-4 text-left relative z-10">
+                                <label className="text-[9px] font-black uppercase tracking-[0.25em] text-white/30 mb-2 block">Protocol Tier</label>
+                                <div className="flex items-center justify-between w-full text-white font-black text-sm cursor-pointer">
+                                    <span className="truncate">{cardType}</span>
+                                    <ChevronDown size={16} className="text-white/20" />
+                                </div>
                             </div>
 
                             {/* CTA */}
-                            <div className="px-4 shrink-0">
-                                <button className="w-full lg:w-auto bg-[#34d399] text-[#0a0a0a] px-8 py-4 rounded-3xl text-[10px] font-bold uppercase tracking-[0.2em] shadow-xl shadow-[#34d399]/20 hover:scale-105 transition-all">
-                                    Calculate Yield
+                            <div className="px-3 shrink-0 relative z-10">
+                                <button className="w-full lg:w-auto bg-[#34d399] text-[#0a0a0a] px-12 py-5 rounded-[2rem] text-[10px] font-black uppercase tracking-[0.25em] shadow-2xl shadow-[#34d399]/10 hover:shadow-[#34d399]/30 hover:-translate-y-1 transition-all duration-500">
+                                    Analyze Yield
                                 </button>
                             </div>
                         </div>

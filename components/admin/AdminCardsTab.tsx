@@ -85,16 +85,16 @@ export const AdminCardsTab: React.FC<AdminCardsTabProps> = ({
   return (
     <div className="flex-1 flex flex-col min-h-0">
       {/* Search & Filter Header */}
-      <div className="px-8 py-6 border-b border-black/5 bg-slate-50/50 flex flex-wrap items-center gap-6">
+      <div className="px-8 py-6 border-b border-white/5 bg-[#1a1a1a]/50 flex flex-wrap items-center gap-6">
         {/* Search Bar */}
         <div className="relative flex-1 min-w-[300px]">
-          <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-black/20" />
+          <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" />
           <input 
             type="text" 
             placeholder="Search products or banks..." 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 pr-12 py-3 bg-white border border-black/5 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-teal/20 focus:border-teal/30 transition-all shadow-sm"
+            className="w-full pl-12 pr-12 py-3 bg-[#0a0a0a] border border-white/5 rounded-2xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#34d399]/20 focus:border-[#34d399]/30 transition-all shadow-sm"
           />
           <AnimatePresence>
             {searchQuery && (
@@ -103,7 +103,7 @@ export const AdminCardsTab: React.FC<AdminCardsTabProps> = ({
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
                 onClick={() => setSearchQuery('')}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-black/20 hover:text-black/40 transition-colors"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-white/20 hover:text-white/40 transition-colors"
               >
                 <X size={16} />
               </motion.button>
@@ -115,55 +115,55 @@ export const AdminCardsTab: React.FC<AdminCardsTabProps> = ({
         <div className="flex flex-wrap items-center gap-3">
           {/* Bank Filter */}
           <div className="relative group">
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-black/30 group-hover:text-teal transition-colors">
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 group-hover:text-[#34d399] transition-colors">
               <Layers size={14} />
             </div>
             <select 
               value={bankFilter}
               onChange={(e) => setBankFilter(e.target.value)}
-              className="pl-10 pr-10 py-3 bg-white border border-black/5 rounded-2xl text-[10px] font-black uppercase tracking-widest appearance-none focus:outline-none focus:ring-2 focus:ring-teal/20 shadow-sm cursor-pointer hover:border-black/10 transition-all"
+              className="pl-10 pr-10 py-3 bg-[#0a0a0a] border border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-widest appearance-none text-white focus:outline-none focus:ring-2 focus:ring-[#34d399]/20 shadow-sm cursor-pointer hover:border-white/10 transition-all"
             >
-              <option>All Banks</option>
+              <option className="bg-[#0a0a0a]">All Banks</option>
               {ADMIN_BANKS.sort().map(bank => (
-                <option key={bank} value={bank}>{bank}</option>
+                <option key={bank} value={bank} className="bg-[#0a0a0a]">{bank}</option>
               ))}
             </select>
-            <ChevronDown size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-black/20 pointer-events-none" />
+            <ChevronDown size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-white/20 pointer-events-none" />
           </div>
 
           {/* Type Filter */}
           <div className="relative group">
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-black/30 group-hover:text-teal transition-colors">
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 group-hover:text-[#34d399] transition-colors">
               <Zap size={14} />
             </div>
             <select 
               value={typeFilter}
               onChange={(e) => setTypeFilter(e.target.value)}
-              className="pl-10 pr-10 py-3 bg-white border border-black/5 rounded-2xl text-[10px] font-black uppercase tracking-widest appearance-none focus:outline-none focus:ring-2 focus:ring-teal/20 shadow-sm cursor-pointer hover:border-black/10 transition-all"
+              className="pl-10 pr-10 py-3 bg-[#0a0a0a] border border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-widest appearance-none text-white focus:outline-none focus:ring-2 focus:ring-[#34d399]/20 shadow-sm cursor-pointer hover:border-white/10 transition-all"
             >
-              <option>All Types</option>
+              <option className="bg-[#0a0a0a]">All Types</option>
               {CARD_TYPES.sort().map(type => (
-                <option key={type} value={type}>{type}</option>
+                <option key={type} value={type} className="bg-[#0a0a0a]">{type}</option>
               ))}
             </select>
-            <ChevronDown size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-black/20 pointer-events-none" />
+            <ChevronDown size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-white/20 pointer-events-none" />
           </div>
 
           {/* Status Filter */}
           <div className="relative group">
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-black/30 group-hover:text-teal transition-colors">
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 group-hover:text-[#34d399] transition-colors">
               <div className="w-2 h-2 rounded-full bg-current" />
             </div>
             <select 
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="pl-10 pr-10 py-3 bg-white border border-black/5 rounded-2xl text-[10px] font-black uppercase tracking-widest appearance-none focus:outline-none focus:ring-2 focus:ring-teal/20 shadow-sm cursor-pointer hover:border-black/10 transition-all"
+              className="pl-10 pr-10 py-3 bg-[#0a0a0a] border border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-widest appearance-none text-white focus:outline-none focus:ring-2 focus:ring-[#34d399]/20 shadow-sm cursor-pointer hover:border-white/10 transition-all"
             >
-              <option>All Status</option>
-              <option value="Published">Published</option>
-              <option value="Draft">Draft</option>
+              <option className="bg-[#0a0a0a]">All Status</option>
+              <option value="Published" className="bg-[#0a0a0a]">Published</option>
+              <option value="Draft" className="bg-[#0a0a0a]">Draft</option>
             </select>
-            <ChevronDown size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-black/20 pointer-events-none" />
+            <ChevronDown size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-white/20 pointer-events-none" />
           </div>
 
           {/* Reset Button */}
@@ -177,7 +177,7 @@ export const AdminCardsTab: React.FC<AdminCardsTabProps> = ({
                 setTypeFilter('All Types');
                 setStatusFilter('All Status');
               }}
-              className="text-[10px] uppercase font-black tracking-widest text-red-500 hover:text-red-600 px-5 py-3 bg-red-50 rounded-2xl transition-all border border-red-100 shadow-sm hover:shadow-md active:scale-95"
+              className="text-[10px] uppercase font-black tracking-widest text-red-500 hover:text-red-400 px-5 py-3 bg-red-500/10 rounded-2xl transition-all border border-red-500/20 shadow-sm hover:shadow-md active:scale-95"
             >
               Reset Filters
             </motion.button>
@@ -186,9 +186,9 @@ export const AdminCardsTab: React.FC<AdminCardsTabProps> = ({
         
         {/* Count Indicator */}
         <div className="ml-auto flex items-center gap-4">
-          <div className="h-8 w-px bg-black/5" />
-          <div className="text-[10px] uppercase font-black tracking-[0.2em] text-black/30">
-            Registry: <span className="text-[#242424]">{filteredCards.length}</span><span className="text-black/10 mx-1">/</span>{cards.length}
+          <div className="h-8 w-px bg-white/5" />
+          <div className="text-[10px] uppercase font-black tracking-[0.2em] text-white/30">
+            Registry: <span className="text-white">{filteredCards.length}</span><span className="text-white/10 mx-1">/</span>{cards.length}
           </div>
         </div>
       </div>
@@ -197,32 +197,32 @@ export const AdminCardsTab: React.FC<AdminCardsTabProps> = ({
       <div className="flex-1 overflow-x-auto overflow-y-auto max-h-[calc(100vh-22rem)] custom-scrollbar">
         <table className="w-full text-left border-collapse min-w-[1000px]">
           <thead className="sticky top-0 z-20 shadow-sm">
-            <tr className="bg-slate-50 border-b border-black/5">
+            <tr className="bg-[#1a1a1a] border-b border-white/5">
               <th 
-                className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40 bg-slate-50 cursor-pointer hover:text-teal transition-colors group"
+                className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-[#1a1a1a] cursor-pointer hover:text-[#34d399] transition-colors group"
                 onClick={() => toggleSort('name')}
               >
                 <div className="flex items-center gap-2">
                   Financial Product
-                  <ArrowUpDown size={12} className={`opacity-0 group-hover:opacity-100 transition-opacity ${sortBy === 'name' ? 'opacity-100 text-teal' : ''}`} />
+                  <ArrowUpDown size={12} className={`opacity-0 group-hover:opacity-100 transition-opacity ${sortBy === 'name' ? 'opacity-100 text-[#34d399]' : ''}`} />
                 </div>
               </th>
-              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40 bg-slate-50">Issuer & Bank</th>
-              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40 bg-slate-50">Optimization</th>
-              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40 bg-slate-50">Fees & Status</th>
-              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-black/40 text-right bg-slate-50">Actions</th>
+              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-[#1a1a1a]">Issuer & Bank</th>
+              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-[#1a1a1a]">Optimization</th>
+              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-[#1a1a1a]">Fees & Status</th>
+              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 text-right bg-[#1a1a1a]">Actions</th>
             </tr>
           </thead>
 
-          <tbody className="divide-y divide-black/5">
+          <tbody className="divide-y divide-white/5">
             {filteredCards.map((card) => (
               <tr 
                 key={card.id} 
-                className="group hover:bg-slate-50/50 transition-colors"
+                className="group hover:bg-white/[0.02] transition-colors"
               >
                 <td className="px-8 py-6">
                   <div className="flex items-center gap-4">
-                    <div className="w-16 h-10 rounded-xl bg-black/5 overflow-hidden border border-black/5 group-hover:scale-105 transition-transform shadow-sm relative">
+                    <div className="w-16 h-10 rounded-xl bg-white/5 overflow-hidden border border-white/5 group-hover:scale-105 transition-transform shadow-sm relative">
                       <img src={card.image} alt={card.name} className="w-full h-full object-cover" />
                       {card.status === 'draft' && (
                         <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center">
@@ -231,37 +231,37 @@ export const AdminCardsTab: React.FC<AdminCardsTabProps> = ({
                       )}
                     </div>
                     <div>
-                      <div className="font-bold text-[#242424] leading-tight group-hover:text-teal transition-colors line-clamp-1">{card.name}</div>
-                      <div className="text-[10px] text-black/30 mt-1 uppercase font-black tracking-widest">{card.type}</div>
+                      <div className="font-bold text-white leading-tight group-hover:text-[#34d399] transition-colors line-clamp-1">{card.name}</div>
+                      <div className="text-[10px] text-white/30 mt-1 uppercase font-black tracking-widest">{card.type}</div>
                     </div>
                   </div>
                 </td>
                 <td className="px-8 py-6">
                   <div className="flex flex-col">
-                    <span className="text-sm text-[#242424] font-bold">{card.bank}</span>
-                    <span className="text-[10px] text-black/40 uppercase font-bold tracking-tighter mt-0.5">{card.issuer || 'Local Primary'}</span>
+                    <span className="text-sm text-white/90 font-bold">{card.bank}</span>
+                    <span className="text-[10px] text-white/40 uppercase font-bold tracking-tighter mt-0.5">{card.issuer || 'Local Primary'}</span>
                   </div>
                 </td>
                 <td className="px-8 py-6">
-                  <span className="px-2.5 py-1.5 rounded-lg bg-teal/5 text-teal text-[10px] font-black uppercase tracking-wider flex items-center gap-2 w-fit border border-teal/10">
-                    <Zap size={12} className="text-teal/40" />
+                  <span className="px-2.5 py-1.5 rounded-lg bg-[#34d399]/5 text-[#34d399] text-[10px] font-black uppercase tracking-wider flex items-center gap-2 w-fit border border-[#34d399]/10">
+                    <Zap size={12} className="text-[#34d399]/40" />
                     {card.best_for}
                   </span>
                 </td>
                 <td className="px-8 py-6">
                   <div className="flex flex-col gap-1.5">
-                    <div className="text-[11px] font-bold text-[#242424]/70">
-                      Annual: <span className="text-[#242424]">{card.annual_fee}</span>
+                    <div className="text-[11px] font-bold text-white/70">
+                      Annual: <span className="text-white">{card.annual_fee}</span>
                     </div>
                     <div className="flex items-center gap-2">
                        <div className={`px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-widest border ${
                          card.status === 'published' 
-                           ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20' 
-                           : 'bg-amber-500/10 text-amber-600 border-amber-500/20'
+                           ? 'bg-[#34d399]/10 text-[#34d399] border-[#34d399]/20' 
+                           : 'bg-amber-500/10 text-amber-500 border-amber-500/20'
                        }`}>
                          {card.status || 'published'}
                        </div>
-                       <div className="text-[9px] text-black/20 font-mono tracking-tighter">
+                       <div className="text-[9px] text-white/20 font-mono tracking-tighter">
                          {card.rewards_rate}
                        </div>
                     </div>
@@ -271,14 +271,14 @@ export const AdminCardsTab: React.FC<AdminCardsTabProps> = ({
                   <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0">
                     <button 
                       onClick={() => onEdit(card)}
-                      className="p-2.5 text-teal hover:bg-teal/10 rounded-xl transition-all border border-transparent hover:border-teal/20 shadow-sm"
+                      className="p-2.5 text-[#34d399] hover:bg-[#34d399]/10 rounded-xl transition-all border border-transparent hover:border-[#34d399]/20 shadow-sm"
                       title="Update Details"
                     >
                       <Edit2 size={18} />
                     </button>
                     <button 
                       onClick={() => onDelete('cards', card.id!)}
-                      className="p-2.5 text-red-500 hover:bg-red-50 rounded-xl transition-all border border-transparent hover:border-red-100 shadow-sm"
+                      className="p-2.5 text-red-500 hover:bg-red-500/10 rounded-xl transition-all border border-transparent hover:border-red-500/20 shadow-sm"
                       title="Archive Card"
                     >
                       <Trash2 size={18} />
@@ -297,19 +297,19 @@ export const AdminCardsTab: React.FC<AdminCardsTabProps> = ({
                   >
                     {cards.length === 0 ? (
                       <>
-                        <div className="w-16 h-16 bg-slate-50 rounded-3xl mx-auto mb-6 flex items-center justify-center text-black/10">
+                        <div className="w-16 h-16 bg-white/5 rounded-3xl mx-auto mb-6 flex items-center justify-center text-white/10">
                           <Layers size={32} />
                         </div>
-                        <p className="text-[#242424] font-serif font-bold text-2xl italic">No financial products listed.</p>
-                        <p className="text-black/40 text-xs mt-3 uppercase tracking-[0.2em] font-black">Add your first credit card to the registry core.</p>
+                        <p className="text-white font-serif font-bold text-2xl italic">No financial products listed.</p>
+                        <p className="text-white/40 text-xs mt-3 uppercase tracking-[0.2em] font-black">Add your first credit card to the registry core.</p>
                       </>
                     ) : (
                       <>
-                        <div className="w-16 h-16 bg-slate-50 rounded-3xl mx-auto mb-6 flex items-center justify-center text-black/10">
+                        <div className="w-16 h-16 bg-white/5 rounded-3xl mx-auto mb-6 flex items-center justify-center text-white/10">
                           <Search size={32} />
                         </div>
-                        <p className="text-[#242424] font-serif font-bold text-2xl italic">No matching products found.</p>
-                        <p className="text-black/40 text-xs mt-3 uppercase tracking-[0.2em] font-black">Adjust filters or search parameters to locate nodes.</p>
+                        <p className="text-white font-serif font-bold text-2xl italic">No matching products found.</p>
+                        <p className="text-white/40 text-xs mt-3 uppercase tracking-[0.2em] font-black">Adjust filters or search parameters to locate nodes.</p>
                       </>
                     )}
                   </motion.div>

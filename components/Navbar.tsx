@@ -28,64 +28,64 @@ const Navbar: React.FC = () => {
             fixed left-0 right-0 
             flex justify-center
             z-[90]
-            transition-all duration-700 cubic-bezier(0.25, 0.8, 0.25, 1)
-            ${isScrolled ? 'top-10' : 'top-10'}
+            transition-all duration-1000 cubic-bezier(0.16, 1, 0.3, 1)
+            ${isScrolled ? 'top-6 md:top-8' : 'top-0'}
         `}
-
       >
         <div 
             className={`
                 flex items-center justify-between
-                transition-all duration-700 cubic-bezier(0.25, 0.8, 0.25, 1)
+                transition-all duration-1000 cubic-bezier(0.16, 1, 0.3, 1)
                 ${isScrolled 
-                    ? `w-[92%] md:w-[90%] lg:w-[80%] max-w-7xl pointer-events-auto px-4 md:px-6 py-2 ${isDarkPage ? 'bg-[#1a1a1a]/40 border-white/10' : 'bg-cream/40 border-white/50'} rounded-full shadow-lg shadow-black/10 backdrop-blur-xl border` 
-                    : `w-full max-w-[1440px] ${isDarkPage ? 'bg-transparent border-white/5' : 'bg-transparent border-ink/10'} px-4 md:px-6 py-5 md:py-6 rounded-none shadow-none border-b border-x-0 border-t-0`
+                    ? `w-[92%] md:w-[90%] lg:w-[85%] max-w-7xl px-5 md:px-8 py-3 bg-[#0a0a0a]/60 border border-white/10 rounded-full shadow-2xl shadow-black/40 backdrop-blur-2xl` 
+                    : `w-full max-w-[1440px] bg-transparent border-b border-white/[0.03] px-6 md:px-12 py-6 md:py-8`
                 }
             `}
         >
-            {/* Logo Section - Masthead Style */}
-            <div className={`
-                flex flex-col relative z-10 group cursor-pointer
-            `}>
+            {/* Logo Section */}
+            <div className="flex flex-col relative z-10 group cursor-pointer">
                 <div className="flex items-center gap-3">
-                    <Link to="/" className={`font-heading font-extrabold tracking-tighter text-base md:text-[17px] ${isDarkPage ? 'text-cream' : 'text-ink'} leading-none hover:opacity-75 transition-opacity flex items-baseline uppercase`}>
-                        Yureka<span className="text-clay">.</span>money
+                    <Link to="/" className="font-heading font-black tracking-tighter text-lg md:text-xl text-white leading-none hover:opacity-80 transition-opacity flex items-baseline uppercase">
+                        Yureka<span className="text-[#34d399]">.</span>money
                     </Link>
                     {/* Neural Status Indicator */}
-                    <div className={`flex items-center gap-1.5 px-2 py-0.5 ${isDarkPage ? 'bg-[#047857]/20 border-white/10' : 'bg-[#047857]/5 border-[#047857]/10'} rounded-full`}>
+                    <div className="flex items-center gap-2 px-2.5 py-1 bg-white/[0.03] border border-white/[0.08] rounded-full backdrop-blur-md">
                         <motion.div 
-                            animate={{ opacity: [0.4, 1, 0.4] }}
-                            transition={{ duration: 2, repeat: Infinity }}
-                            className="w-1.5 h-1.5 bg-clay rounded-full shadow-[0_0_8px_rgba(4,120,87,0.5)]"
+                            animate={{ opacity: [0.3, 1, 0.3], scale: [1, 1.2, 1] }}
+                            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                            className="w-1.5 h-1.5 bg-[#34d399] rounded-full shadow-[0_0_10px_rgba(52,211,153,0.4)]"
                         />
-                        <span className={`text-[8px] font-extrabold text-clay uppercase tracking-widest hidden md:block`}>Neural Active</span>
+                        <span className="text-[8px] font-black text-[#34d399]/70 uppercase tracking-[0.25em] hidden md:block">Neural Active</span>
                     </div>
                 </div>
 
                 {!isScrolled && (
-                      <span className={`hidden md:block text-[10px] uppercase tracking-[0.3em] ${isDarkPage ? 'text-white/20' : 'text-ink/40'} mt-1 font-sans font-bold`}>
-                        AI-Driven Intelligence • Est. 2026
-                      </span>
+                      <motion.span 
+                        initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                        className="hidden md:block text-[9px] uppercase tracking-[0.4em] text-white/20 mt-1.5 font-bold"
+                      >
+                        AI-Driven Yield Intelligence • Protocol v2.4
+                      </motion.span>
                 )}
             </div>
 
-            {/* Desktop Menu - Editorial Tabs */}
-            <div className={`
-                hidden md:flex items-center relative z-10 shrink-0 gap-8
-            `}>
-                <div className="flex items-center gap-6">
+            {/* Desktop Menu */}
+            <div className="hidden md:flex items-center relative z-10 shrink-0 gap-8">
+                <div className="flex items-center gap-7">
                     {[
                         { name: 'Cards', path: '/cards' },
                         { name: 'Manifesto', path: '/manifesto' },
-                        { name: 'Free Tools', path: '/free-tools' },
-                        { name: 'Blogs', path: '/blogs' }
+                        { name: 'Tools', path: '/free-tools' },
+                        { name: 'Insights', path: '/blogs' }
                     ].map((item) => (
                         <Link 
                             key={item.name}
                             to={item.path} 
                             className={`
-                                 relative text-[11px] font-bold uppercase tracking-widest transition-all py-1
-                                ${location.pathname === item.path ? (isDarkPage ? 'text-[#047857] border-b-2 border-[#047857]' : 'text-ink border-b-2 border-clay') : (isDarkPage ? 'text-white/40 hover:text-white' : 'text-ink/50 hover:text-ink')}
+                                 relative text-[10px] font-black uppercase tracking-[0.2em] transition-all py-1
+                                ${location.pathname === item.path 
+                                    ? 'text-[#34d399] after:content-[""] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-px after:bg-[#34d399]' 
+                                    : 'text-white/30 hover:text-white'}
                             `}
                         >
                             {item.name}
@@ -93,23 +93,17 @@ const Navbar: React.FC = () => {
                     ))}
                 </div>
 
-                <div className="h-4 w-px bg-[#242424]/20"></div>
+                <div className="h-4 w-px bg-white/10" />
 
-                <div className="flex items-center gap-4 lg:gap-6">
-                      <Link to="/yureka-ai" className={`
-                        ${isDarkPage ? 'text-white/60 hover:text-white' : 'text-[#242424] hover:text-[#047857]'} font-sans font-medium text-[11px] transition-colors whitespace-nowrap uppercase tracking-widest
-                      `}>
-                        Yureka AI
+                <div className="flex items-center gap-6">
+                      <Link to="/yureka-ai" className="text-white/40 hover:text-white font-bold text-[10px] transition-colors whitespace-nowrap uppercase tracking-[0.2em]">
+                        Neural Engine
                       </Link>
-
                     
-                    <Link to="/join-waitlist" className={`
-                        bg-ink text-cream text-[10px] font-bold uppercase tracking-[0.2em] px-5 lg:px-7 py-2.5 lg:py-3
-                        flex items-center gap-2 group transition-all duration-500 rounded-full shrink-0 shadow-lg hover:shadow-clay/20 hover:-translate-y-0.5
-                    `}>
-                        <Sparkles size={14} className="text-clay" />
-                        <span>Join Waitlist Now</span>
-                        <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                    <Link to="/join-waitlist" className="bg-[#34d399] text-[#0a0a0a] text-[10px] font-black uppercase tracking-[0.25em] px-8 py-3.5 flex items-center gap-2.5 group transition-all duration-500 rounded-full shrink-0 shadow-xl shadow-[#34d399]/10 hover:shadow-[#34d399]/20 hover:-translate-y-1">
+                        <Sparkles size={14} className="group-hover:rotate-12 transition-transform" />
+                        <span>Join Registry</span>
+                        <ArrowRight size={14} className="group-hover:translate-x-1.5 transition-transform" />
                     </Link>
                 </div>
             </div>
@@ -117,17 +111,16 @@ const Navbar: React.FC = () => {
              {/* Mobile Toggle */}
              <div className="md:hidden flex items-center ml-auto gap-4">
                   <button 
-                    className={`p-2 ${isDarkPage ? 'text-white' : 'text-ink'} hover:text-clay transition-colors`}
+                    className="p-2.5 bg-white/5 border border-white/10 rounded-xl text-white hover:bg-white/10 transition-all"
                     onClick={() => setIsMobileMenuOpen(true)}
                 >
-                    <Menu size={24} strokeWidth={2} />
+                    <Menu size={22} />
                 </button>
             </div>
-
         </div>
       </header>
 
-      {/* Mobile Menu Overlay - Paper Texture */}
+      {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <div className="fixed inset-0 z-[110] pointer-events-auto">
@@ -135,39 +128,39 @@ const Navbar: React.FC = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="absolute inset-0 bg-[#242424]/20 backdrop-blur-md" 
+                className="absolute inset-0 bg-[#000]/80 backdrop-blur-xl" 
                 onClick={() => setIsMobileMenuOpen(false)}
               />
               
               <motion.div 
-                initial={{ x: '100%' }}
-                animate={{ x: 0 }}
-                exit={{ x: '100%' }}
-                transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                className="absolute top-0 right-0 h-full w-[85%] max-w-[400px] bg-cream/80 backdrop-blur-3xl border-l border-white/40 p-8 flex flex-col shadow-2xl"
+                initial={{ x: '100%', opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: '100%', opacity: 0 }}
+                transition={{ type: 'spring', damping: 28, stiffness: 220 }}
+                className="absolute top-0 right-0 h-full w-[85%] max-w-[400px] bg-[#0a0a0a] border-l border-white/10 p-10 flex flex-col shadow-2xl"
               >
-                  <div className="flex justify-between items-center mb-12 border-b border-ink/10 pb-6">
-                      <span className="font-heading text-2xl font-extrabold text-ink flex items-end uppercase tracking-tighter">
-                        Index<span className="text-clay ml-1">.</span>
+                  <div className="flex justify-between items-center mb-16">
+                      <span className="font-heading text-2xl font-black text-white flex items-end uppercase tracking-tighter">
+                        Menu<span className="text-[#34d399] ml-1">.</span>
                       </span>
 
-                      <button onClick={() => setIsMobileMenuOpen(false)} className="p-4 -mr-4 hover:bg-[#242424]/5 rounded-full transition-all">
-                          <X size={32} className="text-[#242424]" strokeWidth={1} />
+                      <button onClick={() => setIsMobileMenuOpen(false)} className="w-12 h-12 bg-white/5 border border-white/10 flex items-center justify-center rounded-full text-white hover:bg-white hover:text-[#0a0a0a] transition-all">
+                          <X size={24} />
                       </button>
                   </div>
                   
-                  <nav className="flex flex-col gap-8">
+                  <nav className="flex flex-col gap-10">
                     {[
-                        { name: 'Card Explorer', path: '/cards', desc: 'Curated Matches' },
-                        { name: 'Manifesto', path: '/manifesto', desc: 'Our Mission' },
-                        { name: 'Free Tools', path: '/free-tools', desc: 'Financial Engine' },
-                        { name: 'Blogs', path: '/blogs', desc: 'Credit Insights' },
-                        { name: 'Yureka AI', path: '/yureka-ai', desc: 'AI Matching' }
+                        { name: 'Card Explorer', path: '/cards', desc: 'Neural matched credit selection' },
+                        { name: 'Manifesto', path: '/manifesto', desc: 'The decentralization of yield' },
+                        { name: 'Free Tools', path: '/free-tools', desc: 'Institutional grade calculators' },
+                        { name: 'Insights', path: '/blogs', desc: 'The elite credit journal' },
+                        { name: 'Yureka AI', path: '/yureka-ai', desc: 'Access the neural core' }
                     ].map((item, idx) => (
                         <motion.div
                           initial={{ opacity: 0, x: 20 }}
                           animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: idx * 0.1 }}
+                          transition={{ delay: idx * 0.08 }}
                           key={item.name}
                         >
                             <Link 
@@ -175,30 +168,32 @@ const Navbar: React.FC = () => {
                                 onClick={() => setIsMobileMenuOpen(false)} 
                                 className="group block"
                             >
-                                <div className="text-xl sm:text-2xl font-heading font-extrabold text-ink group-hover:text-clay transition-colors mb-1 uppercase tracking-tight">{item.name}</div>
-                                <div className="text-[10px] sm:text-[11px] font-sans font-bold uppercase tracking-[0.3em] text-ink/40 group-hover:text-ink/60">{item.desc}</div>
+                                <div className="text-2xl font-black text-white group-hover:text-[#34d399] transition-colors mb-1.5 uppercase tracking-tight">{item.name}</div>
+                                <div className="text-[10px] font-bold uppercase tracking-[0.25em] text-white/20 group-hover:text-white/40">{item.desc}</div>
                             </Link>
-
                         </motion.div>
                     ))}
                     
                     <motion.div
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.6 }}
-                      className="mt-4"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.5 }}
+                      className="mt-6"
                     >
-                        <Link to="/join-waitlist" onClick={() => setIsMobileMenuOpen(false)} className="w-full py-3 md:py-4 bg-[#242424] text-cream font-medium uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 transition-all rounded-full shadow-lg">
-                            <Sparkles size={16} className="text-[#047857]" />
-                            Join Waitlist Now
+                        <Link to="/join-waitlist" onClick={() => setIsMobileMenuOpen(false)} className="w-full h-16 bg-[#34d399] text-[#0a0a0a] font-black uppercase tracking-[0.25em] text-[11px] flex items-center justify-center gap-3 transition-all rounded-full shadow-2xl shadow-[#34d399]/10">
+                            <Sparkles size={16} />
+                            Join Registry Now
                         </Link>
                     </motion.div>
                   </nav>
 
-                  <div className="mt-auto pt-8 border-t border-ink/10 text-center">
-                    <div className="flex justify-between text-[#242424]/30 text-[10px] uppercase tracking-widest font-mono">
-                        <span>Pan-India • Digital Ed.</span>
-                        <span>© 2026</span>
+                  <div className="mt-auto pt-10 border-t border-white/5">
+                    <div className="flex justify-between items-center text-white/20 text-[9px] uppercase tracking-[0.3em] font-mono">
+                        <div className="flex items-center gap-2">
+                            <div className="w-1.5 h-1.5 bg-[#34d399] rounded-full animate-pulse" />
+                            <span>System Online</span>
+                        </div>
+                        <span>© 2026 YUREKA</span>
                     </div>
                   </div>
               </motion.div>

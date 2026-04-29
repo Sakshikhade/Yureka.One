@@ -55,166 +55,160 @@ const TypewriterText: React.FC<{ text: string; delay?: number; onComplete?: () =
     return <span>{displayedText}</span>;
 };
 
-const YurekaAIAnimation = () => {
-  const [messages, setMessages] = useState([
-    { id: 1, type: 'user', text: "Ready to pull the trigger on the MacBook 16. Should I stick with my Amex Gold?", delay: 1000 },
-    { id: 2, type: 'ai', text: "Hold up! Love the upgrade, but let's be strategic. Direct swipe on Amex is okay, but I've found a much better yield path for your specific wallet.", delay: 4500 },
-    { id: 3, type: 'user', text: "Better than 5x points? How?", delay: 11000 },
-    { id: 4, type: 'ai', text: "You're forgetting your HDFC SmartBuy cap isn't hit yet! If we route this through RewardX for an Apple voucher, you stack 10x points + an upfront 7% corporate discount. That's ₹12,400 in total value back.", delay: 14000 },
-    { id: 5, type: 'user', text: "That's huge. What about my Marriott points goal for the Japan trip?", delay: 24000 },
-    { id: 6, type: 'ai', text: "Exactly why we're doing this. This move alone gets you 2 free nights in Osaka. Direct swipe won't get you even halfway there. Shall I apply the stack?", delay: 28000 },
-  ]);
+const YUREKA_MSGS = [
+  { id: 1, type: 'user', text: "I'm buying a ₹1.5L MacBook Pro. Should I just swipe my Amex Platinum?", delay: 1200 },
+  { id: 2, type: 'ai',   text: "Hold that swipe. Amex Platinum gives you 1 MR/₹50 here — fine, but not optimal. Your HDFC SmartBuy monthly cap isn't hit yet, which unlocks 10x Infinia points on this exact merchant.", delay: 4800 },
+  { id: 3, type: 'user', text: "10x? That's ₹15,000 in points right?", delay: 13000 },
+  { id: 4, type: 'ai',   text: "Exactly ₹15,000 in Infinia points. Stack a ₹1.5L Apple voucher via RewardX (6% off = ₹9,000 instant) and your effective spend is ₹1,41,000 — saving ₹24,000 total. Shall I map the stack?", delay: 17000 },
+  { id: 5, type: 'user', text: "Yes. Also can I transfer the Infinia points to air miles?", delay: 28000 },
+  { id: 6, type: 'ai',   text: "1:2 ratio to Air India Miles — that's 30,000 miles, enough for a Business Class upgrade on Delhi–Singapore. I've plotted the full yield path. Ready to apply?", delay: 32000 },
+];
 
+const YurekaAIAnimation = () => {
   const [visibleMessages, setVisibleMessages] = useState<number[]>([]);
   const [isThinking, setIsThinking] = useState(false);
-  const [userInputStatus, setUserInputStatus] = useState("Idle"); 
+  const [inputActive, setInputActive] = useState(false);
   const [finishedTypingId, setFinishedTypingId] = useState<number[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    let timers: any[] = [];
-    setUserInputStatus("Typing");
+    let timers: ReturnType<typeof setTimeout>[] = [];
     
-    messages.forEach((msg, i) => {
-      const t = setTimeout(() => {
-        if (msg.type === 'user') {
-            const typingMsg = i === 2 ? "Analyzing point multipliers..." : i === 4 ? "Calculating Japan trip yield..." : "Analyzing wallet...";
-            setUserInputStatus("Typing");
-            setTimeout(() => {
-                setUserInputStatus("Done");
-                setVisibleMessages(prev => [...prev, msg.id]);
-            }, 1200);
-        } else {
-            setIsThinking(true);
-            setTimeout(() => {
-                setIsThinking(false);
-                setVisibleMessages(prev => [...prev, msg.id]);
-            }, 2200);
-        }
-      }, msg.delay);
-      timers.push(t);
-    });
-    
-    return () => timers.forEach(t => clearTimeout(t));
-  }, []);
+    const runSequence = () => {
+        setVisibleMessages([]);
+        setFinishedTypingId([]);
+        setIsThinking(false);
+        setInputActive(false);
 
-  // Auto-scroll logic - refined for sticky typing
-  useEffect(() => {
-    const scrollContainer = scrollRef.current;
-    if (!scrollContainer) return;
+        YUREKA_MSGS.forEach((msg) => {
+            const t = setTimeout(() => {
+                if (msg.type === 'user') {
+                    setInputActive(true);
+                    setTimeout(() => {
+                        setInputActive(false);
+                        setVisibleMessages(prev => [...prev, msg.id]);
+                    }, 1400);
+                } else {
+                    setIsThinking(true);
+                    setTimeout(() => {
+                        setIsThinking(false);
+                        setVisibleMessages(prev => [...prev, msg.id]);
+                    }, 2400);
+                }
+            }, msg.delay);
+            timers.push(t);
+        });
+    };
 
-    // Scroll when messages appear or thinking state changes
-    scrollContainer.scrollTo({
-        top: scrollContainer.scrollHeight,
-        behavior: 'smooth'
-    });
-
-    // If AI is currently typing, we need to keep pinning to bottom as text grows
-    let scrollInterval: any;
-    if (isThinking || visibleMessages.length > finishedTypingId.length) {
-        scrollInterval = setInterval(() => {
-            scrollContainer.scrollTop = scrollContainer.scrollHeight;
-        }, 100); // More frequent updates for smooth pinning
-    }
+    runSequence();
+    const mainInterval = setInterval(runSequence, 40000); // Restart sequence every 40 seconds
 
     return () => {
-        if (scrollInterval) clearInterval(scrollInterval);
+        timers.forEach(clearTimeout);
+        clearInterval(mainInterval);
     };
-  }, [visibleMessages, isThinking, finishedTypingId]);
+  }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
+  }, [visibleMessages, isThinking]);
 
   return (
     <WindowFrame title="Yureka Neural Engine" color="teal">
       <div className="h-full flex flex-col bg-[#0a0a0a] relative overflow-hidden">
-        {/* Dynamic Compute Pulse */}
+        {/* Ambient glow when AI thinks */}
         <AnimatePresence>
-            {isThinking && (
-                <motion.div 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="absolute inset-0 bg-[#34d399]/[0.05] pointer-events-none"
-                    style={{ filter: 'blur(60px)' }}
-                />
-            )}
+          {isThinking && (
+            <motion.div
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              className="absolute inset-0 pointer-events-none"
+              style={{ background: 'radial-gradient(ellipse at 50% 60%, rgba(52,211,153,0.07) 0%, transparent 70%)' }}
+            />
+          )}
         </AnimatePresence>
 
-        {/* Scroll Fade Indicator */}
-        <div className="absolute top-0 left-0 right-0 h-12 bg-gradient-to-b from-[#0a0a0a] to-transparent z-20 pointer-events-none" />
+        {/* Fade top edge */}
+        <div className="absolute top-0 left-0 right-0 h-10 bg-gradient-to-b from-[#0a0a0a] to-transparent z-20 pointer-events-none" />
 
-        <div 
-            ref={scrollRef}
-            className="flex-1 p-6 md:p-14 pt-12 md:pt-16 space-y-8 md:space-y-12 overflow-y-auto no-scrollbar relative z-10"
-        >
+        <div ref={scrollRef} className="flex-1 px-5 md:px-10 pt-10 pb-6 space-y-6 overflow-y-auto no-scrollbar relative z-10">
           <AnimatePresence mode="popLayout">
-            {messages.filter(m => visibleMessages.includes(m.id)).map((msg) => (
+            {YUREKA_MSGS.filter(m => visibleMessages.includes(m.id)).map((msg) => (
               <motion.div
                 key={msg.id}
                 layout
-                initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                className={`flex items-end gap-4 ${msg.type === 'user' ? 'flex-row-reverse' : ''}`}
+                initial={{ opacity: 0, y: 20, scale: 0.96, filter: 'blur(6px)' }}
+                animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+                transition={{ type: 'spring', damping: 26, stiffness: 280 }}
+                className={`flex items-end gap-3 ${msg.type === 'user' ? 'flex-row-reverse' : 'flex-row'}`}
               >
-                <motion.div 
-                    animate={msg.type === 'user' ? { scale: [1, 1.1, 1] } : {}}
-                    className={`w-10 h-10 md:w-12 md:h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-xl ${msg.type === 'user' ? 'bg-[#34d399]' : 'bg-white/5'}`}
-                >
-                  {msg.type === 'user' ? <Search size={16} className="text-[#0a0a0a]" /> : <Cpu size={18} className="text-white/60" />}
-                </motion.div>
-                <div className={`max-w-[90%] md:max-w-[85%] px-4 py-3 md:px-6 md:py-5 rounded-[1.5rem] md:rounded-[2rem] tracking-tight text-[11px] md:text-[14px] font-medium leading-relaxed shadow-[0_15px_35px_-5px_rgba(0,0,0,0.4)] border ${
-                  msg.type === 'user' ? 'bg-white/5 border-white/5 text-white rounded-br-none' : 'bg-[#34d399] border-[#34d399] text-[#0a0a0a] rounded-bl-none shadow-lg shadow-[#34d399]/20'
+                <div className={`w-8 h-8 md:w-10 md:h-10 rounded-2xl shrink-0 flex items-center justify-center ${
+                  msg.type === 'user' ? 'bg-[#34d399] shadow-lg shadow-[#34d399]/20' : 'bg-white/[0.06] border border-white/10'
+                }`}>
+                  {msg.type === 'user'
+                    ? <Search size={14} className="text-[#0a0a0a]" />
+                    : <Cpu size={15} className="text-[#34d399]" />}
+                </div>
+                <div className={`max-w-[85%] px-4 py-3 rounded-2xl text-[11px] md:text-[13px] leading-relaxed font-medium border ${
+                  msg.type === 'user'
+                    ? 'bg-white/[0.06] border-white/[0.08] text-white/80 rounded-br-[4px]'
+                    : 'bg-[#34d399] border-[#34d399] text-[#0a0a0a] font-semibold rounded-bl-[4px] shadow-lg shadow-[#34d399]/15'
                 }`}>
                   {msg.type === 'ai' ? (
-                      <TypewriterText 
-                        text={msg.text} 
-                        delay={15} 
-                        onComplete={() => setFinishedTypingId(prev => [...prev, msg.id])} 
-                      />
-                  ) : (
-                      msg.text
-                  )}
+                    <TypewriterText text={msg.text} delay={14} onComplete={() => setFinishedTypingId(p => [...p, msg.id])} />
+                  ) : msg.text}
                 </div>
               </motion.div>
             ))}
-            
+
             {isThinking && (
-              <motion.div 
-                layout 
-                initial={{ opacity: 0, y: 10 }} 
-                animate={{ opacity: 1, y: 0 }} 
-                className="flex items-center gap-4 px-12"
+              <motion.div
+                key="thinking"
+                layout
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                className="flex items-end gap-3"
               >
-                <div className="flex gap-2 py-5 px-8 bg-white/5 rounded-3xl rounded-bl-none border border-white/5">
-                   {[0, 1, 2].map(i => (
-                     <motion.div 
-                        key={i} 
-                        animate={{ y: [0, -6, 0], opacity: [0.3, 1, 0.3] }}
-                        transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.15 }}
-                        className="w-2 h-2 bg-[#34d399] rounded-full" 
-                     />
-                   ))}
+                <div className="w-8 h-8 md:w-10 md:h-10 rounded-2xl shrink-0 bg-white/[0.06] border border-white/10 flex items-center justify-center">
+                  <Cpu size={15} className="text-[#34d399]" />
                 </div>
-                <span className="text-[10px] font-medium uppercase text-[#34d399]/40 tracking-[0.2em] animate-pulse">Computing Yield Path...</span>
+                <div className="px-5 py-3.5 bg-white/[0.05] border border-white/[0.08] rounded-2xl rounded-bl-[4px] flex gap-2 items-center">
+                  {[0,1,2].map(i => (
+                    <motion.div key={i}
+                      animate={{ y: [0, -5, 0], opacity: [0.3, 1, 0.3] }}
+                      transition={{ duration: 0.85, repeat: Infinity, delay: i * 0.17, ease: 'easeInOut' }}
+                      className="w-2 h-2 bg-[#34d399] rounded-full"
+                    />
+                  ))}
+                  <span className="ml-2 text-[9px] text-[#34d399]/50 font-bold uppercase tracking-widest animate-pulse">Computing yield…</span>
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
         </div>
 
-        {/* Dynamic Chat Footer */}
-        <div className="p-8 border-t border-white/5 bg-[#0a0a0a]/80 backdrop-blur-md relative z-10">
-          <div className="h-14 md:h-16 bg-white/5 rounded-3xl flex items-center px-8 justify-between border border-white/5 shadow-sm">
-             <div className="flex items-center gap-4 overflow-hidden">
-                {userInputStatus === "Typing" && (
-                    <motion.div animate={{ opacity: [0.2, 1, 0.2] }} transition={{ repeat: Infinity, duration: 1.5 }} className="w-2.5 h-2.5 bg-[#34d399] rounded-full shrink-0" />
-                )}
-                <span className={`text-[10px] md:text-base font-medium transition-all duration-500 truncate ${userInputStatus === "Typing" ? 'text-[#34d399]' : 'text-white/20'}`}>
-                    {userInputStatus === "Typing" ? "Analyzing Reward Matrix..." : "Ask Yureka Neural Assistant..."}
-                </span>
-             </div>
-             <div className="flex items-center gap-4">
-                <div className="h-8 w-[1px] bg-white/5" />
-                <Rocket size={20} className={`transition-colors ${userInputStatus === "Typing" ? 'text-[#34d399]' : 'text-white/10'}`} />
-             </div>
+        {/* Input bar */}
+        <div className="px-5 py-4 border-t border-white/[0.06] bg-[#0a0a0a]/90 backdrop-blur-md">
+          <div className="h-12 bg-white/[0.04] border border-white/[0.08] rounded-2xl flex items-center px-5 gap-3">
+            <AnimatePresence mode="wait">
+              {inputActive ? (
+                <motion.div key="active" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex items-center gap-2 flex-1">
+                  <motion.div animate={{ opacity: [1,0,1] }} transition={{ repeat: Infinity, duration: 1 }} className="w-2 h-2 bg-[#34d399] rounded-full shrink-0" />
+                  <span className="text-[11px] text-[#34d399] font-medium">Analysing wallet matrix…</span>
+                </motion.div>
+              ) : (
+                <motion.span key="idle" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex-1 text-[11px] text-white/20">
+                  Ask Yureka Neural Engine…
+                </motion.span>
+              )}
+            </AnimatePresence>
+            <Rocket size={16} className={`shrink-0 transition-colors ${inputActive ? 'text-[#34d399]' : 'text-white/10'}`} />
+          </div>
+          <div className="flex items-center gap-2 mt-2 px-1">
+            <div className="w-1.5 h-1.5 rounded-full bg-[#34d399] animate-pulse" />
+            <span className="text-[9px] text-white/20 uppercase tracking-widest font-bold">Neural Active</span>
           </div>
         </div>
       </div>
@@ -223,167 +217,160 @@ const YurekaAIAnimation = () => {
 };
 
 
+const RX_STEPS = [
+  { label: 'MacBook Pro 16"', value: 150000, type: 'base', badge: null, icon: <ShoppingBag size={16} />, sub: 'Merchant Cart' },
+  { label: 'Apple Voucher via RewardX', value: -9000, type: 'disc', badge: '6% INSTANT', icon: <Zap size={16} />, sub: 'Voucher Stack' },
+  { label: 'HDFC Infinia SmartBuy', value: -15000, type: 'disc', badge: '10X POINTS', icon: <Star size={16} />, sub: 'Card Multiplier' },
+  { label: 'Yureka Yield Optimizer', value: -3750, type: 'disc', badge: '2.5% EXTRA', icon: <Cpu size={16} />, sub: 'AI Stack Layer' },
+  { label: 'Referral Credit', value: -1500, type: 'disc', badge: '1% BACK', icon: <Users size={16} />, sub: 'Loyalty Node' },
+];
+
 const RewardXAnimation = () => {
   const [step, setStep] = useState(0);
-  const [count, setCount] = useState(50000);
-  const [savings, setSavings] = useState(0);
+  const [displayCount, setDisplayCount] = useState(150000);
+  const [displaySavings, setDisplaySavings] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const steps = [
-    { label: 'Merchant Cart', value: 50000, type: 'base', icon: <ShoppingBag size={18} /> },
-    { label: 'RewardX Voucher', value: -4500, badge: '9% INSTANT', type: 'disc', icon: <Zap size={18} /> },
-    { label: 'Axis Magnus Multiplier', value: -3050, badge: '10X POINTS', type: 'disc', icon: <Star size={18} /> },
-    { label: 'Yureka Yield Stack', value: -1450, badge: '2.5% EXTRA', type: 'disc', icon: <Cpu size={18} /> },
-    { label: 'Referral Kickback', value: -500, badge: '1% UNLOCKED', type: 'disc', icon: <Users size={18} /> }
-  ];
-
   useEffect(() => {
-    let timeout: any;
-    const runSequence = (currentStep: number) => {
-        const nextStep = (currentStep + 1) % (steps.length + 2);
-        const delay = currentStep >= steps.length ? 10000 : 2500; 
-        timeout = setTimeout(() => {
-            setStep(nextStep);
-            runSequence(nextStep);
-        }, delay);
+    let timeout: ReturnType<typeof setTimeout>;
+    const run = (s: number) => {
+      const next = (s + 1) % (RX_STEPS.length + 2);
+      timeout = setTimeout(() => { setStep(next); run(next); }, s >= RX_STEPS.length ? 9000 : 2600);
     };
-    runSequence(0);
+    run(0);
     return () => clearTimeout(timeout);
   }, []);
 
   useEffect(() => {
-    if (step === 0) {
-        setCount(50000);
-        setSavings(0);
-    } else if (step > 0 && step <= steps.length - 1) {
-        const targetValue = 50000 + steps.slice(1, step + 1).reduce((acc, curr) => acc + curr.value, 0);
-        const targetSavings = Math.abs(steps.slice(1, step + 1).reduce((acc, curr) => acc + curr.value, 0));
-        
-        let c = count;
-        let s = savings;
-        const t = setInterval(() => {
-            let changed = false;
-            if (c > targetValue) { c -= 200; changed = true; }
-            if (s < targetSavings) { s += 200; changed = true; }
-            
-            if (!changed) {
-                setCount(targetValue);
-                setSavings(targetSavings);
-                clearInterval(t);
-            } else {
-                setCount(Math.max(c, targetValue));
-                setSavings(Math.min(s, targetSavings));
-            }
-        }, 16);
-        return () => clearInterval(t);
+    if (step === 0) { setDisplayCount(150000); setDisplaySavings(0); return; }
+    if (step > 0 && step <= RX_STEPS.length - 1) {
+      const target = 150000 + RX_STEPS.slice(1, step + 1).reduce((a, c) => a + c.value, 0);
+      const savedTarget = Math.abs(RX_STEPS.slice(1, step + 1).reduce((a, c) => a + c.value, 0));
+      let c = displayCount, s = displaySavings;
+      const t = setInterval(() => {
+        let moved = false;
+        if (c > target) { c = Math.max(c - 300, target); moved = true; }
+        if (s < savedTarget) { s = Math.min(s + 300, savedTarget); moved = true; }
+        setDisplayCount(c); setDisplaySavings(s);
+        if (!moved) clearInterval(t);
+      }, 16);
+      return () => clearInterval(t);
     }
   }, [step]);
 
   useEffect(() => {
-    if (scrollRef.current) {
-        scrollRef.current.scrollTo({
-            top: scrollRef.current.scrollHeight,
-            behavior: 'smooth'
-        });
-    }
+    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
   }, [step]);
+
+  const progress = step >= RX_STEPS.length ? 100 : Math.round((step / (RX_STEPS.length - 1)) * 100);
 
   return (
     <WindowFrame title="Adaptive Yield Engine" color="emerald">
       <div className="h-full flex flex-col bg-[#0a0a0a] relative overflow-hidden">
-        
-        <div className="p-10 md:p-14 pb-4 flex justify-between items-start relative z-20 shrink-0">
-            <div>
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-3 mb-2">
-                    <div className="flex gap-1">
-                       {[0, 1, 2].map(i => <motion.div key={i} animate={{ opacity: [0.2, 1, 0.2] }} transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.2 }} className="w-1 h-1 rounded-full bg-[#34d399]" />)}
-                    </div>
-                    <span className="text-[9px] font-medium tracking-[0.3em] text-[#34d399] uppercase">Yield Script Pulse</span>
-                </motion.div>
-                <h3 className="text-2xl md:text-3xl font-medium text-white tracking-tighter uppercase leading-tight">Executive<br />Protocol</h3>
-            </div>
-            <div className="text-right">
-                <div className="text-[9px] font-medium text-white/30 tracking-widest uppercase mb-1">Total Yield Unlocked</div>
-                <div className="text-2xl font-medium text-[#34d399] tracking-tighter tabular-nums">₹{savings.toLocaleString()}</div>
-            </div>
-        </div>
+        {/* Ambient glow */}
+        <div className="absolute top-0 right-0 w-48 h-48 bg-[#34d399]/8 blur-[60px] rounded-full pointer-events-none" />
 
-        <div className="flex-1 overflow-y-auto no-scrollbar relative z-10 px-8 md:px-12 pt-4 pb-6" ref={scrollRef}>
-          <div className="space-y-3">
-            {steps.map((s, i) => (
-              i <= step && (
-                <motion.div
-                  key={i}
-                  layout
-                  initial={{ opacity: 0, y: 15, filter: 'blur(10px)' }}
-                  animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                  className={`flex items-center justify-between p-5 rounded-[2rem] border transition-all duration-700 ${
-                    i === step ? 'bg-white/10 border-white/10 shadow-xl' : 'bg-white/5 border-white/5'
-                  }`}
-                >
-                    <div className="flex items-center gap-5">
-                      <motion.div 
-                          animate={i === step ? { scale: [1, 1.1, 1] } : {}}
-                          className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg ${
-                              i === 0 ? 'bg-white text-[#0a0a0a]' : 'bg-[#34d399] text-[#0a0a0a] shadow-[#34d399]/20'
-                          }`}
-                      >
-                      {s.icon}
-                    </motion.div>
-                    <div>
-                      <div className="text-[14px] font-medium text-white uppercase tracking-tight">{s.label}</div>
-                      <div className="text-[10px] font-medium text-white/40 uppercase tracking-[0.2em] flex items-center gap-2">
-                        {i === 0 ? 'Source Node' : i < step ? 'Yield Executed' : 'Optimizing Logic...'}
-                        {i === step && <motion.span animate={{ opacity: [1, 0, 1] }} className="text-[#34d399] font-medium">●</motion.span>}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className={`text-base font-medium tracking-tight ${s.type === 'base' ? 'text-white' : 'text-[#34d399]'}`}>
-                      {s.value > 0 ? '' : '−'}₹{Math.abs(s.value).toLocaleString()}
-                    </div>
-                    {s.badge && (
-                      <div className="inline-block px-2.5 py-1 mt-1 bg-[#34d399] text-[#0a0a0a] text-[9px] font-bold rounded-lg tracking-tight shadow-sm">
-                        {s.badge}
-                      </div>
-                    )}
-                  </div>
-                </motion.div>
-              )
-            ))}
-
-            {step >= steps.length && (
-              <motion.div
-                initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                className="p-8 bg-white/5 rounded-[3rem] text-white flex items-center justify-between shadow-2xl relative overflow-hidden group border border-white/10 mt-6"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-[#34d399]/20 to-transparent translate-x-[-100%] animate-[shimmer_3s_infinite]" />
-                <div className="relative z-10">
-                    <div className="text-[10px] font-medium text-white/40 uppercase tracking-[0.4em] mb-2">Settlement Pipeline Value</div>
-                    <div className="text-4xl font-medium tracking-tight">₹{count.toLocaleString()}</div>
-                </div>
-                <div className="relative z-10 bg-[#34d399] px-6 py-4 rounded-[1.5rem] shadow-xl rotate-3 group-hover:rotate-0 transition-all duration-500 border border-white/10 text-[#0a0a0a]">
-                   <div className="text-[10px] font-bold uppercase tracking-widest mb-1 text-center">Net Yield</div>
-                   <div className="text-2xl font-bold tabular-nums tracking-tighter">19.2%</div>
-                </div>
-              </motion.div>
-            )}
+        {/* Header */}
+        <div className="px-8 md:px-12 pt-8 pb-5 flex justify-between items-start shrink-0 relative z-10 border-b border-white/[0.06]">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              {[0,1,2].map(i => (
+                <motion.div key={i} animate={{ opacity: [0.2,1,0.2], scale: [0.8,1,0.8] }}
+                  transition={{ duration: 1.8, repeat: Infinity, delay: i * 0.25 }}
+                  className="w-1.5 h-1.5 rounded-full bg-[#34d399]" />
+              ))}
+              <span className="text-[9px] font-bold tracking-[0.3em] text-[#34d399]/60 uppercase">Yield Script Active</span>
+            </div>
+            <h3 className="text-xl md:text-2xl font-extrabold text-white tracking-tighter uppercase leading-tight">Executive<br />Protocol</h3>
+          </div>
+          <div className="text-right">
+            <div className="text-[8px] text-white/25 tracking-widest uppercase mb-1 font-bold">Total Saved</div>
+            <motion.div className="text-xl md:text-2xl font-bold text-[#34d399] tracking-tighter tabular-nums">
+              ₹{displaySavings.toLocaleString()}
+            </motion.div>
+            <div className="mt-2 h-1 w-24 bg-white/5 rounded-full overflow-hidden ml-auto">
+              <motion.div animate={{ width: `${progress}%` }} transition={{ duration: 0.8, ease: 'easeOut' }}
+                className="h-full bg-[#34d399] rounded-full" />
+            </div>
           </div>
         </div>
 
-        <div className="p-12 pt-8 relative z-10 flex items-center justify-between border-t border-white/5 bg-white/5 shrink-0">
-            <div className="flex items-center gap-6">
-                <div className="flex -space-x-3">
-                    {[0, 1, 2, 3].map(i => (
-                        <div key={i} className="w-8 h-8 rounded-full border-4 border-[#0a0a0a] bg-white/10 overflow-hidden shadow-sm">
-                            <div className="w-full h-full bg-gradient-to-br from-white/20 to-white/30" />
-                        </div>
-                    ))}
+        {/* Steps */}
+        <div ref={scrollRef} className="flex-1 overflow-y-auto no-scrollbar px-5 md:px-8 py-5 space-y-2.5 relative z-10">
+          <AnimatePresence mode="popLayout">
+            {RX_STEPS.map((s, i) => i <= step && (
+              <motion.div key={i} layout
+                initial={{ opacity: 0, x: 20, filter: 'blur(8px)' }}
+                animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+                transition={{ type: 'spring', damping: 22, stiffness: 260, delay: 0.05 }}
+                className={`flex items-center justify-between p-4 md:p-5 rounded-2xl border transition-colors duration-500 ${
+                  i === step ? 'bg-white/[0.08] border-white/10 shadow-lg' : 'bg-white/[0.03] border-white/[0.05]'
+                }`}
+              >
+                <div className="flex items-center gap-3.5">
+                  <motion.div animate={i === step ? { scale: [1, 1.08, 1] } : {}}
+                    transition={{ duration: 1.2, repeat: i === step ? Infinity : 0 }}
+                    className={`w-10 h-10 md:w-11 md:h-11 rounded-xl flex items-center justify-center shadow-md shrink-0 ${
+                      i === 0 ? 'bg-white text-[#0a0a0a]' : 'bg-[#34d399] text-[#0a0a0a] shadow-[#34d399]/20'
+                    }`}
+                  >
+                    {s.icon}
+                  </motion.div>
+                  <div>
+                    <div className="text-[12px] md:text-[13px] font-semibold text-white leading-tight">{s.label}</div>
+                    <div className="text-[9px] font-bold text-white/25 uppercase tracking-widest mt-0.5 flex items-center gap-1.5">
+                      {s.sub}
+                      {i === step && (
+                        <motion.span animate={{ opacity: [1,0,1] }} transition={{ duration: 1, repeat: Infinity }}
+                          className="text-[#34d399]">●</motion.span>
+                      )}
+                    </div>
+                  </div>
                 </div>
-                <div className="text-[9px] font-medium text-white/30 uppercase tracking-[0.3em] animate-pulse">Running Optimized Swipe Path v4.9.2</div>
-            </div>
-            <div className="text-[9px] font-medium text-white/40 uppercase tracking-[0.3em]">Code: RX-VAULT-7</div>
+                <div className="text-right shrink-0">
+                  <div className={`text-sm md:text-base font-bold tracking-tight tabular-nums ${s.type === 'base' ? 'text-white' : 'text-[#34d399]'}`}>
+                    {s.value > 0 ? '' : '−'}₹{Math.abs(s.value).toLocaleString()}
+                  </div>
+                  {s.badge && (
+                    <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }}
+                      className="inline-block mt-1 px-2 py-0.5 bg-[#34d399] text-[#0a0a0a] text-[8px] font-black rounded-md tracking-wide">
+                      {s.badge}
+                    </motion.div>
+                  )}
+                </div>
+              </motion.div>
+            ))}
+
+            {step >= RX_STEPS.length && (
+              <motion.div key="result"
+                initial={{ opacity: 0, y: 20, scale: 0.97 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ type: 'spring', damping: 20, stiffness: 220 }}
+                className="mt-3 p-6 md:p-7 bg-[#34d399]/10 border border-[#34d399]/20 rounded-2xl flex items-center justify-between relative overflow-hidden"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-[#34d399]/10 via-transparent to-transparent" />
+                <div className="relative z-10">
+                  <div className="text-[9px] font-bold text-white/30 uppercase tracking-[0.3em] mb-1">You Pay</div>
+                  <div className="text-3xl md:text-4xl font-black text-white tracking-tighter tabular-nums">₹{displayCount.toLocaleString()}</div>
+                  <div className="text-[10px] text-white/30 mt-1">vs ₹1,50,000 original</div>
+                </div>
+                <div className="relative z-10 bg-[#34d399] px-5 py-4 rounded-xl text-[#0a0a0a] text-center shadow-xl shadow-[#34d399]/20">
+                  <div className="text-[9px] font-black uppercase tracking-widest">Net Yield</div>
+                  <div className="text-2xl font-black tabular-nums">19.5%</div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Footer */}
+        <div className="px-8 py-4 border-t border-white/[0.06] bg-white/[0.02] flex items-center justify-between shrink-0">
+          <div className="flex items-center gap-2">
+            <motion.div animate={{ opacity: [0.5,1,0.5] }} transition={{ duration: 2, repeat: Infinity }}
+              className="w-2 h-2 rounded-full bg-[#34d399]" />
+            <span className="text-[9px] text-white/25 font-bold uppercase tracking-widest">Yield Path v5.1 Active</span>
+          </div>
+          <div className="text-[9px] text-white/20 font-mono uppercase tracking-widest">RX-VAULT</div>
         </div>
       </div>
     </WindowFrame>
@@ -392,274 +379,182 @@ const RewardXAnimation = () => {
 
 
 const ExtensionAnimation = () => {
-    const [journeyStep, setJourneyStep] = useState(0); // 0: Idle, 1: Page Scan, 2: Card Scan, 3: Voucher Scan, 4: Suggestion, 5: Result
-    const [activeTab, setActiveTab] = useState('Home');
+  const [phase, setPhase] = useState(0);
 
-    useEffect(() => {
-        const sequence = async () => {
-            setJourneyStep(0);
-            await new Promise(r => setTimeout(r, 2000));
-            setJourneyStep(1); // Page Scan
-            await new Promise(r => setTimeout(r, 2500));
-            setJourneyStep(2); // Card Scan
-            await new Promise(r => setTimeout(r, 2500));
-            setJourneyStep(3); // Voucher Scan
-            await new Promise(r => setTimeout(r, 2500));
-            setJourneyStep(4); // Suggestion
-            await new Promise(r => setTimeout(r, 2500));
-            setJourneyStep(5); // Result
-            await new Promise(r => setTimeout(r, 10000));
-            sequence(); // Loop
-        };
-        sequence();
-    }, []);
-
-    const renderJourneyContent = () => {
-        switch(journeyStep) {
-            case 1:
-                return (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 py-4">
-                        <div className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/5">
-                            <div className="w-10 h-10 border-2 border-[#34d399]/20 border-t-[#34d399] rounded-full animate-spin" />
-                            <div>
-                                <div className="text-[10px] font-medium uppercase text-white/40 tracking-widest">Protocol 1</div>
-                                <div className="text-[12px] font-medium text-white">Scanning Merchant Data...</div>
-                            </div>
-                        </div>
-                        <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
-                            <motion.div initial={{ x: '-100%' }} animate={{ x: '0%' }} transition={{ duration: 2.5 }} className="h-full bg-[#34d399] w-full" />
-                        </div>
-                    </motion.div>
-                );
-            case 2:
-                return (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 py-4">
-                        <div className="flex gap-4 items-center mb-4">
-                            {[0, 1, 2].map(i => (
-                                <motion.div key={i} animate={{ rotateY: [0, 360], y: [0, -5, 0] }} transition={{ duration: 3, repeat: Infinity, delay: i * 0.4 }} className="w-12 h-8 bg-white/10 rounded-md border border-white/10" />
-                            ))}
-                        </div>
-                        <div>
-                            <div className="text-[10px] font-medium uppercase text-white/40 tracking-widest">Protocol 2</div>
-                            <div className="text-[14px] font-medium text-white">Analyzing 4 saved Credit Cards...</div>
-                        </div>
-                    </motion.div>
-                );
-            case 3:
-                return (
-                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 py-4">
-                         <div className="flex flex-col gap-2">
-                            {[0, 1, 2].map(i => (
-                                <motion.div key={i} initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: i * 0.3 }} className="h-8 bg-white/5 border border-white/10 rounded-xl flex items-center px-4 justify-between">
-                                    <div className="text-[9px] font-medium text-white/60 uppercase">Voucher Node #{i+102}</div>
-                                    <Zap size={10} className="text-[#34d399]" />
-                                </motion.div>
-                            ))}
-                        </div>
-                        <div>
-                            <div className="text-[10px] font-medium uppercase text-white/40 tracking-widest">Protocol 3</div>
-                            <div className="text-[14px] font-medium text-white">Auditing institutional gift cards...</div>
-                        </div>
-                    </motion.div>
-                );
-            case 4:
-                return (
-                    <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="space-y-6 py-4 text-center">
-                        <motion.div animate={{ scale: [1, 1.2, 1] }} className="w-20 h-20 bg-[#34d399] rounded-full mx-auto flex items-center justify-center text-[#0a0a0a] shadow-2xl shadow-[#34d399]/20">
-                            <Star size={32} />
-                        </motion.div>
-                        <div>
-                            <div className="text-[11px] font-bold uppercase text-[#34d399] tracking-widest mb-2">Optimal Path Logged</div>
-                            <div className="text-lg font-medium text-white leading-tight">Match: HDFC Infinia + High-Yield Voucher</div>
-                        </div>
-                    </motion.div>
-                );
-            case 5:
-                return (
-                    <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
-                        <div className="p-5 bg-white/5 rounded-[2rem] border border-white/10 flex items-center justify-between shadow-sm">
-                            <div>
-                                <div className="text-[10px] font-bold text-[#34d399] uppercase tracking-widest mb-1">Final Result</div>
-                                <div className="text-2xl font-medium text-white tracking-tighter">₹12,840.00</div>
-                            </div>
-                            <motion.div animate={{ rotate: 360 }} transition={{ duration: 4, repeat: Infinity, ease: 'linear' }} className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center border border-white/10 text-[#34d399]">
-                                <Sparkles size={20} />
-                            </motion.div>
-                        </div>
-
-                        <div className="space-y-2">
-                             {[
-                                { label: 'Best Card', val: 'HDFC Infinia (16.2%)', icon: <CreditCard size={12} /> },
-                                { label: 'Gift Card Stack', val: 'Amazon Prime (₹4,500)', icon: <Zap size={12} /> }
-                             ].map((row, i) => (
-                                <div key={i} className="flex justify-between items-center p-3.5 bg-white/5 rounded-2xl border border-white/5">
-                                    <div className="flex items-center gap-3">
-                                        <div className="text-[#34d399]">{row.icon}</div>
-                                        <span className="text-[10px] font-medium text-white/30 uppercase tracking-tight">{row.label}</span>
-                                    </div>
-                                    <span className="text-[11px] font-medium text-white">{row.val}</span>
-                                </div>
-                             ))}
-                        </div>
-
-                        <motion.button 
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                            className="w-full h-16 bg-[#34d399] text-[#0a0a0a] rounded-[1.5rem] text-[11px] font-bold uppercase tracking-[0.2em] shadow-2xl shadow-emerald-900/30 flex items-center justify-center gap-3 relative group overflow-hidden"
-                        >
-                            <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 -translate-x-[100%] group-hover:translate-x-[100%] transition-transform duration-700" />
-                            Apply Protocol <MousePointer size={14} className="opacity-40" />
-                        </motion.button>
-                    </motion.div>
-                );
-            default:
-                return (
-                    <div className="py-12 text-center space-y-4">
-                        <div className="w-16 h-16 bg-white/5 rounded-3xl mx-auto flex items-center justify-center text-white/10">
-                            <Sparkles size={32} />
-                        </div>
-                        <div className="text-[11px] font-medium text-white/20 uppercase tracking-[0.3em]">Agent in standby</div>
-                    </div>
-                );
-        }
+  useEffect(() => {
+    let t: ReturnType<typeof setTimeout>;
+    const seq = async () => {
+      setPhase(0); await new Promise(r => setTimeout(r, 1800));
+      setPhase(1); await new Promise(r => setTimeout(r, 2200));
+      setPhase(2); await new Promise(r => setTimeout(r, 2000));
+      setPhase(3); await new Promise(r => setTimeout(r, 2000));
+      setPhase(4); await new Promise(r => setTimeout(r, 9000));
+      seq();
     };
+    seq();
+    return () => clearTimeout(t);
+  }, []);
 
-    return (
-        <WindowFrame title="Hyper-Extension Protocol" color="teal">
-            <div className="h-full bg-[#0a0a0a] relative flex flex-col overflow-hidden">
-                {/* BROWSER HEADER */}
-                <div className="bg-white/5 p-3 border-b border-white/10 flex items-center gap-3 md:gap-5 shrink-0">
-                    <div className="flex gap-2">
-                        <div className="w-6 h-6 rounded-full bg-white/5 shadow-sm flex items-center justify-center"><ChevronRight size={12} className="rotate-180 text-white/20" /></div>
-                        <div className="w-6 h-6 rounded-full bg-white/5 shadow-sm flex items-center justify-center"><ChevronRight size={12} className="text-white/20" /></div>
-                    </div>
-                    {/* Address Bar */}
-                    <div className="flex-1 h-8 bg-white/5 rounded-full border border-white/10 px-4 flex items-center justify-between group">
-                        <div className="flex items-center gap-2 overflow-hidden">
-                            <Lock size={10} className="text-emerald-500" />
-                            <span className="text-[11px] font-medium text-white/40 truncate">amazon.in/cart/checkout/review</span>
-                        </div>
-                        <Star size={12} className="text-white/10 group-hover:text-amber-400 transition-colors cursor-pointer" />
-                    </div>
-                    {/* Extension Toolbar */}
-                    <div className="flex items-center gap-3">
-                        <motion.div 
-                            animate={journeyStep > 0 ? { 
-                                scale: [1, 1.1, 1],
-                                backgroundColor: '#34d399',
-                                boxShadow: '0 10px 20px -5px rgba(52, 211, 153, 0.4)'
-                            } : {}}
-                            className="w-8 h-8 rounded-lg flex items-center justify-center transition-all bg-white/5"
-                        >
-                            <Sparkles size={16} className={journeyStep > 0 ? 'text-[#0a0a0a]' : 'text-white/20'} />
-                        </motion.div>
-                        <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-white/10 shadow-sm">
-                            <div className="w-full h-full bg-white/10" />
-                        </div>
-                    </div>
-                </div>
+  const CART = [
+    { name: 'MacBook Pro 16"', spec: '512GB · Space Black', price: '₹2,49,900' },
+    { name: 'AirPods Pro 2nd Gen', spec: 'USB-C · MagSafe Case', price: '₹24,900' },
+  ];
 
-                {/* MERCHANT CART BACKGROUND */}
-                <div className="flex-1 p-6 md:p-10 relative overflow-hidden">
-                    <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div className="md:col-span-2 space-y-6">
-                            <div className="text-sm font-medium text-white/80 tracking-tight mb-4 flex justify-between">
-                                <span>Shopping Cart (2 items)</span>
-                                <span className="text-white/20">Price</span>
-                            </div>
-                            {[
-                                { name: 'iPhone 15 Pro', spec: '128GB, Natural Titanium', price: '₹1,24,900', img: 'bg-white/10' },
-                                { name: 'Sony WH-1000XM5', spec: 'Noise Canceling, Black', price: '₹29,990', img: 'bg-white/10' }
-                            ].map((item, i) => (
-                                <div key={i} className="flex gap-6 border-b border-white/5 pb-6">
-                                    <div className={`w-20 h-24 ${item.img} rounded-xl shadow-sm flex items-center justify-center border border-white/10`}>
-                                        <div className="w-10 h-10 bg-white/20 rounded-full blur-md" />
-                                    </div>
-                                    <div className="flex-1 justify-between flex">
-                                        <div className="space-y-1">
-                                            <div className="text-sm font-medium text-white">{item.name}</div>
-                                            <div className="text-[10px] font-medium text-white/30 uppercase tracking-widest">{item.spec}</div>
-                                            <div className="text-[10px] text-[#34d399] font-medium mt-2 lowercase">In Stock</div>
-                                        </div>
-                                        <div className="text-sm font-medium text-white">{item.price}</div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                        <div className="bg-white/5 p-6 rounded-3xl border border-white/5 shadow-sm h-fit space-y-6">
-                             <div className="text-xs font-medium text-white uppercase tracking-widest">Order Summary</div>
-                             <div className="space-y-3">
-                                <div className="flex justify-between text-[11px] font-medium text-white/40 uppercase"><span>Subtotal</span><span>₹1,54,890</span></div>
-                                <div className="flex justify-between text-[11px] font-medium text-white/40 uppercase"><span>Shipping</span><span className="text-[#34d399]">FREE</span></div>
-                             </div>
-                             <div className="h-[1px] bg-white/5" />
-                             <div className="flex justify-between items-end">
-                                <div className="text-[10px] font-medium text-white uppercase tracking-widest leading-none mb-1">Total</div>
-                                <div className="text-xl font-medium text-white tracking-tight">₹1,54,890</div>
-                             </div>
-                             <motion.div animate={journeyStep === 5 ? { opacity: 0.5, scale: 0.95 } : {}} className="w-full h-12 bg-[#34d399] rounded-xl flex items-center justify-center text-[10px] font-bold uppercase tracking-widest text-[#0a0a0a] shadow-lg shadow-[#34d399]/20">
-                                Proceed to Buy
-                             </motion.div>
-                        </div>
-                    </div>
+  return (
+    <WindowFrame title="Yureka+ Extension" color="teal">
+      <div className="h-full bg-[#0a0a0a] flex flex-col overflow-hidden">
 
-                    {/* Scanning Journey Overlays */}
-                    <AnimatePresence>
-                        {journeyStep === 1 && (
-                            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-40 flex items-center justify-center pointer-events-none">
-                                <motion.div animate={{ scale: [1, 1.5, 1], opacity: [0.3, 0.6, 0.3] }} transition={{ duration: 1.5, repeat: Infinity }} className="w-64 h-64 border-4 border-[#34d399]/30 rounded-full blur-md" />
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-                </div>
+        {/* Browser chrome */}
+        <div className="bg-white/[0.04] px-3 py-2.5 border-b border-white/[0.06] flex items-center gap-2.5 shrink-0">
+          <div className="flex gap-1.5">
+            <div className="w-2.5 h-2.5 rounded-full bg-red-500/40" />
+            <div className="w-2.5 h-2.5 rounded-full bg-amber-400/40" />
+            <div className="w-2.5 h-2.5 rounded-full bg-[#34d399]/40" />
+          </div>
+          <div className="flex-1 h-6 bg-white/[0.04] border border-white/[0.08] rounded-full px-3 flex items-center gap-2">
+            <Lock size={8} className="text-[#34d399] shrink-0" />
+            <span className="text-[9px] text-white/30 font-mono truncate">amazon.in/cart/checkout</span>
+          </div>
+          <motion.div
+            animate={phase > 0 ? { backgroundColor: '#34d399', boxShadow: '0 0 12px rgba(52,211,153,0.5)' } : {}}
+            transition={{ type: 'spring', stiffness: 200 }}
+            className="w-6 h-6 rounded-md bg-white/[0.06] flex items-center justify-center shrink-0"
+          >
+            <Sparkles size={12} className={phase > 0 ? 'text-[#0a0a0a]' : 'text-white/20'} />
+          </motion.div>
+        </div>
 
-                <AnimatePresence>
-                    {journeyStep > 0 && (
-                        <motion.div 
-                            initial={{ opacity: 0, y: -40, x: 20, scale: 0.95 }}
-                            animate={{ opacity: 1, y: 0, x: 0, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.95, y: -20 }}
-                            transition={{ type: 'spring', damping: 20, stiffness: 120 }}
-                            className="absolute top-[68px] right-3 w-[320px] sm:w-[340px] bg-[#121212] backdrop-blur-3xl rounded-[2rem] shadow-[0_48px_100px_-15px_rgba(0,0,0,0.6)] border border-white/10 z-50 overflow-hidden flex flex-col max-h-[calc(100%-80px)]"
-                        >
-                            <div className="p-6 bg-white/5 border-b border-white/5 flex items-center justify-between flex-shrink-0 backdrop-blur-md">
-                                <div className="flex items-center gap-4">
-                                    <div className="w-11 h-11 bg-[#34d399] rounded-2xl flex items-center justify-center text-[#0a0a0a] shadow-2xl shadow-teal-900/40 relative group">
-                                        <div className="absolute inset-0 bg-white/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                                        <Sparkles size={20} className="relative z-10" />
-                                    </div>
-                                    <div>
-                                       <span className="text-[14px] font-bold uppercase tracking-widest text-[#34d399] block leading-none mb-1">Hyperagent v2</span>
-                                       <span className="text-[9px] font-medium text-white/30 uppercase tracking-[0.3em] font-mono">Neural Node Audit</span>
-                                    </div>
-                                </div>
-                                <div className="px-5 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest bg-[#34d399] text-[#0a0a0a] shadow-lg shadow-[#34d399]/20">
-                                   Protocol {journeyStep}/5
-                                </div>
-                            </div>
-                            <div className="flex-1 p-6 md:p-8 overflow-y-auto">
-                                <AnimatePresence mode="wait">
-                                    <motion.div key={journeyStep} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.5 }}>
-                                        {renderJourneyContent()}
-                                    </motion.div>
-                                </AnimatePresence>
-                            </div>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-
-                {/* Status Bar */}
-                <div className="p-5 bg-white/5 border-t border-white/5 flex justify-between items-center shrink-0">
-                    <div className="flex items-center gap-3">
-                        <div className="w-2 h-2 rounded-full bg-[#34d399] animate-pulse" />
-                        <span className="text-[10px] font-medium uppercase tracking-widest text-white/30">Stable Uplink</span>
-                    </div>
-                </div>
+        {/* Page */}
+        <div className="flex-1 p-4 md:p-6 overflow-hidden relative">
+          <div className="space-y-3">
+            <div className="flex justify-between text-[10px] font-semibold text-white/50 uppercase tracking-widest mb-3">
+              <span>Shopping Cart (2 items)</span>
+              <span>Price</span>
             </div>
-        </WindowFrame>
-    );
-};
+            {CART.map((item, i) => (
+              <div key={i} className="flex gap-3 pb-3 border-b border-white/[0.05]">
+                <div className="w-14 h-16 bg-white/[0.06] border border-white/[0.08] rounded-xl shrink-0" />
+                <div className="flex-1 flex justify-between items-start">
+                  <div>
+                    <div className="text-[11px] font-semibold text-white">{item.name}</div>
+                    <div className="text-[9px] text-white/25 mt-0.5">{item.spec}</div>
+                    <div className="text-[9px] text-[#34d399] mt-1 font-medium">In Stock</div>
+                  </div>
+                  <div className="text-[11px] font-bold text-white">{item.price}</div>
+                </div>
+              </div>
+            ))}
+            <div className="pt-1 space-y-1.5">
+              <div className="flex justify-between text-[10px] text-white/30"><span>Subtotal</span><span>₹2,74,800</span></div>
+              <div className="flex justify-between text-[10px] text-white/30"><span>Shipping</span><span className="text-[#34d399]">FREE</span></div>
+              <div className="flex justify-between text-[12px] font-bold text-white pt-1 border-t border-white/[0.06]"><span>Total</span><span>₹2,74,800</span></div>
+            </div>
+            <motion.div animate={phase === 4 ? { opacity: 0.4, scale: 0.98 } : { opacity: 1, scale: 1 }}
+              className="w-full h-10 bg-[#34d399] rounded-xl flex items-center justify-center text-[10px] font-black uppercase tracking-widest text-[#0a0a0a]">
+              Proceed to Pay
+            </motion.div>
+          </div>
 
+          {/* Scan overlay on phase 1 */}
+          <AnimatePresence>
+            {phase === 1 && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                className="absolute inset-0 pointer-events-none flex items-center justify-center z-10">
+                <motion.div animate={{ scale: [1, 1.3, 1], opacity: [0.4, 0.7, 0.4] }}
+                  transition={{ duration: 1.2, repeat: Infinity }}
+                  className="w-40 h-40 border-2 border-[#34d399]/40 rounded-full" />
+                <motion.div animate={{ scale: [1.3, 1, 1.3], opacity: [0.2, 0.5, 0.2] }}
+                  transition={{ duration: 1.2, repeat: Infinity, delay: 0.3 }}
+                  className="absolute w-24 h-24 border border-[#34d399]/30 rounded-full" />
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Phase 2 — analysing */}
+          <AnimatePresence>
+            {phase === 2 && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+                transition={{ type: 'spring', damping: 22, stiffness: 280 }}
+                className="absolute bottom-4 left-4 right-4 p-4 bg-[#111] border border-white/10 rounded-2xl z-20 shadow-xl"
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-7 h-7 border-2 border-[#34d399]/30 border-t-[#34d399] rounded-full animate-spin shrink-0" />
+                  <div>
+                    <div className="text-[9px] font-bold text-[#34d399] uppercase tracking-widest">Yureka+</div>
+                    <div className="text-[11px] font-semibold text-white">Scanning 3 cards + 200 vouchers…</div>
+                  </div>
+                </div>
+                <div className="h-1.5 w-full bg-white/[0.06] rounded-full overflow-hidden">
+                  <motion.div initial={{ width: '0%' }} animate={{ width: '85%' }}
+                    transition={{ duration: 2, ease: 'easeOut' }}
+                    className="h-full bg-[#34d399] rounded-full" />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Phase 3 — found */}
+          <AnimatePresence>
+            {phase === 3 && (
+              <motion.div
+                initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }}
+                transition={{ type: 'spring', damping: 18, stiffness: 260 }}
+                className="absolute bottom-4 left-4 right-4 p-4 bg-[#111] border border-[#34d399]/20 rounded-2xl z-20 shadow-2xl shadow-[#34d399]/10"
+              >
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="w-5 h-5 bg-[#34d399] rounded-md flex items-center justify-center shrink-0">
+                    <Sparkles size={10} className="text-[#0a0a0a]" />
+                  </div>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-[#34d399]">Yureka+</span>
+                </div>
+                <div className="text-[13px] font-bold text-white mb-3">Found <span className="text-[#34d399]">₹29,250</span> in hidden vouchers & points</div>
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
+                  className="w-full h-10 bg-[#34d399] rounded-xl text-[#0a0a0a] text-[10px] font-black uppercase tracking-widest flex items-center justify-center cursor-pointer shadow-lg shadow-[#34d399]/20">
+                  Apply Yield Stack
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Phase 4 — applied */}
+          <AnimatePresence>
+            {phase === 4 && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }}
+                transition={{ type: 'spring', damping: 20, stiffness: 240 }}
+                className="absolute inset-4 bg-[#0d0d0d] border border-white/[0.08] rounded-2xl z-20 flex flex-col items-center justify-center text-center p-6 shadow-2xl"
+              >
+                <motion.div
+                  initial={{ scale: 0 }} animate={{ scale: 1 }}
+                  transition={{ type: 'spring', damping: 14, stiffness: 300, delay: 0.1 }}
+                  className="w-16 h-16 bg-[#34d399] rounded-2xl flex items-center justify-center text-[#0a0a0a] shadow-xl shadow-[#34d399]/20 mb-4"
+                >
+                  <CheckCircle2 size={32} />
+                </motion.div>
+                <div className="text-[9px] font-bold text-[#34d399] uppercase tracking-[0.3em] mb-1">Yield Applied</div>
+                <div className="text-3xl font-black text-white tracking-tighter mb-1">₹2,45,550</div>
+                <div className="text-[10px] text-white/30">Saved <span className="text-[#34d399] font-bold">₹29,250</span> automatically</div>
+                <div className="mt-4 flex gap-3 text-[9px] text-white/20 uppercase tracking-widest">
+                  <span>HDFC Infinia 10x</span>
+                  <span>·</span>
+                  <span>Apple Voucher 6%</span>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Status bar */}
+        <div className="px-4 py-2.5 bg-white/[0.02] border-t border-white/[0.05] flex items-center gap-2 shrink-0">
+          <motion.div animate={{ opacity: [0.5,1,0.5] }} transition={{ duration: 2, repeat: Infinity }}
+            className="w-1.5 h-1.5 rounded-full bg-[#34d399]" />
+          <span className="text-[8px] font-bold text-white/20 uppercase tracking-widest">Stable Uplink · Yureka Neural v2</span>
+        </div>
+      </div>
+    </WindowFrame>
+  );
+};
 
 /* --- MAIN SECTION --- */
 

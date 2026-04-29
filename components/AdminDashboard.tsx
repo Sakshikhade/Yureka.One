@@ -548,13 +548,39 @@ const AdminDashboard: React.FC = () => {
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-50/50 selection:bg-teal/10">
-      <AdminSidebar 
-        user={user} userRole={userRole} activeTab={activeTab} isSidebarOpen={isSidebarOpen}
-        onTabChange={setActiveTab} onLogout={handleLogout} onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
-      />
+  return (
+    <div className="flex min-h-screen bg-[#0a0a0a] selection:bg-[#34d399]/20 relative overflow-hidden">
+      {/* CONTINUOUS AMBIENT ANIMATION NODES */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.2, 1],
+            opacity: [0.1, 0.15, 0.1],
+            x: [-20, 20, -20],
+            y: [-20, 20, -20]
+          }}
+          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+          className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-[#34d399]/20 blur-[120px] rounded-full"
+        />
+        <motion.div 
+          animate={{ 
+            scale: [1.2, 1, 1.2],
+            opacity: [0.05, 0.1, 0.05],
+            x: [20, -20, 20],
+            y: [20, -20, 20]
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          className="absolute -bottom-[10%] -right-[10%] w-[50%] h-[50%] bg-[#34d399]/10 blur-[150px] rounded-full"
+        />
+      </div>
 
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="relative z-10 flex w-full min-h-screen">
+        <AdminSidebar 
+          user={user} userRole={userRole} activeTab={activeTab} isSidebarOpen={isSidebarOpen}
+          onTabChange={setActiveTab} onLogout={handleLogout} onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+        />
+
+        <div className="flex-1 flex flex-col min-w-0">
         <AdminHeader 
           user={user} activeTab={activeTab} 
           onLogout={handleLogout} onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} 
@@ -562,7 +588,7 @@ const AdminDashboard: React.FC = () => {
           addLabel={getAddLabel()}
         />
 
-        <main className="flex-1 p-4 md:p-10">
+        <main className="flex-1 p-4 md:p-10 bg-[#0a0a0a]">
             <div className="max-w-7xl mx-auto">
               <AnimatePresence mode="wait">
                 <motion.div 
@@ -571,7 +597,7 @@ const AdminDashboard: React.FC = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.2 }}
-                  className="bg-cream rounded-[2.5rem] border border-black/5 shadow-2xl shadow-black/[0.02] overflow-hidden min-h-[70vh] flex flex-col"
+                  className="bg-[#111] rounded-[2.5rem] border border-white/5 shadow-2xl shadow-black overflow-hidden min-h-[70vh] flex flex-col"
                 >
                   {activeTab === 'blogs' && <AdminBlogsTab onEdit={handleEdit} onDelete={confirmDelete} formatDateForInput={formatDateForInput} />}
                   {activeTab === 'cards' && <AdminCardsTab onEdit={handleEdit} onDelete={confirmDelete} />}
@@ -607,16 +633,16 @@ const AdminDashboard: React.FC = () => {
             initial={{ opacity: 0, y: 30, scale: 0.9, filter: 'blur(10px)' }}
             animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
             exit={{ opacity: 0, scale: 0.8, filter: 'blur(10px)' }}
-            className={`fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] px-6 py-4 rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] backdrop-blur-3xl border flex items-center gap-5 min-w-[340px] max-w-[90vw] ${
+            className={`fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] px-6 py-4 rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-3xl border flex items-center gap-5 min-w-[340px] max-w-[90vw] ${
               notification.type === 'success' 
-                ? 'bg-[#242424]/90 border-teal/20 text-cream' 
-                : 'bg-red-600/90 border-red-400/20 text-cream'
+                ? 'bg-[#1a1a1a]/90 border-[#34d399]/20 text-white' 
+                : 'bg-red-950/90 border-red-500/20 text-white'
             }`}
           >
             <div className={`w-10 h-10 rounded-full flex items-center justify-center relative ${
-              notification.type === 'success' ? 'bg-teal/20 text-teal-300' : 'bg-cream/20 text-cream'
+              notification.type === 'success' ? 'bg-[#34d399]/20 text-[#34d399]' : 'bg-red-500/20 text-red-500'
             }`}>
-              {notification.type === 'success' && <div className="absolute inset-0 rounded-full border border-teal/40 animate-ping" />}
+              {notification.type === 'success' && <div className="absolute inset-0 rounded-full border border-[#34d399]/40 animate-ping" />}
               {notification.type === 'success' ? '✓' : '!'}
             </div>
             <div className="flex flex-col flex-1">
@@ -627,7 +653,7 @@ const AdminDashboard: React.FC = () => {
             </div>
             <button 
               onClick={() => setNotification(null)}
-              className="text-cream/20 hover:text-cream transition-colors"
+              className="text-white/20 hover:text-white transition-colors"
             >
               ✕
             </button>

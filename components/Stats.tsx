@@ -91,7 +91,7 @@ const Stats: React.FC = () => {
             <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] -z-10" />
             
             {/* Stat 1 */}
-            <motion.div variants={itemVariants} className="col-span-1 p-8 md:p-12 border-b md:border-b-0 md:border-r border-white/10 relative group hover:bg-[#047857]/[0.15] transition-all duration-500">
+            <motion.div variants={itemVariants} className="col-span-1 p-8 md:p-12 border-b md:border-b-0 md:border-r border-white/10 relative group hover:bg-[#34d399]/[0.1] transition-all duration-500">
                 <div className="flex justify-between items-start mb-10 text-white">
                      <span className="text-[10px] font-bold uppercase tracking-widest text-[#34d399] border border-[#34d399]/20 px-4 py-2 bg-[#34d399]/10 rounded-full backdrop-blur-sm shadow-sm group-hover:scale-105 transition-transform">Cards</span>
                      <span className="text-[10px] font-mono text-white/10">DAT.01</span>
@@ -108,11 +108,11 @@ const Stats: React.FC = () => {
                     We check fees and rewards for over 200+ credit cards across all major Indian banks. No bias, just pure neural data.
                 </p>
                 {/* Subtle Hover Gradient */}
-                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/0 via-transparent to-emerald-500/0 group-hover:from-emerald-500/[0.1] transition-all duration-700 pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#34d399]/0 via-transparent to-[#34d399]/0 group-hover:from-[#34d399]/[0.05] transition-all duration-700 pointer-events-none" />
             </motion.div>
 
             {/* Stat 2 */}
-            <motion.div variants={itemVariants} className="col-span-1 p-8 md:p-12 border-b md:border-b-0 md:border-r border-white/10 relative group hover:bg-[#047857]/[0.15] transition-all duration-500">
+            <motion.div variants={itemVariants} className="col-span-1 p-8 md:p-12 border-b md:border-b-0 md:border-r border-white/10 relative group hover:bg-[#34d399]/[0.1] transition-all duration-500">
                 <div className="flex justify-between items-start mb-10 text-white">
                      <span className="text-[10px] font-bold uppercase tracking-widest text-[#34d399] border border-[#34d399]/20 px-4 py-2 bg-[#34d399]/10 rounded-full backdrop-blur-sm shadow-sm group-hover:scale-105 transition-transform">Accuracy</span>
                      <span className="text-[10px] font-mono text-white/10">ALG.02</span>
@@ -127,11 +127,11 @@ const Stats: React.FC = () => {
                 <p className="text-white/40 text-sm font-sans leading-relaxed max-w-xs transition-opacity group-hover:opacity-100">
                     We scan 50+ unique spending patterns to make sure every recommendation fits your lifestyle with surgical precision.
                 </p>
-                <div className="absolute inset-0 bg-gradient-to-br from-[#047857]/0 via-transparent to-[#047857]/0 group-hover:from-[#047857]/[0.1] transition-all duration-700 pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#34d399]/0 via-transparent to-[#34d399]/0 group-hover:from-[#34d399]/[0.05] transition-all duration-700 pointer-events-none" />
             </motion.div>
 
             {/* Stat 3 */}
-            <motion.div variants={itemVariants} className="col-span-1 p-8 md:p-12 relative group hover:bg-[#047857]/[0.15] transition-all duration-500">
+            <motion.div variants={itemVariants} className="col-span-1 p-8 md:p-12 relative group hover:bg-[#34d399]/[0.1] transition-all duration-500">
                 <div className="flex justify-between items-start mb-10 text-white">
                      <span className="text-[10px] font-bold uppercase tracking-widest text-[#34d399] border border-[#34d399]/20 px-4 py-2 bg-[#34d399]/10 rounded-full backdrop-blur-sm shadow-sm group-hover:scale-105 transition-transform">Savings</span>
                      <span className="text-[10px] font-mono text-white/10">RES.03</span>
@@ -147,7 +147,7 @@ const Stats: React.FC = () => {
                 <p className="text-white/40 text-sm font-sans leading-relaxed max-w-xs transition-opacity group-hover:opacity-100">
                     Users unlock an average of ₹15,000 per year by optimizing their core spending through our intelligence report.
                 </p>
-                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/0 via-transparent to-emerald-500/0 group-hover:from-emerald-500/[0.1] transition-all duration-700 pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-br from-[#34d399]/0 via-transparent to-[#34d399]/0 group-hover:from-[#34d399]/[0.05] transition-all duration-700 pointer-events-none" />
             </motion.div>
 
         </motion.div>
