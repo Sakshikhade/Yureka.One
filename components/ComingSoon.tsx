@@ -162,7 +162,7 @@ const YurekaAIAnimation = () => {
                   {msg.type === 'user' ? <Search size={16} className="text-[#0a0a0a]" /> : <Cpu size={18} className="text-white/60" />}
                 </motion.div>
                 <div className={`max-w-[90%] md:max-w-[85%] px-4 py-3 md:px-6 md:py-5 rounded-[1.5rem] md:rounded-[2rem] tracking-tight text-[11px] md:text-[14px] font-medium leading-relaxed shadow-[0_15px_35px_-5px_rgba(0,0,0,0.4)] border ${
-                  msg.type === 'user' ? 'bg-white/5 border-white/5 text-white rounded-br-none' : 'bg-white/10 border-white/5 text-white rounded-bl-none'
+                  msg.type === 'user' ? 'bg-white/5 border-white/5 text-white rounded-br-none' : 'bg-[#34d399] border-[#34d399] text-[#0a0a0a] rounded-bl-none shadow-lg shadow-[#34d399]/20'
                 }`}>
                   {msg.type === 'ai' ? (
                       <TypewriterText 
@@ -321,13 +321,13 @@ const RewardXAnimation = () => {
                     i === step ? 'bg-white/10 border-white/10 shadow-xl' : 'bg-white/5 border-white/5'
                   }`}
                 >
-                  <div className="flex items-center gap-5">
-                    <motion.div 
-                        animate={i === step ? { scale: [1, 1.1, 1] } : {}}
-                        className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg ${
-                            i === 0 ? 'bg-white text-[#0a0a0a]' : 'bg-[#34d399] text-[#0a0a0a] shadow-[#34d399]/20'
-                        }`}
-                    >
+                    <div className="flex items-center gap-5">
+                      <motion.div 
+                          animate={i === step ? { scale: [1, 1.1, 1] } : {}}
+                          className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg ${
+                              i === 0 ? 'bg-white text-[#0a0a0a]' : 'bg-[#34d399] text-[#0a0a0a] shadow-[#34d399]/20'
+                          }`}
+                      >
                       {s.icon}
                     </motion.div>
                     <div>
@@ -572,8 +572,8 @@ const ExtensionAnimation = () => {
                                 { name: 'Sony WH-1000XM5', spec: 'Noise Canceling, Black', price: '₹29,990', img: 'bg-white/10' }
                             ].map((item, i) => (
                                 <div key={i} className="flex gap-6 border-b border-white/5 pb-6">
-                                    <div className={`w-20 h-24 ${item.img} rounded-xl shadow-sm flex items-center justify-center`}>
-                                        <div className="w-10 h-10 bg-white/5 rounded-full blur-xl" />
+                                    <div className={`w-20 h-24 ${item.img} rounded-xl shadow-sm flex items-center justify-center border border-white/10`}>
+                                        <div className="w-10 h-10 bg-white/20 rounded-full blur-md" />
                                     </div>
                                     <div className="flex-1 justify-between flex">
                                         <div className="space-y-1">
