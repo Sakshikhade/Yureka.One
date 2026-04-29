@@ -194,7 +194,7 @@ const ComparisonWidget: React.FC = () => {
                 {[...WITHOUT_ROW1, ...WITHOUT_ROW2].slice(0, 8).map((pill, i) => {
                   // Constrained grid positions to stay within bounds
                   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-                  const xOffset = isMobile ? (i % 2 === 0 ? -80 : 80) : (i % 2 === 0 ? -140 : 140);
+                  const xOffset = isMobile ? (i % 2 === 0 ? -90 : 45) : (i % 2 === 0 ? -155 : 95);
                   const yOffset = Math.floor(i / 2) * (isMobile ? 45 : 55);
                   
                   // Constrained shattered positions
