@@ -242,39 +242,7 @@ const GroupChatAudit: React.FC = () => {
           <div className="w-[400px] h-[700px] bg-[#34d399]/5 blur-[120px] rounded-full" />
       </div>
 
-      {/* Floating Card Detail */}
-      <motion.div 
-        initial={{ opacity: 0, x: 20 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        animate={{ 
-            y: [0, -15, 0],
-            rotate: [5, 3, 5]
-        }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute -right-12 top-1/3 hidden xl:block z-50"
-      >
-        <div className="bg-white/80 backdrop-blur-xl p-5 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] border border-ink/5 rotate-3 rounded-2xl w-56">
-            <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 bg-[#34d399]/10 rounded-xl flex items-center justify-center">
-                    <Globe size={16} className="text-[#34d399]" />
-                </div>
-                <div className="space-y-1">
-                    <div className="w-16 h-2 bg-[#242424]/10 rounded-full" />
-                    <div className="w-10 h-1.5 bg-[#242424]/5 rounded-full" />
-                </div>
-            </div>
-            <div className="space-y-2">
-                <div className="w-full h-1.5 bg-[#242424]/5 rounded-full" />
-                <div className="w-full h-1.5 bg-[#242424]/5 rounded-full" />
-                <div className="w-2/3 h-1.5 bg-[#242424]/5 rounded-full" />
-            </div>
-            <div className="mt-4 pt-4 border-t border-ink/5 flex justify-between items-center">
-                <div className="w-8 h-8 bg-[#242424]/5 rounded-full" />
-                <div className="w-12 h-4 bg-[#34d399]/20 rounded-lg" />
-            </div>
-        </div>
-      </motion.div>
+
     </div>
   );
 };
