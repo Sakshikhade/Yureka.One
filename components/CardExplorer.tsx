@@ -178,7 +178,7 @@ const CardExplorer: React.FC = () => {
                     
                     <div className="flex items-center gap-6">
                         <span className="text-[10px] font-bold text-white/60 uppercase tracking-[0.3em]">Sort By:</span>
-                        <div className="flex bg-white/5 p-1 rounded-2xl border border-white/5">
+                        <div className="flex bg-white/5 p-1 rounded-2xl border border-white/5 overflow-x-auto no-scrollbar w-full md:w-auto">
                             {(['featured', 'rewards', 'fees', 'rating'] as const).map((s) => (
                                 <button key={s} onClick={() => setSortBy(s)}
                                     className={`px-5 py-2.5 rounded-xl text-[9px] font-bold uppercase tracking-widest transition-all ${sortBy === s ? 'bg-[#34d399] text-[#0a0a0a] shadow-lg' : 'text-white/60 hover:text-white'}`}
@@ -197,7 +197,7 @@ const CardExplorer: React.FC = () => {
                             <motion.div key={card.id} layout initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: (index % 4) * 0.05 }} className="group">
                                 <Link to={`/cards/${card.slug || card.id}`} className="block h-full">
                                     <div className="bg-white/5 rounded-[2.5rem] border border-white/5 p-2 h-full flex flex-col hover:border-[#34d399]/30 hover:bg-white/[0.07] transition-all duration-500 group">
-                                        <div className="relative aspect-[1.6/1] rounded-[2rem] overflow-hidden mb-6 bg-white/[0.03]">
+                                        <div className="relative aspect-video md:aspect-[1.6/1] rounded-[2rem] overflow-hidden mb-4 md:mb-6 bg-white/[0.03]">
                                             <ImageWithLoader src={card.image} alt={card.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
                                             <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 flex items-center gap-2">
                                                 <div className="w-1.5 h-1.5 rounded-full bg-[#34d399]" />

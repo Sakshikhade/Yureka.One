@@ -29,7 +29,7 @@ const Navbar: React.FC = () => {
             flex justify-center
             z-[90]
             transition-all duration-1000 cubic-bezier(0.16, 1, 0.3, 1)
-            ${isScrolled ? 'top-6 md:top-8' : 'top-0'}
+            ${isScrolled ? 'top-12 md:top-14' : 'top-10 md:top-10'}
         `}
       >
         <div 
@@ -37,8 +37,8 @@ const Navbar: React.FC = () => {
                 flex items-center justify-between
                 transition-all duration-1000 cubic-bezier(0.16, 1, 0.3, 1)
                 ${isScrolled 
-                    ? `w-[92%] md:w-[90%] lg:w-[85%] max-w-7xl px-5 md:px-8 py-3 bg-[#0a0a0a]/60 border border-white/10 rounded-full shadow-2xl shadow-black/40 backdrop-blur-2xl` 
-                    : `w-full max-w-[1440px] bg-transparent border-b border-white/[0.03] px-6 md:px-12 py-6 md:py-8`
+                    ? `w-[95%] md:w-[90%] lg:w-[85%] max-w-7xl px-4 md:px-8 py-2 md:py-3 bg-[#0a0a0a]/90 border border-white/10 rounded-full shadow-2xl shadow-black/40 backdrop-blur-2xl` 
+                    : `w-full max-w-[1440px] bg-transparent border-b border-white/[0.03] px-4 md:px-12 py-4 md:py-8`
                 }
             `}
         >

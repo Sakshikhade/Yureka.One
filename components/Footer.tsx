@@ -30,7 +30,7 @@ const Footer: React.FC = () => {
 
         {/* Top Section: Impact Stats Block (Image 2 Redesign) */}
         <div className="max-w-[1440px] mx-auto px-6 mb-16 md:mb-24">
-           <div className="bg-white/[0.03] border border-white/10 rounded-[2rem] w-full p-8 md:p-12 lg:p-12 flex flex-col lg:flex-row gap-12 lg:gap-8 justify-between text-white shadow-2xl relative overflow-hidden group">
+           <div className="bg-white/[0.03] border border-white/10 rounded-[2rem] w-full p-6 md:p-12 lg:p-12 flex flex-col lg:flex-row gap-8 lg:gap-8 justify-between text-white shadow-2xl relative overflow-hidden group">
                
                {/* Orbital Background Accent */}
                <div className="absolute top-0 right-0 w-full h-full pointer-events-none opacity-10">
@@ -161,7 +161,7 @@ const Footer: React.FC = () => {
         </div>
 
         {/* IMAGE 2: THE "RIGHT SIDE" SUB-FOOTER */}
-        <div className="w-full glass-dark glass-shine-container min-h-[700px] flex flex-col items-center justify-center relative overflow-hidden py-32 px-6 border-t border-white/5">
+        <div className="w-full glass-dark glass-shine-container min-h-[500px] md:min-h-[700px] flex flex-col items-center justify-center relative overflow-hidden py-20 md:py-32 px-6 border-t border-white/5">
             {/* Dotted Starfield Background */}
             <div className="absolute inset-0 opacity-[0.15]" 
                  style={{ 
@@ -177,7 +177,7 @@ const Footer: React.FC = () => {
                viewport={{ once: true }}
                className="relative z-10 mb-16"
             >
-                <span className="text-6xl text-white font-serif font-bold italic tracking-tighter">Y.</span>
+                <span className="text-5xl md:text-6xl text-white font-serif font-bold italic tracking-tighter">Y.</span>
             </motion.div>
 
             {/* Quick Links */}
@@ -200,7 +200,7 @@ const Footer: React.FC = () => {
             <div className="relative z-10 text-center mb-4">
                 <h2 className="text-2xl md:text-4xl text-white/20 font-mono tracking-tight mb-2">Welcome to the</h2>
                 <h2 className="text-2xl sm:text-4xl md:text-7xl font-mono text-[#34d399]/90 tracking-tighter uppercase relative">
-                   <span className="relative z-10">right side of earning</span>
+                   <span className="relative z-10 break-words text-center leading-tight">right side of earning</span>
                    {/* Pixel-like Glow effect */}
                    <div className="absolute inset-0 blur-[25px] bg-[#34d399]/10 -z-10" />
                 </h2>
