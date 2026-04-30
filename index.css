@@ -1,0 +1,231 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+      html {
+        scroll-behavior: smooth;
+        background-color: #0a0a0a;
+        -webkit-tap-highlight-color: transparent;
+      }
+      body {
+        font-family: 'Inter', sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+        background-color: #0a0a0a;
+        color: rgba(255, 255, 255, 0.9);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        overflow-x: hidden;
+        user-select: none; /* Security: Disable text selection */
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+      }
+
+      /* Heading modular scale and hierarchy */
+      h1, .font-heading {
+        font-family: 'Outfit', sans-serif;
+        font-weight: 800;
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+        text-transform: uppercase;
+      }
+
+      h2 {
+        font-family: 'Outfit', sans-serif;
+        font-weight: 700;
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+        text-transform: uppercase;
+      }
+
+      h3 {
+        font-family: 'Outfit', sans-serif;
+        font-weight: 700;
+        line-height: 1.2;
+        letter-spacing: -0.01em;
+        text-transform: uppercase;
+      }
+
+      /* Global Heading Sizes */
+      h1 { font-size: clamp(28px, 5vw, 52px); }
+      h2 { font-size: clamp(22px, 4vw, 34px); }
+      h3 { font-size: clamp(18px, 3vw, 24px); }
+
+      .font-serif {
+        font-family: 'Fraunces', serif; 
+      }
+      
+      .font-blackletter {
+        font-family: 'Fraunces', serif;
+        font-weight: 900;
+        font-variation-settings: "SOFT" 100;
+      }
+      
+      /* Rest of existing styles... */
+      /* Allow selection on form inputs/textareas only */
+      input, textarea, [contenteditable="true"] {
+        user-select: text !important;
+        -webkit-user-select: text !important;
+      }
+      
+      /* Security: Print Protection */
+      @media print {
+        body { display: none !important; }
+      }
+
+      /* Global Paper Grain Texture - Optimized */
+      .paper-texture {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9999;
+        background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyBAMAAADsEZWCAAAAGFBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA75mMAAAACHRSTlMA1P////+/AE+3TToAAACgSURBVDjLjZPRDoQgDEVb8P//Y3dMvKxGZ+GDFGgvA+N2DqI1nK8v6220Z+bMTf133h51U92W3u3n/c3j9/2Q13f8+pP1rQfz0sP02B895O7RfnTof0P+e7Tv3x7pQ//o0d6/PRL7g0d7f/dov7899P8e2U/oR8gPdXvkHz+Q/2yPdKH+2SO/1D165H11jz6+oUffX9eH/Pujvdn9f/UBU2k3sKxT+mEAAAAASUVORK5CYII=");
+        opacity: 0.15;
+        background-repeat: repeat;
+      }
+
+      /* Vignette - Optimized */
+      .vignette-overlay {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9998;
+        background: radial-gradient(circle at center, transparent 60%, rgba(242, 239, 233, 0.2) 100%);
+      }
+
+      /* Glass/Vellum Island Effect - Hardware Accelerated */
+      .glass-panel {
+        background: rgba(242, 239, 233, 0.92); 
+        backdrop-filter: blur(16px) saturate(180%);
+        -webkit-backdrop-filter: blur(16px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.6); 
+        box-shadow: 0 2px 32px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0,0,0,0.04); 
+        transform: translateZ(0);
+      }
+
+      /* Custom Selection Color (for inputs) */
+      ::selection {
+        background: #34d399; 
+        color: #0a0a0a;
+      }
+
+      /* Editorial Scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #0a0a0a; 
+        border-left: 1px solid rgba(255,255,255,0.08);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #333333; 
+        border: 2px solid #0a0a0a;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #555555; 
+      }
+
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(40px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .animate-fade-in-up {
+        animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+      
+      @keyframes marquee {
+        0% { transform: translateX(0%); }
+        100% { transform: translateX(-100%); }
+      }
+      .animate-marquee {
+        animation: marquee 40s linear infinite;
+      }
+      
+      @keyframes shimmer {
+        100% { transform: translateX(100%); }
+      }
+      /* Editorial Manuscript Styles (Markdown) */
+      .prose-ink ul, .markdown-body ul {
+        list-style-type: disc !important;
+        padding-left: 1.5rem !important;
+        margin-top: 1rem !important;
+        margin-bottom: 1rem !important;
+      }
+      .prose-ink ol, .markdown-body ol {
+        list-style-type: decimal !important;
+        padding-left: 1.5rem !important;
+        margin-top: 1rem !important;
+        margin-bottom: 1rem !important;
+      }
+      .prose-ink li, .markdown-body li {
+        margin-bottom: 0.5rem !important;
+        display: list-item !important;
+        color: inherit;
+      }
+      .prose-ink h1, .prose-ink h2, .prose-ink h3 {
+        margin-top: 2rem !important;
+        margin-bottom: 1rem !important;
+        color: rgba(255, 255, 255, 0.9) !important;
+      }
+      .prose-ink p {
+        margin-bottom: 1.5rem !important;
+        line-height: 1.8 !important;
+      }
+      
+      @keyframes glass-shine {
+        0% { transform: translateX(-100%) skewX(-20deg); opacity: 0; }
+        20% { opacity: 0.5; }
+        50% { opacity: 0.5; }
+        80% { opacity: 0.5; }
+        100% { transform: translateX(200%) skewX(-20deg); opacity: 0; }
+      }
+
+      .animate-glass-shine {
+        animation: glass-shine 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      }
+
+      .glass-dark {
+        background: rgba(18, 18, 18, 0.85);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .glass-shine-container {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .glass-shine-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 60%;
+        height: 100%;
+        background: linear-gradient(
+          to right,
+          transparent 0%,
+          rgba(255, 255, 255, 0.04) 50%,
+          transparent 100%
+        );
+        transform: skewX(-20deg);
+        animation: glass-shine 10s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .mask-gradient-v {
+        mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+        -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+      }

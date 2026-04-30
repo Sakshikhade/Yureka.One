@@ -17,6 +17,9 @@ const FAQ = lazy(() => import('./FAQ'));
 const CalculatorCTA = lazy(() => import('./CalculatorCTA'));
 const RentalProtection = lazy(() => import('./RentalProtection'));
 const Footer = lazy(() => import('./Footer'));
+const PartnerLogos = lazy(() => import('./PartnerLogos'));
+const HowYurekaHelps = lazy(() => import('./HowYurekaHelps'));
+const FeaturedRewards = lazy(() => import('./FeaturedRewards'));
 
 const MainPage: React.FC = () => {
   const { cards } = useSupabase();
@@ -56,6 +59,11 @@ const MainPage: React.FC = () => {
                 <Suspense fallback={<SkeletonHero />}>
                     <Hero />
                 </Suspense>
+
+                {/* Partner logo strip with savings pills — directly after hero */}
+                <Suspense fallback={<div className="h-28 bg-white/5 animate-pulse" />}>
+                    <PartnerLogos />
+                </Suspense>
                 
                 <Suspense fallback={<div className="h-40" />}>
                     <TextReveal />
@@ -67,6 +75,11 @@ const MainPage: React.FC = () => {
                     </Suspense>
                 </section>
 
+                {/* How Yureka Helps — 6 feature cards grid */}
+                <Suspense fallback={<div className="h-[600px] animate-pulse bg-white/5" />}>
+                    <HowYurekaHelps />
+                </Suspense>
+
                 <HowItWorksStepper />
 
                 <section id="secured" className="scroll-mt-24">
@@ -74,6 +87,11 @@ const MainPage: React.FC = () => {
                         <RentalProtection cards={cards} />
                     </Suspense>
                 </section>
+
+                {/* Featured Rewards — 5 category cards */}
+                <Suspense fallback={<div className="h-[500px] animate-pulse bg-white/5" />}>
+                    <FeaturedRewards />
+                </Suspense>
 
                 <Suspense fallback={<div className="h-32 animate-pulse bg-white/5" />}>
                     <CalculatorCTA />
