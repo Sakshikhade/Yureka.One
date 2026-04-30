@@ -46,6 +46,8 @@ const CardExplorer: React.FC = () => {
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [cardType, setCardType] = useState('All Types');
     const [isBankMenuOpen, setIsBankMenuOpen] = useState(false);
+    const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
+    const [isTypeMenuOpen, setIsTypeMenuOpen] = useState(false);
     const [sortBy, setSortBy] = useState<'featured' | 'rewards' | 'fees' | 'rating'>('featured');
 
     const filteredCards = useMemo(() => {
@@ -104,7 +106,7 @@ const CardExplorer: React.FC = () => {
                             {/* Bank */}
                             <div className="flex-1 px-8 py-4 border-b lg:border-b-0 lg:border-r border-white/5 text-left relative z-10">
                                 <label className="text-[9px] font-black uppercase tracking-[0.25em] text-white/60 mb-2 block">Select Bank</label>
-                                <button onClick={() => setIsBankMenuOpen(!isBankMenuOpen)} className="flex items-center justify-between w-full text-white font-black text-sm outline-none group/btn">
+                                <button onClick={() => { setIsBankMenuOpen(!isBankMenuOpen); setIsCategoryMenuOpen(false); setIsTypeMenuOpen(false); }} className="flex items-center justify-between w-full text-white font-black text-sm outline-none group/btn">
                                     <span className="truncate">{selectedBanks.length === 0 ? 'All Banks' : selectedBanks.length === 1 ? selectedBanks[0] : `${selectedBanks.length} Banks`}</span>
                                     <ChevronDown className={`text-white/40 transition-all duration-500 ${isBankMenuOpen ? 'rotate-180 text-[#34d399]' : ''}`} size={16} />
                                 </button>
@@ -140,19 +142,67 @@ const CardExplorer: React.FC = () => {
                             {/* Category - Refactored to Custom Dropdown */}
                             <div className="flex-1 px-8 py-4 border-b lg:border-b-0 lg:border-r border-white/5 text-left relative z-10">
                                 <label className="text-[9px] font-black uppercase tracking-[0.25em] text-white/60 mb-2 block">Category</label>
-                                <div className="flex items-center justify-between w-full text-white font-black text-sm cursor-pointer" onClick={() => {/* Category Menu Logic */}}>
-                                    <span className="truncate">{selectedCategories[0] || 'Select Category'}</span>
-                                    <ChevronDown size={16} className="text-white/40" />
-                                </div>
+                                <button onClick={() => { setIsCategoryMenuOpen(!isCategoryMenuOpen); setIsBankMenuOpen(false); setIsTypeMenuOpen(false); }} className="flex items-center justify-between w-full text-white font-black text-sm outline-none group/btn">
+                                    <span className="truncate">{selectedCategories.length === 0 ? 'All Categories' : selectedCategories.length === 1 ? selectedCategories[0] : `${selectedCategories.length} Categories`}</span>
+                                    <ChevronDown className={`text-white/40 transition-all duration-500 ${isCategoryMenuOpen ? 'rotate-180 text-[#34d399]' : ''}`} size={16} />
+                                </button>
+                                <AnimatePresence>
+                                    {isCategoryMenuOpen && (
+                                        <>
+                                            <div className="fixed inset-0 z-40" onClick={() => setIsCategoryMenuOpen(false)} />
+                                            <motion.div initial={{ opacity: 0, y: 15, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 15, scale: 0.95 }}
+                                                className="absolute top-full left-0 lg:-left-24 mt-6 w-80 bg-[#0a0a0a] rounded-[2.5rem] shadow-2xl overflow-hidden z-50 border border-white/10 backdrop-blur-3xl"
+                                            >
+                                                <div className="max-h-96 overflow-y-auto p-3 no-scrollbar">
+                                                    {['All Categories', ...ALL_CATEGORIES.map(c => c.name)].map(cat => {
+                                                        const isSelected = cat === 'All Categories' ? selectedCategories.length === 0 : selectedCategories.includes(cat);
+                                                        return (
+                                                            <button key={cat} onClick={() => { if(cat === 'All Categories') { setSelectedCategories([]); setIsCategoryMenuOpen(false); } else { setSelectedCategories(prev => prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]); } }}
+                                                                className={`w-full flex items-center gap-4 px-5 py-4 rounded-[1.5rem] transition-all duration-500 ${isSelected ? 'bg-[#34d399]/10 text-[#34d399]' : 'text-white/60 hover:bg-white/5 hover:text-white'}`}
+                                                            >
+                                                                <span className="text-[10px] font-black uppercase tracking-[0.15em]">{cat}</span>
+                                                                {isSelected && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[#34d399] shadow-[0_0_10px_rgba(52,211,153,0.5)]" />}
+                                                            </button>
+                                                        );
+                                                    })}
+                                                </div>
+                                            </motion.div>
+                                        </>
+                                    )}
+                                </AnimatePresence>
                             </div>
 
                             {/* Type - Refactored to Custom Dropdown */}
                             <div className="flex-1 px-8 py-4 text-left relative z-10">
                                 <label className="text-[9px] font-black uppercase tracking-[0.25em] text-white/60 mb-2 block">Card Type</label>
-                                <div className="flex items-center justify-between w-full text-white font-black text-sm cursor-pointer">
+                                <button onClick={() => { setIsTypeMenuOpen(!isTypeMenuOpen); setIsBankMenuOpen(false); setIsCategoryMenuOpen(false); }} className="flex items-center justify-between w-full text-white font-black text-sm outline-none group/btn">
                                     <span className="truncate">{cardType}</span>
-                                    <ChevronDown size={16} className="text-white/40" />
-                                </div>
+                                    <ChevronDown className={`text-white/40 transition-all duration-500 ${isTypeMenuOpen ? 'rotate-180 text-[#34d399]' : ''}`} size={16} />
+                                </button>
+                                <AnimatePresence>
+                                    {isTypeMenuOpen && (
+                                        <>
+                                            <div className="fixed inset-0 z-40" onClick={() => setIsTypeMenuOpen(false)} />
+                                            <motion.div initial={{ opacity: 0, y: 15, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 15, scale: 0.95 }}
+                                                className="absolute top-full left-0 lg:right-0 lg:left-auto mt-6 w-80 bg-[#0a0a0a] rounded-[2.5rem] shadow-2xl overflow-hidden z-50 border border-white/10 backdrop-blur-3xl"
+                                            >
+                                                <div className="max-h-96 overflow-y-auto p-3 no-scrollbar">
+                                                    {['All Types', 'Premium', 'Entry-Level'].map(type => {
+                                                        const isSelected = type === cardType;
+                                                        return (
+                                                            <button key={type} onClick={() => { setCardType(type); setIsTypeMenuOpen(false); }}
+                                                                className={`w-full flex items-center gap-4 px-5 py-4 rounded-[1.5rem] transition-all duration-500 ${isSelected ? 'bg-[#34d399]/10 text-[#34d399]' : 'text-white/60 hover:bg-white/5 hover:text-white'}`}
+                                                            >
+                                                                <span className="text-[10px] font-black uppercase tracking-[0.15em]">{type}</span>
+                                                                {isSelected && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[#34d399] shadow-[0_0_10px_rgba(52,211,153,0.5)]" />}
+                                                            </button>
+                                                        );
+                                                    })}
+                                                </div>
+                                            </motion.div>
+                                        </>
+                                    )}
+                                </AnimatePresence>
                             </div>
 
                             {/* CTA */}
