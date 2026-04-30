@@ -129,7 +129,7 @@ const AppContent: React.FC = () => {
             <Route path="/cards" element={
               <>
                 <SEO 
-                  title="Card Explorer | Precision Matching Engine" 
+                  title="Card Explorer | Find Your Perfect Credit Card" 
                   description="Deep-dive into 200+ credit cards. Filter by rewards, lounge access, and lifestyle perks."
                 />
                 <CardExplorer />
@@ -141,7 +141,7 @@ const AppContent: React.FC = () => {
             <Route path="/blogs" element={
               <>
                 <SEO 
-                  title="Pulse | Credit Intelligence Journal" 
+                  title="Pulse | Expert Credit Card Journal" 
                   description="Expert analysis on reward hacking, luxury travel, and the Indian credit landscape."
                 />
                 <JournalPage />
@@ -153,8 +153,8 @@ const AppContent: React.FC = () => {
             <Route path="/join-waitlist" element={
                <>
                  <SEO 
-                   title="The Registry | Secure Your Access" 
-                   description="Join the elite waitlist for early access to the Yureka Neural Engine."
+                   title="Join Waitlist | Secure Your Access" 
+                   description="Join the elite waitlist for early access to the Yureka Intelligence Engine."
                  />
                  <WaitlistPage />
                </>
@@ -179,7 +179,7 @@ const AppContent: React.FC = () => {
             <Route path="/yureka-ai" element={
                <>
                  <SEO 
-                   title="Yureka AI | Your AI Financial Co-Pilot" 
+                   title="Yureka AI | Your Credit Card Co-Pilot" 
                    description="From picking the perfect credit card to maximising every reward point."
                  />
                  <YurekaAIPage />

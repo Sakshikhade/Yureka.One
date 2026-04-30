@@ -42,8 +42,8 @@ const Hero: React.FC = () => {
                 <h1 className="text-3xl sm:text-6xl md:text-7xl lg:text-[clamp(2.5rem,6vw,6.5rem)] leading-[0.9] font-heading font-extrabold text-white uppercase tracking-tight">
                     Stop Guessing. <br className="hidden md:block" /> Start Winning.
                 </h1>
-                <h3 className="text-xs sm:text-base xl:text-lg font-sans font-semibold text-white/40 mt-4 md:mt-6 max-w-3xl mx-auto leading-relaxed tracking-tight uppercase px-4 sm:px-0">
-                    We audit <span className="text-white">200+ elite credit cards</span> through the RewardX Neural Engine <br className="hidden lg:block" /> to reveal your highest possible yield path.
+                <h3 className="text-xs sm:text-base xl:text-lg font-sans font-semibold text-white/60 mt-4 md:mt-6 max-w-3xl mx-auto leading-relaxed tracking-tight uppercase px-4 sm:px-0">
+                    We audit <span className="text-white">200+ elite credit cards</span> through the Yureka Intelligence Engine <br className="hidden lg:block" /> to reveal your highest possible reward path.
                 </h3>
 
                 
@@ -51,7 +51,7 @@ const Hero: React.FC = () => {
                     <Link to="/yureka-ai" className="group relative px-8 py-5 md:px-12 md:py-6 bg-white text-[#0a0a0a] overflow-hidden rounded-full w-full sm:w-auto shadow-[0_8px_40px_-12px_rgba(0,0,0,0.8)] transition-all hover:-translate-y-1 hover:shadow-2xl text-center border border-transparent">
                         <div className="absolute inset-0 w-full h-full bg-[#34d399]/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
                         <span className="relative z-10 font-bold text-[10px] md:text-[11px] uppercase tracking-[0.3em] flex items-center justify-center gap-3">
-                            <Sparkles size={16} className="text-[#34d399] animate-pulse" /> Launch Neural Matcher
+                            <Sparkles size={16} className="text-[#34d399] animate-pulse" /> Find Your Perfect Card
                         </span>
                     </Link>
                     
@@ -76,22 +76,22 @@ const Hero: React.FC = () => {
                 >
                   <div className="flex items-center gap-5 mb-14">
                         <span className="text-7xl xl:text-8xl font-black leading-none text-white tracking-tighter">E</span>
-                        <h4 className="font-black text-[10px] uppercase tracking-[0.5em] text-white/20 pt-8">Dispatch Core</h4>
+                        <h4 className="font-black text-[10px] uppercase tracking-[0.5em] text-white/60 pt-8">Card Details</h4>
                      </div>
  
                      <h5 className="font-heading font-black text-3xl xl:text-4xl text-white leading-[0.85] mb-8 uppercase tracking-tighter">Financial <br />Absolute.</h5>
  
-                     <div className="flex justify-between items-center text-[10px] text-white/40 font-black uppercase tracking-[0.4em] mb-10 border-b border-white/5 pb-5">
-                        <span>Dispatch 09.A</span>
-                        <span>Neural Core</span>
+                     <div className="flex justify-between items-center text-[10px] text-white/60 font-black uppercase tracking-[0.4em] mb-10 border-b border-white/5 pb-5">
+                        <span>Update 09.A</span>
+                        <span>Intelligence Core</span>
                      </div>
                      
-                     <p className="text-justify font-sans text-white/40 leading-relaxed text-[15px] mb-14 border-b border-white/5 pb-14 italic font-medium">
-                        The Indian credit landscape has reached peak entropy. Fragmented products make manual selection mathematically impossible. Our engine audits the matrix to render certainty.
+                     <p className="text-justify font-sans text-white/70 leading-relaxed text-[15px] mb-14 border-b border-white/5 pb-14 italic font-medium">
+                        The Indian credit landscape is complex. Our engine finds the best cards for you with mathematical precision.
                      </p>
                      
                       <div className="bg-white/5 backdrop-blur-3xl border border-white/10 rounded-[2.5rem] shadow-2xl shadow-black/40 group hover:bg-white/10 transition-all duration-700 p-8 overflow-hidden">
-                         <h5 className="font-black text-[10px] uppercase tracking-[0.3em] text-[#34d399] mb-8">Yield Probability</h5>
+                         <h5 className="font-black text-[10px] uppercase tracking-[0.3em] text-[#34d399] mb-8">Projected Savings</h5>
                          <div className="flex flex-wrap justify-between items-center text-[10px] font-black text-white/40 border-b border-white/5 py-5 uppercase tracking-[0.1em] gap-2">
                              <span>Avg Yield</span>
                               <span className="text-[#34d399] font-black whitespace-nowrap text-base">₹15,400.00</span>
@@ -119,20 +119,20 @@ const Hero: React.FC = () => {
                     className="md:col-span-1 xl:col-span-3 border-t xl:border-t-0 pl-0 xl:pl-12 pt-16 flex flex-col justify-between pr-10"
                 >
                      <div>
-                        <h4 className="font-black text-[10px] uppercase tracking-[0.5em] mb-14 text-white/30 border-b border-white/5 pb-6">Protocol Index</h4>
+                        <h4 className="font-black text-[10px] uppercase tracking-[0.5em] mb-14 text-white/60 border-b border-white/5 pb-6">Site Navigation</h4>
                         <ul className="space-y-0">
                             {[
-                                { title: "Neural", page: "01", link: "/yureka-ai", desc: "Logic Core" },
-                                { title: "Audit", page: "05", link: "/free-tools", desc: "Yield Parity" },
-                                { title: "Explorer", page: "09", link: "/cards", desc: "Selection Matrix" },
-                                { title: "Manifesto", page: "14", link: "/manifesto", desc: "Strategy Alpha" }
+                                { title: "AI Matcher", page: "01", link: "/yureka-ai", desc: "Decision Logic" },
+                                { title: "Rewards", page: "05", link: "/free-tools", desc: "Reward Value" },
+                                { title: "Explorer", page: "09", link: "/cards", desc: "Card Selection" },
+                                { title: "Manifesto", page: "14", link: "/manifesto", desc: "Winning Strategy" }
                             ].map((item, i) => (
                                 <li key={i} className="border-b border-white/5 last:border-0 group">
                                     <Link to={item.link} className="flex justify-between items-start py-8 md:py-10 cursor-pointer relative overflow-hidden px-6 -mx-6 transition-all duration-1000">
                                         <div className="absolute inset-0 bg-[#34d399]/5 -translate-x-full group-hover:translate-x-0 transition-transform duration-1000" />
                                         <div className="relative z-10">
                                             <span className="block font-heading font-black text-xl md:text-2xl text-white group-hover:text-[#34d399] transition-colors mb-2 uppercase tracking-tighter">{item.title}</span>
-                                            <span className="block text-[10px] font-black uppercase tracking-[0.25em] text-white/30 group-hover:text-white/50">{item.desc}</span>
+                                            <span className="block text-[10px] font-black uppercase tracking-[0.25em] text-white/60 group-hover:text-white/80">{item.desc}</span>
                                         </div>
                                         <span className="relative z-10 font-mono text-xs md:text-sm text-white/10 font-black group-hover:text-[#34d399]/40 transition-colors">.{item.page}</span>
                                     </Link>
@@ -152,7 +152,7 @@ const Hero: React.FC = () => {
                              </div>
                              <h4 className="font-serif text-lg xl:text-xl italic mb-8 text-white/90 leading-snug">"The definitive way to <br /> audit credit cards."</h4>
                              <Link to="/join-waitlist" className="block w-full bg-[#34d399] text-[#0a0a0a] text-center py-5 rounded-2xl font-black uppercase tracking-[0.3em] text-[11px] transition-all duration-500 hover:shadow-xl hover:shadow-[#34d399]/20">
-                                Join Registry
+                                Join Waitlist
                              </Link>
                              <div className="mt-6 flex items-center justify-center gap-2">
                                 <div className="w-1.5 h-1.5 bg-[#34d399] rounded-full animate-pulse" />

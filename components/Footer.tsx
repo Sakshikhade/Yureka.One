@@ -104,7 +104,7 @@ const Footer: React.FC = () => {
                         <li><Link to="/blogs" className="hover:text-[#34d399] font-serif text-xs md:text-sm transition-colors">Blogs</Link></li>
                         <li><Link to="/jobs" className="hover:text-[#34d399] font-serif text-xs md:text-sm transition-colors">Careers at Yureka</Link></li>
                         <li><a href="#" className="hover:text-[#34d399] font-serif text-xs md:text-sm transition-colors">Press & Media</a></li>
-                        <li><Link to="/join-waitlist" className="hover:text-[#34d399] font-serif text-xs md:text-sm transition-colors">Apply for VIP Access</Link></li>
+                        <li><Link to="/join-waitlist" className="hover:text-[#34d399] font-serif text-xs md:text-sm transition-colors">Join the Waitlist</Link></li>
                         <li><Link to="/admin" className="hover:text-[#34d399] font-serif text-xs md:text-sm transition-colors opacity-30 hover:opacity-100">Admin Dashboard</Link></li>
                     </ul>
                 </div>
@@ -115,16 +115,16 @@ const Footer: React.FC = () => {
                     <ul className="space-y-3 md:space-y-4">
                         <li><Link to="/terms-of-service" className="hover:text-[#34d399] font-serif text-xs md:text-sm transition-colors">Terms of Service</Link></li>
                         <li><Link to="/privacy-policy" className="hover:text-[#34d399] font-serif text-xs md:text-sm transition-colors">Privacy Policy</Link></li>
-                        <li><Link to="/security-protocol" className="hover:text-[#34d399] font-serif text-xs md:text-sm transition-colors">Security Protocol</Link></li>
+                        <li><Link to="/security-protocol" className="hover:text-[#34d399] font-serif text-xs md:text-sm transition-colors">Security Policy</Link></li>
                         <li><Link to="/community-guidelines" className="hover:text-[#34d399] font-serif text-xs md:text-sm transition-colors">Community Guidelines</Link></li>
                     </ul>
                 </div>
 
                 {/* Column 4 - Contact */}
                 <div className="pl-6 md:pl-8 border-r border-white/10 min-h-[150px] md:min-h-[200px] col-span-1 sm:col-span-2 md:col-span-1 lg:col-span-2">
-                    <h4 className="font-bold text-xs uppercase tracking-[0.2em] mb-4 md:mb-8 text-white/20">Contact Bureau</h4>
+                    <h4 className="font-bold text-xs uppercase tracking-[0.2em] mb-4 md:mb-8 text-white/20">Contact Support</h4>
                     <div className="mb-6 md:mb-8">
-                        <p className="text-[10px] uppercase tracking-wider text-white/20 mb-1">User Support (Pan-India)</p>
+                        <p className="text-[10px] uppercase tracking-wider text-white/40 mb-1">User Support (Pan-India)</p>
                         <a href="mailto:support@yureka.money" className="text-base md:text-lg font-serif hover:text-[#34d399] transition-colors group">
                            <span className="border-b border-transparent group-hover:border-clay">support@yureka.money</span>
                         </a>
@@ -212,7 +212,7 @@ const Footer: React.FC = () => {
 
             {/* User Switcher (Tenant/Landlord replacement) */}
             <div className="relative z-10 flex bg-white/5 p-1 rounded-full border border-white/10">
-                 <Link to="/join-waitlist" className="px-6 md:px-8 py-3 text-[10px] md:text-xs font-bold text-white/40 hover:text-white uppercase tracking-widest transition-colors">
+                 <Link to="/join-waitlist" className="px-6 md:px-8 py-3 text-[10px] md:text-xs font-bold text-white/60 hover:text-white uppercase tracking-widest transition-colors">
                     Join Waitlist
                  </Link>
                  <Link to="/yureka-ai" className="px-6 md:px-8 py-3 text-[10px] md:text-xs font-bold text-[#0a0a0a] bg-[#34d399] rounded-full uppercase tracking-widest shadow-xl hover:bg-white transition-colors">
