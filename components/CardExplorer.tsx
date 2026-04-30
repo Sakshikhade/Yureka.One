@@ -34,7 +34,16 @@ const ALL_CATEGORIES = [
 const BANK_LOGOS: Record<string, string> = {
     'HDFC': '/assets/banks/hdfc.png', 'SBI': '/assets/banks/sbi.png', 'Axis': '/assets/banks/axis.png',
     'ICICI': '/assets/banks/icici.png', 'Kotak': '/assets/banks/kotak.png', 'Yes Bank': '/assets/banks/yesbank.png',
-    'Amex': '/assets/banks/amex.png', 'IDFC': '/assets/banks/idfc.png', 'HSBC': '/assets/banks/hsbc.png'
+    'Amex': '/assets/banks/amex.png', 'IDFC': '/assets/banks/idfc.png', 'HSBC': '/assets/banks/hsbc.png',
+    'RBL': '/assets/banks/rbl.png', 'IndusInd': '/assets/banks/indusind.png', 'BOB': '/assets/banks/bob.png',
+    'SC': '/assets/banks/sc.png', 'Indian': '/assets/banks/indian.png', 'PNB': '/assets/banks/pnb.png',
+    'Canara': '/assets/banks/canara.png', 'DBS': '/assets/banks/dbs.png', 'IDBI': '/assets/banks/idbi.png',
+    'AU': '/assets/banks/au.png', 'Equitas': '/assets/banks/equitas.png', 'CSB': '/assets/banks/csb.png',
+    'Federal': '/assets/banks/federal.png', 'SBM': '/assets/banks/sbm.png', 'South Indian': '/assets/banks/southindian.png',
+    'Utkarsh Bank': '/assets/banks/utkarsh.png', 'Suryoday Bank': '/assets/banks/suryoday.png', 'Union Bank': '/assets/banks/union.png',
+    'Unity SFB': '/assets/banks/unity.png', 'DCB': '/assets/banks/dcb.png', 'Bank Of India': '/assets/banks/boi.png',
+    'J&K Bank': '/assets/banks/jk.png', 'CUB': '/assets/banks/cub.png', 'Slice SFB': '/assets/banks/slice.png',
+    'Dhanlaxmi Bank': '/assets/banks/dhanlaxmi.png', 'Indian Overseas Bank': '/assets/banks/iob.png'
 };
 
 function ShoppingBag(props: any) { return <Briefcase {...props} />; } // fallback
@@ -124,8 +133,8 @@ const CardExplorer: React.FC = () => {
                                                             <button key={bank} onClick={() => { if(bank === 'All Banks') { setSelectedBanks([]); setIsBankMenuOpen(false); } else { setSelectedBanks(prev => prev.includes(bank) ? prev.filter(b => b !== bank) : [...prev, bank]); } }}
                                                                 className={`w-full flex items-center gap-4 px-5 py-4 rounded-[1.5rem] transition-all duration-500 ${isSelected ? 'bg-[#34d399]/10 text-[#34d399]' : 'text-white/60 hover:bg-white/5 hover:text-white'}`}
                                                             >
-                                                                <div className="w-9 h-9 rounded-full bg-white/5 flex items-center justify-center p-1.5 overflow-hidden shrink-0 border border-white/5">
-                                                                    {BANK_LOGOS[bank] ? <img src={BANK_LOGOS[bank]} alt="" className="w-full h-full object-contain grayscale opacity-60" /> : <Landmark size={14} />}
+                                                                <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center p-1.5 overflow-hidden shrink-0 border border-white/10 shadow-sm">
+                                                                    {BANK_LOGOS[bank] ? <img src={BANK_LOGOS[bank]} alt="" className="w-full h-full object-contain" /> : <Landmark size={14} className="text-[#0a0a0a]" />}
                                                                 </div>
                                                                 <span className="text-[10px] font-black uppercase tracking-[0.15em]">{bank}</span>
                                                                 {isSelected && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[#34d399] shadow-[0_0_10px_rgba(52,211,153,0.5)]" />}
