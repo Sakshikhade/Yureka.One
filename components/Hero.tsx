@@ -12,7 +12,7 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <section id="hero" className="relative w-full min-h-screen flex flex-col items-center pt-4 md:pt-8 pb-12 bg-[#0a0a0a] border-b border-white/10 overflow-hidden text-[#F2EFE9] scroll-mt-32">
+    <section id="hero" className="relative w-full flex flex-col items-center pt-4 md:pt-8 pb-12 bg-[#0a0a0a] border-b border-white/10 overflow-hidden text-[#F2EFE9] scroll-mt-32">
 
         {/* Background Grid/Lines - Flowing within the 3-column Core */}
         <div className="absolute inset-0 pointer-events-none">
