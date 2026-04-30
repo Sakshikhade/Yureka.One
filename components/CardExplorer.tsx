@@ -100,11 +100,11 @@ const CardExplorer: React.FC = () => {
 
                     {/* ── FILTER BAR ── */}
                     <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="max-w-6xl mx-auto px-4">
-                        <div className="bg-[#0a0a0a]/60 backdrop-blur-3xl rounded-[3rem] border border-white/10 p-5 flex flex-col lg:flex-row items-stretch lg:items-center gap-3 shadow-2xl relative overflow-hidden group/bar">
-                            <div className="absolute inset-0 bg-gradient-to-r from-[#34d399]/5 to-transparent opacity-0 group-hover/bar:opacity-100 transition-opacity duration-1000" />
+                        <div className="bg-[#0a0a0a]/60 backdrop-blur-3xl rounded-[3rem] border border-white/10 p-5 flex flex-col lg:flex-row items-stretch lg:items-center gap-3 shadow-2xl relative group/bar">
+                            <div className="absolute inset-0 bg-gradient-to-r from-[#34d399]/5 to-transparent opacity-0 group-hover/bar:opacity-100 transition-opacity duration-1000 rounded-[3rem]" />
                             
                             {/* Bank */}
-                            <div className="flex-1 px-8 py-4 border-b lg:border-b-0 lg:border-r border-white/5 text-left relative z-10">
+                            <div className={`flex-1 px-8 py-4 border-b lg:border-b-0 lg:border-r border-white/5 text-left relative ${isBankMenuOpen ? 'z-50' : 'z-10'}`}>
                                 <label className="text-[9px] font-black uppercase tracking-[0.25em] text-white/60 mb-2 block">Select Bank</label>
                                 <button onClick={() => { setIsBankMenuOpen(!isBankMenuOpen); setIsCategoryMenuOpen(false); setIsTypeMenuOpen(false); }} className="flex items-center justify-between w-full text-white font-black text-sm outline-none group/btn">
                                     <span className="truncate">{selectedBanks.length === 0 ? 'All Banks' : selectedBanks.length === 1 ? selectedBanks[0] : `${selectedBanks.length} Banks`}</span>
@@ -140,7 +140,7 @@ const CardExplorer: React.FC = () => {
                             </div>
 
                             {/* Category - Refactored to Custom Dropdown */}
-                            <div className="flex-1 px-8 py-4 border-b lg:border-b-0 lg:border-r border-white/5 text-left relative z-10">
+                            <div className={`flex-1 px-8 py-4 border-b lg:border-b-0 lg:border-r border-white/5 text-left relative ${isCategoryMenuOpen ? 'z-50' : 'z-10'}`}>
                                 <label className="text-[9px] font-black uppercase tracking-[0.25em] text-white/60 mb-2 block">Category</label>
                                 <button onClick={() => { setIsCategoryMenuOpen(!isCategoryMenuOpen); setIsBankMenuOpen(false); setIsTypeMenuOpen(false); }} className="flex items-center justify-between w-full text-white font-black text-sm outline-none group/btn">
                                     <span className="truncate">{selectedCategories.length === 0 ? 'All Categories' : selectedCategories.length === 1 ? selectedCategories[0] : `${selectedCategories.length} Categories`}</span>
@@ -173,7 +173,7 @@ const CardExplorer: React.FC = () => {
                             </div>
 
                             {/* Type - Refactored to Custom Dropdown */}
-                            <div className="flex-1 px-8 py-4 text-left relative z-10">
+                            <div className={`flex-1 px-8 py-4 text-left relative ${isTypeMenuOpen ? 'z-50' : 'z-10'}`}>
                                 <label className="text-[9px] font-black uppercase tracking-[0.25em] text-white/60 mb-2 block">Card Type</label>
                                 <button onClick={() => { setIsTypeMenuOpen(!isTypeMenuOpen); setIsBankMenuOpen(false); setIsCategoryMenuOpen(false); }} className="flex items-center justify-between w-full text-white font-black text-sm outline-none group/btn">
                                     <span className="truncate">{cardType}</span>
