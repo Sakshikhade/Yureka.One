@@ -82,7 +82,7 @@ const CardExplorer: React.FC = () => {
             <SEO title="Card Explorer | Yureka Credit Intelligence" description="Find the absolute best credit cards tailored to your spending habits using our advanced analysis engine." />
 
             {/* ── HERO ── */}
-            <div className="relative pt-24 md:pt-40 pb-20 border-b border-white/5 overflow-hidden">
+            <div className="relative pt-24 md:pt-40 pb-20 border-b border-white/5">
                 <div className="absolute inset-0 opacity-[0.02] pointer-events-none" 
                     style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 30c0-16.569-13.431-30-30-30v60c16.569 0 30-13.431 30-30zm0 0c0 16.569 13.431 30 30 30V0c-16.569 0-30 13.431-30 30z' fill='%23fff' fill-opacity='1' fill-rule='evenodd'/%3E%3C/svg%3E")` }} 
                 />
@@ -117,7 +117,7 @@ const CardExplorer: React.FC = () => {
                                             <motion.div initial={{ opacity: 0, y: 15, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 15, scale: 0.95 }}
                                                 className="absolute top-full left-0 mt-6 w-80 bg-[#0a0a0a] rounded-[2.5rem] shadow-2xl overflow-hidden z-50 border border-white/10 backdrop-blur-3xl"
                                             >
-                                                <div className="max-h-96 overflow-y-auto p-3 no-scrollbar">
+                                                <div className="max-h-[50vh] sm:max-h-96 overflow-y-auto p-3 no-scrollbar overscroll-contain touch-pan-y">
                                                     {['All Banks', ...ALL_BANKS].map(bank => {
                                                         const isSelected = bank === 'All Banks' ? selectedBanks.length === 0 : selectedBanks.includes(bank);
                                                         return (
@@ -153,7 +153,7 @@ const CardExplorer: React.FC = () => {
                                             <motion.div initial={{ opacity: 0, y: 15, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 15, scale: 0.95 }}
                                                 className="absolute top-full left-0 lg:-left-24 mt-6 w-80 bg-[#0a0a0a] rounded-[2.5rem] shadow-2xl overflow-hidden z-50 border border-white/10 backdrop-blur-3xl"
                                             >
-                                                <div className="max-h-96 overflow-y-auto p-3 no-scrollbar">
+                                                <div className="max-h-[50vh] sm:max-h-96 overflow-y-auto p-3 no-scrollbar overscroll-contain touch-pan-y">
                                                     {['All Categories', ...ALL_CATEGORIES.map(c => c.name)].map(cat => {
                                                         const isSelected = cat === 'All Categories' ? selectedCategories.length === 0 : selectedCategories.includes(cat);
                                                         return (
@@ -186,7 +186,7 @@ const CardExplorer: React.FC = () => {
                                             <motion.div initial={{ opacity: 0, y: 15, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 15, scale: 0.95 }}
                                                 className="absolute top-full left-0 lg:right-0 lg:left-auto mt-6 w-80 bg-[#0a0a0a] rounded-[2.5rem] shadow-2xl overflow-hidden z-50 border border-white/10 backdrop-blur-3xl"
                                             >
-                                                <div className="max-h-96 overflow-y-auto p-3 no-scrollbar">
+                                                <div className="max-h-[50vh] sm:max-h-96 overflow-y-auto p-3 no-scrollbar overscroll-contain touch-pan-y">
                                                     {['All Types', 'Premium', 'Entry-Level'].map(type => {
                                                         const isSelected = type === cardType;
                                                         return (
