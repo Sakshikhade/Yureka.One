@@ -16,6 +16,7 @@ const ComingSoon = lazy(() => import('./ComingSoon'));
 const FAQ = lazy(() => import('./FAQ'));
 const CalculatorCTA = lazy(() => import('./CalculatorCTA'));
 const RentalProtection = lazy(() => import('./RentalProtection'));
+const HowYurekaHelps = lazy(() => import('./HowYurekaHelps'));
 const Footer = lazy(() => import('./Footer'));
 const PartnerLogos = lazy(() => import('./PartnerLogos'));
 
@@ -61,6 +62,11 @@ const MainPage: React.FC = () => {
                 {/* Blue partner logo strip — immediately after hero headline */}
                 <Suspense fallback={<div className="h-16 bg-[#1a3fcb] animate-pulse" />}>
                     <PartnerLogos />
+                </Suspense>
+
+                {/* How Yureka Helps — 6 feature cards grid, right below logo strip */}
+                <Suspense fallback={<div className="h-[600px] animate-pulse bg-white/5" />}>
+                    <HowYurekaHelps />
                 </Suspense>
 
                 
