@@ -17,6 +17,7 @@ const FAQ = lazy(() => import('./FAQ'));
 const CalculatorCTA = lazy(() => import('./CalculatorCTA'));
 const RentalProtection = lazy(() => import('./RentalProtection'));
 const Footer = lazy(() => import('./Footer'));
+const PartnerLogos = lazy(() => import('./PartnerLogos'));
 
 const MainPage: React.FC = () => {
   const { cards } = useSupabase();
@@ -55,6 +56,11 @@ const MainPage: React.FC = () => {
                 
                 <Suspense fallback={<SkeletonHero />}>
                     <Hero />
+                </Suspense>
+
+                {/* Blue partner logo strip — immediately after hero headline */}
+                <Suspense fallback={<div className="h-16 bg-[#1a3fcb] animate-pulse" />}>
+                    <PartnerLogos />
                 </Suspense>
 
                 
