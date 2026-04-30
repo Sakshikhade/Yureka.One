@@ -156,8 +156,8 @@ const CardDetail: React.FC = () => {
                     {/* Data Specs */}
                     <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {[
-                            { label: 'Annual Fee', value: card.annual_fee ? `₹${card.annual_fee.replace(/[^0-9]/g, '')} + GST` : '₹0 + GST', icon: <Landmark size={20} /> },
-                            { label: 'Joining Fee', value: card.joining_fee ? `₹${card.joining_fee.replace(/[^0-9]/g, '')} + GST` : '₹0 + GST', icon: <CreditCard size={20} /> },
+                            { label: 'Annual Fee', value: card.annual_fee ? `₹${String(card.annual_fee).replace(/[^0-9]/g, '')} + GST` : '₹0 + GST', icon: <Landmark size={20} /> },
+                            { label: 'Joining Fee', value: card.joining_fee ? `₹${String(card.joining_fee).replace(/[^0-9]/g, '')} + GST` : '₹0 + GST', icon: <CreditCard size={20} /> },
                             { label: 'Rewards Rate', value: card.rewards_rate || 'Accelerated', icon: <Zap size={20} /> },
                             { label: 'Best For', value: card.best_for || 'Lifestyle', icon: <Trophy size={20} /> },
                             { label: 'Projected Savings', value: card.projected_savings || '₹12,000+', icon: <TrendingUp size={20} /> },
@@ -194,37 +194,37 @@ const CardDetail: React.FC = () => {
                                     id: 'benefits', 
                                     title: 'Rewards & Benefits', 
                                     data: [
-                                        ...(card.grid_benefits || []),
-                                        ...(card.benefit_items?.map(b => ({ title: b.heading, value: b.subheading })) || []),
-                                        ...(card.cashback_details?.map(c => ({ title: 'Cashback', value: c })) || []),
-                                        ...(card.welcome_benefits ? [{ title: 'Welcome Benefits', value: card.welcome_benefits }] : []),
-                                        ...(card.intro_offer ? [{ title: 'Intro Offer', value: card.intro_offer }] : [])
+                                        ...(Array.isArray(card.grid_benefits) ? card.grid_benefits : []),
+                                        ...(Array.isArray(card.benefit_items) ? card.benefit_items.map(b => ({ title: b?.heading || 'Benefit', value: b?.subheading || (typeof b === 'string' ? b : '') })) : []),
+                                        ...(Array.isArray(card.cashback_details) ? card.cashback_details.map(c => ({ title: 'Cashback', value: String(c) })) : []),
+                                        ...(card.welcome_benefits ? [{ title: 'Welcome Benefits', value: String(card.welcome_benefits) }] : []),
+                                        ...(card.intro_offer ? [{ title: 'Intro Offer', value: String(card.intro_offer) }] : [])
                                     ]
                                 },
                                 { 
                                     id: 'details', 
                                     title: 'Card Details', 
                                     data: [
-                                        ...(card.product_details?.map((d: any) => ({ title: d, value: '' })) || []),
-                                        ...(card.detailed_features?.map(f => ({ title: f.title, value: f.content })) || [])
+                                        ...(Array.isArray(card.product_details) ? card.product_details.map((d: any) => ({ title: String(d), value: '' })) : []),
+                                        ...(Array.isArray(card.detailed_features) ? card.detailed_features.map(f => ({ title: f?.title || 'Feature', value: f?.content || (typeof f === 'string' ? f : '') })) : [])
                                     ]
                                 },
                                 { 
                                     id: 'eligibility', 
                                     title: 'Eligibility Criteria', 
-                                    data: card.eligibility_criteria?.map(e => ({ 
-                                        title: e.criteria, 
-                                        value: `Salaried: ${e.salaried} | Self-Employed: ${e.self_employed}` 
-                                    })) || [] 
+                                    data: Array.isArray(card.eligibility_criteria) ? card.eligibility_criteria.map(e => ({ 
+                                        title: e?.criteria || 'General Eligibility', 
+                                        value: `Salaried: ${e?.salaried || 'N/A'} | Self-Employed: ${e?.self_employed || 'N/A'}` 
+                                    })) : [] 
                                 },
                                 { 
                                     id: 'redemption', 
                                     title: 'Redemption & Value', 
-                                    data: card.redemption_table?.map(r => ({ title: r.category, value: r.value })) || [] 
+                                    data: Array.isArray(card.redemption_table) ? card.redemption_table.map(r => ({ title: r?.category || 'Category', value: r?.value || '' })) : [] 
                                 },
                                 { id: 'fees', title: 'Fees & Charges', data: card.grid_fees || [] },
                             ].map((section) => (
-                                section.data.length > 0 && (
+                                section.data && Array.isArray(section.data) && section.data.length > 0 && (
                                     <div key={section.id} className="bg-[#1a1a1a] rounded-[2rem] border border-white/5 overflow-hidden">
                                         <button onClick={() => toggleSection(section.id)} className="w-full px-10 py-8 flex items-center justify-between group">
                                             <h3 className="text-sm font-bold uppercase tracking-[0.3em] text-white group-hover:text-[#34d399] transition-colors">{section.title}</h3>
@@ -236,8 +236,8 @@ const CardDetail: React.FC = () => {
                                                     <div className="px-10 pb-10 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
                                                         {section.data.map((item: any, i: number) => (
                                                             <div key={i} className="space-y-1.5">
-                                                                <h4 className="text-[11px] font-bold text-[#34d399] uppercase tracking-widest">{item.title || item}</h4>
-                                                                {item.value && <p className="text-sm text-white/80 font-serif italic leading-relaxed">{item.value}</p>}
+                                                                <h4 className="text-[11px] font-bold text-[#34d399] uppercase tracking-widest">{item?.title || item || 'Detail'}</h4>
+                                                                {item?.value && <p className="text-sm text-white/80 font-serif italic leading-relaxed">{item.value}</p>}
                                                             </div>
                                                         ))}
                                                     </div>
@@ -256,10 +256,10 @@ const CardDetail: React.FC = () => {
                             <div className="space-y-6">
                                 <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-[#34d399]">Pros</p>
                                 <div className="space-y-4">
-                                    {(card.pros || ['Accelerated rewards', 'LTF Potential', 'Premium Lounge Access']).map((p: any, i: number) => (
+                                    {(Array.isArray(card.pros) ? card.pros : ['Accelerated rewards', 'LTF Potential', 'Premium Lounge Access']).map((p: any, i: number) => (
                                         <div key={i} className="flex gap-4 items-start">
                                             <div className="w-5 h-5 rounded-full bg-[#34d399]/20 flex items-center justify-center shrink-0 text-[#34d399]"><Sparkles size={10} /></div>
-                                            <p className="text-xs font-bold text-white/90 leading-tight">{p}</p>
+                                            <p className="text-xs font-bold text-white/90 leading-tight">{typeof p === 'string' ? p : p?.title || 'Pros'}</p>
                                         </div>
                                     ))}
                                 </div>
@@ -267,10 +267,10 @@ const CardDetail: React.FC = () => {
                             <div className="space-y-6">
                                 <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-red-500/80">Cons</p>
                                 <div className="space-y-4">
-                                    {(card.cons || ['High interest rate', 'Fee waiver milestone', 'Capped rewards']).map((c: any, i: number) => (
+                                    {(Array.isArray(card.cons) ? card.cons : ['High interest rate', 'Fee waiver milestone', 'Capped rewards']).map((c: any, i: number) => (
                                         <div key={i} className="flex gap-4 items-start">
                                             <div className="w-5 h-5 rounded-full bg-red-500/10 flex items-center justify-center shrink-0 text-red-500"><Info size={10} /></div>
-                                            <p className="text-xs font-bold text-white/90 leading-tight">{c}</p>
+                                            <p className="text-xs font-bold text-white/90 leading-tight">{typeof c === 'string' ? c : c?.title || 'Cons'}</p>
                                         </div>
                                     ))}
                                 </div>

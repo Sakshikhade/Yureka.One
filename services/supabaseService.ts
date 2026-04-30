@@ -240,10 +240,27 @@ export const getBlogBySlug = async (slug: string): Promise<Blog | null> => {
 };
 
 export const getCardBySlug = async (slugOrId: string): Promise<Card | null> => {
-  let result = await supabase.from('cards').select('*').eq('slug', slugOrId).single();
-  if (result.data) return result.data;
-  result = await supabase.from('cards').select('*').eq('id', slugOrId).single();
-  return result.data;
+  // Try slug first
+  const { data: bySlug } = await supabase
+    .from('cards')
+    .select('*')
+    .eq('slug', slugOrId)
+    .maybeSingle();
+  
+  if (bySlug) return bySlug;
+
+  // Try ID if it's a valid UUID format
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  if (uuidRegex.test(slugOrId)) {
+    const { data: byId } = await supabase
+      .from('cards')
+      .select('*')
+      .eq('id', slugOrId)
+      .maybeSingle();
+    return byId;
+  }
+
+  return null;
 };
 
 export const getUserRole = async (email: string | undefined): Promise<string> => {

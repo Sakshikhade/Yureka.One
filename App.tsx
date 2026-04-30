@@ -123,77 +123,77 @@ const AppContent: React.FC = () => {
             </motion.div>
           </div>
         }>
-          <Routes>
-            <Route path="/" element={<MainPage />} />
-            
-            <Route path="/cards" element={
-              <>
-                <SEO 
-                  title="Card Explorer | Find Your Perfect Credit Card" 
-                  description="Deep-dive into 200+ credit cards. Filter by rewards, lounge access, and lifestyle perks."
-                />
-                <CardExplorer />
-              </>
-            } />
-            
-            <Route path="/cards/:slug" element={<CardDetail />} />
-            
-            <Route path="/blogs" element={
-              <>
-                <SEO 
-                  title="Pulse | Expert Credit Card Journal" 
-                  description="Expert analysis on reward hacking, luxury travel, and the Indian credit landscape."
-                />
-                <JournalPage />
-              </>
-            } />
-            
-            <Route path="/blogs/:slug" element={<BlogDetail />} />
-            
-            <Route path="/join-waitlist" element={
-               <>
-                 <SEO 
-                   title="Join Waitlist | Secure Your Access" 
-                   description="Join the elite waitlist for early access to the Yureka Intelligence Engine."
-                 />
-                 <WaitlistPage />
-               </>
-            } />
-            
-            <Route path="/admin" element={
-              <ErrorBoundary>
+          <ErrorBoundary>
+            <Routes>
+              <Route path="/" element={<MainPage />} />
+              
+              <Route path="/cards" element={
+                <>
+                  <SEO 
+                    title="Card Explorer | Find Your Perfect Credit Card" 
+                    description="Deep-dive into 200+ credit cards. Filter by rewards, lounge access, and lifestyle perks."
+                  />
+                  <CardExplorer />
+                </>
+              } />
+              
+              <Route path="/cards/:slug" element={<CardDetail />} />
+              
+              <Route path="/blogs" element={
+                <>
+                  <SEO 
+                    title="Pulse | Expert Credit Card Journal" 
+                    description="Expert analysis on reward hacking, luxury travel, and the Indian credit landscape."
+                  />
+                  <JournalPage />
+                </>
+              } />
+              
+              <Route path="/blogs/:slug" element={<BlogDetail />} />
+              
+              <Route path="/join-waitlist" element={
+                 <>
+                   <SEO 
+                     title="Join Waitlist | Secure Your Access" 
+                     description="Join the elite waitlist for early access to the Yureka Intelligence Engine."
+                   />
+                   <WaitlistPage />
+                 </>
+              } />
+              
+              <Route path="/admin" element={
                 <AdminDashboard />
-              </ErrorBoundary>
-            } />
-            <Route path="/coming-soon" element={<ComingSoon />} />
-            
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/terms-of-service" element={<TermsOfService />} />
-            <Route path="/security-protocol" element={<SecurityProtocolPage />} />
-            <Route path="/community-guidelines" element={<CommunityGuidelines />} />
-            <Route path="/free-tools" element={<YurekaOsPage />} />
-            <Route path="/yureka-os" element={<Navigate to="/free-tools" replace />} />
-            <Route path="/manifesto" element={<OurStory />} />
-            <Route path="/jobs" element={<CareersPage />} />
- 
-            <Route path="/yureka-ai" element={
-               <>
-                 <SEO 
-                   title="Yureka AI | Your Credit Card Co-Pilot" 
-                   description="From picking the perfect credit card to maximising every reward point."
-                 />
-                 <YurekaAIPage />
-               </>
-            } />
-            <Route path="/explorer" element={<Navigate to="/cards" replace />} />
-            <Route path="/ai-magic" element={<Navigate to="/yureka-ai" replace />} />
-            <Route path="/ai" element={<Navigate to="/yureka-ai" replace />} />
-            <Route path="/matrix" element={<Navigate to="/rewards-calculator" replace />} />
-            <Route path="/journal" element={<Navigate to="/blogs" replace />} />
-            <Route path="/rewards-calculator" element={<RewardsTransferCalculator />} />
- 
-            <Route path="*" element={<MainPage />} />
-          </Routes>
+              } />
+              <Route path="/coming-soon" element={<ComingSoon />} />
+              
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-of-service" element={<TermsOfService />} />
+              <Route path="/security-protocol" element={<SecurityProtocolPage />} />
+              <Route path="/community-guidelines" element={<CommunityGuidelines />} />
+              <Route path="/free-tools" element={<YurekaOsPage />} />
+              <Route path="/yureka-os" element={<Navigate to="/free-tools" replace />} />
+              <Route path="/manifesto" element={<OurStory />} />
+              <Route path="/jobs" element={<CareersPage />} />
+   
+              <Route path="/yureka-ai" element={
+                 <>
+                   <SEO 
+                     title="Yureka AI | Your Credit Card Co-Pilot" 
+                     description="From picking the perfect credit card to maximising every reward point."
+                   />
+                   <YurekaAIPage />
+                 </>
+              } />
+              <Route path="/explorer" element={<Navigate to="/cards" replace />} />
+              <Route path="/ai-magic" element={<Navigate to="/yureka-ai" replace />} />
+              <Route path="/ai" element={<Navigate to="/yureka-ai" replace />} />
+              <Route path="/matrix" element={<Navigate to="/rewards-calculator" replace />} />
+              <Route path="/journal" element={<Navigate to="/blogs" replace />} />
+              <Route path="/rewards-calculator" element={<RewardsTransferCalculator />} />
+   
+              <Route path="*" element={<MainPage />} />
+            </Routes>
+          </ErrorBoundary>
         </Suspense>
       </main>
 
