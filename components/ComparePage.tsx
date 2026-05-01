@@ -13,30 +13,32 @@ import SEO from './SEO';
 const POPULAR_COMPARISONS = [
   {
     id: '1',
-    title: 'HDFC Infinia Metal vs. ICICI Emeralde Private Metal',
-    category: 'Kings of Credit Cards',
+    title: 'Axis Atlas vs. ICICI Emeralde Private Metal vs. HDFC Regalia Gold',
+    category: 'Premium Rewards Tier',
     cards: [
-      { name: 'HDFC Infinia', image: 'https://images.unsplash.com/photo-1589750670744-dc9633e0f9c7?auto=format&fit=crop&q=80&w=400' },
-      { name: 'ICICI Emeralde', image: 'https://images.unsplash.com/photo-1613243555988-441166d4d6fd?auto=format&fit=crop&q=80&w=400' }
+      { name: 'Axis Atlas', image: 'https://images.unsplash.com/photo-1556742049-02e49f9d2a10?auto=format&fit=crop&q=80&w=400', slug: 'axis-atlas' },
+      { name: 'ICICI Emeralde', image: 'https://images.unsplash.com/photo-1613243555988-441166d4d6fd?auto=format&fit=crop&q=80&w=400', slug: 'icici-emeralde' },
+      { name: 'Regalia Gold', image: 'https://images.unsplash.com/photo-1589750670744-dc9633e0f9c7?auto=format&fit=crop&q=80&w=400', slug: 'hdfc-regalia-gold' }
     ]
   },
   {
     id: '2',
-    title: 'Axis Atlas vs. Axis Magnus vs. HDFC Regalia Gold',
-    category: 'Premium Rewards',
+    title: 'Axis Atlas vs. Axis Magnus vs. Tata Neu Infinity HDFC',
+    category: 'Travel & Lifestyle Matchup',
     cards: [
-      { name: 'Axis Atlas', image: 'https://images.unsplash.com/photo-1556742049-02e49f9d2a10?auto=format&fit=crop&q=80&w=400' },
-      { name: 'Axis Magnus', image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&q=80&w=400' },
-      { name: 'Regalia Gold', image: 'https://images.unsplash.com/photo-1589750670744-dc9633e0f9c7?auto=format&fit=crop&q=80&w=400' }
+      { name: 'Axis Atlas', image: 'https://images.unsplash.com/photo-1556742049-02e49f9d2a10?auto=format&fit=crop&q=80&w=400', slug: 'axis-atlas' },
+      { name: 'Axis Magnus', image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&q=80&w=400', slug: 'axis-magnus' },
+      { name: 'Tata Neu Infinity', image: 'https://images.unsplash.com/photo-1589750670744-dc9633e0f9c7?auto=format&fit=crop&q=80&w=400', slug: 'tata-neu-infinity' }
     ]
   },
   {
     id: '3',
-    title: 'Amex Platinum Travel vs. Amex Membership Rewards',
-    category: 'Amex Duo',
+    title: 'Amazon Pay ICICI vs. Swiggy HDFC vs. Airtel Axis Bank',
+    category: 'Entry-Level Cashback Heros',
     cards: [
-      { name: 'Amex Platinum', image: 'https://images.unsplash.com/photo-1613243555988-441166d4d6fd?auto=format&fit=crop&q=80&w=400' },
-      { name: 'Amex MRCC', image: 'https://images.unsplash.com/photo-1556742049-02e49f9d2a10?auto=format&fit=crop&q=80&w=400' }
+      { name: 'Amazon Pay ICICI', image: 'https://images.unsplash.com/photo-1613243555988-441166d4d6fd?auto=format&fit=crop&q=80&w=400', slug: 'amazon-pay-icici' },
+      { name: 'Swiggy HDFC', image: 'https://images.unsplash.com/photo-1556742049-02e49f9d2a10?auto=format&fit=crop&q=80&w=400', slug: 'swiggy-hdfc' },
+      { name: 'Airtel Axis', image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&q=80&w=400', slug: 'airtel-axis' }
     ]
   }
 ];
@@ -195,7 +197,7 @@ const ComparePage: React.FC = () => {
             <p className="text-white/20 text-[10px] font-black uppercase tracking-[0.4em]">Expert curated neural matchups</p>
          </div>
 
-         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+         <div className="flex flex-col gap-6">
             {POPULAR_COMPARISONS.map((comp, idx) => (
                <motion.div
                  key={comp.id}
@@ -203,35 +205,39 @@ const ComparePage: React.FC = () => {
                  whileInView={{ opacity: 1, y: 0 }}
                  viewport={{ once: true }}
                  transition={{ delay: idx * 0.1 }}
-                 className="group bg-[#111]/60 backdrop-blur-xl border border-white/5 rounded-[3rem] p-8 md:p-10 hover:border-[#34d399]/20 transition-all duration-700 overflow-hidden"
+                 className="group relative bg-[#111]/40 backdrop-blur-3xl border border-white/5 rounded-[2.5rem] p-8 md:p-10 hover:border-[#34d399]/30 transition-all duration-700"
                >
-                  <div className="space-y-10 relative z-10">
+                  <div className="flex flex-col space-y-8">
+                     {/* Header */}
                      <div className="space-y-1">
-                        <h3 className="text-lg font-black text-white uppercase tracking-tight line-clamp-1">{comp.title}</h3>
-                        <p className="text-[10px] font-bold text-[#34d399] uppercase tracking-widest">{comp.category}</p>
+                        <h3 className="text-xl font-heading font-bold text-white tracking-tight">{comp.title}</h3>
+                        <p className="text-[11px] font-bold text-white/30 uppercase tracking-[0.2em]">{comp.category}</p>
                      </div>
-
-                     <div className="flex items-center justify-center gap-4 md:gap-8">
+ 
+                     {/* Comparison Visualization */}
+                     <div className="flex items-center justify-between gap-4 py-4 overflow-x-auto no-scrollbar">
                         {comp.cards.map((card, i) => (
                            <React.Fragment key={i}>
-                              <div className="relative group/card flex flex-col items-center gap-3">
-                                 <div className="w-32 md:w-44 aspect-[1.6/1] rounded-xl overflow-hidden shadow-2xl transform group-hover/card:scale-105 transition-transform duration-500">
+                              <div className="flex flex-col items-center gap-4 min-w-[140px] flex-1">
+                                 <div className="relative w-full aspect-[1.6/1] rounded-2xl overflow-hidden shadow-2xl group-hover:scale-[1.02] transition-transform duration-700">
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-10" />
                                     <img src={card.image} alt={card.name} className="w-full h-full object-cover" />
                                  </div>
-                                 <span className="text-[9px] font-black text-white/40 uppercase tracking-widest">{card.name}</span>
+                                 <span className="text-[10px] font-black text-white/40 uppercase tracking-widest">{card.name}</span>
                               </div>
                               {i < comp.cards.length - 1 && (
-                                <div className="text-xl md:text-2xl font-black text-white/10 group-hover:text-[#34d399]/40 transition-colors">VS</div>
+                                <div className="text-sm font-black text-[#34d399]/40 px-2 italic shrink-0">VS</div>
                               )}
                            </React.Fragment>
                         ))}
                      </div>
-
+ 
+                     {/* Action Button */}
                      <Link 
-                       to={`/compare/${comp.cards.map(c => c.name.toLowerCase().replace(/ /g, '-')).join('-vs-')}`}
-                       className="w-full bg-white/5 border border-white/10 text-white/60 py-5 rounded-3xl text-[11px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all flex items-center justify-center gap-3 group/btn"
+                       to={`/compare/${comp.cards.map(c => c.slug).join('-vs-')}`}
+                       className="w-full bg-white/5 border border-white/10 text-white/80 py-5 rounded-2xl text-[12px] font-black uppercase tracking-[0.2em] hover:bg-[#34d399] hover:text-black transition-all duration-500 flex items-center justify-center gap-3 shadow-xl hover:shadow-[#34d399]/20"
                      >
-                        View Detailed Comparison <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
+                        View Comparison <ArrowRight size={18} />
                      </Link>
                   </div>
                </motion.div>
