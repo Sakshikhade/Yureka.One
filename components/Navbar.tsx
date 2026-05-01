@@ -29,7 +29,7 @@ const Navbar: React.FC = () => {
             flex justify-center
             z-[90]
             transition-all duration-1000 cubic-bezier(0.16, 1, 0.3, 1)
-            ${isScrolled ? 'top-12 md:top-14' : 'top-10 md:top-10'}
+            ${isScrolled ? 'top-6 md:top-8' : 'top-0'}
         `}
       >
         <div 
@@ -37,8 +37,8 @@ const Navbar: React.FC = () => {
                 flex items-center justify-between
                 transition-all duration-1000 cubic-bezier(0.16, 1, 0.3, 1)
                 ${isScrolled 
-                    ? `w-[95%] md:w-[90%] lg:w-[85%] max-w-7xl px-4 md:px-8 py-2 md:py-3 bg-[#0a0a0a]/90 border border-white/10 rounded-full shadow-2xl shadow-black/40 backdrop-blur-2xl` 
-                    : `w-full max-w-[1440px] bg-transparent border-b border-white/[0.03] px-4 md:px-12 py-4 md:py-8`
+                    ? `w-[92%] md:w-[90%] lg:w-[85%] max-w-7xl px-5 md:px-8 py-3 bg-[#0a0a0a]/60 border border-white/10 rounded-full shadow-2xl shadow-black/40 backdrop-blur-2xl` 
+                    : `w-full max-w-[1440px] bg-transparent border-b border-white/[0.03] px-6 md:px-12 py-6 md:py-8`
                 }
             `}
         >
@@ -55,16 +55,16 @@ const Navbar: React.FC = () => {
                             transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
                             className="w-1.5 h-1.5 bg-[#34d399] rounded-full shadow-[0_0_10px_rgba(52,211,153,0.4)]"
                         />
-                        <span className="text-[8px] font-black text-[#34d399]/70 uppercase tracking-[0.25em] hidden md:block">System Active</span>
+                        <span className="text-[8px] font-black text-[#34d399]/70 uppercase tracking-[0.25em] hidden md:block">Neural Active</span>
                     </div>
                 </div>
 
                 {!isScrolled && (
                       <motion.span 
                         initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                        className="hidden md:block text-[9px] uppercase tracking-[0.4em] text-white/40 mt-1.5 font-bold"
+                        className="hidden md:block text-[9px] uppercase tracking-[0.4em] text-white/20 mt-1.5 font-bold"
                       >
-                        AI-Driven Credit Card Intelligence
+                        AI-Driven Yield Intelligence • Protocol v2.4
                       </motion.span>
                 )}
             </div>
@@ -96,13 +96,13 @@ const Navbar: React.FC = () => {
                 <div className="h-4 w-px bg-white/10" />
 
                 <div className="flex items-center gap-6">
-                      <Link to="/yureka-ai" className="text-white/60 hover:text-white font-bold text-[10px] transition-colors whitespace-nowrap uppercase tracking-[0.2em]">
-                        AI Engine
+                      <Link to="/yureka-ai" className="text-white/40 hover:text-white font-bold text-[10px] transition-colors whitespace-nowrap uppercase tracking-[0.2em]">
+                        Neural Engine
                       </Link>
                     
                     <Link to="/join-waitlist" className="bg-[#34d399] text-[#0a0a0a] text-[10px] font-black uppercase tracking-[0.25em] px-8 py-3.5 flex items-center gap-2.5 group transition-all duration-500 rounded-full shrink-0 shadow-xl shadow-[#34d399]/10 hover:shadow-[#34d399]/20 hover:-translate-y-1">
                         <Sparkles size={14} className="group-hover:rotate-12 transition-transform" />
-                        <span>Join Waitlist</span>
+                        <span>Join Registry</span>
                         <ArrowRight size={14} className="group-hover:translate-x-1.5 transition-transform" />
                     </Link>
                 </div>
@@ -151,11 +151,11 @@ const Navbar: React.FC = () => {
                   
                   <nav className="flex flex-col gap-10">
                     {[
-                        { name: 'Card Explorer', path: '/cards', desc: 'AI-matched credit card selection' },
-                        { name: 'Manifesto', path: '/manifesto', desc: 'The future of credit rewards' },
+                        { name: 'Card Explorer', path: '/cards', desc: 'Neural matched credit selection' },
+                        { name: 'Manifesto', path: '/manifesto', desc: 'The decentralization of yield' },
                         { name: 'Free Tools', path: '/free-tools', desc: 'Institutional grade calculators' },
                         { name: 'Insights', path: '/blogs', desc: 'The elite credit journal' },
-                        { name: 'Yureka AI', path: '/yureka-ai', desc: 'Access the AI Engine' }
+                        { name: 'Yureka AI', path: '/yureka-ai', desc: 'Access the neural core' }
                     ].map((item, idx) => (
                         <motion.div
                           initial={{ opacity: 0, x: 20 }}
@@ -182,16 +182,16 @@ const Navbar: React.FC = () => {
                     >
                         <Link to="/join-waitlist" onClick={() => setIsMobileMenuOpen(false)} className="w-full h-16 bg-[#34d399] text-[#0a0a0a] font-black uppercase tracking-[0.25em] text-[11px] flex items-center justify-center gap-3 transition-all rounded-full shadow-2xl shadow-[#34d399]/10">
                             <Sparkles size={16} />
-                            Join Waitlist Now
+                            Join Registry Now
                         </Link>
                     </motion.div>
                   </nav>
 
                   <div className="mt-auto pt-10 border-t border-white/5">
-                    <div className="flex justify-between items-center text-white/40 text-[9px] uppercase tracking-[0.3em] font-mono">
+                    <div className="flex justify-between items-center text-white/20 text-[9px] uppercase tracking-[0.3em] font-mono">
                         <div className="flex items-center gap-2">
                             <div className="w-1.5 h-1.5 bg-[#34d399] rounded-full animate-pulse" />
-                            <span>Service Online</span>
+                            <span>System Online</span>
                         </div>
                         <span>© 2026 YUREKA</span>
                     </div>
