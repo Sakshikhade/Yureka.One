@@ -172,9 +172,10 @@ const Navbar: React.FC = () => {
                   <nav className="flex flex-col gap-10">
                     {[
                         { name: 'Card Explorer', path: '/cards', desc: 'Neural matched credit selection' },
-                        { name: 'Manifesto', path: '/manifesto', desc: 'The decentralization of yield' },
+                        { name: 'Categories', path: '/categories', desc: 'Browse by lifestyle & perks' },
+                        { name: 'Explore', path: '/manifesto', desc: 'The decentralization of yield' },
                         { name: 'Free Tools', path: '/free-tools', desc: 'Institutional grade calculators' },
-                        { name: 'Insights', path: '/blogs', desc: 'The elite credit journal' },
+                        { name: 'Blogs', path: '/blogs', desc: 'The elite credit journal' },
                         { name: 'Yureka AI', path: '/yureka-ai', desc: 'Access the neural core' }
                     ].map((item, idx) => (
                         <motion.div
