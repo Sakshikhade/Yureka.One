@@ -58,10 +58,10 @@ const CardDetail: React.FC = () => {
     if (!card) {
         return (
             <div className="min-h-screen bg-[#0f0f0f] flex flex-col items-center justify-center p-6 text-center">
-                <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#34d399] mb-6">404 Card Not Found</p>
+                <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-clay mb-6">404 Card Not Found</p>
                 <h1 className="text-5xl font-heading font-extrabold text-white mb-4 tracking-tight uppercase">Credit Card Not Found</h1>
                 <p className="text-white/60 mb-10 max-w-md font-serif italic text-lg leading-relaxed">The credit card you are looking for may have been delisted or archived.</p>
-                <Link to="/cards" className="bg-white text-[#0f0f0f] px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-[#34d399] hover:text-white transition-all">
+                <Link to="/cards" className="bg-white text-[#0f0f0f] px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-clay hover:text-white transition-all">
                     Return to Cards
                 </Link>
             </div>
@@ -71,7 +71,7 @@ const CardDetail: React.FC = () => {
     const updatedOn = card.updated_on || new Date(card.updated_at || Date.now()).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
     
     return (
-        <div className="min-h-screen bg-[#0f0f0f] text-white/90 font-sans selection:bg-[#34d399] selection:text-white pb-32">
+        <div className="min-h-screen bg-[#0f0f0f] text-white/90 font-sans selection:bg-clay selection:text-white pb-32">
             <SEO 
                 title={`${card.name} | Review & Intelligence Analysis`}
                 description={card.description || `Comprehensive yield analysis of ${card.name} by ${card.bank}. Rewards, fees, and eligibility data.`}
@@ -80,13 +80,13 @@ const CardDetail: React.FC = () => {
             {/* ── TOP NAV ── */}
             <div className="sticky top-[104px] md:top-20 z-[45] bg-[#0f0f0f]/90 backdrop-blur-xl border-b border-white/5">
                 <div className="max-w-[1200px] mx-auto px-6 h-16 flex items-center justify-between">
-                    <Link to="/cards" className="flex items-center gap-2 text-white/60 hover:text-[#34d399] transition-colors group text-[10px] font-bold uppercase tracking-widest">
+                    <Link to="/cards" className="flex items-center gap-2 text-white/60 hover:text-clay transition-colors group text-[10px] font-bold uppercase tracking-widest">
                         <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
                         Card Explorer
                     </Link>
                     <div className="flex items-center gap-4">
                         <button className="text-white/40 hover:text-white transition-colors"><Share2 size={16} /></button>
-                        <a href={card.apply_link || "#"} target="_blank" rel="noopener noreferrer" className="bg-[#34d399] text-black px-6 py-2.5 rounded-full font-bold text-[10px] uppercase tracking-widest hover:scale-105 transition-all shadow-lg shadow-[#34d399]/20">
+                        <a href={card.apply_link || "#"} target="_blank" rel="noopener noreferrer" className="bg-clay text-black px-6 py-2.5 rounded-full font-bold text-[10px] uppercase tracking-widest hover:scale-105 transition-all shadow-lg shadow-clay/20">
                             Apply Now
                         </a>
                     </div>
@@ -98,7 +98,7 @@ const CardDetail: React.FC = () => {
                 {/* ── HEADER ── */}
                 <header className="mb-16">
                     <div className="flex items-center gap-3 mb-8">
-                        <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#34d399]">{card.bank || card.issuer || 'Prime'}</span>
+                        <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-clay">{card.bank || card.issuer || 'Prime'}</span>
                         <div className="w-1 h-1 rounded-full bg-white/10" />
                         <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/60">Verified Review</span>
                     </div>
@@ -114,7 +114,7 @@ const CardDetail: React.FC = () => {
                         <div>
                             <p className="text-[9px] font-bold uppercase tracking-[0.3em] text-white/60 mb-2">Verification Status</p>
                             <div className="flex items-center gap-2">
-                                <CheckCircle2 size={14} className="text-[#34d399]" />
+                                <CheckCircle2 size={14} className="text-clay" />
                                 <p className="text-sm font-bold text-white uppercase tracking-tight">Verified Credit Card</p>
                             </div>
                         </div>
@@ -133,10 +133,10 @@ const CardDetail: React.FC = () => {
                             <div className="absolute inset-0 bg-[#047857]/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
                             <ImageWithLoader src={card.image} alt={card.name} className="w-full h-full object-contain relative z-10 group-hover:scale-105 transition-transform duration-700" />
                         </div>
-                        <div className="bg-[#1a1a1a] rounded-[2rem] border border-white/5 p-8 space-y-6">
+                        <div className="bg-white/5 rounded-[2rem] border border-white/5 p-8 space-y-6">
                             <div className="flex items-center justify-between">
                                 <span className="text-[10px] font-bold uppercase tracking-widest text-white/60">Rating</span>
-                                <div className="flex items-center gap-2 text-[#34d399]">
+                                <div className="flex items-center gap-2 text-clay">
                                     <Trophy size={16} />
                                     <span className="text-2xl font-heading font-extrabold tracking-tight">{card.elite_rating || card.rating || '4.8'}</span>
                                     <span className="text-white/40 text-xs font-bold">/ 5.0</span>
@@ -144,7 +144,7 @@ const CardDetail: React.FC = () => {
                             </div>
                             <div className="space-y-4">
                                 <div className="h-2 bg-white/5 rounded-full overflow-hidden">
-                                    <div className="h-full bg-[#34d399] rounded-full" style={{ width: `${((card.elite_rating || card.rating || 4.8) / 5) * 100}%` }} />
+                                    <div className="h-full bg-clay rounded-full" style={{ width: `${((card.elite_rating || card.rating || 4.8) / 5) * 100}%` }} />
                                 </div>
                                 <p className="text-[11px] text-white/70 font-serif italic leading-relaxed">
                                     Top 2% of surveyed cards in the {card.category || 'General'} sector based on net yield and usability.
@@ -164,7 +164,7 @@ const CardDetail: React.FC = () => {
                             { label: 'Card Type', value: card.type || 'Premium', icon: <Globe size={20} /> },
                         ].map((spec, i) => (
                             <div key={i} className="bg-white/5 border border-white/5 rounded-[2rem] p-8 flex flex-col justify-between hover:bg-white/[0.07] transition-all">
-                                <div className="w-10 h-10 rounded-2xl bg-white/5 flex items-center justify-center text-[#34d399] mb-6">
+                                <div className="w-10 h-10 rounded-2xl bg-white/5 flex items-center justify-center text-clay mb-6">
                                     {spec.icon}
                                 </div>
                                 <div>
@@ -179,7 +179,7 @@ const CardDetail: React.FC = () => {
                 {/* ── ANALYSIS ── */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-32">
                     <div className="lg:col-span-8">
-                        <div className="pl-6 border-l-4 border-[#34d399] mb-12">
+                        <div className="pl-6 border-l-4 border-clay mb-12">
                             <h2 className="text-3xl font-heading font-extrabold text-white uppercase tracking-tight">Expert Verdict</h2>
                         </div>
                         <div className="prose prose-invert prose-lg max-w-none prose-p:font-serif prose-p:italic prose-p:text-white/90 prose-p:leading-relaxed prose-p:text-xl">
@@ -225,9 +225,9 @@ const CardDetail: React.FC = () => {
                                 { id: 'fees', title: 'Fees & Charges', data: card.grid_fees || [] },
                             ].map((section) => (
                                 section.data && Array.isArray(section.data) && section.data.length > 0 && (
-                                    <div key={section.id} className="bg-[#1a1a1a] rounded-[2rem] border border-white/5 overflow-hidden">
+                                    <div key={section.id} className="bg-white/5 rounded-[2rem] border border-white/5 overflow-hidden">
                                         <button onClick={() => toggleSection(section.id)} className="w-full px-10 py-8 flex items-center justify-between group">
-                                            <h3 className="text-sm font-bold uppercase tracking-[0.3em] text-white group-hover:text-[#34d399] transition-colors">{section.title}</h3>
+                                            <h3 className="text-sm font-bold uppercase tracking-[0.3em] text-white group-hover:text-clay transition-colors">{section.title}</h3>
                                             <ChevronDown className={`text-white/40 transition-transform duration-500 ${openSections[section.id] ? 'rotate-180' : ''}`} size={20} />
                                         </button>
                                         <AnimatePresence>
@@ -236,7 +236,7 @@ const CardDetail: React.FC = () => {
                                                     <div className="px-10 pb-10 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
                                                         {section.data.map((item: any, i: number) => (
                                                             <div key={i} className="space-y-1.5">
-                                                                <h4 className="text-[11px] font-bold text-[#34d399] uppercase tracking-widest">{item?.title || item || 'Detail'}</h4>
+                                                                <h4 className="text-[11px] font-bold text-clay uppercase tracking-widest">{item?.title || item || 'Detail'}</h4>
                                                                 {item?.value && <p className="text-sm text-white/80 font-serif italic leading-relaxed">{item.value}</p>}
                                                             </div>
                                                         ))}
@@ -252,13 +252,13 @@ const CardDetail: React.FC = () => {
 
                     <aside className="lg:col-span-4 space-y-8">
                         {/* Pros/Cons Sidecard */}
-                        <div className="bg-[#1a1a1a] rounded-[2.5rem] border border-white/5 p-10 space-y-12 sticky top-48">
+                        <div className="bg-white/5 rounded-[2.5rem] border border-white/5 p-10 space-y-12 sticky top-48">
                             <div className="space-y-6">
-                                <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-[#34d399]">Pros</p>
+                                <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-clay">Pros</p>
                                 <div className="space-y-4">
                                     {(Array.isArray(card.pros) ? card.pros : ['Accelerated rewards', 'LTF Potential', 'Premium Lounge Access']).map((p: any, i: number) => (
                                         <div key={i} className="flex gap-4 items-start">
-                                            <div className="w-5 h-5 rounded-full bg-[#34d399]/20 flex items-center justify-center shrink-0 text-[#34d399]"><Sparkles size={10} /></div>
+                                            <div className="w-5 h-5 rounded-full bg-clay/20 flex items-center justify-center shrink-0 text-clay"><Sparkles size={10} /></div>
                                             <p className="text-xs font-bold text-white/90 leading-tight">{typeof p === 'string' ? p : p?.title || 'Pros'}</p>
                                         </div>
                                     ))}

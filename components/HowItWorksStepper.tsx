@@ -44,12 +44,12 @@ const STEPS = [
 // ── UI Components for the "Phones" ────────────────────────────────────────
 
 const AIChatScreen = ({ isActive }: { isActive: boolean }) => (
-  <div className="w-full h-full bg-[#111] p-6 flex flex-col font-sans">
+  <div className="w-full h-full bg-white/5 p-6 flex flex-col font-sans">
     <div className="flex items-center justify-between mb-8">
       <div className="flex gap-1.5">
         <motion.div animate={{ opacity: [0.2, 1, 0.2] }} transition={{ repeat: Infinity, duration: 2 }} className="w-2 h-2 rounded-full bg-red-400" />
         <motion.div animate={{ opacity: [0.2, 1, 0.2] }} transition={{ repeat: Infinity, duration: 2, delay: 0.2 }} className="w-2 h-2 rounded-full bg-amber-400" />
-        <motion.div animate={{ opacity: [0.2, 1, 0.2] }} transition={{ repeat: Infinity, duration: 2, delay: 0.4 }} className="w-2 h-2 rounded-full bg-[#34d399]" />
+        <motion.div animate={{ opacity: [0.2, 1, 0.2] }} transition={{ repeat: Infinity, duration: 2, delay: 0.4 }} className="w-2 h-2 rounded-full bg-clay" />
       </div>
       <span className="text-[10px] font-mono text-white/20 uppercase tracking-widest">Yureka Neural Engine  v.2.4b</span>
     </div>
@@ -59,8 +59,8 @@ const AIChatScreen = ({ isActive }: { isActive: boolean }) => (
         {isActive && (
           <div className="space-y-6">
             <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.5 }} className="flex gap-3 items-start max-w-[90%]">
-              <div className="w-7 h-7 rounded-full bg-[#34d399]/10 flex items-center justify-center shrink-0 border border-[#34d399]/20">
-                <div className="w-1.5 h-1.5 rounded-full bg-[#34d399]" />
+              <div className="w-7 h-7 rounded-full bg-clay/10 flex items-center justify-center shrink-0 border border-clay/20">
+                <div className="w-1.5 h-1.5 rounded-full bg-clay" />
               </div>
               <div className="bg-white/5 p-4 rounded-2xl rounded-tl-none shadow-sm border border-white/5">
                 <p className="text-[11px] text-white/70 leading-relaxed font-medium">Ready to pull the trigger on the MacBook 16. Should I stick with my Amex Gold?</p>
@@ -68,19 +68,19 @@ const AIChatScreen = ({ isActive }: { isActive: boolean }) => (
             </motion.div>
 
             <motion.div initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 1, duration: 0.5 }} className="flex gap-3 flex-row-reverse items-start max-w-[95%]">
-              <div className="w-7 h-7 rounded-full bg-[#34d399] flex items-center justify-center shrink-0 shadow-lg">
+              <div className="w-7 h-7 rounded-full bg-clay flex items-center justify-center shrink-0 shadow-lg">
                 <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ repeat: Infinity, duration: 2 }}>
-                  <Cpu size={12} className="text-[#0a0a0a]" />
+                  <Cpu size={12} className="text-cream" />
                 </motion.div>
               </div>
-              <div className="bg-[#34d399] p-4 rounded-2xl rounded-tr-none shadow-xl text-[#0a0a0a]">
+              <div className="bg-clay p-4 rounded-2xl rounded-tr-none shadow-xl text-cream">
                 <p className="text-[11px] leading-relaxed font-bold">Hold up! Love the upgrade, but let's be strategic. Direct swipe on Amex is okay, but I've found a much better yield path for your specific wallet.</p>
               </div>
             </motion.div>
 
             <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 2.5, duration: 0.5 }} className="flex gap-3 items-start max-w-[90%]">
-              <div className="w-7 h-7 rounded-full bg-[#34d399]/10 flex items-center justify-center shrink-0 border border-[#34d399]/20">
-                <div className="w-1.5 h-1.5 rounded-full bg-[#34d399]" />
+              <div className="w-7 h-7 rounded-full bg-clay/10 flex items-center justify-center shrink-0 border border-clay/20">
+                <div className="w-1.5 h-1.5 rounded-full bg-clay" />
               </div>
               <div className="bg-white/5 p-4 rounded-2xl rounded-tl-none shadow-sm border border-white/5">
                 <p className="text-[11px] text-white/70 leading-relaxed font-medium">Better than 5x points? How?</p>
@@ -93,7 +93,7 @@ const AIChatScreen = ({ isActive }: { isActive: boolean }) => (
 
     <div className="mt-auto pt-4 flex items-center justify-between border-t border-white/5">
        <div className="flex items-center gap-2">
-          <motion.div animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1.2, 0.8] }} transition={{ repeat: Infinity, duration: 1.5 }} className="w-2 h-2 rounded-full bg-[#34d399]" />
+          <motion.div animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1.2, 0.8] }} transition={{ repeat: Infinity, duration: 1.5 }} className="w-2 h-2 rounded-full bg-clay" />
           <span className="text-[9px] font-bold text-white/20 uppercase tracking-widest">Neural Active</span>
        </div>
        <Search size={14} className="text-white/20" />
@@ -102,7 +102,7 @@ const AIChatScreen = ({ isActive }: { isActive: boolean }) => (
 );
 
 const RewardXScreen = ({ isActive }: { isActive: boolean }) => (
-  <div className="w-full h-full bg-[#0a0a0a] p-6 flex flex-col border border-white/5">
+  <div className="w-full h-full bg-cream p-6 flex flex-col border border-white/5">
     <div className="flex justify-between items-center mb-8">
       <span className="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em]">Adaptive Yield Engine</span>
       <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-white text-[10px] italic border border-white/10">Y</div>
@@ -110,14 +110,14 @@ const RewardXScreen = ({ isActive }: { isActive: boolean }) => (
 
     <h3 className="text-2xl font-serif text-white mb-1">Executive Protocol</h3>
     <div className="flex justify-between items-center mb-8">
-       <span className="text-[10px] font-mono text-[#34d399] uppercase tracking-widest">Yield Script Pulse</span>
-       <motion.span animate={{ opacity: [0.6, 1, 0.6] }} transition={{ repeat: Infinity, duration: 2 }} className="text-xl font-medium text-[#34d399]">₹9,500</motion.span>
+       <span className="text-[10px] font-mono text-clay uppercase tracking-widest">Yield Script Pulse</span>
+       <motion.span animate={{ opacity: [0.6, 1, 0.6] }} transition={{ repeat: Infinity, duration: 2 }} className="text-xl font-medium text-clay">₹9,500</motion.span>
     </div>
 
     <div className="space-y-3">
       {[
         { icon: <Layers size={14}/>, label: 'Merchant Cart', sub: 'Source Node', val: '₹50,000', color: 'bg-white/10 text-white' },
-        { icon: <Zap size={14}/>, label: 'RewardX Voucher', sub: 'Yield Executed', val: '-₹4,500', color: 'bg-[#34d399] text-[#0a0a0a]', tag: '9% Instant' },
+        { icon: <Zap size={14}/>, label: 'RewardX Voucher', sub: 'Yield Executed', val: '-₹4,500', color: 'bg-clay text-cream', tag: '9% Instant' },
         { icon: <Sparkles size={14}/>, label: 'Axis Magnus Multiplier', sub: 'Yield Executed', val: '-₹3,050', color: 'bg-white/20 text-white', tag: '10x Points' },
       ].map((item, i) => (
         <motion.div 
@@ -139,11 +139,11 @@ const RewardXScreen = ({ isActive }: { isActive: boolean }) => (
           <div className="flex-1">
             <div className="flex justify-between items-center mb-0.5">
               <span className="text-xs font-bold text-white/90">{item.label}</span>
-              <span className={`text-xs font-medium ${item.val.startsWith('-') ? 'text-[#34d399]' : 'text-white/40'}`}>{item.val}</span>
+              <span className={`text-xs font-medium ${item.val.startsWith('-') ? 'text-clay' : 'text-white/40'}`}>{item.val}</span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-[9px] text-white/20 uppercase tracking-widest">{item.sub}</span>
-              {item.tag && <span className="text-[8px] font-bold px-1.5 py-0.5 bg-[#34d399]/10 text-[#34d399] rounded uppercase">{item.tag}</span>}
+              {item.tag && <span className="text-[8px] font-bold px-1.5 py-0.5 bg-clay/10 text-clay rounded uppercase">{item.tag}</span>}
             </div>
           </div>
         </motion.div>
@@ -153,7 +153,7 @@ const RewardXScreen = ({ isActive }: { isActive: boolean }) => (
 );
 
 const ExtensionScreen = ({ isActive }: { isActive: boolean }) => (
-  <div className="w-full h-full bg-[#111] p-6 flex flex-col">
+  <div className="w-full h-full bg-white/5 p-6 flex flex-col">
     <div className="w-full h-8 bg-white/5 border border-white/10 rounded-t-xl flex items-center px-4 gap-2 mb-6">
       <div className="flex gap-1">
         <motion.div animate={{ opacity: [0.2, 1, 0.2] }} transition={{ repeat: Infinity, duration: 1 }} className="w-1.5 h-1.5 rounded-full bg-white/10" />
@@ -170,7 +170,7 @@ const ExtensionScreen = ({ isActive }: { isActive: boolean }) => (
       <div className="space-y-4">
         <div className="flex gap-3">
           <div className="w-12 h-12 bg-white/5 rounded-lg shrink-0 relative overflow-hidden">
-            <motion.div animate={{ opacity: [0.3, 0.6, 0.3] }} transition={{ repeat: Infinity, duration: 2 }} className="absolute inset-0 bg-[#34d399]/5" />
+            <motion.div animate={{ opacity: [0.3, 0.6, 0.3] }} transition={{ repeat: Infinity, duration: 2 }} className="absolute inset-0 bg-clay/5" />
           </div>
           <div className="flex-1">
             <div className="flex justify-between text-[10px] font-bold text-white/70">
@@ -188,7 +188,7 @@ const ExtensionScreen = ({ isActive }: { isActive: boolean }) => (
           </div>
           <div className="flex justify-between items-center mb-4">
              <span className="text-[10px] text-white/40">Shipping</span>
-             <motion.span animate={{ opacity: [0.5, 1, 0.5] }} transition={{ repeat: Infinity, duration: 1.5 }} className="text-[10px] font-bold text-[#34d399]">FREE</motion.span>
+             <motion.span animate={{ opacity: [0.5, 1, 0.5] }} transition={{ repeat: Infinity, duration: 1.5 }} className="text-[10px] font-bold text-clay">FREE</motion.span>
           </div>
           <div className="flex justify-between items-center py-3 border-y border-white/5">
              <span className="text-xs font-bold text-white">Total</span>
@@ -204,14 +204,14 @@ const ExtensionScreen = ({ isActive }: { isActive: boolean }) => (
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: 100, opacity: 0 }}
             transition={{ delay: 0.8, type: 'spring', stiffness: 100 }}
-            className="absolute top-1/2 -right-4 -translate-y-1/2 w-32 bg-white text-[#0a0a0a] p-4 rounded-2xl shadow-2xl z-20"
+            className="absolute top-1/2 -right-4 -translate-y-1/2 w-32 bg-white text-cream p-4 rounded-2xl shadow-2xl z-20"
           >
             <div className="flex items-center gap-2 mb-3">
-              <motion.div animate={{ rotate: [0, 10, -10, 0] }} transition={{ repeat: Infinity, duration: 3 }} className="w-5 h-5 rounded bg-[#0a0a0a] flex items-center justify-center text-[8px] font-serif italic text-white">Y</motion.div>
+              <motion.div animate={{ rotate: [0, 10, -10, 0] }} transition={{ repeat: Infinity, duration: 3 }} className="w-5 h-5 rounded bg-cream flex items-center justify-center text-[8px] font-serif italic text-white">Y</motion.div>
               <span className="text-[8px] font-bold tracking-widest uppercase">Yureka+</span>
             </div>
             <p className="text-[9px] leading-tight mb-3 font-bold">Found ₹5,400 in hidden vouchers.</p>
-            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full py-1.5 bg-[#34d399] text-[#0a0a0a] text-[8px] font-bold uppercase tracking-widest rounded-lg shadow-lg">Apply Yield</motion.button>
+            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full py-1.5 bg-clay text-cream text-[8px] font-bold uppercase tracking-widest rounded-lg shadow-lg">Apply Yield</motion.button>
           </motion.div>
         )}
       </AnimatePresence>
@@ -220,17 +220,17 @@ const ExtensionScreen = ({ isActive }: { isActive: boolean }) => (
 );
 
 const WaitlistScreen = ({ isActive }: { isActive: boolean }) => (
-  <div className="w-full h-full bg-[#0a0a0a] flex flex-col justify-center items-center p-8 text-center relative overflow-hidden border border-white/5">
+  <div className="w-full h-full bg-cream flex flex-col justify-center items-center p-8 text-center relative overflow-hidden border border-white/5">
     <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
     
     <div className="w-20 h-20 rounded-full border border-white/10 flex items-center justify-center relative z-10">
       <motion.div 
         animate={{ rotate: 360 }}
         transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-        className="absolute inset-0 border-t border-[#34d399] rounded-full"
+        className="absolute inset-0 border-t border-clay rounded-full"
       />
       <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ repeat: Infinity, duration: 3 }}>
-        <CheckCircle2 className="text-[#34d399]" size={32} />
+        <CheckCircle2 className="text-clay" size={32} />
       </motion.div>
     </div>
 
@@ -239,7 +239,7 @@ const WaitlistScreen = ({ isActive }: { isActive: boolean }) => (
     
     <div className="mt-12 w-full space-y-2">
       <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
-        <motion.div animate={isActive ? { width: '75%' } : { width: '0%' }} transition={{ duration: 2, delay: 0.5 }} className="h-full bg-[#34d399]" />
+        <motion.div animate={isActive ? { width: '75%' } : { width: '0%' }} transition={{ duration: 2, delay: 0.5 }} className="h-full bg-clay" />
       </div>
       <div className="flex justify-between text-[8px] font-mono text-white/20">
         <motion.span animate={{ opacity: [0.5, 1, 0.5] }} transition={{ repeat: Infinity, duration: 2 }}>ENCRYPTING...</motion.span>
@@ -262,7 +262,7 @@ const HowItWorksStepper: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative w-full bg-[#0a0a0a] py-16 md:py-24">
+    <div className="relative w-full bg-cream py-16 md:py-24">
       <div className="max-w-7xl mx-auto px-6 space-y-24 md:space-y-36">
         {STEPS.map((step, index) => {
           return (
@@ -282,13 +282,13 @@ const HowItWorksStepper: React.FC = () => {
                     <motion.div 
                       animate={{ scale: [1, 1.05, 1], opacity: [0.1, 0.2, 0.1] }}
                       transition={{ repeat: Infinity, duration: 10 }}
-                      className="absolute inset-0 bg-[#34d399]/10 blur-[120px] rounded-full scale-110" 
+                      className="absolute inset-0 bg-clay/10 blur-[120px] rounded-full scale-110" 
                     />
                     
-                    <div className="relative w-[280px] h-[580px] sm:w-[320px] sm:h-[640px] rounded-[3.5rem] border-[12px] border-[#1a1a1a] bg-[#0a0a0a] shadow-[0_60px_120px_-30px_rgba(0,0,0,0.8)] overflow-hidden ring-1 ring-white/10">
+                    <div className="relative w-[280px] h-[580px] sm:w-[320px] sm:h-[640px] rounded-[3.5rem] border-[12px] border-[#1a1a1a] bg-cream shadow-[0_60px_120px_-30px_rgba(0,0,0,0.8)] overflow-hidden ring-1 ring-white/10">
                       <div className="absolute inset-0 z-50 pointer-events-none bg-gradient-to-tr from-transparent via-white/[0.01] to-white/[0.04]" />
                       <div className="absolute top-0 inset-x-0 h-9 flex justify-center z-[60]">
-                        <div className="w-28 h-7 bg-[#1a1a1a] rounded-b-[2rem]" />
+                        <div className="w-28 h-7 bg-white/5 rounded-b-[2rem]" />
                       </div>
 
                       <div className="absolute inset-0 pt-8">
@@ -317,13 +317,13 @@ const HowItWorksStepper: React.FC = () => {
                 {/* Text Column */}
                 <div className={`flex flex-col items-center ${step.side === 'right' ? 'lg:order-1 lg:items-end text-center lg:text-right' : 'lg:order-2 lg:items-start text-center lg:text-left'}`}>
                   <div className={`max-w-xl flex flex-col items-center ${step.side === 'right' ? 'lg:items-end' : 'lg:items-start'}`}>
-                    <span className="block text-[#34d399] text-[11px] font-bold uppercase tracking-[0.5em] mb-4">
+                    <span className="block text-clay text-[11px] font-bold uppercase tracking-[0.5em] mb-4">
                       {step.tag}
                     </span>
                     
                     <h2 className="text-4xl md:text-6xl lg:text-7xl font-serif text-white mb-4 leading-[0.95] tracking-tighter uppercase">
                       {step.title.split(' ').map((word, i) => (
-                        <span key={i} className={i % 2 !== 0 ? 'italic font-light text-[#34d399]' : ''}>
+                        <span key={i} className={i % 2 !== 0 ? 'italic font-light text-clay' : ''}>
                           {word}{' '}
                         </span>
                       ))}
@@ -334,15 +334,15 @@ const HowItWorksStepper: React.FC = () => {
                     </p>
 
                     <div className={`flex flex-col gap-6 items-center ${step.side === 'right' ? 'lg:items-end' : 'lg:items-start'}`}>
-                      <button className="group relative px-10 py-5 bg-white text-[#0a0a0a] rounded-full text-[10px] font-bold uppercase tracking-[0.3em] overflow-hidden transition-all hover:scale-105 shadow-2xl">
+                      <button className="group relative px-10 py-5 bg-white text-cream rounded-full text-[10px] font-bold uppercase tracking-[0.3em] overflow-hidden transition-all hover:scale-105 shadow-2xl">
                         <span className="relative z-10 flex items-center justify-center gap-3 w-full">
                           {step.cta} <ArrowRight size={14} className="group-hover:translate-x-1.5 transition-transform" />
                         </span>
-                        <div className="absolute inset-0 bg-[#34d399] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out" />
+                        <div className="absolute inset-0 bg-clay translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out" />
                       </button>
 
                       <div className="flex items-center gap-3 mt-2">
-                         <div className="w-1.5 h-1.5 rounded-full bg-[#34d399] animate-pulse" />
+                         <div className="w-1.5 h-1.5 rounded-full bg-clay animate-pulse" />
                          <span className="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em]">
                            Availability: <span className="text-white/40">{step.availability}</span>
                          </span>

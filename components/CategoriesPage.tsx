@@ -37,7 +37,7 @@ const CATEGORIES = [
 
 const CategoriesPage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] pb-20">
+    <div className="min-h-screen bg-cream pb-20">
       <SEO 
         title="Card Categories | Browse by Lifestyle" 
         description="Find the perfect credit card tailored to your spending habits. Explore 20+ specialized categories."
@@ -45,7 +45,7 @@ const CategoriesPage: React.FC = () => {
 
       {/* Hero Section */}
       <section className="relative pt-20 pb-12 overflow-hidden px-6">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#34d399]/5 via-transparent to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-clay/5 via-transparent to-transparent pointer-events-none" />
         
         <div className="max-w-7xl mx-auto relative z-10 text-center space-y-6">
            <motion.div 
@@ -53,7 +53,7 @@ const CategoriesPage: React.FC = () => {
              animate={{ opacity: 1, y: 0 }}
              className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full backdrop-blur-xl"
            >
-             <Sparkles size={14} className="text-[#34d399]" />
+             <Sparkles size={14} className="text-clay" />
              <span className="text-[10px] font-black text-white/60 uppercase tracking-[0.3em]">Neural Classification</span>
            </motion.div>
 
@@ -63,7 +63,7 @@ const CategoriesPage: React.FC = () => {
              transition={{ delay: 0.1 }}
              className="text-4xl md:text-6xl font-heading font-black text-white tracking-tighter uppercase"
            >
-             Your Path to <span className="text-[#34d399]">Smarter</span> Spends
+             Your Path to <span className="text-clay">Smarter</span> Spends
            </motion.h1>
 
            <motion.p 
@@ -72,7 +72,7 @@ const CategoriesPage: React.FC = () => {
              transition={{ delay: 0.2 }}
              className="max-w-2xl mx-auto text-white/40 text-sm md:text-base leading-relaxed"
            >
-             Unlock the power of strategic spending with our curated selection. Find cards that <span className="text-white font-bold underline decoration-[#34d399] decoration-2 underline-offset-4">transform everyday purchases</span> into meaningful rewards.
+             Unlock the power of strategic spending with our curated selection. Find cards that <span className="text-white font-bold underline decoration-clay decoration-2 underline-offset-4">transform everyday purchases</span> into meaningful rewards.
            </motion.p>
         </div>
       </section>
@@ -89,7 +89,7 @@ const CategoriesPage: React.FC = () => {
             >
               <Link 
                 to={`/categories/${category.slug}`}
-                className="group relative block bg-[#111] border border-white/5 rounded-[2rem] p-6 hover:border-[#34d399]/40 transition-all duration-500 overflow-hidden h-full"
+                className="group relative block bg-white/5 border border-white/5 rounded-[2rem] p-6 hover:border-clay/40 transition-all duration-500 overflow-hidden h-full"
               >
                 {/* Background Glow */}
                 <div className={`absolute -top-12 -right-12 w-24 h-24 bg-gradient-to-br ${category.color} opacity-0 group-hover:opacity-10 blur-2xl transition-opacity`} />
@@ -100,19 +100,19 @@ const CategoriesPage: React.FC = () => {
                       {category.image ? (
                         <img src={category.image} alt="" className="w-20 h-20 object-contain drop-shadow-2xl" />
                       ) : (
-                        <category.icon className="text-[#34d399] drop-shadow-lg" size={56} />
+                        <category.icon className="text-clay drop-shadow-lg" size={56} />
                       )}
                     </div>
                   </div>
 
                   <div className="space-y-1">
-                    <h3 className="text-[13px] font-black text-white uppercase tracking-tight group-hover:text-[#34d399] transition-colors">{category.name}</h3>
+                    <h3 className="text-[13px] font-black text-white uppercase tracking-tight group-hover:text-clay transition-colors">{category.name}</h3>
                     <p className="text-[9px] font-bold text-white/20 uppercase tracking-widest line-clamp-1">{category.desc}</p>
                   </div>
 
                   <div className="pt-2 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
-                    <span className="text-[8px] font-black text-[#34d399] uppercase tracking-widest">Explore</span>
-                    <ArrowRight size={10} className="text-[#34d399]" />
+                    <span className="text-[8px] font-black text-clay uppercase tracking-widest">Explore</span>
+                    <ArrowRight size={10} className="text-clay" />
                   </div>
                 </div>
               </Link>
@@ -123,12 +123,12 @@ const CategoriesPage: React.FC = () => {
 
       {/* Bottom CTA */}
       <section className="max-w-7xl mx-auto px-6 mt-20">
-        <div className="bg-gradient-to-r from-[#34d399]/10 to-transparent border border-white/5 rounded-[3rem] p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8">
+        <div className="bg-gradient-to-r from-clay/10 to-transparent border border-white/5 rounded-[3rem] p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="space-y-4 text-center md:text-left">
             <h2 className="text-2xl md:text-3xl font-heading font-black text-white uppercase">Still Unsure?</h2>
             <p className="text-white/40 text-sm max-w-md">Let our Intelligence Engine match you with the perfect card based on your unique credit profile.</p>
           </div>
-          <Link to="/yureka-ai" className="bg-[#34d399] text-black px-10 py-4 rounded-full font-black uppercase tracking-widest flex items-center gap-2 hover:scale-105 transition-transform shrink-0">
+          <Link to="/yureka-ai" className="bg-clay text-black px-10 py-4 rounded-full font-black uppercase tracking-widest flex items-center gap-2 hover:scale-105 transition-transform shrink-0">
              Consult Yureka AI <ArrowRight size={18} />
           </Link>
         </div>

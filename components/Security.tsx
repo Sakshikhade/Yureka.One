@@ -57,7 +57,7 @@ const Security: React.FC = () => {
                     className="flex justify-between items-end border-b border-white/10 mb-12 pb-6"
                 >
                     <div>
-                        <div className="flex items-center gap-2 text-[#34d399] mb-3">
+                        <div className="flex items-center gap-2 text-clay mb-3">
                              <Lock size={14} strokeWidth={2.5} />
                              <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Privacy Protocol</span>
                         </div>
@@ -65,7 +65,7 @@ const Security: React.FC = () => {
                     </div>
                     <div className="hidden md:block text-right mb-1">
                          <p className="text-[9px] font-bold text-white/30 uppercase tracking-[0.3em] mb-1">DOC. REF: YR-884-X</p>
-                         <p className="text-[9px] font-bold text-[#34d399] uppercase tracking-[0.3em] leading-none">SECURITY: TRIPLE-LAYER AES</p>
+                         <p className="text-[9px] font-bold text-clay uppercase tracking-[0.3em] leading-none">SECURITY: TRIPLE-LAYER AES</p>
                     </div>
                 </motion.div>
 

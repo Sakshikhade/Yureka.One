@@ -39,7 +39,7 @@ export class ErrorBoundary extends Component<Props, State> {
       }
       
       return (
-        <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center p-6 md:p-12 text-center selection:bg-[#34d399] selection:text-[#0a0a0a]">
+        <div className="min-h-screen bg-cream flex flex-col items-center justify-center p-6 md:p-12 text-center selection:bg-clay selection:text-cream">
           {/* Ambient Glow */}
           <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-red-500/5 to-transparent pointer-events-none" />
           
@@ -84,7 +84,7 @@ export class ErrorBoundary extends Component<Props, State> {
                   window.sessionStorage.setItem('page-has-been-force-refreshed', 'false');
                   window.location.reload();
                 }}
-                className="h-16 px-12 bg-white text-[#0a0a0a] rounded-full text-xs font-black uppercase tracking-[0.3em] hover:bg-[#34d399] hover:scale-105 transition-all shadow-2xl group flex items-center gap-3"
+                className="h-16 px-12 bg-white text-cream rounded-full text-xs font-black uppercase tracking-[0.3em] hover:bg-clay hover:scale-105 transition-all shadow-2xl group flex items-center gap-3"
               >
                 Sync & Reload
               </button>

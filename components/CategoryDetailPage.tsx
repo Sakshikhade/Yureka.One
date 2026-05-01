@@ -37,7 +37,7 @@ const CategoryDetailPage: React.FC = () => {
   }, [slug]);
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] pb-20">
+    <div className="min-h-screen bg-cream pb-20">
       <SEO 
         title={`${meta.name} Credit Cards | Best of ${new Date().getFullYear()}`} 
         description={`Compare the best ${meta.name} credit cards in India. Maximize your ${slug} rewards with our expert analysis.`}
@@ -46,7 +46,7 @@ const CategoryDetailPage: React.FC = () => {
       {/* Dynamic Hero Section */}
       <section className={`relative pt-16 pb-20 px-6 overflow-hidden bg-gradient-to-b ${meta.color} to-transparent`}>
          <div className="max-w-7xl mx-auto relative z-10">
-            <Link to="/categories" className="inline-flex items-center gap-2 text-white/40 hover:text-[#34d399] transition-colors text-[10px] font-black uppercase tracking-[0.3em] mb-12 group">
+            <Link to="/categories" className="inline-flex items-center gap-2 text-white/40 hover:text-clay transition-colors text-[10px] font-black uppercase tracking-[0.3em] mb-12 group">
                <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
                Back to Categories
             </Link>
@@ -69,7 +69,7 @@ const CategoryDetailPage: React.FC = () => {
                      <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-2">
                         {meta.benefits.map((benefit: string, i: number) => (
                            <li key={i} className="flex items-center gap-2 text-white/60 text-sm">
-                              <div className="w-1.5 h-1.5 rounded-full bg-[#34d399]/40" />
+                              <div className="w-1.5 h-1.5 rounded-full bg-clay/40" />
                               {benefit}
                            </li>
                         ))}
@@ -82,7 +82,7 @@ const CategoryDetailPage: React.FC = () => {
                   <div className="space-y-4">
                      <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-white/20">
                         <span>Analysis Status</span>
-                        <span className="text-[#34d399]">Live</span>
+                        <span className="text-clay">Live</span>
                      </div>
                      <div className="text-3xl font-heading font-black text-white">{cards.length}</div>
                      <p className="text-[9px] font-bold text-white/40 uppercase tracking-widest leading-relaxed">Verified cards matched for your <br />{meta.name} profile.</p>
@@ -96,7 +96,7 @@ const CategoryDetailPage: React.FC = () => {
       <section className="max-w-7xl mx-auto px-6 -mt-8 relative z-20">
         {loading ? (
           <div className="flex flex-col items-center justify-center py-40 gap-4">
-            <Loader2 className="animate-spin text-[#34d399]" size={40} />
+            <Loader2 className="animate-spin text-clay" size={40} />
             <span className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em]">Syncing Neural Data...</span>
           </div>
         ) : cards.length > 0 ? (
@@ -108,7 +108,7 @@ const CategoryDetailPage: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
-                className="group bg-[#111]/80 backdrop-blur-2xl border border-white/5 rounded-[2.5rem] p-6 md:p-8 hover:border-[#34d399]/30 transition-all duration-700"
+                className="group bg-white/5/80 backdrop-blur-2xl border border-white/5 rounded-[2.5rem] p-6 md:p-8 hover:border-clay/30 transition-all duration-700"
               >
                 <div className="flex flex-col lg:flex-row gap-8 lg:items-center">
                   {/* Card Visual */}
@@ -128,9 +128,9 @@ const CategoryDetailPage: React.FC = () => {
                     <div className="flex flex-wrap items-center gap-2">
                        {/* Tags */}
                        {card.category && (
-                         <div className="flex items-center gap-1.5 px-3 py-1 bg-[#34d399]/10 border border-[#34d399]/20 rounded-full">
-                           <Zap size={10} className="text-[#34d399]" />
-                           <span className="text-[8px] font-black text-[#34d399] uppercase tracking-widest">{card.category}</span>
+                         <div className="flex items-center gap-1.5 px-3 py-1 bg-clay/10 border border-clay/20 rounded-full">
+                           <Zap size={10} className="text-clay" />
+                           <span className="text-[8px] font-black text-clay uppercase tracking-widest">{card.category}</span>
                          </div>
                        )}
                        <div className="flex items-center gap-1.5 px-3 py-1 bg-white/5 border border-white/10 rounded-full">
@@ -160,18 +160,18 @@ const CategoryDetailPage: React.FC = () => {
                        </div>
                        <div className="space-y-1">
                           <span className="text-[8px] font-black text-white/20 uppercase tracking-widest">Reward Rate</span>
-                          <p className="text-[11px] font-black text-[#34d399]">{card.rewards_rate || 'Upto 5%'}</p>
+                          <p className="text-[11px] font-black text-clay">{card.rewards_rate || 'Upto 5%'}</p>
                        </div>
                     </div>
                   </div>
 
                   {/* Action Buttons */}
                   <div className="w-full lg:w-48 flex flex-col gap-3">
-                    <Link to={`/cards/${card.slug || card.id}`} className="w-full bg-[#34d399] text-black py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform">
+                    <Link to={`/cards/${card.slug || card.id}`} className="w-full bg-clay text-black py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform">
                        Read More <ExternalLink size={14} />
                     </Link>
                     <Link to="/yureka-ai" className="w-full bg-white/5 text-white/60 hover:text-white py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 border border-white/10 hover:border-white/20 transition-all group">
-                       <Sparkles size={14} className="group-hover:text-[#34d399] transition-colors" />
+                       <Sparkles size={14} className="group-hover:text-clay transition-colors" />
                        Ask AI
                     </Link>
                     <button className="text-[8px] font-bold text-white/20 uppercase tracking-widest hover:text-white/40 transition-colors text-center pt-2">
@@ -183,7 +183,7 @@ const CategoryDetailPage: React.FC = () => {
             ))}
           </div>
         ) : (
-          <div className="bg-[#111] border border-white/5 rounded-[3rem] p-20 flex flex-col items-center justify-center text-center space-y-6">
+          <div className="bg-white/5 border border-white/5 rounded-[3rem] p-20 flex flex-col items-center justify-center text-center space-y-6">
              <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center">
                 <AlertCircle size={32} className="text-white/20" />
              </div>
@@ -191,7 +191,7 @@ const CategoryDetailPage: React.FC = () => {
                 <h3 className="text-xl font-heading font-black text-white uppercase">Neural Gap Detected</h3>
                 <p className="text-white/40 max-w-sm mx-auto text-sm">We currently don't have enough verified cards for this category. Our engine is actively auditing new products.</p>
              </div>
-             <Link to="/categories" className="text-[#34d399] text-[10px] font-black uppercase tracking-widest hover:underline">
+             <Link to="/categories" className="text-clay text-[10px] font-black uppercase tracking-widest hover:underline">
                 Back to all categories
              </Link>
           </div>

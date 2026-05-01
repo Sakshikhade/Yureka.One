@@ -31,8 +31,8 @@ const ComparisonDetail: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center gap-6">
-        <Loader2 className="animate-spin text-[#34d399]" size={48} />
+      <div className="min-h-screen bg-cream flex flex-col items-center justify-center gap-6">
+        <Loader2 className="animate-spin text-clay" size={48} />
         <span className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em]">Aggregating Neural Data...</span>
       </div>
     );
@@ -51,14 +51,14 @@ const ComparisonDetail: React.FC = () => {
   const dynamicBenefits = getAllKeys('grid_benefits');
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] pb-32">
+    <div className="min-h-screen bg-cream pb-32">
       <SEO 
         title={`Comparison: ${cards.map(c => c.name).join(' vs ')}`} 
         description="Side-by-side analysis of features, rewards, and eligibility."
       />
 
       {/* Hero Header */}
-      <section className="relative pt-12 pb-24 overflow-hidden bg-[#34d399]">
+      <section className="relative pt-12 pb-24 overflow-hidden bg-clay">
          <div className="absolute inset-0 bg-gradient-to-r from-[#2ab884]/50 to-transparent pointer-events-none" />
          <div className="max-w-7xl mx-auto px-6 relative z-10">
             <Link to="/compare" className="inline-flex items-center gap-2 text-black/60 hover:text-black transition-colors text-[10px] font-black uppercase tracking-[0.3em] mb-12">
@@ -93,7 +93,7 @@ const ComparisonDetail: React.FC = () => {
                  initial={{ opacity: 0, y: 30 }}
                  whileInView={{ opacity: 1, y: 0 }}
                  viewport={{ once: true }}
-                 className="bg-[#111] border border-white/10 rounded-[2.5rem] p-6 space-y-8 flex flex-col hover:border-[#34d399]/30 transition-all group"
+                 className="bg-white/5 border border-white/10 rounded-[2.5rem] p-6 space-y-8 flex flex-col hover:border-clay/30 transition-all group"
                >
                   <div className="flex flex-wrap gap-2">
                      {(card.tags || [card.category, card.type]).filter(Boolean).map((tag, j) => (
@@ -124,14 +124,14 @@ const ComparisonDetail: React.FC = () => {
                      <ul className="space-y-3">
                         {(card.benefits || []).slice(0, 4).map((benefit, j) => (
                            <li key={j} className="flex items-start gap-3">
-                              <Check size={14} className="text-[#34d399] mt-0.5 shrink-0" />
+                              <Check size={14} className="text-clay mt-0.5 shrink-0" />
                               <span className="text-xs text-white/70 leading-relaxed">{benefit}</span>
                            </li>
                         ))}
                      </ul>
                   </div>
 
-                  <Link to={`/cards/${card.slug || card.id}`} className="w-full bg-[#34d399] text-black py-5 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-[#2ab884] transition-all">
+                  <Link to={`/cards/${card.slug || card.id}`} className="w-full bg-clay text-black py-5 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-[#2ab884] transition-all">
                      Read Full Review <ChevronRight size={14} />
                   </Link>
                </motion.div>
@@ -176,7 +176,7 @@ const ComparisonDetail: React.FC = () => {
                            <div key={idx} className="flex justify-between items-end border-b border-white/5 pb-4">
                               <div className="space-y-1">
                                  <span className="text-[9px] font-black text-white/20 uppercase tracking-widest">{fee.title}</span>
-                                 <p className="text-lg font-bold text-[#34d399] leading-none">{fee.value}</p>
+                                 <p className="text-lg font-bold text-clay leading-none">{fee.value}</p>
                               </div>
                            </div>
                         ))}
@@ -207,9 +207,9 @@ const ComparisonDetail: React.FC = () => {
                         {/* Rewards Rate */}
                         <div className="space-y-4">
                            <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em]">Neural Efficiency</span>
-                           <div className="p-4 bg-[#34d399]/5 border border-[#34d399]/10 rounded-2xl">
+                           <div className="p-4 bg-clay/5 border border-clay/10 rounded-2xl">
                               <div className="flex items-center gap-2 mb-1">
-                                 <Zap size={14} className="text-[#34d399]" />
+                                 <Zap size={14} className="text-clay" />
                                  <span className="text-[10px] font-black text-white uppercase tracking-widest">Base Rate</span>
                               </div>
                               <p className="text-xl font-black text-white">{card.rewards_rate || 'N/A'}</p>
@@ -231,7 +231,7 @@ const ComparisonDetail: React.FC = () => {
                               {(!card.grid_benefits || card.grid_benefits.length === 0) && (
                                 card.product_details?.slice(0, 3).map((detail, idx) => (
                                   <div key={idx} className="flex items-start gap-3 py-2">
-                                     <Check size={12} className="text-[#34d399] mt-1" />
+                                     <Check size={12} className="text-clay mt-1" />
                                      <span className="text-[11px] text-white/60">{detail}</span>
                                   </div>
                                 ))
@@ -243,9 +243,9 @@ const ComparisonDetail: React.FC = () => {
                         {card.welcome_benefits && (
                           <div className="space-y-4 pt-4">
                              <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em]">Onboarding Perks</span>
-                             <div className="flex items-start gap-3 p-4 bg-[#34d399]/5 border border-[#34d399]/10 rounded-2xl">
-                                <Gift size={16} className="text-[#34d399] shrink-0" />
-                                <span className="text-[11px] text-[#34d399] leading-relaxed font-bold uppercase tracking-tight">{card.welcome_benefits}</span>
+                             <div className="flex items-start gap-3 p-4 bg-clay/5 border border-clay/10 rounded-2xl">
+                                <Gift size={16} className="text-clay shrink-0" />
+                                <span className="text-[11px] text-clay leading-relaxed font-bold uppercase tracking-tight">{card.welcome_benefits}</span>
                              </div>
                           </div>
                         )}
@@ -262,7 +262,7 @@ const ComparisonDetail: React.FC = () => {
                <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em]">Synced Neural Synchronization</p>
             </div>
 
-            <div className="bg-[#111] border border-white/5 rounded-[2.5rem] overflow-hidden shadow-2xl">
+            <div className="bg-white/5 border border-white/5 rounded-[2.5rem] overflow-hidden shadow-2xl">
                <div className="overflow-x-auto custom-scrollbar">
                   <table className="w-full text-left border-collapse">
                      <thead>
@@ -316,7 +316,7 @@ const ComparisonDetail: React.FC = () => {
             {cards.map((card) => (
                <div key={card.id} className="flex flex-col gap-3">
                   {card.apply_link && (
-                    <a href={card.apply_link} target="_blank" rel="noopener noreferrer" className="w-full bg-[#34d399] text-black py-5 rounded-2xl text-[11px] font-black uppercase tracking-widest flex items-center justify-center gap-3 hover:scale-[1.02] transition-all shadow-xl shadow-[#34d399]/10">
+                    <a href={card.apply_link} target="_blank" rel="noopener noreferrer" className="w-full bg-clay text-black py-5 rounded-2xl text-[11px] font-black uppercase tracking-widest flex items-center justify-center gap-3 hover:scale-[1.02] transition-all shadow-xl shadow-clay/10">
                        Apply Securely <MousePointer2 size={16} />
                     </a>
                   )}

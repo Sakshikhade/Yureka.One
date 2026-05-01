@@ -99,7 +99,7 @@ const GroupChatAudit: React.FC = () => {
             <p className="text-white text-[12px] font-bold leading-none truncate">The Yield Syndicate</p>
             <div className="flex items-center gap-1.5 mt-1">
               <motion.span animate={{ opacity: [1, 0.3, 1] }} transition={{ repeat: Infinity, duration: 2 }}
-                className="w-1.5 h-1.5 bg-[#34d399] rounded-full shrink-0" />
+                className="w-1.5 h-1.5 bg-clay rounded-full shrink-0" />
               <span className="text-white/30 text-[9px] font-medium uppercase tracking-widest">3 members active</span>
             </div>
           </div>
@@ -131,7 +131,7 @@ const GroupChatAudit: React.FC = () => {
                     whileInView={{ boxShadow: msg.right ? `0 8px 24px -4px ${msg.accent}30` : '0 4px 16px -4px rgba(0,0,0,0.4)' }}
                     className={`px-3.5 py-2.5 text-[11px] leading-relaxed font-medium rounded-2xl ${
                       msg.right
-                        ? 'bg-[#34d399] text-[#0a0a0a] rounded-br-[4px]'
+                        ? 'bg-clay text-cream rounded-br-[4px]'
                         : 'bg-white/[0.07] text-white/85 rounded-bl-[4px] border border-white/[0.07]'
                     }`}
                   >
@@ -139,7 +139,7 @@ const GroupChatAudit: React.FC = () => {
                   </motion.div>
                   <div className={`flex items-center gap-1 mt-1 px-1 ${msg.right ? 'flex-row' : 'flex-row'}`}>
                     <span className="text-[8px] text-white/20">{msg.time}</span>
-                    {msg.right && <CheckCheck size={10} className="text-[#34d399]/50" />}
+                    {msg.right && <CheckCheck size={10} className="text-clay/50" />}
                   </div>
                   {msg.reaction && (
                     <motion.div
@@ -171,7 +171,7 @@ const GroupChatAudit: React.FC = () => {
                     <motion.div key={i}
                       animate={{ y: [0, -5, 0], opacity: [0.3, 1, 0.3] }}
                       transition={{ duration: 0.85, repeat: Infinity, delay: i * 0.17, ease: 'easeInOut' }}
-                      className="w-1.5 h-1.5 bg-[#34d399]/60 rounded-full"
+                      className="w-1.5 h-1.5 bg-clay/60 rounded-full"
                     />
                   ))}
                 </div>
@@ -182,20 +182,20 @@ const GroupChatAudit: React.FC = () => {
         </div>
 
         {/* Input bar */}
-        <div className="px-3 py-3 bg-[#111]/90 backdrop-blur-xl border-t border-white/[0.05] flex items-center gap-2 shrink-0">
+        <div className="px-3 py-3 bg-white/5/90 backdrop-blur-xl border-t border-white/[0.05] flex items-center gap-2 shrink-0">
           <motion.div whileHover={{ scale: 1.12 }} className="p-2 text-white/20 cursor-pointer">
             <Plus size={17} />
           </motion.div>
           <div className="flex-1 h-9 bg-white/[0.05] rounded-2xl px-4 flex items-center border border-white/[0.07]">
             <span className="text-[10px] text-white/20">Enter the Syndicate…</span>
           </div>
-          <motion.div whileHover={{ scale: 1.12 }} className="w-9 h-9 bg-[#34d399]/12 text-[#34d399] rounded-2xl flex items-center justify-center border border-[#34d399]/20 cursor-pointer">
+          <motion.div whileHover={{ scale: 1.12 }} className="w-9 h-9 bg-clay/12 text-clay rounded-2xl flex items-center justify-center border border-clay/20 cursor-pointer">
             <Mic size={15} />
           </motion.div>
         </div>
 
         {/* Home indicator */}
-        <div className="h-6 flex items-center justify-center bg-[#111]/90">
+        <div className="h-6 flex items-center justify-center bg-white/5/90">
           <div className="w-24 h-1 bg-white/10 rounded-full" />
         </div>
       </motion.div>

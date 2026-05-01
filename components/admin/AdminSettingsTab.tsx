@@ -33,13 +33,13 @@ export const AdminSettingsTab: React.FC<AdminSettingsTabProps> = ({
         </div>
         <button 
           onClick={onAddMember}
-          className="w-full md:w-auto bg-white text-[#0a0a0a] px-8 py-3 rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] flex items-center justify-center gap-2 hover:bg-[#34d399] hover:text-white transition-all shadow-lg active:scale-95"
+          className="w-full md:w-auto bg-white text-cream px-8 py-3 rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] flex items-center justify-center gap-2 hover:bg-clay hover:text-white transition-all shadow-lg active:scale-95"
         >
           <Plus size={16} /> Deploy New Node
         </button>
       </div>
 
-      <div className="overflow-x-auto rounded-[2rem] border border-white/5 bg-[#1a1a1a]/30">
+      <div className="overflow-x-auto rounded-[2rem] border border-white/5 bg-white/5/30">
         <table className="w-full text-left min-w-[700px]">
           <thead className="bg-white/5 text-[10px] uppercase font-black tracking-widest text-white/40 border-b border-white/5">
             <tr>
@@ -60,7 +60,7 @@ export const AdminSettingsTab: React.FC<AdminSettingsTabProps> = ({
                       ? 'bg-red-500/10 text-red-500 border-red-500/20' 
                       : member.role === 'editor' 
                         ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' 
-                        : 'bg-[#34d399]/10 text-[#34d399] border-[#34d399]/20'
+                        : 'bg-clay/10 text-clay border-clay/20'
                   }`}>
                     {member.role}
                   </span>
@@ -68,7 +68,7 @@ export const AdminSettingsTab: React.FC<AdminSettingsTabProps> = ({
                 <td className="px-6 py-4 text-right space-x-1">
                   <button 
                     onClick={() => onEditMember(member)}
-                    className="p-3 text-[#34d399] hover:bg-[#34d399]/10 rounded-xl transition-all opacity-0 group-hover:opacity-100"
+                    className="p-3 text-clay hover:bg-clay/10 rounded-xl transition-all opacity-0 group-hover:opacity-100"
                     title="Edit Node"
                   >
                     <Edit2 size={18} />

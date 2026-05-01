@@ -21,10 +21,10 @@ const FAQQuestion: React.FC<FAQQuestionProps> = ({ question, answer }) => {
         className="w-full flex items-center justify-between p-4 text-left group"
         aria-expanded={isOpen}
       >
-        <span className="font-sans font-medium text-white pr-4 text-base md:text-lg group-hover:text-[#34d399] transition-colors uppercase tracking-tight">{question}</span>
+        <span className="font-sans font-medium text-white pr-4 text-base md:text-lg group-hover:text-clay transition-colors uppercase tracking-tight">{question}</span>
         <motion.div 
           animate={{ rotate: isOpen ? 180 : 0 }}
-          className="text-[#34d399] shrink-0"
+          className="text-clay shrink-0"
         >
            {isOpen ? <Minus size={20} /> : <Plus size={20} />}
         </motion.div>
@@ -64,7 +64,7 @@ const FAQCategory: React.FC<FAQCategoryProps> = ({ icon: Icon, title, questions,
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.1, duration: 0.8 }}
-      className={`rounded-3xl transition-all duration-500 overflow-hidden mb-6 backdrop-blur-3xl border border-white/10 ${isOpen ? 'shadow-2xl ring-1 ring-[#34d399]/10 bg-white/[0.05]' : 'bg-white/[0.02] shadow-sm hover:shadow-md'}`}
+      className={`rounded-3xl transition-all duration-500 overflow-hidden mb-6 backdrop-blur-3xl border border-white/10 ${isOpen ? 'shadow-2xl ring-1 ring-clay/10 bg-white/[0.05]' : 'bg-white/[0.02] shadow-sm hover:shadow-md'}`}
     >
       
       {/* Category Header */}
@@ -74,14 +74,14 @@ const FAQCategory: React.FC<FAQCategoryProps> = ({ icon: Icon, title, questions,
         aria-expanded={isOpen}
       >
         <div className="flex items-center gap-6">
-           <div className={`w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shrink-0 ${isOpen ? 'bg-white text-[#0a0a0a]' : 'bg-white/5 text-[#34d399]'}`}>
+           <div className={`w-14 h-14 rounded-full flex items-center justify-center transition-colors duration-300 shrink-0 ${isOpen ? 'bg-white text-cream' : 'bg-white/5 text-clay'}`}>
                <Icon size={24} strokeWidth={1.5} />
            </div>
            <span className="font-serif font-bold text-xl md:text-2xl text-white uppercase tracking-tighter">{title}</span>
         </div>
         <motion.div 
           animate={{ rotate: isOpen ? 180 : 0 }}
-          className="text-[#34d399]"
+          className="text-clay"
         >
            {isOpen ? <Minus size={28} /> : <Plus size={28} />}
         </motion.div>
@@ -156,7 +156,7 @@ const faqData = [
 // --- Main Layout ---
 const FAQ: React.FC = () => {
   return (
-    <section className="py-12 md:py-20 bg-[#0a0a0a] border-b border-white/10 relative overflow-hidden">
+    <section className="py-12 md:py-20 bg-cream border-b border-white/10 relative overflow-hidden">
          {/* Background Texture for Glassmorphism Context */}
          <div className="absolute inset-0 pointer-events-none opacity-[0.05]" 
               style={{ backgroundImage: 'radial-gradient(#34d399 0.5px, transparent 0.5px)', backgroundSize: '20px 20px' }}>
@@ -175,7 +175,7 @@ const FAQ: React.FC = () => {
                          transition={{ duration: 0.8 }}
                          className="text-left mb-8"
                       >
-                         <span className="block text-[#34d399] text-[10px] md:text-xs font-bold uppercase tracking-[0.4em] mb-6">Help & Support</span>
+                         <span className="block text-clay text-[10px] md:text-xs font-bold uppercase tracking-[0.4em] mb-6">Help & Support</span>
                          <h2 className="text-4xl md:text-5xl lg:text-[clamp(1.5rem,3.5vw,4rem)] font-serif font-bold text-white mb-4 leading-[0.9] tracking-tighter uppercase">
                              Common <br className="hidden md:block" /> Questions
                          </h2>
@@ -188,7 +188,7 @@ const FAQ: React.FC = () => {
                          whileInView={{ opacity: 0.7 }}
                          viewport={{ once: true }}
                          transition={{ delay: 0.4, duration: 1 }}
-                         className="text-sm md:text-base lg:text-lg text-white font-serif italic max-w-md border-l-2 border-[#34d399] pl-6"
+                         className="text-sm md:text-base lg:text-lg text-white font-serif italic max-w-md border-l-2 border-clay pl-6"
                       >
                           Navigating the world of credit rewards shouldn't be a mystery. We've clarified the most common queries about the Yureka.money matching engine.
                       </motion.p>

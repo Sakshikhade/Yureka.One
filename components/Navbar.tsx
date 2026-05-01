@@ -45,7 +45,7 @@ const Navbar: React.FC = () => {
             <div className="flex items-center relative z-10 group cursor-pointer shrink-0">
                 <Link to="/" className="flex items-center gap-4 group">
                     <div className="font-heading font-black tracking-tighter text-lg md:text-xl text-white leading-none hover:opacity-80 transition-opacity flex items-baseline uppercase">
-                        YUREKA<span className="text-[#34d399]">.</span>MONEY
+                        YUREKA<span className="text-clay">.</span>MONEY
                     </div>
                 </Link>
             </div>
@@ -55,7 +55,7 @@ const Navbar: React.FC = () => {
                 <nav className="flex items-center gap-6 lg:gap-8">
                     <Link 
                         to="/cards" 
-                        className={`text-[10px] font-black uppercase tracking-[0.2em] transition-all py-1 ${location.pathname === '/cards' ? 'text-[#34d399]' : 'text-white/40 hover:text-white'}`}
+                        className={`text-[10px] font-black uppercase tracking-[0.2em] transition-all py-1 ${location.pathname === '/cards' ? 'text-clay' : 'text-white/40 hover:text-white'}`}
                     >
                         Cards
                     </Link>
@@ -67,7 +67,7 @@ const Navbar: React.FC = () => {
                         onMouseLeave={() => setIsExploreOpen(false)}
                     >
                         <button 
-                            className={`flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.2em] transition-all py-1 ${isExploreOpen ? 'text-[#34d399]' : 'text-white/40 hover:text-white'}`}
+                            className={`flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.2em] transition-all py-1 ${isExploreOpen ? 'text-clay' : 'text-white/40 hover:text-white'}`}
                         >
                             Explore <ChevronDown size={10} className={`transition-transform duration-500 ${isExploreOpen ? 'rotate-180' : ''}`} />
                         </button>
@@ -81,7 +81,7 @@ const Navbar: React.FC = () => {
                                     transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                                     className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-64 pointer-events-auto"
                                 >
-                                    <div className="bg-[#0d0d0d]/90 backdrop-blur-3xl border border-white/10 rounded-[2rem] p-4 shadow-2xl">
+                                    <div className="bg-white/[0.03]/90 backdrop-blur-3xl border border-white/10 rounded-[2rem] p-4 shadow-2xl">
                                         <div className="flex flex-col gap-1">
                                             {EXPLORE_ITEMS.map((item) => (
                                                 <Link
@@ -89,8 +89,8 @@ const Navbar: React.FC = () => {
                                                     to={item.path}
                                                     className="flex items-center gap-4 p-3 rounded-2xl hover:bg-white/5 transition-all group/item"
                                                 >
-                                                    <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center group-hover/item:bg-[#34d399]/10 transition-colors">
-                                                        <item.icon size={18} className="text-white/40 group-hover/item:text-[#34d399]" />
+                                                    <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center group-hover/item:bg-clay/10 transition-colors">
+                                                        <item.icon size={18} className="text-white/40 group-hover/item:text-clay" />
                                                     </div>
                                                     <div className="flex flex-col">
                                                         <span className="text-[11px] font-black text-white uppercase tracking-wider">{item.name}</span>
@@ -107,7 +107,7 @@ const Navbar: React.FC = () => {
 
                     <Link 
                         to="/blogs" 
-                        className={`text-[10px] font-black uppercase tracking-[0.2em] transition-all py-1 ${location.pathname === '/blogs' ? 'text-[#34d399]' : 'text-white/40 hover:text-white'}`}
+                        className={`text-[10px] font-black uppercase tracking-[0.2em] transition-all py-1 ${location.pathname === '/blogs' ? 'text-clay' : 'text-white/40 hover:text-white'}`}
                     >
                         Blogs
                     </Link>
@@ -120,7 +120,7 @@ const Navbar: React.FC = () => {
                         YurekaAi
                       </Link>
                     
-                    <Link to="/join-waitlist" className="bg-[#34d399] text-[#0a0a0a] text-[10px] font-black uppercase tracking-[0.25em] px-6 lg:px-8 py-2.5 lg:py-3 flex items-center gap-2.5 group transition-all duration-500 rounded-full shrink-0 shadow-[0_10px_20px_rgba(52,211,153,0.15)] hover:shadow-[0_10px_25px_rgba(52,211,153,0.25)] hover:-translate-y-0.5 active:scale-95">
+                    <Link to="/join-waitlist" className="bg-clay text-cream text-[10px] font-black uppercase tracking-[0.25em] px-6 lg:px-8 py-2.5 lg:py-3 flex items-center gap-2.5 group transition-all duration-500 rounded-full shrink-0 shadow-[0_10px_20px_rgba(52,211,153,0.15)] hover:shadow-[0_10px_25px_rgba(52,211,153,0.25)] hover:-translate-y-0.5 active:scale-95">
                         <Sparkles size={14} className="group-hover:rotate-12 transition-transform" />
                         <span className="whitespace-nowrap">Join Waitlist</span>
                         <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
@@ -157,14 +157,14 @@ const Navbar: React.FC = () => {
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: '100%', opacity: 0 }}
                 transition={{ type: 'spring', damping: 28, stiffness: 220 }}
-                className="absolute top-0 right-0 h-full w-[85%] max-w-[400px] bg-[#0a0a0a] border-l border-white/10 p-10 flex flex-col shadow-2xl"
+                className="absolute top-0 right-0 h-full w-[85%] max-w-[400px] bg-cream border-l border-white/10 p-10 flex flex-col shadow-2xl"
               >
                   <div className="flex justify-between items-center mb-16">
                       <span className="font-heading text-2xl font-black text-white flex items-end uppercase tracking-tighter">
-                        Menu<span className="text-[#34d399] ml-1">.</span>
+                        Menu<span className="text-clay ml-1">.</span>
                       </span>
 
-                      <button onClick={() => setIsMobileMenuOpen(false)} className="w-12 h-12 bg-white/5 border border-white/10 flex items-center justify-center rounded-full text-white hover:bg-white hover:text-[#0a0a0a] transition-all">
+                      <button onClick={() => setIsMobileMenuOpen(false)} className="w-12 h-12 bg-white/5 border border-white/10 flex items-center justify-center rounded-full text-white hover:bg-white hover:text-cream transition-all">
                           <X size={24} />
                       </button>
                   </div>
@@ -190,7 +190,7 @@ const Navbar: React.FC = () => {
                                 onClick={() => setIsMobileMenuOpen(false)} 
                                 className="group block"
                             >
-                                <div className="text-2xl font-black text-white group-hover:text-[#34d399] transition-colors mb-1.5 uppercase tracking-tight">{item.name}</div>
+                                <div className="text-2xl font-black text-white group-hover:text-clay transition-colors mb-1.5 uppercase tracking-tight">{item.name}</div>
                                 <div className="text-[10px] font-bold uppercase tracking-[0.25em] text-white/20 group-hover:text-white/40">{item.desc}</div>
                             </Link>
                         </motion.div>
@@ -202,7 +202,7 @@ const Navbar: React.FC = () => {
                       transition={{ delay: 0.5 }}
                       className="mt-6"
                     >
-                        <Link to="/join-waitlist" onClick={() => setIsMobileMenuOpen(false)} className="w-full h-16 bg-[#34d399] text-[#0a0a0a] font-black uppercase tracking-[0.25em] text-[11px] flex items-center justify-center gap-3 transition-all rounded-full shadow-2xl shadow-[#34d399]/10">
+                        <Link to="/join-waitlist" onClick={() => setIsMobileMenuOpen(false)} className="w-full h-16 bg-clay text-cream font-black uppercase tracking-[0.25em] text-[11px] flex items-center justify-center gap-3 transition-all rounded-full shadow-2xl shadow-clay/10">
                             <Sparkles size={16} />
                             Join Registry Now
                         </Link>
@@ -212,7 +212,7 @@ const Navbar: React.FC = () => {
                   <div className="mt-auto pt-10 border-t border-white/5">
                     <div className="flex justify-between items-center text-white/20 text-[9px] uppercase tracking-[0.3em] font-mono">
                         <div className="flex items-center gap-2">
-                            <div className="w-1.5 h-1.5 bg-[#34d399] rounded-full animate-pulse" />
+                            <div className="w-1.5 h-1.5 bg-clay rounded-full animate-pulse" />
                             <span>System Online</span>
                         </div>
                         <span>© 2026 YUREKA</span>

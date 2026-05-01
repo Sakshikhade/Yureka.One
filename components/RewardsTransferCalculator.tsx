@@ -167,13 +167,13 @@ const RewardsTransferCalculator: React.FC = () => {
   }, [results, showBonusesOnly, visibleCount]);
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] font-sans text-white pb-20">
+    <div className="min-h-screen bg-cream font-sans text-white pb-20">
       <SEO title="Transfer Calculator | Yureka" description="Optimize your rewards transfers with precision." />
 
       <div className="max-w-[1240px] mx-auto px-4 sm:px-6 pt-6 sm:pt-10">
         
         {/* Controls Section */}
-        <div className="bg-[#1a1a1a] rounded-3xl border border-white/5 p-6 sm:p-8 mb-6 shadow-2xl relative group">
+        <div className="bg-white/5 rounded-3xl border border-white/5 p-6 sm:p-8 mb-6 shadow-2xl relative group">
           <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 blur-[100px] rounded-full -mr-32 -mt-32" />
           
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-end relative z-10">
@@ -184,7 +184,7 @@ const RewardsTransferCalculator: React.FC = () => {
               <div className="flex items-center gap-2">
                 <div 
                   onClick={() => setIsFromOpen(!isFromOpen)}
-                  className="flex-1 h-[64px] bg-[#0a0a0a] border border-white/10 rounded-2xl px-5 flex items-center justify-between cursor-pointer hover:border-emerald-500/30 transition-all group shadow-inner"
+                  className="flex-1 h-[64px] bg-cream border border-white/10 rounded-2xl px-5 flex items-center justify-between cursor-pointer hover:border-emerald-500/30 transition-all group shadow-inner"
                 >
                   <div className="flex items-center gap-4 overflow-hidden">
                     <ProgramIcon name={selectedFrom} fallbackColor="bg-emerald-600" />
@@ -208,15 +208,15 @@ const RewardsTransferCalculator: React.FC = () => {
                 {isFromOpen && (
                   <motion.div 
                     initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }}
-                    className="absolute top-full left-0 right-0 z-[60] mt-3 bg-[#1a1a1a] border border-white/10 shadow-3xl rounded-2xl overflow-hidden min-w-[300px]"
+                    className="absolute top-full left-0 right-0 z-[60] mt-3 bg-white/5 border border-white/10 shadow-3xl rounded-2xl overflow-hidden min-w-[300px]"
                   >
-                    <div className="p-4 border-b border-white/5 bg-[#0a0a0a]/50">
+                    <div className="p-4 border-b border-white/5 bg-cream/50">
                       <div className="relative">
                         <Search size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" />
                         <input 
                           autoFocus type="text" placeholder="Search programs..." 
                           value={fromSearchQuery} onChange={e => setFromSearchQuery(e.target.value)}
-                          className="w-full bg-[#0a0a0a] rounded-xl pl-11 pr-4 py-3 text-sm outline-none border border-white/5 focus:border-emerald-500/30 transition-all"
+                          className="w-full bg-cream rounded-xl pl-11 pr-4 py-3 text-sm outline-none border border-white/5 focus:border-emerald-500/30 transition-all"
                         />
                       </div>
                     </div>
@@ -262,7 +262,7 @@ const RewardsTransferCalculator: React.FC = () => {
               <div className="flex items-center gap-2">
                 <div 
                   onClick={() => setIsToOpen(!isToOpen)}
-                  className="flex-1 h-[64px] bg-[#0a0a0a] border border-white/10 rounded-2xl px-5 flex items-center justify-between cursor-pointer hover:border-emerald-500/30 transition-all group shadow-inner"
+                  className="flex-1 h-[64px] bg-cream border border-white/10 rounded-2xl px-5 flex items-center justify-between cursor-pointer hover:border-emerald-500/30 transition-all group shadow-inner"
                 >
                   <div className="flex items-center gap-4 overflow-hidden">
                     <ProgramIcon name={selectedTo} fallbackColor="bg-emerald-900" />
@@ -286,15 +286,15 @@ const RewardsTransferCalculator: React.FC = () => {
                 {isToOpen && (
                   <motion.div 
                     initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }}
-                    className="absolute top-full left-0 right-0 z-[60] mt-3 bg-[#1a1a1a] border border-white/10 shadow-3xl rounded-2xl overflow-hidden min-w-[300px]"
+                    className="absolute top-full left-0 right-0 z-[60] mt-3 bg-white/5 border border-white/10 shadow-3xl rounded-2xl overflow-hidden min-w-[300px]"
                   >
-                    <div className="p-4 border-b border-white/5 bg-[#0a0a0a]/50">
+                    <div className="p-4 border-b border-white/5 bg-cream/50">
                       <div className="relative">
                         <Search size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" />
                         <input 
                           autoFocus type="text" placeholder="Search targets..." 
                           value={toSearchQuery} onChange={e => setToSearchQuery(e.target.value)}
-                          className="w-full bg-[#0a0a0a] rounded-xl pl-11 pr-4 py-3 text-sm outline-none border border-white/5 focus:border-emerald-500/30 transition-all"
+                          className="w-full bg-cream rounded-xl pl-11 pr-4 py-3 text-sm outline-none border border-white/5 focus:border-emerald-500/30 transition-all"
                         />
                       </div>
                     </div>
@@ -337,7 +337,7 @@ const RewardsTransferCalculator: React.FC = () => {
             {/* Points */}
             <div className="md:col-span-4">
               <label className="text-[10px] font-bold text-emerald-400 uppercase tracking-[0.3em] block mb-3 px-1">Node Value</label>
-              <div className="h-[64px] bg-[#0a0a0a] border border-white/10 rounded-2xl px-5 flex items-center gap-2 focus-within:border-emerald-500/50 transition-all shadow-inner">
+              <div className="h-[64px] bg-cream border border-white/10 rounded-2xl px-5 flex items-center gap-2 focus-within:border-emerald-500/50 transition-all shadow-inner">
                 <input 
                   type="number" 
                   value={amount || ''} 
@@ -352,9 +352,9 @@ const RewardsTransferCalculator: React.FC = () => {
         </div>
 
         {/* Login Banner */}
-        <div className="bg-[#1a1a1a] rounded-[2rem] border border-white/5 p-5 mb-10 flex items-center justify-between group cursor-pointer hover:bg-white/[0.03] transition-all shadow-xl">
+        <div className="bg-white/5 rounded-[2rem] border border-white/5 p-5 mb-10 flex items-center justify-between group cursor-pointer hover:bg-white/[0.03] transition-all shadow-xl">
           <div className="flex items-center gap-5 text-white/40 font-bold uppercase tracking-[0.2em] text-[10px]">
-            <div className="w-10 h-10 rounded-2xl bg-[#0a0a0a] flex items-center justify-center border border-white/5 group-hover:border-emerald-500/20 transition-all">
+            <div className="w-10 h-10 rounded-2xl bg-cream flex items-center justify-center border border-white/5 group-hover:border-emerald-500/20 transition-all">
               <User size={18} className="text-emerald-400" />
             </div>
             <span>Login to view your synced balances</span>
@@ -389,7 +389,7 @@ const RewardsTransferCalculator: React.FC = () => {
             {displayedResults.length === 0 ? (
                <motion.div 
                  initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                 className="py-24 text-center bg-[#1a1a1a] rounded-[3rem] border border-dashed border-white/5 text-white/20 flex flex-col items-center gap-6"
+                 className="py-24 text-center bg-white/5 rounded-[3rem] border border-dashed border-white/5 text-white/20 flex flex-col items-center gap-6"
                >
                   <div className="w-20 h-20 rounded-full bg-emerald-500/5 flex items-center justify-center border border-emerald-500/10">
                     <TrendingUp size={40} strokeWidth={1} className="text-emerald-500/40" />
@@ -416,7 +416,7 @@ const RewardsTransferCalculator: React.FC = () => {
                   <motion.div 
                     layout initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
                     key={itemId}
-                    className="bg-[#1a1a1a] rounded-[2.5rem] border border-white/5 p-6 sm:p-10 hover:shadow-3xl hover:border-emerald-500/20 transition-all group overflow-hidden relative"
+                    className="bg-white/5 rounded-[2.5rem] border border-white/5 p-6 sm:p-10 hover:shadow-3xl hover:border-emerald-500/20 transition-all group overflow-hidden relative"
                   >
                     {/* Decorative glow background */}
                     <div className="absolute top-0 right-0 w-48 h-48 bg-emerald-500/[0.02] blur-[80px] rounded-full group-hover:bg-emerald-500/[0.05] transition-all" />

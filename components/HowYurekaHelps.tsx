@@ -10,17 +10,17 @@ const FEATURES = [
     sub: 'Try Now →',
     subLink: '/yureka-ai',
     description: 'Your personal credit card guru. Instantly get answers on features, exclusions, hacks, and the best ways to earn.',
-    gradient: 'from-[#34d399]/20 via-transparent to-transparent',
-    iconBg: 'bg-[#34d399]/10 text-[#34d399]',
+    gradient: 'from-clay/20 via-transparent to-transparent',
+    iconBg: 'bg-clay/10 text-clay',
     preview: (
-      <div className="w-full rounded-2xl bg-[#0d0d0d] border border-white/5 p-4 text-left space-y-2 relative overflow-hidden">
+      <div className="w-full rounded-2xl bg-white/[0.03] border border-white/5 p-4 text-left space-y-2 relative overflow-hidden">
         <motion.div 
           animate={{ y: [10, 0], opacity: [0, 1] }} 
           transition={{ duration: 0.4, repeat: Infinity, repeatDelay: 4 }}
           className="flex gap-2 items-start"
         >
-          <div className="w-5 h-5 rounded-full bg-[#34d399]/20 shrink-0 flex items-center justify-center"><Bot size={10} className="text-[#34d399]" /></div>
-          <div className="bg-[#34d399]/10 text-[#34d399] text-[9px] px-3 py-1 rounded-xl rounded-tl-none">Insurance on Atlas?</div>
+          <div className="w-5 h-5 rounded-full bg-clay/20 shrink-0 flex items-center justify-center"><Bot size={10} className="text-clay" /></div>
+          <div className="bg-clay/10 text-clay text-[9px] px-3 py-1 rounded-xl rounded-tl-none">Insurance on Atlas?</div>
         </motion.div>
         <motion.div 
           animate={{ y: [10, 0], opacity: [0, 1] }} 
@@ -41,7 +41,7 @@ const FEATURES = [
     gradient: 'from-blue-500/10 via-transparent to-transparent',
     iconBg: 'bg-blue-500/10 text-blue-400',
     preview: (
-      <div className="w-full rounded-2xl bg-[#0d0d0d] border border-white/5 overflow-hidden py-3">
+      <div className="w-full rounded-2xl bg-white/[0.03] border border-white/5 overflow-hidden py-3">
         {/* Row 1: Left to Right */}
         <div className="flex gap-2 animate-marquee whitespace-nowrap mb-2 px-2 will-change-transform" style={{ animationDirection: 'reverse', animationDuration: '25s' }}>
            {[1,2,3,4,5,6].map((n, i) => (
@@ -70,14 +70,14 @@ const FEATURES = [
     gradient: 'from-purple-500/10 via-transparent to-transparent',
     iconBg: 'bg-purple-500/10 text-purple-400',
     preview: (
-      <div className="w-full rounded-2xl bg-[#0d0d0d] border border-white/5 p-3 space-y-2 relative overflow-hidden group">
+      <div className="w-full rounded-2xl bg-white/[0.03] border border-white/5 p-3 space-y-2 relative overflow-hidden group">
         {/* Scanning Line Effect */}
         <motion.div 
           animate={{ top: ['0%', '100%', '0%'] }} 
           transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-          className="absolute left-0 right-0 h-[2px] bg-[#34d399] shadow-[0_0_15px_#34d399] z-20"
+          className="absolute left-0 right-0 h-[2px] bg-clay shadow-[0_0_15px_#34d399] z-20"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#34d399]/0 via-[#34d399]/5 to-[#34d399]/0 opacity-0 group-hover:opacity-100 transition-opacity" />
+        <div className="absolute inset-0 bg-gradient-to-b from-clay/0 via-clay/5 to-clay/0 opacity-0 group-hover:opacity-100 transition-opacity" />
         
         {['Lounge', 'Rewards', 'Fees'].map((item, i) => (
           <div key={i} className="space-y-1 relative z-10">
@@ -88,7 +88,7 @@ const FEATURES = [
               <motion.div 
                 animate={{ width: ['0%', `${70 + i * 10}%`] }} 
                 transition={{ duration: 2, repeat: Infinity, repeatType: 'reverse', ease: 'linear' }}
-                className="h-full bg-[#34d399] rounded-full" 
+                className="h-full bg-clay rounded-full" 
               />
             </div>
           </div>
@@ -105,7 +105,7 @@ const FEATURES = [
     gradient: 'from-amber-500/10 via-transparent to-transparent',
     iconBg: 'bg-amber-500/10 text-amber-400',
     preview: (
-      <div className="w-full rounded-2xl bg-[#0d0d0d] border border-white/5 p-4 flex flex-col justify-center items-center gap-2 overflow-hidden">
+      <div className="w-full rounded-2xl bg-white/[0.03] border border-white/5 p-4 flex flex-col justify-center items-center gap-2 overflow-hidden">
         <span className="text-[7px] text-white/20 uppercase tracking-widest mb-1">Estimated Savings</span>
         <div className="text-xl font-heading font-black text-white tracking-tighter tabular-nums flex items-baseline">
           ₹
@@ -130,7 +130,7 @@ const FEATURES = [
            <motion.div 
              animate={{ scaleX: [0, 1] }} 
              transition={{ duration: 2, repeat: Infinity, repeatType: 'reverse' }}
-             className="h-full bg-[#34d399] rounded-full origin-left" 
+             className="h-full bg-clay rounded-full origin-left" 
            />
         </div>
       </div>
@@ -145,7 +145,7 @@ const FEATURES = [
     gradient: 'from-cyan-500/10 via-transparent to-transparent',
     iconBg: 'bg-cyan-500/10 text-cyan-400',
     preview: (
-      <div className="w-full rounded-2xl bg-[#0d0d0d] border border-white/5 p-4 flex flex-col gap-3">
+      <div className="w-full rounded-2xl bg-white/[0.03] border border-white/5 p-4 flex flex-col gap-3">
         <div className="flex justify-between items-center px-4">
           <div className="w-7 h-7 rounded-full bg-white/5 p-1.5"><img src="/assets/banks/hdfc.png" alt="" className="w-full h-full object-contain opacity-50" /></div>
           <span className="text-[8px] text-white/10 font-black italic">VS</span>
@@ -154,7 +154,7 @@ const FEATURES = [
         <div className="space-y-1.5">
            {[1,2].map((n, i) => (
              <div key={i} className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
-               <motion.div animate={{ x: ['-100%', '100%'] }} transition={{ repeat: Infinity, duration: 2, delay: i }} className="h-full w-1/2 bg-[#34d399] rounded-full" />
+               <motion.div animate={{ x: ['-100%', '100%'] }} transition={{ repeat: Infinity, duration: 2, delay: i }} className="h-full w-1/2 bg-clay rounded-full" />
              </div>
            ))}
         </div>
@@ -170,7 +170,7 @@ const FEATURES = [
     gradient: 'from-rose-500/10 via-transparent to-transparent',
     iconBg: 'bg-rose-500/10 text-rose-400',
     preview: (
-      <div className="w-full rounded-2xl bg-[#0d0d0d] border border-white/5 p-4 relative overflow-hidden h-[80px]">
+      <div className="w-full rounded-2xl bg-white/[0.03] border border-white/5 p-4 relative overflow-hidden h-[80px]">
         <motion.div 
           animate={{ y: [0, -40] }} 
           transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
@@ -178,7 +178,7 @@ const FEATURES = [
         >
           {['HDFC miles update', 'SBI limit change', 'Atlas fee waiver'].map((title, i) => (
             <div key={i} className="flex gap-2 items-center">
-              <div className="w-1 h-1 rounded-full bg-[#34d399] shrink-0" />
+              <div className="w-1 h-1 rounded-full bg-clay shrink-0" />
               <span className="text-[9px] text-white/20 whitespace-nowrap">{title}</span>
             </div>
           ))}
@@ -189,7 +189,7 @@ const FEATURES = [
 ];
 
 const HowYurekaHelps: React.FC = () => (
-  <section className="relative bg-[#0a0a0a] py-16 md:py-24 border-t border-white/5 overflow-hidden">
+  <section className="relative bg-cream py-16 md:py-24 border-t border-white/5 overflow-hidden">
     {/* Subtle dot grid background */}
     <div className="absolute inset-0 opacity-[0.02] pointer-events-none"
       style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px)', backgroundSize: '32px 32px' }}
@@ -204,11 +204,11 @@ const HowYurekaHelps: React.FC = () => (
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         className="text-center mb-10 md:mb-12"
       >
-        <span className="inline-block text-[#34d399] text-[10px] font-black uppercase tracking-[0.5em] mb-3">
+        <span className="inline-block text-clay text-[10px] font-black uppercase tracking-[0.5em] mb-3">
           The Full Stack
         </span>
         <h2 className="text-4xl md:text-6xl lg:text-7xl font-heading text-white tracking-tighter leading-[0.95] uppercase mb-4">
-          How Yureka <span className="text-[#34d399]">Helps?</span>
+          How Yureka <span className="text-clay">Helps?</span>
         </h2>
         <p className="text-white/40 text-sm md:text-base max-w-2xl mx-auto leading-relaxed">
           Six precision tools built for one purpose — to help you make smarter financial decisions every single day.
@@ -243,11 +243,11 @@ const HowYurekaHelps: React.FC = () => (
                   <Icon size={18} />
                 </div>
                 <div className="flex items-center gap-2 flex-1 min-w-0">
-                  <h3 className="text-white font-bold text-sm leading-tight group-hover:text-[#34d399] transition-colors truncate">
+                  <h3 className="text-white font-bold text-sm leading-tight group-hover:text-clay transition-colors truncate">
                     {f.title}
                   </h3>
                   {f.sub && (
-                    <Link to={f.subLink} className="text-[#34d399] text-[10px] font-bold shrink-0 hover:underline flex items-center gap-0.5">
+                    <Link to={f.subLink} className="text-clay text-[10px] font-bold shrink-0 hover:underline flex items-center gap-0.5">
                       {f.sub} <ArrowUpRight size={10} />
                     </Link>
                   )}
@@ -260,7 +260,7 @@ const HowYurekaHelps: React.FC = () => (
               </p>
 
               {/* Bottom shimmer */}
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-[#34d399]/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-full" />
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-clay/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-full" />
             </motion.div>
           );
         })}

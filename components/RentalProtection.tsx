@@ -38,7 +38,7 @@ const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
   if (displayCards.length === 0) return null;
 
   return (
-    <section className="bg-[#0a0a0a] py-16 md:py-20 px-6 relative overflow-hidden glass-shine-container">
+    <section className="bg-cream py-16 md:py-20 px-6 relative overflow-hidden glass-shine-container">
       <div className="absolute inset-0 glass-dark opacity-95" />
       {/* Background grid */}
       <div
@@ -47,7 +47,7 @@ const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
       />
 
       {/* Ambient glow */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#34d399]/5 blur-[160px] rounded-full pointer-events-none" />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-clay/5 blur-[160px] rounded-full pointer-events-none" />
 
       <div className="max-w-6xl mx-auto flex flex-col items-center text-center relative z-10">
 
@@ -59,9 +59,9 @@ const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="space-y-5 mb-10 md:mb-12 max-w-4xl"
         >
-          <p className="text-[#34d399] text-[10px] md:text-xs font-bold uppercase tracking-[0.4em]">
+          <p className="text-clay text-[10px] md:text-xs font-bold uppercase tracking-[0.4em]">
             YOU INVESTED CRORES INTO{' '}
-            <span className="text-white border-b border-[#34d399] pb-0.5">THAT HOME</span>
+            <span className="text-white border-b border-clay pb-0.5">THAT HOME</span>
           </p>
 
           <h2 className="text-4xl md:text-6xl lg:text-7xl font-heading text-white tracking-tighter leading-[0.95] uppercase">
@@ -86,18 +86,18 @@ const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
                 transition={{ delay: i * 0.1, duration: 0.6 }}
                 className="group relative"
               >
-                <div className="bg-white/[0.03] backdrop-blur-3xl border border-white/10 rounded-[2.5rem] p-5 md:p-8 hover:bg-white/[0.05] hover:border-[#34d399]/30 transition-all duration-500 overflow-hidden shadow-2xl">
+                <div className="bg-white/[0.03] backdrop-blur-3xl border border-white/10 rounded-[2.5rem] p-5 md:p-8 hover:bg-white/[0.05] hover:border-clay/30 transition-all duration-500 overflow-hidden shadow-2xl">
                   
                   {/* Top Row: Visual & Quick Info */}
                   <div className="flex flex-col lg:flex-row gap-8 items-center lg:items-start mb-8">
                     {/* Card Visual */}
-                    <div className="w-full lg:w-72 shrink-0 aspect-[1.6/1] rounded-2xl overflow-hidden bg-black/40 border border-white/5 relative group-hover:border-[#34d399]/20 transition-all">
+                    <div className="w-full lg:w-72 shrink-0 aspect-[1.6/1] rounded-2xl overflow-hidden bg-black/40 border border-white/5 relative group-hover:border-clay/20 transition-all">
                       <img 
                         src={card.image} 
                         alt={card.name} 
                         className="w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-700" 
                       />
-                      <div className="absolute top-3 left-3 w-2 h-2 rounded-full bg-[#34d399] animate-pulse" />
+                      <div className="absolute top-3 left-3 w-2 h-2 rounded-full bg-clay animate-pulse" />
                     </div>
 
                     {/* Middle: Title & Tags */}
@@ -109,11 +109,11 @@ const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
                         <span className="flex items-center gap-1.5 px-3 py-1 bg-blue-500/10 text-blue-400 text-[9px] font-black uppercase tracking-widest rounded-full border border-blue-500/20">
                           Travel
                         </span>
-                        <span className="flex items-center gap-1.5 px-3 py-1 bg-[#34d399]/10 text-[#34d399] text-[9px] font-black uppercase tracking-widest rounded-full border border-[#34d399]/20">
+                        <span className="flex items-center gap-1.5 px-3 py-1 bg-clay/10 text-clay text-[9px] font-black uppercase tracking-widest rounded-full border border-clay/20">
                           Lounge Access
                         </span>
                       </div>
-                      <h3 className="text-2xl md:text-3xl font-heading font-black text-white leading-tight uppercase tracking-tighter mb-2 group-hover:text-[#34d399] transition-colors">
+                      <h3 className="text-2xl md:text-3xl font-heading font-black text-white leading-tight uppercase tracking-tighter mb-2 group-hover:text-clay transition-colors">
                         {card.name}
                       </h3>
                       <p className="text-white/40 text-xs font-mono uppercase tracking-[0.2em]">
@@ -133,7 +133,7 @@ const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
                         to="/yureka-ai"
                         className="w-full bg-white/[0.04] border border-white/10 text-white/80 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-white/[0.08] transition-all group/ai"
                       >
-                        Ask AI <Bot size={14} className="text-[#34d399] group-hover/ai:animate-pulse" />
+                        Ask AI <Bot size={14} className="text-clay group-hover/ai:animate-pulse" />
                       </Link>
                       <button className="text-[9px] text-white/20 hover:text-white/40 transition-colors uppercase tracking-widest font-bold">
                         Report data issue
@@ -157,7 +157,7 @@ const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
                     </div>
                     <div className="space-y-2">
                       <span className="text-[8px] text-white/20 uppercase tracking-[0.25em] font-black block">Reward Rate</span>
-                      <p className="text-base font-black text-[#34d399] tracking-tight">{card.rewards_rate || '3.33% → 33%'}</p>
+                      <p className="text-base font-black text-clay tracking-tight">{card.rewards_rate || '3.33% → 33%'}</p>
                     </div>
                     <div className="space-y-2">
                       <span className="text-[8px] text-white/20 uppercase tracking-[0.25em] font-black block">Rating</span>
@@ -180,7 +180,7 @@ const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
         >
           <Link
             to="/cards"
-            className="inline-block bg-[#34d399] text-[#0a0a0a] px-12 py-5 rounded-full text-[10px] font-black uppercase tracking-[0.4em] shadow-2xl hover:shadow-[#34d399]/20 transition-all duration-300"
+            className="inline-block bg-clay text-cream px-12 py-5 rounded-full text-[10px] font-black uppercase tracking-[0.4em] shadow-2xl hover:shadow-clay/20 transition-all duration-300"
           >
             Explore Full Catalog →
           </Link>

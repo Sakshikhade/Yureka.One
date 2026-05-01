@@ -79,7 +79,7 @@ const ComparePage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] pb-32">
+    <div className="min-h-screen bg-cream pb-32">
       <SEO 
         title="Credit Card Comparisons | Side-by-Side Analysis" 
         description="Compare up to 3 credit cards side-by-side. Deep-dive into fees, rewards, and eligibility to find your perfect match."
@@ -87,7 +87,7 @@ const ComparePage: React.FC = () => {
 
       {/* Hero Header */}
       <section className="relative pt-20 pb-16 overflow-hidden px-6">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#34d399]/10 via-transparent to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-clay/10 via-transparent to-transparent pointer-events-none" />
         
         <div className="max-w-7xl mx-auto relative z-10">
            <motion.div 
@@ -95,7 +95,7 @@ const ComparePage: React.FC = () => {
              animate={{ opacity: 1, y: 0 }}
              className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full backdrop-blur-xl mb-8"
            >
-             <ArrowRightLeft size={14} className="text-[#34d399]" />
+             <ArrowRightLeft size={14} className="text-clay" />
              <span className="text-[10px] font-black text-white/60 uppercase tracking-[0.3em]">Neural Comparison Engine</span>
            </motion.div>
 
@@ -105,16 +105,16 @@ const ComparePage: React.FC = () => {
              transition={{ delay: 0.1 }}
              className="text-4xl md:text-6xl font-heading font-black text-white tracking-tighter uppercase"
            >
-             Credit Card <span className="text-[#34d399]">Comparisons</span>
+             Credit Card <span className="text-clay">Comparisons</span>
            </motion.h1>
         </div>
       </section>
 
       {/* Comparison Tool */}
       <section className="max-w-7xl mx-auto px-6 -mt-4 relative z-20">
-         <div className="bg-[#111] border border-white/5 rounded-[3rem] p-8 md:p-12 shadow-2xl relative">
+         <div className="bg-white/5 border border-white/5 rounded-[3rem] p-8 md:p-12 shadow-2xl relative">
             {/* Background pattern */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-[#34d399]/5 blur-[100px] pointer-events-none" />
+            <div className="absolute top-0 right-0 w-64 h-64 bg-clay/5 blur-[100px] pointer-events-none" />
             
             <div className="relative z-10 space-y-12">
                <div className="space-y-2">
@@ -146,11 +146,11 @@ const ComparePage: React.FC = () => {
                                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
                                  animate={{ opacity: 1, y: 0, scale: 1 }}
                                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                                 className="absolute top-full left-0 right-0 mt-3 z-[100] bg-[#1a1a1a] border border-white/10 rounded-3xl shadow-2xl overflow-hidden backdrop-blur-3xl"
+                                 className="absolute top-full left-0 right-0 mt-3 z-[100] bg-white/5 border border-white/10 rounded-3xl shadow-2xl overflow-hidden backdrop-blur-3xl"
                                >
                                   <div className="max-h-72 overflow-y-auto custom-scrollbar p-2">
                                      {loading ? (
-                                       <div className="p-8 flex justify-center"><Loader2 className="animate-spin text-[#34d399]" /></div>
+                                       <div className="p-8 flex justify-center"><Loader2 className="animate-spin text-clay" /></div>
                                      ) : (
                                        allCards.map(card => (
                                          <button
@@ -181,7 +181,7 @@ const ComparePage: React.FC = () => {
                   <button 
                     onClick={handleCompare}
                     disabled={selectedCards.filter(id => id !== '').length < 2}
-                    className="bg-[#34d399] disabled:bg-white/5 text-black disabled:text-white/20 px-10 py-5 rounded-full font-black uppercase tracking-[0.2em] flex items-center gap-3 transition-all hover:scale-105 active:scale-95 group shadow-2xl shadow-[#34d399]/20"
+                    className="bg-clay disabled:bg-white/5 text-black disabled:text-white/20 px-10 py-5 rounded-full font-black uppercase tracking-[0.2em] flex items-center gap-3 transition-all hover:scale-105 active:scale-95 group shadow-2xl shadow-clay/20"
                   >
                      Compare Now <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                   </button>
@@ -205,7 +205,7 @@ const ComparePage: React.FC = () => {
                  whileInView={{ opacity: 1, y: 0 }}
                  viewport={{ once: true }}
                  transition={{ delay: idx * 0.1 }}
-                 className="group relative bg-[#111]/40 backdrop-blur-3xl border border-white/5 rounded-[2.5rem] p-8 md:p-10 hover:border-[#34d399]/30 transition-all duration-700"
+                 className="group relative bg-white/5/40 backdrop-blur-3xl border border-white/5 rounded-[2.5rem] p-8 md:p-10 hover:border-clay/30 transition-all duration-700"
                >
                   <div className="flex flex-col space-y-8">
                      {/* Header */}
@@ -235,7 +235,7 @@ const ComparePage: React.FC = () => {
                                     <span className="text-[10px] font-black text-white/40 uppercase tracking-widest">{cardRef.name}</span>
                                  </div>
                                  {i < comp.cards.length - 1 && (
-                                   <div className="text-sm font-black text-[#34d399]/40 px-2 italic shrink-0">VS</div>
+                                   <div className="text-sm font-black text-clay/40 px-2 italic shrink-0">VS</div>
                                  )}
                               </React.Fragment>
                            );
@@ -245,7 +245,7 @@ const ComparePage: React.FC = () => {
                      {/* Action Button */}
                      <Link 
                        to={`/compare/${comp.cards.map(c => c.slug).join('-vs-')}`}
-                       className="w-full bg-white/5 border border-white/10 text-white/80 py-5 rounded-2xl text-[12px] font-black uppercase tracking-[0.2em] hover:bg-[#34d399] hover:text-black transition-all duration-500 flex items-center justify-center gap-3 shadow-xl hover:shadow-[#34d399]/20"
+                       className="w-full bg-white/5 border border-white/10 text-white/80 py-5 rounded-2xl text-[12px] font-black uppercase tracking-[0.2em] hover:bg-clay hover:text-black transition-all duration-500 flex items-center justify-center gap-3 shadow-xl hover:shadow-clay/20"
                      >
                         View Comparison <ArrowRight size={18} />
                      </Link>
@@ -264,8 +264,8 @@ const ComparePage: React.FC = () => {
                { icon: Sparkles, title: 'AI Insights', desc: 'Deep-dive analysis of hidden terms and reward capping.' }
             ].map((prop, i) => (
                <div key={i} className="space-y-4 group">
-                  <div className="w-12 h-12 bg-[#34d399]/10 rounded-2xl flex items-center justify-center group-hover:bg-[#34d399] transition-colors duration-500">
-                     <prop.icon className="text-[#34d399] group-hover:text-black transition-colors" />
+                  <div className="w-12 h-12 bg-clay/10 rounded-2xl flex items-center justify-center group-hover:bg-clay transition-colors duration-500">
+                     <prop.icon className="text-clay group-hover:text-black transition-colors" />
                   </div>
                   <h4 className="text-lg font-black text-white uppercase tracking-tight">{prop.title}</h4>
                   <p className="text-white/40 text-sm leading-relaxed">{prop.desc}</p>

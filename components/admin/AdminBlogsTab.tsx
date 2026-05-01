@@ -32,12 +32,12 @@ export const AdminBlogsTab: React.FC<AdminBlogsTabProps> = ({
     <div className="flex-1 overflow-x-auto overflow-y-auto max-h-[calc(100vh-16rem)] custom-scrollbar">
       <table className="w-full text-left border-collapse min-w-[900px]">
         <thead className="sticky top-0 z-20 shadow-sm">
-          <tr className="bg-[#1a1a1a] border-b border-white/5">
-            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-[#1a1a1a]">Publication Context</th>
-            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-[#1a1a1a]">Taxonomy</th>
-            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-[#1a1a1a]">Author</th>
-            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-[#1a1a1a]">Status & Timeline</th>
-            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 text-right bg-[#1a1a1a]">Management</th>
+          <tr className="bg-white/5 border-b border-white/5">
+            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-white/5">Publication Context</th>
+            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-white/5">Taxonomy</th>
+            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-white/5">Author</th>
+            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-white/5">Status & Timeline</th>
+            <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 text-right bg-white/5">Management</th>
           </tr>
         </thead>
 
@@ -56,7 +56,7 @@ export const AdminBlogsTab: React.FC<AdminBlogsTabProps> = ({
                         <img src={blog.image} alt={blog.title} className="w-full h-full object-cover" />
                       </div>
                       <div className="max-w-md">
-                        <div className="font-bold text-white leading-tight group-hover:text-[#34d399] transition-colors line-clamp-1">{blog.title}</div>
+                        <div className="font-bold text-white leading-tight group-hover:text-clay transition-colors line-clamp-1">{blog.title}</div>
                         <div className="text-[11px] text-white/40 mt-1 flex items-center gap-2">
                           <ExternalLink size={10} />
                           {blog.slug}
@@ -66,13 +66,13 @@ export const AdminBlogsTab: React.FC<AdminBlogsTabProps> = ({
                   </td>
                   <td className="px-8 py-6">
                     <span className="px-2.5 py-1.5 rounded-lg bg-white/5 text-white/60 text-[10px] font-black uppercase tracking-wider flex items-center gap-2 w-fit border border-white/5">
-                      <Target size={12} className="text-[#34d399]/40" />
+                      <Target size={12} className="text-clay/40" />
                       {blog.category}
                     </span>
                   </td>
                   <td className="px-8 py-6">
                     <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-full bg-[#34d399]/10 flex items-center justify-center text-[#34d399] text-[10px] font-bold">
+                      <div className="w-6 h-6 rounded-full bg-clay/10 flex items-center justify-center text-clay text-[10px] font-bold">
                         {blog.author?.[0] || 'A'}
                       </div>
                       <span className="text-sm text-white/70 font-medium">{blog.author}</span>
@@ -85,7 +85,7 @@ export const AdminBlogsTab: React.FC<AdminBlogsTabProps> = ({
                           <Clock size={12} /> Scheduled: {new Date(blog.scheduled_at!).toLocaleDateString()}
                         </div>
                       ) : (
-                        <div className="flex items-center gap-2 text-[#34d399] font-black uppercase tracking-widest text-[9px] bg-[#34d399]/10 px-2 py-1 rounded-md w-fit border border-[#34d399]/20">
+                        <div className="flex items-center gap-2 text-clay font-black uppercase tracking-widest text-[9px] bg-clay/10 px-2 py-1 rounded-md w-fit border border-clay/20">
                           <Target size={12} /> Live Post
                         </div>
                       )}
@@ -98,7 +98,7 @@ export const AdminBlogsTab: React.FC<AdminBlogsTabProps> = ({
                     <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                       <button 
                         onClick={() => onEdit(blog)}
-                        className="p-2.5 text-[#34d399] hover:bg-[#34d399]/10 rounded-xl transition-all border border-transparent hover:border-[#34d399]/20 shadow-sm"
+                        className="p-2.5 text-clay hover:bg-clay/10 rounded-xl transition-all border border-transparent hover:border-clay/20 shadow-sm"
                         title="Edit Publication"
                       >
                         <Edit2 size={18} />

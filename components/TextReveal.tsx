@@ -8,7 +8,7 @@ const TextReveal: React.FC = () => {
   const words = bodyText.split(' ');
 
   return (
-    <section className="relative bg-[#0a0a0a] border-b border-white/10 text-white">
+    <section className="relative bg-cream border-b border-white/10 text-white">
       {/* Background Micro-details */}
       <div className="absolute inset-0 opacity-[0.02] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/p6-mini.png')]" />
 

@@ -138,7 +138,7 @@ export const BlogForm: React.FC<BlogFormProps> = ({
         {/* Advanced List Dropdown */}
         <div className="relative group">
           <button type="button" className="p-2 hover:bg-white/10 rounded-lg transition-colors text-white/60" title="Lists"><List size={14}/></button>
-          <div className="absolute top-full left-0 mt-1 hidden group-hover:flex flex-col bg-[#0a0a0a] border border-white/10 shadow-xl rounded-xl p-1 z-50 min-w-[120px]">
+          <div className="absolute top-full left-0 mt-1 hidden group-hover:flex flex-col bg-cream border border-white/10 shadow-xl rounded-xl p-1 z-50 min-w-[120px]">
             <button type="button" onClick={() => insertMarkdown(field, 'bullet')} className="flex items-center gap-2 px-3 py-2 hover:bg-white/10 rounded-lg text-xs font-bold text-white/60">
               <div className="w-1.5 h-1.5 rounded-full bg-white/40" /> Bullets
             </button>
@@ -158,7 +158,7 @@ export const BlogForm: React.FC<BlogFormProps> = ({
       <button 
         type="button" 
         onClick={() => aiSmartFormat(field)}
-        className="flex items-center gap-2 px-4 py-2 bg-[#34d399]/10 hover:bg-[#34d399] text-[#34d399] hover:text-black rounded-xl transition-all font-bold text-[10px] uppercase tracking-widest border border-[#34d399]/20"
+        className="flex items-center gap-2 px-4 py-2 bg-clay/10 hover:bg-clay text-clay hover:text-black rounded-xl transition-all font-bold text-[10px] uppercase tracking-widest border border-clay/20"
       >
         <Sparkles size={14} className="animate-pulse" />
         AI Smart Format
@@ -196,7 +196,7 @@ export const BlogForm: React.FC<BlogFormProps> = ({
                 required
                 value={form.title}
                 onChange={e => setForm({...form, title: e.target.value})}
-                className="w-full bg-white/5 border-none rounded-2xl p-6 focus:ring-2 focus:ring-[#34d399] outline-none transition-all font-serif text-3xl placeholder:text-white/10 shadow-inner text-white"
+                className="w-full bg-white/5 border-none rounded-2xl p-6 focus:ring-2 focus:ring-clay outline-none transition-all font-serif text-3xl placeholder:text-white/10 shadow-inner text-white"
                 placeholder="Story Title..."
               />
             </div>
@@ -208,7 +208,7 @@ export const BlogForm: React.FC<BlogFormProps> = ({
                   type="text" 
                   value={form.author}
                   onChange={e => setForm({...form, author: e.target.value})}
-                  className="w-full bg-white/5 border-none rounded-xl p-4 text-sm focus:ring-2 focus:ring-[#34d399] outline-none shadow-sm text-white"
+                  className="w-full bg-white/5 border-none rounded-xl p-4 text-sm focus:ring-2 focus:ring-clay outline-none shadow-sm text-white"
                 />
               </div>
               <div>
@@ -216,13 +216,13 @@ export const BlogForm: React.FC<BlogFormProps> = ({
                 <select 
                   value={form.category}
                   onChange={e => setForm({...form, category: e.target.value})}
-                  className="w-full bg-white/5 border-none rounded-xl p-4 text-sm focus:ring-2 focus:ring-[#34d399] outline-none shadow-sm font-bold appearance-none bg-no-repeat bg-[right_1rem_center] text-white"
+                  className="w-full bg-white/5 border-none rounded-xl p-4 text-sm focus:ring-2 focus:ring-clay outline-none shadow-sm font-bold appearance-none bg-no-repeat bg-[right_1rem_center] text-white"
                 >
-                  <option className="bg-[#0a0a0a]">Credit Cards</option>
-                  <option className="bg-[#0a0a0a]">Finance</option>
-                  <option className="bg-[#0a0a0a]">Lifestyle</option>
-                  <option className="bg-[#0a0a0a]">Technology</option>
-                  <option className="bg-[#0a0a0a]">Savings</option>
+                  <option className="bg-cream">Credit Cards</option>
+                  <option className="bg-cream">Finance</option>
+                  <option className="bg-cream">Lifestyle</option>
+                  <option className="bg-cream">Technology</option>
+                  <option className="bg-cream">Savings</option>
                 </select>
               </div>
             </div>
@@ -238,13 +238,13 @@ export const BlogForm: React.FC<BlogFormProps> = ({
                   type="text" 
                   value={form.slug}
                   onChange={e => setForm({...form, slug: e.target.value})}
-                  className="flex-1 bg-[#0a0a0a] border border-white/10 rounded-lg px-3 py-2 text-[11px] focus:ring-1 focus:ring-[#34d399] outline-none font-mono text-white"
+                  className="flex-1 bg-cream border border-white/10 rounded-lg px-3 py-2 text-[11px] focus:ring-1 focus:ring-clay outline-none font-mono text-white"
                   placeholder="auto-generated"
                 />
                 <button 
                   type="button"
                   onClick={() => setForm({...form, slug: form.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')})}
-                  className="p-2 bg-white/10 text-white rounded-lg hover:bg-[#34d399] hover:text-black transition-colors"
+                  className="p-2 bg-white/10 text-white rounded-lg hover:bg-clay hover:text-black transition-colors"
                 >
                   <Settings size={14} />
                 </button>
@@ -255,7 +255,7 @@ export const BlogForm: React.FC<BlogFormProps> = ({
               <select 
                 value={form.publishMode}
                 onChange={e => setForm({...form, publishMode: e.target.value})}
-                className="w-full bg-[#0a0a0a] border border-white/10 rounded-lg px-3 py-2 text-[11px] focus:ring-1 focus:ring-[#34d399] outline-none font-bold text-white"
+                className="w-full bg-cream border border-white/10 rounded-lg px-3 py-2 text-[11px] focus:ring-1 focus:ring-clay outline-none font-bold text-white"
               >
                 <option value="now">Public Immediate</option>
                 <option value="later">Scheduled Release</option>
@@ -275,11 +275,11 @@ export const BlogForm: React.FC<BlogFormProps> = ({
             id="blog-excerpt"
             value={form.excerpt}
             onChange={e => setForm({...form, excerpt: e.target.value})}
-            className="w-full bg-[#0a0a0a] border border-white/10 rounded-2xl p-6 h-40 text-lg font-serif italic leading-relaxed focus:ring-0 outline-none resize-none shadow-sm text-white placeholder:text-white/20"
+            className="w-full bg-cream border border-white/10 rounded-2xl p-6 h-40 text-lg font-serif italic leading-relaxed focus:ring-0 outline-none resize-none shadow-sm text-white placeholder:text-white/20"
             placeholder="Paste Gemini summary..."
           />
-          <div className="bg-white/5 rounded-2xl p-8 border border-[#34d399]/10 overflow-y-auto max-h-40">
-             <div className="prose prose-sm prose-serif italic text-white/60 border-l-2 border-[#34d399] pl-4">
+          <div className="bg-white/5 rounded-2xl p-8 border border-clay/10 overflow-y-auto max-h-40">
+             <div className="prose prose-sm prose-serif italic text-white/60 border-l-2 border-clay pl-4">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>{form.excerpt || '*Awaiting draft...*'}</ReactMarkdown>
              </div>
           </div>
@@ -291,14 +291,14 @@ export const BlogForm: React.FC<BlogFormProps> = ({
         <div className="flex items-center justify-between border-b border-white/10 pb-2">
           <label className="text-[10px] font-black uppercase tracking-widest text-white/30">Master Manuscript</label>
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 text-[10px] text-[#34d399] font-bold uppercase tracking-widest animate-pulse">
+            <div className="flex items-center gap-2 text-[10px] text-clay font-bold uppercase tracking-widest animate-pulse">
                <Eye size={12} /> Live Render Active
             </div>
             <Toolbar field="content" />
           </div>
         </div>
         
-        <div className="flex flex-col lg:flex-row gap-0 border border-white/10 rounded-[2.5rem] overflow-hidden bg-[#0a0a0a] shadow-2xl min-h-[60vh]">
+        <div className="flex flex-col lg:flex-row gap-0 border border-white/10 rounded-[2.5rem] overflow-hidden bg-cream shadow-2xl min-h-[60vh]">
           <div className="lg:w-1/2 p-8 bg-white/5 border-r border-white/10">
             <textarea 
               id="blog-content"
@@ -308,8 +308,8 @@ export const BlogForm: React.FC<BlogFormProps> = ({
               placeholder="Start the journal story..."
             />
           </div>
-          <div className="lg:w-1/2 p-8 md:p-12 overflow-y-auto max-h-[60vh] bg-[#0a0a0a] custom-scrollbar">
-            <article className="prose prose-lg max-w-none prose-serif prose-headings:font-heading prose-headings:font-extrabold prose-headings:tracking-tight prose-headings:text-white prose-h2:text-3xl prose-h2:mt-16 prose-h2:mb-6 prose-h2:pb-4 prose-h2:border-b prose-h2:border-white/10 prose-h3:text-2xl prose-h3:mt-12 prose-h3:mb-4 prose-p:text-white/80 prose-p:leading-[1.85] prose-p:text-[17px] prose-a:text-[#34d399] prose-a:no-underline hover:prose-a:underline prose-blockquote:border-l-4 prose-blockquote:border-[#34d399] prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-white/60 prose-blockquote:not-italic prose-strong:text-white prose-strong:font-bold prose-code:bg-[#34d399]/10 prose-code:text-[#34d399] prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:font-mono prose-img:rounded-xl prose-img:shadow-lg prose-img:border prose-img:border-white/10 prose-ul:space-y-2 prose-li:text-white/75 prose-li:text-[17px] prose-hr:border-white/10 prose-hr:my-16">
+          <div className="lg:w-1/2 p-8 md:p-12 overflow-y-auto max-h-[60vh] bg-cream custom-scrollbar">
+            <article className="prose prose-lg max-w-none prose-serif prose-headings:font-heading prose-headings:font-extrabold prose-headings:tracking-tight prose-headings:text-white prose-h2:text-3xl prose-h2:mt-16 prose-h2:mb-6 prose-h2:pb-4 prose-h2:border-b prose-h2:border-white/10 prose-h3:text-2xl prose-h3:mt-12 prose-h3:mb-4 prose-p:text-white/80 prose-p:leading-[1.85] prose-p:text-[17px] prose-a:text-clay prose-a:no-underline hover:prose-a:underline prose-blockquote:border-l-4 prose-blockquote:border-clay prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-white/60 prose-blockquote:not-italic prose-strong:text-white prose-strong:font-bold prose-code:bg-clay/10 prose-code:text-clay prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:font-mono prose-img:rounded-xl prose-img:shadow-lg prose-img:border prose-img:border-white/10 prose-ul:space-y-2 prose-li:text-white/75 prose-li:text-[17px] prose-hr:border-white/10 prose-hr:my-16">
                <ReactMarkdown remarkPlugins={[remarkGfm]}>{form.content || '# The Journey Begins...'}</ReactMarkdown>
             </article>
           </div>
@@ -329,9 +329,9 @@ export const BlogForm: React.FC<BlogFormProps> = ({
         <button 
           type="submit" 
           disabled={saving}
-          className="bg-white text-black px-16 py-5 rounded-full font-bold hover:bg-[#34d399] transition-all shadow-2xl flex items-center gap-3 text-[10px] uppercase tracking-[0.2em] shrink-0"
+          className="bg-white text-black px-16 py-5 rounded-full font-bold hover:bg-clay transition-all shadow-2xl flex items-center gap-3 text-[10px] uppercase tracking-[0.2em] shrink-0"
         >
-          {saving ? <Loader2 className="animate-spin" size={20} /> : <Zap size={18} className="fill-[#34d399]" />}
+          {saving ? <Loader2 className="animate-spin" size={20} /> : <Zap size={18} className="fill-clay" />}
           {saving ? 'Transmitting...' : 'Confirm Publication'}
         </button>
       </div>

@@ -55,12 +55,12 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
       </AnimatePresence>
 
       <aside className={`
-        w-72 bg-[#0a0a0a] border-r border-white/5 flex flex-col fixed lg:sticky top-0 h-screen z-50 transition-all duration-500 ease-in-out shadow-2xl
+        w-72 bg-cream border-r border-white/5 flex flex-col fixed lg:sticky top-0 h-screen z-50 transition-all duration-500 ease-in-out shadow-2xl
         ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
         <div className="p-8 border-b border-white/5">
           <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 bg-white rounded-2xl flex items-center justify-center text-[#0a0a0a] font-serif font-black shadow-xl">Y</div>
+            <div className="w-10 h-10 bg-white rounded-2xl flex items-center justify-center text-cream font-serif font-black shadow-xl">Y</div>
             <div className="flex flex-col">
               <span className="font-serif font-black text-lg tracking-tight text-white leading-tight uppercase">Yureka Admin</span>
               <span className="text-[9px] uppercase font-black text-white/20 tracking-[0.2em] mt-1">Management Console</span>
@@ -82,7 +82,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
                     : 'text-white/40 hover:bg-white/5 hover:text-white'
                 }`}
               >
-                <Icon size={20} className={isActive ? 'text-[#34d399]' : 'text-white/20 group-hover:text-white transition-colors'} /> 
+                <Icon size={20} className={isActive ? 'text-clay' : 'text-white/20 group-hover:text-white transition-colors'} /> 
                 <span className={`text-[11px] font-bold uppercase tracking-widest ${isActive ? 'text-white' : 'text-white/40'}`}>
                   {item.label}
                 </span>
@@ -99,7 +99,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
                       repeat: Infinity,
                       ease: "easeInOut"
                     }}
-                    className="absolute left-1 w-1.5 h-8 bg-[#34d399] rounded-full shadow-[0_0_15px_rgba(52,211,153,0.5)]"
+                    className="absolute left-1 w-1.5 h-8 bg-clay rounded-full shadow-[0_0_15px_rgba(52,211,153,0.5)]"
                   />
                 )}
               </button>
@@ -109,7 +109,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
 
         <div className="p-6 border-t border-white/5 bg-white/[0.02]">
           <div className="flex items-center gap-4 px-2 mb-6">
-            <div className="w-10 h-10 rounded-2xl bg-[#111] border border-white/5 flex items-center justify-center text-white/40 text-xs font-black shadow-sm">
+            <div className="w-10 h-10 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center text-white/40 text-xs font-black shadow-sm">
               {user?.email?.[0].toUpperCase()}
             </div>
             <div className="overflow-hidden">
@@ -119,7 +119,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
           </div>
           <button 
             onClick={onLogout}
-            className="w-full flex items-center gap-3 px-5 py-4 rounded-2xl text-red-500 hover:bg-red-500/10 transition-all font-black text-[10px] uppercase tracking-widest border border-red-500/10 group shadow-sm bg-[#0a0a0a]"
+            className="w-full flex items-center gap-3 px-5 py-4 rounded-2xl text-red-500 hover:bg-red-500/10 transition-all font-black text-[10px] uppercase tracking-widest border border-red-500/10 group shadow-sm bg-cream"
           >
             <LogOut size={16} className="group-hover:-translate-x-1 transition-transform" /> 
             Sign Out Session

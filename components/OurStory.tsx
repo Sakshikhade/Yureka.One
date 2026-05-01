@@ -40,7 +40,7 @@ const FadeInSection: React.FC<FadeInSectionProps> = ({ children, delay = 0, clas
 
 const OurStory: React.FC = () => {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] pt-4 md:pt-8 pb-20 font-sans text-[#e5e5e5] px-2 md:px-6">
+    <div className="min-h-screen bg-cream pt-4 md:pt-8 pb-20 font-sans text-[#e5e5e5] px-2 md:px-6">
       
       {/* --- NEW HERO SECTION: LE MONDE STYLE --- */}
       <div className="max-w-[1280px] mx-auto overflow-hidden mb-12 animate-fade-in-up">
@@ -54,17 +54,17 @@ const OurStory: React.FC = () => {
             </div>
             {/* Masthead */}
             <div className="py-2 text-center relative px-2">
-                <h1 className="font-blackletter text-3xl sm:text-6xl md:text-8xl leading-none text-[#34d399] break-words">Yureka.money</h1>
+                <h1 className="font-blackletter text-3xl sm:text-6xl md:text-8xl leading-none text-clay break-words">Yureka.money</h1>
             </div>
             {/* Categories */}
             <div className="border-t-2 border-b border-white/20 py-1.5 flex justify-center flex-wrap gap-4 md:gap-8 text-[10px] md:text-xs font-bold uppercase tracking-[0.15em] text-white/60">
-                <a href="#ai-match" className="cursor-pointer hover:text-[#34d399] transition-colors">AI Match</a>
-                <a href="#rewards" className="cursor-pointer hover:text-[#34d399] transition-colors">Rewards</a>
-                <a href="#rules" className="cursor-pointer hover:text-[#34d399] transition-colors">Rules</a>
-                <a href="#money" className="cursor-pointer hover:text-[#34d399] transition-colors">Money</a>
-                <a href="#tech" className="cursor-pointer hover:text-[#34d399] transition-colors">Tech</a>
-                <a href="#security" className="cursor-pointer hover:text-[#34d399] transition-colors">Security</a>
-                <a href="#vouchers" className="cursor-pointer hover:text-[#34d399] transition-colors">Vouchers</a>
+                <a href="#ai-match" className="cursor-pointer hover:text-clay transition-colors">AI Match</a>
+                <a href="#rewards" className="cursor-pointer hover:text-clay transition-colors">Rewards</a>
+                <a href="#rules" className="cursor-pointer hover:text-clay transition-colors">Rules</a>
+                <a href="#money" className="cursor-pointer hover:text-clay transition-colors">Money</a>
+                <a href="#tech" className="cursor-pointer hover:text-clay transition-colors">Tech</a>
+                <a href="#security" className="cursor-pointer hover:text-clay transition-colors">Security</a>
+                <a href="#vouchers" className="cursor-pointer hover:text-clay transition-colors">Vouchers</a>
             </div>
         </div>
 
@@ -74,7 +74,7 @@ const OurStory: React.FC = () => {
             {/* Left Column: Editorial */}
             <div className="lg:col-span-2 hidden lg:block border-r border-white/10 pr-6">
                 <div className="mb-4">
-                    <span className="text-4xl text-[#34d399] font-blackletter block mb-2">J</span>
+                    <span className="text-4xl text-clay font-blackletter block mb-2">J</span>
                     <h3 className="font-bold uppercase tracking-widest text-xs mb-2 text-white/80">Editorial</h3>
                     <h4 className="font-serif font-bold text-lg leading-tight mb-2 text-white">The Problem</h4>
                 </div>
@@ -114,19 +114,19 @@ const OurStory: React.FC = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 border-t border-white/10 pt-6">
                     <div className="col-span-1">
-                        <h4 className="font-bold text-[10px] uppercase mb-2 flex items-center gap-2 text-[#34d399]"><span className="w-1.5 h-1.5 bg-[#34d399]"></span> Yureka AI</h4>
+                        <h4 className="font-bold text-[10px] uppercase mb-2 flex items-center gap-2 text-clay"><span className="w-1.5 h-1.5 bg-clay"></span> Yureka AI</h4>
                         <p className="font-serif text-sm leading-tight text-white/60">
                             We scan 200+ cards in seconds to find your best match.
                         </p>
                     </div>
                     <div className="col-span-1 border-l border-white/10 pl-6">
-                         <h4 className="font-bold text-[10px] uppercase mb-2 flex items-center gap-2 text-[#34d399]"><span className="w-1.5 h-1.5 bg-[#34d399]"></span> Rewards</h4>
+                         <h4 className="font-bold text-[10px] uppercase mb-2 flex items-center gap-2 text-clay"><span className="w-1.5 h-1.5 bg-clay"></span> Rewards</h4>
                          <p className="font-serif text-sm leading-tight text-white/60">
                             Average users save ₹15,000+ a year by finding the right card.
                          </p>
                     </div>
                     <div className="col-span-1 border-l border-white/10 pl-6">
-                         <h4 className="font-bold text-[10px] uppercase mb-2 flex items-center gap-2 text-[#34d399]"><span className="w-1.5 h-1.5 bg-[#34d399]"></span> Security</h4>
+                         <h4 className="font-bold text-[10px] uppercase mb-2 flex items-center gap-2 text-clay"><span className="w-1.5 h-1.5 bg-clay"></span> Security</h4>
                          <p className="font-serif text-sm leading-tight text-white/60">
                             We use bank-level security to keep your data safe.
                          </p>
@@ -182,7 +182,7 @@ const OurStory: React.FC = () => {
                     <ImageWithLoader src={item.img} className="w-full h-full object-cover opacity-60 group-hover:opacity-100" />
                 </div>
                 <div>
-                   <p className="text-[10px] font-bold uppercase tracking-wider text-[#34d399] opacity-70">{item.subtitle}</p>
+                   <p className="text-[10px] font-bold uppercase tracking-wider text-clay opacity-70">{item.subtitle}</p>
                    <p className="text-xs font-serif font-bold leading-tight text-white/80">{item.title}</p>
                 </div>
              </div>
@@ -192,7 +192,7 @@ const OurStory: React.FC = () => {
          <div className="bg-[#111111] text-white p-6 md:p-10 flex flex-col md:flex-row justify-between items-center md:items-end border-b border-white/20 text-center md:text-left">
             <div>
                 <h1 className="text-3xl sm:text-6xl lg:text-7xl font-heading font-black tracking-tighter leading-tight uppercase">
-                    our mission<span className="text-[#34d399]">.</span>
+                    our mission<span className="text-clay">.</span>
                 </h1>
             </div>
 
@@ -211,7 +211,7 @@ const OurStory: React.FC = () => {
          <div className="p-6 md:p-12 border-b border-white/10 text-center md:text-left">
             <FadeInSection>
                 <h2 className="text-2xl sm:text-5xl lg:text-6xl font-heading font-black leading-[1.1] text-white tracking-tight mb-4 uppercase">
-                    Credit cards are confusing. <br className="hidden md:block"/> <span className="text-[#34d399]">We make them simple.</span>
+                    Credit cards are confusing. <br className="hidden md:block"/> <span className="text-clay">We make them simple.</span>
                 </h2>
             </FadeInSection>
         </div>
@@ -224,7 +224,7 @@ const OurStory: React.FC = () => {
             <div className="lg:col-span-2 border-r border-white/10 p-4 md:p-6">
                  <FadeInSection delay={100}>
                      <div className="mb-8">
-                         <p className="text-[#34d399] font-serif text-xl italic mb-1">Editor's Note</p>
+                         <p className="text-clay font-serif text-xl italic mb-1">Editor's Note</p>
                          <h3 className="font-serif text-3xl font-bold leading-none mb-3 text-white">The Problem</h3>
                          <p className="font-serif text-sm leading-relaxed text-white/40">
                              "There are too many credit cards in India. Most people have the wrong one. We fix that."
@@ -234,9 +234,9 @@ const OurStory: React.FC = () => {
                          <div className="w-full h-px bg-white/10 mb-4"></div>
                          <p className="font-bold text-[10px] uppercase tracking-widest mb-2 text-white/20">In this issue</p>
                          <ul className="space-y-2 text-sm font-serif underline decoration-white/10 underline-offset-4 cursor-pointer text-white/60">
-                             <li className="hover:text-[#34d399]">Hidden Fees</li>
-                             <li className="hover:text-[#34d399]">Helpful AI</li>
-                             <li className="hover:text-[#34d399]">Save on Vouchers</li>
+                             <li className="hover:text-clay">Hidden Fees</li>
+                             <li className="hover:text-clay">Helpful AI</li>
+                             <li className="hover:text-clay">Save on Vouchers</li>
                          </ul>
                      </div>
                  </FadeInSection>
@@ -268,14 +268,14 @@ const OurStory: React.FC = () => {
                     <div className="md:col-span-8">
                         <FadeInSection delay={300}>
                             <div className="flex items-center gap-2 mb-4">
-                               <span className="bg-[#34d399] text-[#0a0a0a] text-[9px] font-bold uppercase px-2 py-1 rounded-sm">Cover Story</span>
+                               <span className="bg-clay text-cream text-[9px] font-bold uppercase px-2 py-1 rounded-sm">Cover Story</span>
                             </div>
                             <h3 className="text-2xl md:text-3xl font-serif font-bold leading-tight mb-4 text-white">
                                 Why it's hard to compare cards yourself, and how we help.
                             </h3>
                             <div className="columns-1 md:columns-2 gap-10 font-serif text-sm leading-relaxed text-justify text-white/60">
                                 <p className="mb-4">
-                                    <span className="float-left text-4xl font-bold leading-[0.8] mr-2 mt-[-2px] text-[#34d399]">T</span>here is too much information to check: fees, rewards, and rules.
+                                    <span className="float-left text-4xl font-bold leading-[0.8] mr-2 mt-[-2px] text-clay">T</span>here is too much information to check: fees, rewards, and rules.
                                 </p>
                                 <p className="mb-4">
                                     It's hard to find the best card on your own. That's why we built our AI. We do the math for you.
@@ -288,7 +288,7 @@ const OurStory: React.FC = () => {
                     </div>
 
                     {/* Right Sidebar Info Box */}
-                    <div className="md:col-span-4 bg-white/[0.02] p-5 border-t-4 border-[#34d399]">
+                    <div className="md:col-span-4 bg-white/[0.02] p-5 border-t-4 border-clay">
                         <FadeInSection delay={400}>
                             <h4 className="font-bold text-[10px] uppercase tracking-widest mb-4 text-white/20">The Data</h4>
                             <div className="space-y-4">
@@ -306,9 +306,9 @@ const OurStory: React.FC = () => {
                                 </div>
                             </div>
                             <div className="mt-6 pt-4 border-t border-white/5">
-                                <Quote size={24} className="text-[#34d399] mb-2 opacity-50" />
+                                <Quote size={24} className="text-clay mb-2 opacity-50" />
                                 <p className="font-serif italic text-sm text-white/60">"We want to help you save money and understand your finances."</p>
-                                <p className="text-[10px] font-bold uppercase mt-2 text-[#34d399] tracking-widest">— The Founders</p>
+                                <p className="text-[10px] font-bold uppercase mt-2 text-clay tracking-widest">— The Founders</p>
                             </div>
                         </FadeInSection>
                     </div>
@@ -330,7 +330,7 @@ const OurStory: React.FC = () => {
                         <div className="border-t-2 border-white/20 w-full pt-1 mb-2">
                             <span className="font-bold text-[10px] uppercase tracking-widest text-white/20">{col.label}</span>
                         </div>
-                        <h4 className="font-serif text-lg font-bold leading-tight mb-2 group-hover:text-[#34d399] transition-colors text-white/80">{col.title}</h4>
+                        <h4 className="font-serif text-lg font-bold leading-tight mb-2 group-hover:text-clay transition-colors text-white/80">{col.title}</h4>
                         <p className="text-xs font-serif leading-relaxed text-white/40">{col.desc}</p>
                     </div>
                 </FadeInSection>
@@ -347,7 +347,7 @@ const OurStory: React.FC = () => {
             <FadeInSection>
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 border-t-4 border-white/20 pt-12">
                     <div className="lg:col-span-4">
-                        <span className="text-[#34d399] font-bold text-[10px] uppercase tracking-[0.3em] block mb-4">Neural Dispatch 01</span>
+                        <span className="text-clay font-bold text-[10px] uppercase tracking-[0.3em] block mb-4">Neural Dispatch 01</span>
                         <h2 className="text-4xl md:text-5xl font-heading font-black leading-none mb-6 uppercase text-white">The AI Match Engine.</h2>
                         <div className="bg-[#111111] text-white/90 p-6 font-sans font-medium text-lg leading-relaxed shadow-2xl transform -rotate-1 border border-white/5">
                             "We don't guess. We compute. Every reward, every fee, every hidden clause scanned in 350ms."
@@ -357,7 +357,7 @@ const OurStory: React.FC = () => {
                     <div className="lg:col-span-8 flex flex-col justify-center">
                         <div className="columns-1 md:columns-2 gap-10 font-serif text-lg leading-relaxed text-justify text-white/60">
                             <p className="mb-6">
-                                <span className="float-left text-7xl font-bold leading-[0.7] mr-3 mt-1 text-[#34d399]">O</span>ur neural core is trained on the collective logic of thousands of credit instruments. It understands that a 5% reward rate is meaningless if the redemption cap is low or the exclusion list is long.
+                                <span className="float-left text-7xl font-bold leading-[0.7] mr-3 mt-1 text-clay">O</span>ur neural core is trained on the collective logic of thousands of credit instruments. It understands that a 5% reward rate is meaningless if the redemption cap is low or the exclusion list is long.
                             </p>
                             <p>
                                 By processing your spending patterns across 12 distinct categories, the engine simulates 12 months of usage for every card in our database. The result isn't a recommendation—it's a prediction of performance. Precision finance, finally tailored to the individual.
@@ -376,19 +376,19 @@ const OurStory: React.FC = () => {
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                             <div className="space-y-4">
-                                <h4 className="font-bold text-[10px] uppercase tracking-widest bg-[#34d399] text-[#0a0a0a] inline-block px-2 py-1">Strategy A</h4>
+                                <h4 className="font-bold text-[10px] uppercase tracking-widest bg-clay text-cream inline-block px-2 py-1">Strategy A</h4>
                                 <p className="font-serif text-lg leading-snug text-white/80">
                                     Maximize miles for travel. We map airline transfer partners across multiple card networks to build Your flight bridge.
                                 </p>
                             </div>
                             <div className="space-y-4">
-                                <h4 className="font-bold text-[10px] uppercase tracking-widest bg-emerald-500 text-[#0a0a0a] inline-block px-2 py-1">Strategy B</h4>
+                                <h4 className="font-bold text-[10px] uppercase tracking-widest bg-emerald-500 text-cream inline-block px-2 py-1">Strategy B</h4>
                                 <p className="font-serif text-lg leading-snug text-white/80">
                                     Direct cashback liquid assets. For those who prefer immediate injection of capital back into their ecosystem.
                                 </p>
                             </div>
                         </div>
-                        <p className="font-serif text-xl italic text-white/40 leading-relaxed border-l-4 border-[#34d399]/40 pl-6 py-2">
+                        <p className="font-serif text-xl italic text-white/40 leading-relaxed border-l-4 border-clay/40 pl-6 py-2">
                             Rewards are not "perks"—they are the yield of your lifestyle. If you aren't earning 3-5% CAGR on your regular spends, you are effectively paying a hidden tax to the banking system.
                         </p>
                     </div>
@@ -412,8 +412,8 @@ const OurStory: React.FC = () => {
                 <div className="relative border-4 border-white/10 p-8 md:p-16 overflow-hidden bg-white/[0.01]">
                     <div className="absolute top-0 right-0 p-4 font-blackletter text-6xl text-white/5 pointer-events-none">THE FINE PRINT</div>
                     <div className="max-w-3xl mx-auto text-center">
-                        <span className="text-[#34d399] font-bold text-[10px] uppercase tracking-[0.4em] mb-4 block">Registry Audit / Rules</span>
-                        <h2 className="text-4xl md:text-6xl font-serif font-bold leading-tight mb-8 italic underline decoration-[#34d399]/40 underline-offset-8 text-white">No More Cryptic Clauses.</h2>
+                        <span className="text-clay font-bold text-[10px] uppercase tracking-[0.4em] mb-4 block">Registry Audit / Rules</span>
+                        <h2 className="text-4xl md:text-6xl font-serif font-bold leading-tight mb-8 italic underline decoration-clay/40 underline-offset-8 text-white">No More Cryptic Clauses.</h2>
                         <div className="space-y-8 font-serif text-lg leading-relaxed text-white/60">
                             <p>
                                 Banks profit from complexity. The 50-page Terms & Conditions document is a wall designed to prevent you from truly understanding the instrument you hold.
@@ -453,11 +453,11 @@ const OurStory: React.FC = () => {
                                     "A credit card is either a hole in your pocket or a bridge to your next major investment. You choose the architecture."
                                 </p>
                              </div>
-                             <div className="text-[#34d399] font-blackletter text-[10rem] absolute -bottom-10 -right-10 opacity-5 group-hover:rotate-12 transition-transform duration-1000">$</div>
+                             <div className="text-clay font-blackletter text-[10rem] absolute -bottom-10 -right-10 opacity-5 group-hover:rotate-12 transition-transform duration-1000">$</div>
                         </div>
                     </div>
                     <div className="lg:col-span-7 order-1 lg:order-2 flex flex-col justify-center">
-                        <span className="text-[#34d399] font-bold text-[10px] uppercase tracking-[0.3em] block mb-4">Financial Dispatch 04</span>
+                        <span className="text-clay font-bold text-[10px] uppercase tracking-[0.3em] block mb-4">Financial Dispatch 04</span>
                         <h2 className="text-4xl md:text-5xl font-serif font-bold leading-none mb-6 text-white">Money: The Strategic Tool.</h2>
                         <div className="font-serif text-lg leading-relaxed text-justify text-white/60">
                             <p className="mb-6">
@@ -481,19 +481,19 @@ const OurStory: React.FC = () => {
                     </div>
 
                     <div className="lg:col-span-4 px-12 border-r border-white/5">
-                        <h4 className="font-bold text-[10px] uppercase tracking-[0.3em] mb-4 text-[#34d399]">Neural Engine</h4>
+                        <h4 className="font-bold text-[10px] uppercase tracking-[0.3em] mb-4 text-clay">Neural Engine</h4>
                         <p className="font-serif text-sm leading-relaxed text-white/60">
                             Our proprietary LLM-driven core parses bank policy PDF changes in real-time. No manual entry, no stale data.
                         </p>
                     </div>
                     <div className="lg:col-span-4 px-12 border-r border-white/5">
-                        <h4 className="font-bold text-[10px] uppercase tracking-[0.3em] mb-4 text-[#34d399]">Real-Time Sync</h4>
+                        <h4 className="font-bold text-[10px] uppercase tracking-[0.3em] mb-4 text-clay">Real-Time Sync</h4>
                         <p className="font-serif text-sm leading-relaxed text-white/60">
                             Integration with Supabase ensures that every card update is propagated to your dashboard in under 200ms.
                         </p>
                     </div>
                     <div className="lg:col-span-4 px-12">
-                        <h4 className="font-bold text-[10px] uppercase tracking-[0.3em] mb-4 text-[#34d399]">React Architecture</h4>
+                        <h4 className="font-bold text-[10px] uppercase tracking-[0.3em] mb-4 text-clay">React Architecture</h4>
                         <p className="font-serif text-sm leading-relaxed text-white/60">
                             A high-fidelity frontend built with Framer Motion for a tactile, responsive experience that feels like magic.
                         </p>
@@ -506,7 +506,7 @@ const OurStory: React.FC = () => {
         <section id="security" className="scroll-mt-32">
             <FadeInSection>
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 border-t border-white/10 pt-12">
-                    <div className="lg:col-span-6 bg-white/[0.02] p-12 border-l-8 border-[#34d399]/40">
+                    <div className="lg:col-span-6 bg-white/[0.02] p-12 border-l-8 border-clay/40">
                         <h2 className="text-4xl font-serif font-bold mb-6 text-white">Security as a Foundation.</h2>
                         <div className="space-y-6 font-serif text-lg leading-relaxed text-white/60">
                             <p>
@@ -514,15 +514,15 @@ const OurStory: React.FC = () => {
                             </p>
                             <ul className="space-y-4">
                                 <li className="flex gap-4 items-start">
-                                    <span className="w-6 h-6 rounded-full bg-[#34d399] text-[#0a0a0a] flex-shrink-0 flex items-center justify-center text-[10px] font-bold">01</span>
+                                    <span className="w-6 h-6 rounded-full bg-clay text-cream flex-shrink-0 flex items-center justify-center text-[10px] font-bold">01</span>
                                     <span><strong className="text-white">AES-256 Encryption</strong>: Your data is encrypted at rest and in transit.</span>
                                 </li>
                                 <li className="flex gap-4 items-start">
-                                    <span className="w-6 h-6 rounded-full bg-[#34d399] text-[#0a0a0a] flex-shrink-0 flex items-center justify-center text-[10px] font-bold">02</span>
+                                    <span className="w-6 h-6 rounded-full bg-clay text-cream flex-shrink-0 flex items-center justify-center text-[10px] font-bold">02</span>
                                     <span><strong className="text-white">Zero-Knowledge Architecture</strong>: We prioritize your privacy above all. We don't see what you don't share.</span>
                                 </li>
                                 <li className="flex gap-4 items-start">
-                                    <span className="w-6 h-6 rounded-full bg-[#34d399] text-[#0a0a0a] flex-shrink-0 flex items-center justify-center text-[10px] font-bold">03</span>
+                                    <span className="w-6 h-6 rounded-full bg-clay text-cream flex-shrink-0 flex items-center justify-center text-[10px] font-bold">03</span>
                                     <span><strong className="text-white">Regular Audits</strong>: Our systems undergo continuous penetration testing to ensure resilience.</span>
                                 </li>
                             </ul>
@@ -530,10 +530,10 @@ const OurStory: React.FC = () => {
                     </div>
                     <div className="lg:col-span-6 flex items-center justify-center">
                         <div className="relative w-full max-w-md aspect-square bg-[#111111] p-12 flex items-center justify-center overflow-hidden border border-white/5">
-                             <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[#34d399] to-transparent animate-pulse"></div>
+                             <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-clay to-transparent animate-pulse"></div>
                              <div className="w-32 h-32 border-4 border-white/10 rounded-full flex items-center justify-center relative z-10">
                                 <div className="w-16 h-16 bg-white rounded-sm transform rotate-45 flex items-center justify-center shadow-[0_0_20px_rgba(255,255,255,0.2)]">
-                                    <div className="w-4 h-4 bg-[#0a0a0a] rounded-full"></div>
+                                    <div className="w-4 h-4 bg-cream rounded-full"></div>
                                 </div>
                              </div>
                              <p className="absolute bottom-8 text-white/20 font-mono text-[10px] uppercase tracking-[0.5em]">System Status: Fortified</p>
@@ -548,8 +548,8 @@ const OurStory: React.FC = () => {
             <FadeInSection>
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 border-t-4 border-white pt-12 mb-20">
                     <div className="lg:col-span-4">
-                        <h2 className="text-4xl md:text-6xl font-blackletter mb-6 leading-none text-[#34d399]">Instant Value.</h2>
-                        <p className="font-serif text-xl italic text-white/40 mb-8 underline decoration-[#34d399]/40 underline-offset-4 decoration-2">Spend smart, Save smarter.</p>
+                        <h2 className="text-4xl md:text-6xl font-blackletter mb-6 leading-none text-clay">Instant Value.</h2>
+                        <p className="font-serif text-xl italic text-white/40 mb-8 underline decoration-clay/40 underline-offset-4 decoration-2">Spend smart, Save smarter.</p>
                         <ul className="space-y-4 font-bold text-[10px] uppercase tracking-widest text-white/30">
                             <li>• 500+ Luxury Partners</li>
                             <li>• 2-10% Immediate Savings</li>
@@ -570,7 +570,7 @@ const OurStory: React.FC = () => {
                                 <h3 className="text-2xl font-serif font-bold mb-2 tracking-tight">Ready to optimize?</h3>
                                 <p className="font-serif italic opacity-30 text-sm">Join 10,000+ high-performance spenders today.</p>
                              </div>
-                             <button className="bg-[#34d399] text-[#0a0a0a] px-8 py-4 font-bold text-[10px] uppercase tracking-widest hover:bg-white transition-all cursor-pointer shadow-lg shadow-[#34d399]/10">
+                             <button className="bg-clay text-cream px-8 py-4 font-bold text-[10px] uppercase tracking-widest hover:bg-white transition-all cursor-pointer shadow-lg shadow-clay/10">
                                 Join the Registry
                              </button>
                         </div>

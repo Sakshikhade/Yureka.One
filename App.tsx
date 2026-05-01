@@ -109,7 +109,7 @@ const Preloader = () => {
             opacity: 0,
             transition: { duration: 0.8, ease: [0.65, 0, 0.35, 1] }
           }}
-          className="fixed inset-0 z-[100] bg-[#0a0a0a] flex flex-col items-center justify-center overflow-hidden"
+          className="fixed inset-0 z-[100] bg-cream flex flex-col items-center justify-center overflow-hidden"
         >
           <div className="relative w-32 h-32 flex items-center justify-center">
             {/* Pulsing Outer Ring */}
@@ -120,7 +120,7 @@ const Preloader = () => {
                 rotate: 360
               }}
               transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-              className="absolute inset-0 border border-[#34d399] rounded-[2.5rem]"
+              className="absolute inset-0 border border-clay rounded-[2.5rem]"
             />
             
             {/* The Logo SVG - Lightweight but Premium */}
@@ -157,7 +157,7 @@ const Preloader = () => {
                  initial={{ width: "0%" }}
                  animate={{ width: "100%" }}
                  transition={{ duration: 1.2, ease: "easeInOut" }}
-                 className="h-full bg-[#34d399]"
+                 className="h-full bg-clay"
                />
             </div>
           </div>
@@ -166,7 +166,7 @@ const Preloader = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="mt-20 text-[10px] font-black text-[#34d399] uppercase tracking-[0.5em] animate-pulse"
+            className="mt-20 text-[10px] font-black text-clay uppercase tracking-[0.5em] animate-pulse"
           >
             System Active
           </motion.div>
@@ -181,7 +181,7 @@ const AppContent: React.FC = () => {
   const isAdminRoute = location.pathname.startsWith('/admin');
 
   return (
-    <div className={`min-h-screen bg-[#0a0a0a] font-sans text-white relative ${isAdminRoute ? 'pt-0' : 'pt-32 md:pt-36'}`}>
+    <div className={`min-h-screen bg-cream font-sans text-white relative ${isAdminRoute ? 'pt-0' : 'pt-32 md:pt-36'}`}>
       {!isAdminRoute && <Preloader />}
 
       <ScrollToTop />
@@ -190,13 +190,13 @@ const AppContent: React.FC = () => {
       
       <main className={`relative z-10 ${isAdminRoute ? 'pt-0' : ''}`}>
         <Suspense fallback={
-          <div className="fixed inset-0 z-[100] bg-[#0a0a0a]/80 backdrop-blur-xl flex items-center justify-center overflow-hidden">
+          <div className="fixed inset-0 z-[100] bg-cream/80 backdrop-blur-xl flex items-center justify-center overflow-hidden">
             <motion.div 
                animate={{ scale: [0.95, 1, 0.95], opacity: [0.5, 1, 0.5] }}
                transition={{ duration: 2, repeat: Infinity }}
-               className="w-40 h-40 bg-[#0a0a0a] rounded-[2rem] shadow-2xl flex items-center justify-center border border-white/5"
+               className="w-40 h-40 bg-cream rounded-[2rem] shadow-2xl flex items-center justify-center border border-white/5"
             >
-               <Sparkles className="text-[#34d399]" size={48} />
+               <Sparkles className="text-clay" size={48} />
             </motion.div>
           </div>
         }>
@@ -284,7 +284,7 @@ const AppContent: React.FC = () => {
       {!isAdminRoute && (
         <Link 
           to="/coming-soon"
-          className="fixed bottom-14 right-6 z-[100] bg-[#34d399] text-black p-4 rounded-full shadow-2xl hover:scale-110 transition-transform cursor-pointer border border-[#34d399]/20"
+          className="fixed bottom-14 right-6 z-[100] bg-clay text-black p-4 rounded-full shadow-2xl hover:scale-110 transition-transform cursor-pointer border border-clay/20"
           aria-label="Launch Intelligence Lab"
         >
           <button className="cursor-pointer" aria-hidden="true" tabIndex={-1}>

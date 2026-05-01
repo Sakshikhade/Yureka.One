@@ -12,7 +12,7 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <section id="hero" className="relative w-full flex flex-col items-center pt-2 md:pt-4 pb-6 bg-[#0a0a0a] border-b border-white/10 overflow-hidden text-[#F2EFE9] scroll-mt-32">
+    <section id="hero" className="relative w-full flex flex-col items-center pt-2 md:pt-4 pb-6 bg-cream border-b border-white/10 overflow-hidden text-[#F2EFE9] scroll-mt-32">
 
         {/* Background Grid/Lines - Flowing within the 3-column Core */}
         <div className="absolute inset-0 pointer-events-none">
@@ -34,7 +34,7 @@ const Hero: React.FC = () => {
             >
                 <div className="flex justify-center items-center gap-6 mb-4 md:md-6">
                      <div className="h-[1px] bg-white/10 w-12 md:w-24"></div>
-                     <span className="text-[#34d399] font-bold text-xs uppercase tracking-[0.4em]">The Automation of Wealth</span>
+                     <span className="text-clay font-bold text-xs uppercase tracking-[0.4em]">The Automation of Wealth</span>
                      <div className="h-[1px] bg-white/10 w-12 md:w-24"></div>
                 </div>
                 <h1 className="text-3xl sm:text-6xl md:text-7xl lg:text-[clamp(2.5rem,6vw,6.5rem)] leading-[0.9] font-heading font-extrabold text-white uppercase tracking-tight">
@@ -46,10 +46,10 @@ const Hero: React.FC = () => {
 
                 
                 <div className="mt-6 md:mt-8 mb-8 md:mb-10 flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 px-4">
-                    <Link to="/yureka-ai" className="group relative px-8 py-5 md:px-12 md:py-6 bg-white text-[#0a0a0a] overflow-hidden rounded-full w-full sm:w-auto shadow-[0_8px_40px_-12px_rgba(0,0,0,0.8)] transition-all hover:-translate-y-1 hover:shadow-2xl text-center border border-transparent">
-                        <div className="absolute inset-0 w-full h-full bg-[#34d399]/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+                    <Link to="/yureka-ai" className="group relative px-8 py-5 md:px-12 md:py-6 bg-white text-cream overflow-hidden rounded-full w-full sm:w-auto shadow-[0_8px_40px_-12px_rgba(0,0,0,0.8)] transition-all hover:-translate-y-1 hover:shadow-2xl text-center border border-transparent">
+                        <div className="absolute inset-0 w-full h-full bg-clay/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
                         <span className="relative z-10 font-bold text-[10px] md:text-[11px] uppercase tracking-[0.3em] flex items-center justify-center gap-3">
-                            <Sparkles size={16} className="text-[#34d399] animate-pulse" /> Find Your Perfect Card
+                            <Sparkles size={16} className="text-clay animate-pulse" /> Find Your Perfect Card
                         </span>
                     </Link>
                     

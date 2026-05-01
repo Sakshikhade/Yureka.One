@@ -76,7 +76,7 @@ const BlogDetail: React.FC = () => {
         return (
             <div className="min-h-screen bg-cream flex items-center justify-center">
                 <div className="space-y-4 text-center">
-                    <div className="w-12 h-12 border-2 border-[#34d399]/30 border-t-[#34d399] rounded-full animate-spin mx-auto" />
+                    <div className="w-12 h-12 border-2 border-clay/30 border-t-clay rounded-full animate-spin mx-auto" />
                     <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/40">Opening Article</p>
                 </div>
             </div>
@@ -86,10 +86,10 @@ const BlogDetail: React.FC = () => {
     if (!blog) {
         return (
             <div className="min-h-screen bg-cream flex flex-col items-center justify-center p-6 text-center">
-                <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-[#34d399] mb-6">404 Not Found</p>
+                <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-clay mb-6">404 Not Found</p>
                 <h1 className="text-5xl font-heading font-extrabold text-white mb-4 tracking-tight">Article Not Found</h1>
                 <p className="text-white/50 mb-10 max-w-md font-serif italic text-lg">The story you are looking for may have been archived or moved.</p>
-                <Link to="/blogs" className="bg-white text-black px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-[#34d399] transition-all">
+                <Link to="/blogs" className="bg-white text-black px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-clay transition-all">
                     Back to Journal
                 </Link>
             </div>
@@ -110,14 +110,14 @@ const BlogDetail: React.FC = () => {
 
             {/* ── READING PROGRESS BAR ── */}
             <div
-                className="fixed top-0 left-0 h-0.5 bg-gradient-to-r from-[#0a0a0a] to-[#34d399] z-[100] transition-all duration-75"
+                className="fixed top-0 left-0 h-0.5 bg-gradient-to-r from-cream to-clay z-[100] transition-all duration-75"
                 style={{ width: `${readingProgress}%` }}
             />
 
             {/* ── TOP NAV ── */}
             <div className="sticky top-[104px] md:top-20 z-40 bg-cream/90 backdrop-blur-xl border-b border-white/5">
                 <div className="max-w-[780px] mx-auto px-6 h-14 flex items-center justify-between">
-                    <Link to="/blogs" className="flex items-center gap-2 text-white/40 hover:text-[#34d399] transition-colors group text-[11px] font-bold uppercase tracking-widest font-sans">
+                    <Link to="/blogs" className="flex items-center gap-2 text-white/40 hover:text-clay transition-colors group text-[11px] font-bold uppercase tracking-widest font-sans">
                         <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
                         Journal
                     </Link>
@@ -126,16 +126,16 @@ const BlogDetail: React.FC = () => {
                             {copied && (
                                 <motion.span
                                     initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0 }}
-                                    className="text-[10px] font-bold text-[#34d399] uppercase tracking-widest mr-2"
+                                    className="text-[10px] font-bold text-clay uppercase tracking-widest mr-2"
                                 >
                                     Copied!
                                 </motion.span>
                             )}
                         </AnimatePresence>
-                        <button onClick={handleShare} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/5 text-white/40 hover:text-[#34d399] transition-all">
+                        <button onClick={handleShare} className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/5 text-white/40 hover:text-clay transition-all">
                             <Share2 size={16} />
                         </button>
-                        <button onClick={() => setBookmarked(!bookmarked)} className={`w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/5 transition-all ${bookmarked ? 'text-[#34d399]' : 'text-white/40 hover:text-[#34d399]'}`}>
+                        <button onClick={() => setBookmarked(!bookmarked)} className={`w-9 h-9 flex items-center justify-center rounded-full hover:bg-white/5 transition-all ${bookmarked ? 'text-clay' : 'text-white/40 hover:text-clay'}`}>
                             <Bookmark size={16} fill={bookmarked ? 'currentColor' : 'none'} />
                         </button>
                     </div>
@@ -148,7 +148,7 @@ const BlogDetail: React.FC = () => {
                 <header className="mb-12">
                     {/* Meta */}
                     <div className="flex items-center flex-wrap gap-3 mb-8 font-sans">
-                        <span className="bg-[#34d399]/10 text-[#34d399] text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full">
+                        <span className="bg-clay/10 text-clay text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full">
                             {blog.category}
                         </span>
                         <div className="flex items-center gap-1.5 text-white/40 text-[10px] font-bold uppercase tracking-widest">
@@ -198,7 +198,7 @@ const BlogDetail: React.FC = () => {
                 <article>
                     {/* Pull quote / excerpt */}
                     {blog.excerpt && (
-                        <div className="relative pl-6 border-l-4 border-[#34d399] mb-12">
+                        <div className="relative pl-6 border-l-4 border-clay mb-12">
                             <p className="text-xl md:text-2xl italic text-white/70 leading-relaxed font-serif font-medium">
                                 {blog.excerpt}
                             </p>
@@ -211,10 +211,10 @@ const BlogDetail: React.FC = () => {
                         prose-h2:text-3xl prose-h2:mt-16 prose-h2:mb-6 prose-h2:pb-4 prose-h2:border-b prose-h2:border-white/10
                         prose-h3:text-2xl prose-h3:mt-12 prose-h3:mb-4
                         prose-p:text-white/80 prose-p:leading-[1.85] prose-p:text-[17px] prose-p:font-serif
-                        prose-a:text-[#34d399] prose-a:no-underline hover:prose-a:underline
-                        prose-blockquote:border-l-4 prose-blockquote:border-[#34d399] prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-white/60 prose-blockquote:not-italic
+                        prose-a:text-clay prose-a:no-underline hover:prose-a:underline
+                        prose-blockquote:border-l-4 prose-blockquote:border-clay prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-white/60 prose-blockquote:not-italic
                         prose-strong:text-white prose-strong:font-bold
-                        prose-code:bg-[#34d399]/10 prose-code:text-[#34d399] prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:font-mono
+                        prose-code:bg-clay/10 prose-code:text-clay prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:font-mono
                         prose-img:rounded-xl prose-img:shadow-lg prose-img:border prose-img:border-white/10
                         prose-ul:space-y-2 prose-li:text-white/75 prose-li:font-serif prose-li:text-[17px]
                         prose-hr:border-white/10 prose-hr:my-16
@@ -234,12 +234,12 @@ const BlogDetail: React.FC = () => {
                             <a href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(window.location.href)}&title=${encodeURIComponent(blog.title)}`} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/50 hover:bg-[#0077b5] hover:text-white transition-all">
                                 <Linkedin size={16} />
                             </a>
-                            <button onClick={handleShare} className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/50 hover:bg-[#34d399] hover:text-black transition-all">
+                            <button onClick={handleShare} className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/50 hover:bg-clay hover:text-black transition-all">
                                 <LinkIcon size={16} />
                             </button>
                         </div>
                     </div>
-                    <button onClick={() => setBookmarked(!bookmarked)} className={`flex items-center gap-2 px-5 py-3 rounded-full border text-[11px] font-bold uppercase tracking-widest transition-all font-sans ${bookmarked ? 'border-[#34d399] text-[#34d399] bg-[#34d399]/5' : 'border-white/10 text-white/40 hover:border-[#34d399] hover:text-[#34d399]'}`}>
+                    <button onClick={() => setBookmarked(!bookmarked)} className={`flex items-center gap-2 px-5 py-3 rounded-full border text-[11px] font-bold uppercase tracking-widest transition-all font-sans ${bookmarked ? 'border-clay text-clay bg-clay/5' : 'border-white/10 text-white/40 hover:border-clay hover:text-clay'}`}>
                         <Bookmark size={14} fill={bookmarked ? 'currentColor' : 'none'} />
                         {bookmarked ? 'Saved' : 'Save Article'}
                     </button>
@@ -258,7 +258,7 @@ const BlogDetail: React.FC = () => {
                         <p className="text-white/60 leading-relaxed font-serif italic text-[15px]">
                             Senior analyst at Yureka, specializing in Indian credit ecosystems, reward optimization, and fintech strategy. Published weekly in The Yureka Journal.
                         </p>
-                        <Link to="/blogs" className="inline-flex items-center gap-2 text-[#34d399] text-[11px] font-bold uppercase tracking-widest font-sans hover:gap-3 transition-all">
+                        <Link to="/blogs" className="inline-flex items-center gap-2 text-clay text-[11px] font-bold uppercase tracking-widest font-sans hover:gap-3 transition-all">
                             More articles <ArrowLeft size={12} className="rotate-180" />
                         </Link>
                     </div>
@@ -277,8 +277,8 @@ const BlogDetail: React.FC = () => {
                                     <div className="aspect-[4/3] rounded-xl overflow-hidden mb-4 border border-white/5">
                                         <ImageWithLoader src={post.image} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                     </div>
-                                    <span className="text-[9px] font-bold uppercase tracking-widest text-[#34d399] font-sans">{post.category}</span>
-                                    <h4 className="text-base font-bold text-white/90 leading-[1.3] mt-1 group-hover:text-[#34d399] transition-colors font-sans line-clamp-2">{post.title}</h4>
+                                    <span className="text-[9px] font-bold uppercase tracking-widest text-clay font-sans">{post.category}</span>
+                                    <h4 className="text-base font-bold text-white/90 leading-[1.3] mt-1 group-hover:text-clay transition-colors font-sans line-clamp-2">{post.title}</h4>
                                     <p className="text-white/40 text-sm font-serif italic mt-2 line-clamp-2">{post.excerpt}</p>
                                 </Link>
                             ))}
@@ -287,14 +287,14 @@ const BlogDetail: React.FC = () => {
                 )}
 
                 {/* ── CTA ── */}
-                <div className="mt-24 rounded-2xl bg-gradient-to-br from-[#123b2c] to-[#0a1f17] border border-[#34d399]/20 p-10 text-center relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-[#34d399]/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-                    <p className="text-[#34d399] text-[10px] font-bold uppercase tracking-[0.4em] font-sans mb-4">Never miss a dispatch</p>
+                <div className="mt-24 rounded-2xl bg-gradient-to-br from-[#123b2c] to-[#0a1f17] border border-clay/20 p-10 text-center relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-clay/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+                    <p className="text-clay text-[10px] font-bold uppercase tracking-[0.4em] font-sans mb-4">Never miss a dispatch</p>
                     <h3 className="text-3xl md:text-4xl font-heading font-extrabold text-white tracking-tight mb-3 relative z-10">
-                        The future of credit is <span className="italic font-serif font-light text-[#34d399]">conversational.</span>
+                        The future of credit is <span className="italic font-serif font-light text-clay">conversational.</span>
                     </h3>
                     <p className="text-white/60 font-serif italic mb-8 relative z-10">Join 50,000+ others on the AI-driven financial optimization platform.</p>
-                    <Link to="/join-waitlist" className="inline-block bg-[#34d399] text-black px-10 py-4 rounded-full font-bold uppercase tracking-widest text-[11px] font-sans hover:bg-white transition-all shadow-lg shadow-[#34d399]/20 relative z-10">
+                    <Link to="/join-waitlist" className="inline-block bg-clay text-black px-10 py-4 rounded-full font-bold uppercase tracking-widest text-[11px] font-sans hover:bg-white transition-all shadow-lg shadow-clay/20 relative z-10">
                         Join VIP Waitlist →
                     </Link>
                 </div>
@@ -306,7 +306,7 @@ const BlogDetail: React.FC = () => {
                     <motion.button
                         initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.8 }}
                         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                        className="fixed bottom-8 right-8 w-12 h-12 bg-white text-black rounded-full shadow-2xl flex items-center justify-center hover:bg-[#34d399] transition-all z-50 border border-black/10"
+                        className="fixed bottom-8 right-8 w-12 h-12 bg-white text-black rounded-full shadow-2xl flex items-center justify-center hover:bg-clay transition-all z-50 border border-black/10"
                     >
                         <ChevronUp size={20} />
                     </motion.button>

@@ -57,7 +57,7 @@ export const AdminModals: React.FC<AdminModalsProps> = ({
       {isDeleteModalOpen && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={() => setIsDeleteModalOpen(false)}></div>
-          <div className="relative bg-[#111] w-full max-w-md rounded-[2.5rem] shadow-[0_30px_100px_rgba(0,0,0,0.8)] p-10 text-center border border-white/10">
+          <div className="relative bg-white/5 w-full max-w-md rounded-[2.5rem] shadow-[0_30px_100px_rgba(0,0,0,0.8)] p-10 text-center border border-white/10">
             <div className="w-20 h-20 bg-red-500/10 text-red-500 rounded-full flex items-center justify-center mx-auto mb-8 border border-red-500/20">
               <Trash2 size={40} />
             </div>
@@ -93,11 +93,11 @@ export const AdminModals: React.FC<AdminModalsProps> = ({
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={() => setIsModalOpen(false)}></div>
-          <div className="relative bg-[#111] w-full max-w-2xl rounded-[3rem] shadow-[0_40px_120px_rgba(0,0,0,0.9)] overflow-hidden max-h-[90vh] flex flex-col border border-white/10">
-            <div className="p-8 border-b border-white/5 flex justify-between items-center bg-[#1a1a1a]">
+          <div className="relative bg-white/5 w-full max-w-2xl rounded-[3rem] shadow-[0_40px_120px_rgba(0,0,0,0.9)] overflow-hidden max-h-[90vh] flex flex-col border border-white/10">
+            <div className="p-8 border-b border-white/5 flex justify-between items-center bg-white/5">
               <div className="flex items-center gap-4">
-                <div className="w-10 h-10 bg-[#34d399]/10 rounded-xl flex items-center justify-center text-[#34d399] border border-[#34d399]/20">
-                   <div className="w-2.5 h-2.5 bg-[#34d399] rounded-full animate-pulse shadow-[0_0_10px_rgba(52,211,153,0.5)]" />
+                <div className="w-10 h-10 bg-clay/10 rounded-xl flex items-center justify-center text-clay border border-clay/20">
+                   <div className="w-2.5 h-2.5 bg-clay rounded-full animate-pulse shadow-[0_0_10px_rgba(52,211,153,0.5)]" />
                 </div>
                 <div>
                   <h2 className="text-2xl font-serif font-black text-white uppercase tracking-tight">
@@ -114,7 +114,7 @@ export const AdminModals: React.FC<AdminModalsProps> = ({
               </button>
             </div>
 
-            <div className="p-8 overflow-y-auto custom-scrollbar bg-[#111]">
+            <div className="p-8 overflow-y-auto custom-scrollbar bg-white/5">
               {helpers.error && (
                 <div className="mb-8 p-5 bg-red-500/10 text-red-500 rounded-[1.5rem] flex items-center gap-4 text-[11px] font-black uppercase tracking-wider border border-red-500/20">
                   <div className="p-1.5 bg-red-500 text-white rounded-lg">

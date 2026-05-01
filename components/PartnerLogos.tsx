@@ -12,7 +12,7 @@ const PARTNERS = [
 const ITEMS = [...PARTNERS, ...PARTNERS, ...PARTNERS, ...PARTNERS];
 
 const PartnerLogos: React.FC = () => (
-  <div className="w-full bg-[#0a0a0a] py-12 overflow-hidden relative">
+  <div className="w-full bg-cream py-12 overflow-hidden relative">
     <div className="max-w-4xl mx-auto px-6">
       <div className="relative bg-white/[0.08] backdrop-blur-3xl border border-white/20 rounded-full px-12 py-5 shadow-[0_0_40px_rgba(255,255,255,0.05),0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden">
         {/* Shine effect */}

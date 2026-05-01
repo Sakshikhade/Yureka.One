@@ -16,10 +16,10 @@ export const AdminLogsTab: React.FC = () => {
         <p className="text-white/40 text-xs font-bold uppercase tracking-widest">A transparent record of all environmental modifications.</p>
       </div>
 
-      <div className="overflow-x-auto overflow-y-auto max-h-[calc(100vh-20rem)] custom-scrollbar rounded-[2rem] border border-white/5 bg-[#1a1a1a]/30">
+      <div className="overflow-x-auto overflow-y-auto max-h-[calc(100vh-20rem)] custom-scrollbar rounded-[2rem] border border-white/5 bg-white/5/30">
         <table className="w-full text-left border-collapse min-w-[800px]">
           <thead className="sticky top-0 z-20 shadow-sm">
-            <tr className="bg-[#1a1a1a] text-[10px] uppercase font-black tracking-widest text-white/40 border-b border-white/5">
+            <tr className="bg-white/5 text-[10px] uppercase font-black tracking-widest text-white/40 border-b border-white/5">
               <th className="px-8 py-5">Timestamp</th>
               <th className="px-8 py-5">Node Identity</th>
               <th className="px-8 py-5">Modification</th>
@@ -37,7 +37,7 @@ export const AdminLogsTab: React.FC = () => {
                 <td className="px-8 py-6">
                   <span className={`px-2.5 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider border ${
                     log.action === 'INSERT' 
-                      ? 'bg-[#34d399]/10 text-[#34d399] border-[#34d399]/20' 
+                      ? 'bg-clay/10 text-clay border-clay/20' 
                       : log.action === 'UPDATE' 
                         ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' 
                         : 'bg-red-500/10 text-red-500 border-red-500/20'

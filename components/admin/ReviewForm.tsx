@@ -42,11 +42,11 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
                 <p className="text-[9px] font-black uppercase tracking-widest mt-4">Awaiting Signal</p>
               </div>
             )}
-            <div className="absolute inset-0 bg-[#0a0a0a]/60 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center backdrop-blur-sm">
+            <div className="absolute inset-0 bg-cream/60 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center backdrop-blur-sm">
               <button 
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="bg-white text-[#0a0a0a] p-4 rounded-full hover:scale-110 transition-transform shadow-2xl active:scale-95"
+                className="bg-white text-cream p-4 rounded-full hover:scale-110 transition-transform shadow-2xl active:scale-95"
               >
                 <Upload size={20} />
               </button>
@@ -59,8 +59,8 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
             className="hidden" 
             accept="image/*"
           />
-          <div className="p-5 rounded-2xl bg-[#34d399]/5 border border-[#34d399]/10">
-            <p className="text-[9px] text-[#34d399] font-black uppercase tracking-widest leading-relaxed text-center">Neural Optimization: Portrait imagery enhances social proof credibility nodes.</p>
+          <div className="p-5 rounded-2xl bg-clay/5 border border-clay/10">
+            <p className="text-[9px] text-clay font-black uppercase tracking-widest leading-relaxed text-center">Neural Optimization: Portrait imagery enhances social proof credibility nodes.</p>
           </div>
         </div>
 
@@ -71,7 +71,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
               type="text" required
               value={form.author}
               onChange={e => setForm({...form, author: e.target.value})}
-              className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 focus:ring-2 focus:ring-[#34d399] outline-none transition-all text-white placeholder:text-white/10"
+              className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 focus:ring-2 focus:ring-clay outline-none transition-all text-white placeholder:text-white/10"
               placeholder="Full Name"
             />
           </div>
@@ -82,7 +82,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
                 type="text" required
                 value={form.role}
                 onChange={e => setForm({...form, role: e.target.value})}
-                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 focus:ring-2 focus:ring-[#34d399] outline-none transition-all text-white"
+                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 focus:ring-2 focus:ring-clay outline-none transition-all text-white"
                 placeholder="e.g. CTO"
               />
             </div>
@@ -92,7 +92,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
                 type="text" required
                 value={form.company}
                 onChange={e => setForm({...form, company: e.target.value})}
-                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 focus:ring-2 focus:ring-[#34d399] outline-none transition-all text-white"
+                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 focus:ring-2 focus:ring-clay outline-none transition-all text-white"
                 placeholder="Company"
               />
             </div>
@@ -104,7 +104,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
               type="text"
               value={form.company_logo}
               onChange={e => setForm({...form, company_logo: e.target.value})}
-              className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-xs focus:ring-2 focus:ring-[#34d399] outline-none transition-all text-white font-mono"
+              className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 text-xs focus:ring-2 focus:ring-clay outline-none transition-all text-white font-mono"
               placeholder="https://asset-node.com/logo.svg"
             />
           </div>
@@ -115,7 +115,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
                 type="number" min="1" max="5"
                 value={form.rating || 5}
                 onChange={e => setForm({...form, rating: parseInt(e.target.value)})}
-                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 focus:ring-2 focus:ring-[#34d399] outline-none transition-all text-white font-bold"
+                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 focus:ring-2 focus:ring-clay outline-none transition-all text-white font-bold"
               />
             </div>
             <div>
@@ -123,18 +123,18 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
               <select 
                 value={form.source || 'Direct'}
                 onChange={e => setForm({...form, source: e.target.value})}
-                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 focus:ring-2 focus:ring-[#34d399] outline-none transition-all text-white appearance-none"
+                className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 focus:ring-2 focus:ring-clay outline-none transition-all text-white appearance-none"
               >
-                <option value="Direct" className="bg-[#0a0a0a]">Direct Transmission</option>
-                <option value="App Store" className="bg-[#0a0a0a]">Apple Ecosystem</option>
-                <option value="Google Play" className="bg-[#0a0a0a]">Android Network</option>
+                <option value="Direct" className="bg-cream">Direct Transmission</option>
+                <option value="App Store" className="bg-cream">Apple Ecosystem</option>
+                <option value="Google Play" className="bg-cream">Android Network</option>
               </select>
             </div>
           </div>
 
           <div className="flex items-center gap-4 py-4">
              <label className="flex items-center gap-4 cursor-pointer group">
-                <div className={`w-14 h-7 rounded-full p-1 transition-all duration-500 ${form.featured ? 'bg-[#34d399]' : 'bg-white/10 border border-white/10'}`}>
+                <div className={`w-14 h-7 rounded-full p-1 transition-all duration-500 ${form.featured ? 'bg-clay' : 'bg-white/10 border border-white/10'}`}>
                     <div className={`w-5 h-5 bg-white rounded-full shadow-lg transition-all duration-500 transform ${form.featured ? 'translate-x-7' : 'translate-x-0'}`} />
                 </div>
                 <input 
@@ -143,7 +143,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
                     checked={form.featured || false}
                     onChange={e => setForm({...form, featured: e.target.checked})}
                 />
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30 group-hover:text-[#34d399] transition-colors">Elite Hero Highlight</span>
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30 group-hover:text-clay transition-colors">Elite Hero Highlight</span>
              </label>
           </div>
 
@@ -152,7 +152,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
             <textarea 
               value={form.quote}
               onChange={e => setForm({...form, quote: e.target.value})}
-              className="w-full bg-white/5 border border-white/10 rounded-2xl p-5 focus:ring-2 focus:ring-[#34d399] outline-none transition-all h-40 text-white leading-relaxed font-serif italic"
+              className="w-full bg-white/5 border border-white/10 rounded-2xl p-5 focus:ring-2 focus:ring-clay outline-none transition-all h-40 text-white leading-relaxed font-serif italic"
               placeholder="Deploy the user narrative..."
             />
           </div>
@@ -171,7 +171,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
         <button 
           type="submit" 
           disabled={uploading || saving}
-          className="bg-white text-[#0a0a0a] px-16 py-5 rounded-[2rem] font-black hover:bg-[#34d399] hover:text-white transition-all shadow-2xl disabled:opacity-50 flex items-center gap-3 text-[11px] uppercase tracking-[0.2em] shrink-0 active:scale-95"
+          className="bg-white text-cream px-16 py-5 rounded-[2rem] font-black hover:bg-clay hover:text-white transition-all shadow-2xl disabled:opacity-50 flex items-center gap-3 text-[11px] uppercase tracking-[0.2em] shrink-0 active:scale-95"
         >
           {(uploading || saving) ? <Loader2 className="animate-spin" size={24} /> : <Zap size={22} className="fill-current" />}
           {(uploading || saving) ? 'TRANSMITTING...' : 'COMMIT REVIEW'}

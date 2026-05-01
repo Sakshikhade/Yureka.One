@@ -12,7 +12,7 @@ import {
 
 const WindowFrame: React.FC<{ children: React.ReactNode, title?: string, color?: string, dark?: boolean }> = ({ children, title, color = "clay", dark = true }) => {
   return (
-    <div className={`w-full h-full bg-[#0a0a0a] rounded-[1.5rem] md:rounded-[2rem] overflow-hidden border border-white/5 shadow-2xl transition-all duration-500 group-hover:shadow-${color}/10 group-hover:border-${color}/20 flex flex-col`}>
+    <div className={`w-full h-full bg-cream rounded-[1.5rem] md:rounded-[2rem] overflow-hidden border border-white/5 shadow-2xl transition-all duration-500 group-hover:shadow-${color}/10 group-hover:border-${color}/20 flex flex-col`}>
       {/* Browser/OS Top Bar */}
       <div className={`px-4 py-3 md:px-6 md:py-4 border-b border-white/5 bg-white/5 flex justify-between items-center backdrop-blur-md`}>
         <div className="flex gap-1.5 md:gap-2">
@@ -117,7 +117,7 @@ const YurekaAIAnimation = () => {
 
   return (
     <WindowFrame title="Yureka Neural Engine" color="teal">
-      <div className="h-full flex flex-col bg-[#0a0a0a] relative overflow-hidden">
+      <div className="h-full flex flex-col bg-cream relative overflow-hidden">
         {/* Ambient glow when AI thinks */}
         <AnimatePresence>
           {isThinking && (
@@ -130,7 +130,7 @@ const YurekaAIAnimation = () => {
         </AnimatePresence>
 
         {/* Fade top edge */}
-        <div className="absolute top-0 left-0 right-0 h-10 bg-gradient-to-b from-[#0a0a0a] to-transparent z-20 pointer-events-none" />
+        <div className="absolute top-0 left-0 right-0 h-10 bg-gradient-to-b from-cream to-transparent z-20 pointer-events-none" />
 
         <div ref={scrollRef} className="flex-1 px-5 md:px-10 pt-10 pb-6 space-y-6 overflow-y-auto no-scrollbar relative z-10">
           <AnimatePresence mode="popLayout">
@@ -144,16 +144,16 @@ const YurekaAIAnimation = () => {
                 className={`flex items-end gap-3 ${msg.type === 'user' ? 'flex-row-reverse' : 'flex-row'}`}
               >
                 <div className={`w-8 h-8 md:w-10 md:h-10 rounded-2xl shrink-0 flex items-center justify-center ${
-                  msg.type === 'user' ? 'bg-[#34d399] shadow-lg shadow-[#34d399]/20' : 'bg-white/[0.06] border border-white/10'
+                  msg.type === 'user' ? 'bg-clay shadow-lg shadow-clay/20' : 'bg-white/[0.06] border border-white/10'
                 }`}>
                   {msg.type === 'user'
-                    ? <Search size={14} className="text-[#0a0a0a]" />
-                    : <Cpu size={15} className="text-[#34d399]" />}
+                    ? <Search size={14} className="text-cream" />
+                    : <Cpu size={15} className="text-clay" />}
                 </div>
                 <div className={`max-w-[85%] px-4 py-3 rounded-2xl text-[11px] md:text-[13px] leading-relaxed font-medium border ${
                   msg.type === 'user'
                     ? 'bg-white/[0.06] border-white/[0.08] text-white/80 rounded-br-[4px]'
-                    : 'bg-[#34d399] border-[#34d399] text-[#0a0a0a] font-semibold rounded-bl-[4px] shadow-lg shadow-[#34d399]/15'
+                    : 'bg-clay border-clay text-cream font-semibold rounded-bl-[4px] shadow-lg shadow-clay/15'
                 }`}>
                   {msg.type === 'ai' ? (
                     <TypewriterText text={msg.text} delay={14} onComplete={() => setFinishedTypingId(p => [...p, msg.id])} />
@@ -172,17 +172,17 @@ const YurekaAIAnimation = () => {
                 className="flex items-end gap-3"
               >
                 <div className="w-8 h-8 md:w-10 md:h-10 rounded-2xl shrink-0 bg-white/[0.06] border border-white/10 flex items-center justify-center">
-                  <Cpu size={15} className="text-[#34d399]" />
+                  <Cpu size={15} className="text-clay" />
                 </div>
                 <div className="px-5 py-3.5 bg-white/[0.05] border border-white/[0.08] rounded-2xl rounded-bl-[4px] flex gap-2 items-center">
                   {[0,1,2].map(i => (
                     <motion.div key={i}
                       animate={{ y: [0, -5, 0], opacity: [0.3, 1, 0.3] }}
                       transition={{ duration: 0.85, repeat: Infinity, delay: i * 0.17, ease: 'easeInOut' }}
-                      className="w-2 h-2 bg-[#34d399] rounded-full"
+                      className="w-2 h-2 bg-clay rounded-full"
                     />
                   ))}
-                  <span className="ml-2 text-[9px] text-[#34d399]/50 font-bold uppercase tracking-widest animate-pulse">Computing yield…</span>
+                  <span className="ml-2 text-[9px] text-clay/50 font-bold uppercase tracking-widest animate-pulse">Computing yield…</span>
                 </div>
               </motion.div>
             )}
@@ -190,13 +190,13 @@ const YurekaAIAnimation = () => {
         </div>
 
         {/* Input bar */}
-        <div className="px-5 py-4 border-t border-white/[0.06] bg-[#0a0a0a]/90 backdrop-blur-md">
+        <div className="px-5 py-4 border-t border-white/[0.06] bg-cream/90 backdrop-blur-md">
           <div className="h-12 bg-white/[0.04] border border-white/[0.08] rounded-2xl flex items-center px-5 gap-3">
             <AnimatePresence mode="wait">
               {inputActive ? (
                 <motion.div key="active" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex items-center gap-2 flex-1">
-                  <motion.div animate={{ opacity: [1,0,1] }} transition={{ repeat: Infinity, duration: 1 }} className="w-2 h-2 bg-[#34d399] rounded-full shrink-0" />
-                  <span className="text-[11px] text-[#34d399] font-medium">Analysing wallet matrix…</span>
+                  <motion.div animate={{ opacity: [1,0,1] }} transition={{ repeat: Infinity, duration: 1 }} className="w-2 h-2 bg-clay rounded-full shrink-0" />
+                  <span className="text-[11px] text-clay font-medium">Analysing wallet matrix…</span>
                 </motion.div>
               ) : (
                 <motion.span key="idle" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex-1 text-[11px] text-white/20">
@@ -204,10 +204,10 @@ const YurekaAIAnimation = () => {
                 </motion.span>
               )}
             </AnimatePresence>
-            <Rocket size={16} className={`shrink-0 transition-colors ${inputActive ? 'text-[#34d399]' : 'text-white/10'}`} />
+            <Rocket size={16} className={`shrink-0 transition-colors ${inputActive ? 'text-clay' : 'text-white/10'}`} />
           </div>
           <div className="flex items-center gap-2 mt-2 px-1">
-            <div className="w-1.5 h-1.5 rounded-full bg-[#34d399] animate-pulse" />
+            <div className="w-1.5 h-1.5 rounded-full bg-clay animate-pulse" />
             <span className="text-[9px] text-white/20 uppercase tracking-widest font-bold">Neural Active</span>
           </div>
         </div>
@@ -266,9 +266,9 @@ const RewardXAnimation = () => {
 
   return (
     <WindowFrame title="Adaptive Yield Engine" color="emerald">
-      <div className="h-full flex flex-col bg-[#0a0a0a] relative overflow-hidden">
+      <div className="h-full flex flex-col bg-cream relative overflow-hidden">
         {/* Ambient glow */}
-        <div className="absolute top-0 right-0 w-48 h-48 bg-[#34d399]/8 blur-[60px] rounded-full pointer-events-none" />
+        <div className="absolute top-0 right-0 w-48 h-48 bg-clay/8 blur-[60px] rounded-full pointer-events-none" />
 
         {/* Header */}
         <div className="px-8 md:px-12 pt-8 pb-5 flex justify-between items-start shrink-0 relative z-10 border-b border-white/[0.06]">
@@ -277,20 +277,20 @@ const RewardXAnimation = () => {
               {[0,1,2].map(i => (
                 <motion.div key={i} animate={{ opacity: [0.2,1,0.2], scale: [0.8,1,0.8] }}
                   transition={{ duration: 1.8, repeat: Infinity, delay: i * 0.25 }}
-                  className="w-1.5 h-1.5 rounded-full bg-[#34d399]" />
+                  className="w-1.5 h-1.5 rounded-full bg-clay" />
               ))}
-              <span className="text-[9px] font-bold tracking-[0.3em] text-[#34d399]/60 uppercase">Yield Script Active</span>
+              <span className="text-[9px] font-bold tracking-[0.3em] text-clay/60 uppercase">Yield Script Active</span>
             </div>
             <h3 className="text-xl md:text-2xl font-extrabold text-white tracking-tighter uppercase leading-tight">Executive<br />Protocol</h3>
           </div>
           <div className="text-right">
             <div className="text-[8px] text-white/25 tracking-widest uppercase mb-1 font-bold">Total Saved</div>
-            <motion.div className="text-xl md:text-2xl font-bold text-[#34d399] tracking-tighter tabular-nums">
+            <motion.div className="text-xl md:text-2xl font-bold text-clay tracking-tighter tabular-nums">
               ₹{displaySavings.toLocaleString()}
             </motion.div>
             <div className="mt-2 h-1 w-24 bg-white/5 rounded-full overflow-hidden ml-auto">
               <motion.div animate={{ width: `${progress}%` }} transition={{ duration: 0.8, ease: 'easeOut' }}
-                className="h-full bg-[#34d399] rounded-full" />
+                className="h-full bg-clay rounded-full" />
             </div>
           </div>
         </div>
@@ -311,7 +311,7 @@ const RewardXAnimation = () => {
                   <motion.div animate={i === step ? { scale: [1, 1.08, 1] } : {}}
                     transition={{ duration: 1.2, repeat: i === step ? Infinity : 0 }}
                     className={`w-10 h-10 md:w-11 md:h-11 rounded-xl flex items-center justify-center shadow-md shrink-0 ${
-                      i === 0 ? 'bg-white text-[#0a0a0a]' : 'bg-[#34d399] text-[#0a0a0a] shadow-[#34d399]/20'
+                      i === 0 ? 'bg-white text-cream' : 'bg-clay text-cream shadow-clay/20'
                     }`}
                   >
                     {s.icon}
@@ -322,18 +322,18 @@ const RewardXAnimation = () => {
                       {s.sub}
                       {i === step && (
                         <motion.span animate={{ opacity: [1,0,1] }} transition={{ duration: 1, repeat: Infinity }}
-                          className="text-[#34d399]">●</motion.span>
+                          className="text-clay">●</motion.span>
                       )}
                     </div>
                   </div>
                 </div>
                 <div className="text-right shrink-0">
-                  <div className={`text-sm md:text-base font-bold tracking-tight tabular-nums ${s.type === 'base' ? 'text-white' : 'text-[#34d399]'}`}>
+                  <div className={`text-sm md:text-base font-bold tracking-tight tabular-nums ${s.type === 'base' ? 'text-white' : 'text-clay'}`}>
                     {s.value > 0 ? '' : '−'}₹{Math.abs(s.value).toLocaleString()}
                   </div>
                   {s.badge && (
                     <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }}
-                      className="inline-block mt-1 px-2 py-0.5 bg-[#34d399] text-[#0a0a0a] text-[8px] font-black rounded-md tracking-wide">
+                      className="inline-block mt-1 px-2 py-0.5 bg-clay text-cream text-[8px] font-black rounded-md tracking-wide">
                       {s.badge}
                     </motion.div>
                   )}
@@ -346,15 +346,15 @@ const RewardXAnimation = () => {
                 initial={{ opacity: 0, y: 20, scale: 0.97 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ type: 'spring', damping: 20, stiffness: 220 }}
-                className="mt-3 p-6 md:p-7 bg-[#34d399]/10 border border-[#34d399]/20 rounded-2xl flex items-center justify-between relative overflow-hidden"
+                className="mt-3 p-6 md:p-7 bg-clay/10 border border-clay/20 rounded-2xl flex items-center justify-between relative overflow-hidden"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-[#34d399]/10 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-r from-clay/10 via-transparent to-transparent" />
                 <div className="relative z-10">
                   <div className="text-[9px] font-bold text-white/30 uppercase tracking-[0.3em] mb-1">You Pay</div>
                   <div className="text-3xl md:text-4xl font-black text-white tracking-tighter tabular-nums">₹{displayCount.toLocaleString()}</div>
                   <div className="text-[10px] text-white/30 mt-1">vs ₹1,50,000 original</div>
                 </div>
-                <div className="relative z-10 bg-[#34d399] px-5 py-4 rounded-xl text-[#0a0a0a] text-center shadow-xl shadow-[#34d399]/20">
+                <div className="relative z-10 bg-clay px-5 py-4 rounded-xl text-cream text-center shadow-xl shadow-clay/20">
                   <div className="text-[9px] font-black uppercase tracking-widest">Net Yield</div>
                   <div className="text-2xl font-black tabular-nums">19.5%</div>
                 </div>
@@ -367,7 +367,7 @@ const RewardXAnimation = () => {
         <div className="px-8 py-4 border-t border-white/[0.06] bg-white/[0.02] flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2">
             <motion.div animate={{ opacity: [0.5,1,0.5] }} transition={{ duration: 2, repeat: Infinity }}
-              className="w-2 h-2 rounded-full bg-[#34d399]" />
+              className="w-2 h-2 rounded-full bg-clay" />
             <span className="text-[9px] text-white/25 font-bold uppercase tracking-widest">Yield Path v5.1 Active</span>
           </div>
           <div className="text-[9px] text-white/20 font-mono uppercase tracking-widest">RX-VAULT</div>
@@ -402,17 +402,17 @@ const ExtensionAnimation = () => {
 
   return (
     <WindowFrame title="Yureka+ Extension" color="teal">
-      <div className="h-full bg-[#0a0a0a] flex flex-col overflow-hidden">
+      <div className="h-full bg-cream flex flex-col overflow-hidden">
 
         {/* Browser chrome */}
         <div className="bg-white/[0.04] px-3 py-2.5 border-b border-white/[0.06] flex items-center gap-2.5 shrink-0">
           <div className="flex gap-1.5">
             <div className="w-2.5 h-2.5 rounded-full bg-red-500/40" />
             <div className="w-2.5 h-2.5 rounded-full bg-amber-400/40" />
-            <div className="w-2.5 h-2.5 rounded-full bg-[#34d399]/40" />
+            <div className="w-2.5 h-2.5 rounded-full bg-clay/40" />
           </div>
           <div className="flex-1 h-6 bg-white/[0.04] border border-white/[0.08] rounded-full px-3 flex items-center gap-2">
-            <Lock size={8} className="text-[#34d399] shrink-0" />
+            <Lock size={8} className="text-clay shrink-0" />
             <span className="text-[9px] text-white/30 font-mono truncate">amazon.in/cart/checkout</span>
           </div>
           <motion.div
@@ -420,7 +420,7 @@ const ExtensionAnimation = () => {
             transition={{ type: 'spring', stiffness: 200 }}
             className="w-6 h-6 rounded-md bg-white/[0.06] flex items-center justify-center shrink-0"
           >
-            <Sparkles size={12} className={phase > 0 ? 'text-[#0a0a0a]' : 'text-white/20'} />
+            <Sparkles size={12} className={phase > 0 ? 'text-cream' : 'text-white/20'} />
           </motion.div>
         </div>
 
@@ -438,7 +438,7 @@ const ExtensionAnimation = () => {
                   <div>
                     <div className="text-[11px] font-semibold text-white">{item.name}</div>
                     <div className="text-[9px] text-white/25 mt-0.5">{item.spec}</div>
-                    <div className="text-[9px] text-[#34d399] mt-1 font-medium">In Stock</div>
+                    <div className="text-[9px] text-clay mt-1 font-medium">In Stock</div>
                   </div>
                   <div className="text-[11px] font-bold text-white">{item.price}</div>
                 </div>
@@ -446,11 +446,11 @@ const ExtensionAnimation = () => {
             ))}
             <div className="pt-1 space-y-1.5">
               <div className="flex justify-between text-[10px] text-white/30"><span>Subtotal</span><span>₹2,74,800</span></div>
-              <div className="flex justify-between text-[10px] text-white/30"><span>Shipping</span><span className="text-[#34d399]">FREE</span></div>
+              <div className="flex justify-between text-[10px] text-white/30"><span>Shipping</span><span className="text-clay">FREE</span></div>
               <div className="flex justify-between text-[12px] font-bold text-white pt-1 border-t border-white/[0.06]"><span>Total</span><span>₹2,74,800</span></div>
             </div>
             <motion.div animate={phase === 4 ? { opacity: 0.4, scale: 0.98 } : { opacity: 1, scale: 1 }}
-              className="w-full h-10 bg-[#34d399] rounded-xl flex items-center justify-center text-[10px] font-black uppercase tracking-widest text-[#0a0a0a]">
+              className="w-full h-10 bg-clay rounded-xl flex items-center justify-center text-[10px] font-black uppercase tracking-widest text-cream">
               Proceed to Pay
             </motion.div>
           </div>
@@ -462,10 +462,10 @@ const ExtensionAnimation = () => {
                 className="absolute inset-0 pointer-events-none flex items-center justify-center z-10">
                 <motion.div animate={{ scale: [1, 1.3, 1], opacity: [0.4, 0.7, 0.4] }}
                   transition={{ duration: 1.2, repeat: Infinity }}
-                  className="w-40 h-40 border-2 border-[#34d399]/40 rounded-full" />
+                  className="w-40 h-40 border-2 border-clay/40 rounded-full" />
                 <motion.div animate={{ scale: [1.3, 1, 1.3], opacity: [0.2, 0.5, 0.2] }}
                   transition={{ duration: 1.2, repeat: Infinity, delay: 0.3 }}
-                  className="absolute w-24 h-24 border border-[#34d399]/30 rounded-full" />
+                  className="absolute w-24 h-24 border border-clay/30 rounded-full" />
               </motion.div>
             )}
           </AnimatePresence>
@@ -476,19 +476,19 @@ const ExtensionAnimation = () => {
               <motion.div
                 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
                 transition={{ type: 'spring', damping: 22, stiffness: 280 }}
-                className="absolute bottom-4 left-4 right-4 p-4 bg-[#111] border border-white/10 rounded-2xl z-20 shadow-xl"
+                className="absolute bottom-4 left-4 right-4 p-4 bg-white/5 border border-white/10 rounded-2xl z-20 shadow-xl"
               >
                 <div className="flex items-center gap-3 mb-3">
-                  <div className="w-7 h-7 border-2 border-[#34d399]/30 border-t-[#34d399] rounded-full animate-spin shrink-0" />
+                  <div className="w-7 h-7 border-2 border-clay/30 border-t-clay rounded-full animate-spin shrink-0" />
                   <div>
-                    <div className="text-[9px] font-bold text-[#34d399] uppercase tracking-widest">Yureka+</div>
+                    <div className="text-[9px] font-bold text-clay uppercase tracking-widest">Yureka+</div>
                     <div className="text-[11px] font-semibold text-white">Scanning 3 cards + 200 vouchers…</div>
                   </div>
                 </div>
                 <div className="h-1.5 w-full bg-white/[0.06] rounded-full overflow-hidden">
                   <motion.div initial={{ width: '0%' }} animate={{ width: '85%' }}
                     transition={{ duration: 2, ease: 'easeOut' }}
-                    className="h-full bg-[#34d399] rounded-full" />
+                    className="h-full bg-clay rounded-full" />
                 </div>
               </motion.div>
             )}
@@ -500,17 +500,17 @@ const ExtensionAnimation = () => {
               <motion.div
                 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }}
                 transition={{ type: 'spring', damping: 18, stiffness: 260 }}
-                className="absolute bottom-4 left-4 right-4 p-4 bg-[#111] border border-[#34d399]/20 rounded-2xl z-20 shadow-2xl shadow-[#34d399]/10"
+                className="absolute bottom-4 left-4 right-4 p-4 bg-white/5 border border-clay/20 rounded-2xl z-20 shadow-2xl shadow-clay/10"
               >
                 <div className="flex items-center gap-2 mb-1">
-                  <div className="w-5 h-5 bg-[#34d399] rounded-md flex items-center justify-center shrink-0">
-                    <Sparkles size={10} className="text-[#0a0a0a]" />
+                  <div className="w-5 h-5 bg-clay rounded-md flex items-center justify-center shrink-0">
+                    <Sparkles size={10} className="text-cream" />
                   </div>
-                  <span className="text-[10px] font-black uppercase tracking-widest text-[#34d399]">Yureka+</span>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-clay">Yureka+</span>
                 </div>
-                <div className="text-[13px] font-bold text-white mb-3">Found <span className="text-[#34d399]">₹29,250</span> in hidden vouchers & points</div>
+                <div className="text-[13px] font-bold text-white mb-3">Found <span className="text-clay">₹29,250</span> in hidden vouchers & points</div>
                 <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
-                  className="w-full h-10 bg-[#34d399] rounded-xl text-[#0a0a0a] text-[10px] font-black uppercase tracking-widest flex items-center justify-center cursor-pointer shadow-lg shadow-[#34d399]/20">
+                  className="w-full h-10 bg-clay rounded-xl text-cream text-[10px] font-black uppercase tracking-widest flex items-center justify-center cursor-pointer shadow-lg shadow-clay/20">
                   Apply Yield Stack
                 </motion.div>
               </motion.div>
@@ -523,18 +523,18 @@ const ExtensionAnimation = () => {
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }}
                 transition={{ type: 'spring', damping: 20, stiffness: 240 }}
-                className="absolute inset-4 bg-[#0d0d0d] border border-white/[0.08] rounded-2xl z-20 flex flex-col items-center justify-center text-center p-6 shadow-2xl"
+                className="absolute inset-4 bg-white/[0.03] border border-white/[0.08] rounded-2xl z-20 flex flex-col items-center justify-center text-center p-6 shadow-2xl"
               >
                 <motion.div
                   initial={{ scale: 0 }} animate={{ scale: 1 }}
                   transition={{ type: 'spring', damping: 14, stiffness: 300, delay: 0.1 }}
-                  className="w-16 h-16 bg-[#34d399] rounded-2xl flex items-center justify-center text-[#0a0a0a] shadow-xl shadow-[#34d399]/20 mb-4"
+                  className="w-16 h-16 bg-clay rounded-2xl flex items-center justify-center text-cream shadow-xl shadow-clay/20 mb-4"
                 >
                   <CheckCircle2 size={32} />
                 </motion.div>
-                <div className="text-[9px] font-bold text-[#34d399] uppercase tracking-[0.3em] mb-1">Yield Applied</div>
+                <div className="text-[9px] font-bold text-clay uppercase tracking-[0.3em] mb-1">Yield Applied</div>
                 <div className="text-3xl font-black text-white tracking-tighter mb-1">₹2,45,550</div>
-                <div className="text-[10px] text-white/30">Saved <span className="text-[#34d399] font-bold">₹29,250</span> automatically</div>
+                <div className="text-[10px] text-white/30">Saved <span className="text-clay font-bold">₹29,250</span> automatically</div>
                 <div className="mt-4 flex gap-3 text-[9px] text-white/20 uppercase tracking-widest">
                   <span>HDFC Infinia 10x</span>
                   <span>·</span>
@@ -548,7 +548,7 @@ const ExtensionAnimation = () => {
         {/* Status bar */}
         <div className="px-4 py-2.5 bg-white/[0.02] border-t border-white/[0.05] flex items-center gap-2 shrink-0">
           <motion.div animate={{ opacity: [0.5,1,0.5] }} transition={{ duration: 2, repeat: Infinity }}
-            className="w-1.5 h-1.5 rounded-full bg-[#34d399]" />
+            className="w-1.5 h-1.5 rounded-full bg-clay" />
           <span className="text-[8px] font-bold text-white/20 uppercase tracking-widest">Stable Uplink · Yureka Neural v2</span>
         </div>
       </div>
@@ -586,11 +586,11 @@ const ComingSoon: React.FC = () => {
     ];
 
     return (
-        <section ref={containerRef} className="relative min-h-screen bg-[#0a0a0a] font-sans selection:bg-[#34d399] selection:text-[#0a0a0a] overflow-hidden py-16 md:py-32">
+        <section ref={containerRef} className="relative min-h-screen bg-cream font-sans selection:bg-clay selection:text-cream overflow-hidden py-16 md:py-32">
             
             {/* Premium Background Elements */}
-            <div className="absolute top-0 left-0 w-full h-[1000px] bg-gradient-to-b from-[#34d399]/5 to-transparent pointer-events-none" />
-            <div className="absolute top-[20%] right-[-10%] w-[600px] h-[600px] bg-[#34d399]/5 blur-[120px] rounded-full pointer-events-none" />
+            <div className="absolute top-0 left-0 w-full h-[1000px] bg-gradient-to-b from-clay/5 to-transparent pointer-events-none" />
+            <div className="absolute top-[20%] right-[-10%] w-[600px] h-[600px] bg-clay/5 blur-[120px] rounded-full pointer-events-none" />
             <div className="absolute bottom-[10%] left-[-5%] w-[800px] h-[800px] bg-teal-500/5 blur-[160px] rounded-full pointer-events-none" />
 
             <div className="w-full relative z-10 px-6 md:px-12 lg:px-20">
@@ -603,12 +603,12 @@ const ComingSoon: React.FC = () => {
                         className="max-w-3xl"
                     >
                         <div className="inline-flex items-center gap-3 px-4 py-1.5 mb-6 md:mb-10 bg-white/5 border border-white/10 rounded-full shadow-sm backdrop-blur-xl">
-                            <span className="w-2 h-2 rounded-full bg-[#34d399] animate-pulse" />
+                            <span className="w-2 h-2 rounded-full bg-clay animate-pulse" />
                             <span className="text-[9px] md:text-[10px] font-medium uppercase tracking-[0.2em] text-white/40">Intelligence Pipeline / v0.9.4B</span>
                         </div>
                         <h2 className="text-3xl sm:text-5xl lg:text-[clamp(1.5rem,4vw,4.5rem)] font-heading font-extrabold tracking-tight leading-[0.9] text-white uppercase">
                             The <br />
-                           <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#34d399] to-white/50 italic font-thin serif">Elite</span><br />
+                           <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-clay to-white/50 italic font-thin serif">Elite</span><br />
                            Standard.
                         </h2>
                     </motion.div>
@@ -620,7 +620,7 @@ const ComingSoon: React.FC = () => {
                         className="lg:max-w-[280px] space-y-6 md:space-y-8 pb-4"
                     >
                         <div className="w-12 h-12 bg-white/5 rounded-[1.2rem] flex items-center justify-center shadow-2xl border border-white/10 rotate-3 hover:rotate-0 transition-transform duration-500 backdrop-blur-xl">
-                            <Lock className="text-[#34d399]" size={24} />
+                            <Lock className="text-clay" size={24} />
                         </div>
                         <p className="text-white/40 text-xs md:text-sm font-medium leading-relaxed tracking-tight">
                            Our system interprets 10^7 variables per second to render "guessing" obsolete. This is the automation of superiority.
@@ -642,7 +642,7 @@ const ComingSoon: React.FC = () => {
                             >
                                 <div className="relative w-full min-h-[480px] md:min-h-[560px] max-h-[680px] overflow-hidden rounded-[2rem] shadow-2xl">
                                    {/* Advanced Glow */}
-                                   <div className={`absolute -inset-10 bg-gradient-to-br from-[#34d399]/5 to-transparent blur-[120px] opacity-0 group-hover:opacity-100 transition-opacity duration-1000`} />
+                                   <div className={`absolute -inset-10 bg-gradient-to-br from-clay/5 to-transparent blur-[120px] opacity-0 group-hover:opacity-100 transition-opacity duration-1000`} />
                                    {feature.component}
                                 </div>
                             </motion.div>
@@ -668,12 +668,12 @@ const ComingSoon: React.FC = () => {
                                    {feature.desc}
                                 </p>
                                 <div className="pt-4 flex flex-col sm:flex-row items-center sm:items-start lg:items-center gap-6 w-full lg:w-auto">
-                                   <Link to="/join-waitlist" className="h-12 md:h-14 px-8 md:px-10 bg-white text-[#0a0a0a] rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em] shadow-2xl shadow-black/10 hover:bg-[#34d399] hover:text-white hover:-translate-y-1 transition-all active:scale-95 group shrink-0 flex items-center justify-center w-full sm:w-auto">
+                                   <Link to="/join-waitlist" className="h-12 md:h-14 px-8 md:px-10 bg-white text-cream rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em] shadow-2xl shadow-black/10 hover:bg-clay hover:text-white hover:-translate-y-1 transition-all active:scale-95 group shrink-0 flex items-center justify-center w-full sm:w-auto">
                                       Join Internal Test <ChevronRight size={14} className="inline-block ml-2 group-hover:translate-x-1 transition-transform" />
                                    </Link>
                                    <div className="flex flex-col text-center sm:text-left">
                                       <span className="text-[8px] md:text-[9px] font-medium text-white/10 uppercase tracking-widest">Availability</span>
-                                      <span className="text-[9px] md:text-[10px] font-bold text-[#34d399] uppercase italic">Limited Access Nodes</span>
+                                      <span className="text-[9px] md:text-[10px] font-bold text-clay uppercase italic">Limited Access Nodes</span>
                                    </div>
                                 </div>
                             </motion.div>
@@ -690,9 +690,9 @@ const ComingSoon: React.FC = () => {
                 >
                     {/* Dark Grain Overlay */}
                     <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #fff 1px, transparent 0)', backgroundSize: '40px 40px' }} />
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#34d399]/10 blur-[160px] rounded-full pointer-events-none" />
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-clay/10 blur-[160px] rounded-full pointer-events-none" />
                     <div className="relative z-10 max-w-3xl mx-auto">
-                        <Sparkles className="mx-auto mb-8 text-[#34d399]" size={32} />
+                        <Sparkles className="mx-auto mb-8 text-clay" size={32} />
                         <h2 className="text-4xl md:text-5xl font-medium tracking-tight text-white uppercase mb-8 leading-[0.85]">
                             Secure Your <br />
                             <span className="text-clay italic serif font-thin">Access.</span>
@@ -701,12 +701,12 @@ const ComingSoon: React.FC = () => {
                             Phase 1 deployment is capped at 5,000 nodes. priority is given to institutional waitlist members.
                         </p>
                         <div className="flex flex-col items-center gap-6">
-                            <button className="h-16 px-16 bg-cream text-ink rounded-full text-xs font-bold uppercase tracking-[0.4em] hover:bg-[#34d399] hover:text-cream hover:scale-105 transition-all duration-500 shadow-2xl group flex items-center gap-4">
+                            <button className="h-16 px-16 bg-cream text-ink rounded-full text-xs font-bold uppercase tracking-[0.4em] hover:bg-clay hover:text-cream hover:scale-105 transition-all duration-500 shadow-2xl group flex items-center gap-4">
                                 Enter The Registry <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
                             </button>
                              <div className="flex items-center gap-4 text-[9px] font-black uppercase tracking-[0.5em] text-cream/20">
-                                <span className="w-1.5 h-1.5 rounded-full bg-[#34d399]" /> Encrypted Connection
-                                <span className="w-1.5 h-1.5 rounded-full bg-[#34d399]" /> SSL 256-Bit
+                                <span className="w-1.5 h-1.5 rounded-full bg-clay" /> Encrypted Connection
+                                <span className="w-1.5 h-1.5 rounded-full bg-clay" /> SSL 256-Bit
                             </div>
                         </div>
                     </div>
@@ -720,8 +720,8 @@ const ComingSoon: React.FC = () => {
                         viewport={{ once: true }}
                         className="text-center space-y-4 mb-16"
                     >
-                        <span className="text-[#34d399] text-[10px] font-black uppercase tracking-[0.4em]">Yield Categories</span>
-                        <h2 className="text-4xl md:text-6xl font-heading text-white tracking-tighter uppercase">Smarter <span className="text-[#34d399]">Spends.</span></h2>
+                        <span className="text-clay text-[10px] font-black uppercase tracking-[0.4em]">Yield Categories</span>
+                        <h2 className="text-4xl md:text-6xl font-heading text-white tracking-tighter uppercase">Smarter <span className="text-clay">Spends.</span></h2>
                         <p className="text-white/40 text-xs md:text-sm max-w-xl mx-auto uppercase tracking-widest font-bold">Strategic optimization for every major spend category in your lifestyle.</p>
                     </motion.div>
 
@@ -774,7 +774,7 @@ const ComingSoon: React.FC = () => {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: i * 0.1 }}
-                                className={`group relative bg-white/[0.03] backdrop-blur-3xl border border-white/10 rounded-[2.5rem] p-8 md:p-10 hover:bg-white/[0.06] hover:border-[#34d399]/30 transition-all duration-500 shadow-2xl ${i >= 3 ? 'lg:col-span-1.5' : ''}`}
+                                className={`group relative bg-white/[0.03] backdrop-blur-3xl border border-white/10 rounded-[2.5rem] p-8 md:p-10 hover:bg-white/[0.06] hover:border-clay/30 transition-all duration-500 shadow-2xl ${i >= 3 ? 'lg:col-span-1.5' : ''}`}
                             >
                                 {/* Subtle Grid Background for Card */}
                                 <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 0)', backgroundSize: '20px 20px' }} />
@@ -794,7 +794,7 @@ const ComingSoon: React.FC = () => {
                                 </div>
 
                                 {/* Hover Glow */}
-                                <div className={`absolute -bottom-10 -right-10 w-32 h-32 bg-[#34d399]/10 blur-[50px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none`} />
+                                <div className={`absolute -bottom-10 -right-10 w-32 h-32 bg-clay/10 blur-[50px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none`} />
                             </motion.div>
                         ))}
                     </div>
@@ -805,7 +805,7 @@ const ComingSoon: React.FC = () => {
                     initial={{ opacity: 0, y: 60 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="mt-6 p-8 md:p-12 lg:p-16 bg-[#1a1a1a] rounded-[2.5rem] relative overflow-hidden group border border-cream/5 shadow-2xl"
+                    className="mt-6 p-8 md:p-12 lg:p-16 bg-white/5 rounded-[2.5rem] relative overflow-hidden group border border-cream/5 shadow-2xl"
                 >
                     {/* Concentric Wireframe background */}
                     <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-20">
@@ -840,7 +840,7 @@ const ComingSoon: React.FC = () => {
                                    Get the Yureka app to make earning simpler, faster, and stress-free. Scan the QR or tap below to download and get started.
                                </p>
                                <div className="flex flex-col sm:flex-row items-center gap-8 w-full pt-6">
-                                   <button className="w-full sm:w-auto px-10 py-4 bg-[#111] border border-white/20 text-white/90 rounded-xl text-xs font-semibold hover:border-white/50 hover:bg-white/5 transition-all shadow-lg active:scale-95">
+                                   <button className="w-full sm:w-auto px-10 py-4 bg-white/5 border border-white/20 text-white/90 rounded-xl text-xs font-semibold hover:border-white/50 hover:bg-white/5 transition-all shadow-lg active:scale-95">
                                        Download on App store
                                    </button>
                                    <span className="text-xs text-white/30 cursor-not-allowed">

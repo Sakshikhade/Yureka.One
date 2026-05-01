@@ -36,11 +36,11 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
   };
 
   return (
-    <header className="sticky top-0 right-0 left-0 h-24 bg-[#0a0a0a]/80 backdrop-blur-xl border-b border-white/5 z-40 px-4 md:px-10 flex items-center justify-between transition-all duration-300">
+    <header className="sticky top-0 right-0 left-0 h-24 bg-cream/80 backdrop-blur-xl border-b border-white/5 z-40 px-4 md:px-10 flex items-center justify-between transition-all duration-300">
       <div className="flex items-center gap-6">
         <button 
           onClick={onToggleSidebar}
-          className="lg:hidden p-2.5 hover:bg-white/5 rounded-2xl transition-colors border border-white/5 shadow-sm bg-[#111]"
+          className="lg:hidden p-2.5 hover:bg-white/5 rounded-2xl transition-colors border border-white/5 shadow-sm bg-white/5"
         >
           <Menu size={20} className="text-white" />
         </button>
@@ -62,7 +62,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
                 ease: "easeInOut"
               }}
               className={`w-1.5 h-1.5 rounded-full ${
-                syncStatus === 'connected' ? 'bg-[#34d399] shadow-[0_0_12px_rgba(52,211,153,0.8)]' : 
+                syncStatus === 'connected' ? 'bg-clay shadow-[0_0_12px_rgba(52,211,153,0.8)]' : 
                 syncStatus === 'reconnecting' ? 'bg-amber-500 shadow-[0_0_12px_rgba(245,158,11,0.8)]' : 
                 'bg-red-500 shadow-[0_0_12px_rgba(239,44,44,0.8)]'
               }`} 
@@ -78,7 +78,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
         {onAdd && (
           <button 
             onClick={onAdd}
-            className="flex items-center gap-2 bg-white text-[#0a0a0a] px-4 md:px-6 py-2.5 rounded-2xl font-bold text-[11px] uppercase tracking-wider hover:bg-[#34d399] hover:text-white transition-all shadow-lg active:scale-95"
+            className="flex items-center gap-2 bg-white text-cream px-4 md:px-6 py-2.5 rounded-2xl font-bold text-[11px] uppercase tracking-wider hover:bg-clay hover:text-white transition-all shadow-lg active:scale-95"
           >
             <Plus size={16} />
             <span className="hidden sm:inline">{addLabel || `Add New`}</span>
@@ -108,9 +108,9 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
             <p className="text-xs font-black text-white leading-none">{user?.email?.split('@')[0] || 'Administrator'}</p>
             <p className="text-[10px] text-white/40 mt-1 uppercase font-bold tracking-tighter">Access: Active</p>
           </div>
-          <div className="w-11 h-11 rounded-2xl bg-[#34d399]/10 flex items-center justify-center text-[#34d399] font-serif font-black shadow-inner border border-[#34d399]/5 relative">
+          <div className="w-11 h-11 rounded-2xl bg-clay/10 flex items-center justify-center text-clay font-serif font-black shadow-inner border border-clay/5 relative">
             {user?.email?.[0].toUpperCase() || 'A'}
-            <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-[#34d399] border-2 border-[#0a0a0a] rounded-full shadow-sm" />
+            <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-clay border-2 border-cream rounded-full shadow-sm" />
           </div>
         </div>
       </div>

@@ -22,7 +22,7 @@ const CalculatorCTA: React.FC = () => {
   const results = calculateSavings();
 
   return (
-    <section className="relative bg-[#0a0a0a] overflow-hidden border-t border-white/10">
+    <section className="relative bg-cream overflow-hidden border-t border-white/10">
       {/* Geometric Background Pattern */}
       <div className="absolute inset-0 opacity-[0.04] pointer-events-none" 
            style={{ 
@@ -52,7 +52,7 @@ const CalculatorCTA: React.FC = () => {
                       key={isOpen ? 'open' : 'closed'}
                       initial={{ x: 10, opacity: 0 }}
                       animate={{ x: 0, opacity: 1 }}
-                      className="text-[9px] font-mono text-[#34d399] font-bold"
+                      className="text-[9px] font-mono text-clay font-bold"
                     >
                       {isOpen ? '8888.88' : results.diff}
                     </motion.div>
@@ -99,7 +99,7 @@ const CalculatorCTA: React.FC = () => {
           
           <button 
             onClick={() => setIsOpen(true)}
-            className="bg-white text-[#0a0a0a] px-12 py-5 rounded-full font-bold uppercase tracking-widest text-[13px] hover:scale-105 active:scale-95 transition-all shadow-2xl hover:bg-[#34d399] hover:text-white flex items-center gap-3 group/btn"
+            className="bg-white text-cream px-12 py-5 rounded-full font-bold uppercase tracking-widest text-[13px] hover:scale-105 active:scale-95 transition-all shadow-2xl hover:bg-clay hover:text-white flex items-center gap-3 group/btn"
           >
             Run Comparison
             <motion.div
@@ -132,14 +132,14 @@ const CalculatorCTA: React.FC = () => {
               <div className="p-8 md:p-12">
                 <div className="flex justify-between items-center mb-10">
                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-[#34d399] rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20">
-                         <Calculator size={20} className="text-[#0a0a0a]" />
+                      <div className="w-10 h-10 bg-clay rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                         <Calculator size={20} className="text-cream" />
                       </div>
                       <h4 className="text-2xl font-serif font-bold text-white uppercase tracking-tight">Savings Intelligence</h4>
                    </div>
                    <button 
                     onClick={() => setIsOpen(false)}
-                    className="w-12 h-12 bg-white/5 border border-white/10 flex items-center justify-center rounded-full text-white hover:bg-white hover:text-[#0a0a0a] transition-all shadow-sm"
+                    className="w-12 h-12 bg-white/5 border border-white/10 flex items-center justify-center rounded-full text-white hover:bg-white hover:text-cream transition-all shadow-sm"
                    >
                      <X size={20} />
                    </button>
@@ -163,7 +163,7 @@ const CalculatorCTA: React.FC = () => {
                           step="5000" 
                           value={monthlySpend}
                           onChange={(e) => setMonthlySpend(parseInt(e.target.value))}
-                          className="w-full accent-[#34d399] h-1.5 bg-white/10 rounded-full appearance-none cursor-pointer"
+                          className="w-full accent-clay h-1.5 bg-white/10 rounded-full appearance-none cursor-pointer"
                         />
                       </div>
 
@@ -176,7 +176,7 @@ const CalculatorCTA: React.FC = () => {
                                 onClick={() => setCategory(cat)}
                                 className={`px-6 py-3 rounded-full text-[11px] font-bold uppercase tracking-widest transition-all ${
                                   category === cat 
-                                  ? 'bg-[#34d399] text-[#0a0a0a] shadow-xl shadow-emerald-500/20' 
+                                  ? 'bg-clay text-cream shadow-xl shadow-emerald-500/20' 
                                   : 'bg-white/5 border border-white/10 text-white/60 hover:border-white/30'
                                 }`}
                              >
@@ -200,14 +200,14 @@ const CalculatorCTA: React.FC = () => {
                         </div>
 
                         <div className="mb-8">
-                           <p className="text-[10px] font-bold uppercase tracking-widest text-[#34d399] mb-1">Yureka Optimized</p>
+                           <p className="text-[10px] font-bold uppercase tracking-widest text-clay mb-1">Yureka Optimized</p>
                            <h5 className="text-4xl sm:text-5xl font-serif font-bold text-white tracking-tight">₹{results.yureka}<span className="text-base ml-1">/yr</span></h5>
                         </div>
                       </div>
 
                       <div className="pt-6 border-t border-white/10 relative z-10">
                          <div className="flex items-center gap-2 mb-2">
-                            <ShieldCheck size={14} className="text-[#34d399]" />
+                            <ShieldCheck size={14} className="text-clay" />
                             <span className="text-[10px] uppercase font-bold tracking-widest text-white/30">Guaranteed delta</span>
                          </div>
                          <p className="text-2xl font-serif italic text-white">
@@ -219,10 +219,10 @@ const CalculatorCTA: React.FC = () => {
 
                 <div className="mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-6">
                    <p className="text-[10px] text-white/20 font-mono flex items-center gap-2">
-                      <div className="w-1.5 h-1.5 bg-[#34d399] rounded-full animate-pulse" />
+                      <div className="w-1.5 h-1.5 bg-clay rounded-full animate-pulse" />
                       YUREKA ALG.v4 CLUSTER ANALYSIS ACTIVE
                    </p>
-                   <Link to="/join-waitlist" className="flex items-center gap-3 text-sm font-bold text-white border-b-2 border-[#34d399] pb-1 hover:text-[#34d399] transition-colors">
+                   <Link to="/join-waitlist" className="flex items-center gap-3 text-sm font-bold text-white border-b-2 border-clay pb-1 hover:text-clay transition-colors">
                       Claim Your Optimization Report
                       <ArrowRight size={18} />
                    </Link>

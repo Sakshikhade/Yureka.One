@@ -13,22 +13,22 @@ interface ShowcaseCarouselProps {
 // Pill data
 // ─────────────────────────────────────────────────────────────
 const WITH_ROW1 = [
-  { icon: '⚡', text: 'AI-matched rewards',      bg: 'bg-[#34d399] text-[#0a0a0a]' },
-  { icon: '🎯', text: 'Zero hidden fees',         bg: 'bg-[#34d399] text-[#0a0a0a]' },
-  { icon: '💳', text: '200+ cards analyzed',      bg: 'bg-[#34d399] text-[#0a0a0a]' },
-  { icon: '✅', text: 'Best card, guaranteed',    bg: 'bg-[#34d399] text-[#0a0a0a]' },
-  { icon: '🔄', text: 'Instant comparison',       bg: 'bg-[#34d399] text-[#0a0a0a]' },
-  { icon: '🤖', text: 'Neural matching',          bg: 'bg-[#34d399] text-[#0a0a0a]' },
-  { icon: '🎁', text: 'Max rewards unlocked',     bg: 'bg-[#34d399] text-[#0a0a0a]' },
+  { icon: '⚡', text: 'AI-matched rewards',      bg: 'bg-clay text-cream' },
+  { icon: '🎯', text: 'Zero hidden fees',         bg: 'bg-clay text-cream' },
+  { icon: '💳', text: '200+ cards analyzed',      bg: 'bg-clay text-cream' },
+  { icon: '✅', text: 'Best card, guaranteed',    bg: 'bg-clay text-cream' },
+  { icon: '🔄', text: 'Instant comparison',       bg: 'bg-clay text-cream' },
+  { icon: '🤖', text: 'Neural matching',          bg: 'bg-clay text-cream' },
+  { icon: '🎁', text: 'Max rewards unlocked',     bg: 'bg-clay text-cream' },
 ];
 const WITH_ROW2 = [
-  { icon: '💰', text: '₹15k average savings',    bg: 'bg-[#34d399] text-[#0a0a0a]' },
-  { icon: '📊', text: 'Reward math done for you', bg: 'bg-[#34d399] text-[#0a0a0a]' },
-  { icon: '🏆', text: 'Top cluster match',        bg: 'bg-[#34d399] text-[#0a0a0a]' },
-  { icon: '🔐', text: 'Unbiased, always',         bg: 'bg-[#34d399] text-[#0a0a0a]' },
-  { icon: '📱', text: 'Chrome auto-apply',        bg: 'bg-[#34d399] text-[#0a0a0a]' },
-  { icon: '⚡', text: 'Real-time audit',          bg: 'bg-[#34d399] text-[#0a0a0a]' },
-  { icon: '🎯', text: 'Spend-matched card',       bg: 'bg-[#34d399] text-[#0a0a0a]' },
+  { icon: '💰', text: '₹15k average savings',    bg: 'bg-clay text-cream' },
+  { icon: '📊', text: 'Reward math done for you', bg: 'bg-clay text-cream' },
+  { icon: '🏆', text: 'Top cluster match',        bg: 'bg-clay text-cream' },
+  { icon: '🔐', text: 'Unbiased, always',         bg: 'bg-clay text-cream' },
+  { icon: '📱', text: 'Chrome auto-apply',        bg: 'bg-clay text-cream' },
+  { icon: '⚡', text: 'Real-time audit',          bg: 'bg-clay text-cream' },
+  { icon: '🎯', text: 'Spend-matched card',       bg: 'bg-clay text-cream' },
 ];
 
 const WITHOUT_ROW1 = [
@@ -106,7 +106,7 @@ const ComparisonWidget: React.FC = () => {
           onClick={() => setMode('with')}
           className={`px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-500 ${
             mode === 'with'
-              ? 'bg-[#34d399] text-[#0a0a0a] shadow-[0_0_20px_rgba(52,211,153,0.3)]'
+              ? 'bg-clay text-cream shadow-[0_0_20px_rgba(52,211,153,0.3)]'
               : 'text-white/40 hover:text-white/60'
           }`}
         >
@@ -139,7 +139,7 @@ const ComparisonWidget: React.FC = () => {
               <>
                 <h3 className="text-2xl md:text-3xl font-serif text-white leading-snug mb-1.5 uppercase tracking-tighter">
                   Just pick your card,<br />
-                  <span className="italic font-light text-[#34d399]">and start earning.</span>
+                  <span className="italic font-light text-clay">and start earning.</span>
                 </h3>
                 <p className="text-[10px] text-white/20 font-sans uppercase tracking-[0.3em] font-bold">
                   The Protocol executes the complex math. You keep the yield.
@@ -192,7 +192,7 @@ const ComparisonWidget: React.FC = () => {
 // ─────────────────────────────────────────────────────────────
 const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp }) => {
   return (
-    <section className="relative bg-[#0a0a0a] border-t border-white/5 z-10 w-full">
+    <section className="relative bg-cream border-t border-white/5 z-10 w-full">
       <div className="w-full flex justify-center flex-col">
         <div className="relative w-full border-x-0 border-b border-white/5 bg-white/[0.02] flex flex-col shadow-2xl overflow-hidden">
 
@@ -212,21 +212,21 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp })
                   viewport={{ once: true, margin: "-100px" }}
                   transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  <span className="block text-[#34d399] text-[11px] font-bold uppercase tracking-[0.4em] mb-4">
+                  <span className="block text-clay text-[11px] font-bold uppercase tracking-[0.4em] mb-4">
                     How It Works
                   </span>
                   <h2 className="text-4xl md:text-5xl lg:text-[clamp(1.5rem,3.5vw,4.5rem)] font-serif text-white mb-8 leading-[0.85] tracking-tighter uppercase">
                     We Compare <br />
-                    <span className="italic font-light text-[#34d399]">For You.</span>
+                    <span className="italic font-light text-clay">For You.</span>
                   </h2>
-                  <p className="text-white/60 text-base md:text-lg lg:text-xl font-serif italic leading-snug mb-6 border-l-2 border-[#34d399]/30 pl-8 max-w-md">
+                  <p className="text-white/60 text-base md:text-lg lg:text-xl font-serif italic leading-snug mb-6 border-l-2 border-clay/30 pl-8 max-w-md">
                     "We don't just list cards. We scan 200+ options to find the one that fits your life perfectly."
                   </p>
                   <div className="flex items-center gap-6 text-[11px] font-bold tracking-[0.3em] uppercase text-white/20">
                     <motion.div
                       animate={{ width: [40, 80, 40] }}
                       transition={{ repeat: Infinity, duration: 2.5 }}
-                      className="h-px bg-[#34d399]/50"
+                      className="h-px bg-clay/50"
                     />
                     Scroll to discover
                   </div>

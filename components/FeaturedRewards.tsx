@@ -51,14 +51,14 @@ const REWARDS = [
 
 const FeaturedRewards: React.FC = () => {
   return (
-    <section className="relative bg-[#0a0a0a] py-24 md:py-36 border-t border-white/5 overflow-hidden">
+    <section className="relative bg-cream py-24 md:py-36 border-t border-white/5 overflow-hidden">
       {/* Subtle background grid */}
       <div
         className="absolute inset-0 opacity-[0.025] pointer-events-none"
         style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)', backgroundSize: '60px 60px' }}
       />
       {/* Glow center */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#34d399]/[0.04] rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-clay/[0.04] rounded-full blur-[120px] pointer-events-none" />
 
       <div className="relative z-10 max-w-6xl mx-auto px-6">
         {/* Heading */}
@@ -69,11 +69,11 @@ const FeaturedRewards: React.FC = () => {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="text-center mb-16 md:mb-20"
         >
-          <span className="inline-block text-[#34d399] text-[10px] font-black uppercase tracking-[0.5em] mb-5">
+          <span className="inline-block text-clay text-[10px] font-black uppercase tracking-[0.5em] mb-5">
             Intelligence-Driven Savings
           </span>
           <h2 className="text-4xl md:text-6xl lg:text-7xl font-heading text-white tracking-tighter leading-[0.95] uppercase mb-6">
-            Featured <span className="text-[#34d399]">Rewards</span>
+            Featured <span className="text-clay">Rewards</span>
           </h2>
           <p className="text-white/40 text-sm md:text-base max-w-2xl mx-auto leading-relaxed">
             The right card, matched to the right category, unlocks compounding rewards you'd never find on your own.
@@ -135,7 +135,7 @@ const RewardCard: React.FC<{ reward: Reward; delay: number }> = ({ reward, delay
 
     {/* Highlight */}
     <p className="relative z-10 text-white text-sm font-bold mb-2">
-      <span className="text-[#34d399]">{reward.highlight}</span>
+      <span className="text-clay">{reward.highlight}</span>
     </p>
 
     {/* Description */}
@@ -144,7 +144,7 @@ const RewardCard: React.FC<{ reward: Reward; delay: number }> = ({ reward, delay
     </p>
 
     {/* Bottom glow line */}
-    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-[#34d399]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-full" />
+    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-clay/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-full" />
   </motion.div>
 );
 

@@ -45,7 +45,7 @@ export const AdminWaitlistTab: React.FC<AdminWaitlistTabProps> = ({
   return (
     <div className="flex flex-col h-full">
       {/* Tab Selectors */}
-      <div className="px-8 pt-8 pb-4 border-b border-white/5 bg-[#1a1a1a]/50">
+      <div className="px-8 pt-8 pb-4 border-b border-white/5 bg-white/5/50">
         <div className="flex items-center gap-1 bg-white/5 p-1 rounded-2xl w-fit border border-white/5">
           {statusTabs.map((tab) => {
             const Icon = tab.icon;
@@ -59,14 +59,14 @@ export const AdminWaitlistTab: React.FC<AdminWaitlistTabProps> = ({
                 onClick={() => onFilterChange(tab.id as any)}
                 className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${
                   filter === tab.id 
-                    ? 'bg-white text-[#0a0a0a] shadow-sm' 
+                    ? 'bg-white text-cream shadow-sm' 
                     : 'text-white/40 hover:text-white hover:bg-white/5'
                 }`}
               >
                 <Icon size={14} className={filter === tab.id ? '' : 'text-white/20'} />
                 {tab.label}
                 <span className={`ml-1 px-2 py-0.5 rounded-md text-[9px] ${
-                  filter === tab.id ? 'bg-[#0a0a0a]/10 text-[#0a0a0a]' : 'bg-white/5 text-white/40'
+                  filter === tab.id ? 'bg-cream/10 text-cream' : 'bg-white/5 text-white/40'
                 }`}>
                   {count}
                 </span>
@@ -79,12 +79,12 @@ export const AdminWaitlistTab: React.FC<AdminWaitlistTabProps> = ({
       <div className="flex-1 overflow-x-auto">
         <table className="w-full text-left border-collapse min-w-[1000px]">
           <thead className="sticky top-0 z-20 shadow-sm">
-            <tr className="bg-[#1a1a1a] border-b border-white/5">
-              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-[#1a1a1a]">Applicant Identity</th>
-              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-[#1a1a1a]">Classification</th>
-              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-[#1a1a1a]">Registration Context</th>
-              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-[#1a1a1a]">Status</th>
-              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 text-right bg-[#1a1a1a]">Administrative Actions</th>
+            <tr className="bg-white/5 border-b border-white/5">
+              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-white/5">Applicant Identity</th>
+              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-white/5">Classification</th>
+              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-white/5">Registration Context</th>
+              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-white/5">Status</th>
+              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 text-right bg-white/5">Administrative Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-white/5">
@@ -100,7 +100,7 @@ export const AdminWaitlistTab: React.FC<AdminWaitlistTabProps> = ({
                 >
                   <td className="px-8 py-6">
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-2xl bg-white/5 flex items-center justify-center font-serif font-black text-white/20 group-hover:bg-[#34d399]/10 group-hover:text-[#34d399] transition-colors">
+                      <div className="w-10 h-10 rounded-2xl bg-white/5 flex items-center justify-center font-serif font-black text-white/20 group-hover:bg-clay/10 group-hover:text-clay transition-colors">
                         {entry.name[0].toUpperCase()}
                       </div>
                       <div>
@@ -128,7 +128,7 @@ export const AdminWaitlistTab: React.FC<AdminWaitlistTabProps> = ({
                   <td className="px-8 py-6">
                     <div className="flex items-center gap-2">
                       <div className={`w-2 h-2 rounded-full ${
-                        entry.status === 'accepted' ? 'bg-[#34d399]' : 
+                        entry.status === 'accepted' ? 'bg-clay' : 
                         entry.status === 'on_hold' ? 'bg-blue-500' : 
                         entry.status === 'rejected' ? 'bg-red-500' : 
                         'bg-amber-500'
@@ -143,7 +143,7 @@ export const AdminWaitlistTab: React.FC<AdminWaitlistTabProps> = ({
                       <button 
                         onClick={() => onUpdateStatus(entry.id!, 'accepted')}
                         disabled={entry.status === 'accepted'}
-                        className={`p-2.5 rounded-xl transition-all ${entry.status === 'accepted' ? 'text-[#34d399] bg-[#34d399]/10' : 'text-white/20 hover:text-[#34d399] hover:bg-[#34d399]/10 border border-transparent hover:border-[#34d399]/20 shadow-sm'}`}
+                        className={`p-2.5 rounded-xl transition-all ${entry.status === 'accepted' ? 'text-clay bg-clay/10' : 'text-white/20 hover:text-clay hover:bg-clay/10 border border-transparent hover:border-clay/20 shadow-sm'}`}
                         title="Authorize Entry"
                       >
                         <CheckCircle size={18} />

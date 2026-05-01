@@ -85,7 +85,7 @@ export const AdminCardsTab: React.FC<AdminCardsTabProps> = ({
   return (
     <div className="flex-1 flex flex-col min-h-0">
       {/* Search & Filter Header */}
-      <div className="px-8 py-6 border-b border-white/5 bg-[#1a1a1a]/50 flex flex-wrap items-center gap-6">
+      <div className="px-8 py-6 border-b border-white/5 bg-white/5/50 flex flex-wrap items-center gap-6">
         {/* Search Bar */}
         <div className="relative flex-1 min-w-[300px]">
           <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" />
@@ -94,7 +94,7 @@ export const AdminCardsTab: React.FC<AdminCardsTabProps> = ({
             placeholder="Search products or banks..." 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 pr-12 py-3 bg-[#0a0a0a] border border-white/5 rounded-2xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#34d399]/20 focus:border-[#34d399]/30 transition-all shadow-sm"
+            className="w-full pl-12 pr-12 py-3 bg-cream border border-white/5 rounded-2xl text-sm text-white focus:outline-none focus:ring-2 focus:ring-clay/20 focus:border-clay/30 transition-all shadow-sm"
           />
           <AnimatePresence>
             {searchQuery && (
@@ -115,17 +115,17 @@ export const AdminCardsTab: React.FC<AdminCardsTabProps> = ({
         <div className="flex flex-wrap items-center gap-3">
           {/* Bank Filter */}
           <div className="relative group">
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 group-hover:text-[#34d399] transition-colors">
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 group-hover:text-clay transition-colors">
               <Layers size={14} />
             </div>
             <select 
               value={bankFilter}
               onChange={(e) => setBankFilter(e.target.value)}
-              className="pl-10 pr-10 py-3 bg-[#0a0a0a] border border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-widest appearance-none text-white focus:outline-none focus:ring-2 focus:ring-[#34d399]/20 shadow-sm cursor-pointer hover:border-white/10 transition-all"
+              className="pl-10 pr-10 py-3 bg-cream border border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-widest appearance-none text-white focus:outline-none focus:ring-2 focus:ring-clay/20 shadow-sm cursor-pointer hover:border-white/10 transition-all"
             >
-              <option className="bg-[#0a0a0a]">All Banks</option>
+              <option className="bg-cream">All Banks</option>
               {ADMIN_BANKS.sort().map(bank => (
-                <option key={bank} value={bank} className="bg-[#0a0a0a]">{bank}</option>
+                <option key={bank} value={bank} className="bg-cream">{bank}</option>
               ))}
             </select>
             <ChevronDown size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-white/20 pointer-events-none" />
@@ -133,17 +133,17 @@ export const AdminCardsTab: React.FC<AdminCardsTabProps> = ({
 
           {/* Type Filter */}
           <div className="relative group">
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 group-hover:text-[#34d399] transition-colors">
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 group-hover:text-clay transition-colors">
               <Zap size={14} />
             </div>
             <select 
               value={typeFilter}
               onChange={(e) => setTypeFilter(e.target.value)}
-              className="pl-10 pr-10 py-3 bg-[#0a0a0a] border border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-widest appearance-none text-white focus:outline-none focus:ring-2 focus:ring-[#34d399]/20 shadow-sm cursor-pointer hover:border-white/10 transition-all"
+              className="pl-10 pr-10 py-3 bg-cream border border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-widest appearance-none text-white focus:outline-none focus:ring-2 focus:ring-clay/20 shadow-sm cursor-pointer hover:border-white/10 transition-all"
             >
-              <option className="bg-[#0a0a0a]">All Types</option>
+              <option className="bg-cream">All Types</option>
               {CARD_TYPES.sort().map(type => (
-                <option key={type} value={type} className="bg-[#0a0a0a]">{type}</option>
+                <option key={type} value={type} className="bg-cream">{type}</option>
               ))}
             </select>
             <ChevronDown size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-white/20 pointer-events-none" />
@@ -151,17 +151,17 @@ export const AdminCardsTab: React.FC<AdminCardsTabProps> = ({
 
           {/* Status Filter */}
           <div className="relative group">
-            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 group-hover:text-[#34d399] transition-colors">
+            <div className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 group-hover:text-clay transition-colors">
               <div className="w-2 h-2 rounded-full bg-current" />
             </div>
             <select 
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="pl-10 pr-10 py-3 bg-[#0a0a0a] border border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-widest appearance-none text-white focus:outline-none focus:ring-2 focus:ring-[#34d399]/20 shadow-sm cursor-pointer hover:border-white/10 transition-all"
+              className="pl-10 pr-10 py-3 bg-cream border border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-widest appearance-none text-white focus:outline-none focus:ring-2 focus:ring-clay/20 shadow-sm cursor-pointer hover:border-white/10 transition-all"
             >
-              <option className="bg-[#0a0a0a]">All Status</option>
-              <option value="Published" className="bg-[#0a0a0a]">Published</option>
-              <option value="Draft" className="bg-[#0a0a0a]">Draft</option>
+              <option className="bg-cream">All Status</option>
+              <option value="Published" className="bg-cream">Published</option>
+              <option value="Draft" className="bg-cream">Draft</option>
             </select>
             <ChevronDown size={14} className="absolute right-4 top-1/2 -translate-y-1/2 text-white/20 pointer-events-none" />
           </div>
@@ -197,20 +197,20 @@ export const AdminCardsTab: React.FC<AdminCardsTabProps> = ({
       <div className="flex-1 overflow-x-auto overflow-y-auto max-h-[calc(100vh-22rem)] custom-scrollbar">
         <table className="w-full text-left border-collapse min-w-[1000px]">
           <thead className="sticky top-0 z-20 shadow-sm">
-            <tr className="bg-[#1a1a1a] border-b border-white/5">
+            <tr className="bg-white/5 border-b border-white/5">
               <th 
-                className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-[#1a1a1a] cursor-pointer hover:text-[#34d399] transition-colors group"
+                className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-white/5 cursor-pointer hover:text-clay transition-colors group"
                 onClick={() => toggleSort('name')}
               >
                 <div className="flex items-center gap-2">
                   Financial Product
-                  <ArrowUpDown size={12} className={`opacity-0 group-hover:opacity-100 transition-opacity ${sortBy === 'name' ? 'opacity-100 text-[#34d399]' : ''}`} />
+                  <ArrowUpDown size={12} className={`opacity-0 group-hover:opacity-100 transition-opacity ${sortBy === 'name' ? 'opacity-100 text-clay' : ''}`} />
                 </div>
               </th>
-              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-[#1a1a1a]">Issuer & Bank</th>
-              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-[#1a1a1a]">Optimization</th>
-              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-[#1a1a1a]">Fees & Status</th>
-              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 text-right bg-[#1a1a1a]">Actions</th>
+              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-white/5">Issuer & Bank</th>
+              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-white/5">Optimization</th>
+              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-white/5">Fees & Status</th>
+              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 text-right bg-white/5">Actions</th>
             </tr>
           </thead>
 
@@ -231,7 +231,7 @@ export const AdminCardsTab: React.FC<AdminCardsTabProps> = ({
                       )}
                     </div>
                     <div>
-                      <div className="font-bold text-white leading-tight group-hover:text-[#34d399] transition-colors line-clamp-1">{card.name}</div>
+                      <div className="font-bold text-white leading-tight group-hover:text-clay transition-colors line-clamp-1">{card.name}</div>
                       <div className="text-[10px] text-white/30 mt-1 uppercase font-black tracking-widest">{card.type}</div>
                     </div>
                   </div>
@@ -243,8 +243,8 @@ export const AdminCardsTab: React.FC<AdminCardsTabProps> = ({
                   </div>
                 </td>
                 <td className="px-8 py-6">
-                  <span className="px-2.5 py-1.5 rounded-lg bg-[#34d399]/5 text-[#34d399] text-[10px] font-black uppercase tracking-wider flex items-center gap-2 w-fit border border-[#34d399]/10">
-                    <Zap size={12} className="text-[#34d399]/40" />
+                  <span className="px-2.5 py-1.5 rounded-lg bg-clay/5 text-clay text-[10px] font-black uppercase tracking-wider flex items-center gap-2 w-fit border border-clay/10">
+                    <Zap size={12} className="text-clay/40" />
                     {card.best_for}
                   </span>
                 </td>
@@ -256,7 +256,7 @@ export const AdminCardsTab: React.FC<AdminCardsTabProps> = ({
                     <div className="flex items-center gap-2">
                        <div className={`px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-widest border ${
                          card.status === 'published' 
-                           ? 'bg-[#34d399]/10 text-[#34d399] border-[#34d399]/20' 
+                           ? 'bg-clay/10 text-clay border-clay/20' 
                            : 'bg-amber-500/10 text-amber-500 border-amber-500/20'
                        }`}>
                          {card.status || 'published'}
@@ -271,7 +271,7 @@ export const AdminCardsTab: React.FC<AdminCardsTabProps> = ({
                   <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0">
                     <button 
                       onClick={() => onEdit(card)}
-                      className="p-2.5 text-[#34d399] hover:bg-[#34d399]/10 rounded-xl transition-all border border-transparent hover:border-[#34d399]/20 shadow-sm"
+                      className="p-2.5 text-clay hover:bg-clay/10 rounded-xl transition-all border border-transparent hover:border-clay/20 shadow-sm"
                       title="Update Details"
                     >
                       <Edit2 size={18} />

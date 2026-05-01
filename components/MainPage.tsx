@@ -45,7 +45,7 @@ const MainPage: React.FC = () => {
         schema={homeSchema}
       />
       
-      <div className="bg-[#0a0a0a] min-h-screen selection:bg-clay/30">
+      <div className="bg-cream min-h-screen selection:bg-clay/30">
         {/* EDITORIAL 5-COLUMN ARCHITECTURE */}
         <div className="grid grid-cols-1 lg:grid-cols-5 w-full relative">
             

@@ -548,7 +548,7 @@ const AdminDashboard: React.FC = () => {
   }
 
   return (
-    <div className="flex min-h-screen bg-[#0a0a0a] selection:bg-[#34d399]/20 relative overflow-hidden">
+    <div className="flex min-h-screen bg-cream selection:bg-clay/20 relative overflow-hidden">
       {/* CONTINUOUS AMBIENT ANIMATION NODES */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
         <motion.div 
@@ -559,7 +559,7 @@ const AdminDashboard: React.FC = () => {
             y: [-20, 20, -20]
           }}
           transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-          className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-[#34d399]/20 blur-[120px] rounded-full"
+          className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-clay/20 blur-[120px] rounded-full"
         />
         <motion.div 
           animate={{ 
@@ -569,7 +569,7 @@ const AdminDashboard: React.FC = () => {
             y: [20, -20, 20]
           }}
           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute -bottom-[10%] -right-[10%] w-[50%] h-[50%] bg-[#34d399]/10 blur-[150px] rounded-full"
+          className="absolute -bottom-[10%] -right-[10%] w-[50%] h-[50%] bg-clay/10 blur-[150px] rounded-full"
         />
       </div>
 
@@ -587,7 +587,7 @@ const AdminDashboard: React.FC = () => {
           addLabel={getAddLabel()}
         />
 
-        <main className="flex-1 p-4 md:p-10 bg-[#0a0a0a]">
+        <main className="flex-1 p-4 md:p-10 bg-cream">
             <div className="max-w-7xl mx-auto">
               <AnimatePresence mode="wait">
                 <motion.div 
@@ -596,7 +596,7 @@ const AdminDashboard: React.FC = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.2 }}
-                  className="bg-[#111] rounded-[2.5rem] border border-white/5 shadow-2xl shadow-black overflow-hidden min-h-[70vh] flex flex-col"
+                  className="bg-white/5 rounded-[2.5rem] border border-white/5 shadow-2xl shadow-black overflow-hidden min-h-[70vh] flex flex-col"
                 >
                   {activeTab === 'blogs' && <AdminBlogsTab onEdit={handleEdit} onDelete={confirmDelete} formatDateForInput={formatDateForInput} />}
                   {activeTab === 'cards' && <AdminCardsTab onEdit={handleEdit} onDelete={confirmDelete} />}
@@ -634,14 +634,14 @@ const AdminDashboard: React.FC = () => {
             exit={{ opacity: 0, scale: 0.8, filter: 'blur(10px)' }}
             className={`fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] px-6 py-4 rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-3xl border flex items-center gap-5 min-w-[340px] max-w-[90vw] ${
               notification.type === 'success' 
-                ? 'bg-[#1a1a1a]/90 border-[#34d399]/20 text-white' 
+                ? 'bg-white/5/90 border-clay/20 text-white' 
                 : 'bg-red-950/90 border-red-500/20 text-white'
             }`}
           >
             <div className={`w-10 h-10 rounded-full flex items-center justify-center relative ${
-              notification.type === 'success' ? 'bg-[#34d399]/20 text-[#34d399]' : 'bg-red-500/20 text-red-500'
+              notification.type === 'success' ? 'bg-clay/20 text-clay' : 'bg-red-500/20 text-red-500'
             }`}>
-              {notification.type === 'success' && <div className="absolute inset-0 rounded-full border border-[#34d399]/40 animate-ping" />}
+              {notification.type === 'success' && <div className="absolute inset-0 rounded-full border border-clay/40 animate-ping" />}
               {notification.type === 'success' ? '✓' : '!'}
             </div>
             <div className="flex flex-col flex-1">
