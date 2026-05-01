@@ -13,18 +13,29 @@ const generateSlug = (name: string, bank: string) =>
   `${name}-${bank}`.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
 const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
-  // Randomly pick 4 cards — shuffle once per mount
+  // Always pull these specific 4 elite cards if they exist, otherwise use fallbacks
+  const targetIssuers = ['ICICI', 'Axis', 'Axis', 'HDFC'];
+  const targetNames = ['Emeralde Private', 'Magnus', 'Atlas', 'Diners Club Black'];
+
   const displayCards = useMemo(() => {
-    const pool = cards.length >= 4 ? [...cards] : [...cards, ...cards].slice(0, 4);
-    for (let i = pool.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [pool[i], pool[j]] = [pool[j], pool[i]];
+    // Attempt to find the specific cards in the pool
+    const found = targetNames.map((name, i) => {
+      return cards.find(c => 
+        c.name.toLowerCase().includes(name.toLowerCase()) && 
+        (c.issuer?.toLowerCase().includes(targetIssuers[i].toLowerCase()) || c.bank?.toLowerCase().includes(targetIssuers[i].toLowerCase()))
+      );
+    }).filter(Boolean);
+
+    // If we don't find all 4, we use the ones we found + whatever is available to make it 4
+    if (found.length < 4) {
+      const remaining = cards.filter(c => !found.includes(c));
+      return [...found, ...remaining].slice(0, 4);
     }
-    return pool.slice(0, 4);
+    return found;
   }, [cards]);
 
-  // Subtle tilt angles for the "hanging card" effect
-  const tilts = [-3, 1.5, -1, 2.5];
+  // If no cards are available at all (still loading or empty), we show nothing or skeleton
+  if (displayCards.length === 0) return null;
 
   return (
     <section className="bg-[#0a0a0a] py-16 md:py-20 px-6 relative overflow-hidden glass-shine-container">
@@ -62,127 +73,116 @@ const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
           </p>
         </motion.div>
 
-        {/* Card Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 w-full mb-10">
+        {/* Card List (Image 2 Redesign) */}
+        <div className="w-full space-y-6 mb-12">
           {displayCards.map((card, i) => {
             const slug = card.slug || generateSlug(card.name, card.bank || card.issuer || '');
-            const swingDurations = [4.2, 5.1, 4.7, 5.5];
             return (
               <motion.div
                 key={card.id || i}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.12, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              >
-              <motion.div
-                animate={{ rotate: [tilts[i] - 1.2, tilts[i] + 1.2, tilts[i] - 1.2] }}
-                whileHover={{ y: -8, scale: 1.03, rotate: 0 }}
-                transition={{
-                  rotate: { delay: i * 0.15 + 0.8, duration: swingDurations[i], repeat: Infinity, ease: "easeInOut" },
-                  y: { duration: 0.4 },
-                  scale: { duration: 0.4 },
-                }}
-                style={{ rotate: `${tilts[i]}deg` }}
+                transition={{ delay: i * 0.1, duration: 0.6 }}
                 className="group relative"
               >
-                {/* Serrated Tape Header */}
-                <div className="absolute top-0 left-0 right-0 h-3 bg-[#0a0a0a] z-20 overflow-hidden flex">
-                  {[...Array(40)].map((_, j) => (
-                    <div key={j} className="w-1.5 h-1.5 bg-[#0a0a0a] rounded-full -translate-y-1/2 border border-white/5" />
-                  ))}
-                </div>
-
-                {/* Glow on hover */}
-                <div className="absolute inset-0 rounded-2xl bg-[#34d399]/0 group-hover:bg-[#34d399]/5 transition-all duration-700 blur-xl" />
-
-                <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] pt-10 pb-6 px-6 flex flex-col items-center border border-white/5 group-hover:border-[#34d399]/30 transition-all duration-700 relative overflow-hidden">
-
-                  {/* Indicator dot */}
-                  <div className="absolute top-7 left-6 w-2.5 h-2.5 rounded-full bg-[#34d399] shadow-[0_0_12px_#34d399] z-30 animate-pulse" />
-
-                  {/* Card image */}
-                  <div className="w-full aspect-[1.6/1] rounded-xl overflow-hidden bg-[#111] mb-4 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.6)] group-hover:shadow-[0_30px_60px_-10px_rgba(52,211,153,0.15)] transition-all duration-700">
-                    {card.image ? (
-                      <img
-                        src={card.image}
-                        alt={card.name}
-                        className="w-full h-full object-contain p-3 transition-transform duration-700 group-hover:scale-105 grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100"
+                <div className="bg-white/[0.03] backdrop-blur-3xl border border-white/10 rounded-[2.5rem] p-5 md:p-8 hover:bg-white/[0.05] hover:border-[#34d399]/30 transition-all duration-500 overflow-hidden shadow-2xl">
+                  
+                  {/* Top Row: Visual & Quick Info */}
+                  <div className="flex flex-col lg:flex-row gap-8 items-center lg:items-start mb-8">
+                    {/* Card Visual */}
+                    <div className="w-full lg:w-72 shrink-0 aspect-[1.6/1] rounded-2xl overflow-hidden bg-black/40 border border-white/5 relative group-hover:border-[#34d399]/20 transition-all">
+                      <img 
+                        src={card.image} 
+                        alt={card.name} 
+                        className="w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-700" 
                       />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-[#1f1f1f]">
-                        <span className="text-white/10 text-[10px] uppercase tracking-widest">No Image</span>
+                      <div className="absolute top-3 left-3 w-2 h-2 rounded-full bg-[#34d399] animate-pulse" />
+                    </div>
+
+                    {/* Middle: Title & Tags */}
+                    <div className="flex-1 text-left">
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        <span className="flex items-center gap-1.5 px-3 py-1 bg-amber-500/10 text-amber-500 text-[9px] font-black uppercase tracking-widest rounded-full border border-amber-500/20">
+                          Premium <Star size={10} />
+                        </span>
+                        <span className="flex items-center gap-1.5 px-3 py-1 bg-blue-500/10 text-blue-400 text-[9px] font-black uppercase tracking-widest rounded-full border border-blue-500/20">
+                          Travel
+                        </span>
+                        <span className="flex items-center gap-1.5 px-3 py-1 bg-[#34d399]/10 text-[#34d399] text-[9px] font-black uppercase tracking-widest rounded-full border border-[#34d399]/20">
+                          Lounge Access
+                        </span>
                       </div>
-                    )}
+                      <h3 className="text-2xl md:text-3xl font-heading font-black text-white leading-tight uppercase tracking-tighter mb-2 group-hover:text-[#34d399] transition-colors">
+                        {card.name}
+                      </h3>
+                      <p className="text-white/40 text-xs font-mono uppercase tracking-[0.2em]">
+                        {card.issuer || card.bank} — Protocol ID: {card.id?.slice(0,8).toUpperCase() || 'ELITE-99'}
+                      </p>
+                    </div>
+
+                    {/* Right: Actions */}
+                    <div className="flex flex-col gap-3 w-full lg:w-64 shrink-0">
+                      <Link 
+                        to={`/cards/${slug}`}
+                        className="w-full bg-[#34d399] text-[#0a0a0a] py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:scale-[1.02] transition-all shadow-[0_10px_20px_rgba(52,211,153,0.1)]"
+                      >
+                        Read More <ArrowUpRight size={14} />
+                      </Link>
+                      <Link 
+                        to="/yureka-ai"
+                        className="w-full bg-white/5 border border-white/10 text-white/60 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-white/10 transition-all"
+                      >
+                        Ask AI <TrendingUp size={14} />
+                      </Link>
+                      <button className="text-[9px] text-white/20 hover:text-white/40 transition-colors uppercase tracking-widest font-bold">
+                        Report data issue
+                      </button>
+                    </div>
                   </div>
 
-                  {/* Card info */}
-                  <div className="w-full text-left space-y-1 mb-5">
-                    <p className="text-[8px] font-mono text-[#34d399] uppercase tracking-widest font-bold">Elite Instrument</p>
-                    <h3 className="text-white text-base font-heading leading-tight uppercase">
-                      {card.name}
-                    </h3>
-                    <p className="text-white/30 text-[9px] font-mono uppercase tracking-wider">{card.issuer || card.bank}</p>
-                  </div>
-
-                  {/* Stats */}
-                  <div className="w-full space-y-3 mb-5">
-                    <div className="flex justify-between items-end border-b border-white/10 pb-2">
-                      <span className="text-[8px] text-white/50 uppercase tracking-[0.2em]">Yield Potential</span>
-                      <span className="text-xs font-mono text-[#34d399] font-bold">
-                        +{card.rewards_rate || '—'}
-                      </span>
+                  {/* Bottom Row: Data Grid */}
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-6 pt-8 border-t border-white/10">
+                    <div className="space-y-1.5">
+                      <span className="text-[8px] text-white/30 uppercase tracking-[0.2em] font-black">Intro Offer</span>
+                      <p className="text-[10px] font-bold text-white/80 leading-snug line-clamp-2 italic font-serif">{card.intro_offer || 'Elite Welcome Rewards'}</p>
                     </div>
-                    <div className="flex justify-between items-end border-b border-white/10 pb-2">
-                      <span className="text-[8px] text-white/50 uppercase tracking-[0.2em]">Annual Fee</span>
-                      <span className="text-xs font-mono text-white/90">
-                        ₹{String(card.annual_fee ?? '0').replace(/[^0-9]/g, '') || '0'}
-                      </span>
+                    <div className="space-y-1.5">
+                      <span className="text-[8px] text-white/30 uppercase tracking-[0.2em] font-black">Annual Fees</span>
+                      <p className="text-sm font-black text-white">₹{String(card.annual_fee ?? '0').replace(/[^0-9]/g, '') || '0'} <span className="text-[9px] text-white/20 font-medium">+GST</span></p>
                     </div>
-                    <div className="flex justify-between items-end">
-                      <span className="text-[8px] text-white/20 uppercase tracking-[0.2em]">Elite Rating</span>
-                      <div className="flex gap-0.5">
-                        {[...Array(5)].map((_, j) => (
-                          <Star
-                            key={j}
-                            size={8}
-                            className={j < Math.floor(card.elite_rating || card.rating || 4) ? 'text-[#34d399] fill-[#34d399]' : 'text-white/10'}
-                          />
-                        ))}
+                    <div className="space-y-1.5">
+                      <span className="text-[8px] text-white/30 uppercase tracking-[0.2em] font-black">Joining Fees</span>
+                      <p className="text-sm font-black text-white">₹{String(card.joining_fee || card.annual_fee ?? '0').replace(/[^0-9]/g, '') || '0'} <span className="text-[9px] text-white/20 font-medium">+GST</span></p>
+                    </div>
+                    <div className="space-y-1.5">
+                      <span className="text-[8px] text-white/30 uppercase tracking-[0.2em] font-black">Reward Rate</span>
+                      <p className="text-sm font-black text-[#34d399]">{card.rewards_rate || '3.33% → 33%'}</p>
+                    </div>
+                    <div className="space-y-1.5">
+                      <span className="text-[8px] text-white/30 uppercase tracking-[0.2em] font-black">Elite Rating</span>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-sm font-black text-white">{card.elite_rating || card.rating || '4.5'}</span>
+                        <Star size={12} className="text-[#34d399] fill-[#34d399]" />
                       </div>
                     </div>
                   </div>
 
-                  {/* Footer */}
-                  <div className="w-full pt-4 border-t border-white/5 flex items-center justify-between">
-                    <div className="flex flex-col">
-                      <span className="text-[7px] text-white/10 uppercase tracking-widest">Protocol ID</span>
-                      <span className="text-[8px] font-mono text-white/30 tracking-widest">{card.id?.slice(0, 8).toUpperCase() || 'YR-88-SEC'}</span>
-                    </div>
-                    <Link
-                      to={`/cards/${slug}`}
-                      onClick={(e) => e.stopPropagation()}
-                      className="w-7 h-7 rounded-lg bg-[#34d399]/10 flex items-center justify-center hover:bg-[#34d399] transition-colors group/btn"
-                    >
-                      <ArrowUpRight size={12} className="text-[#34d399] group-hover/btn:text-[#0a0a0a] transition-colors" />
-                    </Link>
-                  </div>
                 </div>
-              </motion.div>
               </motion.div>
             );
           })}
         </div>
 
         <motion.div
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
         >
           <Link
             to="/cards"
-            className="inline-block bg-white text-[#0a0a0a] px-12 py-5 rounded-full text-[10px] font-bold uppercase tracking-[0.4em] shadow-2xl hover:bg-[#34d399] transition-all duration-300"
+            className="inline-block bg-[#34d399] text-[#0a0a0a] px-12 py-5 rounded-full text-[10px] font-black uppercase tracking-[0.4em] shadow-2xl hover:shadow-[#34d399]/20 transition-all duration-300"
           >
-            Explore Elite Catalog →
+            Explore Full Catalog →
           </Link>
         </motion.div>
 
