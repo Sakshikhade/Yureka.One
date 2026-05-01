@@ -110,7 +110,7 @@ const ComparePage: React.FC = () => {
 
       {/* Comparison Tool */}
       <section className="max-w-7xl mx-auto px-6 -mt-4 relative z-20">
-         <div className="bg-[#111] border border-white/5 rounded-[3rem] p-8 md:p-12 shadow-2xl relative overflow-hidden">
+         <div className="bg-[#111] border border-white/5 rounded-[3rem] p-8 md:p-12 shadow-2xl relative">
             {/* Background pattern */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 blur-[100px] pointer-events-none" />
             
@@ -122,7 +122,7 @@ const ComparePage: React.FC = () => {
 
                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {[0, 1, 2].map((i) => (
-                    <div key={i} className="space-y-3 relative">
+                    <div key={i} className={`space-y-3 relative ${activeDropdown === i ? 'z-[100]' : 'z-10'}`}>
                        <label className="text-[10px] font-black text-white/20 uppercase tracking-widest block ml-1">
                           Card {i + 1} {i === 2 && <span className="text-white/10 lowercase tracking-normal">(Optional)</span>}
                        </label>
