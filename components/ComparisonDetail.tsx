@@ -4,7 +4,8 @@ import { motion } from 'motion/react';
 import { 
   ArrowLeft, Check, X, Shield, Zap, Sparkles, Loader2, Star, 
   Award, TrendingUp, Plane, ShoppingBag, Utensils, 
-  ChevronRight, ExternalLink, Info, Globe, CreditCard
+  ChevronRight, ExternalLink, Info, Globe, CreditCard,
+  Gift, Percent, Wallet, MousePointer2
 } from 'lucide-react';
 import { getCards } from '../services/supabaseService';
 import { Card } from '../types';
@@ -37,6 +38,18 @@ const ComparisonDetail: React.FC = () => {
     );
   }
 
+  // Helper to extract unique keys from all cards for dynamic comparison
+  const getAllKeys = (type: 'grid_fees' | 'grid_benefits') => {
+    const keysSet = new Set<string>();
+    cards.forEach(card => {
+      (card[type] || []).forEach(item => keysSet.add(item.title));
+    });
+    return Array.from(keysSet);
+  };
+
+  const dynamicFees = getAllKeys('grid_fees');
+  const dynamicBenefits = getAllKeys('grid_benefits');
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] pb-32">
       <SEO 
@@ -44,11 +57,9 @@ const ComparisonDetail: React.FC = () => {
         description="Side-by-side analysis of features, rewards, and eligibility."
       />
 
-      {/* Modern Banner Header (Inspired by Image 2) */}
-      <section className="relative pt-12 pb-24 overflow-hidden">
-         <div className="absolute inset-0 bg-blue-600 z-0" />
-         <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-transparent z-0 opacity-50" />
-         
+      {/* Hero Header */}
+      <section className="relative pt-12 pb-24 overflow-hidden bg-blue-600">
+         <div className="absolute inset-0 bg-gradient-to-r from-blue-700/50 to-transparent pointer-events-none" />
          <div className="max-w-7xl mx-auto px-6 relative z-10">
             <Link to="/compare" className="inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors text-[10px] font-black uppercase tracking-[0.3em] mb-12">
                <ArrowLeft size={14} /> Back to Selection
@@ -63,44 +74,37 @@ const ComparisonDetail: React.FC = () => {
                   {cards.map((c, i) => (
                     <React.Fragment key={c.id}>
                        {c.name}
-                       {i < cards.length - 1 && <span className="text-white/40 mx-2">vs</span>}
+                       {i < cards.length - 1 && <span className="text-white/40 mx-2 text-2xl md:text-3xl">vs</span>}
                     </React.Fragment>
                   ))}
                </motion.h1>
-
-               <div className="hidden lg:block relative shrink-0">
-                  <div className="w-48 h-32 bg-white/20 rounded-2xl rotate-12 absolute -top-4 -right-4 backdrop-blur-xl border border-white/20" />
-                  <div className="w-48 h-32 bg-white/10 rounded-2xl -rotate-6 backdrop-blur-xl border border-white/20" />
-                  <CreditCard className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white/40" size={64} />
-               </div>
             </div>
          </div>
       </section>
 
-      {/* Main Content Grid */}
+      {/* Comparison Sections */}
       <div className="max-w-7xl mx-auto px-6 -mt-16 relative z-20 space-y-20">
          
-         {/* Top Card Cards (Image 2 Middle) */}
+         {/* Top Level Cards */}
          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {cards.map((card, i) => (
                <motion.div 
                  key={card.id}
                  initial={{ opacity: 0, y: 30 }}
-                 animate={{ opacity: 1, y: 0 }}
-                 transition={{ delay: i * 0.1 }}
+                 whileInView={{ opacity: 1, y: 0 }}
+                 viewport={{ once: true }}
                  className="bg-[#111] border border-white/10 rounded-[2.5rem] p-6 space-y-8 flex flex-col hover:border-blue-400/30 transition-all group"
                >
                   <div className="flex flex-wrap gap-2">
-                     <span className="flex items-center gap-1.5 px-3 py-1 bg-blue-500/10 border border-blue-500/20 rounded-full text-[8px] font-black text-blue-400 uppercase tracking-widest">
-                        <Plane size={10} /> Travel
-                     </span>
-                     <span className="flex items-center gap-1.5 px-3 py-1 bg-purple-500/10 border border-purple-500/20 rounded-full text-[8px] font-black text-purple-400 uppercase tracking-widest">
-                        <Award size={10} /> Premium
-                     </span>
+                     {(card.tags || [card.category, card.type]).filter(Boolean).map((tag, j) => (
+                       <span key={j} className="flex items-center gap-1.5 px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[8px] font-black text-white/60 uppercase tracking-widest">
+                          {tag}
+                       </span>
+                     ))}
                   </div>
 
                   <div className="space-y-4">
-                     <div className="aspect-[1.6/1] rounded-2xl overflow-hidden shadow-2xl bg-white/5 border border-white/5 transform group-hover:scale-[1.02] transition-transform duration-700">
+                     <div className="aspect-[1.6/1] rounded-2xl overflow-hidden shadow-2xl bg-white/5 border border-white/5">
                         <img src={card.image} alt={card.name} className="w-full h-full object-cover" />
                      </div>
                      <div className="flex justify-between items-start">
@@ -116,9 +120,9 @@ const ComparisonDetail: React.FC = () => {
                   </div>
 
                   <div className="space-y-4 flex-1">
-                     <h4 className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em]">Highlights</h4>
+                     <h4 className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em]">Top Benefits</h4>
                      <ul className="space-y-3">
-                        {card.benefits?.slice(0, 5).map((benefit, j) => (
+                        {(card.benefits || []).slice(0, 4).map((benefit, j) => (
                            <li key={j} className="flex items-start gap-3">
                               <Check size={14} className="text-[#34d399] mt-0.5 shrink-0" />
                               <span className="text-xs text-white/70 leading-relaxed">{benefit}</span>
@@ -127,15 +131,15 @@ const ComparisonDetail: React.FC = () => {
                      </ul>
                   </div>
 
-                  <Link to={`/cards/${card.slug || card.id}`} className="w-full bg-blue-600 text-white py-5 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-blue-500 transition-all shadow-xl shadow-blue-600/10">
+                  <Link to={`/cards/${card.slug || card.id}`} className="w-full bg-blue-600 text-white py-5 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-blue-500 transition-all">
                      Read Full Review <ChevronRight size={14} />
                   </Link>
                </motion.div>
             ))}
          </div>
 
-         {/* Fees & Charges Section (Image 2 Bottom) */}
-         <section className="space-y-8">
+         {/* Fees & Charges Matrix (Dynamic from Supabase) */}
+         <section className="space-y-10">
             <div className="flex items-center gap-4">
                <h2 className="text-2xl font-heading font-black text-white uppercase tracking-tight">Fees & Charges</h2>
                <div className="h-px flex-1 bg-white/5" />
@@ -166,23 +170,26 @@ const ComparisonDetail: React.FC = () => {
                            </div>
                            <span className="text-[8px] font-bold text-white/20 uppercase">+ GST</span>
                         </div>
-                        <div className="flex justify-between items-end border-b border-white/5 pb-4">
-                           <div className="space-y-1">
-                              <span className="text-[9px] font-black text-white/20 uppercase tracking-widest">Forex Markup</span>
-                              <p className="text-lg font-bold text-blue-400 leading-none">2%</p>
+                        
+                        {/* Dynamic Grid Fees from Supabase */}
+                        {(card.grid_fees || []).map((fee, idx) => (
+                           <div key={idx} className="flex justify-between items-end border-b border-white/5 pb-4">
+                              <div className="space-y-1">
+                                 <span className="text-[9px] font-black text-white/20 uppercase tracking-widest">{fee.title}</span>
+                                 <p className="text-lg font-bold text-blue-400 leading-none">{fee.value}</p>
+                              </div>
                            </div>
-                           <span className="text-[8px] font-bold text-white/20 uppercase">International</span>
-                        </div>
+                        ))}
                      </div>
                   </div>
                ))}
             </div>
          </section>
 
-         {/* Rewards Program (Image 3 Top) */}
-         <section className="space-y-8">
+         {/* Rewards & Features Program (Dynamic from Supabase) */}
+         <section className="space-y-10">
             <div className="flex items-center gap-4">
-               <h2 className="text-2xl font-heading font-black text-white uppercase tracking-tight">Rewards Program</h2>
+               <h2 className="text-2xl font-heading font-black text-white uppercase tracking-tight">Rewards & Features</h2>
                <div className="h-px flex-1 bg-white/5" />
             </div>
 
@@ -196,47 +203,63 @@ const ComparisonDetail: React.FC = () => {
                         <span className="text-xs font-black text-white uppercase tracking-wider">{card.name}</span>
                      </div>
 
-                     <div className="space-y-6 flex-1">
+                     <div className="space-y-8 flex-1">
+                        {/* Rewards Rate */}
                         <div className="space-y-4">
-                           <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em]">Earning Rates</span>
-                           <div className="space-y-2">
-                              {[
-                                 { label: 'Travel', val: '2% - 5%' },
-                                 { label: 'Dining', val: '2.5%' },
-                                 { label: 'Others', val: '1.5%' }
-                              ].map((row, idx) => (
-                                 <div key={idx} className="flex justify-between items-center py-2 border-b border-white/[0.03]">
-                                    <span className="text-xs text-white/60">{row.label}</span>
-                                    <span className="text-xs font-black text-white">{row.val}</span>
-                                 </div>
-                              ))}
+                           <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em]">Neural Efficiency</span>
+                           <div className="p-4 bg-blue-500/5 border border-blue-500/10 rounded-2xl">
+                              <div className="flex items-center gap-2 mb-1">
+                                 <Zap size={14} className="text-blue-400" />
+                                 <span className="text-[10px] font-black text-white uppercase tracking-widest">Base Rate</span>
+                              </div>
+                              <p className="text-xl font-black text-white">{card.rewards_rate || 'N/A'}</p>
+                              <p className="text-[9px] font-bold text-white/20 uppercase tracking-widest mt-1">Direct from product manifest</p>
                            </div>
                         </div>
 
-                        <div className="space-y-4 pt-4">
-                           <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em]">Milestones</span>
-                           <div className="space-y-3">
-                              {['₹1.5L Spend: 1k Bonus', '₹3L Spend: 2.5k Bonus', '₹6L Spend: Annual Waiver'].map((m, idx) => (
-                                 <div key={idx} className="flex items-start gap-3">
-                                    <div className="w-4 h-4 rounded bg-blue-500/10 flex items-center justify-center shrink-0 mt-0.5">
-                                       <Check size={10} className="text-blue-400" />
-                                    </div>
-                                    <span className="text-[11px] text-white/60 leading-tight">{m}</span>
+                        {/* Grid Benefits from Supabase */}
+                        <div className="space-y-4">
+                           <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em]">Key Levers</span>
+                           <div className="space-y-2">
+                              {(card.grid_benefits || []).map((benefit, idx) => (
+                                 <div key={idx} className="flex justify-between items-start py-3 border-b border-white/[0.03]">
+                                    <span className="text-xs text-white/60 pr-4">{benefit.title}</span>
+                                    <span className="text-xs font-black text-white text-right">{benefit.value}</span>
                                  </div>
                               ))}
+                              {/* Fallback if no grid benefits */}
+                              {(!card.grid_benefits || card.grid_benefits.length === 0) && (
+                                card.product_details?.slice(0, 3).map((detail, idx) => (
+                                  <div key={idx} className="flex items-start gap-3 py-2">
+                                     <Check size={12} className="text-blue-400 mt-1" />
+                                     <span className="text-[11px] text-white/60">{detail}</span>
+                                  </div>
+                                ))
+                              )}
                            </div>
                         </div>
+
+                        {/* Welcome Benefits */}
+                        {card.welcome_benefits && (
+                          <div className="space-y-4 pt-4">
+                             <span className="text-[10px] font-black text-white/40 uppercase tracking-[0.3em]">Onboarding Perks</span>
+                             <div className="flex items-start gap-3 p-4 bg-[#34d399]/5 border border-[#34d399]/10 rounded-2xl">
+                                <Gift size={16} className="text-[#34d399] shrink-0" />
+                                <span className="text-[11px] text-[#34d399] leading-relaxed font-bold uppercase tracking-tight">{card.welcome_benefits}</span>
+                             </div>
+                          </div>
+                        )}
                      </div>
                   </div>
                ))}
             </div>
          </section>
 
-         {/* Quick Comparison Table (Image 4) */}
+         {/* Detailed Matrix Table (Pulling all card properties) */}
          <section className="space-y-10 pt-10">
             <div className="text-center space-y-2">
-               <h2 className="text-3xl font-heading font-black text-white uppercase tracking-tight">Quick Comparison</h2>
-               <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em]">Feature Grid Overview</p>
+               <h2 className="text-3xl font-heading font-black text-white uppercase tracking-tight">Comprehensive Matrix</h2>
+               <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em]">Synced Neural Synchronization</p>
             </div>
 
             <div className="bg-[#111] border border-white/5 rounded-[2.5rem] overflow-hidden shadow-2xl">
@@ -244,34 +267,36 @@ const ComparisonDetail: React.FC = () => {
                   <table className="w-full text-left border-collapse">
                      <thead>
                         <tr className="bg-white/5 border-b border-white/10">
-                           <th className="p-8 text-[11px] font-black text-white/40 uppercase tracking-widest w-64">Feature</th>
+                           <th className="p-8 text-[11px] font-black text-white/40 uppercase tracking-widest w-64">Neural Vector</th>
                            {cards.map(card => (
-                              <th key={card.id} className="p-8 text-[11px] font-black text-white uppercase tracking-widest text-center min-w-[240px]">
+                              <th key={card.id} className="p-8 text-[11px] font-black text-white uppercase tracking-widest text-center min-w-[280px]">
                                  {card.name}
                               </th>
                            ))}
                            {Array.from({ length: 3 - cards.length }).map((_, i) => (
-                              <th key={i} className="p-8 min-w-[240px]" />
+                              <th key={i} className="p-8 min-w-[280px]" />
                            ))}
                         </tr>
                      </thead>
                      <tbody className="divide-y divide-white/5">
                         {[
+                           { label: 'Neural Score', val: (c: Card) => `${c.rating} / 5` },
+                           { label: 'Primary Focus', key: 'best_for' },
                            { label: 'Annual Fee', key: 'annual_fee' },
                            { label: 'Joining Fee', key: 'joining_fee' },
-                           { label: 'Reward Rate', val: '2% → 36%' },
-                           { label: 'Intro Offers', key: 'best_for' },
-                           { label: 'Lounge Access', val: 'Domestic: 12/yr | Intl: Unlimited' },
-                           { label: 'Milestone Bonus', val: 'Up to ₹25,000 yearly benefits' }
+                           { label: 'Reward Engine', key: 'rewards_rate' },
+                           { label: 'Intro Offer', key: 'intro_offer' },
+                           { label: 'Savings Factor', key: 'projected_savings' },
+                           { label: 'Elite Tier', val: (c: Card) => c.elite_rating ? `Tier ${c.elite_rating}` : 'Standard' },
                         ].map((row, idx) => (
                            <tr key={idx} className="hover:bg-white/[0.02] transition-colors">
-                              <td className="p-8 border-r border-white/5">
+                              <td className="p-8 border-r border-white/5 bg-white/[0.01]">
                                  <span className="text-xs font-black text-white uppercase tracking-wider">{row.label}</span>
                               </td>
                               {cards.map(card => (
                                  <td key={card.id} className="p-8 text-center border-r border-white/5 last:border-r-0">
                                     <span className="text-sm font-bold text-white/60">
-                                       {row.key ? (card as any)[row.key] : row.val}
+                                       {row.key ? ((card as any)[row.key] || 'N/A') : (row.val ? row.val(card) : 'N/A')}
                                     </span>
                                  </td>
                               ))}
@@ -286,18 +311,21 @@ const ComparisonDetail: React.FC = () => {
             </div>
          </section>
 
-         {/* Insight Section */}
-         <section className="bg-gradient-to-r from-blue-600/10 to-transparent border border-white/5 rounded-[3rem] p-10 md:p-16 flex flex-col md:flex-row items-center gap-12">
-            <div className="w-24 h-24 bg-blue-600 rounded-[2rem] flex items-center justify-center shrink-0 shadow-2xl shadow-blue-600/40 transform -rotate-12">
-               <Sparkles size={40} className="text-white" />
-            </div>
-            <div className="space-y-4">
-               <h2 className="text-2xl md:text-3xl font-heading font-black text-white uppercase tracking-tight">Intelligence Verdict</h2>
-               <p className="text-white/40 text-sm max-w-2xl leading-relaxed">
-                  Our Neural Engine evaluates cards based on real-world spending patterns. While rewards are primary, we also factor in <span className="text-blue-400">capping limits</span>, <span className="text-blue-400">redemption friction</span>, and <span className="text-blue-400">annual fee waiver viability</span>.
-               </p>
-            </div>
-         </section>
+         {/* Action Hub */}
+         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {cards.map((card) => (
+               <div key={card.id} className="flex flex-col gap-3">
+                  {card.apply_link && (
+                    <a href={card.apply_link} target="_blank" rel="noopener noreferrer" className="w-full bg-[#34d399] text-black py-5 rounded-2xl text-[11px] font-black uppercase tracking-widest flex items-center justify-center gap-3 hover:scale-[1.02] transition-all shadow-xl shadow-[#34d399]/10">
+                       Apply Securely <MousePointer2 size={16} />
+                    </a>
+                  )}
+                  <Link to={`/cards/${card.slug || card.id}`} className="w-full bg-white/5 border border-white/10 text-white/60 py-5 rounded-2xl text-[11px] font-black uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-white hover:text-black transition-all">
+                     View Deep Dive <ExternalLink size={16} />
+                  </Link>
+               </div>
+            ))}
+         </div>
       </div>
     </div>
   );
