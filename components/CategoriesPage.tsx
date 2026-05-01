@@ -95,14 +95,12 @@ const CategoriesPage: React.FC = () => {
                 <div className={`absolute -top-12 -right-12 w-24 h-24 bg-gradient-to-br ${category.color} opacity-0 group-hover:opacity-10 blur-2xl transition-opacity`} />
                 
                 <div className="relative z-10 flex flex-col items-center text-center space-y-4">
-                  {/* Icon Container with 3D effect */}
                   <div className="relative group-hover:scale-110 transition-transform duration-500">
-                    <div className={`absolute inset-0 bg-gradient-to-br ${category.color} blur-xl opacity-20 group-hover:opacity-40 transition-opacity`} />
-                    <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${category.color} p-4 shadow-2xl relative z-10 flex items-center justify-center transform group-hover:rotate-6 transition-all duration-500`}>
+                    <div className="w-20 h-20 relative z-10 flex items-center justify-center transform group-hover:rotate-6 transition-all duration-500">
                       {category.image ? (
-                        <img src={category.image} alt="" className="w-10 h-10 object-contain drop-shadow-lg" />
+                        <img src={category.image} alt="" className="w-16 h-16 object-contain drop-shadow-2xl" />
                       ) : (
-                        <category.icon className="text-white drop-shadow-lg" size={32} />
+                        <category.icon className="text-[#34d399] drop-shadow-lg" size={48} />
                       )}
                     </div>
                   </div>
