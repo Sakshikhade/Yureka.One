@@ -16,9 +16,9 @@ const POPULAR_COMPARISONS = [
     title: 'Axis Atlas vs. ICICI Emeralde Private Metal vs. HDFC Regalia Gold',
     category: 'Premium Rewards Tier',
     cards: [
-      { name: 'Axis Atlas', image: 'https://images.unsplash.com/photo-1556742049-02e49f9d2a10?auto=format&fit=crop&q=80&w=400', slug: 'axis-atlas' },
-      { name: 'ICICI Emeralde', image: 'https://images.unsplash.com/photo-1613243555988-441166d4d6fd?auto=format&fit=crop&q=80&w=400', slug: 'icici-emeralde' },
-      { name: 'Regalia Gold', image: 'https://images.unsplash.com/photo-1589750670744-dc9633e0f9c7?auto=format&fit=crop&q=80&w=400', slug: 'hdfc-regalia-gold' }
+      { name: 'Axis Atlas', image: 'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/axis-bank-atlas.jpeg', slug: 'axis-bank-atlas' },
+      { name: 'ICICI Emeralde', image: 'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/icici-bank-emeralde-private-metal.jpeg', slug: 'icici-emeralde-private-metal-icici-bank' },
+      { name: 'Regalia Gold', image: 'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/hdfc-bank-regalia-gold.jpeg', slug: 'hdfc-regalia-gold-hdfc-bank' }
     ]
   },
   {
@@ -26,9 +26,9 @@ const POPULAR_COMPARISONS = [
     title: 'Axis Atlas vs. Axis Magnus vs. Tata Neu Infinity HDFC',
     category: 'Travel & Lifestyle Matchup',
     cards: [
-      { name: 'Axis Atlas', image: 'https://images.unsplash.com/photo-1556742049-02e49f9d2a10?auto=format&fit=crop&q=80&w=400', slug: 'axis-atlas' },
-      { name: 'Axis Magnus', image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&q=80&w=400', slug: 'axis-magnus' },
-      { name: 'Tata Neu Infinity', image: 'https://images.unsplash.com/photo-1589750670744-dc9633e0f9c7?auto=format&fit=crop&q=80&w=400', slug: 'tata-neu-infinity' }
+      { name: 'Axis Atlas', image: 'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/axis-bank-atlas.jpeg', slug: 'axis-bank-atlas' },
+      { name: 'Axis Magnus', image: 'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/axis-bank-magnus.jpeg', slug: 'magnus-axis-bank' },
+      { name: 'Tata Neu Infinity', image: 'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/hdfc-bank-tata-neu-infinity.jpeg', slug: 'hdfc-tata-neu-infinity-hdfc-bank' }
     ]
   },
   {
@@ -36,9 +36,9 @@ const POPULAR_COMPARISONS = [
     title: 'Amazon Pay ICICI vs. Swiggy HDFC vs. Airtel Axis Bank',
     category: 'Entry-Level Cashback Heros',
     cards: [
-      { name: 'Amazon Pay ICICI', image: 'https://images.unsplash.com/photo-1613243555988-441166d4d6fd?auto=format&fit=crop&q=80&w=400', slug: 'amazon-pay-icici' },
-      { name: 'Swiggy HDFC', image: 'https://images.unsplash.com/photo-1556742049-02e49f9d2a10?auto=format&fit=crop&q=80&w=400', slug: 'swiggy-hdfc' },
-      { name: 'Airtel Axis', image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&q=80&w=400', slug: 'airtel-axis' }
+      { name: 'Amazon Pay ICICI', image: 'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/icici-bank-amazon-pay-icici.png', slug: 'amazon-pay-icici-icici-bank' },
+      { name: 'Swiggy HDFC', image: 'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/hdfc-bank-swiggy-hdfc-bank.jpeg', slug: 'swiggy-hdfc-bank-hdfc-bank' },
+      { name: 'Airtel Axis', image: 'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/axis-bank-airtel-axis-bank.jpeg', slug: 'airtel-axis-bank-axis-bank' }
     ]
   }
 ];

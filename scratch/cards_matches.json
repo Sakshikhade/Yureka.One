@@ -1,0 +1,78 @@
+[dotenv@17.3.1] injecting env (9) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+[
+  {
+    "name": "Airtel Axis Bank",
+    "slug": "airtel-axis-bank-axis-bank",
+    "image": "https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/axis-bank-airtel-axis-bank.jpeg"
+  },
+  {
+    "name": "Amazon Pay ICICI",
+    "slug": "amazon-pay-icici-icici-bank",
+    "image": "https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/icici-bank-amazon-pay-icici.png"
+  },
+  {
+    "name": "HDFC Business Regalia",
+    "slug": "hdfc-business-regalia-hdfc-bank",
+    "image": "https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/hdfc-bank-business-regalia.webp"
+  },
+  {
+    "name": "HDFC Regalia Gold",
+    "slug": "hdfc-regalia-gold-hdfc-bank",
+    "image": "https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/hdfc-bank-regalia-gold.jpeg"
+  },
+  {
+    "name": "HDFC Swiggy ORNGE",
+    "slug": "hdfc-swiggy-ornge-hdfc-bank",
+    "image": "https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/hdfc-bank-swiggy-ornge-hdfc-bank.webp"
+  },
+  {
+    "name": "HDFC Tata Neu Infinity",
+    "slug": "hdfc-tata-neu-infinity-hdfc-bank",
+    "image": "https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/hdfc-bank-tata-neu-infinity.jpeg"
+  },
+  {
+    "name": "ICICI Emeralde",
+    "slug": "icici-emeralde-icici-bank",
+    "image": "https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/icici-bank-emeralde.jpeg"
+  },
+  {
+    "name": "ICICI Emeralde Private Metal",
+    "slug": "icici-emeralde-private-metal-icici-bank",
+    "image": "https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/icici-bank-emeralde-private-metal.jpeg"
+  },
+  {
+    "name": "Magnus",
+    "slug": "magnus-axis-bank",
+    "image": "https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/axis-bank-magnus.jpeg"
+  },
+  {
+    "name": "Regalia",
+    "slug": "regalia-hdfc-bank",
+    "image": "https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/hdfc-bank-regalia.jpeg"
+  },
+  {
+    "name": "Swiggy BLCK HDFC",
+    "slug": "swiggy-blck-hdfc-hdfc-bank",
+    "image": "https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/hdfc-bank-swiggy-blck-hdfc-bank.jpeg"
+  },
+  {
+    "name": "Swiggy HDFC Bank",
+    "slug": "swiggy-hdfc-bank-hdfc-bank",
+    "image": "https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/hdfc-bank-swiggy-hdfc-bank.jpeg"
+  },
+  {
+    "name": "Tata Neu HDFC",
+    "slug": "tata-neu-hdfc-hdfc-bank",
+    "image": "https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/hdfc-bank-tata-neu-plus.jpeg"
+  },
+  {
+    "name": "Magnus Burgundy",
+    "slug": "axis-bank-magnus-burgundy",
+    "image": "https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/axis-bank-magnus-burgundy.jpeg"
+  },
+  {
+    "name": "Atlas",
+    "slug": "axis-bank-atlas",
+    "image": "https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/axis-bank-atlas.jpeg"
+  }
+]
