@@ -712,6 +712,94 @@ const ComingSoon: React.FC = () => {
                     </div>
                 </motion.div>
 
+                {/* Smarter Spends Grid (Image 2) */}
+                <div className="mt-32 md:mt-48 space-y-12">
+                    <motion.div 
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-center space-y-4 mb-16"
+                    >
+                        <span className="text-[#34d399] text-[10px] font-black uppercase tracking-[0.4em]">Yield Categories</span>
+                        <h2 className="text-4xl md:text-6xl font-heading text-white tracking-tighter uppercase">Smarter <span className="text-[#34d399]">Spends.</span></h2>
+                        <p className="text-white/40 text-xs md:text-sm max-w-xl mx-auto uppercase tracking-widest font-bold">Strategic optimization for every major spend category in your lifestyle.</p>
+                    </motion.div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {[
+                            { 
+                                category: 'Shopping', 
+                                color: 'text-fuchsia-500', 
+                                logo: 'https://logo.clearbit.com/myntra.com', 
+                                savings: 'UPTO 20%', 
+                                brands: 'Myntra and Nykaa', 
+                                desc: 'orders just by using the right credit card combined with affiliate tools.' 
+                            },
+                            { 
+                                category: 'Travel', 
+                                color: 'text-blue-500', 
+                                logo: 'https://logo.clearbit.com/goindigo.in', 
+                                savings: 'UPTO 20%', 
+                                brands: 'IndiGo tickets', 
+                                desc: 'just by using the right credit card combined with airline membership programmes.' 
+                            },
+                            { 
+                                category: 'Dining', 
+                                color: 'text-orange-500', 
+                                logo: 'https://logo.clearbit.com/eazydiner.com', 
+                                savings: 'UPTO 30%', 
+                                brands: 'Restaurant Bills', 
+                                desc: 'just by using the right credit card with dining programs like EazyDiner.' 
+                            },
+                            { 
+                                category: 'Business', 
+                                color: 'text-red-500', 
+                                logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Emblem_of_India.svg/1200px-Emblem_of_India.svg.png', 
+                                savings: 'UPTO 16.67%', 
+                                brands: 'Tax payments', 
+                                desc: 'just by using the right business credit cards with and max benefit redemption options.' 
+                            },
+                            { 
+                                category: 'Hotel', 
+                                color: 'text-amber-600', 
+                                logo: 'https://logo.clearbit.com/accor.com', 
+                                savings: 'FREE NIGHTS', 
+                                brands: 'Accor Hotels', 
+                                desc: 'on your stays by using the right credit card, the most rewarding redemption options and transfer bonuses.' 
+                            }
+                        ].map((item, i) => (
+                            <motion.div
+                                key={i}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: i * 0.1 }}
+                                className={`group relative bg-white/[0.03] backdrop-blur-3xl border border-white/10 rounded-[2.5rem] p-8 md:p-10 hover:bg-white/[0.06] hover:border-[#34d399]/30 transition-all duration-500 shadow-2xl ${i >= 3 ? 'lg:col-span-1.5' : ''}`}
+                            >
+                                {/* Subtle Grid Background for Card */}
+                                <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 0)', backgroundSize: '20px 20px' }} />
+                                
+                                <div className="relative z-10 flex flex-col items-start gap-8 h-full">
+                                    <div className="h-16 flex items-center">
+                                        <img src={item.logo} alt={item.category} className="h-12 w-auto object-contain brightness-100 group-hover:scale-110 transition-transform duration-500" />
+                                    </div>
+                                    <div className="space-y-4">
+                                        <h3 className="text-white font-bold text-sm md:text-base tracking-tight leading-tight">
+                                            Smarter <span className={item.color}>{item.category}</span> Spends
+                                        </h3>
+                                        <p className="text-white/40 text-[10px] md:text-xs leading-relaxed font-medium">
+                                            Saving <span className="text-white font-bold">{item.savings}</span> on <span className="text-white font-bold">{item.brands}</span> {item.desc}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Hover Glow */}
+                                <div className={`absolute -bottom-10 -right-10 w-32 h-32 bg-[#34d399]/10 blur-[50px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none`} />
+                            </motion.div>
+                        ))}
+                    </div>
+                </div>
+
                 {/* App Download CTA - "Image 2" */}
                 <motion.div 
                     initial={{ opacity: 0, y: 60 }}
