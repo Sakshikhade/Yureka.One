@@ -42,17 +42,19 @@ const FEATURES = [
     iconBg: 'bg-blue-500/10 text-blue-400',
     preview: (
       <div className="w-full rounded-2xl bg-[#0d0d0d] border border-white/5 overflow-hidden py-3">
-        <div className="flex gap-2 animate-marquee whitespace-nowrap mb-2 px-2 will-change-transform">
-           {[1,2,3,4].map((n, i) => (
-             <div key={i} className="bg-white/5 rounded-lg w-10 h-10 shrink-0 flex items-center justify-center p-2">
-               <img src={`/assets/banks/${['hdfc','sbi','axis','amex'][i%4]}.png`} alt="" className="w-full h-full object-contain opacity-50" loading="lazy" />
+        {/* Row 1: Left to Right */}
+        <div className="flex gap-2 animate-marquee whitespace-nowrap mb-2 px-2 will-change-transform" style={{ animationDirection: 'reverse', animationDuration: '25s' }}>
+           {[1,2,3,4,5,6].map((n, i) => (
+             <div key={i} className="bg-white rounded-lg w-10 h-10 shrink-0 flex items-center justify-center p-1.5 shadow-sm">
+               <img src={`/assets/banks/${['hdfc','sbi','axis','amex'][i%4]}.png`} alt="" className="w-full h-full object-contain" loading="lazy" />
              </div>
            ))}
         </div>
-        <div className="flex gap-2 animate-marquee-reverse whitespace-nowrap px-2 will-change-transform">
-           {[1,2,3,4].map((n, i) => (
-             <div key={i} className="bg-white/5 rounded-lg w-10 h-10 shrink-0 flex items-center justify-center p-2">
-               <img src={`/assets/banks/${['icici','kotak','yesbank','idfc'][i%4]}.png`} alt="" className="w-full h-full object-contain opacity-50" loading="lazy" />
+        {/* Row 2: Right to Left */}
+        <div className="flex gap-2 animate-marquee whitespace-nowrap px-2 will-change-transform" style={{ animationDuration: '30s' }}>
+           {[1,2,3,4,5,6].map((n, i) => (
+             <div key={i} className="bg-white rounded-lg w-10 h-10 shrink-0 flex items-center justify-center p-1.5 shadow-sm">
+               <img src={`/assets/banks/${['icici','kotak','yesbank','idfc'][i%4]}.png`} alt="" className="w-full h-full object-contain" loading="lazy" />
              </div>
            ))}
         </div>
