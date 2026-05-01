@@ -63,43 +63,60 @@ const fallbackReviews: Review[] = [
 const AppStoreCard: React.FC<{ review: Review }> = ({ review }) => {
     return (
         <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="bg-white/5 backdrop-blur-2xl p-6 md:p-8 rounded-[2.5rem] shadow-[0_20px_50px_-10px_rgba(0,0,0,0.5)] border border-white/10 space-y-4 hover:shadow-2xl hover:scale-[1.02] transition-all duration-500 group"
+            className="group relative bg-[#0d0d0d]/40 backdrop-blur-3xl p-8 rounded-[2.5rem] border border-white/5 hover:border-[#34d399]/30 transition-all duration-700 overflow-hidden"
         >
-            <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full overflow-hidden bg-cream grayscale border border-black/5">
-                        <img src={review.avatar || `https://ui-avatars.com/api/?name=${review.author}&background=random`} alt={review.author} className="w-full h-full object-cover" />
-                    </div>
-                    <div className="flex flex-col">
-                        <h4 className="text-[14px] font-bold text-white uppercase tracking-wider">{review.author}</h4>
-                        <div className="flex items-center gap-1 text-white/40 text-[10px] uppercase font-bold tracking-widest mt-0.5">
-                             <span>{review.source || 'Verified User'}</span>
-                             {review.source && (
-                                 review.source === 'App Store' ? <Apple size={10} className="fill-current" /> : <Play size={10} className="fill-current" />
-                             )}
+            {/* Premium Glow Effect */}
+            <div className="absolute -top-24 -right-24 w-48 h-48 bg-[#34d399]/5 blur-[80px] group-hover:bg-[#34d399]/10 transition-colors duration-700" />
+            
+            <div className="relative z-10 flex flex-col gap-6">
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                        <div className="relative">
+                            <div className="w-14 h-14 rounded-2xl overflow-hidden border border-white/10 p-0.5 bg-gradient-to-br from-white/10 to-transparent">
+                                <img 
+                                    src={review.avatar || `https://ui-avatars.com/api/?name=${review.author}&background=0d0d0d&color=fff&bold=true`} 
+                                    alt={review.author} 
+                                    className="w-full h-full object-cover rounded-[calc(1rem-2px)] grayscale group-hover:grayscale-0 transition-all duration-700" 
+                                />
+                            </div>
+                            <div className="absolute -bottom-1 -right-1 bg-[#34d399] rounded-full p-1 border-2 border-[#0a0a0a]">
+                                <CheckCircle size={10} className="text-[#0a0a0a]" />
+                            </div>
+                        </div>
+                        <div className="flex flex-col">
+                            <div className="flex items-center gap-2">
+                                <h4 className="text-base font-heading font-black text-white uppercase tracking-tight">{review.author}</h4>
+                            </div>
+                            <span className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em]">{review.role || 'Verified Client'}</span>
                         </div>
                     </div>
+                    <div className="w-10 h-10 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10 group-hover:bg-[#34d399]/10 group-hover:border-[#34d399]/20 transition-all duration-700">
+                        {review.source === 'App Store' ? <Apple size={18} className="text-white/40 group-hover:text-[#34d399]" /> : <Play size={18} className="text-white/40 group-hover:text-[#34d399]" />}
+                    </div>
                 </div>
-                <div className="w-8 h-8 bg-white/10 rounded-xl flex items-center justify-center opacity-40 group-hover:opacity-100 transition-opacity">
-                    {review.source === 'App Store' ? <Apple size={16} /> : <Play size={16} />}
+
+                <div className="flex items-center gap-1.5 bg-white/5 w-fit px-3 py-1.5 rounded-full border border-white/5">
+                    {[...Array(5)].map((_, i) => (
+                        <Star key={i} size={10} className={`${i < (review.rating || 5) ? 'text-[#34d399] fill-[#34d399]' : 'text-white/10'}`} />
+                    ))}
+                    <div className="w-px h-2.5 bg-white/10 mx-2" />
+                    <span className="text-[9px] font-black text-white/40 uppercase tracking-widest">
+                        {new Date(review.created_at || Date.now()).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })}
+                    </span>
+                </div>
+
+                <blockquote className="text-lg font-serif italic text-white/80 leading-snug tracking-tight">
+                    "{review.quote}"
+                </blockquote>
+                
+                <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                    <div className="h-px w-8 bg-[#34d399]/30" />
+                    <span className="text-[8px] font-black text-[#34d399] uppercase tracking-[0.4em]">Verified Yield</span>
                 </div>
             </div>
-
-            <div className="flex items-center gap-1 py-1">
-                {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={12} className={`${i < (review.rating || 5) ? 'text-[#047857] fill-[#047857]' : 'text-gray-200'}`} />
-                ))}
-                <span className="text-[10px] font-bold text-white/40 ml-2 uppercase tracking-widest">
-                    {new Date(review.created_at || Date.now()).toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' })}
-                </span>
-            </div>
-
-            <p className="text-[15px] text-white/90 leading-relaxed font-sans">
-                {review.quote}
-            </p>
         </motion.div>
     );
 };

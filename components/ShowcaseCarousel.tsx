@@ -14,18 +14,18 @@ interface ShowcaseCarouselProps {
 // ─────────────────────────────────────────────────────────────
 const WITH_ROW1 = [
   { icon: '⚡', text: 'AI-matched rewards',      bg: 'bg-[#34d399] text-[#0a0a0a]' },
-  { icon: '🎯', text: 'Zero hidden fees',         bg: 'bg-white/10 text-white border border-white/10' },
+  { icon: '🎯', text: 'Zero hidden fees',         bg: 'bg-[#34d399] text-[#0a0a0a]' },
   { icon: '💳', text: '200+ cards analyzed',      bg: 'bg-[#34d399] text-[#0a0a0a]' },
   { icon: '✅', text: 'Best card, guaranteed',    bg: 'bg-[#34d399] text-[#0a0a0a]' },
-  { icon: '🔄', text: 'Instant comparison',       bg: 'bg-white/5 text-white/60 border border-white/5' },
+  { icon: '🔄', text: 'Instant comparison',       bg: 'bg-[#34d399] text-[#0a0a0a]' },
   { icon: '🤖', text: 'Neural matching',          bg: 'bg-[#34d399] text-[#0a0a0a]' },
   { icon: '🎁', text: 'Max rewards unlocked',     bg: 'bg-[#34d399] text-[#0a0a0a]' },
 ];
 const WITH_ROW2 = [
-  { icon: '💰', text: '₹15k average savings',    bg: 'bg-white/10 text-white border border-white/10' },
+  { icon: '💰', text: '₹15k average savings',    bg: 'bg-[#34d399] text-[#0a0a0a]' },
   { icon: '📊', text: 'Reward math done for you', bg: 'bg-[#34d399] text-[#0a0a0a]' },
-  { icon: '🏆', text: 'Top cluster match',        bg: 'bg-white/10 text-white border border-white/10' },
-  { icon: '🔐', text: 'Unbiased, always',         bg: 'bg-white/5 text-white/60 border border-white/5' },
+  { icon: '🏆', text: 'Top cluster match',        bg: 'bg-[#34d399] text-[#0a0a0a]' },
+  { icon: '🔐', text: 'Unbiased, always',         bg: 'bg-[#34d399] text-[#0a0a0a]' },
   { icon: '📱', text: 'Chrome auto-apply',        bg: 'bg-[#34d399] text-[#0a0a0a]' },
   { icon: '⚡', text: 'Real-time audit',          bg: 'bg-[#34d399] text-[#0a0a0a]' },
   { icon: '🎯', text: 'Spend-matched card',       bg: 'bg-[#34d399] text-[#0a0a0a]' },

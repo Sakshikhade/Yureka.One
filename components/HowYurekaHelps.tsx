@@ -68,9 +68,17 @@ const FEATURES = [
     gradient: 'from-purple-500/10 via-transparent to-transparent',
     iconBg: 'bg-purple-500/10 text-purple-400',
     preview: (
-      <div className="w-full rounded-2xl bg-[#0d0d0d] border border-white/5 p-3 space-y-2">
+      <div className="w-full rounded-2xl bg-[#0d0d0d] border border-white/5 p-3 space-y-2 relative overflow-hidden group">
+        {/* Scanning Line Effect */}
+        <motion.div 
+          animate={{ top: ['0%', '100%', '0%'] }} 
+          transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+          className="absolute left-0 right-0 h-[2px] bg-[#34d399] shadow-[0_0_15px_#34d399] z-20"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#34d399]/0 via-[#34d399]/5 to-[#34d399]/0 opacity-0 group-hover:opacity-100 transition-opacity" />
+        
         {['Lounge', 'Rewards', 'Fees'].map((item, i) => (
-          <div key={i} className="space-y-1">
+          <div key={i} className="space-y-1 relative z-10">
             <div className="flex justify-between text-[7px] text-white/20 uppercase tracking-widest">
               <span>{item}</span>
             </div>
@@ -95,10 +103,26 @@ const FEATURES = [
     gradient: 'from-amber-500/10 via-transparent to-transparent',
     iconBg: 'bg-amber-500/10 text-amber-400',
     preview: (
-      <div className="w-full rounded-2xl bg-[#0d0d0d] border border-white/5 p-4 flex flex-col justify-center items-center gap-2">
+      <div className="w-full rounded-2xl bg-[#0d0d0d] border border-white/5 p-4 flex flex-col justify-center items-center gap-2 overflow-hidden">
         <span className="text-[7px] text-white/20 uppercase tracking-widest mb-1">Estimated Savings</span>
-        <div className="text-xl font-heading font-black text-white tracking-tighter tabular-nums">
-          ₹18,700
+        <div className="text-xl font-heading font-black text-white tracking-tighter tabular-nums flex items-baseline">
+          ₹
+          <motion.span
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            <motion.span
+              animate={{ count: [0, 18700] }}
+              transition={{ duration: 2, repeat: Infinity, repeatType: 'reverse' }}
+              onUpdate={(latest) => {
+                const span = document.getElementById('savings-counter');
+                if (span) span.innerText = Math.round(Number(latest.count)).toLocaleString();
+              }}
+              id="savings-counter"
+            >
+              0
+            </motion.span>
+          </motion.span>
         </div>
         <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
            <motion.div 
