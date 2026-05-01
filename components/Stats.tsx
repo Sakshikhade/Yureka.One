@@ -48,12 +48,13 @@ const Stats: React.FC = () => {
         
         {/* Header - Financial Section Style */}
         <div className="border-b-4 border-double border-white/10 mb-6 md:mb-8 pb-4">
-             <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 text-cream">
+             <div className="flex flex-col md:flex-row justify-between items-center md:items-end gap-6 text-cream">
                 <motion.div 
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true }}
                     variants={itemVariants}
+                    className="flex flex-col items-center md:items-start text-center md:text-left w-full md:w-auto"
                 >
                     <div className="flex items-center gap-3 mb-4 md:mb-6">
                         <div className="w-1.5 h-1.5 bg-[#34d399] rounded-full animate-pulse"></div>
@@ -69,9 +70,9 @@ const Stats: React.FC = () => {
                     viewport={{ once: true }}
                     variants={itemVariants}
                     transition={{ delay: 0.2 }}
-                    className="md:text-right"
+                    className="text-center md:text-right w-full md:w-auto"
                 >
-                    <p className="text-white/40 text-sm md:text-base max-w-sm font-serif italic border-l md:border-l-0 md:border-r border-clay/50 pl-4 md:pl-0 md:pr-4">
+                    <p className="text-white/40 text-sm md:text-base max-w-sm mx-auto md:ml-auto font-serif italic border-t md:border-t-0 md:border-l md:border-r border-clay/50 pt-4 md:pt-0 pl-0 md:pl-0 md:pr-4">
                         "Banks make money when you're confused. <br className="hidden lg:block" /> We help you understand and save."
                     </p>
                 </motion.div>

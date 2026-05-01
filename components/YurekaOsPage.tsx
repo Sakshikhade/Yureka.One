@@ -107,28 +107,28 @@ const YurekaOsPage: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="flex flex-col justify-center order-1 lg:order-2"
+            className="flex flex-col justify-center order-1 lg:order-2 text-center lg:text-left items-center lg:items-start"
           >
-            <div className="space-y-8">
-              <div className="inline-flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div className="space-y-8 w-full max-w-md lg:max-w-none flex flex-col items-center lg:items-start">
+              <div className="inline-flex flex-col sm:flex-row items-center lg:items-start gap-4">
                 <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#34d399]/10 rounded-full border border-[#34d399]/20">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#34d399] animate-ping" />
                   <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#34d399]">Limited Beta Access Live</span>
                 </div>
-                <div className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20">Project // FREE TOOLS</div>
+                <div className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 mt-2 sm:mt-0">Project // FREE TOOLS</div>
               </div>
               
               <div className="space-y-4">
-                <h1 className="text-5xl md:text-7xl font-heading font-extrabold tracking-tighter text-white leading-[0.9] lg:max-w-md">
+                <h1 className="text-5xl md:text-7xl font-heading font-extrabold tracking-tighter text-white leading-[0.9] lg:max-w-md mx-auto lg:mx-0">
                    Optimize your <br /> <span className="text-white/20 italic font-light">Reward</span> <br /> transfers.
                 </h1>
-                <p className="text-white/50 font-sans text-xl font-medium max-w-sm leading-relaxed">
+                <p className="text-white/50 font-sans text-xl font-medium max-w-sm leading-relaxed mx-auto lg:mx-0">
                    Stop guessing. Our Free Tools audit the exact mathematical yield for your specific redemption goals.
                 </p>
               </div>
 
-              <form onSubmit={handleCalculate} className="space-y-6 pt-4">
-                <div className="flex flex-col sm:flex-row gap-3">
+              <form onSubmit={handleCalculate} className="space-y-6 pt-4 w-full">
+                <div className="flex flex-col sm:flex-row gap-3 w-full max-w-md mx-auto lg:mx-0">
                   <div className="flex-1 relative group">
                     <input 
                       type="email" 
@@ -136,13 +136,13 @@ const YurekaOsPage: React.FC = () => {
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="aditya@example.com" 
                       required
-                      className="w-full px-6 py-5 rounded-2xl border border-white/10 focus:ring-4 focus:ring-[#34d399]/10 focus:border-[#34d399]/30 outline-none transition-all text-lg font-sans bg-[#111111] text-white shadow-inner placeholder:text-white/10"
+                      className="w-full px-6 py-5 rounded-2xl border border-white/10 focus:ring-4 focus:ring-[#34d399]/10 focus:border-[#34d399]/30 outline-none transition-all text-lg font-sans bg-[#111111] text-white shadow-inner placeholder:text-white/10 text-center sm:text-left"
                     />
                   </div>
                   <button 
                     type="submit"
                     disabled={loading}
-                    className="relative overflow-hidden bg-[#34d399] text-[#0a0a0a] px-10 py-5 rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-white active:scale-95 transition-all group shadow-2xl shadow-[#34d399]/10 shrink-0"
+                    className="relative overflow-hidden bg-[#34d399] text-[#0a0a0a] px-10 py-5 rounded-2xl font-bold flex items-center justify-center gap-3 hover:bg-white active:scale-95 transition-all group shadow-2xl shadow-[#34d399]/10 shrink-0 w-full sm:w-auto"
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                     {loading ? <Loader2 size={20} className="animate-spin" /> : (
@@ -156,7 +156,7 @@ const YurekaOsPage: React.FC = () => {
 
 
 
-                <div className="text-center md:text-left">
+                <div className="text-center lg:text-left">
                   <p className="text-[10px] text-white/30 font-sans tracking-wide">
                     By continuing, you agree to our <Link to="/terms" className="text-white underline">Terms of Service</Link>
                   </p>

@@ -189,14 +189,14 @@ const OurStory: React.FC = () => {
            ))}
         </div>
 
-         <div className="bg-[#111111] text-white p-6 md:p-10 flex flex-col md:flex-row justify-between items-start md:items-end border-b border-white/20">
+         <div className="bg-[#111111] text-white p-6 md:p-10 flex flex-col md:flex-row justify-between items-center md:items-end border-b border-white/20 text-center md:text-left">
             <div>
                 <h1 className="text-3xl sm:text-6xl lg:text-7xl font-heading font-black tracking-tighter leading-tight uppercase">
                     our mission<span className="text-[#34d399]">.</span>
                 </h1>
             </div>
 
-            <div className="flex gap-8 text-right mt-4 md:mt-0 font-serif italic opacity-40 text-sm">
+            <div className="flex gap-8 justify-center md:justify-end text-center md:text-right mt-6 md:mt-0 font-serif italic opacity-40 text-sm">
                 <div>
                     <span className="block font-sans font-bold text-[10px] uppercase tracking-widest opacity-30 mb-1">Published</span>
                     Bengaluru, 2026
@@ -208,7 +208,7 @@ const OurStory: React.FC = () => {
             </div>
         </div>
 
-         <div className="p-6 md:p-12 border-b border-white/10">
+         <div className="p-6 md:p-12 border-b border-white/10 text-center md:text-left">
             <FadeInSection>
                 <h2 className="text-2xl sm:text-5xl lg:text-6xl font-heading font-black leading-[1.1] text-white tracking-tight mb-4 uppercase">
                     Credit cards are confusing. <br className="hidden md:block"/> <span className="text-[#34d399]">We make them simple.</span>
@@ -565,7 +565,7 @@ const OurStory: React.FC = () => {
                                 Whether it's the 15% you save on your weekly grocery run or the ₹5,000 you shave off your next luxury purchase, the Yureka Voucher Hub is where your strategy meets the real world. No waiting for billing cycles. No cryptic redemption portals. Just pure, instant value. 
                             </p>
                         </div>
-                        <div className="mt-12 bg-[#111111] text-white p-8 flex flex-col md:flex-row justify-between items-center gap-8 border border-white/5">
+                        <div className="mt-12 bg-[#111111] text-white p-8 flex flex-col md:flex-row justify-between items-center gap-8 border border-white/5 text-center md:text-left">
                              <div>
                                 <h3 className="text-2xl font-serif font-bold mb-2 tracking-tight">Ready to optimize?</h3>
                                 <p className="font-serif italic opacity-30 text-sm">Join 10,000+ high-performance spenders today.</p>

@@ -13,8 +13,8 @@ const PrivacyPolicy: React.FC = () => {
         <div className="bg-[#0a0a0a] min-h-screen text-white pb-32 selection:bg-[#34d399] selection:text-[#0a0a0a]">
             {/* Header Section */}
             <div className="pt-6 md:pt-16 pb-16 md:pb-24 border-b border-white/10 px-6">
-                <div className="max-w-4xl mx-auto">
-                    <div className="flex items-center gap-2 text-[#34d399] mb-6">
+                <div className="max-w-4xl mx-auto text-center md:text-left">
+                    <div className="flex items-center justify-center md:justify-start gap-2 text-[#34d399] mb-6">
                         <Shield size={18} strokeWidth={2.5} />
                         <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Legal Compendium</span>
                     </div>
@@ -25,7 +25,7 @@ const PrivacyPolicy: React.FC = () => {
                         <p className="text-xl md:text-2xl font-serif italic text-white/60">
                             How we protect your financial data.
                         </p>
-                        <div className="text-left md:text-right">
+                        <div className="text-center md:text-right">
                             <p className="text-[10px] uppercase tracking-widest font-bold text-white/40">Last Updated</p>
                             <p className="text-sm font-mono mt-1 text-[#34d399] border-b border-[#34d399]/30 inline-block pb-1">7th April 2026</p>
                         </div>
