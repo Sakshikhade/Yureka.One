@@ -5,6 +5,7 @@ const PARTNERS = [
   { name: 'SBI',              logo: 'https://upload.wikimedia.org/wikipedia/commons/c/cc/SBI-logo.svg' },
   { name: 'Axis Bank',        logo: 'https://upload.wikimedia.org/wikipedia/commons/1/1a/Axis_Bank_logo.svg' },
   { name: 'Marriott Bonvoy',  logo: 'https://upload.wikimedia.org/wikipedia/commons/7/73/Marriott_Bonvoy_logo.svg' },
+  { name: 'Amazon',           logo: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg' },
 ];
 
 // Duplicate enough times so the strip feels endless
