@@ -3,16 +3,16 @@ import React from 'react';
 const PARTNERS = [
   { name: 'HDFC',             logo: '/assets/banks/hdfc.png' },
   { name: 'SBI',              logo: '/assets/banks/sbi.png' },
-  { name: 'Axis Bank',        logo: '/assets/banks/axis.png' },
+  { name: 'Axis',             logo: '/assets/banks/axis.png' },
   { name: 'ICICI',            logo: '/assets/banks/icici.png' },
-  { name: 'American Express', logo: '/assets/banks/amex.png' },
+  { name: 'Amex',             logo: '/assets/banks/amex.png' },
   { name: 'Kotak',            logo: '/assets/banks/kotak.png' },
   { name: 'IndusInd',         logo: '/assets/banks/indusind.png' },
-  { name: 'Yes Bank',         logo: '/assets/banks/yes.png' },
-  { name: 'AU Small Finance', logo: '/assets/banks/au.png' },
-  { name: 'TATA',             logo: '/assets/banks/tata.png' },
-  { name: 'Marriott',         logo: '/assets/banks/marriott.png' },
-  { name: 'Amazon',           logo: '/assets/banks/amazon.png' },
+  { name: 'Yes Bank',         logo: '/assets/banks/yesbank.png' },
+  { name: 'AU',               logo: '/assets/banks/au.png' },
+  { name: 'IDFC',             logo: '/assets/banks/idfc.png' },
+  { name: 'RBL',              logo: '/assets/banks/rbl.png' },
+  { name: 'HSBC',             logo: '/assets/banks/hsbc.png' },
 ];
 
 // Duplicate enough times so the strip feels endless
@@ -42,7 +42,7 @@ const PartnerLogos: React.FC = () => (
             <img
               src={p.logo}
               alt={p.name}
-              className="h-full w-auto object-contain brightness-0 invert opacity-50 hover:opacity-100 transition-opacity duration-300 max-w-[100px]"
+              className="h-full w-auto object-contain transition-all duration-300 max-w-[100px]"
               onError={(e) => {
                 const el = e.target as HTMLImageElement;
                 el.style.display = 'none';
