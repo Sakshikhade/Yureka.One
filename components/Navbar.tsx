@@ -1,25 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, Menu, X, Sparkles } from 'lucide-react';
+import { ArrowRight, Menu, X, Sparkles, ChevronDown, LayoutGrid, Calculator, ArrowRightLeft } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isExploreOpen, setIsExploreOpen] = useState(false);
   const location = useLocation();
-  const isDarkPage = location.pathname.startsWith('/blogs') || location.pathname.startsWith('/cards') || location.pathname.startsWith('/security-protocol');
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setIsScrolled(true);
-      } else if (window.scrollY < 30) {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 30);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const EXPLORE_ITEMS = [
+    { name: 'Categories', path: '/cards', icon: LayoutGrid, desc: 'Find cards by lifestyle' },
+    { name: 'Tools', path: '/free-tools', icon: Calculator, desc: 'Institutional calculators' },
+    { name: 'Compare', path: '/cards', icon: ArrowRightLeft, desc: 'Side-by-side analysis' }
+  ];
 
   return (
     <>
@@ -51,31 +53,64 @@ const Navbar: React.FC = () => {
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center relative z-10 shrink-0 gap-6 lg:gap-10">
                 <nav className="flex items-center gap-6 lg:gap-8">
-                    {[
-                        { name: 'Cards', path: '/cards' },
-                        { name: 'Explore', path: '/manifesto' },
-                        { name: 'Tools', path: '/free-tools' },
-                        { name: 'Blogs', path: '/blogs' }
-                    ].map((item) => (
-                        <Link 
-                            key={item.name}
-                            to={item.path} 
-                            className={`
-                                 relative text-[10px] font-black uppercase tracking-[0.2em] transition-all py-1
-                                ${location.pathname === item.path 
-                                    ? 'text-[#34d399]' 
-                                    : 'text-white/40 hover:text-white'}
-                            `}
+                    <Link 
+                        to="/cards" 
+                        className={`text-[10px] font-black uppercase tracking-[0.2em] transition-all py-1 ${location.pathname === '/cards' ? 'text-[#34d399]' : 'text-white/40 hover:text-white'}`}
+                    >
+                        Cards
+                    </Link>
+
+                    {/* Explore Dropdown */}
+                    <div 
+                        className="relative"
+                        onMouseEnter={() => setIsExploreOpen(true)}
+                        onMouseLeave={() => setIsExploreOpen(false)}
+                    >
+                        <button 
+                            className={`flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.2em] transition-all py-1 ${isExploreOpen ? 'text-[#34d399]' : 'text-white/40 hover:text-white'}`}
                         >
-                            {item.name}
-                            {location.pathname === item.path && (
-                                <motion.div 
-                                    layoutId="nav-active"
-                                    className="absolute -bottom-1 left-0 right-0 h-[2px] bg-[#34d399] rounded-full shadow-[0_0_8px_rgba(52,211,153,0.4)]"
-                                />
+                            Explore <ChevronDown size={10} className={`transition-transform duration-500 ${isExploreOpen ? 'rotate-180' : ''}`} />
+                        </button>
+
+                        <AnimatePresence>
+                            {isExploreOpen && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                                    className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-64 pointer-events-auto"
+                                >
+                                    <div className="bg-[#0d0d0d]/90 backdrop-blur-3xl border border-white/10 rounded-[2rem] p-4 shadow-2xl">
+                                        <div className="flex flex-col gap-1">
+                                            {EXPLORE_ITEMS.map((item) => (
+                                                <Link
+                                                    key={item.name}
+                                                    to={item.path}
+                                                    className="flex items-center gap-4 p-3 rounded-2xl hover:bg-white/5 transition-all group/item"
+                                                >
+                                                    <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center group-hover/item:bg-[#34d399]/10 transition-colors">
+                                                        <item.icon size={18} className="text-white/40 group-hover/item:text-[#34d399]" />
+                                                    </div>
+                                                    <div className="flex flex-col">
+                                                        <span className="text-[11px] font-black text-white uppercase tracking-wider">{item.name}</span>
+                                                        <span className="text-[9px] font-bold text-white/20 uppercase tracking-widest">{item.desc}</span>
+                                                    </div>
+                                                </Link>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </motion.div>
                             )}
-                        </Link>
-                    ))}
+                        </AnimatePresence>
+                    </div>
+
+                    <Link 
+                        to="/blogs" 
+                        className={`text-[10px] font-black uppercase tracking-[0.2em] transition-all py-1 ${location.pathname === '/blogs' ? 'text-[#34d399]' : 'text-white/40 hover:text-white'}`}
+                    >
+                        Blogs
+                    </Link>
                 </nav>
 
                 <div className="h-4 w-px bg-white/10" />
