@@ -10,28 +10,29 @@ import {
 import SEO from './SEO';
 
 const CATEGORIES = [
-  { id: 'travel', name: 'Travel', icon: Plane, color: 'from-blue-500 to-indigo-600', slug: 'travel', desc: 'Flights, Hotels & Stays' },
-  { id: 'shopping', name: 'Shopping', icon: ShoppingBag, color: 'from-pink-500 to-rose-600', slug: 'shopping', desc: 'Online & Retail Therapy' },
-  { id: 'cashback', name: 'Cashback', icon: Wallet, color: 'from-emerald-500 to-teal-600', slug: 'cashback', desc: 'Direct Savings on Every Spend' },
-  { id: 'fuel', name: 'Fuel', icon: Fuel, color: 'from-amber-500 to-orange-600', slug: 'fuel', desc: 'Surcharge Waivers & Points' },
-  { id: 'lifetime-free', name: 'Lifetime Free', icon: Tag, color: 'from-purple-500 to-violet-600', slug: 'lifetime-free', desc: 'Zero Annual Fees Forever' },
-  { id: 'entry-level', name: 'Entry Level', icon: Bike, color: 'from-cyan-500 to-blue-600', slug: 'entry-level', desc: 'Perfect First Credit Cards' },
-  { id: 'dining', name: 'Dining', icon: Utensils, color: 'from-orange-500 to-red-600', slug: 'dining', desc: 'Gourmet Rewards & Discounts' },
-  { id: 'co-branded', name: 'Co-Branded', icon: Users, color: 'from-indigo-500 to-purple-600', slug: 'co-branded', desc: 'Partner Specific Benefits' },
-  { id: 'grocery', name: 'Grocery', icon: ShoppingBasket, color: 'from-green-500 to-emerald-600', slug: 'grocery', desc: 'Daily Essentials Savings' },
-  { id: 'premium', name: 'Premium', icon: Star, color: 'from-yellow-400 to-amber-600', slug: 'premium', desc: 'Elite Perks & Concierge' },
-  { id: 'hotel', name: 'Hotel', icon: Hotel, color: 'from-blue-400 to-indigo-500', slug: 'hotel', desc: 'Stays & Luxury Hospitality' },
-  { id: 'business', name: 'Business', icon: Briefcase, color: 'from-slate-600 to-slate-800', slug: 'business', desc: 'Corporate Spends & Rewards' },
-  { id: 'lounge', name: 'Lounge Access', icon: Sofa, color: 'from-violet-400 to-purple-600', slug: 'lounge-access', desc: 'Airport Luxury Comfort' },
-  { id: 'student', name: 'Student', icon: GraduationCap, color: 'from-sky-400 to-blue-500', slug: 'student', desc: 'Start Your Credit Journey' },
-  { id: 'entertainment', name: 'Entertainment', icon: Music, color: 'from-fuchsia-500 to-pink-600', slug: 'entertainment', desc: 'Events, Concerts & More' },
-  { id: 'utility', name: 'Utility Bill', icon: Zap, color: 'from-yellow-500 to-orange-500', slug: 'utility-bill', desc: 'Electricity, Water & Gas' },
-  { id: 'movie', name: 'Movie', icon: Film, color: 'from-red-500 to-rose-600', slug: 'movie', desc: 'Cinema & Streaming Perks' },
-  { id: 'health', name: 'Health', icon: Heart, color: 'from-rose-400 to-red-500', slug: 'health', desc: 'Wellness & Medical Rewards' },
-  { id: 'rent', name: 'Rent', icon: Home, color: 'from-indigo-400 to-blue-600', slug: 'rent', desc: 'Earn on Monthly Rentals' },
-  { id: 'insurance', name: 'Insurance', icon: Shield, color: 'from-teal-400 to-emerald-500', slug: 'insurance', desc: 'Premium Payments & Protection' },
-  { id: 'upi', name: 'UPI', icon: Smartphone, color: 'from-purple-500 to-indigo-600', slug: 'upi', desc: 'Credit on UPI Transactions' },
-  { id: 'education', name: 'Education', icon: School, color: 'from-blue-600 to-cyan-500', slug: 'education', desc: 'Fees & Academic Spends' }
+  { id: 'travel', name: 'Travel', icon: Plane, image: '/images/categories/travel.png', color: 'from-blue-500 to-indigo-600', slug: 'travel', desc: 'Flights, Hotels & Stays' },
+  { id: 'shopping', name: 'Shopping', icon: ShoppingBag, image: '/images/categories/shopping.png', color: 'from-pink-500 to-rose-600', slug: 'shopping', desc: 'Online & Retail Therapy' },
+  { id: 'cashback', name: 'Cashback', icon: Wallet, image: '/images/categories/cashback.png', color: 'from-emerald-500 to-teal-600', slug: 'cashback', desc: 'Direct Savings on Every Spend' },
+  { id: 'fuel', name: 'Fuel', icon: Fuel, image: '/images/categories/fuel.png', color: 'from-amber-500 to-orange-600', slug: 'fuel', desc: 'Surcharge Waivers & Points' },
+  { id: 'lifetime-free', name: 'Lifetime Free', icon: Tag, image: '/images/categories/lifetime-free.png', color: 'from-purple-500 to-violet-600', slug: 'lifetime-free', desc: 'Zero Annual Fees Forever' },
+  { id: 'entry-level', name: 'Entry Level', icon: Bike, image: '/images/categories/entry-level.png', color: 'from-cyan-500 to-blue-600', slug: 'entry-level', desc: 'Perfect First Credit Cards' },
+  { id: 'dining', name: 'Dining', icon: Utensils, image: '/images/categories/dining.png', color: 'from-orange-500 to-red-600', slug: 'dining', desc: 'Gourmet Rewards & Discounts' },
+  { id: 'co-branded', name: 'Co-Branded', icon: Users, image: '/images/categories/co-branded.png', color: 'from-indigo-500 to-purple-600', slug: 'co-branded', desc: 'Partner Specific Benefits' },
+  { id: 'grocery', name: 'Grocery', icon: ShoppingBasket, image: '/images/categories/grocery.png', color: 'from-green-500 to-emerald-600', slug: 'grocery', desc: 'Daily Essentials Savings' },
+  { id: 'premium', name: 'Premium', icon: Star, image: '/images/categories/premium.png', color: 'from-yellow-400 to-amber-600', slug: 'premium', desc: 'Elite Perks & Concierge' },
+  { id: 'hotel', name: 'Hotel', icon: Hotel, image: '/images/categories/hotel.png', color: 'from-blue-400 to-indigo-500', slug: 'hotel', desc: 'Stays & Luxury Hospitality' },
+  { id: 'business', name: 'Business', icon: Briefcase, image: '/images/categories/business.png', color: 'from-slate-600 to-slate-800', slug: 'business', desc: 'Corporate Spends & Rewards' },
+  { id: 'lounge', name: 'Lounge Access', icon: Sofa, image: '/images/categories/lounge-access.png', color: 'from-violet-400 to-purple-600', slug: 'lounge-access', desc: 'Airport Luxury Comfort' },
+  { id: 'student', name: 'Student', icon: GraduationCap, image: '/images/categories/student.png', color: 'from-sky-400 to-blue-500', slug: 'student', desc: 'Start Your Credit Journey' },
+  { id: 'entertainment', name: 'Entertainment', icon: Music, image: '/images/categories/entertainment.png', color: 'from-fuchsia-500 to-pink-600', slug: 'entertainment', desc: 'Events, Concerts & More' },
+  { id: 'utility', name: 'Utility Bill', icon: Zap, image: '/images/categories/utility-bill.png', color: 'from-yellow-500 to-orange-500', slug: 'utility-bill', desc: 'Electricity, Water & Gas' },
+  { id: 'movie', name: 'Movie', icon: Film, image: '/images/categories/movie.png', color: 'from-red-500 to-rose-600', slug: 'movie', desc: 'Cinema & Streaming Perks' },
+  { id: 'airlines', name: 'Airlines', icon: Plane, image: '/images/categories/airlines.png', color: 'from-indigo-400 to-blue-500', slug: 'airlines', desc: 'Aviation & Flight Miles' },
+  { id: 'health', name: 'Health', icon: Heart, image: '/images/categories/health.png', color: 'from-rose-400 to-red-500', slug: 'health', desc: 'Wellness & Medical Rewards' },
+  { id: 'rent', name: 'Rent', icon: Home, image: '/images/categories/rent.png', color: 'from-indigo-400 to-blue-600', slug: 'rent', desc: 'Earn on Monthly Rentals' },
+  { id: 'insurance', name: 'Insurance', icon: Shield, image: '/images/categories/insurance.png', color: 'from-teal-400 to-emerald-500', slug: 'insurance', desc: 'Premium Payments & Protection' },
+  { id: 'upi', name: 'UPI', icon: Smartphone, image: '/images/categories/upi.png', color: 'from-purple-500 to-indigo-600', slug: 'upi', desc: 'Credit on UPI Transactions' },
+  { id: 'education', name: 'Education', icon: School, image: '/images/categories/education.png', color: 'from-blue-600 to-cyan-500', slug: 'education', desc: 'Fees & Academic Spends' }
 ];
 
 const CategoriesPage: React.FC = () => {
@@ -88,7 +89,7 @@ const CategoriesPage: React.FC = () => {
             >
               <Link 
                 to={`/categories/${category.slug}`}
-                className="group relative block bg-[#111] border border-white/5 rounded-[2rem] p-6 hover:border-[#34d399]/40 transition-all duration-500 overflow-hidden"
+                className="group relative block bg-[#111] border border-white/5 rounded-[2rem] p-6 hover:border-[#34d399]/40 transition-all duration-500 overflow-hidden h-full"
               >
                 {/* Background Glow */}
                 <div className={`absolute -top-12 -right-12 w-24 h-24 bg-gradient-to-br ${category.color} opacity-0 group-hover:opacity-10 blur-2xl transition-opacity`} />
@@ -98,7 +99,11 @@ const CategoriesPage: React.FC = () => {
                   <div className="relative group-hover:scale-110 transition-transform duration-500">
                     <div className={`absolute inset-0 bg-gradient-to-br ${category.color} blur-xl opacity-20 group-hover:opacity-40 transition-opacity`} />
                     <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${category.color} p-4 shadow-2xl relative z-10 flex items-center justify-center transform group-hover:rotate-6 transition-all duration-500`}>
-                      <category.icon className="text-white drop-shadow-lg" size={32} />
+                      {category.image ? (
+                        <img src={category.image} alt="" className="w-10 h-10 object-contain drop-shadow-lg" />
+                      ) : (
+                        <category.icon className="text-white drop-shadow-lg" size={32} />
+                      )}
                     </div>
                   </div>
 
