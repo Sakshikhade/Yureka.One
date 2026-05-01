@@ -24,7 +24,7 @@ const Navbar: React.FC = () => {
   return (
     <>
       <header 
-        className="fixed left-0 right-0 top-12 md:top-14 flex justify-center z-[90] pointer-events-none"
+        className="fixed inset-x-0 top-10 md:top-12 flex justify-center z-[100] pointer-events-none"
       >
         <motion.div 
             initial={{ y: -20, opacity: 0 }}

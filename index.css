@@ -22,7 +22,6 @@
         -moz-user-select: none;
         -ms-user-select: none;
         text-rendering: optimizeSpeed; /* Performance: Faster text rendering */
-        contain: content; /* Performance: Isolate layout shifts */
       }
 
       /* Heading modular scale and hierarchy */
