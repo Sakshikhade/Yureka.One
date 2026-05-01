@@ -56,6 +56,8 @@ const CareersPage = lazyWithRetry(() => import('./components/CareersPage'));
 const RewardsTransferCalculator = lazyWithRetry(() => import('./components/RewardsTransferCalculator'));
 const CategoriesPage = lazyWithRetry(() => import('./components/CategoriesPage'));
 const CategoryDetailPage = lazyWithRetry(() => import('./components/CategoryDetailPage'));
+const ComparePage = lazyWithRetry(() => import('./components/ComparePage'));
+const ComparisonDetail = lazyWithRetry(() => import('./components/ComparisonDetail'));
 const ComingSoon = lazyWithRetry(() => import('./components/ComingSoon'));
 
 import { motion, AnimatePresence } from 'motion/react';
@@ -267,6 +269,8 @@ const AppContent: React.FC = () => {
               <Route path="/rewards-calculator" element={<RewardsTransferCalculator />} />
               <Route path="/categories" element={<CategoriesPage />} />
               <Route path="/categories/:slug" element={<CategoryDetailPage />} />
+              <Route path="/compare" element={<ComparePage />} />
+              <Route path="/compare/:slug" element={<ComparisonDetail />} />
    
               <Route path="*" element={<MainPage />} />
             </Routes>

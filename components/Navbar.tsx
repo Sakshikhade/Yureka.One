@@ -20,7 +20,7 @@ const Navbar: React.FC = () => {
   const EXPLORE_ITEMS = [
     { name: 'Categories', path: '/categories', icon: LayoutGrid, desc: 'Find cards by lifestyle' },
     { name: 'Tools', path: '/free-tools', icon: Calculator, desc: 'Institutional calculators' },
-    { name: 'Compare', path: '/cards', icon: ArrowRightLeft, desc: 'Side-by-side analysis' }
+    { name: 'Compare', path: '/compare', icon: ArrowRightLeft, desc: 'Side-by-side analysis' }
   ];
 
   return (
@@ -173,6 +173,7 @@ const Navbar: React.FC = () => {
                     {[
                         { name: 'Card Explorer', path: '/cards', desc: 'Neural matched credit selection' },
                         { name: 'Categories', path: '/categories', desc: 'Browse by lifestyle & perks' },
+                        { name: 'Compare', path: '/compare', desc: 'Side-by-side neural matchup' },
                         { name: 'Explore', path: '/manifesto', desc: 'The decentralization of yield' },
                         { name: 'Free Tools', path: '/free-tools', desc: 'Institutional grade calculators' },
                         { name: 'Blogs', path: '/blogs', desc: 'The elite credit journal' },
