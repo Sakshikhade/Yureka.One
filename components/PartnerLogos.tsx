@@ -1,22 +1,14 @@
 import React from 'react';
 
 const PARTNERS = [
-  { name: 'HDFC',             logo: '/assets/banks/hdfc.png' },
-  { name: 'SBI',              logo: '/assets/banks/sbi.png' },
-  { name: 'Axis',             logo: '/assets/banks/axis.png' },
-  { name: 'ICICI',            logo: '/assets/banks/icici.png' },
-  { name: 'Amex',             logo: '/assets/banks/amex.png' },
-  { name: 'Kotak',            logo: '/assets/banks/kotak.png' },
-  { name: 'IndusInd',         logo: '/assets/banks/indusind.png' },
-  { name: 'Yes Bank',         logo: '/assets/banks/yesbank.png' },
-  { name: 'AU',               logo: '/assets/banks/au.png' },
-  { name: 'IDFC',             logo: '/assets/banks/idfc.png' },
-  { name: 'RBL',              logo: '/assets/banks/rbl.png' },
-  { name: 'HSBC',             logo: '/assets/banks/hsbc.png' },
+  { name: 'American Express', logo: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/American_Express_logo_%282018%29.svg' },
+  { name: 'SBI',              logo: 'https://upload.wikimedia.org/wikipedia/commons/c/cc/SBI-logo.svg' },
+  { name: 'Axis Bank',        logo: 'https://upload.wikimedia.org/wikipedia/commons/1/1a/Axis_Bank_logo.svg' },
+  { name: 'Marriott Bonvoy',  logo: 'https://upload.wikimedia.org/wikipedia/commons/7/73/Marriott_Bonvoy_logo.svg' },
 ];
 
 // Duplicate enough times so the strip feels endless
-const ITEMS = [...PARTNERS, ...PARTNERS, ...PARTNERS];
+const ITEMS = [...PARTNERS, ...PARTNERS, ...PARTNERS, ...PARTNERS];
 
 const PartnerLogos: React.FC = () => (
   <div className="w-full bg-[#0a0a0a] py-12 overflow-hidden relative">
@@ -35,18 +27,18 @@ const PartnerLogos: React.FC = () => (
           }}
         >
       <div
-        className="flex items-center gap-12 whitespace-nowrap animate-marquee w-max"
+        className="flex items-center gap-16 whitespace-nowrap animate-marquee w-max"
         style={{ animationDuration: '38s' }}
       >
         {ITEMS.map((p, i) => (
           <div
             key={i}
-            className="inline-flex items-center justify-center h-8 px-2 shrink-0"
+            className="inline-flex items-center justify-center h-8 px-4 shrink-0"
           >
             <img
               src={p.logo}
               alt={p.name}
-              className="h-full w-auto object-contain brightness-[1.1] opacity-60 hover:opacity-100 transition-all duration-500 max-w-[100px] hover:scale-110"
+              className="h-full w-auto object-contain brightness-0 invert opacity-60 hover:opacity-100 transition-all duration-500 max-w-[120px] hover:scale-110"
               onError={(e) => {
                 const el = e.target as HTMLImageElement;
                 el.style.display = 'none';
