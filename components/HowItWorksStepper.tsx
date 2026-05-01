@@ -315,8 +315,8 @@ const HowItWorksStepper: React.FC = () => {
                 </div>
 
                 {/* Text Column */}
-                <div className={`flex flex-col ${step.side === 'right' ? 'lg:order-1 lg:items-end text-center lg:text-right' : 'lg:order-2 lg:items-start text-center lg:text-left'}`}>
-                  <div className="max-w-xl">
+                <div className={`flex flex-col items-center ${step.side === 'right' ? 'lg:order-1 lg:items-end text-center lg:text-right' : 'lg:order-2 lg:items-start text-center lg:text-left'}`}>
+                  <div className={`max-w-xl flex flex-col items-center ${step.side === 'right' ? 'lg:items-end' : 'lg:items-start'}`}>
                     <span className="block text-[#34d399] text-[11px] font-bold uppercase tracking-[0.5em] mb-4">
                       {step.tag}
                     </span>
@@ -333,9 +333,9 @@ const HowItWorksStepper: React.FC = () => {
                       {step.description}
                     </p>
 
-                    <div className={`flex flex-col gap-6 ${step.side === 'right' ? 'items-end' : 'items-start'}`}>
+                    <div className={`flex flex-col gap-6 items-center ${step.side === 'right' ? 'lg:items-end' : 'lg:items-start'}`}>
                       <button className="group relative px-10 py-5 bg-white text-[#0a0a0a] rounded-full text-[10px] font-bold uppercase tracking-[0.3em] overflow-hidden transition-all hover:scale-105 shadow-2xl">
-                        <span className="relative z-10 flex items-center gap-3">
+                        <span className="relative z-10 flex items-center justify-center gap-3 w-full">
                           {step.cta} <ArrowRight size={14} className="group-hover:translate-x-1.5 transition-transform" />
                         </span>
                         <div className="absolute inset-0 bg-[#34d399] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out" />

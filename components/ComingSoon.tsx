@@ -653,9 +653,9 @@ const ComingSoon: React.FC = () => {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 1 }}
-                                className="w-full lg:w-1/2 space-y-6 md:space-y-8 px-4"
+                                className="w-full lg:w-1/2 space-y-6 md:space-y-8 px-4 flex flex-col items-center lg:items-start text-center lg:text-left"
                             >
-                                <div className="space-y-4">
+                                <div className="space-y-4 flex flex-col items-center lg:items-start">
                                    <div className="flex items-center gap-3">
                                       <span className="text-[9px] md:text-[10px] font-medium uppercase tracking-[0.3em] text-white/20">{feature.label}</span>
                                       <div className="h-[1px] w-8 md:w-12 bg-white/5" />
@@ -664,14 +664,14 @@ const ComingSoon: React.FC = () => {
                                       {feature.title}
                                    </h3>
                                 </div>
-                                <p className="text-white/50 text-sm md:text-lg font-medium leading-relaxed max-w-md">
+                                <p className="text-white/50 text-sm md:text-lg font-medium leading-relaxed max-w-md mx-auto lg:mx-0">
                                    {feature.desc}
                                 </p>
-                                <div className="pt-4 flex flex-col sm:flex-row items-start sm:items-center gap-6">
-                                   <Link to="/join-waitlist" className="h-12 md:h-14 px-8 md:px-10 bg-white text-[#0a0a0a] rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em] shadow-2xl shadow-black/10 hover:bg-[#34d399] hover:text-white hover:-translate-y-1 transition-all active:scale-95 group shrink-0 flex items-center justify-center">
+                                <div className="pt-4 flex flex-col sm:flex-row items-center sm:items-start lg:items-center gap-6 w-full lg:w-auto">
+                                   <Link to="/join-waitlist" className="h-12 md:h-14 px-8 md:px-10 bg-white text-[#0a0a0a] rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em] shadow-2xl shadow-black/10 hover:bg-[#34d399] hover:text-white hover:-translate-y-1 transition-all active:scale-95 group shrink-0 flex items-center justify-center w-full sm:w-auto">
                                       Join Internal Test <ChevronRight size={14} className="inline-block ml-2 group-hover:translate-x-1 transition-transform" />
                                    </Link>
-                                   <div className="flex flex-col">
+                                   <div className="flex flex-col text-center sm:text-left">
                                       <span className="text-[8px] md:text-[9px] font-medium text-white/10 uppercase tracking-widest">Availability</span>
                                       <span className="text-[9px] md:text-[10px] font-bold text-[#34d399] uppercase italic">Limited Access Nodes</span>
                                    </div>
