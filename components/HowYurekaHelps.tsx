@@ -139,7 +139,7 @@ const FEATURES = [
 ];
 
 const HowYurekaHelps: React.FC = () => (
-  <section className="relative bg-[#0a0a0a] py-24 md:py-36 border-t border-white/5 overflow-hidden">
+  <section className="relative bg-[#0a0a0a] py-16 md:py-24 border-t border-white/5 overflow-hidden">
     {/* Subtle dot grid background */}
     <div className="absolute inset-0 opacity-[0.02] pointer-events-none"
       style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px)', backgroundSize: '32px 32px' }}
@@ -152,12 +152,12 @@ const HowYurekaHelps: React.FC = () => (
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="text-center mb-16 md:mb-20"
+        className="text-center mb-10 md:mb-12"
       >
-        <span className="inline-block text-[#34d399] text-[10px] font-black uppercase tracking-[0.5em] mb-5">
+        <span className="inline-block text-[#34d399] text-[10px] font-black uppercase tracking-[0.5em] mb-3">
           The Full Stack
         </span>
-        <h2 className="text-4xl md:text-6xl lg:text-7xl font-heading text-white tracking-tighter leading-[0.95] uppercase mb-6">
+        <h2 className="text-4xl md:text-6xl lg:text-7xl font-heading text-white tracking-tighter leading-[0.95] uppercase mb-4">
           How Yureka <span className="text-[#34d399]">Helps?</span>
         </h2>
         <p className="text-white/40 text-sm md:text-base max-w-2xl mx-auto leading-relaxed">

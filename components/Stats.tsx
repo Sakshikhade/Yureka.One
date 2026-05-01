@@ -43,11 +43,11 @@ const Stats: React.FC = () => {
   };
 
   return (
-    <section className="py-12 md:py-20 bg-[#0a0a0a] px-4 md:px-8 border-y border-white/10 relative overflow-hidden w-full">
+    <section className="py-8 md:py-12 bg-[#0a0a0a] px-4 md:px-8 border-y border-white/10 relative overflow-hidden w-full">
       <div className="w-full relative z-10 text-cream">
         
         {/* Header - Financial Section Style */}
-        <div className="border-b-4 border-double border-white/10 mb-8 md:mb-12 pb-6">
+        <div className="border-b-4 border-double border-white/10 mb-6 md:mb-8 pb-4">
              <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 text-cream">
                 <motion.div 
                     initial="hidden"
@@ -91,8 +91,8 @@ const Stats: React.FC = () => {
             <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] -z-10" />
             
             {/* Stat 1 */}
-            <motion.div variants={itemVariants} className="col-span-1 p-8 md:p-12 border-b md:border-b-0 md:border-r border-white/10 relative group hover:bg-[#34d399]/[0.1] transition-all duration-500">
-                <div className="flex justify-between items-start mb-10 text-white">
+            <motion.div variants={itemVariants} className="col-span-1 p-6 md:p-8 border-b md:border-b-0 md:border-r border-white/10 relative group hover:bg-[#34d399]/[0.1] transition-all duration-500">
+                <div className="flex justify-between items-start mb-6 text-white">
                      <span className="text-[10px] font-bold uppercase tracking-widest text-[#34d399] border border-[#34d399]/20 px-4 py-2 bg-[#34d399]/10 rounded-full backdrop-blur-sm shadow-sm group-hover:scale-105 transition-transform">Cards</span>
                      <span className="text-[10px] font-mono text-white/10">DAT.01</span>
                 </div>
@@ -100,7 +100,7 @@ const Stats: React.FC = () => {
                     <Counter end={248} suffix="" trigger={hasAnimated} />
                     <span className="text-base sm:text-lg opacity-20 italic">nodes</span>
                 </div>
-                <h4 className="text-[11px] font-bold uppercase tracking-[0.3em] text-white mb-4 border-t border-white/10 pt-6 flex justify-between items-center w-full">
+                <h4 className="text-[11px] font-bold uppercase tracking-[0.3em] text-white mb-4 border-t border-white/10 pt-4 flex justify-between items-center w-full">
                     <span>Cards Scanned</span>
                     <span className="text-[9px] lowercase font-normal italic opacity-30">Live Lab Feed</span>
                 </h4>
@@ -112,15 +112,15 @@ const Stats: React.FC = () => {
             </motion.div>
 
             {/* Stat 2 */}
-            <motion.div variants={itemVariants} className="col-span-1 p-8 md:p-12 border-b md:border-b-0 md:border-r border-white/10 relative group hover:bg-[#34d399]/[0.1] transition-all duration-500">
-                <div className="flex justify-between items-start mb-10 text-white">
+            <motion.div variants={itemVariants} className="col-span-1 p-6 md:p-8 border-b md:border-b-0 md:border-r border-white/10 relative group hover:bg-[#34d399]/[0.1] transition-all duration-500">
+                <div className="flex justify-between items-start mb-6 text-white">
                      <span className="text-[10px] font-bold uppercase tracking-widest text-[#34d399] border border-[#34d399]/20 px-4 py-2 bg-[#34d399]/10 rounded-full backdrop-blur-sm shadow-sm group-hover:scale-105 transition-transform">Accuracy</span>
                      <span className="text-[10px] font-mono text-white/10">ALG.02</span>
                 </div>
                 <div className="text-5xl sm:text-6xl md:text-7xl text-white mb-4 tracking-tighter leading-none font-serif">
                     <Counter end={100} prefix="" suffix="%" trigger={hasAnimated} />
                 </div>
-                <h4 className="text-[11px] font-bold uppercase tracking-[0.3em] text-white mb-4 border-t border-white/10 pt-6 flex justify-between items-center w-full">
+                <h4 className="text-[11px] font-bold uppercase tracking-[0.3em] text-white mb-4 border-t border-white/10 pt-4 flex justify-between items-center w-full">
                     <span>Precision Matching</span>
                     <span className="text-[9px] lowercase font-normal italic opacity-30">AI-Verified</span>
                 </h4>
@@ -131,8 +131,8 @@ const Stats: React.FC = () => {
             </motion.div>
 
             {/* Stat 3 */}
-            <motion.div variants={itemVariants} className="col-span-1 p-8 md:p-12 relative group hover:bg-[#34d399]/[0.1] transition-all duration-500">
-                <div className="flex justify-between items-start mb-10 text-white">
+            <motion.div variants={itemVariants} className="col-span-1 p-6 md:p-8 relative group hover:bg-[#34d399]/[0.1] transition-all duration-500">
+                <div className="flex justify-between items-start mb-6 text-white">
                      <span className="text-[10px] font-bold uppercase tracking-widest text-[#34d399] border border-[#34d399]/20 px-4 py-2 bg-[#34d399]/10 rounded-full backdrop-blur-sm shadow-sm group-hover:scale-105 transition-transform">Savings</span>
                      <span className="text-[10px] font-mono text-white/10">RES.03</span>
                 </div>
@@ -140,7 +140,7 @@ const Stats: React.FC = () => {
                     <Counter end={15} prefix="₹" suffix="k" trigger={hasAnimated} />
                     <span className="text-base sm:text-lg opacity-20 italic">yield</span>
                 </div>
-                <h4 className="text-[11px] font-bold uppercase tracking-[0.3em] text-white mb-4 border-t border-white/10 pt-6 flex justify-between items-center w-full">
+                <h4 className="text-[11px] font-bold uppercase tracking-[0.3em] text-white mb-4 border-t border-white/10 pt-4 flex justify-between items-center w-full">
                     <span>Average Savings</span>
                     <span className="text-[9px] lowercase font-normal italic opacity-30">Annualized</span>
                 </h4>

@@ -12,7 +12,7 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <section id="hero" className="relative w-full flex flex-col items-center pt-4 md:pt-8 pb-12 bg-[#0a0a0a] border-b border-white/10 overflow-hidden text-[#F2EFE9] scroll-mt-32">
+    <section id="hero" className="relative w-full flex flex-col items-center pt-2 md:pt-4 pb-6 bg-[#0a0a0a] border-b border-white/10 overflow-hidden text-[#F2EFE9] scroll-mt-32">
 
         {/* Background Grid/Lines - Flowing within the 3-column Core */}
         <div className="absolute inset-0 pointer-events-none">
@@ -30,7 +30,7 @@ const Hero: React.FC = () => {
                 whileInView={fadeInUp.whileInView}
                 viewport={fadeInUp.viewport}
                 transition={{ ...fadeInUp.transition, delay: 0.2 }}
-                className="w-full text-center mb-10 md:mb-16 px-6 pt-10"
+                className="w-full text-center mb-6 md:mb-10 px-6 pt-6"
             >
                 <div className="flex justify-center items-center gap-6 mb-4 md:md-6">
                      <div className="h-[1px] bg-white/10 w-12 md:w-24"></div>
@@ -45,7 +45,7 @@ const Hero: React.FC = () => {
                 </h3>
 
                 
-                <div className="mt-10 md:mt-14 mb-16 md:mb-20 flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 px-4">
+                <div className="mt-6 md:mt-8 mb-8 md:mb-10 flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 px-4">
                     <Link to="/yureka-ai" className="group relative px-8 py-5 md:px-12 md:py-6 bg-white text-[#0a0a0a] overflow-hidden rounded-full w-full sm:w-auto shadow-[0_8px_40px_-12px_rgba(0,0,0,0.8)] transition-all hover:-translate-y-1 hover:shadow-2xl text-center border border-transparent">
                         <div className="absolute inset-0 w-full h-full bg-[#34d399]/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
                         <span className="relative z-10 font-bold text-[10px] md:text-[11px] uppercase tracking-[0.3em] flex items-center justify-center gap-3">

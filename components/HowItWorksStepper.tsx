@@ -262,8 +262,8 @@ const HowItWorksStepper: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative w-full bg-[#0a0a0a] py-20 md:py-32">
-      <div className="max-w-7xl mx-auto px-6 space-y-32 md:space-y-48">
+    <div className="relative w-full bg-[#0a0a0a] py-16 md:py-24">
+      <div className="max-w-7xl mx-auto px-6 space-y-24 md:space-y-36">
         {STEPS.map((step, index) => {
           return (
             <motion.section
@@ -274,7 +274,7 @@ const HowItWorksStepper: React.FC = () => {
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               className="w-full flex items-center justify-center"
             >
-              <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-32 items-center">
+              <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-24 items-center">
                 
                 {/* Phone Column */}
                 <div className={`flex justify-center ${step.side === 'right' ? 'lg:order-2' : 'lg:order-1'}`}>
@@ -317,11 +317,11 @@ const HowItWorksStepper: React.FC = () => {
                 {/* Text Column */}
                 <div className={`flex flex-col ${step.side === 'right' ? 'lg:order-1 lg:items-end text-center lg:text-right' : 'lg:order-2 lg:items-start text-center lg:text-left'}`}>
                   <div className="max-w-xl">
-                    <span className="block text-[#34d399] text-[11px] font-bold uppercase tracking-[0.5em] mb-6">
+                    <span className="block text-[#34d399] text-[11px] font-bold uppercase tracking-[0.5em] mb-4">
                       {step.tag}
                     </span>
                     
-                    <h2 className="text-4xl md:text-6xl lg:text-7xl font-serif text-white mb-8 leading-[0.95] tracking-tighter uppercase">
+                    <h2 className="text-4xl md:text-6xl lg:text-7xl font-serif text-white mb-4 leading-[0.95] tracking-tighter uppercase">
                       {step.title.split(' ').map((word, i) => (
                         <span key={i} className={i % 2 !== 0 ? 'italic font-light text-[#34d399]' : ''}>
                           {word}{' '}
@@ -329,7 +329,7 @@ const HowItWorksStepper: React.FC = () => {
                       ))}
                     </h2>
 
-                    <p className={`text-white/60 text-lg md:text-xl font-sans leading-relaxed mb-10 max-w-md ${step.side === 'right' ? 'lg:ml-auto' : ''}`}>
+                    <p className={`text-white/60 text-lg md:text-xl font-sans leading-relaxed mb-6 max-w-md ${step.side === 'right' ? 'lg:ml-auto' : ''}`}>
                       {step.description}
                     </p>
 

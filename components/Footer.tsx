@@ -5,7 +5,7 @@ import { motion } from 'motion/react';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-[#0a0a0a] text-white/80 border-t border-white/10 relative z-10 pt-20 pb-10">
+    <footer className="bg-[#0a0a0a] text-white/80 border-t border-white/10 relative z-10 pt-12 pb-10">
       <motion.div 
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
@@ -29,8 +29,8 @@ const Footer: React.FC = () => {
         {/* Top Section: Branding & Slogan */}
 
         {/* Top Section: Impact Stats Block (Image 2 Redesign) */}
-        <div className="max-w-[1440px] mx-auto px-6 mb-16 md:mb-24">
-           <div className="bg-white/[0.03] border border-white/10 rounded-[2rem] w-full p-6 md:p-12 lg:p-12 flex flex-col lg:flex-row gap-8 lg:gap-8 justify-between text-white shadow-2xl relative overflow-hidden group">
+        <div className="max-w-[1440px] mx-auto px-6 mb-10 md:mb-12">
+           <div className="bg-white/[0.03] border border-white/10 rounded-[2rem] w-full p-6 md:p-10 lg:p-10 flex flex-col lg:flex-row gap-8 lg:gap-8 justify-between text-white shadow-2xl relative overflow-hidden group">
                
                {/* Orbital Background Accent */}
                <div className="absolute top-0 right-0 w-full h-full pointer-events-none opacity-10">
@@ -83,7 +83,7 @@ const Footer: React.FC = () => {
         </div>
 
         {/* Middle Section: Links Grid (Newspaper Columns) */}
-        <div className="max-w-[1440px] mx-auto px-6 mb-12 md:mb-20">
+        <div className="max-w-[1440px] mx-auto px-6 mb-8 md:mb-12">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 border-l border-white/10">
                 
                 {/* Column 1 - Core Pages */}
@@ -153,7 +153,7 @@ const Footer: React.FC = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="max-w-[1440px] mx-auto px-6 mb-20">
+        <div className="max-w-[1440px] mx-auto px-6 mb-12">
             <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center text-white/20 text-[10px] md:text-xs font-mono uppercase tracking-widest text-center md:text-left">
                 <p>© 2026 Yureka Technologies Pvt Ltd. All Rights Reserved.</p>
                 <p className="mt-4 md:mt-0">Made with Pride in India</p>
@@ -161,7 +161,7 @@ const Footer: React.FC = () => {
         </div>
 
         {/* IMAGE 2: THE "RIGHT SIDE" SUB-FOOTER */}
-        <div className="w-full glass-dark glass-shine-container min-h-[500px] md:min-h-[700px] flex flex-col items-center justify-center relative overflow-hidden py-20 md:py-32 px-6 border-t border-white/5">
+        <div className="w-full glass-dark glass-shine-container min-h-[400px] md:min-h-[600px] flex flex-col items-center justify-center relative overflow-hidden py-16 md:py-24 px-6 border-t border-white/5">
             {/* Dotted Starfield Background */}
             <div className="absolute inset-0 opacity-[0.15]" 
                  style={{ 
@@ -175,13 +175,13 @@ const Footer: React.FC = () => {
                initial={{ opacity: 0, y: 20 }}
                whileInView={{ opacity: 1, y: 0 }}
                viewport={{ once: true }}
-               className="relative z-10 mb-16"
+               className="relative z-10 mb-10"
             >
                 <span className="text-5xl md:text-6xl text-white font-serif font-bold italic tracking-tighter">Y.</span>
             </motion.div>
 
             {/* Quick Links */}
-            <div className="relative z-10 flex flex-col gap-3 w-full max-w-[400px] mb-20">
+            <div className="relative z-10 flex flex-col gap-3 w-full max-w-[400px] mb-12">
                  <Link to="/free-tools" className="w-full h-14 bg-white/5 border border-white/10 text-white/40 rounded-2xl text-sm font-light tracking-widest hover:bg-white/10 hover:text-white transition-all uppercase flex items-center justify-center">
                     Checkout Free Tools
                  </Link>
@@ -191,7 +191,7 @@ const Footer: React.FC = () => {
             </div>
 
             {/* Vertical Line and Diamond */}
-            <div className="relative z-10 flex flex-col items-center mb-16">
+            <div className="relative z-10 flex flex-col items-center mb-10">
                  <div className="w-px h-24 bg-gradient-to-b from-transparent to-[#34d399]" />
                  <div className="w-2.5 h-2.5 bg-[#34d399] rotate-45 border border-[#34d399] shadow-[0_0_15px_#34d399]" />
             </div>
@@ -206,7 +206,7 @@ const Footer: React.FC = () => {
                 </h2>
             </div>
             
-            <p className="relative z-10 text-[10px] md:text-xs font-mono tracking-[0.4em] text-white/20 uppercase mb-20">
+            <p className="relative z-10 text-[10px] md:text-xs font-mono tracking-[0.4em] text-white/20 uppercase mb-12">
                © 2026 YUREKA. MONEY. ALL RIGHTS RESERVED.
             </p>
 

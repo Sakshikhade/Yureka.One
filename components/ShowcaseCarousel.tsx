@@ -261,7 +261,7 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp })
       <div className="flex flex-col lg:grid lg:grid-cols-2">
 
               {/* ── LEFT: copy ── */}
-              <div className="flex flex-col justify-center px-6 lg:px-16 py-10 lg:py-14 relative z-20 border-b lg:border-b-0 lg:border-r border-white/5">
+              <div className="flex flex-col justify-center px-6 lg:px-12 py-8 lg:py-10 relative z-20 border-b lg:border-b-0 lg:border-r border-white/5">
                 <motion.div
                   initial={{ opacity: 0, x: -30 }}
                   whileInView={{ opacity: 1, x: 0 }}
@@ -275,7 +275,7 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp })
                     We Compare <br />
                     <span className="italic font-light text-[#34d399]">For You.</span>
                   </h2>
-                  <p className="text-white/60 text-base md:text-lg lg:text-xl font-serif italic leading-snug mb-10 border-l-2 border-[#34d399]/30 pl-8 max-w-md">
+                  <p className="text-white/60 text-base md:text-lg lg:text-xl font-serif italic leading-snug mb-6 border-l-2 border-[#34d399]/30 pl-8 max-w-md">
                     "We don't just list cards. We scan 200+ options to find the one that fits your life perfectly."
                   </p>
                   <div className="flex items-center gap-6 text-[11px] font-bold tracking-[0.3em] uppercase text-white/20">
@@ -290,7 +290,7 @@ const ShowcaseCarousel: React.FC<ShowcaseCarouselProps> = ({ cards: cardsProp })
               </div>
 
               {/* ── RIGHT: comparison widget ── */}
-              <div className="flex items-center justify-center overflow-hidden bg-white/[0.01] py-8 px-6 lg:py-10">
+              <div className="flex items-center justify-center overflow-hidden bg-white/[0.01] py-6 px-6 lg:py-8">
                 <motion.div 
                   initial={{ opacity: 0, scale: 0.92, y: 20 }}
                   whileInView={{ opacity: 1, scale: 1, y: 0 }}

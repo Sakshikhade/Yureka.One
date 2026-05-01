@@ -27,7 +27,7 @@ const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
   const tilts = [-3, 1.5, -1, 2.5];
 
   return (
-    <section className="bg-[#0a0a0a] py-20 md:py-28 px-6 relative overflow-hidden glass-shine-container">
+    <section className="bg-[#0a0a0a] py-16 md:py-20 px-6 relative overflow-hidden glass-shine-container">
       <div className="absolute inset-0 glass-dark opacity-95" />
       {/* Background grid */}
       <div
@@ -46,7 +46,7 @@ const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="space-y-5 mb-16 md:mb-20 max-w-4xl"
+          className="space-y-5 mb-10 md:mb-12 max-w-4xl"
         >
           <p className="text-[#34d399] text-[10px] md:text-xs font-bold uppercase tracking-[0.4em]">
             YOU INVESTED CRORES INTO{' '}
@@ -63,7 +63,7 @@ const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
         </motion.div>
 
         {/* Card Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 w-full mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 w-full mb-10">
           {displayCards.map((card, i) => {
             const slug = card.slug || generateSlug(card.name, card.bank || card.issuer || '');
             const swingDurations = [4.2, 5.1, 4.7, 5.5];
@@ -96,13 +96,13 @@ const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
                 {/* Glow on hover */}
                 <div className="absolute inset-0 rounded-2xl bg-[#34d399]/0 group-hover:bg-[#34d399]/5 transition-all duration-700 blur-xl" />
 
-                <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] pt-12 pb-6 px-6 flex flex-col items-center border border-white/5 group-hover:border-[#34d399]/30 transition-all duration-700 relative overflow-hidden">
+                <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] pt-10 pb-6 px-6 flex flex-col items-center border border-white/5 group-hover:border-[#34d399]/30 transition-all duration-700 relative overflow-hidden">
 
                   {/* Indicator dot */}
                   <div className="absolute top-7 left-6 w-2.5 h-2.5 rounded-full bg-[#34d399] shadow-[0_0_12px_#34d399] z-30 animate-pulse" />
 
                   {/* Card image */}
-                  <div className="w-full aspect-[1.6/1] rounded-xl overflow-hidden bg-[#111] mb-6 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.6)] group-hover:shadow-[0_30px_60px_-10px_rgba(52,211,153,0.15)] transition-all duration-700">
+                  <div className="w-full aspect-[1.6/1] rounded-xl overflow-hidden bg-[#111] mb-4 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.6)] group-hover:shadow-[0_30px_60px_-10px_rgba(52,211,153,0.15)] transition-all duration-700">
                     {card.image ? (
                       <img
                         src={card.image}

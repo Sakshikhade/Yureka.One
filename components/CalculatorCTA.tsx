@@ -31,12 +31,12 @@ const CalculatorCTA: React.FC = () => {
            }} 
       />
       
-      <div className="w-full relative z-10 px-4 md:px-8 py-8 md:py-12">
+      <div className="w-full relative z-10 px-4 md:px-8 py-6 md:py-8">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-[2.5rem] p-6 md:px-12 md:py-10 flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl shadow-black/40 hover:bg-white/[0.05] transition-all duration-700 group"
+          className="bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-[2.5rem] p-6 md:px-10 md:py-8 flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl shadow-black/40 hover:bg-white/[0.05] transition-all duration-700 group"
         >
           <div className="flex items-center gap-8">
             {/* Full-Fledged Animated Calculator Icon */}
@@ -88,7 +88,7 @@ const CalculatorCTA: React.FC = () => {
             </motion.div>
             
             <div className="text-center md:text-left">
-              <h3 className="text-2xl md:text-4xl font-serif text-white font-bold tracking-tight mb-2">
+              <h3 className="text-2xl md:text-4xl font-serif text-white font-bold tracking-tight mb-1">
                 Yureka vs Standard
               </h3>
               <p className="text-white/40 text-base md:text-lg font-serif italic">
