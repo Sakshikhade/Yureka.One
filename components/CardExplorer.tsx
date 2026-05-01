@@ -22,13 +22,13 @@ const ALL_BANKS = [
 ];
 
 const ALL_CATEGORIES = [
-    { name: 'Travel', icon: <Plane size={14} /> },
-    { name: 'Hotels', icon: <Hotel size={14} /> },
-    { name: 'Cashback', icon: <Landmark size={14} /> },
-    { name: 'Shopping', icon: <ShoppingBag size={14} /> },
-    { name: 'Dining', icon: <Coffee size={14} /> },
-    { name: 'Lounge Access', icon: <Armchair size={14} /> },
-    { name: 'UPI', icon: <Smartphone size={14} /> },
+    { name: 'Travel', image: '/images/categories/travel.png' },
+    { name: 'Hotels', image: '/images/categories/hotel.png' },
+    { name: 'Cashback', image: '/images/categories/cashback.png' },
+    { name: 'Shopping', image: '/images/categories/shopping.png' },
+    { name: 'Dining', image: '/images/categories/dining.png' },
+    { name: 'Lounge Access', image: '/images/categories/lounge-access.png' },
+    { name: 'UPI', image: '/images/categories/upi.png' },
 ];
 
 const BANK_LOGOS: Record<string, string> = {
@@ -163,12 +163,16 @@ const CardExplorer: React.FC = () => {
                                                 className="absolute top-full left-0 lg:-left-24 mt-6 w-80 bg-[#0a0a0a] rounded-[2.5rem] shadow-2xl overflow-hidden z-50 border border-white/10 backdrop-blur-3xl"
                                             >
                                                 <div className="max-h-[50vh] sm:max-h-96 overflow-y-auto p-3 no-scrollbar overscroll-contain touch-pan-y">
-                                                    {['All Categories', ...ALL_CATEGORIES.map(c => c.name)].map(cat => {
+                                                    {[{name: 'All Categories', image: null}, ...ALL_CATEGORIES].map(catObj => {
+                                                        const cat = catObj.name;
                                                         const isSelected = cat === 'All Categories' ? selectedCategories.length === 0 : selectedCategories.includes(cat);
                                                         return (
                                                             <button key={cat} onClick={() => { if(cat === 'All Categories') { setSelectedCategories([]); setIsCategoryMenuOpen(false); } else { setSelectedCategories(prev => prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]); } }}
                                                                 className={`w-full flex items-center gap-4 px-5 py-4 rounded-[1.5rem] transition-all duration-500 ${isSelected ? 'bg-[#34d399]/10 text-[#34d399]' : 'text-white/60 hover:bg-white/5 hover:text-white'}`}
                                                             >
+                                                                <div className="w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center p-1.5 shrink-0 border border-white/10 shadow-sm">
+                                                                    {catObj.image ? <img src={catObj.image} alt="" className="w-full h-full object-contain drop-shadow-md" /> : <Sparkles size={14} className={isSelected ? 'text-[#34d399]' : 'text-white/40'} />}
+                                                                </div>
                                                                 <span className="text-[10px] font-black uppercase tracking-[0.15em]">{cat}</span>
                                                                 {isSelected && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[#34d399] shadow-[0_0_10px_rgba(52,211,153,0.5)]" />}
                                                             </button>
