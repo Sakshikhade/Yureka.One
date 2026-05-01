@@ -24,40 +24,54 @@ const Navbar: React.FC = () => {
   return (
     <>
       <header 
-        className="fixed left-0 right-0 top-14 md:top-16 flex justify-center z-[90] pointer-events-none"
+        className={`
+            fixed left-0 right-0 
+            flex justify-center
+            z-[90]
+            transition-all duration-1000 cubic-bezier(0.16, 1, 0.3, 1)
+            ${isScrolled ? 'top-12 md:top-14' : 'top-10 md:top-10'}
+        `}
       >
         <div 
             className={`
-                pointer-events-auto
                 flex items-center justify-between
-                transition-all duration-700 cubic-bezier(0.16, 1, 0.3, 1)
-                w-[94%] md:w-[90%] lg:w-[85%] max-w-6xl 
-                px-6 md:px-10 py-3 md:py-4
-                bg-black/60 border border-white/10 rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-xl
-                ${isScrolled ? 'scale-[0.98] py-2 md:py-3 border-white/20' : 'scale-100'}
+                transition-all duration-1000 cubic-bezier(0.16, 1, 0.3, 1)
+                ${isScrolled 
+                    ? `w-[95%] md:w-[90%] lg:w-[85%] max-w-7xl px-4 md:px-8 py-2 md:py-3 bg-[#0a0a0a]/90 border border-white/10 rounded-full shadow-2xl shadow-black/40 backdrop-blur-2xl` 
+                    : `w-full max-w-[1440px] bg-transparent border-b border-white/[0.03] px-4 md:px-12 py-4 md:py-8`
+                }
             `}
         >
             {/* Logo Section */}
-            <div className="flex items-center gap-4 relative z-10 group cursor-pointer">
-                <Link to="/" className="flex items-center gap-4 group">
-                    <div className="font-heading font-black tracking-tighter text-lg md:text-xl text-white leading-none hover:opacity-80 transition-opacity flex items-baseline uppercase">
-                        YUREKA<span className="text-[#34d399]">.</span>MONEY
-                    </div>
+            <div className="flex flex-col relative z-10 group cursor-pointer">
+                <div className="flex items-center gap-3">
+                    <Link to="/" className="font-heading font-black tracking-tighter text-lg md:text-xl text-white leading-none hover:opacity-80 transition-opacity flex items-baseline uppercase">
+                        Yureka<span className="text-[#34d399]">.</span>money
+                    </Link>
                     {/* Neural Status Indicator */}
-                    <div className="flex items-center gap-2 px-3 py-1 bg-[#34d399]/5 border border-[#34d399]/20 rounded-full backdrop-blur-md shadow-[0_0_15px_rgba(52,211,153,0.05)]">
+                    <div className="flex items-center gap-2 px-2.5 py-1 bg-white/[0.03] border border-white/[0.08] rounded-full backdrop-blur-md">
                         <motion.div 
-                            animate={{ opacity: [0.4, 1, 0.4], scale: [1, 1.3, 1] }}
-                            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                            className="w-1.5 h-1.5 bg-[#34d399] rounded-full shadow-[0_0_8px_rgba(52,211,153,0.6)]"
+                            animate={{ opacity: [0.3, 1, 0.3], scale: [1, 1.2, 1] }}
+                            transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                            className="w-1.5 h-1.5 bg-[#34d399] rounded-full shadow-[0_0_10px_rgba(52,211,153,0.4)]"
                         />
-                        <span className="text-[8px] font-black text-[#34d399] uppercase tracking-[0.3em] hidden md:block">System Active</span>
+                        <span className="text-[8px] font-black text-[#34d399]/70 uppercase tracking-[0.25em] hidden md:block">System Active</span>
                     </div>
-                </Link>
+                </div>
+
+                {!isScrolled && (
+                      <motion.span 
+                        initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                        className="hidden md:block text-[9px] uppercase tracking-[0.4em] text-white/40 mt-1.5 font-bold"
+                      >
+                        AI-Driven Credit Card Intelligence
+                      </motion.span>
+                )}
             </div>
 
             {/* Desktop Menu */}
-            <div className="hidden md:flex items-center relative z-10 shrink-0 gap-10">
-                <nav className="flex items-center gap-8">
+            <div className="hidden md:flex items-center relative z-10 shrink-0 gap-8">
+                <div className="flex items-center gap-7">
                     {[
                         { name: 'Cards', path: '/cards' },
                         { name: 'Manifesto', path: '/manifesto' },
@@ -70,32 +84,26 @@ const Navbar: React.FC = () => {
                             className={`
                                  relative text-[10px] font-black uppercase tracking-[0.2em] transition-all py-1
                                 ${location.pathname === item.path 
-                                    ? 'text-[#34d399]' 
-                                    : 'text-white/40 hover:text-white'}
+                                    ? 'text-[#34d399] after:content-[""] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-px after:bg-[#34d399]' 
+                                    : 'text-white/30 hover:text-white'}
                             `}
                         >
                             {item.name}
-                            {location.pathname === item.path && (
-                                <motion.div 
-                                    layoutId="nav-active"
-                                    className="absolute -bottom-1 left-0 right-0 h-[2px] bg-[#34d399] rounded-full shadow-[0_0_8px_rgba(52,211,153,0.4)]"
-                                />
-                            )}
                         </Link>
                     ))}
-                </nav>
+                </div>
 
                 <div className="h-4 w-px bg-white/10" />
 
-                <div className="flex items-center gap-8">
-                      <Link to="/yureka-ai" className="text-white/40 hover:text-white font-bold text-[10px] transition-colors whitespace-nowrap uppercase tracking-[0.2em]">
+                <div className="flex items-center gap-6">
+                      <Link to="/yureka-ai" className="text-white/60 hover:text-white font-bold text-[10px] transition-colors whitespace-nowrap uppercase tracking-[0.2em]">
                         AI Engine
                       </Link>
                     
-                    <Link to="/join-waitlist" className="bg-[#34d399] text-[#0a0a0a] text-[10px] font-black uppercase tracking-[0.25em] px-8 py-3 flex items-center gap-2.5 group transition-all duration-500 rounded-full shrink-0 shadow-[0_10px_20px_rgba(52,211,153,0.15)] hover:shadow-[0_10px_25px_rgba(52,211,153,0.25)] hover:-translate-y-0.5 active:scale-95">
+                    <Link to="/join-waitlist" className="bg-[#34d399] text-[#0a0a0a] text-[10px] font-black uppercase tracking-[0.25em] px-8 py-3.5 flex items-center gap-2.5 group transition-all duration-500 rounded-full shrink-0 shadow-xl shadow-[#34d399]/10 hover:shadow-[#34d399]/20 hover:-translate-y-1">
                         <Sparkles size={14} className="group-hover:rotate-12 transition-transform" />
                         <span>Join Waitlist</span>
-                        <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                        <ArrowRight size={14} className="group-hover:translate-x-1.5 transition-transform" />
                     </Link>
                 </div>
             </div>
@@ -103,10 +111,10 @@ const Navbar: React.FC = () => {
              {/* Mobile Toggle */}
              <div className="md:hidden flex items-center ml-auto gap-4">
                   <button 
-                    className="p-2.5 bg-white/5 border border-white/10 rounded-full text-white hover:bg-white/10 transition-all shadow-lg"
+                    className="p-2.5 bg-white/5 border border-white/10 rounded-xl text-white hover:bg-white/10 transition-all"
                     onClick={() => setIsMobileMenuOpen(true)}
                 >
-                    <Menu size={20} />
+                    <Menu size={22} />
                 </button>
             </div>
         </div>
