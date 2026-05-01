@@ -39,36 +39,68 @@ export class ErrorBoundary extends Component<Props, State> {
       }
       
       return (
-        <div className="min-h-[50vh] flex flex-col items-center justify-center p-8 bg-red-50/50 rounded-3xl border border-red-100 m-4">
-          <AlertCircle className="text-red-500 mb-4" size={48} />
-          <h2 className="text-xl font-bold text-red-700 mb-2 font-serif">A Critical Component Crashed</h2>
-          <p className="text-red-600/80 mb-6 text-sm max-w-2xl text-center">
-            The application encountered a fatal error while trying to render this section. 
-            Please take a screenshot of the error below and send it to your developer.
-          </p>
+        <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center p-6 md:p-12 text-center selection:bg-[#34d399] selection:text-[#0a0a0a]">
+          {/* Ambient Glow */}
+          <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-red-500/5 to-transparent pointer-events-none" />
           
-          <div className="bg-white p-6 rounded-xl border border-red-100 w-full max-w-4xl overflow-auto text-left shadow-sm">
-            <h3 className="font-mono text-sm font-bold text-red-600 mb-2">Error Details:</h3>
-            <pre className="text-xs text-red-500 font-mono whitespace-pre-wrap break-words">
-              {this.state.error?.toString()}
-            </pre>
+          <div className="max-w-4xl w-full bg-white/[0.03] backdrop-blur-3xl border border-white/10 rounded-[2.5rem] p-8 md:p-16 shadow-2xl relative overflow-hidden group">
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-red-500/50 to-transparent" />
             
-            {this.state.errorInfo && (
-              <>
-                <h3 className="font-mono text-sm font-bold text-slate-600 mt-6 mb-2">Component Stack Trace:</h3>
-                <pre className="text-[10px] text-slate-500 font-mono whitespace-pre-wrap">
-                  {this.state.errorInfo.componentStack}
-                </pre>
-              </>
-            )}
+            <div className="w-20 h-20 bg-red-500/10 rounded-3xl flex items-center justify-center mx-auto mb-8 border border-red-500/20 shadow-2xl">
+              <AlertCircle className="text-red-500" size={40} />
+            </div>
+
+            <h2 className="text-3xl md:text-5xl font-heading font-black text-white tracking-tighter uppercase mb-6 leading-none">
+              A Critical Component <br />
+              <span className="text-red-500 italic serif font-thin">Crashed.</span>
+            </h2>
+            
+            <p className="text-white/40 text-xs md:text-sm font-medium uppercase tracking-[0.3em] mb-12 max-w-lg mx-auto leading-relaxed">
+              The application encountered a terminal exception in this sector. Diagnostic data has been logged to the console.
+            </p>
+            
+            <div className="bg-black/40 border border-white/5 rounded-2xl p-6 text-left mb-12 relative overflow-hidden">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                <span className="text-[10px] font-black text-white/30 uppercase tracking-widest">System Diagnostics / V2.4B</span>
+              </div>
+              
+              <pre className="text-[10px] md:text-[11px] text-red-400 font-mono whitespace-pre-wrap break-words opacity-80 mb-4 bg-red-500/5 p-4 rounded-lg border border-red-500/10">
+                {this.state.error?.toString()}
+              </pre>
+              
+              {this.state.errorInfo && (
+                <div className="max-h-48 overflow-y-auto no-scrollbar border-t border-white/5 pt-4">
+                  <pre className="text-[9px] text-white/20 font-mono whitespace-pre-wrap">
+                    {this.state.errorInfo.componentStack}
+                  </pre>
+                </div>
+              )}
+            </div>
+            
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+              <button 
+                onClick={() => {
+                  window.sessionStorage.setItem('page-has-been-force-refreshed', 'false');
+                  window.location.reload();
+                }}
+                className="h-16 px-12 bg-white text-[#0a0a0a] rounded-full text-xs font-black uppercase tracking-[0.3em] hover:bg-[#34d399] hover:scale-105 transition-all shadow-2xl group flex items-center gap-3"
+              >
+                Sync & Reload
+              </button>
+              <a 
+                href="mailto:dev@yureka.money"
+                className="text-[10px] font-bold text-white/30 hover:text-white/60 transition-colors uppercase tracking-widest border-b border-white/10 pb-1"
+              >
+                Report Node Failure
+              </a>
+            </div>
           </div>
-          
-          <button 
-            onClick={() => window.location.reload()}
-            className="mt-8 px-6 py-3 bg-red-600 text-white rounded-xl font-bold hover:bg-red-700 transition-colors"
-          >
-            Reload Page
-          </button>
+
+          <div className="mt-12 flex items-center gap-4 text-[9px] font-black uppercase tracking-[0.5em] text-white/10">
+            <span className="w-1.5 h-1.5 rounded-full bg-red-500/40" /> Fail-Safe Protocol Active
+            <span className="w-1.5 h-1.5 rounded-full bg-red-500/40" /> Node Isolation Ready
+          </div>
         </div>
       );
     }

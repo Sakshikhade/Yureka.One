@@ -12,24 +12,49 @@ import { SupabaseProvider } from './components/SupabaseProvider';
 import { SkeletonCard } from './components/SkeletonLoaders';
 import { ErrorBoundary } from './components/ErrorBoundary';
 
+// Robust Lazy Loader to handle chunk loading failures (common during new deploys)
+const lazyWithRetry = (componentImport: () => Promise<any>) =>
+  lazy(async () => {
+    const pageHasAlreadyBeenForceRefreshed = JSON.parse(
+      window.sessionStorage.getItem('page-has-been-force-refreshed') || 'false'
+    );
+
+    try {
+      const component = await componentImport();
+      window.sessionStorage.setItem('page-has-been-force-refreshed', 'false');
+      return component;
+    } catch (error) {
+      if (!pageHasAlreadyBeenForceRefreshed) {
+        // Logging for visibility
+        console.warn('Chunk loading failed. Forcing refresh to sync hashes.', error);
+        window.sessionStorage.setItem('page-has-been-force-refreshed', 'true');
+        window.location.reload();
+        return { default: () => null }; // Return empty component while reloading
+      }
+
+      // If it still fails after a refresh, throw the error to be caught by ErrorBoundary
+      throw error;
+    }
+  });
+
 // Lazy Loaded Pages
-const MainPage = lazy(() => import('./components/MainPage'));
-const CardExplorer = lazy(() => import('./components/CardExplorer'));
-const CardDetail = lazy(() => import('./components/CardDetail'));
-const OurStory = lazy(() => import('./components/OurStory'));
-const JournalPage = lazy(() => import('./components/JournalPage'));
-const BlogDetail = lazy(() => import('./components/BlogDetail'));
-const PrivacyPolicy = lazy(() => import('./components/PrivacyPolicy'));
-const TermsOfService = lazy(() => import('./components/TermsOfService'));
-const SecurityProtocolPage = lazy(() => import('./components/SecurityProtocolPage'));
-const CommunityGuidelines = lazy(() => import('./components/CommunityGuidelines'));
-const YurekaOsPage = lazy(() => import('./components/YurekaOsPage'));
-const AdminDashboard = lazy(() => import('./components/AdminDashboard'));
-const WaitlistPage = lazy(() => import('./components/WaitlistPage'));
-const YurekaAIPage = lazy(() => import('./components/YurekaAIPage'));
-const CareersPage = lazy(() => import('./components/CareersPage'));
-const RewardsTransferCalculator = lazy(() => import('./components/RewardsTransferCalculator'));
-const ComingSoon = lazy(() => import('./components/ComingSoon'));
+const MainPage = lazyWithRetry(() => import('./components/MainPage'));
+const CardExplorer = lazyWithRetry(() => import('./components/CardExplorer'));
+const CardDetail = lazyWithRetry(() => import('./components/CardDetail'));
+const OurStory = lazyWithRetry(() => import('./components/OurStory'));
+const JournalPage = lazyWithRetry(() => import('./components/JournalPage'));
+const BlogDetail = lazyWithRetry(() => import('./components/BlogDetail'));
+const PrivacyPolicy = lazyWithRetry(() => import('./components/PrivacyPolicy'));
+const TermsOfService = lazyWithRetry(() => import('./components/TermsOfService'));
+const SecurityProtocolPage = lazyWithRetry(() => import('./components/SecurityProtocolPage'));
+const CommunityGuidelines = lazyWithRetry(() => import('./components/CommunityGuidelines'));
+const YurekaOsPage = lazyWithRetry(() => import('./components/YurekaOsPage'));
+const AdminDashboard = lazyWithRetry(() => import('./components/AdminDashboard'));
+const WaitlistPage = lazyWithRetry(() => import('./components/WaitlistPage'));
+const YurekaAIPage = lazyWithRetry(() => import('./components/YurekaAIPage'));
+const CareersPage = lazyWithRetry(() => import('./components/CareersPage'));
+const RewardsTransferCalculator = lazyWithRetry(() => import('./components/RewardsTransferCalculator'));
+const ComingSoon = lazyWithRetry(() => import('./components/ComingSoon'));
 
 import { motion, AnimatePresence } from 'motion/react';
 
