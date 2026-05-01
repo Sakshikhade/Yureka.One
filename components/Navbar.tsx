@@ -18,7 +18,7 @@ const Navbar: React.FC = () => {
   }, []);
 
   const EXPLORE_ITEMS = [
-    { name: 'Categories', path: '/cards', icon: LayoutGrid, desc: 'Find cards by lifestyle' },
+    { name: 'Categories', path: '/categories', icon: LayoutGrid, desc: 'Find cards by lifestyle' },
     { name: 'Tools', path: '/free-tools', icon: Calculator, desc: 'Institutional calculators' },
     { name: 'Compare', path: '/cards', icon: ArrowRightLeft, desc: 'Side-by-side analysis' }
   ];

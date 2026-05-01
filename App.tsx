@@ -54,6 +54,8 @@ const WaitlistPage = lazyWithRetry(() => import('./components/WaitlistPage'));
 const YurekaAIPage = lazyWithRetry(() => import('./components/YurekaAIPage'));
 const CareersPage = lazyWithRetry(() => import('./components/CareersPage'));
 const RewardsTransferCalculator = lazyWithRetry(() => import('./components/RewardsTransferCalculator'));
+const CategoriesPage = lazyWithRetry(() => import('./components/CategoriesPage'));
+const CategoryDetailPage = lazyWithRetry(() => import('./components/CategoryDetailPage'));
 const ComingSoon = lazyWithRetry(() => import('./components/ComingSoon'));
 
 import { motion, AnimatePresence } from 'motion/react';
@@ -263,6 +265,8 @@ const AppContent: React.FC = () => {
               <Route path="/matrix" element={<Navigate to="/rewards-calculator" replace />} />
               <Route path="/journal" element={<Navigate to="/blogs" replace />} />
               <Route path="/rewards-calculator" element={<RewardsTransferCalculator />} />
+              <Route path="/categories" element={<CategoriesPage />} />
+              <Route path="/categories/:slug" element={<CategoryDetailPage />} />
    
               <Route path="*" element={<MainPage />} />
             </Routes>
