@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { motion } from 'motion/react';
 import { Card } from '../types';
-import { Star, TrendingUp, ArrowUpRight, Link as LinkIcon } from 'lucide-react';
+import { Star, TrendingUp, ArrowUpRight, Link as LinkIcon, Bot } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import ImageWithLoader from './ImageWithLoader';
 
@@ -125,15 +125,15 @@ const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
                     <div className="flex flex-col gap-3 w-full lg:w-64 shrink-0">
                       <Link 
                         to={`/cards/${slug}`}
-                        className="w-full bg-[#34d399] text-[#0a0a0a] py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:scale-[1.02] transition-all shadow-[0_10px_20px_rgba(52,211,153,0.1)]"
+                        className="w-full bg-[#2563eb] text-white py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-blue-600 transition-all shadow-[0_10px_20px_rgba(37,99,235,0.1)] group/btn"
                       >
-                        Read More <ArrowUpRight size={14} />
+                        Read More <ArrowUpRight size={14} className="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
                       </Link>
                       <Link 
                         to="/yureka-ai"
-                        className="w-full bg-white/5 border border-white/10 text-white/60 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-white/10 transition-all"
+                        className="w-full bg-white/[0.04] border border-white/10 text-white/80 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-white/[0.08] transition-all group/ai"
                       >
-                        Ask AI <TrendingUp size={14} />
+                        Ask AI <Bot size={14} className="text-[#34d399] group-hover/ai:animate-pulse" />
                       </Link>
                       <button className="text-[9px] text-white/20 hover:text-white/40 transition-colors uppercase tracking-widest font-bold">
                         Report data issue
@@ -141,29 +141,29 @@ const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
                     </div>
                   </div>
 
-                  {/* Bottom Row: Data Grid */}
-                  <div className="grid grid-cols-2 md:grid-cols-5 gap-6 pt-8 border-t border-white/10">
-                    <div className="space-y-1.5">
-                      <span className="text-[8px] text-white/30 uppercase tracking-[0.2em] font-black">Intro Offer</span>
-                      <p className="text-[10px] font-bold text-white/80 leading-snug line-clamp-2 italic font-serif">{card.intro_offer || 'Elite Welcome Rewards'}</p>
+                  {/* Bottom Row: Data Table (Image 2 Style) */}
+                  <div className="bg-white/[0.02] border border-white/5 rounded-3xl p-6 md:p-8 grid grid-cols-2 md:grid-cols-5 gap-8 items-center">
+                    <div className="space-y-2">
+                      <span className="text-[8px] text-white/20 uppercase tracking-[0.25em] font-black block">Intro Offer</span>
+                      <p className="text-[11px] font-bold text-white/70 leading-relaxed italic font-serif line-clamp-2">{card.intro_offer || 'Elite Welcome Rewards'}</p>
                     </div>
-                    <div className="space-y-1.5">
-                      <span className="text-[8px] text-white/30 uppercase tracking-[0.2em] font-black">Annual Fees</span>
-                      <p className="text-sm font-black text-white">₹{String(card.annual_fee ?? '0').replace(/[^0-9]/g, '') || '0'} <span className="text-[9px] text-white/20 font-medium">+GST</span></p>
+                    <div className="space-y-2">
+                      <span className="text-[8px] text-white/20 uppercase tracking-[0.25em] font-black block">Annual Fees</span>
+                      <p className="text-base font-black text-white tracking-tight">₹{String(card.annual_fee ?? '0').replace(/[^0-9]/g, '') || '0'} <span className="text-[10px] text-white/20 font-medium">+ GST</span></p>
                     </div>
-                    <div className="space-y-1.5">
-                      <span className="text-[8px] text-white/30 uppercase tracking-[0.2em] font-black">Joining Fees</span>
-                      <p className="text-sm font-black text-white">₹{String((card.joining_fee || card.annual_fee) ?? '0').replace(/[^0-9]/g, '') || '0'} <span className="text-[9px] text-white/20 font-medium">+GST</span></p>
+                    <div className="space-y-2">
+                      <span className="text-[8px] text-white/20 uppercase tracking-[0.25em] font-black block">Joining Fees</span>
+                      <p className="text-base font-black text-white tracking-tight">₹{String((card.joining_fee || card.annual_fee) ?? '0').replace(/[^0-9]/g, '') || '0'} <span className="text-[10px] text-white/20 font-medium">+ GST</span></p>
                     </div>
-                    <div className="space-y-1.5">
-                      <span className="text-[8px] text-white/30 uppercase tracking-[0.2em] font-black">Reward Rate</span>
-                      <p className="text-sm font-black text-[#34d399]">{card.rewards_rate || '3.33% → 33%'}</p>
+                    <div className="space-y-2">
+                      <span className="text-[8px] text-white/20 uppercase tracking-[0.25em] font-black block">Reward Rate</span>
+                      <p className="text-base font-black text-[#34d399] tracking-tight">{card.rewards_rate || '3.33% → 33%'}</p>
                     </div>
-                    <div className="space-y-1.5">
-                      <span className="text-[8px] text-white/30 uppercase tracking-[0.2em] font-black">Elite Rating</span>
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-sm font-black text-white">{card.elite_rating || card.rating || '4.5'}</span>
-                        <Star size={12} className="text-[#34d399] fill-[#34d399]" />
+                    <div className="space-y-2">
+                      <span className="text-[8px] text-white/20 uppercase tracking-[0.25em] font-black block">Rating</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-base font-black text-white">{card.elite_rating || card.rating || '4.8'}</span>
+                        <Star size={14} className="text-amber-400 fill-amber-400" />
                       </div>
                     </div>
                   </div>
