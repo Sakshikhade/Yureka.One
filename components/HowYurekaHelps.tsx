@@ -177,13 +177,13 @@ const HowYurekaHelps: React.FC = () => (
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
               whileHover={{ y: -6 }}
-              className="group relative bg-white/[0.03] border border-white/8 rounded-[2.5rem] p-6 flex flex-col gap-5 transition-all duration-500 hover:border-white/20 hover:bg-white/[0.05] overflow-hidden"
+              className="group relative bg-white/[0.01] backdrop-blur-3xl border border-white/10 rounded-[2.5rem] p-6 flex flex-col gap-5 transition-all duration-700 hover:border-white/20 hover:bg-white/[0.04] overflow-hidden shadow-2xl"
             >
               {/* Gradient wash */}
               <div className={`absolute inset-0 rounded-[2.5rem] bg-gradient-to-br ${f.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none`} />
 
-              {/* Preview UI */}
-              <div className="relative z-10 w-full">
+              {/* Preview UI - Fixed height for consistency */}
+              <div className="relative z-10 w-full h-[150px] flex items-center justify-center overflow-hidden">
                 {f.preview}
               </div>
 

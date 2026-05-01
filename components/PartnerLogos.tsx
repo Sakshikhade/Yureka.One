@@ -1,25 +1,25 @@
 import React from 'react';
 
 const PARTNERS = [
-  { name: 'TATA',             logo: '/logos/itc.png' },
-  { name: 'Marriott Bonvoy',  logo: '/logos/accor.png' },
-  { name: 'Amazon',           logo: '/logos/atmos.png' },
-  { name: 'SBI',              logo: '/logos/sbi.png' },
-  { name: 'Axis Bank',        logo: '/logos/axis.png' },
-  { name: 'American Express', logo: '/logos/amex.png' },
-  { name: 'HDFC',             logo: '/logos/hdfc.png' },
-  { name: 'ICICI',            logo: '/logos/icici.png' },
-  { name: 'Kotak',            logo: '/logos/kotak.png' },
-  { name: 'IndusInd',         logo: '/logos/indusind.png' },
-  { name: 'Yes Bank',         logo: '/logos/yes.png' },
-  { name: 'AU',               logo: '/logos/au.png' },
+  { name: 'HDFC',             logo: '/assets/banks/hdfc.png' },
+  { name: 'SBI',              logo: '/assets/banks/sbi.png' },
+  { name: 'Axis Bank',        logo: '/assets/banks/axis.png' },
+  { name: 'ICICI',            logo: '/assets/banks/icici.png' },
+  { name: 'American Express', logo: '/assets/banks/amex.png' },
+  { name: 'Kotak',            logo: '/assets/banks/kotak.png' },
+  { name: 'IndusInd',         logo: '/assets/banks/indusind.png' },
+  { name: 'Yes Bank',         logo: '/assets/banks/yes.png' },
+  { name: 'AU Small Finance', logo: '/assets/banks/au.png' },
+  { name: 'TATA',             logo: '/assets/banks/tata.png' },
+  { name: 'Marriott',         logo: '/assets/banks/marriott.png' },
+  { name: 'Amazon',           logo: '/assets/banks/amazon.png' },
 ];
 
 // Duplicate enough times so the strip feels endless
 const ITEMS = [...PARTNERS, ...PARTNERS, ...PARTNERS];
 
 const PartnerLogos: React.FC = () => (
-  <div className="w-full bg-[#1a3fcb] py-4 overflow-hidden relative">
+  <div className="w-full bg-[#0a0a0a] py-6 overflow-hidden relative border-y border-white/5">
     {/* Fade edges */}
     <div
       className="relative overflow-hidden"
@@ -42,7 +42,7 @@ const PartnerLogos: React.FC = () => (
             <img
               src={p.logo}
               alt={p.name}
-              className="h-full w-auto object-contain brightness-0 invert opacity-90 max-w-[80px]"
+              className="h-full w-auto object-contain brightness-0 invert opacity-50 hover:opacity-100 transition-opacity duration-300 max-w-[100px]"
               onError={(e) => {
                 const el = e.target as HTMLImageElement;
                 el.style.display = 'none';
