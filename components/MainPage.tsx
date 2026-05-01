@@ -71,18 +71,22 @@ const MainPage: React.FC = () => {
 
                 
                 <Suspense fallback={<div className="h-40" />}>
-                    <TextReveal />
+                    <div className="content-auto">
+                        <TextReveal />
+                    </div>
                 </Suspense>
 
-                <section id="showcase" className="scroll-mt-24">
+                <section id="showcase" className="scroll-mt-24 content-auto">
                     <Suspense fallback={<div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-6 py-6"><SkeletonCard /><SkeletonCard /><SkeletonCard /></div>}>
                         <ShowcaseCarousel cards={cards} />
                     </Suspense>
                 </section>
 
-                <HowItWorksStepper />
+                <div className="content-auto">
+                    <HowItWorksStepper />
+                </div>
 
-                <section id="secured" className="scroll-mt-24">
+                <section id="secured" className="scroll-mt-24 content-auto">
                     <Suspense fallback={<div className="h-48" />}>
                         <RentalProtection cards={cards} />
                     </Suspense>
@@ -90,38 +94,40 @@ const MainPage: React.FC = () => {
 
 
                 <Suspense fallback={<div className="h-32 animate-pulse bg-white/5" />}>
-                    <CalculatorCTA />
+                    <div className="content-auto">
+                        <CalculatorCTA />
+                    </div>
                 </Suspense>
 
-                <section id="stats" className="scroll-mt-24">
+                <section id="stats" className="scroll-mt-24 content-auto">
                     <Suspense fallback={<div className="h-48 bg-white/5 animate-pulse" />}>
                         <Stats />
                     </Suspense>
                 </section>
 
-                <div className="w-full relative border-y border-white/5">
+                <div className="w-full relative border-y border-white/5 content-auto">
                     <Marquee />
                 </div>
 
-                <Suspense fallback={<div className="h-48" />}>
-                    <ComingSoon />
-                </Suspense>
+                <div className="content-auto">
+                    <Suspense fallback={<div className="h-48" />}>
+                        <ComingSoon />
+                    </Suspense>
+                </div>
 
-                <section id="security" className="scroll-mt-24">
+                <section id="security" className="scroll-mt-24 content-auto">
                     <Suspense fallback={<div className="h-48 bg-[#1A2F2F] animate-pulse" />}>
                         <Security />
                     </Suspense>
                 </section>
 
-                <section id="reviews" className="scroll-mt-24">
+                <section id="reviews" className="scroll-mt-24 content-auto">
                     <Suspense fallback={<div className="h-48" />}>
                         <Community />
                     </Suspense>
                 </section>
 
-
-
-                <section id="faq" className="scroll-mt-24">
+                <section id="faq" className="scroll-mt-24 content-auto">
                     <Suspense fallback={<div className="h-48" />}>
                         <FAQ />
                     </Suspense>
@@ -129,7 +135,9 @@ const MainPage: React.FC = () => {
                 
                 {/* FOOTER ANCHORED TO CORE */}
                 <Suspense fallback={<div className="h-40" />}>
-                    <Footer />
+                    <div className="content-auto">
+                        <Footer />
+                    </div>
                 </Suspense>
             </div>
 

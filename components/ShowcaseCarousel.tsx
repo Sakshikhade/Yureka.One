@@ -87,16 +87,10 @@ const PillRow: React.FC<{
 // ─────────────────────────────────────────────────────────────
 const ComparisonWidget: React.FC = () => {
   const [mode, setMode] = React.useState<'with' | 'without'>('with');
-  const [isShattered, setIsShattered] = React.useState(false);
   const [isScanning, setIsScanning] = React.useState(false);
 
   React.useEffect(() => {
-    if (mode === 'without') {
-      setIsShattered(false);
-      const timer = setTimeout(() => setIsShattered(true), 1200); 
-      return () => clearTimeout(timer);
-    } else {
-      setIsShattered(false);
+    if (mode === 'with') {
       setIsScanning(true);
       const timer = setTimeout(() => setIsScanning(false), 1500);
       return () => clearTimeout(timer);
@@ -136,15 +130,9 @@ const ComparisonWidget: React.FC = () => {
           <motion.div
             key={mode}
             initial={{ opacity: 0, y: 16 }}
-            animate={mode === 'without' && isShattered 
-              ? { opacity: 1, y: 220, rotate: -3, scale: 0.95 } // Shattered position
-              : { opacity: 1, y: 0, rotate: 0, scale: 1 }      // Ordered position
-            }
+            animate={{ opacity: 1, y: 0, rotate: 0, scale: 1 }}
             exit={{ opacity: 0, y: -16 }}
-            transition={mode === 'without' && isShattered 
-              ? { type: "spring", stiffness: 100, damping: 10 } // Gravity drop feel
-              : { duration: 0.4, ease: [0.25, 1, 0.5, 1] }
-            }
+            transition={{ duration: 0.4, ease: [0.25, 1, 0.5, 1] }}
             className="text-center mb-12 px-2 relative z-10"
           >
             {mode === 'with' ? (
@@ -172,70 +160,26 @@ const ComparisonWidget: React.FC = () => {
         </AnimatePresence>
 
         {/* ── CONTENT AREA ── */}
-        <div className="relative w-full h-[260px] overflow-hidden">
+        <div className="relative w-full overflow-hidden">
           <AnimatePresence mode="wait">
-            {mode === 'with' ? (
-              <motion.div
-                key="pills-with"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                className="w-full flex flex-col gap-3 pt-4"
-              >
-                <PillRow pills={WITH_ROW1} duration={26} />
-                <PillRow pills={WITH_ROW2} reverse duration={32} />
-              </motion.div>
-            ) : (
-              <motion.div
-                key="pills-without"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="w-full h-full pt-4 relative"
-              >
-                {[...WITHOUT_ROW1, ...WITHOUT_ROW2].slice(0, 8).map((pill, i) => {
-                  // Constrained grid positions to stay within bounds
-                  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-                  const xOffset = isMobile ? (i % 2 === 0 ? -60 : 60) : (i % 2 === 0 ? -110 : 110);
-                  const yOffset = Math.floor(i / 2) * (isMobile ? 45 : 55);
-                  
-                  // Constrained shattered positions
-                  const shatterX = xOffset + ((Math.random() * 40) - 20);
-                  const shatterY = (isMobile ? 110 : 140) + (Math.random() * 30);
-                  const shatterRotate = (Math.random() * 30) - 15;
-
-                  return (
-                    <motion.span
-                      key={pill.text}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={isShattered 
-                        ? { opacity: 1, x: shatterX, y: shatterY, rotate: shatterRotate, scale: 0.85 }
-                        : { opacity: 1, x: xOffset, y: yOffset, rotate: 0, scale: 1 }
-                      }
-                      transition={isShattered 
-                        ? { 
-                            type: "spring", 
-                            stiffness: 120, 
-                            damping: 12,
-                            delay: i * 0.03
-                          } 
-                        : { duration: 0.5, delay: i * 0.04, ease: "easeOut" }
-                      }
-                      style={{ 
-                        left: '50%',
-                        top: '10%',
-                        transform: 'translate(-50%, -50%)' 
-                      }}
-                      className={`absolute inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-[10px] font-bold shadow-sm whitespace-nowrap transition-colors border border-black/5 ${pill.bg}`}
-                    >
-                      <span className="text-xs">{pill.icon}</span>
-                      {pill.text}
-                    </motion.span>
-                  );
-                })}
-              </motion.div>
-            )}
+            <motion.div
+              key={mode}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.4 }}
+              className="w-full pt-4 grid grid-cols-2 gap-4"
+            >
+              {(mode === 'with' ? [...WITH_ROW1, ...WITH_ROW2] : [...WITHOUT_ROW1, ...WITHOUT_ROW2]).slice(0, 8).map((pill, i) => (
+                <div
+                  key={pill.text}
+                  className={`inline-flex items-center gap-2 px-4 py-3 rounded-2xl text-[10px] font-bold shadow-sm border border-white/5 transition-all hover:scale-[1.02] ${pill.bg}`}
+                >
+                  <span className="text-xs">{pill.icon}</span>
+                  <span className="truncate">{pill.text}</span>
+                </div>
+              ))}
+            </motion.div>
           </AnimatePresence>
         </div>
       </div>

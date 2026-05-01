@@ -21,6 +21,8 @@
         -webkit-user-select: none;
         -moz-user-select: none;
         -ms-user-select: none;
+        text-rendering: optimizeSpeed; /* Performance: Faster text rendering */
+        contain: content; /* Performance: Isolate layout shifts */
       }
 
       /* Heading modular scale and hierarchy */
@@ -150,6 +152,12 @@
       }
       .animate-marquee {
         animation: marquee 40s linear infinite;
+        will-change: transform; /* Performance: Hardware accelerate */
+      }
+      
+      .content-auto {
+        content-visibility: auto;
+        contain-intrinsic-size: 0 500px;
       }
       
       @keyframes shimmer {

@@ -15,19 +15,19 @@ const FEATURES = [
     preview: (
       <div className="w-full rounded-2xl bg-[#0d0d0d] border border-white/5 p-4 text-left space-y-2 relative overflow-hidden">
         <motion.div 
-          animate={{ y: [20, 0], opacity: [0, 1] }} 
-          transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 3 }}
+          animate={{ y: [10, 0], opacity: [0, 1] }} 
+          transition={{ duration: 0.4, repeat: Infinity, repeatDelay: 4 }}
           className="flex gap-2 items-start"
         >
-          <div className="w-6 h-6 rounded-full bg-[#34d399]/20 shrink-0 flex items-center justify-center"><Bot size={12} className="text-[#34d399]" /></div>
-          <div className="bg-[#34d399]/10 text-[#34d399] text-[10px] px-3 py-1.5 rounded-xl rounded-tl-none leading-relaxed">Insurance spends on Axis Atlas?</div>
+          <div className="w-5 h-5 rounded-full bg-[#34d399]/20 shrink-0 flex items-center justify-center"><Bot size={10} className="text-[#34d399]" /></div>
+          <div className="bg-[#34d399]/10 text-[#34d399] text-[9px] px-3 py-1 rounded-xl rounded-tl-none">Insurance on Atlas?</div>
         </motion.div>
         <motion.div 
-          animate={{ y: [20, 0], opacity: [0, 1] }} 
-          transition={{ duration: 0.5, delay: 1.5, repeat: Infinity, repeatDelay: 3 }}
+          animate={{ y: [10, 0], opacity: [0, 1] }} 
+          transition={{ duration: 0.4, delay: 2, repeat: Infinity, repeatDelay: 4 }}
           className="flex gap-2 items-start justify-end"
         >
-          <div className="bg-white/5 text-white/60 text-[10px] px-3 py-1.5 rounded-xl rounded-tr-none">Use Amazon Pay vouchers!</div>
+          <div className="bg-white/5 text-white/60 text-[9px] px-3 py-1 rounded-xl rounded-tr-none">Use APay vouchers!</div>
         </motion.div>
       </div>
     ),
@@ -42,19 +42,17 @@ const FEATURES = [
     iconBg: 'bg-blue-500/10 text-blue-400',
     preview: (
       <div className="w-full rounded-2xl bg-[#0d0d0d] border border-white/5 overflow-hidden py-3">
-        {/* Row 1: Left to Right */}
-        <div className="flex gap-2 animate-marquee whitespace-nowrap mb-2 px-2">
-           {[1,2,3,4,1,2].map((n, i) => (
-             <div key={i} className="bg-white/5 rounded-lg w-12 h-12 shrink-0 flex items-center justify-center p-2">
-               <img src={`/assets/banks/${['hdfc','sbi','axis','amex'][i%4]}.png`} alt="" className="w-full h-full object-contain opacity-70" />
+        <div className="flex gap-2 animate-marquee whitespace-nowrap mb-2 px-2 will-change-transform">
+           {[1,2,3,4].map((n, i) => (
+             <div key={i} className="bg-white/5 rounded-lg w-10 h-10 shrink-0 flex items-center justify-center p-2">
+               <img src={`/assets/banks/${['hdfc','sbi','axis','amex'][i%4]}.png`} alt="" className="w-full h-full object-contain opacity-50" loading="lazy" />
              </div>
            ))}
         </div>
-        {/* Row 2: Right to Left */}
-        <div className="flex gap-2 animate-marquee-reverse whitespace-nowrap px-2">
-           {[1,2,3,4,1,2].map((n, i) => (
-             <div key={i} className="bg-white/5 rounded-lg w-12 h-12 shrink-0 flex items-center justify-center p-2">
-               <img src={`/assets/banks/${['icici','kotak','yesbank','idfc'][i%4]}.png`} alt="" className="w-full h-full object-contain opacity-70" />
+        <div className="flex gap-2 animate-marquee-reverse whitespace-nowrap px-2 will-change-transform">
+           {[1,2,3,4].map((n, i) => (
+             <div key={i} className="bg-white/5 rounded-lg w-10 h-10 shrink-0 flex items-center justify-center p-2">
+               <img src={`/assets/banks/${['icici','kotak','yesbank','idfc'][i%4]}.png`} alt="" className="w-full h-full object-contain opacity-50" loading="lazy" />
              </div>
            ))}
         </div>
@@ -63,24 +61,23 @@ const FEATURES = [
   },
   {
     icon: ScanLine,
-    title: 'Credit Card Deep Dive',
+    title: 'Deep Dive',
     sub: null,
     subLink: '/cards',
-    description: 'Skip the fine print. Get straight to the key benefits, offers, and hidden terms — clearly laid out.',
+    description: 'Skip the fine print. Get straight to the key benefits, offers, and hidden terms.',
     gradient: 'from-purple-500/10 via-transparent to-transparent',
     iconBg: 'bg-purple-500/10 text-purple-400',
     preview: (
       <div className="w-full rounded-2xl bg-[#0d0d0d] border border-white/5 p-3 space-y-2">
-        {['Lounge Access', 'Rewards Rate', 'Annual Fee'].map((item, i) => (
+        {['Lounge', 'Rewards', 'Fees'].map((item, i) => (
           <div key={i} className="space-y-1">
-            <div className="flex justify-between text-[8px] text-white/30 uppercase tracking-tighter">
+            <div className="flex justify-between text-[7px] text-white/20 uppercase tracking-widest">
               <span>{item}</span>
-              <span>{80 + i * 5}%</span>
             </div>
             <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
               <motion.div 
-                animate={{ width: ['0%', `${80 + i * 5}%`] }} 
-                transition={{ duration: 2, repeat: Infinity, repeatType: 'reverse', ease: 'easeInOut' }}
+                animate={{ width: ['0%', `${70 + i * 10}%`] }} 
+                transition={{ duration: 2, repeat: Infinity, repeatType: 'reverse', ease: 'linear' }}
                 className="h-full bg-[#34d399] rounded-full" 
               />
             </div>
@@ -98,35 +95,16 @@ const FEATURES = [
     gradient: 'from-amber-500/10 via-transparent to-transparent',
     iconBg: 'bg-amber-500/10 text-amber-400',
     preview: (
-      <div className="w-full rounded-2xl bg-[#0d0d0d] border border-white/5 p-4 flex flex-col justify-center items-center gap-3">
-        <div className="text-center">
-          <motion.span 
-             animate={{ opacity: [0.5, 1, 0.5] }}
-             transition={{ duration: 2, repeat: Infinity }}
-             className="text-[8px] text-white/30 uppercase tracking-[0.2em] mb-1 block"
-          >
-            Estimated Savings
-          </motion.span>
-          <div className="text-2xl font-heading font-black text-white tracking-tighter">
-            ₹<motion.span 
-               initial={{ children: 0 }}
-               animate={{ children: 18700 }}
-               transition={{ duration: 2, repeat: Infinity, repeatType: 'reverse' }}
-               // @ts-ignore
-               onUpdate={(latest) => {
-                 const el = document.getElementById('savings-counter');
-                 if (el) el.textContent = Math.round(latest.children).toLocaleString();
-               }}
-            >
-              <span id="savings-counter">0</span>
-            </motion.span>
-          </div>
+      <div className="w-full rounded-2xl bg-[#0d0d0d] border border-white/5 p-4 flex flex-col justify-center items-center gap-2">
+        <span className="text-[7px] text-white/20 uppercase tracking-widest mb-1">Estimated Savings</span>
+        <div className="text-xl font-heading font-black text-white tracking-tighter tabular-nums">
+          ₹18,700
         </div>
         <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
            <motion.div 
-             animate={{ width: ['0%', '100%'] }} 
+             animate={{ scaleX: [0, 1] }} 
              transition={{ duration: 2, repeat: Infinity, repeatType: 'reverse' }}
-             className="h-full bg-[#34d399] rounded-full shadow-[0_0_10px_#34d399]" 
+             className="h-full bg-[#34d399] rounded-full origin-left" 
            />
         </div>
       </div>
@@ -137,25 +115,20 @@ const FEATURES = [
     title: 'Compare Cards',
     sub: 'Compare →',
     subLink: '/cards',
-    description: 'Put your top picks head-to-head. See which card wins based on features, rewards, and more.',
+    description: 'Put your top picks head-to-head. See which card wins based on features and rewards.',
     gradient: 'from-cyan-500/10 via-transparent to-transparent',
     iconBg: 'bg-cyan-500/10 text-cyan-400',
     preview: (
-      <div className="w-full rounded-2xl bg-[#0d0d0d] border border-white/5 p-4 flex flex-col gap-4">
-        <div className="flex justify-between items-center px-2">
-          <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ repeat: Infinity, duration: 2 }} className="w-8 h-8 rounded-full bg-white/5 p-1.5 flex items-center justify-center">
-            <img src="/assets/banks/hdfc.png" alt="" className="w-full h-full object-contain" />
-          </motion.div>
-          <span className="text-[10px] text-white/20 font-black tracking-widest italic">VS</span>
-          <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ repeat: Infinity, duration: 2, delay: 1 }} className="w-8 h-8 rounded-full bg-white/5 p-1.5 flex items-center justify-center">
-            <img src="/assets/banks/axis.png" alt="" className="w-full h-full object-contain" />
-          </motion.div>
+      <div className="w-full rounded-2xl bg-[#0d0d0d] border border-white/5 p-4 flex flex-col gap-3">
+        <div className="flex justify-between items-center px-4">
+          <div className="w-7 h-7 rounded-full bg-white/5 p-1.5"><img src="/assets/banks/hdfc.png" alt="" className="w-full h-full object-contain opacity-50" /></div>
+          <span className="text-[8px] text-white/10 font-black italic">VS</span>
+          <div className="w-7 h-7 rounded-full bg-white/5 p-1.5"><img src="/assets/banks/axis.png" alt="" className="w-full h-full object-contain opacity-50" /></div>
         </div>
-        <div className="space-y-2">
+        <div className="space-y-1.5">
            {[1,2].map((n, i) => (
-             <div key={i} className="flex items-center gap-2 h-1.5">
-               <motion.div animate={{ width: i === 0 ? ['40%', '90%', '40%'] : ['90%', '40%', '90%'] }} transition={{ repeat: Infinity, duration: 3 }} className="h-full bg-[#34d399] rounded-full" />
-               <motion.div animate={{ width: i === 0 ? ['60%', '10%', '60%'] : ['10%', '60%', '10%'] }} transition={{ repeat: Infinity, duration: 3 }} className="h-full bg-white/10 rounded-full" />
+             <div key={i} className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
+               <motion.div animate={{ x: ['-100%', '100%'] }} transition={{ repeat: Infinity, duration: 2, delay: i }} className="h-full w-1/2 bg-[#34d399] rounded-full" />
              </div>
            ))}
         </div>
@@ -164,35 +137,26 @@ const FEATURES = [
   },
   {
     icon: Newspaper,
-    title: 'Card News & Deals',
-    sub: 'Read Latest →',
+    title: 'Card News',
+    sub: 'Read →',
     subLink: '/blogs',
-    description: 'Stay updated with the latest offers, tips, and insights. Never miss a credit card trick again.',
+    description: 'Stay updated with the latest offers, tips, and insights. Never miss a trick.',
     gradient: 'from-rose-500/10 via-transparent to-transparent',
     iconBg: 'bg-rose-500/10 text-rose-400',
     preview: (
-      <div className="w-full rounded-2xl bg-[#0d0d0d] border border-white/5 p-4 relative overflow-hidden">
+      <div className="w-full rounded-2xl bg-[#0d0d0d] border border-white/5 p-4 relative overflow-hidden h-[80px]">
         <motion.div 
-          animate={{ y: [0, -80] }} 
-          transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
-          className="space-y-4"
+          animate={{ y: [0, -40] }} 
+          transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
+          className="space-y-2"
         >
-          {['HDFC Regalia miles update', 'SBI cashback limit change', 'Axis Atlas fee waiver', 'Amex Platinum rewards', 'Kotak 811 benefits'].map((title, i) => (
+          {['HDFC miles update', 'SBI limit change', 'Atlas fee waiver'].map((title, i) => (
             <div key={i} className="flex gap-2 items-center">
               <div className="w-1 h-1 rounded-full bg-[#34d399] shrink-0" />
-              <span className="text-[10px] text-white/40 whitespace-nowrap">{title}</span>
-            </div>
-          ))}
-          {/* Duplicate for seamless loop */}
-          {['HDFC Regalia miles update', 'SBI cashback limit change'].map((title, i) => (
-            <div key={i+10} className="flex gap-2 items-center">
-              <div className="w-1 h-1 rounded-full bg-[#34d399] shrink-0" />
-              <span className="text-[10px] text-white/40 whitespace-nowrap">{title}</span>
+              <span className="text-[9px] text-white/20 whitespace-nowrap">{title}</span>
             </div>
           ))}
         </motion.div>
-        <div className="absolute inset-x-0 top-0 h-8 bg-gradient-to-b from-[#0d0d0d] to-transparent z-10" />
-        <div className="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-[#0d0d0d] to-transparent z-10" />
       </div>
     ),
   },
