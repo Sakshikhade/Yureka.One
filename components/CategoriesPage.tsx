@@ -96,11 +96,11 @@ const CategoriesPage: React.FC = () => {
                 
                 <div className="relative z-10 flex flex-col items-center text-center space-y-4">
                   <div className="relative group-hover:scale-110 transition-transform duration-500">
-                    <div className="w-20 h-20 relative z-10 flex items-center justify-center transform group-hover:rotate-6 transition-all duration-500">
+                    <div className="w-24 h-24 relative z-10 flex items-center justify-center transform group-hover:rotate-6 transition-all duration-500">
                       {category.image ? (
-                        <img src={category.image} alt="" className="w-16 h-16 object-contain drop-shadow-2xl" />
+                        <img src={category.image} alt="" className="w-20 h-20 object-contain drop-shadow-2xl" />
                       ) : (
-                        <category.icon className="text-[#34d399] drop-shadow-lg" size={48} />
+                        <category.icon className="text-[#34d399] drop-shadow-lg" size={56} />
                       )}
                     </div>
                   </div>
