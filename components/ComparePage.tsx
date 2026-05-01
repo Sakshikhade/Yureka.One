@@ -216,20 +216,30 @@ const ComparePage: React.FC = () => {
  
                      {/* Comparison Visualization */}
                      <div className="flex items-center justify-between gap-4 py-4 overflow-x-auto no-scrollbar">
-                        {comp.cards.map((card, i) => (
-                           <React.Fragment key={i}>
-                              <div className="flex flex-col items-center gap-4 min-w-[140px] flex-1">
-                                 <div className="relative w-full aspect-[1.6/1] rounded-2xl overflow-hidden shadow-2xl group-hover:scale-[1.02] transition-transform duration-700">
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-10" />
-                                    <img src={card.image} alt={card.name} className="w-full h-full object-cover" />
+                        {comp.cards.map((cardRef, i) => {
+                           const cardData = allCards.find(c => c.slug === cardRef.slug);
+                           const displayImage = cardData?.image || cardRef.image;
+                           
+                           return (
+                              <React.Fragment key={i}>
+                                 <div className="flex flex-col items-center gap-4 min-w-[140px] flex-1">
+                                    <div className="relative w-full aspect-[1.6/1] rounded-2xl overflow-hidden shadow-2xl group-hover:scale-[1.02] transition-transform duration-700 bg-white/5">
+                                       <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-10" />
+                                       <img 
+                                         src={displayImage} 
+                                         alt={cardRef.name} 
+                                         className="w-full h-full object-cover transition-opacity duration-500"
+                                         onLoad={(e) => (e.currentTarget.style.opacity = '1')}
+                                       />
+                                    </div>
+                                    <span className="text-[10px] font-black text-white/40 uppercase tracking-widest">{cardRef.name}</span>
                                  </div>
-                                 <span className="text-[10px] font-black text-white/40 uppercase tracking-widest">{card.name}</span>
-                              </div>
-                              {i < comp.cards.length - 1 && (
-                                <div className="text-sm font-black text-[#34d399]/40 px-2 italic shrink-0">VS</div>
-                              )}
-                           </React.Fragment>
-                        ))}
+                                 {i < comp.cards.length - 1 && (
+                                   <div className="text-sm font-black text-[#34d399]/40 px-2 italic shrink-0">VS</div>
+                                 )}
+                              </React.Fragment>
+                           );
+                        })}
                      </div>
  
                      {/* Action Button */}
