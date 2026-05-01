@@ -227,9 +227,12 @@ const ComparePage: React.FC = () => {
                         ))}
                      </div>
 
-                     <button className="w-full bg-white/5 border border-white/10 text-white/60 py-5 rounded-3xl text-[11px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all flex items-center justify-center gap-3 group/btn">
+                     <Link 
+                       to={`/compare/${comp.cards.map(c => c.name.toLowerCase().replace(/ /g, '-')).join('-vs-')}`}
+                       className="w-full bg-white/5 border border-white/10 text-white/60 py-5 rounded-3xl text-[11px] font-black uppercase tracking-widest hover:bg-white hover:text-black transition-all flex items-center justify-center gap-3 group/btn"
+                     >
                         View Detailed Comparison <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
-                     </button>
+                     </Link>
                   </div>
                </motion.div>
             ))}
