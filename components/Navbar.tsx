@@ -40,31 +40,22 @@ const Navbar: React.FC = () => {
             `}
         >
             {/* Logo Section */}
-            <div className="flex items-center gap-4 relative z-10 group cursor-pointer">
+            <div className="flex items-center relative z-10 group cursor-pointer shrink-0">
                 <Link to="/" className="flex items-center gap-4 group">
                     <div className="font-heading font-black tracking-tighter text-lg md:text-xl text-white leading-none hover:opacity-80 transition-opacity flex items-baseline uppercase">
                         YUREKA<span className="text-[#34d399]">.</span>MONEY
-                    </div>
-                    {/* Neural Status Indicator */}
-                    <div className="flex items-center gap-2 px-3 py-1 bg-[#34d399]/5 border border-[#34d399]/20 rounded-full backdrop-blur-md shadow-[0_0_15px_rgba(52,211,153,0.05)]">
-                        <motion.div 
-                            animate={{ opacity: [0.4, 1, 0.4], scale: [1, 1.3, 1] }}
-                            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                            className="w-1.5 h-1.5 bg-[#34d399] rounded-full shadow-[0_0_8px_rgba(52,211,153,0.6)]"
-                        />
-                        <span className="text-[8px] font-black text-[#34d399] uppercase tracking-[0.3em] hidden md:block">System Active</span>
                     </div>
                 </Link>
             </div>
 
             {/* Desktop Menu */}
-            <div className="hidden md:flex items-center relative z-10 shrink-0 gap-10">
-                <nav className="flex items-center gap-8">
+            <div className="hidden md:flex items-center relative z-10 shrink-0 gap-6 lg:gap-10">
+                <nav className="flex items-center gap-6 lg:gap-8">
                     {[
                         { name: 'Cards', path: '/cards' },
-                        { name: 'Manifesto', path: '/manifesto' },
+                        { name: 'Explore', path: '/manifesto' },
                         { name: 'Tools', path: '/free-tools' },
-                        { name: 'Insights', path: '/blogs' }
+                        { name: 'Blogs', path: '/blogs' }
                     ].map((item) => (
                         <Link 
                             key={item.name}
@@ -89,14 +80,14 @@ const Navbar: React.FC = () => {
 
                 <div className="h-4 w-px bg-white/10" />
 
-                <div className="flex items-center gap-8">
+                <div className="flex items-center gap-6 lg:gap-8">
                       <Link to="/yureka-ai" className="text-white/40 hover:text-white font-bold text-[10px] transition-colors whitespace-nowrap uppercase tracking-[0.2em]">
-                        Neural Engine
+                        YurekaAi
                       </Link>
                     
-                    <Link to="/join-waitlist" className="bg-[#34d399] text-[#0a0a0a] text-[10px] font-black uppercase tracking-[0.25em] px-8 py-3 flex items-center gap-2.5 group transition-all duration-500 rounded-full shrink-0 shadow-[0_10px_20px_rgba(52,211,153,0.15)] hover:shadow-[0_10px_25px_rgba(52,211,153,0.25)] hover:-translate-y-0.5 active:scale-95">
+                    <Link to="/join-waitlist" className="bg-[#34d399] text-[#0a0a0a] text-[10px] font-black uppercase tracking-[0.25em] px-6 lg:px-8 py-2.5 lg:py-3 flex items-center gap-2.5 group transition-all duration-500 rounded-full shrink-0 shadow-[0_10px_20px_rgba(52,211,153,0.15)] hover:shadow-[0_10px_25px_rgba(52,211,153,0.25)] hover:-translate-y-0.5 active:scale-95">
                         <Sparkles size={14} className="group-hover:rotate-12 transition-transform" />
-                        <span>Join Registry</span>
+                        <span className="whitespace-nowrap">Join Waitlist</span>
                         <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                     </Link>
                 </div>
