@@ -33,6 +33,8 @@ interface SupabaseContextType {
   waitlist: WaitlistEntry[];
   team: any[];
   logs: any[];
+  user: any | null;
+  session: any | null;
   syncStatus: 'connected' | 'reconnecting' | 'error';
   isLoading: boolean;
   isAdminDataLoaded: boolean;
@@ -54,6 +56,8 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [team, setTeam] = useState<any[]>([]);
   const [logs, setLogs] = useState<any[]>([]);
   
+  const [user, setUser] = useState<any | null>(null);
+  const [session, setSession] = useState<any | null>(null);
   const [syncStatus, setSyncStatus] = useState<'connected' | 'reconnecting' | 'error'>('connected');
   const [isLoading, setIsLoading] = useState(true);
   const [isAdminDataLoaded, setIsAdminDataLoaded] = useState(false);
@@ -184,8 +188,11 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   }, [isAdminRoute]);
 
   useEffect(() => {
-    const { data: { subscription: authSub } } = supabase.auth.onAuthStateChange((event) => {
-      if (event === 'SIGNED_IN') {
+    const { data: { subscription: authSub } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      setUser(session?.user || null);
+      
+      if (_event === 'SIGNED_IN') {
         refreshAll();
         if (window.location.hash) {
           setTimeout(() => {
@@ -193,6 +200,12 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           }, 100);
         }
       }
+    });
+
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user || null);
     });
 
     const cleanHash = () => {
@@ -213,6 +226,7 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   return (
     <SupabaseContext.Provider value={{ 
       supabase,
+      user, session,
       cards, blogs, reviews, waitlist, team, logs, 
       syncStatus, isLoading, isAdminDataLoaded, refreshAll,
       setCards, setBlogs, setReviews, setWaitlist, setTeam

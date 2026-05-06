@@ -301,9 +301,30 @@ export const checkIfAdmin = async (userId: string | undefined, userEmail: string
 };
 
 export const joinWaitlist = async (entry: any) => {
-  const { data, error } = await supabase.from('waitlist').insert([cleanData(entry)]).select();
+  // 1. Calculate Rank
+  const { count, error: countError } = await supabase
+    .from('waitlist')
+    .select('*', { count: 'exact', head: true });
+  
+  if (countError) throw countError;
+  const rank = 1000 + (count || 0) + 1;
+
+  // 2. Generate Personal Referral Code
+  const firstName = (entry.first_name || 'user').toLowerCase().replace(/[^a-z0-9]/g, '');
+  const randomStr = Math.random().toString(36).substring(2, 6).toUpperCase();
+  const personalReferralCode = `YUREKA-${firstName}-${randomStr}`;
+
+  // 3. Prepare Payload
+  const payload = cleanData({
+    ...entry,
+    rank,
+    personal_referral_code: personalReferralCode,
+    status: entry.status || 'pending'
+  });
+
+  const { data, error } = await supabase.from('waitlist').insert([payload]).select();
   if (error) throw error;
-  return data[0].id;
+  return data[0];
 };
 
 export const subscribeNewsletter = async (email: string) => {

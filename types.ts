@@ -72,11 +72,24 @@ export interface Card {
 export interface WaitlistEntry {
   id?: string;
   name: string;
+  first_name?: string;
+  last_name?: string;
   email: string;
   phone?: string;
+  mobile_number?: string;
+  date_of_birth?: string;
+  gender?: string;
   role: 'user' | 'partner';
   category?: string;
   company?: string;
+  credit_cards_count?: number;
+  credit_cards_details?: any[];
+  most_used_for?: string;
+  monthly_spend?: string;
+  referral_code?: string;
+  personal_referral_code?: string;
+  source_channel?: string;
+  rank?: number;
   status: 'pending' | 'accepted' | 'rejected' | 'on_hold';
   joined_at?: string;
   created_at?: string;

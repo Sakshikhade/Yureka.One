@@ -2,20 +2,32 @@ import React, { useState, useEffect } from 'react';
 import { ArrowRight, Menu, X, Sparkles, ChevronDown, LayoutGrid, Calculator, ArrowRightLeft } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
+import { useSupabase } from './SupabaseProvider';
 
 const Navbar: React.FC = () => {
+  const { supabase, user } = useSupabase();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isExploreOpen, setIsExploreOpen] = useState(false);
   const location = useLocation();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 30);
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const handleLogin = async () => {
+    // Dynamically detect the correct production URL
+    const isCustomDomain = window.location.hostname === 'yureka.money';
+    const productionUrl = isCustomDomain 
+      ? 'https://yureka.money/admin' 
+      : 'https://yurekamoney.netlify.app/admin';
+    
+    const devUrl = window.location.origin + '/admin';
+    const isLocal = window.location.hostname === 'localhost';
+
+    await supabase.auth.signInWithOAuth({ 
+      provider: 'google', 
+      options: { 
+        redirectTo: isLocal ? devUrl : productionUrl 
+      } 
+    });
+  };
 
   const EXPLORE_ITEMS = [
     { name: 'Categories', path: '/categories', icon: LayoutGrid, desc: 'Find cards by lifestyle' },
@@ -120,11 +132,20 @@ const Navbar: React.FC = () => {
                         YurekaAi
                       </Link>
                     
-                    <Link to="/join-waitlist" className="bg-clay text-cream text-[10px] font-black uppercase tracking-[0.25em] px-6 lg:px-8 py-2.5 lg:py-3 flex items-center gap-2.5 group transition-all duration-500 rounded-full shrink-0 shadow-[0_10px_20px_rgba(52,211,153,0.15)] hover:shadow-[0_10px_25px_rgba(52,211,153,0.25)] hover:-translate-y-0.5 active:scale-95">
-                        <Sparkles size={14} className="group-hover:rotate-12 transition-transform" />
-                        <span className="whitespace-nowrap">Join Waitlist</span>
-                        <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                    </Link>
+                    <div className="flex items-center gap-3 bg-white/5 p-1 rounded-full border border-white/10 shrink-0">
+                        <button 
+                            onClick={handleLogin}
+                            className="px-6 py-2.5 text-[10px] font-black uppercase tracking-[0.2em] text-white/60 hover:text-white transition-all rounded-full"
+                        >
+                            Log In
+                        </button>
+                        <Link 
+                            to="/join-waitlist" 
+                            className="bg-clay text-cream text-[10px] font-black uppercase tracking-[0.2em] px-6 py-2.5 flex items-center gap-2 group transition-all duration-500 rounded-full shadow-lg hover:shadow-clay/20"
+                        >
+                            Sign Up
+                        </Link>
+                    </div>
                 </div>
             </div>
 
@@ -202,10 +223,21 @@ const Navbar: React.FC = () => {
                       transition={{ delay: 0.5 }}
                       className="mt-6"
                     >
-                        <Link to="/join-waitlist" onClick={() => setIsMobileMenuOpen(false)} className="w-full h-16 bg-clay text-cream font-black uppercase tracking-[0.25em] text-[11px] flex items-center justify-center gap-3 transition-all rounded-full shadow-2xl shadow-clay/10">
-                            <Sparkles size={16} />
-                            Join Registry Now
-                        </Link>
+                        <div className="flex flex-col gap-4 mt-6">
+                            <button 
+                                onClick={() => { setIsMobileMenuOpen(false); handleLogin(); }}
+                                className="w-full h-14 bg-white/5 border border-white/10 text-white font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full"
+                            >
+                                Log In
+                            </button>
+                            <Link 
+                                to="/join-waitlist" 
+                                onClick={() => setIsMobileMenuOpen(false)} 
+                                className="w-full h-14 bg-clay text-cream font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full shadow-xl"
+                            >
+                                Sign Up
+                            </Link>
+                        </div>
                     </motion.div>
                   </nav>
 
