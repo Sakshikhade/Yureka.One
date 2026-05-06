@@ -85,7 +85,11 @@ const BlogDetail: React.FC = () => {
                                 '.comments', 
                                 '#comments', 
                                 '.attribution',
-                                '.sharing-buttons'
+                                '.sharing-buttons',
+                                '.share-buttons',
+                                '.social-sharing',
+                                '.navbar',
+                                '#navbar'
                             ];
                             clutter.forEach(s => {
                                 mainContent?.querySelectorAll(s).forEach(el => el.remove());
@@ -296,18 +300,10 @@ const BlogDetail: React.FC = () => {
                                     
                                     <div className="mt-16 pt-8 border-t border-white/5 text-center">
                                         <p className="text-white/20 text-[10px] uppercase font-bold tracking-widest mb-4">Original source: {new URL(blog.external_link).hostname}</p>
-                                        <a 
-                                            href={blog.external_link} 
-                                            target="_blank" 
-                                            rel="noopener noreferrer"
-                                            className="inline-flex items-center gap-2 bg-white/5 text-white/40 px-6 py-3 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-clay hover:text-black transition-all border border-white/5"
-                                        >
-                                            View Original Article <ExternalLink size={12} />
-                                        </a>
                                     </div>
                                 </div>
                              ) : (
-                                <div className="w-full relative min-h-[85vh] bg-white/5 rounded-3xl overflow-hidden border border-white/10 shadow-2xl group mb-16">
+                                <div className="w-full relative bg-white/5 rounded-3xl overflow-hidden border border-white/10 shadow-2xl group mb-16">
                                      {/* Loader while iframe is loading */}
                                      {(isReaderLoading || isLoading) && (
                                         <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
@@ -315,30 +311,19 @@ const BlogDetail: React.FC = () => {
                                         </div>
                                      )}
                                      
-                                     {/* IFRAME FALLBACK with branding protection */}
-                                     <div className="relative w-full h-[85vh] overflow-hidden">
+                                     {/* IFRAME FALLBACK with branding protection and connected scroll */}
+                                     <div className="relative w-full overflow-hidden">
                                         <iframe 
                                             src={blog.external_link} 
-                                            className="w-full h-[calc(100%+120px)] border-none relative z-10 -mb-[120px]"
+                                            className="w-full h-[4500px] border-none relative z-10 -mb-[120px]"
                                             title={blog.title}
+                                            scrolling="no"
                                             allowFullScreen
                                             sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
                                         />
                                         
                                         {/* Overlay to catch clicks at the very bottom (branding area) */}
-                                        <div className="absolute bottom-0 left-0 w-full h-20 bg-gradient-to-t from-cream to-transparent z-20 pointer-events-none" />
-                                     </div>
-                                     
-                                     {/* Floating Open Original Button */}
-                                     <div className="absolute bottom-6 right-6 z-30">
-                                        <a 
-                                            href={blog.external_link} 
-                                            target="_blank" 
-                                            rel="noopener noreferrer"
-                                            className="flex items-center gap-2 bg-clay text-black px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-white transition-all shadow-xl font-sans"
-                                        >
-                                            Open Source <ExternalLink size={12} />
-                                        </a>
+                                        <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-cream to-transparent z-20 pointer-events-none" />
                                      </div>
                                 </div>
                              )}
@@ -362,27 +347,6 @@ const BlogDetail: React.FC = () => {
                     )}
                 </article>
 
-                {/* ── SHARE ROW ── */}
-                <div className="mt-20 pt-10 border-t border-white/10 flex items-center justify-between flex-wrap gap-6">
-                    <div>
-                        <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-white/40 font-sans mb-2">Share this article</p>
-                        <div className="flex gap-2">
-                            <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(blog.title)}&url=${encodeURIComponent(window.location.href)}`} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/50 hover:bg-white hover:text-black transition-all">
-                                <Twitter size={16} />
-                            </a>
-                            <a href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(window.location.href)}&title=${encodeURIComponent(blog.title)}`} target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/50 hover:bg-[#0077b5] hover:text-white transition-all">
-                                <Linkedin size={16} />
-                            </a>
-                            <button onClick={handleShare} className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/50 hover:bg-clay hover:text-black transition-all">
-                                <LinkIcon size={16} />
-                            </button>
-                        </div>
-                    </div>
-                    <button onClick={() => setBookmarked(!bookmarked)} className={`flex items-center gap-2 px-5 py-3 rounded-full border text-[11px] font-bold uppercase tracking-widest transition-all font-sans ${bookmarked ? 'border-clay text-clay bg-clay/5' : 'border-white/10 text-white/40 hover:border-clay hover:text-clay'}`}>
-                        <Bookmark size={14} fill={bookmarked ? 'currentColor' : 'none'} />
-                        {bookmarked ? 'Saved' : 'Save Article'}
-                    </button>
-                </div>
 
                 {/* ── AUTHOR CARD ── */}
                 <div className="mt-12 p-8 md:p-10 rounded-2xl bg-white/5 border border-white/10 flex gap-6 items-start">
