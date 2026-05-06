@@ -22,6 +22,8 @@ const BlogDetail: React.FC = () => {
     const [bookmarked, setBookmarked] = useState(false);
     const [copied, setCopied] = useState(false);
     const [showScrollTop, setShowScrollTop] = useState(false);
+    const [extractedHtml, setExtractedHtml] = useState<string | null>(null);
+    const [isReaderLoading, setIsReaderLoading] = useState(false);
     const articleRef = useRef<HTMLDivElement>(null);
 
     const blogSchema = blog ? {
@@ -36,13 +38,80 @@ const BlogDetail: React.FC = () => {
     useEffect(() => {
         if (!slug) return;
         setIsLoading(true);
+        setExtractedHtml(null);
+        
         const fetchBlog = async () => {
             const data = await getBlogBySlug(slug);
             setBlog(data);
             setIsLoading(false);
+            
             if (data) {
                 const all = await fetchBlogsPublic();
                 setRelated((all || []).filter(b => b.id !== data.id && b.category === data.category).slice(0, 3));
+                
+                // Try to fetch and extract content for seamless reading
+                if (data.external_link) {
+                    setIsReaderLoading(true);
+                    try {
+                        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(data.external_link)}`;
+                        const response = await fetch(proxyUrl);
+                        const result = await response.json();
+                        const html = result.contents;
+                        
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        
+                        // Selectors for Blogger and common blog platforms
+                        const selectors = [
+                            '.post-body', 
+                            '[itemprop="articleBody"]', 
+                            'article', 
+                            '.entry-content', 
+                            '.main-content',
+                            '.post-content'
+                        ];
+                        
+                        let mainContent = null;
+                        for (const selector of selectors) {
+                            mainContent = doc.querySelector(selector);
+                            if (mainContent) break;
+                        }
+                        
+                        if (mainContent) {
+                            // Clean up: Remove known branding/clutter selectors
+                            const clutter = [
+                                '.post-footer', 
+                                '.blog-pager', 
+                                '.comments', 
+                                '#comments', 
+                                '.attribution',
+                                '.sharing-buttons'
+                            ];
+                            clutter.forEach(s => {
+                                mainContent?.querySelectorAll(s).forEach(el => el.remove());
+                            });
+
+                            // Fix relative links and images
+                            const baseUrl = new URL(data.external_link).origin;
+                            mainContent.querySelectorAll('img, a').forEach(el => {
+                                if (el.hasAttribute('src')) {
+                                    const src = el.getAttribute('src');
+                                    if (src && src.startsWith('/')) el.setAttribute('src', baseUrl + src);
+                                }
+                                if (el.hasAttribute('href')) {
+                                    const href = el.getAttribute('href');
+                                    if (href && href.startsWith('/')) el.setAttribute('href', baseUrl + href);
+                                }
+                            });
+                            
+                            setExtractedHtml(mainContent.innerHTML);
+                        }
+                    } catch (err) {
+                        console.warn("Reader mode extraction failed:", err);
+                    } finally {
+                        setIsReaderLoading(false);
+                    }
+                }
             }
         };
         fetchBlog();
@@ -207,31 +276,72 @@ const BlogDetail: React.FC = () => {
 
                     {/* Main content or External Embed */}
                     {blog.external_link ? (
-                        <div className="w-full relative min-h-[85vh] bg-white/5 rounded-3xl overflow-hidden border border-white/10 shadow-2xl group mb-16">
-                             {/* Loader while iframe is loading */}
-                             <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
-                                <Loader2 className="animate-spin text-clay" size={48} />
-                             </div>
-                             
-                             <iframe 
-                                src={blog.external_link} 
-                                className="w-full h-[85vh] border-none relative z-10"
-                                title={blog.title}
-                                allowFullScreen
-                                sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
-                             />
-                             
-                             {/* Floating Open Original Button */}
-                             <div className="absolute bottom-6 right-6 z-20">
-                                <a 
-                                    href={blog.external_link} 
-                                    target="_blank" 
-                                    rel="noopener noreferrer"
-                                    className="flex items-center gap-2 bg-clay text-black px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-white transition-all shadow-xl font-sans"
-                                >
-                                    Open Source <ExternalLink size={12} />
-                                </a>
-                             </div>
+                        <div className="w-full relative min-h-[60vh]">
+                             {/* SEAMLESS READER MODE */}
+                             {extractedHtml ? (
+                                <div className="prose prose-lg max-w-none
+                                    prose-headings:font-heading prose-headings:font-extrabold prose-headings:tracking-tight prose-headings:text-white
+                                    prose-h2:text-3xl prose-h2:mt-16 prose-h2:mb-6 prose-h2:pb-4 prose-h2:border-b prose-h2:border-white/10
+                                    prose-h3:text-2xl prose-h3:mt-12 prose-h3:mb-4
+                                    prose-p:text-white/80 prose-p:leading-[1.85] prose-p:text-[17px] prose-p:font-serif
+                                    prose-a:text-clay prose-a:no-underline hover:prose-a:underline
+                                    prose-blockquote:border-l-4 prose-blockquote:border-clay prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-white/60 prose-blockquote:not-italic
+                                    prose-strong:text-white prose-strong:font-bold
+                                    prose-img:rounded-xl prose-img:shadow-lg prose-img:border prose-img:border-white/10
+                                    prose-ul:space-y-2 prose-li:text-white/75 prose-li:font-serif prose-li:text-[17px]
+                                    prose-hr:border-white/10 prose-hr:my-16
+                                    animate-in fade-in duration-700
+                                ">
+                                    <div dangerouslySetInnerHTML={{ __html: extractedHtml }} />
+                                    
+                                    <div className="mt-16 pt-8 border-t border-white/5 text-center">
+                                        <p className="text-white/20 text-[10px] uppercase font-bold tracking-widest mb-4">Original source: {new URL(blog.external_link).hostname}</p>
+                                        <a 
+                                            href={blog.external_link} 
+                                            target="_blank" 
+                                            rel="noopener noreferrer"
+                                            className="inline-flex items-center gap-2 bg-white/5 text-white/40 px-6 py-3 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-clay hover:text-black transition-all border border-white/5"
+                                        >
+                                            View Original Article <ExternalLink size={12} />
+                                        </a>
+                                    </div>
+                                </div>
+                             ) : (
+                                <div className="w-full relative min-h-[85vh] bg-white/5 rounded-3xl overflow-hidden border border-white/10 shadow-2xl group mb-16">
+                                     {/* Loader while iframe is loading */}
+                                     {(isReaderLoading || isLoading) && (
+                                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
+                                            <Loader2 className="animate-spin text-clay" size={48} />
+                                        </div>
+                                     )}
+                                     
+                                     {/* IFRAME FALLBACK with branding protection */}
+                                     <div className="relative w-full h-[85vh] overflow-hidden">
+                                        <iframe 
+                                            src={blog.external_link} 
+                                            className="w-full h-[calc(100%+120px)] border-none relative z-10 -mb-[120px]"
+                                            title={blog.title}
+                                            allowFullScreen
+                                            sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+                                        />
+                                        
+                                        {/* Overlay to catch clicks at the very bottom (branding area) */}
+                                        <div className="absolute bottom-0 left-0 w-full h-20 bg-gradient-to-t from-cream to-transparent z-20 pointer-events-none" />
+                                     </div>
+                                     
+                                     {/* Floating Open Original Button */}
+                                     <div className="absolute bottom-6 right-6 z-30">
+                                        <a 
+                                            href={blog.external_link} 
+                                            target="_blank" 
+                                            rel="noopener noreferrer"
+                                            className="flex items-center gap-2 bg-clay text-black px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-white transition-all shadow-xl font-sans"
+                                        >
+                                            Open Source <ExternalLink size={12} />
+                                        </a>
+                                     </div>
+                                </div>
+                             )}
                         </div>
                     ) : (
                         <div className="prose prose-lg max-w-none
