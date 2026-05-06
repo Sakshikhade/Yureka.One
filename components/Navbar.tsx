@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useSupabase } from './SupabaseProvider';
 
 const Navbar: React.FC = () => {
-  const { supabase, user } = useSupabase();
+  const { supabase, user, currentUserStatus } = useSupabase();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isExploreOpen, setIsExploreOpen] = useState(false);
@@ -134,12 +134,22 @@ const Navbar: React.FC = () => {
                     
                     <div className="flex items-center gap-3 bg-white/5 p-1 rounded-full border border-white/10 shrink-0">
                         {user ? (
-                            <Link 
-                                to="/dashboard" 
-                                className="bg-clay text-cream text-[10px] font-black uppercase tracking-[0.2em] px-8 py-2.5 flex items-center gap-2 group transition-all duration-500 rounded-full shadow-lg hover:shadow-clay/20"
-                            >
-                                Dashboard
-                            </Link>
+                            <>
+                                {currentUserStatus === 'admin' && (
+                                    <Link 
+                                        to="/admin" 
+                                        className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 hover:text-white px-4"
+                                    >
+                                        Admin
+                                    </Link>
+                                )}
+                                <Link 
+                                    to={currentUserStatus === 'none' ? '/join-waitlist' : '/dashboard'} 
+                                    className="bg-clay text-cream text-[10px] font-black uppercase tracking-[0.2em] px-8 py-2.5 flex items-center gap-2 group transition-all duration-500 rounded-full shadow-lg hover:shadow-clay/20"
+                                >
+                                    {currentUserStatus === 'none' ? 'Join Waitlist' : 'Dashboard'}
+                                </Link>
+                            </>
                         ) : (
                             <>
                                 <button 
@@ -236,13 +246,24 @@ const Navbar: React.FC = () => {
                     >
                         <div className="flex flex-col gap-4 mt-6">
                             {user ? (
-                                <Link 
-                                    to="/dashboard" 
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                    className="w-full h-14 bg-clay text-cream font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full shadow-xl"
-                                >
-                                    Dashboard
-                                </Link>
+                                <>
+                                    {currentUserStatus === 'admin' && (
+                                        <Link 
+                                            to="/admin" 
+                                            onClick={() => setIsMobileMenuOpen(false)}
+                                            className="w-full h-14 bg-white/5 border border-white/10 text-white font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full mb-2"
+                                        >
+                                            Admin Panel
+                                        </Link>
+                                    )}
+                                    <Link 
+                                        to={currentUserStatus === 'none' ? '/join-waitlist' : '/dashboard'} 
+                                        onClick={() => setIsMobileMenuOpen(false)}
+                                        className="w-full h-14 bg-clay text-cream font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full shadow-xl"
+                                    >
+                                        {currentUserStatus === 'none' ? 'Join Waitlist' : 'Dashboard'}
+                                    </Link>
+                                </>
                             ) : (
                                 <>
                                     <button 

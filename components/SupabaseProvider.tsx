@@ -35,6 +35,7 @@ interface SupabaseContextType {
   logs: any[];
   user: any | null;
   session: any | null;
+  currentUserStatus: 'none' | 'pending' | 'accepted' | 'admin' | 'loading';
   syncStatus: 'connected' | 'reconnecting' | 'error';
   isLoading: boolean;
   isAdminDataLoaded: boolean;
@@ -58,6 +59,7 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   
   const [user, setUser] = useState<any | null>(null);
   const [session, setSession] = useState<any | null>(null);
+  const [currentUserStatus, setCurrentUserStatus] = useState<'none' | 'pending' | 'accepted' | 'admin' | 'loading'>('loading');
   const [syncStatus, setSyncStatus] = useState<'connected' | 'reconnecting' | 'error'>('connected');
   const [isLoading, setIsLoading] = useState(true);
   const [isAdminDataLoaded, setIsAdminDataLoaded] = useState(false);
@@ -188,45 +190,71 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   }, [isAdminRoute]);
 
   useEffect(() => {
-    const { data: { subscription: authSub } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription: authSub } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       setSession(session);
-      setUser(session?.user || null);
+      const currentUser = session?.user || null;
+      setUser(currentUser);
+      
+      if (currentUser) {
+        try {
+          const { data: teamMember } = await supabase.from('users').select('role').eq('email', currentUser.email).maybeSingle();
+          if (teamMember) {
+            setCurrentUserStatus('admin');
+          } else {
+            const { data: waitlist } = await supabase.from('waitlist').select('status').eq('email', currentUser.email).maybeSingle();
+            if (waitlist) {
+              setCurrentUserStatus(waitlist.status === 'accepted' ? 'accepted' : 'pending');
+            } else {
+              setCurrentUserStatus('none');
+            }
+          }
+        } catch (err) {
+          setCurrentUserStatus('none');
+        }
+      } else {
+        setCurrentUserStatus('none');
+      }
       
       if (_event === 'SIGNED_IN') {
         refreshAll();
-        if (window.location.hash) {
-          setTimeout(() => {
-            window.history.replaceState(null, '', window.location.pathname + window.location.search);
-          }, 100);
-        }
       }
     });
 
     // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       setSession(session);
-      setUser(session?.user || null);
+      const currentUser = session?.user || null;
+      setUser(currentUser);
+      if (currentUser) {
+        try {
+          const { data: teamMember } = await supabase.from('users').select('role').eq('email', currentUser.email).maybeSingle();
+          if (teamMember) {
+            setCurrentUserStatus('admin');
+          } else {
+            const { data: waitlist } = await supabase.from('waitlist').select('status').eq('email', currentUser.email).maybeSingle();
+            if (waitlist) {
+              setCurrentUserStatus(waitlist.status === 'accepted' ? 'accepted' : 'pending');
+            } else {
+              setCurrentUserStatus('none');
+            }
+          }
+        } catch (err) {
+          setCurrentUserStatus('none');
+        }
+      } else {
+        setCurrentUserStatus('none');
+      }
     });
 
-    const cleanHash = () => {
-      if (window.location.hash) {
-        window.history.replaceState(null, '', window.location.pathname + window.location.search);
-      }
-    };
-
-    if (window.location.hash && (window.location.hash.includes('access_token') || window.location.hash === '#')) {
-      setTimeout(cleanHash, 500);
-    }
-
-    return () => {
-      authSub.unsubscribe();
-    };
+    return () => authSub.unsubscribe();
   }, []);
 
   return (
     <SupabaseContext.Provider value={{ 
       supabase,
-      user, session,
+      user,
+      session,
+      currentUserStatus,
       cards, blogs, reviews, waitlist, team, logs, 
       syncStatus, isLoading, isAdminDataLoaded, refreshAll,
       setCards, setBlogs, setReviews, setWaitlist, setTeam
