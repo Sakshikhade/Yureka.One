@@ -330,3 +330,27 @@ export const subscribeNewsletter = async (email: string) => {
   if (error) throw error;
   return data[0].id;
 };
+// --- USER PORTAL SERVICES ---
+export const fetchUserCards = async (userId: string) => {
+  return await withRetry<any[]>(() => supabase.from('user_owned_cards').select('*').eq('user_id', userId).order('created_at', { ascending: false }));
+};
+
+export const addUserCard = async (cardData: any) => {
+  const { data, error } = await supabase.from('user_owned_cards').insert([cardData]).select();
+  if (error) throw error;
+  return data[0];
+};
+
+export const removeUserCard = async (id: string) => {
+  const { error } = await supabase.from('user_owned_cards').delete().eq('id', id);
+  if (error) throw error;
+};
+
+export const fetchUserReferrals = async (referralCode: string) => {
+  return await withRetry<any[]>(() => supabase.from('waitlist').select('name, email, mobile_number, status, created_at').eq('referral_code', referralCode).order('created_at', { ascending: false }));
+};
+
+export const updateWaitlistMetadata = async (id: string, metadata: any) => {
+  const { error } = await supabase.from('waitlist').update(metadata).eq('id', id);
+  if (error) throw error;
+};

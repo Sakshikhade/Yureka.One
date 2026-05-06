@@ -12,19 +12,13 @@ const Navbar: React.FC = () => {
   const location = useLocation();
 
   const handleLogin = async () => {
-    // Dynamically detect the correct production URL
-    const isCustomDomain = window.location.hostname === 'yureka.money';
-    const productionUrl = isCustomDomain 
-      ? 'https://yureka.money/admin' 
-      : 'https://yurekamoney.netlify.app/admin';
-    
-    const devUrl = window.location.origin + '/admin';
     const isLocal = window.location.hostname === 'localhost';
+    const redirectUrl = window.location.origin + '/dashboard';
 
     await supabase.auth.signInWithOAuth({ 
       provider: 'google', 
       options: { 
-        redirectTo: isLocal ? devUrl : productionUrl 
+        redirectTo: redirectUrl
       } 
     });
   };
@@ -133,18 +127,29 @@ const Navbar: React.FC = () => {
                       </Link>
                     
                     <div className="flex items-center gap-3 bg-white/5 p-1 rounded-full border border-white/10 shrink-0">
-                        <button 
-                            onClick={handleLogin}
-                            className="px-6 py-2.5 text-[10px] font-black uppercase tracking-[0.2em] text-white/60 hover:text-white transition-all rounded-full"
-                        >
-                            Log In
-                        </button>
-                        <Link 
-                            to="/join-waitlist" 
-                            className="bg-clay text-cream text-[10px] font-black uppercase tracking-[0.2em] px-6 py-2.5 flex items-center gap-2 group transition-all duration-500 rounded-full shadow-lg hover:shadow-clay/20"
-                        >
-                            Sign Up
-                        </Link>
+                        {user ? (
+                            <Link 
+                                to="/dashboard" 
+                                className="bg-clay text-cream text-[10px] font-black uppercase tracking-[0.2em] px-8 py-2.5 flex items-center gap-2 group transition-all duration-500 rounded-full shadow-lg hover:shadow-clay/20"
+                            >
+                                Dashboard
+                            </Link>
+                        ) : (
+                            <>
+                                <button 
+                                    onClick={handleLogin}
+                                    className="px-6 py-2.5 text-[10px] font-black uppercase tracking-[0.2em] text-white/60 hover:text-white transition-all rounded-full"
+                                >
+                                    Log In
+                                </button>
+                                <Link 
+                                    to="/join-waitlist" 
+                                    className="bg-clay text-cream text-[10px] font-black uppercase tracking-[0.2em] px-6 py-2.5 flex items-center gap-2 group transition-all duration-500 rounded-full shadow-lg hover:shadow-clay/20"
+                                >
+                                    Sign Up
+                                </Link>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>
@@ -224,19 +229,31 @@ const Navbar: React.FC = () => {
                       className="mt-6"
                     >
                         <div className="flex flex-col gap-4 mt-6">
-                            <button 
-                                onClick={() => { setIsMobileMenuOpen(false); handleLogin(); }}
-                                className="w-full h-14 bg-white/5 border border-white/10 text-white font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full"
-                            >
-                                Log In
-                            </button>
-                            <Link 
-                                to="/join-waitlist" 
-                                onClick={() => setIsMobileMenuOpen(false)} 
-                                className="w-full h-14 bg-clay text-cream font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full shadow-xl"
-                            >
-                                Sign Up
-                            </Link>
+                            {user ? (
+                                <Link 
+                                    to="/dashboard" 
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    className="w-full h-14 bg-clay text-cream font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full shadow-xl"
+                                >
+                                    Dashboard
+                                </Link>
+                            ) : (
+                                <>
+                                    <button 
+                                        onClick={() => { setIsMobileMenuOpen(false); handleLogin(); }}
+                                        className="w-full h-14 bg-white/5 border border-white/10 text-white font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full"
+                                    >
+                                        Log In
+                                    </button>
+                                    <Link 
+                                        to="/join-waitlist" 
+                                        onClick={() => setIsMobileMenuOpen(false)} 
+                                        className="w-full h-14 bg-clay text-cream font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full shadow-xl"
+                                    >
+                                        Sign Up
+                                    </Link>
+                                </>
+                            )}
                         </div>
                     </motion.div>
                   </nav>

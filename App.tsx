@@ -59,6 +59,8 @@ const CategoryDetailPage = lazyWithRetry(() => import('./components/CategoryDeta
 const ComparePage = lazyWithRetry(() => import('./components/ComparePage'));
 const ComparisonDetail = lazyWithRetry(() => import('./components/ComparisonDetail'));
 const ComingSoon = lazyWithRetry(() => import('./components/ComingSoon'));
+const DashboardLayout = lazyWithRetry(() => import('./components/Dashboard/DashboardLayout'));
+const WaitingPage = lazyWithRetry(() => import('./components/WaitingPage'));
 
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -87,18 +89,85 @@ const ScrollToTop = () => {
 }
 
 
+import { getUserRole } from './services/supabaseService';
+
+const ProtectedRoute: React.FC<{ children: React.ReactNode; adminOnly?: boolean }> = ({ children, adminOnly }) => {
+  const { user, supabase } = useSupabase();
+  const [status, setStatus] = React.useState<'loading' | 'accepted' | 'pending' | 'admin' | 'none'>('loading');
+  const location = useLocation();
+
+  React.useEffect(() => {
+    if (!user) {
+      setStatus('none');
+      return;
+    }
+    checkStatus();
+  }, [user]);
+
+  const checkStatus = async () => {
+    try {
+      // 1. Check if Admin
+      const role = await getUserRole(user!.email);
+      if (['admin', 'editor', 'writer'].includes(role)) {
+        setStatus('admin');
+        return;
+      }
+
+      if (adminOnly) {
+        setStatus('none');
+        return;
+      }
+
+      // 2. Check Waitlist Status
+      const { data, error } = await supabase
+        .from('waitlist')
+        .select('status')
+        .eq('email', user!.email)
+        .maybeSingle();
+
+      if (error || !data) {
+        setStatus('none');
+      } else if (data.status === 'accepted') {
+        setStatus('accepted');
+      } else {
+        setStatus('pending');
+      }
+    } catch (err) {
+      setStatus('none');
+    }
+  };
+
+  if (status === 'loading') {
+    return (
+      <div className="fixed inset-0 z-[100] bg-cream flex items-center justify-center">
+        <Loader2 className="animate-spin text-clay" size={40} />
+      </div>
+    );
+  }
+
+  if (status === 'none') return <Navigate to="/join-waitlist" replace />;
+  if (status === 'pending' && location.pathname !== '/waiting') return <Navigate to="/waiting" replace />;
+  if (status === 'accepted' && location.pathname === '/waiting') return <Navigate to="/dashboard" replace />;
+  if (status === 'admin' && adminOnly) return <>{children}</>;
+  if (status === 'admin' && !adminOnly) return <>{children}</>; // Admins can see user dashboard too
+
+  return <>{children}</>;
+};
+
 const AppContent: React.FC = () => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
+  const isDashboardRoute = location.pathname.startsWith('/dashboard') || location.pathname === '/waiting';
+  const isMinimalLayout = isAdminRoute || isDashboardRoute;
 
   return (
-    <div className={`min-h-screen bg-cream font-sans text-white relative ${isAdminRoute ? 'pt-0' : 'pt-32 md:pt-36'}`}>
+    <div className={`min-h-screen bg-cream font-sans text-white relative ${isMinimalLayout ? 'pt-0' : 'pt-32 md:pt-36'}`}>
 
       <ScrollToTop />
-      {!isAdminRoute && <TopBanner />}
-      {!isAdminRoute && <Navbar />}
+      {!isMinimalLayout && <TopBanner />}
+      {!isMinimalLayout && <Navbar />}
       
-      <main className={`relative z-10 ${isAdminRoute ? 'pt-0' : ''}`}>
+      <main className={`relative z-10 ${isMinimalLayout ? 'pt-0' : ''}`}>
         <Suspense fallback={
           <div className="fixed inset-0 z-[100] bg-cream/80 backdrop-blur-xl flex items-center justify-center overflow-hidden">
             <motion.div 
@@ -149,7 +218,19 @@ const AppContent: React.FC = () => {
               } />
               
               <Route path="/admin" element={
-                <AdminDashboard />
+                <ProtectedRoute adminOnly>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              } />
+              <Route path="/dashboard" element={
+                <ProtectedRoute>
+                  <DashboardLayout />
+                </ProtectedRoute>
+              } />
+              <Route path="/waiting" element={
+                <ProtectedRoute>
+                  <WaitingPage />
+                </ProtectedRoute>
               } />
               <Route path="/coming-soon" element={<ComingSoon />} />
               
@@ -188,8 +269,8 @@ const AppContent: React.FC = () => {
         </Suspense>
       </main>
 
-      {!isAdminRoute && location.pathname !== '/' && <Footer />}
-      {!isAdminRoute && <BottomBanner />}
+      {!isMinimalLayout && location.pathname !== '/' && <Footer />}
+      {!isMinimalLayout && <BottomBanner />}
 
       {!isAdminRoute && (
         <Link 
