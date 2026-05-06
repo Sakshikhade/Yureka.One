@@ -86,95 +86,6 @@ const ScrollToTop = () => {
   return null;
 }
 
-const Preloader = () => {
-  const [isVisible, setIsVisible] = React.useState(true);
-  const location = useLocation();
-  const isAdmin = location.pathname.startsWith('/admin');
-
-  useEffect(() => {
-    if (isAdmin) {
-      setIsVisible(false);
-      return;
-    }
-    const timer = setTimeout(() => setIsVisible(false), 1400);
-    return () => clearTimeout(timer);
-  }, [isAdmin]);
-
-  return (
-    <AnimatePresence>
-      {isVisible && (
-        <motion.div
-          initial={{ opacity: 1 }}
-          exit={{ 
-            opacity: 0,
-            transition: { duration: 0.8, ease: [0.65, 0, 0.35, 1] }
-          }}
-          className="fixed inset-0 z-[100] bg-cream flex flex-col items-center justify-center overflow-hidden"
-        >
-          <div className="relative w-32 h-32 flex items-center justify-center">
-            {/* Pulsing Outer Ring */}
-            <motion.div 
-              animate={{ 
-                scale: [1, 1.2, 1],
-                opacity: [0.1, 0.3, 0.1],
-                rotate: 360
-              }}
-              transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-              className="absolute inset-0 border border-clay rounded-[2.5rem]"
-            />
-            
-            {/* The Logo SVG - Lightweight but Premium */}
-            <motion.svg 
-              width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-            >
-              <motion.path 
-                d="M10 10L30 50L50 10" 
-                stroke="#34d399" 
-                strokeWidth="6" 
-                strokeLinecap="round" 
-                strokeLinejoin="round"
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ duration: 1, ease: "easeInOut" }}
-              />
-              <motion.circle 
-                cx="30" cy="30" r="25" 
-                stroke="white" 
-                strokeWidth="0.5" 
-                strokeDasharray="4 4" 
-                opacity="0.2"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              />
-            </motion.svg>
-
-            {/* Loading Progress Bar */}
-            <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 w-48 h-[2px] bg-white/5 rounded-full overflow-hidden">
-               <motion.div 
-                 initial={{ width: "0%" }}
-                 animate={{ width: "100%" }}
-                 transition={{ duration: 1.2, ease: "easeInOut" }}
-                 className="h-full bg-clay"
-               />
-            </div>
-          </div>
-          
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="mt-20 text-[10px] font-black text-clay uppercase tracking-[0.5em] animate-pulse"
-          >
-            System Active
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-};
 
 const AppContent: React.FC = () => {
   const location = useLocation();
@@ -182,7 +93,6 @@ const AppContent: React.FC = () => {
 
   return (
     <div className={`min-h-screen bg-cream font-sans text-white relative ${isAdminRoute ? 'pt-0' : 'pt-32 md:pt-36'}`}>
-      {!isAdminRoute && <Preloader />}
 
       <ScrollToTop />
       {!isAdminRoute && <TopBanner />}
