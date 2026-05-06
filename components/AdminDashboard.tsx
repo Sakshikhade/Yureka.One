@@ -45,7 +45,8 @@ const ADMIN_CATEGORIES = [
 const DEFAULT_BLOG_FORM = {
   title: '', slug: '', excerpt: '', content: '', author: '', category: 'Credit Cards',
   image: 'https://picsum.photos/seed/blog/800/600', read_time: '5 min read',
-  featured: false, status: 'published', publishMode: 'now', scheduled_at: ''
+  featured: false, status: 'published', publishMode: 'now', scheduled_at: '',
+  external_link: ''
 };
 
 const DEFAULT_CARD_FORM = {
@@ -340,6 +341,7 @@ const AdminDashboard: React.FC = () => {
           author: blogForm.author || 'Yureka Editorial',
           category: blogForm.category || 'Credit Cards',
           image: blogForm.image || 'https://picsum.photos/seed/blog/800/600',
+          external_link: blogForm.external_link || '',
           slug: finalSlug,
           status: 'published',
           read_time: blogForm.read_time || '5 min read'

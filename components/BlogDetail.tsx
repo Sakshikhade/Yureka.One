@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { 
     ArrowLeft, Share2, Bookmark, Clock, 
     Twitter, Linkedin, Link as LinkIcon,
-    ChevronUp, BookOpen
+    ChevronUp, BookOpen, ExternalLink, Loader2
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -196,8 +196,8 @@ const BlogDetail: React.FC = () => {
 
                 {/* ── ARTICLE BODY ── */}
                 <article>
-                    {/* Pull quote / excerpt */}
-                    {blog.excerpt && (
+                    {/* Pull quote / excerpt - Only show if not an external link (to avoid redundancy) */}
+                    {!blog.external_link && blog.excerpt && (
                         <div className="relative pl-6 border-l-4 border-clay mb-12">
                             <p className="text-xl md:text-2xl italic text-white/70 leading-relaxed font-serif font-medium">
                                 {blog.excerpt}
@@ -205,22 +205,51 @@ const BlogDetail: React.FC = () => {
                         </div>
                     )}
 
-                    {/* Main content */}
-                    <div className="prose prose-lg max-w-none
-                        prose-headings:font-heading prose-headings:font-extrabold prose-headings:tracking-tight prose-headings:text-white
-                        prose-h2:text-3xl prose-h2:mt-16 prose-h2:mb-6 prose-h2:pb-4 prose-h2:border-b prose-h2:border-white/10
-                        prose-h3:text-2xl prose-h3:mt-12 prose-h3:mb-4
-                        prose-p:text-white/80 prose-p:leading-[1.85] prose-p:text-[17px] prose-p:font-serif
-                        prose-a:text-clay prose-a:no-underline hover:prose-a:underline
-                        prose-blockquote:border-l-4 prose-blockquote:border-clay prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-white/60 prose-blockquote:not-italic
-                        prose-strong:text-white prose-strong:font-bold
-                        prose-code:bg-clay/10 prose-code:text-clay prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:font-mono
-                        prose-img:rounded-xl prose-img:shadow-lg prose-img:border prose-img:border-white/10
-                        prose-ul:space-y-2 prose-li:text-white/75 prose-li:font-serif prose-li:text-[17px]
-                        prose-hr:border-white/10 prose-hr:my-16
-                    ">
-                        <ReactMarkdown remarkPlugins={[remarkGfm]}>{blog.content}</ReactMarkdown>
-                    </div>
+                    {/* Main content or External Embed */}
+                    {blog.external_link ? (
+                        <div className="w-full relative min-h-[85vh] bg-white/5 rounded-3xl overflow-hidden border border-white/10 shadow-2xl group mb-16">
+                             {/* Loader while iframe is loading */}
+                             <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
+                                <Loader2 className="animate-spin text-clay" size={48} />
+                             </div>
+                             
+                             <iframe 
+                                src={blog.external_link} 
+                                className="w-full h-[85vh] border-none relative z-10"
+                                title={blog.title}
+                                allowFullScreen
+                                sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+                             />
+                             
+                             {/* Floating Open Original Button */}
+                             <div className="absolute bottom-6 right-6 z-20">
+                                <a 
+                                    href={blog.external_link} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-2 bg-clay text-black px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest hover:bg-white transition-all shadow-xl font-sans"
+                                >
+                                    Open Source <ExternalLink size={12} />
+                                </a>
+                             </div>
+                        </div>
+                    ) : (
+                        <div className="prose prose-lg max-w-none
+                            prose-headings:font-heading prose-headings:font-extrabold prose-headings:tracking-tight prose-headings:text-white
+                            prose-h2:text-3xl prose-h2:mt-16 prose-h2:mb-6 prose-h2:pb-4 prose-h2:border-b prose-h2:border-white/10
+                            prose-h3:text-2xl prose-h3:mt-12 prose-h3:mb-4
+                            prose-p:text-white/80 prose-p:leading-[1.85] prose-p:text-[17px] prose-p:font-serif
+                            prose-a:text-clay prose-a:no-underline hover:prose-a:underline
+                            prose-blockquote:border-l-4 prose-blockquote:border-clay prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-white/60 prose-blockquote:not-italic
+                            prose-strong:text-white prose-strong:font-bold
+                            prose-code:bg-clay/10 prose-code:text-clay prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:font-mono
+                            prose-img:rounded-xl prose-img:shadow-lg prose-img:border prose-img:border-white/10
+                            prose-ul:space-y-2 prose-li:text-white/75 prose-li:font-serif prose-li:text-[17px]
+                            prose-hr:border-white/10 prose-hr:my-16
+                        ">
+                            <ReactMarkdown remarkPlugins={[remarkGfm]}>{blog.content}</ReactMarkdown>
+                        </div>
+                    )}
                 </article>
 
                 {/* ── SHARE ROW ── */}

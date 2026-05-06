@@ -6,6 +6,7 @@ export interface Blog {
   author: string;
   category: string;
   image: string;
+  external_link?: string;
   date?: string;
   featured?: boolean;
   slug?: string;
