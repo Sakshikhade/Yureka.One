@@ -24,6 +24,7 @@ const BlogDetail: React.FC = () => {
     const [showScrollTop, setShowScrollTop] = useState(false);
     const [extractedHtml, setExtractedHtml] = useState<string | null>(null);
     const [isReaderLoading, setIsReaderLoading] = useState(false);
+    const shadowRef = useRef<HTMLDivElement>(null);
     const articleRef = useRef<HTMLDivElement>(null);
 
     const blogSchema = blog ? {
@@ -89,7 +90,9 @@ const BlogDetail: React.FC = () => {
                                 '.share-buttons',
                                 '.social-sharing',
                                 '.navbar',
-                                '#navbar'
+                                '#navbar',
+                                '.footer-outer',
+                                '.header-outer'
                             ];
                             clutter.forEach(s => {
                                 mainContent?.querySelectorAll(s).forEach(el => el.remove());
@@ -98,13 +101,15 @@ const BlogDetail: React.FC = () => {
                             // Fix relative links and images
                             const baseUrl = new URL(data.external_link).origin;
                             mainContent.querySelectorAll('img, a').forEach(el => {
-                                if (el.hasAttribute('src')) {
-                                    const src = el.getAttribute('src');
-                                    if (src && src.startsWith('/')) el.setAttribute('src', baseUrl + src);
-                                }
-                                if (el.hasAttribute('href')) {
-                                    const href = el.getAttribute('href');
-                                    if (href && href.startsWith('/')) el.setAttribute('href', baseUrl + href);
+                                if (el instanceof HTMLImageElement || el instanceof HTMLAnchorElement) {
+                                    if (el.hasAttribute('src')) {
+                                        const src = el.getAttribute('src');
+                                        if (src && src.startsWith('/')) el.setAttribute('src', baseUrl + src);
+                                    }
+                                    if (el.hasAttribute('href')) {
+                                        const href = el.getAttribute('href');
+                                        if (href && href.startsWith('/')) el.setAttribute('href', baseUrl + href);
+                                    }
                                 }
                             });
                             
@@ -280,30 +285,31 @@ const BlogDetail: React.FC = () => {
 
                     {/* Main content or External Embed */}
                     {blog.external_link ? (
-                        <div className="w-full relative min-h-[60vh]">
+                        <div className="w-full relative">
                              {/* SEAMLESS READER MODE */}
                              {extractedHtml ? (
-                                <div className="prose prose-lg max-w-none
-                                    prose-headings:font-heading prose-headings:font-extrabold prose-headings:tracking-tight prose-headings:text-white
-                                    prose-h2:text-3xl prose-h2:mt-16 prose-h2:mb-6 prose-h2:pb-4 prose-h2:border-b prose-h2:border-white/10
-                                    prose-h3:text-2xl prose-h3:mt-12 prose-h3:mb-4
-                                    prose-p:text-white/80 prose-p:leading-[1.85] prose-p:text-[17px] prose-p:font-serif
-                                    prose-a:text-clay prose-a:no-underline hover:prose-a:underline
-                                    prose-blockquote:border-l-4 prose-blockquote:border-clay prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-white/60 prose-blockquote:not-italic
-                                    prose-strong:text-white prose-strong:font-bold
-                                    prose-img:rounded-xl prose-img:shadow-lg prose-img:border prose-img:border-white/10
-                                    prose-ul:space-y-2 prose-li:text-white/75 prose-li:font-serif prose-li:text-[17px]
-                                    prose-hr:border-white/10 prose-hr:my-16
-                                    animate-in fade-in duration-700
-                                ">
-                                    <div dangerouslySetInnerHTML={{ __html: extractedHtml }} />
+                                <div className="animate-in fade-in duration-700">
+                                    <div className="prose prose-lg max-w-none
+                                        prose-headings:font-heading prose-headings:font-extrabold prose-headings:tracking-tight prose-headings:text-white
+                                        prose-h2:text-3xl prose-h2:mt-16 prose-h2:mb-6 prose-h2:pb-4 prose-h2:border-b prose-h2:border-white/10
+                                        prose-h3:text-2xl prose-h3:mt-12 prose-h3:mb-4
+                                        prose-p:text-white/80 prose-p:leading-[1.85] prose-p:text-[17px] prose-p:font-serif
+                                        prose-a:text-clay prose-a:no-underline hover:prose-a:underline
+                                        prose-blockquote:border-l-4 prose-blockquote:border-clay prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-white/60 prose-blockquote:not-italic
+                                        prose-strong:text-white prose-strong:font-bold
+                                        prose-img:rounded-xl prose-img:shadow-lg prose-img:border prose-img:border-white/10
+                                        prose-ul:space-y-2 prose-li:text-white/75 prose-li:font-serif prose-li:text-[17px]
+                                        prose-hr:border-white/10 prose-hr:my-16
+                                    ">
+                                        <div dangerouslySetInnerHTML={{ __html: extractedHtml }} />
+                                    </div>
                                     
-                                    <div className="mt-16 pt-8 border-t border-white/5 text-center">
+                                    <div className="mt-12 pt-8 border-t border-white/5 text-center">
                                         <p className="text-white/20 text-[10px] uppercase font-bold tracking-widest mb-4">Original source: {new URL(blog.external_link).hostname}</p>
                                     </div>
                                 </div>
                              ) : (
-                                <div className="w-full relative bg-white/5 rounded-3xl overflow-hidden border border-white/10 shadow-2xl group mb-16">
+                                <div className="w-full relative bg-white/5 rounded-3xl overflow-hidden border border-white/10 shadow-2xl group mb-10">
                                      {/* Loader while iframe is loading */}
                                      {(isReaderLoading || isLoading) && (
                                         <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
@@ -311,11 +317,11 @@ const BlogDetail: React.FC = () => {
                                         </div>
                                      )}
                                      
-                                     {/* IFRAME FALLBACK with branding protection and connected scroll */}
-                                     <div className="relative w-full overflow-hidden">
+                                     {/* IFRAME FALLBACK - Now with adaptive height and minimal padding */}
+                                     <div className="relative w-full overflow-hidden min-h-[500px]">
                                         <iframe 
                                             src={blog.external_link} 
-                                            className="w-full h-[4500px] border-none relative z-10 -mb-[120px]"
+                                            className="w-full h-[1500px] border-none relative z-10 -mb-[120px]"
                                             title={blog.title}
                                             scrolling="no"
                                             allowFullScreen
