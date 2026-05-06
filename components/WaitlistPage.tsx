@@ -12,10 +12,22 @@ import { useSupabase } from './SupabaseProvider';
 import { motion, AnimatePresence } from 'motion/react';
 
 // ─── MASTER DATA ───
-const ALL_BANKS = [
-    'HDFC', 'SBI', 'ICICI', 'Axis', 'Kotak', 'Yes Bank', 'RBL', 'Amex',
-    'IndusInd', 'BOB', 'SC', 'IDFC', 'Federal', 'SBM', 'AU', 'DBS', 'HSBC'
-];
+const BANK_LOGOS: Record<string, string> = {
+    'HDFC': '/assets/banks/hdfc.png', 'SBI': '/assets/banks/sbi.png', 'Axis': '/assets/banks/axis.png',
+    'ICICI': '/assets/banks/icici.png', 'Kotak': '/assets/banks/kotak.png', 'Yes Bank': '/assets/banks/yesbank.png',
+    'Amex': '/assets/banks/amex.png', 'IDFC': '/assets/banks/idfc.png', 'HSBC': '/assets/banks/hsbc.png',
+    'RBL': '/assets/banks/rbl.png', 'IndusInd': '/assets/banks/indusind.png', 'BOB': '/assets/banks/bob.png',
+    'SC': '/assets/banks/sc.png', 'Indian': '/assets/banks/indian.png', 'PNB': '/assets/banks/pnb.png',
+    'Canara': '/assets/banks/canara.png', 'DBS': '/assets/banks/dbs.png', 'IDBI': '/assets/banks/idbi.png',
+    'AU': '/assets/banks/au.png', 'Equitas': '/assets/banks/equitas.png', 'CSB': '/assets/banks/csb.png',
+    'Federal': '/assets/banks/federal.png', 'SBM': '/assets/banks/sbm.png', 'South Indian': '/assets/banks/southindian.png',
+    'Utkarsh Bank': '/assets/banks/utkarsh.png', 'Suryoday Bank': '/assets/banks/suryoday.png', 'Union Bank': '/assets/banks/union.png',
+    'Unity SFB': '/assets/banks/unity.png', 'DCB': '/assets/banks/dcb.png', 'Bank Of India': '/assets/banks/boi.png',
+    'J&K Bank': '/assets/banks/jk.png', 'CUB': '/assets/banks/cub.png', 'Slice SFB': '/assets/banks/slice.png',
+    'Dhanlaxmi Bank': '/assets/banks/dhanlaxmi.png', 'Indian Overseas Bank': '/assets/banks/iob.png'
+};
+
+const ALL_BANKS = Object.keys(BANK_LOGOS).sort();
 
 const DISCOVERY_SOURCES = [
     'Linkedin', 'Instagram', 'WhatsApp', 'Referral', 'Youtube', 'Reddit', 'Product Hunt', 'Telegram', 'Twitter', 'Other'
@@ -47,12 +59,14 @@ const WaitlistPage: React.FC = () => {
         gender: '',
         creditCardsCount: 1,
         creditCards: [{ bank: '', card: '' }],
-        mostUsedFor: 'Dining',
+        mostUsedFor: ['Dining'] as string[],
         monthlySpend: '0-25K',
         referralCode: '',
         sourceChannel: 'Linkedin',
         otherSource: ''
     });
+
+    const [openBankDropdown, setOpenBankDropdown] = useState<number | null>(null);
 
     // ─── STEP 1: GOOGLE AUTH ───
     const handleGoogleSignup = async () => {
@@ -143,7 +157,26 @@ const WaitlistPage: React.FC = () => {
     };
 
     const filteredCardsForBank = (bank: string) => {
-        return allCards.filter(c => c.bank === bank || c.issuer === bank);
+        if (!bank) return [];
+        const searchBank = bank.toLowerCase();
+        return allCards.filter(c => {
+            const issuer = (c.issuer || '').toLowerCase();
+            const cardBank = (c.bank || '').toLowerCase();
+            return issuer.includes(searchBank) || cardBank.includes(searchBank) || searchBank.includes(issuer) || searchBank.includes(cardBank);
+        });
+    };
+
+    const toggleUsageCategory = (cat: string) => {
+        setFormData(prev => {
+            const current = prev.mostUsedFor;
+            if (current.includes(cat)) {
+                if (current.length === 1) return prev; // Min 1
+                return { ...prev, mostUsedFor: current.filter(c => c !== cat) };
+            } else {
+                if (current.length === 3) return prev; // Max 3
+                return { ...prev, mostUsedFor: [...current, cat] };
+            }
+        });
     };
 
     // ─── SUBMISSION ───
@@ -161,7 +194,7 @@ const WaitlistPage: React.FC = () => {
                 gender: formData.gender,
                 credit_cards_count: formData.creditCardsCount,
                 credit_cards_details: formData.creditCards,
-                most_used_for: formData.mostUsedFor,
+                most_used_for: formData.mostUsedFor.join(', '),
                 monthly_spend: formData.monthlySpend,
                 referral_code: formData.referralCode,
                 source_channel: formData.sourceChannel === 'Other' ? formData.otherSource : formData.sourceChannel,
@@ -326,16 +359,47 @@ const WaitlistPage: React.FC = () => {
                         <div className="absolute -top-3 -left-3 w-8 h-8 bg-clay text-cream rounded-lg flex items-center justify-center text-[10px] font-black shadow-lg">0{idx + 1}</div>
                         
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="space-y-2">
+                            <div className="space-y-2 relative">
                                 <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Select Bank</label>
-                                <select 
-                                    value={card.bank}
-                                    onChange={e => updateCardDetail(idx, 'bank', e.target.value)}
-                                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-clay transition-all text-xs"
+                                <button 
+                                    onClick={() => setOpenBankDropdown(openBankDropdown === idx ? null : idx)}
+                                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-clay transition-all text-xs flex items-center justify-between"
                                 >
-                                    <option value="">Choose Bank</option>
-                                    {ALL_BANKS.map(bank => <option key={bank} value={bank}>{bank}</option>)}
-                                </select>
+                                    <div className="flex items-center gap-3">
+                                        {card.bank && BANK_LOGOS[card.bank] ? (
+                                            <img src={BANK_LOGOS[card.bank]} alt="" className="w-5 h-5 object-contain" />
+                                        ) : (
+                                            <Landmark size={14} className="text-white/20" />
+                                        )}
+                                        <span>{card.bank || 'Choose Bank'}</span>
+                                    </div>
+                                    <ChevronDown size={14} className={`text-white/20 transition-transform ${openBankDropdown === idx ? 'rotate-180' : ''}`} />
+                                </button>
+
+                                <AnimatePresence>
+                                    {openBankDropdown === idx && (
+                                        <>
+                                            <div className="fixed inset-0 z-40" onClick={() => setOpenBankDropdown(null)} />
+                                            <motion.div 
+                                                initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }}
+                                                className="absolute top-full left-0 right-0 mt-2 bg-cream border border-white/10 rounded-xl shadow-2xl z-50 max-h-60 overflow-y-auto no-scrollbar"
+                                            >
+                                                {ALL_BANKS.map(bank => (
+                                                    <button 
+                                                        key={bank}
+                                                        onClick={() => { updateCardDetail(idx, 'bank', bank); setOpenBankDropdown(null); }}
+                                                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-white/5 text-white transition-colors text-xs"
+                                                    >
+                                                        <div className="w-6 h-6 bg-white rounded-full p-1 flex items-center justify-center overflow-hidden border border-white/10">
+                                                            <img src={BANK_LOGOS[bank]} alt="" className="w-full h-full object-contain" />
+                                                        </div>
+                                                        <span className="font-bold tracking-tight">{bank}</span>
+                                                    </button>
+                                                ))}
+                                            </motion.div>
+                                        </>
+                                    )}
+                                </AnimatePresence>
                             </div>
                             <div className="space-y-2">
                                 <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Select Card</label>
@@ -345,9 +409,9 @@ const WaitlistPage: React.FC = () => {
                                     onChange={e => updateCardDetail(idx, 'card', e.target.value)}
                                     className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-clay transition-all text-xs disabled:opacity-30"
                                 >
-                                    <option value="">{card.bank ? 'Choose Card' : 'Select Bank First'}</option>
-                                    {filteredCardsForBank(card.bank).map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
-                                    <option value="Other">Other / Not Listed</option>
+                                    <option value="" className="bg-black">Choose Card</option>
+                                    {filteredCardsForBank(card.bank).map(c => <option key={c.id} value={c.name} className="bg-black">{c.name}</option>)}
+                                    <option value="Other" className="bg-black">Other / Not Listed</option>
                                 </select>
                             </div>
                         </div>
@@ -373,17 +437,20 @@ const WaitlistPage: React.FC = () => {
             </div>
 
             <div className="space-y-4">
-                <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Primary Credit Use Case</label>
+                <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Primary Credit Use Case (Min 1, Max 3)</label>
                 <div className="flex flex-wrap gap-3">
-                    {USAGE_CATEGORIES.map(cat => (
-                        <button 
-                            key={cat}
-                            onClick={() => setFormData({...formData, mostUsedFor: cat})}
-                            className={`px-6 py-4 rounded-xl border text-xs font-black uppercase tracking-widest transition-all ${formData.mostUsedFor === cat ? 'bg-clay border-clay text-cream shadow-lg' : 'bg-white/5 border-white/10 text-white/40 hover:border-white/20'}`}
-                        >
-                            {cat}
-                        </button>
-                    ))}
+                    {USAGE_CATEGORIES.map(cat => {
+                        const isSelected = formData.mostUsedFor.includes(cat);
+                        return (
+                            <button 
+                                key={cat}
+                                onClick={() => toggleUsageCategory(cat)}
+                                className={`px-6 py-4 rounded-xl border text-xs font-black uppercase tracking-widest transition-all ${isSelected ? 'bg-clay border-clay text-cream shadow-lg' : 'bg-white/5 border-white/10 text-white/40 hover:border-white/20'}`}
+                            >
+                                {cat}
+                            </button>
+                        );
+                    })}
                 </div>
             </div>
 
