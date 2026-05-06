@@ -309,10 +309,8 @@ export const joinWaitlist = async (entry: any) => {
   if (countError) throw countError;
   const rank = 1000 + (count || 0) + 1;
 
-  // 2. Generate Personal Referral Code
-  const firstName = (entry.first_name || 'user').toLowerCase().replace(/[^a-z0-9]/g, '');
-  const randomStr = Math.random().toString(36).substring(2, 6).toUpperCase();
-  const personalReferralCode = `YUREKA-${firstName}-${randomStr}`;
+  // 2. Generate Personal Referral Code (e.g., YRKMNY1001)
+  const personalReferralCode = `YRKMNY${rank}`;
 
   // 3. Prepare Payload
   const payload = cleanData({

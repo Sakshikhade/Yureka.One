@@ -492,7 +492,7 @@ const WaitlistPage: React.FC = () => {
                 <div className="space-y-2">
                     <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Referral Code (Optional)</label>
                     <input 
-                        type="text" placeholder="YUREKA-XXXX"
+                        type="text" placeholder="YRKMNY-XXXX"
                         value={formData.referralCode}
                         onChange={e => setFormData({...formData, referralCode: e.target.value})}
                         className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-white outline-none focus:border-clay transition-all text-xs"
