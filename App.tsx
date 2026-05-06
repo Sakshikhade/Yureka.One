@@ -8,7 +8,7 @@ import SEO from './components/SEO';
 import SocialProof from './components/SocialProof';
 import BottomBanner from './components/BottomBanner';
 import TopBanner from './components/TopBanner';
-import { SupabaseProvider } from './components/SupabaseProvider';
+import { SupabaseProvider, useSupabase } from './components/SupabaseProvider';
 import { SkeletonCard } from './components/SkeletonLoaders';
 import { ErrorBoundary } from './components/ErrorBoundary';
 
