@@ -6,7 +6,7 @@ import {
     Send, MessageCircle, Copy, Globe, ChevronDown, Calendar, 
     Mail, Phone, Trash2
 } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { joinWaitlist, fetchCardsPublic } from '../services/supabaseService';
 import { useSupabase } from './SupabaseProvider';
 import { motion, AnimatePresence } from 'motion/react';
@@ -42,6 +42,7 @@ const USAGE_CATEGORIES = ['Dining', 'Fuels', 'Shopping', 'Travel', 'UPI'];
 const WaitlistPage: React.FC = () => {
     const { supabase, user, session, cards: allCards } = useSupabase();
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
 
     const [step, setStep] = useState(1);
     const [isLoadingData, setIsLoadingData] = useState(false);
@@ -67,6 +68,14 @@ const WaitlistPage: React.FC = () => {
     });
 
     const [openBankDropdown, setOpenBankDropdown] = useState<number | null>(null);
+
+    // ─── REFERRAL PREFILLING ───
+    useEffect(() => {
+        const ref = searchParams.get('ref');
+        if (ref) {
+            setFormData(prev => ({ ...prev, referralCode: ref }));
+        }
+    }, [searchParams]);
 
     // ─── STEP 1: GOOGLE AUTH ───
     const handleGoogleSignup = async () => {
@@ -353,7 +362,7 @@ const WaitlistPage: React.FC = () => {
                 </div>
             </div>
 
-            <div className="space-y-8 max-h-[400px] overflow-y-auto pr-4 custom-scrollbar">
+            <div className="space-y-8">
                 {formData.creditCards.map((card, idx) => (
                     <div key={idx} className="p-6 bg-white/[0.03] rounded-2xl border border-white/5 space-y-6 relative">
                         <div className="absolute -top-3 -left-3 w-8 h-8 bg-clay text-cream rounded-lg flex items-center justify-center text-[10px] font-black shadow-lg">0{idx + 1}</div>
