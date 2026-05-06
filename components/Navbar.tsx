@@ -11,10 +11,16 @@ const Navbar: React.FC = () => {
   const [isExploreOpen, setIsExploreOpen] = useState(false);
   const location = useLocation();
 
-  const handleLogin = async () => {
-    const isLocal = window.location.hostname === 'localhost';
-    const redirectUrl = window.location.origin + '/dashboard';
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
+  const handleLogin = async () => {
+    const redirectUrl = window.location.origin + '/dashboard';
     await supabase.auth.signInWithOAuth({ 
       provider: 'google', 
       options: { 
@@ -26,7 +32,7 @@ const Navbar: React.FC = () => {
   const EXPLORE_ITEMS = [
     { name: 'Categories', path: '/categories', icon: LayoutGrid, desc: 'Find cards by lifestyle' },
     { name: 'Tools', path: '/free-tools', icon: Calculator, desc: 'Institutional calculators' },
-    { name: 'Compare', path: 'https://yureka.money/compare', icon: ArrowRightLeft, desc: 'Side-by-side analysis' }
+    { name: 'Compare', path: '/compare', icon: ArrowRightLeft, desc: 'Side-by-side analysis' }
   ];
 
   return (
@@ -199,7 +205,7 @@ const Navbar: React.FC = () => {
                     {[
                         { name: 'Card Explorer', path: '/cards', desc: 'Neural matched credit selection' },
                         { name: 'Categories', path: '/categories', desc: 'Browse by lifestyle & perks' },
-                        { name: 'Compare', path: 'https://yureka.money/compare', desc: 'Side-by-side neural matchup' },
+                        { name: 'Compare', path: '/compare', desc: 'Side-by-side neural matchup' },
                         { name: 'Explore', path: '/manifesto', desc: 'The decentralization of yield' },
                         { name: 'Free Tools', path: '/free-tools', desc: 'Institutional grade calculators' },
                         { name: 'Blogs', path: '/blogs', desc: 'The elite credit journal' },

@@ -148,26 +148,22 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode; adminOnly?: boolean 
   if (status === 'none') return <Navigate to="/join-waitlist" replace />;
   if (status === 'pending' && location.pathname !== '/waiting') return <Navigate to="/waiting" replace />;
   if (status === 'accepted' && location.pathname === '/waiting') return <Navigate to="/dashboard" replace />;
-  if (status === 'admin' && adminOnly) return <>{children}</>;
-  if (status === 'admin' && !adminOnly) return <>{children}</>; // Admins can see user dashboard too
-
+  
   return <>{children}</>;
 };
 
 const AppContent: React.FC = () => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
-  const isDashboardRoute = location.pathname.startsWith('/dashboard') || location.pathname === '/waiting';
-  const isMinimalLayout = isAdminRoute || isDashboardRoute;
 
   return (
-    <div className={`min-h-screen bg-cream font-sans text-white relative ${isMinimalLayout ? 'pt-0' : 'pt-32 md:pt-36'}`}>
+    <div className={`min-h-screen bg-cream font-sans text-white relative ${isAdminRoute ? 'pt-0' : 'pt-32 md:pt-36'}`}>
 
       <ScrollToTop />
-      {!isMinimalLayout && <TopBanner />}
-      {!isMinimalLayout && <Navbar />}
+      {!isAdminRoute && <TopBanner />}
+      {!isAdminRoute && <Navbar />}
       
-      <main className={`relative z-10 ${isMinimalLayout ? 'pt-0' : ''}`}>
+      <main className={`relative z-10 ${isAdminRoute ? 'pt-0' : ''}`}>
         <Suspense fallback={
           <div className="fixed inset-0 z-[100] bg-cream/80 backdrop-blur-xl flex items-center justify-center overflow-hidden">
             <motion.div 
@@ -218,9 +214,7 @@ const AppContent: React.FC = () => {
               } />
               
               <Route path="/admin" element={
-                <ProtectedRoute adminOnly>
                   <AdminDashboard />
-                </ProtectedRoute>
               } />
               <Route path="/dashboard" element={
                 <ProtectedRoute>
@@ -269,8 +263,8 @@ const AppContent: React.FC = () => {
         </Suspense>
       </main>
 
-      {!isMinimalLayout && location.pathname !== '/' && <Footer />}
-      {!isMinimalLayout && <BottomBanner />}
+      {!isAdminRoute && location.pathname !== '/' && <Footer />}
+      {!isAdminRoute && <BottomBanner />}
 
       {!isAdminRoute && (
         <Link 
