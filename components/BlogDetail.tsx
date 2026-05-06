@@ -78,21 +78,29 @@ const BlogDetail: React.FC = () => {
                             if (mainContent) break;
                         }
                         
+                        if (!mainContent) {
+                            // Heuristic: Find the element with the most text content
+                            const allDivs = Array.from(doc.querySelectorAll('div, section, article'));
+                            let maxText = 0;
+                            let bestEl = null;
+                            allDivs.forEach(el => {
+                                const textLen = el.textContent?.trim().length || 0;
+                                if (textLen > maxText) {
+                                    maxText = textLen;
+                                    bestEl = el;
+                                }
+                            });
+                            if (bestEl && maxText > 500) mainContent = bestEl;
+                        }
+
                         if (mainContent) {
                             // Clean up: Remove known branding/clutter selectors
                             const clutter = [
-                                '.post-footer', 
-                                '.blog-pager', 
-                                '.comments', 
-                                '#comments', 
-                                '.attribution',
-                                '.sharing-buttons',
-                                '.share-buttons',
-                                '.social-sharing',
-                                '.navbar',
-                                '#navbar',
-                                '.footer-outer',
-                                '.header-outer'
+                                'header', 'footer', 'nav', '.navbar', '#navbar', 
+                                '.post-footer', '.blog-pager', '.comments', '#comments', 
+                                '.attribution', '.sharing-buttons', '.share-buttons', 
+                                '.social-sharing', '.footer-outer', '.header-outer',
+                                '.adsbygoogle', 'script', 'style', 'iframe'
                             ];
                             clutter.forEach(s => {
                                 mainContent?.querySelectorAll(s).forEach(el => el.remove());
@@ -101,15 +109,13 @@ const BlogDetail: React.FC = () => {
                             // Fix relative links and images
                             const baseUrl = new URL(data.external_link).origin;
                             mainContent.querySelectorAll('img, a').forEach(el => {
-                                if (el instanceof HTMLImageElement || el instanceof HTMLAnchorElement) {
-                                    if (el.hasAttribute('src')) {
-                                        const src = el.getAttribute('src');
-                                        if (src && src.startsWith('/')) el.setAttribute('src', baseUrl + src);
-                                    }
-                                    if (el.hasAttribute('href')) {
-                                        const href = el.getAttribute('href');
-                                        if (href && href.startsWith('/')) el.setAttribute('href', baseUrl + href);
-                                    }
+                                if (el instanceof HTMLImageElement) {
+                                    const src = el.getAttribute('src');
+                                    if (src && !src.startsWith('http')) el.setAttribute('src', new URL(src, baseUrl).href);
+                                }
+                                if (el instanceof HTMLAnchorElement) {
+                                    const href = el.getAttribute('href');
+                                    if (href && !href.startsWith('http')) el.setAttribute('href', new URL(href, baseUrl).href);
                                 }
                             });
                             
@@ -317,11 +323,11 @@ const BlogDetail: React.FC = () => {
                                         </div>
                                      )}
                                      
-                                     {/* IFRAME FALLBACK - Now with adaptive height and minimal padding */}
-                                     <div className="relative w-full overflow-hidden min-h-[500px]">
+                                     {/* IFRAME FALLBACK - Now with a larger height to ensure visibility if extraction fails */}
+                                     <div className="relative w-full overflow-hidden min-h-[80vh]">
                                         <iframe 
                                             src={blog.external_link} 
-                                            className="w-full h-[1500px] border-none relative z-10 -mb-[120px]"
+                                            className="w-full h-[3000px] border-none relative z-10 -mb-[120px]"
                                             title={blog.title}
                                             scrolling="no"
                                             allowFullScreen
