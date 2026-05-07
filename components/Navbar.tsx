@@ -21,15 +21,6 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleLogin = async () => {
-    const redirectUrl = window.location.origin + '/dashboard';
-    await supabase.auth.signInWithOAuth({ 
-      provider: 'google', 
-      options: { 
-        redirectTo: redirectUrl
-      } 
-    });
-  };
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -141,26 +132,22 @@ const Navbar: React.FC = () => {
                 </div>
                     
                 <div className="flex items-center gap-3 shrink-0">
-                    <Link 
-                        to="/login"
-                        className="bg-clay text-cream text-[10px] font-black uppercase tracking-[0.2em] px-8 py-2.5 transition-all duration-500 rounded-full shadow-lg hover:shadow-clay/20 whitespace-nowrap text-center"
-                    >
-                        Login
-                    </Link>
-                    <Link 
-                        to="/join-waitlist" 
-                        className="bg-clay text-cream text-[10px] font-black uppercase tracking-[0.2em] px-8 py-2.5 transition-all duration-500 rounded-full shadow-lg hover:shadow-clay/20 whitespace-nowrap"
-                    >
-                        SignUp
-                    </Link>
-                    {user && currentUserStatus === 'admin' && (
-                        <Link 
-                            to="/admin" 
-                            className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 hover:text-white px-4"
-                        >
-                            Admin
-                        </Link>
-                    )}
+                    {user && currentUserStatus === 'admin' ? (
+                        <>
+                            <Link 
+                                to="/admin" 
+                                className="bg-clay text-cream text-[10px] font-black uppercase tracking-[0.2em] px-8 py-2.5 transition-all duration-500 rounded-full shadow-lg hover:shadow-clay/20 whitespace-nowrap"
+                            >
+                                Admin Panel
+                            </Link>
+                            <button 
+                                onClick={handleLogout}
+                                className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 hover:text-white px-4"
+                            >
+                                Logout
+                            </button>
+                        </>
+                    ) : null}
                 </div>
             </div>
 
@@ -239,28 +226,22 @@ const Navbar: React.FC = () => {
                       className="mt-6"
                     >
                         <div className="flex flex-col gap-4 mt-6">
-                            <Link 
-                                to="/login"
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                className="w-full h-14 bg-clay text-cream font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full shadow-xl"
-                            >
-                                Login
-                            </Link>
-                            <Link 
-                                to="/join-waitlist" 
-                                onClick={() => setIsMobileMenuOpen(false)} 
-                                className="w-full h-14 bg-clay text-cream font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full shadow-xl"
-                            >
-                                SignUp
-                            </Link>
                             {user && currentUserStatus === 'admin' && (
-                                <Link 
-                                    to="/admin" 
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                    className="w-full h-14 bg-white/5 border border-white/10 text-white font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full mb-2"
-                                >
-                                    Admin Panel
-                                </Link>
+                                <>
+                                    <Link 
+                                        to="/admin" 
+                                        onClick={() => setIsMobileMenuOpen(false)}
+                                        className="w-full h-14 bg-clay text-cream font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full shadow-xl"
+                                    >
+                                        Admin Panel
+                                    </Link>
+                                    <button 
+                                        onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }}
+                                        className="w-full h-14 bg-white/5 border border-white/10 text-white font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full mb-2"
+                                    >
+                                        Logout
+                                    </button>
+                                </>
                             )}
                         </div>
                     </motion.div>

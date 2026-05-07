@@ -668,8 +668,8 @@ const ComingSoon: React.FC = () => {
                                    {feature.desc}
                                 </p>
                                 <div className="pt-4 flex flex-col sm:flex-row items-center sm:items-start lg:items-center gap-6 w-full lg:w-auto">
-                                   <Link to="/join-waitlist" className="h-12 md:h-14 px-8 md:px-10 bg-white text-cream rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em] shadow-2xl shadow-black/10 hover:bg-clay hover:text-white hover:-translate-y-1 transition-all active:scale-95 group shrink-0 flex items-center justify-center w-full sm:w-auto">
-                                      Join Internal Test <ChevronRight size={14} className="inline-block ml-2 group-hover:translate-x-1 transition-transform" />
+                                   <Link to="/cards" className="h-12 md:h-14 px-8 md:px-10 bg-white text-cream rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em] shadow-2xl shadow-black/10 hover:bg-clay hover:text-white hover:-translate-y-1 transition-all active:scale-95 group shrink-0 flex items-center justify-center w-full sm:w-auto">
+                                      Explore Cards <ChevronRight size={14} className="inline-block ml-2 group-hover:translate-x-1 transition-transform" />
                                    </Link>
                                    <div className="flex flex-col text-center sm:text-left">
                                       <span className="text-[8px] md:text-[9px] font-medium text-white/10 uppercase tracking-widest">Availability</span>
@@ -701,9 +701,9 @@ const ComingSoon: React.FC = () => {
                             Phase 1 deployment is capped at 5,000 nodes. priority is given to institutional waitlist members.
                         </p>
                         <div className="flex flex-col items-center gap-6">
-                            <button className="h-16 px-16 bg-cream text-ink rounded-full text-xs font-bold uppercase tracking-[0.4em] hover:bg-clay hover:text-cream hover:scale-105 transition-all duration-500 shadow-2xl group flex items-center gap-4">
-                                Enter The Registry <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
-                            </button>
+                            <Link to="/cards" className="h-16 px-16 bg-cream text-ink rounded-full text-xs font-bold uppercase tracking-[0.4em] hover:bg-clay hover:text-cream hover:scale-105 transition-all duration-500 shadow-2xl group flex items-center gap-4">
+                                Explore Intelligence <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
+                            </Link>
                              <div className="flex items-center gap-4 text-[9px] font-black uppercase tracking-[0.5em] text-cream/20">
                                 <span className="w-1.5 h-1.5 rounded-full bg-clay" /> Encrypted Connection
                                 <span className="w-1.5 h-1.5 rounded-full bg-clay" /> SSL 256-Bit

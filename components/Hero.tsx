@@ -53,9 +53,9 @@ const Hero: React.FC = () => {
                         </span>
                     </Link>
                     
-                    <Link to="/join-waitlist" className="group px-8 py-5 md:px-12 md:py-6 bg-white/5 text-[#F2EFE9] rounded-full w-full sm:w-auto border-2 border-white/10 hover:border-white/30 hover:bg-white/10 transition-all hover:-translate-y-1 text-center backdrop-blur-sm">
+                    <Link to="/cards" className="group px-8 py-5 md:px-12 md:py-6 bg-white/5 text-[#F2EFE9] rounded-full w-full sm:w-auto border-2 border-white/10 hover:border-white/30 hover:bg-white/10 transition-all hover:-translate-y-1 text-center backdrop-blur-sm">
                         <span className="font-bold text-[10px] md:text-[11px] uppercase tracking-[0.3em] flex items-center justify-center gap-3">
-                            Join The VIP Waitlist
+                            Explore All Cards
                         </span>
                     </Link>
                 </div>

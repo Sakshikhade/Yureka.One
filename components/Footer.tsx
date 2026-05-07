@@ -104,7 +104,6 @@ const Footer: React.FC = () => {
                         <li><Link to="/blogs" className="hover:text-clay font-serif text-xs md:text-sm transition-colors">Blogs</Link></li>
                         <li><Link to="/jobs" className="hover:text-clay font-serif text-xs md:text-sm transition-colors">Careers at Yureka</Link></li>
                         <li><a href="#" className="hover:text-clay font-serif text-xs md:text-sm transition-colors">Press & Media</a></li>
-                        <li><Link to="/join-waitlist" className="hover:text-clay font-serif text-xs md:text-sm transition-colors">Join the Waitlist</Link></li>
                         <li><Link to="/admin" className="hover:text-clay font-serif text-xs md:text-sm transition-colors opacity-30 hover:opacity-100">Admin Dashboard</Link></li>
                     </ul>
                 </div>
@@ -212,11 +211,8 @@ const Footer: React.FC = () => {
 
             {/* User Switcher (Tenant/Landlord replacement) */}
             <div className="relative z-10 flex bg-white/5 p-1 rounded-full border border-white/10">
-                 <Link to="/join-waitlist" className="px-6 md:px-8 py-3 text-[10px] md:text-xs font-bold text-white/60 hover:text-white uppercase tracking-widest transition-colors">
-                    Join Waitlist
-                 </Link>
-                 <Link to="/yureka-ai" className="px-6 md:px-8 py-3 text-[10px] md:text-xs font-bold text-cream bg-clay rounded-full uppercase tracking-widest shadow-xl hover:bg-white transition-colors">
-                    Yureka AI
+                 <Link to="/yureka-ai" className="px-8 md:px-12 py-3 text-[10px] md:text-xs font-bold text-cream bg-clay rounded-full uppercase tracking-widest shadow-xl hover:bg-white hover:text-clay transition-colors">
+                    Access Yureka AI
                  </Link>
             </div>
 

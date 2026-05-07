@@ -44,14 +44,12 @@ const CardDetail = lazyWithRetry(() => import('./components/CardDetail'));
 const OurStory = lazyWithRetry(() => import('./components/OurStory'));
 const JournalPage = lazyWithRetry(() => import('./components/JournalPage'));
 const BlogDetail = lazyWithRetry(() => import('./components/BlogDetail'));
-const LoginPage = lazyWithRetry(() => import('./components/LoginPage'));
 const PrivacyPolicy = lazyWithRetry(() => import('./components/PrivacyPolicy'));
 const TermsOfService = lazyWithRetry(() => import('./components/TermsOfService'));
 const SecurityProtocolPage = lazyWithRetry(() => import('./components/SecurityProtocolPage'));
 const CommunityGuidelines = lazyWithRetry(() => import('./components/CommunityGuidelines'));
 const YurekaOsPage = lazyWithRetry(() => import('./components/YurekaOsPage'));
 const AdminDashboard = lazyWithRetry(() => import('./components/AdminDashboard'));
-const WaitlistPage = lazyWithRetry(() => import('./components/WaitlistPage'));
 const YurekaAIPage = lazyWithRetry(() => import('./components/YurekaAIPage'));
 const CareersPage = lazyWithRetry(() => import('./components/CareersPage'));
 const RewardsTransferCalculator = lazyWithRetry(() => import('./components/RewardsTransferCalculator'));
@@ -60,8 +58,6 @@ const CategoryDetailPage = lazyWithRetry(() => import('./components/CategoryDeta
 const ComparePage = lazyWithRetry(() => import('./components/ComparePage'));
 const ComparisonDetail = lazyWithRetry(() => import('./components/ComparisonDetail'));
 const ComingSoon = lazyWithRetry(() => import('./components/ComingSoon'));
-const DashboardLayout = lazyWithRetry(() => import('./components/Dashboard/DashboardLayout'));
-const WaitingPage = lazyWithRetry(() => import('./components/WaitingPage'));
 
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -89,39 +85,6 @@ const ScrollToTop = () => {
   return null;
 }
 
-
-import { getUserRole } from './services/supabaseService';
-
-const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { user, currentUserStatus } = useSupabase();
-  const location = useLocation();
-
-  if (!user) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
-  }
-
-  if (currentUserStatus === 'loading') {
-    return (
-      <div className="fixed inset-0 z-[100] bg-cream flex items-center justify-center">
-        <Loader2 className="animate-spin text-clay" size={40} />
-      </div>
-    );
-  }
-
-  if (currentUserStatus === 'none') {
-    return <Navigate to="/join-waitlist" replace />;
-  }
-
-  if (currentUserStatus === 'pending' && location.pathname !== '/waiting') {
-    return <Navigate to="/waiting" replace />;
-  }
-
-  if ((currentUserStatus === 'accepted' || currentUserStatus === 'admin') && location.pathname === '/waiting') {
-    return <Navigate to="/dashboard" replace />;
-  }
-  
-  return <>{children}</>;
-};
 
 const AppContent: React.FC = () => {
   const location = useLocation();
@@ -174,30 +137,7 @@ const AppContent: React.FC = () => {
               
               <Route path="/blogs/:slug" element={<BlogDetail />} />
               
-              <Route path="/join-waitlist" element={
-                 <>
-                   <SEO 
-                     title="Join Waitlist | Secure Your Access" 
-                     description="Join the elite waitlist for early access to the Yureka Intelligence Engine."
-                   />
-                   <WaitlistPage />
-                 </>
-              } />
-              
-              <Route path="/admin" element={
-                  <AdminDashboard />
-              } />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/dashboard" element={
-                <ProtectedRoute>
-                  <DashboardLayout />
-                </ProtectedRoute>
-              } />
-              <Route path="/waiting" element={
-                <ProtectedRoute>
-                  <WaitingPage />
-                </ProtectedRoute>
-              } />
+              <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/coming-soon" element={<ComingSoon />} />
               
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
