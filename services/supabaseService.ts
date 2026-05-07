@@ -301,7 +301,33 @@ export const checkIfAdmin = async (userId: string | undefined, userEmail: string
 };
 
 export const joinWaitlist = async (entry: any) => {
-  // 1. Calculate Rank
+  const normalizedEmail = entry.email?.toLowerCase().trim();
+
+  // 1. Check if this email already exists in the waitlist
+  const { data: existing, error: existingError } = await supabaseAdmin
+    .from('waitlist')
+    .select('*')
+    .eq('email', normalizedEmail)
+    .maybeSingle();
+
+  if (existingError) throw existingError;
+
+  // 2. If they already exist, update their record and return it (no duplicate error)
+  if (existing) {
+    const { data: updated, error: updateError } = await supabaseAdmin
+      .from('waitlist')
+      .update(cleanData({
+        ...entry,
+        email: normalizedEmail,
+        status: existing.status // preserve existing status (don't reset accepted users)
+      }))
+      .eq('id', existing.id)
+      .select();
+    if (updateError) throw updateError;
+    return updated![0];
+  }
+
+  // 3. New user — calculate rank and generate referral code
   const { count, error: countError } = await supabase
     .from('waitlist')
     .select('*', { count: 'exact', head: true });
@@ -309,12 +335,13 @@ export const joinWaitlist = async (entry: any) => {
   if (countError) throw countError;
   const rank = 1000 + (count || 0) + 1;
 
-  // 2. Generate Personal Referral Code (e.g., YRKMNY1001)
+  // 4. Generate Personal Referral Code (e.g., YRKMNY1001)
   const personalReferralCode = `YRKMNY${rank}`;
 
-  // 3. Prepare Payload
+  // 5. Prepare Payload
   const payload = cleanData({
     ...entry,
+    email: normalizedEmail,
     rank,
     personal_referral_code: personalReferralCode,
     status: entry.status || 'pending'
