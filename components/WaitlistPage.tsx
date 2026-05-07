@@ -90,6 +90,7 @@ const WaitlistPage: React.FC = () => {
     });
 
     const [openBankDropdown, setOpenBankDropdown] = useState<number | null>(null);
+    const [stepErrors, setStepErrors] = useState<Record<string, string>>({});
 
     // ─── REFERRAL PREFILLING ───
     useEffect(() => {
@@ -224,8 +225,38 @@ const WaitlistPage: React.FC = () => {
         });
     };
 
+    // ─── VALIDATION HELPERS ───
+    const validateStep2 = () => {
+        const errors: Record<string, string> = {};
+        if (!formData.firstName.trim()) errors.firstName = 'First name is required';
+        if (!formData.lastName.trim()) errors.lastName = 'Last name is required';
+        if (!formData.mobileNumber.trim()) errors.mobileNumber = 'Mobile number is required';
+        if (!formData.dateOfBirth) errors.dateOfBirth = 'Date of birth is required';
+        if (!formData.gender) errors.gender = 'Gender is required';
+        setStepErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
+
+    const validateStep3 = () => {
+        const errors: Record<string, string> = {};
+        formData.creditCards.forEach((card, idx) => {
+            if (!card.bank) errors[`card_${idx}`] = `Card ${idx + 1}: please select a bank`;
+        });
+        setStepErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
+
+    const validateStep4 = () => {
+        const errors: Record<string, string> = {};
+        if (!formData.sourceChannel) errors.sourceChannel = 'Please select how you discovered us';
+        if (formData.sourceChannel === 'Other' && !formData.otherSource.trim()) errors.otherSource = 'Please specify your discovery source';
+        setStepErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
+
     // ─── SUBMISSION ───
     const handleSubmit = async () => {
+        if (!validateStep4()) return;
         setIsSubmitting(true);
         setError(null);
         try {
@@ -254,7 +285,12 @@ const WaitlistPage: React.FC = () => {
             });
             setStep(5);
         } catch (err: any) {
-            setError(err.message || "Failed to join waitlist. Please try again.");
+            // Handle duplicate email gracefully
+            if (err.message?.includes('duplicate key') || err.code === '23505') {
+                setError('You are already on our waitlist! Check your email for your referral code.');
+            } else {
+                setError(err.message || 'Failed to join waitlist. Please try again.');
+            }
         } finally {
             setIsSubmitting(false);
         }
@@ -310,64 +346,69 @@ const WaitlistPage: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-2">
-                    <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">First Name</label>
+                    <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">First Name <span className="text-red-400">*</span></label>
                     <input 
                         type="text" value={formData.firstName}
-                        onChange={e => setFormData({...formData, firstName: e.target.value})}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-white outline-none focus:border-clay transition-all"
+                        onChange={e => { setFormData({...formData, firstName: e.target.value}); setStepErrors(p => ({...p, firstName: ''})); }}
+                        className={`w-full bg-white/5 border rounded-xl px-6 py-4 text-white outline-none focus:border-clay transition-all ${stepErrors.firstName ? 'border-red-500' : 'border-white/10'}`}
                     />
+                    {stepErrors.firstName && <p className="text-red-400 text-[10px] mt-1">{stepErrors.firstName}</p>}
                 </div>
                 <div className="space-y-2">
-                    <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Last Name</label>
+                    <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Last Name <span className="text-red-400">*</span></label>
                     <input 
                         type="text" value={formData.lastName}
-                        onChange={e => setFormData({...formData, lastName: e.target.value})}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-white outline-none focus:border-clay transition-all"
+                        onChange={e => { setFormData({...formData, lastName: e.target.value}); setStepErrors(p => ({...p, lastName: ''})); }}
+                        className={`w-full bg-white/5 border rounded-xl px-6 py-4 text-white outline-none focus:border-clay transition-all ${stepErrors.lastName ? 'border-red-500' : 'border-white/10'}`}
                     />
+                    {stepErrors.lastName && <p className="text-red-400 text-[10px] mt-1">{stepErrors.lastName}</p>}
                 </div>
             </div>
 
             <div className="space-y-2">
-                <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Associated Mobile Number</label>
+                <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Associated Mobile Number <span className="text-red-400">*</span></label>
                 <div className="relative">
                     <Phone className="absolute left-6 top-1/2 -translate-y-1/2 text-white/20" size={18} />
                     <input 
                         type="tel" value={formData.mobileNumber} placeholder="+91 XXXXX XXXXX"
-                        onChange={e => setFormData({...formData, mobileNumber: e.target.value})}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl pl-16 pr-6 py-4 text-white outline-none focus:border-clay transition-all"
+                        onChange={e => { setFormData({...formData, mobileNumber: e.target.value}); setStepErrors(p => ({...p, mobileNumber: ''})); }}
+                        className={`w-full bg-white/5 border rounded-xl pl-16 pr-6 py-4 text-white outline-none focus:border-clay transition-all ${stepErrors.mobileNumber ? 'border-red-500' : 'border-white/10'}`}
                     />
                 </div>
+                {stepErrors.mobileNumber && <p className="text-red-400 text-[10px] mt-1">{stepErrors.mobileNumber}</p>}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-2">
-                    <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Date of Birth</label>
+                    <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Date of Birth <span className="text-red-400">*</span></label>
                     <div className="relative">
                         <Calendar className="absolute left-6 top-1/2 -translate-y-1/2 text-white/20" size={18} />
                         <input 
                             type="date" value={formData.dateOfBirth}
-                            onChange={e => setFormData({...formData, dateOfBirth: e.target.value})}
-                            className="w-full bg-white/5 border border-white/10 rounded-xl pl-16 pr-6 py-4 text-white outline-none focus:border-clay transition-all appearance-none"
+                            onChange={e => { setFormData({...formData, dateOfBirth: e.target.value}); setStepErrors(p => ({...p, dateOfBirth: ''})); }}
+                            className={`w-full bg-white/5 border rounded-xl pl-16 pr-6 py-4 text-white outline-none focus:border-clay transition-all appearance-none ${stepErrors.dateOfBirth ? 'border-red-500' : 'border-white/10'}`}
                         />
                     </div>
+                    {stepErrors.dateOfBirth && <p className="text-red-400 text-[10px] mt-1">{stepErrors.dateOfBirth}</p>}
                 </div>
                 <div className="space-y-2">
-                    <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Gender</label>
+                    <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Gender <span className="text-red-400">*</span></label>
                     <select 
                         value={formData.gender}
-                        onChange={e => setFormData({...formData, gender: e.target.value})}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-white outline-none focus:border-clay transition-all appearance-none"
+                        onChange={e => { setFormData({...formData, gender: e.target.value}); setStepErrors(p => ({...p, gender: ''})); }}
+                        className={`w-full bg-white/5 border rounded-xl px-6 py-4 text-white outline-none focus:border-clay transition-all appearance-none ${stepErrors.gender ? 'border-red-500' : 'border-white/10'}`}
                     >
                         <option value="" className="bg-black">Select Gender</option>
                         <option value="male" className="bg-black">Male</option>
                         <option value="female" className="bg-black">Female</option>
                         <option value="other" className="bg-black">Other</option>
                     </select>
+                    {stepErrors.gender && <p className="text-red-400 text-[10px] mt-1">{stepErrors.gender}</p>}
                 </div>
             </div>
 
             <button 
-                onClick={() => setStep(3)}
+                onClick={() => { if (validateStep2()) { setStep(3); setStepErrors({}); } }}
                 className="w-full bg-clay text-cream py-5 rounded-2xl flex items-center justify-center gap-4 group shadow-xl active:scale-95 transition-all"
             >
                 <span className="text-[10px] font-black uppercase tracking-[0.3em]">Continue to Financials</span>
@@ -483,11 +524,14 @@ const WaitlistPage: React.FC = () => {
 
             <div className="flex gap-4">
                 <button onClick={() => setStep(2)} className="flex-1 border border-white/10 text-white/40 py-5 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-white/5 transition-all">Back</button>
-                <button onClick={() => setStep(4)} className="flex-[2] bg-clay text-cream py-5 rounded-2xl flex items-center justify-center gap-4 group shadow-xl active:scale-95 transition-all">
+                <button onClick={() => { if (validateStep3()) { setStep(4); setStepErrors({}); } }} className="flex-[2] bg-clay text-cream py-5 rounded-2xl flex items-center justify-center gap-4 group shadow-xl active:scale-95 transition-all">
                     <span className="text-[10px] font-black uppercase tracking-[0.3em]">Next Step</span>
                     <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
                 </button>
             </div>
+            {Object.keys(stepErrors).some(k => k.startsWith('card_')) && (
+                <p className="text-red-400 text-[10px] text-center">{Object.values(stepErrors).find(Boolean)}</p>
+            )}
         </motion.div>
     );
 
