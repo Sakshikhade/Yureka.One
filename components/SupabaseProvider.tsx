@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-import { supabase } from '../supabase';
+import { supabase, supabaseAdmin } from '../supabase';
 import { Card, Blog, Review, WaitlistEntry } from '../types';
 import { featuredCards } from '../data';
 import { 
@@ -197,11 +197,11 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       
       if (currentUser) {
         try {
-          const { data: teamMember } = await supabase.from('users').select('role').eq('email', currentUser.email).maybeSingle();
+          const { data: teamMember } = await supabaseAdmin.from('users').select('role').eq('email', currentUser.email).maybeSingle();
           if (teamMember) {
             setCurrentUserStatus('admin');
           } else {
-            const { data: waitlist } = await supabase.from('waitlist').select('status').eq('email', currentUser.email).maybeSingle();
+            const { data: waitlist } = await supabaseAdmin.from('waitlist').select('status').eq('email', currentUser.email).maybeSingle();
             if (waitlist) {
               setCurrentUserStatus(waitlist.status === 'accepted' ? 'accepted' : 'pending');
             } else {
@@ -227,11 +227,11 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       setUser(currentUser);
       if (currentUser) {
         try {
-          const { data: teamMember } = await supabase.from('users').select('role').eq('email', currentUser.email).maybeSingle();
+          const { data: teamMember } = await supabaseAdmin.from('users').select('role').eq('email', currentUser.email).maybeSingle();
           if (teamMember) {
             setCurrentUserStatus('admin');
           } else {
-            const { data: waitlist } = await supabase.from('waitlist').select('status').eq('email', currentUser.email).maybeSingle();
+            const { data: waitlist } = await supabaseAdmin.from('waitlist').select('status').eq('email', currentUser.email).maybeSingle();
             if (waitlist) {
               setCurrentUserStatus(waitlist.status === 'accepted' ? 'accepted' : 'pending');
             } else {
