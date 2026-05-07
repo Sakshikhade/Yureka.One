@@ -19,7 +19,6 @@ const ReferralDashboard: React.FC = () => {
 
     const loadReferralData = async () => {
         try {
-            // 1. Get the user's personal referral code from waitlist table
             const { data: waitlistEntry } = await supabase
                 .from('waitlist')
                 .select('personal_referral_code')
@@ -55,91 +54,128 @@ const ReferralDashboard: React.FC = () => {
         alert("Referral link copied!");
     };
 
-    if (isLoading) return <div className="flex items-center justify-center py-20"><Clock className="animate-spin text-clay" size={40} /></div>;
+    if (isLoading) return (
+        <div className="flex items-center justify-center py-40">
+            <motion.div 
+                animate={{ rotate: 360 }}
+                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                className="w-16 h-16 border-t-2 border-clay rounded-full"
+            />
+        </div>
+    );
 
     return (
-        <div className="space-y-10">
+        <div className="space-y-16">
             {/* Referral Stats Header */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div className="md:col-span-2 bg-clay text-cream rounded-[2.5rem] p-10 flex flex-col justify-between relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 blur-3xl rounded-full -mr-20 -mt-20 group-hover:scale-150 transition-transform duration-1000" />
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div className="md:col-span-2 glass-dark border border-clay/20 rounded-[3rem] p-12 flex flex-col justify-between relative overflow-hidden group shadow-[0_40px_80px_rgba(52,211,153,0.1)]">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-clay/10 blur-[100px] rounded-full -mr-32 -mt-32 group-hover:bg-clay/20 transition-colors duration-1000" />
                     <div className="relative z-10">
-                        <p className="text-[10px] font-black uppercase tracking-[0.5em] opacity-60 mb-6">Your Accelerator Code</p>
-                        <div className="flex items-center gap-4 bg-black/10 p-2 rounded-2xl border border-white/10 mb-8">
-                            <span className="flex-1 font-mono text-2xl font-bold tracking-widest pl-4 truncate">{personalCode}</span>
-                            <button onClick={copyToClipboard} className="w-14 h-14 bg-white text-clay rounded-xl flex items-center justify-center hover:scale-105 transition-transform shrink-0 shadow-xl"><Copy size={20} /></button>
+                        <div className="flex items-center gap-3 mb-8">
+                            <div className="w-1.5 h-1.5 bg-clay rounded-full animate-pulse shadow-[0_0_10px_rgba(52,211,153,0.8)]" />
+                            <p className="text-[10px] font-black uppercase tracking-[0.6em] text-clay">Accelerator Mechanism</p>
                         </div>
-                        <p className="text-xs italic opacity-80 leading-relaxed">Share this code with your inner circle to accelerate their approval and boost your rank.</p>
+                        
+                        <div className="flex flex-col sm:flex-row items-center gap-6 bg-black/40 p-4 rounded-[2rem] border border-white/5 mb-10 shadow-inner backdrop-blur-md">
+                            <span className="flex-1 font-mono text-3xl font-black tracking-[0.3em] pl-6 text-white truncate">{personalCode}</span>
+                            <button 
+                                onClick={copyToClipboard} 
+                                className="w-full sm:w-20 h-20 bg-white text-black rounded-2xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all shrink-0 shadow-2xl group/copy"
+                            >
+                                <Copy size={28} className="group-hover:rotate-12 transition-transform" />
+                            </button>
+                        </div>
+                        <p className="text-sm font-serif italic text-white/40 leading-relaxed max-w-sm">
+                            Distribute this encrypted identifier to your core network. Each integration accelerates your trajectory within the Lab.
+                        </p>
                     </div>
                 </div>
 
-                <div className="bg-white/[0.03] border border-white/5 rounded-[2.5rem] p-8 flex flex-col justify-center text-center">
-                    <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4 border border-white/10">
-                        <Users className="text-clay" size={20} />
+                <motion.div 
+                    initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                    className="glass-card rounded-[3rem] p-10 flex flex-col items-center justify-center text-center hover:border-clay/30"
+                >
+                    <div className="w-14 h-14 bg-clay/10 rounded-2xl flex items-center justify-center mb-6 border border-clay/20 shadow-inner">
+                        <Users className="text-clay" size={24} />
                     </div>
-                    <span className="text-5xl font-black text-white tracking-tighter leading-none mb-2">{referrals.length}</span>
-                    <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Active Referrals</p>
-                </div>
+                    <span className="text-6xl font-black text-white tracking-tighter leading-none mb-3 italic">{referrals.length}</span>
+                    <p className="text-[10px] font-black uppercase tracking-[0.5em] text-white/20">Active Nodes</p>
+                </motion.div>
 
-                <div className="bg-white/[0.03] border border-white/5 rounded-[2.5rem] p-8 flex flex-col justify-center text-center">
-                    <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4 border border-white/10">
-                        <Star className="text-clay" size={20} />
+                <motion.div 
+                    initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+                    className="glass-card rounded-[3rem] p-10 flex flex-col items-center justify-center text-center hover:border-clay/30"
+                >
+                    <div className="w-14 h-14 bg-clay/10 rounded-2xl flex items-center justify-center mb-6 border border-clay/20 shadow-inner">
+                        <Trophy className="text-clay" size={24} />
                     </div>
-                    <span className="text-5xl font-black text-white tracking-tighter leading-none mb-2">#{(1000 - referrals.length * 10)}</span>
-                    <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Predicted Rank</p>
-                </div>
+                    <span className="text-6xl font-black text-white tracking-tighter leading-none mb-3 italic">#{(1000 - referrals.length * 10)}</span>
+                    <p className="text-[10px] font-black uppercase tracking-[0.5em] text-white/20">Relative Rank</p>
+                </motion.div>
             </div>
 
             {/* Referral List */}
-            <div className="bg-white/[0.03] border border-white/5 rounded-[3rem] overflow-hidden">
-                <div className="p-8 border-b border-white/5 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                        <Shield className="text-clay" size={18} />
-                        <h4 className="text-sm font-black uppercase tracking-[0.3em] text-white">Network Activity</h4>
+            <div className="glass-card rounded-[3rem] overflow-hidden border border-white/5">
+                <div className="p-10 border-b border-white/5 flex items-center justify-between bg-white/[0.01]">
+                    <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center border border-white/10">
+                            <Shield className="text-white/30" size={20} />
+                        </div>
+                        <div>
+                            <h4 className="text-lg font-black italic tracking-tighter text-white leading-none mb-1">Network Activity Log</h4>
+                            <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Privacy-Encoded Data Streams</p>
+                        </div>
                     </div>
-                    <div className="text-[10px] font-bold text-white/20 uppercase tracking-widest">Privacy Protected (Hashed)</div>
                 </div>
 
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto dashboard-scroll">
                     <table className="w-full text-left border-collapse">
                         <thead>
-                            <tr className="bg-white/[0.02]">
-                                <th className="px-8 py-5 text-[9px] font-black uppercase tracking-[0.3em] text-white/40">Full Name</th>
-                                <th className="px-8 py-5 text-[9px] font-black uppercase tracking-[0.3em] text-white/40">Identity (Hashed)</th>
-                                <th className="px-8 py-5 text-[9px] font-black uppercase tracking-[0.3em] text-white/40">Status</th>
-                                <th className="px-8 py-5 text-[9px] font-black uppercase tracking-[0.3em] text-white/40">Acquired</th>
+                            <tr className="bg-white/[0.01]">
+                                <th className="px-10 py-6 text-[10px] font-black uppercase tracking-[0.4em] text-white/30 border-b border-white/5">Authorized Entity</th>
+                                <th className="px-10 py-6 text-[10px] font-black uppercase tracking-[0.4em] text-white/30 border-b border-white/5">Masked Identity</th>
+                                <th className="px-10 py-6 text-[10px] font-black uppercase tracking-[0.4em] text-white/30 border-b border-white/5">Validation Status</th>
+                                <th className="px-10 py-6 text-[10px] font-black uppercase tracking-[0.4em] text-white/30 border-b border-white/5">Acquisition Date</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-white/5">
                             {referrals.length > 0 ? referrals.map((ref, i) => (
                                 <tr key={i} className="hover:bg-white/[0.02] transition-colors group">
-                                    <td className="px-8 py-6">
-                                        <div className="flex items-center gap-3">
-                                            <div className="w-8 h-8 rounded-full bg-clay/20 flex items-center justify-center text-[10px] font-bold text-clay">
+                                    <td className="px-10 py-8">
+                                        <div className="flex items-center gap-5">
+                                            <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-sm font-black text-white border border-white/10 group-hover:bg-clay group-hover:text-black group-hover:scale-110 transition-all duration-500">
                                                 {ref.name[0]}
                                             </div>
-                                            <span className="text-sm font-bold text-white tracking-tight">{ref.name}</span>
+                                            <span className="text-base font-black text-white tracking-tight italic">{ref.name}</span>
                                         </div>
                                     </td>
-                                    <td className="px-8 py-6">
-                                        <div className="flex flex-col gap-1">
-                                            <span className="text-xs font-mono text-white/40">{maskValue(ref.email, 'email')}</span>
+                                    <td className="px-10 py-8">
+                                        <div className="flex flex-col gap-1.5">
+                                            <span className="text-xs font-mono text-white/50 tracking-wider">{maskValue(ref.email, 'email')}</span>
                                             <span className="text-[10px] font-mono text-white/20">{maskValue(ref.mobile_number, 'phone')}</span>
                                         </div>
                                     </td>
-                                    <td className="px-8 py-6">
-                                        <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest ${ref.status === 'accepted' ? 'bg-clay/10 text-clay border border-clay/20' : 'bg-white/5 text-white/40 border border-white/10'}`}>
+                                    <td className="px-10 py-8">
+                                        <div className={`inline-flex items-center gap-3 px-5 py-2 rounded-full text-[9px] font-black uppercase tracking-[0.2em] ${ref.status === 'accepted' ? 'bg-clay/10 text-clay border border-clay/20 shadow-[0_0_15px_rgba(52,211,153,0.1)]' : 'bg-white/5 text-white/30 border border-white/10'}`}>
                                             <div className={`w-1.5 h-1.5 rounded-full ${ref.status === 'accepted' ? 'bg-clay animate-pulse' : 'bg-white/20'}`} />
                                             {ref.status}
                                         </div>
                                     </td>
-                                    <td className="px-8 py-6 text-xs text-white/20 font-mono">
-                                        {new Date(ref.created_at).toLocaleDateString()}
+                                    <td className="px-10 py-8">
+                                        <div className="flex items-center gap-2 text-xs text-white/20 font-mono">
+                                            <Clock size={12} />
+                                            {new Date(ref.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
+                                        </div>
                                     </td>
                                 </tr>
                             )) : (
                                 <tr>
-                                    <td colSpan={4} className="px-8 py-20 text-center text-white/20 italic">No network activity detected yet. Start sharing to build your portfolio.</td>
+                                    <td colSpan={4} className="px-10 py-32 text-center">
+                                        <div className="flex flex-col items-center justify-center gap-4">
+                                            <Share2 className="text-white/5" size={48} />
+                                            <p className="text-sm font-serif italic text-white/20">Zero network activity detected. Broadcast your identifier to synchronize nodes.</p>
+                                        </div>
+                                    </td>
                                 </tr>
                             )}
                         </tbody>

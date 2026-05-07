@@ -91,75 +91,120 @@ const MyCards: React.FC = () => {
     });
 
     if (isLoading) return (
-        <div className="flex items-center justify-center py-20">
-            <Loader2 className="animate-spin text-clay" size={40} />
+        <div className="flex items-center justify-center py-40">
+            <motion.div 
+                animate={{ rotate: 360 }}
+                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                className="w-16 h-16 border-t-2 border-clay rounded-full"
+            />
         </div>
     );
 
     return (
-        <div className="space-y-10">
-            {/* Summary Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-white/[0.03] border border-white/5 rounded-3xl p-8 flex flex-col justify-between">
-                    <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 mb-4">Portfolio Size</p>
-                    <div className="flex items-baseline gap-2">
-                        <span className="text-5xl font-black italic text-white tracking-tighter">{ownedCards.length}</span>
-                        <span className="text-white/40 text-sm italic">Cards</span>
+        <div className="space-y-16">
+            {/* Portfolio Health Intelligence */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <motion.div 
+                    initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                    className="glass-card rounded-[2rem] p-8"
+                >
+                    <div className="flex items-center gap-3 mb-6">
+                        <div className="w-2 h-2 bg-clay rounded-full animate-pulse" />
+                        <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/40">Portfolio Density</p>
                     </div>
-                </div>
-                <div className="bg-white/[0.03] border border-white/5 rounded-3xl p-8 flex flex-col justify-between">
-                    <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 mb-4">Monthly Value</p>
-                    <div className="flex items-baseline gap-2">
-                        <span className="text-5xl font-black italic text-clay tracking-tighter">15%</span>
-                        <span className="text-white/40 text-sm italic">Savings</span>
+                    <div className="flex items-baseline gap-3">
+                        <span className="text-6xl font-black italic text-white tracking-tighter leading-none">{ownedCards.length}</span>
+                        <span className="text-white/20 text-xs font-bold uppercase tracking-widest">Active Assets</span>
                     </div>
-                </div>
+                </motion.div>
+
+                <motion.div 
+                    initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+                    className="glass-card rounded-[2rem] p-8"
+                >
+                    <div className="flex items-center gap-3 mb-6">
+                        <Sparkles size={12} className="text-clay" />
+                        <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/40">Yield Optimization</p>
+                    </div>
+                    <div className="flex items-baseline gap-3">
+                        <span className="text-6xl font-black italic text-clay tracking-tighter leading-none">15%</span>
+                        <span className="text-white/20 text-xs font-bold uppercase tracking-widest">Avg. Cashback</span>
+                    </div>
+                </motion.div>
+
+                <motion.div 
+                    initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+                    className="glass-card rounded-[2rem] p-8 hidden lg:block"
+                >
+                    <div className="flex items-center gap-3 mb-6">
+                        <AlertCircle size={12} className="text-white/20" />
+                        <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/40">Security Status</p>
+                    </div>
+                    <div className="flex items-baseline gap-3">
+                        <span className="text-4xl font-black italic text-white tracking-tighter leading-none">ELITE</span>
+                        <span className="text-clay text-[8px] font-black uppercase tracking-widest">Encrypted</span>
+                    </div>
+                </motion.div>
+
                 <button 
                     onClick={() => setIsAdding(true)}
-                    className="bg-white/5 border border-dashed border-white/10 rounded-3xl p-8 flex flex-col items-center justify-center gap-4 hover:bg-clay/5 hover:border-clay/20 transition-all group"
+                    className="bg-clay text-black rounded-[2rem] p-8 flex flex-col items-center justify-center gap-4 hover:scale-[1.02] active:scale-95 transition-all group shadow-[0_20px_40px_rgba(52,211,153,0.2)]"
                 >
-                    <div className="w-12 h-12 bg-clay text-cream rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <Plus size={24} />
-                    </div>
-                    <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40 group-hover:text-white">Add New Card</span>
+                    <Plus size={32} className="group-hover:rotate-90 transition-transform duration-500" />
+                    <span className="text-[10px] font-black uppercase tracking-[0.4em]">Expand Portfolio</span>
                 </button>
             </div>
 
             {/* Owned Cards Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 <AnimatePresence>
-                    {ownedCards.map((card) => (
+                    {ownedCards.map((card, idx) => (
                         <motion.div 
                             key={card.id}
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.9 }}
-                            className="group relative bg-white/[0.03] border border-white/5 rounded-[2.5rem] p-6 hover:border-clay/30 transition-all hover:shadow-2xl hover:shadow-clay/5"
+                            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.8 }}
+                            transition={{ delay: idx * 0.05 }}
+                            whileHover={{ y: -10 }}
+                            className="group relative"
                         >
-                            <div className="aspect-[1.6/1] bg-black/40 rounded-2xl overflow-hidden mb-6 relative group-hover:scale-[1.02] transition-transform">
-                                {card.card_image ? (
-                                    <img src={card.card_image} alt={card.card_name} className="w-full h-full object-contain p-4" />
-                                ) : (
-                                    <div className="w-full h-full flex items-center justify-center">
-                                        <CreditCard size={48} className="text-white/10" />
-                                    </div>
-                                )}
-                                <div className="absolute top-4 left-4 w-8 h-8 bg-white rounded-lg p-1.5 shadow-xl">
-                                    <img src={BANK_LOGOS[card.bank_name] || '/assets/logo.png'} alt="" className="w-full h-full object-contain" />
-                                </div>
-                            </div>
-
-                            <div className="flex items-center justify-between">
-                                <div>
-                                    <p className="text-[8px] font-black uppercase tracking-[0.4em] text-white/20 mb-1">{card.bank_name}</p>
-                                    <h4 className="text-sm font-bold text-white tracking-tight">{card.card_name}</h4>
-                                </div>
-                                <button 
-                                    onClick={() => handleDeleteCard(card.id)}
-                                    className="w-10 h-10 rounded-full flex items-center justify-center text-red-400/40 hover:bg-red-500/10 hover:text-red-400 transition-all"
+                            <div className="glass-card rounded-[2.5rem] p-8 hover:border-white/20 overflow-hidden relative">
+                                {/* Decorative Gradient */}
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-clay/5 blur-[60px] rounded-full pointer-events-none" />
+                                
+                                <motion.div 
+                                    className="aspect-[1.58/1] bg-black/40 rounded-2xl overflow-hidden mb-8 relative preserve-3d"
+                                    whileHover={{ rotateY: 15, rotateX: -5 }}
+                                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
                                 >
-                                    <Trash2 size={16} />
-                                </button>
+                                    {card.card_image ? (
+                                        <img src={card.card_image} alt={card.card_name} className="w-full h-full object-contain p-6 drop-shadow-2xl" />
+                                    ) : (
+                                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-white/5 to-transparent">
+                                            <CreditCard size={64} className="text-white/5" />
+                                        </div>
+                                    )}
+                                    <div className="absolute top-6 left-6 w-10 h-10 bg-white rounded-xl p-2 shadow-2xl border border-white/20">
+                                        <img src={BANK_LOGOS[card.bank_name] || '/assets/logo.png'} alt="" className="w-full h-full object-contain" />
+                                    </div>
+                                </motion.div>
+
+                                <div className="flex items-end justify-between">
+                                    <div>
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <p className="text-[8px] font-black uppercase tracking-[0.5em] text-clay">{card.bank_name}</p>
+                                            <div className="w-1 h-1 bg-white/20 rounded-full" />
+                                            <p className="text-[8px] font-black uppercase tracking-[0.3em] text-white/20">Credit Asset</p>
+                                        </div>
+                                        <h4 className="text-lg font-black text-white tracking-tight italic leading-tight">{card.card_name}</h4>
+                                    </div>
+                                    <button 
+                                        onClick={() => handleDeleteCard(card.id)}
+                                        className="w-12 h-12 rounded-2xl flex items-center justify-center text-red-400/20 hover:bg-red-500/10 hover:text-red-400 transition-all border border-transparent hover:border-red-500/20"
+                                    >
+                                        <Trash2 size={20} />
+                                    </button>
+                                </div>
                             </div>
                         </motion.div>
                     ))}
@@ -172,88 +217,101 @@ const MyCards: React.FC = () => {
                     <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
                         <motion.div 
                             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                            className="absolute inset-0 bg-cream/80 backdrop-blur-xl"
+                            className="absolute inset-0 bg-black/80 backdrop-blur-3xl"
                             onClick={() => setIsAdding(false)}
                         />
                         <motion.div 
-                            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                            initial={{ opacity: 0, scale: 0.95, y: 40 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
-                            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                            className="bg-black/60 border border-white/10 w-full max-w-lg rounded-[3rem] p-10 relative z-10 shadow-2xl overflow-hidden"
+                            exit={{ opacity: 0, scale: 0.95, y: 40 }}
+                            className="glass-dark border border-white/10 w-full max-w-xl rounded-[3rem] p-12 relative z-10 shadow-[0_40px_100px_rgba(0,0,0,0.8)] overflow-hidden"
                         >
-                            <div className="absolute top-0 left-0 w-full h-1 bg-clay/20">
-                                <motion.div initial={{ width: 0 }} animate={{ width: '100%' }} className="h-full bg-clay" />
+                            <div className="absolute top-0 left-0 w-full h-1.5 bg-white/5">
+                                <motion.div initial={{ width: 0 }} animate={{ width: '100%' }} className="h-full bg-clay shadow-[0_0_20px_rgba(52,211,153,1)]" />
                             </div>
 
-                            <h3 className="text-3xl italic tracking-tighter text-white mb-8">Add to Portfolio</h3>
+                            <div className="flex items-center gap-4 mb-10">
+                                <div className="w-14 h-14 bg-clay/10 rounded-2xl flex items-center justify-center border border-clay/20">
+                                    <Plus className="text-clay" size={28} />
+                                </div>
+                                <div>
+                                    <p className="text-[10px] font-black uppercase tracking-[0.5em] text-clay mb-1">Authorization Phase</p>
+                                    <h3 className="text-4xl italic tracking-tighter text-white font-black leading-none">Register Asset</h3>
+                                </div>
+                            </div>
 
-                            <div className="space-y-8">
-                                <div className="space-y-2 relative">
-                                    <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Select Bank</label>
+                            <div className="space-y-10">
+                                <div className="space-y-4 relative">
+                                    <label className="text-[10px] font-black uppercase tracking-[0.6em] text-white/30 ml-1">Establish Issuer</label>
                                     <button 
                                         onClick={() => setOpenBankDropdown(!openBankDropdown)}
-                                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white text-left flex items-center justify-between group hover:border-clay/30 transition-all"
+                                        className="w-full glass-card rounded-2xl px-8 py-5 text-white text-left flex items-center justify-between group hover:border-white/30 transition-all shadow-inner"
                                     >
-                                        <div className="flex items-center gap-3">
+                                        <div className="flex items-center gap-4">
                                             {selectedBank ? (
-                                                <img src={BANK_LOGOS[selectedBank]} className="w-5 h-5 object-contain" alt="" />
-                                            ) : <Landmark size={18} className="text-white/20" />}
-                                            <span className="text-xs font-bold uppercase tracking-widest">{selectedBank || 'Choose Issuer'}</span>
+                                                <div className="w-8 h-8 bg-white rounded-lg p-1.5 border border-white/20">
+                                                    <img src={BANK_LOGOS[selectedBank]} className="w-full h-full object-contain" alt="" />
+                                                </div>
+                                            ) : <Landmark size={20} className="text-white/20" />}
+                                            <span className="text-sm font-black uppercase tracking-[0.2em]">{selectedBank || 'Select Financial Entity'}</span>
                                         </div>
-                                        <ChevronDown size={16} className={`text-white/20 transition-transform ${openBankDropdown ? 'rotate-180' : ''}`} />
+                                        <ChevronDown size={20} className={`text-white/20 transition-transform duration-500 ${openBankDropdown ? 'rotate-180' : ''}`} />
                                     </button>
 
                                     {openBankDropdown && (
                                         <motion.div 
-                                            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-                                            className="absolute top-full left-0 right-0 mt-2 bg-cream border border-white/10 rounded-2xl shadow-2xl z-[110] max-h-60 overflow-y-auto no-scrollbar py-2"
+                                            initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }}
+                                            className="absolute top-full left-0 right-0 mt-4 glass-dark border border-white/10 rounded-3xl shadow-[0_30px_60px_rgba(0,0,0,0.5)] z-[110] max-h-72 overflow-y-auto dashboard-scroll p-3"
                                         >
                                             {ALL_BANKS.map(bank => (
                                                 <button 
                                                     key={bank}
                                                     onClick={() => { setSelectedBank(bank); setOpenBankDropdown(false); setSelectedCardId(''); }}
-                                                    className="w-full flex items-center gap-4 px-6 py-3 hover:bg-white/5 text-white transition-colors"
+                                                    className="w-full flex items-center gap-5 px-6 py-4 hover:bg-white/5 rounded-2xl text-white transition-all group"
                                                 >
-                                                    <div className="w-8 h-8 bg-white rounded-lg p-1.5">
+                                                    <div className="w-10 h-10 bg-white rounded-xl p-2 group-hover:scale-110 transition-transform">
                                                         <img src={BANK_LOGOS[bank]} className="w-full h-full object-contain" alt="" />
                                                     </div>
-                                                    <span className="text-xs font-bold tracking-tight uppercase">{bank}</span>
+                                                    <span className="text-xs font-black tracking-[0.1em] uppercase">{bank}</span>
                                                 </button>
                                             ))}
                                         </motion.div>
                                     )}
                                 </div>
 
-                                <div className="space-y-2">
-                                    <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Select Card</label>
-                                    <select 
-                                        disabled={!selectedBank}
-                                        value={selectedCardId}
-                                        onChange={e => setSelectedCardId(e.target.value)}
-                                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white outline-none focus:border-clay transition-all appearance-none text-xs font-bold uppercase tracking-widest disabled:opacity-30"
-                                    >
-                                        <option value="" className="bg-black">Choose Variant</option>
-                                        {filteredCards.map(c => (
-                                            <option key={c.id} value={c.id} className="bg-black">{c.name}</option>
-                                        ))}
-                                        <option value="Other" className="bg-black">Other / Not Listed</option>
-                                    </select>
+                                <div className="space-y-4">
+                                    <label className="text-[10px] font-black uppercase tracking-[0.6em] text-white/30 ml-1">Select Variant</label>
+                                    <div className="relative">
+                                        <select 
+                                            disabled={!selectedBank}
+                                            value={selectedCardId}
+                                            onChange={e => setSelectedCardId(e.target.value)}
+                                            className="w-full glass-card rounded-2xl px-8 py-5 text-white outline-none focus:border-clay/50 transition-all appearance-none text-sm font-black uppercase tracking-[0.1em] disabled:opacity-30 cursor-pointer"
+                                        >
+                                            <option value="" className="bg-[#0f0f0f]">Calibrating Variants...</option>
+                                            {filteredCards.map(c => (
+                                                <option key={c.id} value={c.id} className="bg-[#0f0f0f]">{c.name}</option>
+                                            ))}
+                                            <option value="Other" className="bg-[#0f0f0f]">Custom Identifier / Not Listed</option>
+                                        </select>
+                                        <ChevronDown size={20} className="absolute right-8 top-1/2 -translate-y-1/2 text-white/20 pointer-events-none" />
+                                    </div>
                                 </div>
 
-                                <div className="flex gap-4 pt-4">
+                                <div className="flex gap-6 pt-6">
                                     <button 
                                         onClick={() => setIsAdding(false)}
-                                        className="flex-1 border border-white/10 text-white/40 py-5 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-white/5 transition-all"
+                                        className="flex-1 glass-card text-white/30 py-6 rounded-2xl text-[10px] font-black uppercase tracking-[0.4em] hover:bg-white/5 hover:text-white transition-all"
                                     >
-                                        Abort
+                                        Terminate
                                     </button>
                                     <button 
                                         onClick={handleAddCard}
                                         disabled={isSubmitting || !selectedCardId}
-                                        className="flex-[2] bg-clay text-cream py-5 rounded-2xl flex items-center justify-center gap-4 group shadow-xl active:scale-95 transition-all disabled:opacity-50"
+                                        className="flex-[2] bg-white text-black py-6 rounded-2xl flex items-center justify-center gap-4 group shadow-2xl active:scale-95 transition-all disabled:opacity-30"
                                     >
-                                        <span className="text-[10px] font-black uppercase tracking-[0.3em]">{isSubmitting ? 'Syncing...' : 'Add to Collection'}</span>
-                                        {!isSubmitting && <Sparkles size={18} className="group-hover:rotate-12 transition-transform" />}
+                                        <span className="text-[11px] font-black uppercase tracking-[0.4em]">{isSubmitting ? 'Syncing...' : 'Authorize Integration'}</span>
+                                        {!isSubmitting && <Sparkles size={22} className="group-hover:rotate-12 transition-transform duration-500" />}
                                     </button>
                                 </div>
                             </div>

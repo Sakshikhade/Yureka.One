@@ -76,7 +76,6 @@ const MailSync: React.FC = () => {
             return;
         }
 
-        // Calculate 6 months ago date
         const sixMonthsAgo = new Date();
         sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
         const dateStr = `${sixMonthsAgo.getFullYear()}/${(sixMonthsAgo.getMonth() + 1).toString().padStart(2, '0')}/${sixMonthsAgo.getDate().toString().padStart(2, '0')}`;
@@ -84,11 +83,10 @@ const MailSync: React.FC = () => {
         gmailService.setToken(token);
         setIsScanning(true);
         setScanProgress(5);
-        setScanStatus('Initializing Deep Neural Scan...');
+        setScanStatus('Initializing Neural Link...');
 
         try {
-            // 1. Transactions (6 months)
-            setScanStatus('Scanning 6 Months of Financial Traffic...');
+            setScanStatus('Analyzing 6M Financial Traffic...');
             const messages = await gmailService.fetchMessages(`subject:(receipt OR order OR payment OR "paid to") after:${dateStr}`, 40);
             const fetchedTransactions: any[] = [];
             for (let i = 0; i < messages.length; i++) {
@@ -98,8 +96,7 @@ const MailSync: React.FC = () => {
                 setScanProgress(5 + Math.floor((i / messages.length) * 20));
             }
 
-            // 2. Bills & Cards
-            setScanStatus('Detecting Card Ecosystem & Statements...');
+            setScanStatus('Detecting Card Ecosystem...');
             const billMessages = await gmailService.fetchMessages(`subject:(statement OR bill OR due OR welcome OR card) after:${dateStr}`, 30);
             const fetchedBills: any[] = [];
             const fetchedOwnedCards: any[] = [];
@@ -112,8 +109,7 @@ const MailSync: React.FC = () => {
                 setScanProgress(25 + Math.floor((i / billMessages.length) * 25));
             }
 
-            // 3. Applications
-            setScanStatus('Analyzing Application History...');
+            setScanStatus('Scanning Applications...');
             const appMessages = await gmailService.fetchMessages(`subject:(application OR status OR reference) after:${dateStr}`, 20);
             const fetchedApps: any[] = [];
             for (let i = 0; i < appMessages.length; i++) {
@@ -123,8 +119,7 @@ const MailSync: React.FC = () => {
                 setScanProgress(50 + Math.floor((i / appMessages.length) * 20));
             }
 
-            // 4. Shopping
-            setScanStatus('Harvesting Shopping Details...');
+            setScanStatus('Harvesting Shopping Data...');
             const shopMessages = await gmailService.fetchMessages(`subject:(order OR "delivery of") after:${dateStr}`, 30);
             const fetchedOrders: any[] = [];
             for (let i = 0; i < shopMessages.length; i++) {
@@ -134,8 +129,7 @@ const MailSync: React.FC = () => {
                 setScanProgress(70 + Math.floor((i / shopMessages.length) * 20));
             }
 
-            // 5. Save to Supabase (Batch)
-            setScanStatus('Encrypting Neural Insights...');
+            setScanStatus('Encrypting Insights...');
             const savePromises = [];
             if (fetchedTransactions.length > 0) savePromises.push(supabase.from('user_transactions').upsert(fetchedTransactions.map(t => ({ ...t, user_id: user?.id }))));
             if (fetchedBills.length > 0) savePromises.push(supabase.from('user_bills').upsert(fetchedBills.map(b => ({ ...b, user_id: user?.id }))));
@@ -153,141 +147,191 @@ const MailSync: React.FC = () => {
                 applications: fetchedApps
             });
             setScanProgress(100);
-            setScanStatus('Intelligent Sync Complete');
+            setScanStatus('Neural Sync Complete');
         } catch (err) {
             console.error('Scan failed:', err);
-            setScanStatus('Neural Link Interrupted');
+            setScanStatus('Link Error Occurred');
         } finally {
             setTimeout(() => setIsScanning(false), 2000);
         }
     };
 
     return (
-        <div className="space-y-8">
-            {/* Header / Sync Action */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+        <div className="space-y-16">
+            {/* Action Header */}
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 glass-card p-10 rounded-[2.5rem]">
                 <div>
-                    <h2 className="text-2xl italic tracking-tight text-white">Financial Intelligence</h2>
-                    <p className="text-xs text-white/20 uppercase tracking-[0.3em]">6-Month deep scan active</p>
+                    <div className="flex items-center gap-3 mb-4">
+                        <div className="w-1.5 h-1.5 bg-clay rounded-full animate-pulse shadow-[0_0_10px_rgba(52,211,153,0.8)]" />
+                        <p className="text-[10px] font-black uppercase tracking-[0.5em] text-clay">Intelligence Hub</p>
+                    </div>
+                    <h2 className="text-4xl italic tracking-tighter text-white font-black leading-none mb-3">Neural Synchronization</h2>
+                    <p className="text-white/30 text-sm font-serif italic">Deep-scanning 6 months of financial footprints across your ecosystem.</p>
                 </div>
                 <button 
                     onClick={startScan}
                     disabled={isScanning}
-                    className="flex items-center gap-3 px-6 py-3 bg-clay text-cream rounded-xl text-[10px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl shadow-clay/10 disabled:opacity-50"
+                    className="flex items-center gap-4 px-8 py-5 bg-white text-black rounded-2xl text-[11px] font-black uppercase tracking-[0.4em] hover:scale-[1.02] active:scale-95 transition-all shadow-2xl disabled:opacity-30 group"
                 >
-                    <RefreshCw size={14} className={isScanning ? 'animate-spin' : ''} />
-                    {isScanning ? 'Synchronizing...' : 'Run Neural Scan (6M)'}
+                    <RefreshCw size={18} className={`${isScanning ? 'animate-spin' : 'group-hover:rotate-180 transition-transform duration-700'}`} />
+                    {isScanning ? 'Processing...' : 'Initiate Deep Scan'}
                 </button>
             </div>
 
-            {/* Owned Cards & Applications */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="bg-white/[0.03] border border-white/10 rounded-[2rem] p-8">
-                    <div className="flex items-center gap-3 mb-6">
-                        <CreditCard className="text-clay" size={20} />
-                        <h3 className="text-lg italic text-white">Your Card Ecosystem</h3>
-                    </div>
-                    <div className="flex flex-wrap gap-4">
-                        {results.ownedCards.length > 0 ? results.ownedCards.map((c, i) => (
-                            <div key={i} className="px-6 py-4 bg-white/5 border border-white/10 rounded-2xl flex flex-col">
-                                <span className="text-[10px] font-black uppercase tracking-widest text-white/20">{c.bank_name}</span>
-                                <span className="text-sm font-bold text-white">{c.card_name}</span>
-                                <span className="text-[9px] font-mono text-clay mt-1">**** {c.last_four}</span>
+            {/* Intelligence Overview */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <motion.div 
+                    initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
+                    className="glass-card rounded-[2.5rem] p-10"
+                >
+                    <div className="flex items-center justify-between mb-10">
+                        <div className="flex items-center gap-4">
+                            <div className="w-12 h-12 bg-clay/10 rounded-xl flex items-center justify-center border border-clay/20">
+                                <CreditCard className="text-clay" size={24} />
                             </div>
+                            <div>
+                                <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Financial Layout</p>
+                                <h3 className="text-xl italic text-white font-black">Owned Ecosystem</h3>
+                            </div>
+                        </div>
+                        <span className="glass-card px-4 py-1.5 rounded-full text-[10px] font-black text-clay">{results.ownedCards.length} Assets</span>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {results.ownedCards.length > 0 ? results.ownedCards.map((c, i) => (
+                            <motion.div 
+                                key={i} whileHover={{ y: -5 }}
+                                className="p-6 bg-white/5 border border-white/5 rounded-2xl flex flex-col relative overflow-hidden group"
+                            >
+                                <div className="absolute top-0 right-0 w-16 h-16 bg-clay/5 blur-2xl rounded-full" />
+                                <span className="text-[9px] font-black uppercase tracking-widest text-clay mb-2">{c.bank_name}</span>
+                                <span className="text-sm font-bold text-white tracking-tight">{c.card_name}</span>
+                                <div className="mt-4 flex items-center justify-between">
+                                    <span className="text-[10px] font-mono text-white/20 tracking-tighter">**** {c.last_four}</span>
+                                    <div className="w-6 h-6 bg-white rounded-md p-1 group-hover:scale-110 transition-transform">
+                                        <img src={`/assets/banks/${c.bank_name?.toLowerCase().split(' ')[0]}.png`} className="w-full h-full object-contain" alt="" />
+                                    </div>
+                                </div>
+                            </motion.div>
                         )) : (
-                            <p className="text-xs text-white/20 uppercase tracking-widest py-8">No owned cards detected</p>
+                            <div className="col-span-2 py-10 flex flex-col items-center justify-center text-center">
+                                <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center mb-4">
+                                    <AlertCircle className="text-white/10" size={24} />
+                                </div>
+                                <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20">Zero Assets Detected</p>
+                            </div>
                         )}
                     </div>
-                </div>
+                </motion.div>
 
-                <div className="bg-white/[0.03] border border-white/10 rounded-[2rem] p-8">
-                    <div className="flex items-center gap-3 mb-6">
-                        <ArrowRight className="text-clay" size={20} />
-                        <h3 className="text-lg italic text-white">Application Tracker</h3>
+                <motion.div 
+                    initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
+                    className="glass-card rounded-[2.5rem] p-10"
+                >
+                    <div className="flex items-center justify-between mb-10">
+                        <div className="flex items-center gap-4">
+                            <div className="w-12 h-12 bg-clay/10 rounded-xl flex items-center justify-center border border-clay/20">
+                                <RefreshCw className="text-clay" size={24} />
+                            </div>
+                            <div>
+                                <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Acquisition Log</p>
+                                <h3 className="text-xl italic text-white font-black">Application Tracker</h3>
+                            </div>
+                        </div>
+                        <span className="glass-card px-4 py-1.5 rounded-full text-[10px] font-black text-white/40">{results.applications.length} History</span>
                     </div>
-                    <div className="space-y-3">
+
+                    <div className="space-y-3 max-h-[340px] overflow-y-auto dashboard-scroll pr-2">
                         {results.applications.length > 0 ? results.applications.map((a, i) => (
-                            <div key={i} className="flex items-center justify-between p-4 bg-white/5 rounded-2xl">
-                                <div>
-                                    <div className="text-sm font-bold text-white">{a.bank_name} {a.card_name}</div>
-                                    <div className="text-[9px] text-white/40 uppercase tracking-widest">{a.application_date} • {a.application_id}</div>
+                            <div key={i} className="flex items-center justify-between p-5 bg-white/5 rounded-2xl border border-white/5 group hover:border-white/10 transition-all">
+                                <div className="flex gap-4 items-center">
+                                    <div className={`w-2 h-2 rounded-full ${
+                                        a.status === 'successful' ? 'bg-clay shadow-[0_0_8px_rgba(52,211,153,0.8)]' : 
+                                        a.status === 'rejected' ? 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]' : 'bg-white/20'
+                                    }`} />
+                                    <div>
+                                        <div className="text-sm font-bold text-white tracking-tight uppercase">{a.bank_name} {a.card_name}</div>
+                                        <div className="text-[9px] text-white/30 uppercase tracking-[0.2em] mt-1">{a.application_date} • ID: {a.application_id}</div>
+                                    </div>
                                 </div>
-                                <div className={`px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-tighter ${
-                                    a.status === 'successful' ? 'bg-clay/20 text-clay' : 
-                                    a.status === 'rejected' ? 'bg-red-500/20 text-red-400' : 'bg-white/10 text-white/40'
+                                <div className={`px-4 py-1.5 rounded-full text-[8px] font-black uppercase tracking-widest ${
+                                    a.status === 'successful' ? 'bg-clay/10 text-clay' : 
+                                    a.status === 'rejected' ? 'bg-red-500/10 text-red-400' : 'bg-white/5 text-white/30'
                                 }`}>
                                     {a.status}
                                 </div>
                             </div>
                         )) : (
-                            <p className="text-xs text-white/20 uppercase tracking-widest py-8">No application history</p>
+                            <div className="py-20 flex flex-col items-center justify-center text-center">
+                                <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20">Empty Acquisition History</p>
+                            </div>
                         )}
                     </div>
-                </div>
+                </motion.div>
             </div>
 
-            {/* Results Grid */}
-            <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-                {/* Recent Transactions */}
-                <div className="bg-white/[0.02] border border-white/5 rounded-[2rem] p-8">
-                    <div className="flex items-center justify-between mb-8">
-                        <div className="flex items-center gap-3">
-                            <Receipt className="text-clay" size={20} />
-                            <h3 className="text-lg italic text-white">Transactions</h3>
+            {/* Neural Data Grid */}
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-10">
+                <div className="glass-card rounded-[2.5rem] p-10">
+                    <div className="flex items-center justify-between mb-10">
+                        <div className="flex items-center gap-4">
+                            <Receipt className="text-clay" size={24} />
+                            <h3 className="text-xl italic text-white font-black">Financial Flow</h3>
                         </div>
-                        <span className="text-[9px] font-black uppercase tracking-widest text-white/20">{results.transactions.length}</span>
+                        <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-[10px] font-black text-white/20">{results.transactions.length}</div>
                     </div>
-                    <div className="space-y-4 max-h-[400px] overflow-y-auto no-scrollbar">
+                    <div className="space-y-4">
                         {results.transactions.map((t, i) => (
-                            <div key={i} className="flex items-center justify-between p-4 bg-white/5 rounded-2xl">
+                            <div key={i} className="flex items-center justify-between p-5 glass-card rounded-2xl hover:scale-[1.02]">
                                 <div>
-                                    <div className="text-sm font-bold text-white truncate max-w-[120px]">{t.merchant}</div>
-                                    <div className="text-[9px] text-white/40 uppercase tracking-widest">{t.date}</div>
+                                    <div className="text-sm font-black text-white truncate max-w-[120px] tracking-tight">{t.merchant}</div>
+                                    <div className="text-[9px] text-white/30 uppercase tracking-widest mt-1">{t.date}</div>
                                 </div>
-                                <div className="text-sm font-bold text-white">₹{t.amount}</div>
+                                <div className="text-sm font-black text-white italic">₹{t.amount}</div>
                             </div>
                         ))}
                     </div>
                 </div>
 
-                {/* Bills */}
-                <div className="bg-white/[0.02] border border-white/5 rounded-[2rem] p-8">
-                    <div className="flex items-center justify-between mb-8">
-                        <div className="flex items-center gap-3">
-                            <CreditCard className="text-clay" size={20} />
-                            <h3 className="text-lg italic text-white">Card Bills</h3>
+                <div className="glass-card rounded-[2.5rem] p-10 border-clay/10">
+                    <div className="flex items-center justify-between mb-10">
+                        <div className="flex items-center gap-4">
+                            <Shield className="text-clay" size={24} />
+                            <h3 className="text-xl italic text-white font-black">Card Liability</h3>
                         </div>
-                        <span className="text-[9px] font-black uppercase tracking-widest text-white/20">{results.bills.length}</span>
+                        <div className="w-8 h-8 rounded-full bg-clay/10 flex items-center justify-center text-[10px] font-black text-clay">{results.bills.length}</div>
                     </div>
                     <div className="space-y-4">
                         {results.bills.map((b, i) => (
-                            <div key={i} className="p-4 bg-white/5 rounded-2xl border-l-4 border-clay">
-                                <div className="flex justify-between mb-2">
-                                    <div className="text-sm font-bold text-white">{b.bank_name}</div>
-                                    <div className="text-sm font-bold text-clay">₹{b.amount_due}</div>
+                            <div key={i} className="p-6 glass-dark rounded-2xl border-l-4 border-clay hover:translate-x-2 transition-transform">
+                                <div className="flex justify-between mb-3">
+                                    <div className="text-sm font-black text-white uppercase tracking-tight">{b.bank_name}</div>
+                                    <div className="text-lg font-black text-clay italic">₹{b.amount_due}</div>
                                 </div>
-                                <div className="text-[9px] text-white/40 uppercase tracking-widest">Due {b.due_date}</div>
+                                <div className="flex items-center gap-2">
+                                    <div className="w-1 h-1 bg-red-500 rounded-full animate-ping" />
+                                    <div className="text-[9px] text-white/40 uppercase tracking-[0.3em]">Maturity: {b.due_date}</div>
+                                </div>
                             </div>
                         ))}
                     </div>
                 </div>
 
-                {/* Orders */}
-                <div className="bg-white/[0.02] border border-white/5 rounded-[2rem] p-8">
-                    <div className="flex items-center justify-between mb-8">
-                        <div className="flex items-center gap-3">
-                            <ShoppingBag className="text-clay" size={20} />
-                            <h3 className="text-lg italic text-white">Shopping</h3>
+                <div className="glass-card rounded-[2.5rem] p-10">
+                    <div className="flex items-center justify-between mb-10">
+                        <div className="flex items-center gap-4">
+                            <ShoppingBag className="text-clay" size={24} />
+                            <h3 className="text-xl italic text-white font-black">Shopping Insights</h3>
                         </div>
-                        <span className="text-[9px] font-black uppercase tracking-widest text-white/20">{results.orders.length}</span>
+                        <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-[10px] font-black text-white/20">{results.orders.length}</div>
                     </div>
-                    <div className="space-y-4 max-h-[400px] overflow-y-auto no-scrollbar">
+                    <div className="space-y-4">
                         {results.orders.map((o, i) => (
-                            <div key={i} className="p-4 bg-white/5 rounded-2xl">
-                                <div className="text-sm font-bold text-white truncate mb-1">{o.item_name}</div>
-                                <div className="flex justify-between items-center">
-                                    <div className="text-[9px] text-white/40 uppercase tracking-widest">{o.merchant} • {o.order_date}</div>
-                                    <div className="text-xs font-bold text-white">₹{o.price}</div>
+                            <div key={i} className="p-5 glass-card rounded-2xl hover:bg-white/[0.05]">
+                                <div className="text-sm font-black text-white truncate mb-2 tracking-tight">{o.item_name}</div>
+                                <div className="flex justify-between items-center border-t border-white/5 pt-3">
+                                    <div className="text-[9px] text-white/30 uppercase tracking-[0.2em]">{o.merchant} • {o.order_date}</div>
+                                    <div className="text-xs font-black text-white italic">₹{o.price}</div>
                                 </div>
                             </div>
                         ))}
@@ -295,37 +339,50 @@ const MailSync: React.FC = () => {
                 </div>
             </div>
 
-            {/* Scanning Overlay */}
+            {/* Neural Scanning Holograph */}
             <AnimatePresence>
                 {isScanning && (
                     <motion.div 
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="fixed inset-0 bg-cream/90 backdrop-blur-xl z-[100] flex items-center justify-center p-6"
+                        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                        className="fixed inset-0 bg-black/90 backdrop-blur-3xl z-[100] flex items-center justify-center p-10"
                     >
-                        <div className="max-w-md w-full text-center space-y-8">
-                            <div className="relative w-32 h-32 mx-auto">
+                        <div className="max-w-xl w-full text-center space-y-12">
+                            <div className="relative w-48 h-48 mx-auto">
                                 <motion.div 
                                     animate={{ rotate: 360 }}
-                                    transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                                    className="absolute inset-0 border-2 border-clay/20 rounded-full border-t-clay"
+                                    transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+                                    className="absolute inset-0 border-t-2 border-clay rounded-full shadow-[0_0_30px_rgba(52,211,153,0.3)]"
                                 />
-                                <div className="absolute inset-4 bg-clay/10 rounded-full flex items-center justify-center">
-                                    <RefreshCw size={40} className="text-clay animate-spin" />
+                                <motion.div 
+                                    animate={{ rotate: -360 }}
+                                    transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                                    className="absolute inset-4 border-b-2 border-white/20 rounded-full"
+                                />
+                                <div className="absolute inset-8 bg-clay/10 rounded-full flex items-center justify-center border border-clay/20 shadow-inner">
+                                    <RefreshCw size={56} className="text-clay animate-spin" />
                                 </div>
                             </div>
 
-                            <div className="space-y-2">
-                                <h3 className="text-2xl italic text-white">{scanStatus}</h3>
-                                <div className="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">
+                            <div className="space-y-6">
+                                <div className="flex flex-col items-center">
+                                    <span className="text-[10px] font-black uppercase tracking-[0.8em] text-clay mb-2">Neural Synchronization</span>
+                                    <h3 className="text-4xl italic text-white font-black tracking-tighter">{scanStatus}</h3>
+                                </div>
+                                <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden border border-white/5 shadow-inner">
                                     <motion.div 
                                         initial={{ width: 0 }}
                                         animate={{ width: `${scanProgress}%` }}
-                                        className="h-full bg-clay shadow-[0_0_15px_rgba(52,211,153,0.5)]"
+                                        className="h-full bg-gradient-to-r from-clay/40 via-clay to-clay/40 shadow-[0_0_30px_rgba(52,211,153,0.8)]"
                                     />
                                 </div>
-                                <p className="text-[10px] font-black uppercase tracking-[0.5em] text-white/20">{scanProgress}% Calibrated</p>
+                                <div className="flex justify-between items-center px-2">
+                                    <p className="text-[10px] font-black uppercase tracking-[0.5em] text-white/20">{scanProgress}% Calibrated</p>
+                                    <div className="flex gap-1">
+                                        {[1,2,3].map(i => (
+                                            <motion.div key={i} animate={{ opacity: [0.2, 1, 0.2] }} transition={{ delay: i * 0.2, repeat: Infinity }} className="w-1 h-1 bg-clay rounded-full" />
+                                        ))}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </motion.div>
