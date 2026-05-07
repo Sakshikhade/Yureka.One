@@ -121,7 +121,6 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 
 const AppContent: React.FC = () => {
   const location = useLocation();
-  const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
   const isDashboardRoute = location.pathname.startsWith('/dashboard');
   const isSpecialRoute = isAdminRoute || isDashboardRoute;
