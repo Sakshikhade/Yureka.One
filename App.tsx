@@ -58,6 +58,10 @@ const CategoryDetailPage = lazyWithRetry(() => import('./components/CategoryDeta
 const ComparePage = lazyWithRetry(() => import('./components/ComparePage'));
 const ComparisonDetail = lazyWithRetry(() => import('./components/ComparisonDetail'));
 const ComingSoon = lazyWithRetry(() => import('./components/ComingSoon'));
+const LoginPage = lazyWithRetry(() => import('./components/LoginPage'));
+const WaitlistPage = lazyWithRetry(() => import('./components/WaitlistPage'));
+const WaitingPage = lazyWithRetry(() => import('./components/WaitingPage'));
+const DashboardLayout = lazyWithRetry(() => import('./components/Dashboard/DashboardLayout'));
 
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -85,6 +89,35 @@ const ScrollToTop = () => {
   return null;
 }
 
+
+const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { currentUserStatus, isLoading } = useSupabase();
+  const location = useLocation();
+
+  if (isLoading) {
+    return (
+      <div className="fixed inset-0 bg-cream flex items-center justify-center">
+        <Loader2 className="animate-spin text-clay" size={48} />
+      </div>
+    );
+  }
+
+  if (currentUserStatus === 'admin') return <>{children}</>;
+  
+  if (currentUserStatus === 'none' || !currentUserStatus) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  if (currentUserStatus === 'pending' || currentUserStatus === 'on-hold') {
+    return <Navigate to="/waiting" replace />;
+  }
+
+  if (currentUserStatus === 'rejected') {
+    return <Navigate to="/waiting" replace />; // Waiting page handles rejected state
+  }
+
+  return <>{children}</>;
+};
 
 const AppContent: React.FC = () => {
   const location = useLocation();
@@ -138,6 +171,16 @@ const AppContent: React.FC = () => {
               <Route path="/blogs/:slug" element={<BlogDetail />} />
               
               <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/join-waitlist" element={<WaitlistPage />} />
+              <Route path="/waiting" element={<WaitingPage />} />
+              
+              <Route path="/dashboard/*" element={
+                <ProtectedRoute>
+                  <DashboardLayout />
+                </ProtectedRoute>
+              } />
+              
               <Route path="/coming-soon" element={<ComingSoon />} />
               
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />

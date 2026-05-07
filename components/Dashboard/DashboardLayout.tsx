@@ -14,16 +14,16 @@ import ReferralDashboard from './ReferralDashboard';
 import AccountSettings from './AccountSettings';
 
 const NAV_ITEMS = [
-    { id: 'cards', label: 'Cards', icon: CreditCard },
-    { id: 'sync', label: 'Sync Mail', icon: Mail, comingSoon: true },
+    { id: 'cards', label: 'Saved Cards', icon: CreditCard },
+    { id: 'sync', label: 'Mail Sync', icon: Mail, comingSoon: true },
     { id: 'expenses', label: 'Expenses', icon: Receipt, comingSoon: true },
-    { id: 'bills', label: 'Bill Payments', icon: Wallet, comingSoon: true },
+    { id: 'bills', label: 'Bills', icon: Wallet, comingSoon: true },
+    { id: 'extension', label: 'Extension', icon: Zap, comingSoon: true },
     { id: 'store', label: 'Store', icon: Store, comingSoon: true },
-    { id: 'vouchers', label: 'Gift Vouchers', icon: Gift, comingSoon: true },
-    { id: 'redeem', label: 'Redeem', icon: Zap, comingSoon: true },
-    { id: 'ai', label: 'Yureka AI', icon: Sparkles },
-    { id: 'referrals', label: 'Referrals', icon: Users },
-    { id: 'account', label: 'Account', icon: User },
+    { id: 'giftcards', label: 'GiftCards', icon: Gift, comingSoon: true },
+    { id: 'redemption', label: 'Redemption', icon: Sparkles, comingSoon: true },
+    { id: 'referrals', label: 'Referral Dashboard', icon: Users },
+    { id: 'profile', label: 'Profile', icon: User },
 ];
 
 const DashboardLayout: React.FC = () => {
@@ -41,8 +41,7 @@ const DashboardLayout: React.FC = () => {
         switch (activeTab) {
             case 'cards': return <MyCards />;
             case 'referrals': return <ReferralDashboard />;
-            case 'account': return <AccountSettings />;
-            case 'ai': navigate('/yureka-ai'); return null;
+            case 'profile': return <AccountSettings />;
             default: return (
                 <div className="flex flex-col items-center justify-center h-full text-center space-y-6">
                     <div className="w-20 h-20 bg-clay/5 rounded-full flex items-center justify-center border border-clay/10">

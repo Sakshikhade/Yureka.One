@@ -58,7 +58,7 @@ const SPEND_BRACKETS = [
     '0-25K', '25K-50K', '50K-1 Lac', '1 Lac to 2.5Lac', '2.5 Lac to 5 Lac', 'More than 5 Lac'
 ];
 
-const USAGE_CATEGORIES = ['Dining', 'Fuels', 'Shopping', 'Travel', 'UPI'];
+const USAGE_CATEGORIES = ['Dining', 'Fuel', 'Online Shopping', 'Travel', 'Hotel', 'UPI'];
 
 const WaitlistPage: React.FC = () => {
     const { supabase, user, session, cards: allCards } = useSupabase();
@@ -81,10 +81,10 @@ const WaitlistPage: React.FC = () => {
         gender: '',
         creditCardsCount: 1,
         creditCards: [{ bank: '', card: '' }],
-        mostUsedFor: ['Dining'] as string[],
-        monthlySpend: '0-25K',
+        mostUsedFor: [] as string[],
+        monthlySpend: 50000,
         referralCode: '',
-        sourceChannel: 'Linkedin',
+        sourceChannel: '',
         otherSource: '',
         bankSearch: ''
     });
@@ -273,7 +273,7 @@ const WaitlistPage: React.FC = () => {
                 credit_cards_count: formData.creditCardsCount,
                 credit_cards_details: formData.creditCards,
                 most_used_for: formData.mostUsedFor.join(', '),
-                monthly_spend: formData.monthlySpend,
+                monthly_spend: `₹${formData.monthlySpend.toLocaleString()}`,
                 referral_code: formData.referralCode,
                 source_channel: formData.sourceChannel === 'Other' ? formData.otherSource : formData.sourceChannel,
                 role: 'user',
@@ -426,18 +426,20 @@ const WaitlistPage: React.FC = () => {
                 <p className="text-white/40 text-sm">Help us understand your current credit reach.</p>
             </div>
 
-            <div className="space-y-4">
-                <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Number of Credit Cards</label>
-                <div className="flex flex-wrap gap-3">
-                    {[1, 2, 3, 4, 5, '6+'].map(n => (
-                        <button 
-                            key={n}
-                            onClick={() => handleCardCountChange(typeof n === 'string' ? 6 : n)}
-                            className={`px-6 py-4 rounded-xl border text-sm font-black transition-all ${formData.creditCardsCount === (typeof n === 'string' ? 6 : n) ? 'bg-clay border-clay text-cream shadow-lg' : 'bg-white/5 border-white/10 text-white/40 hover:border-white/20'}`}
-                        >
-                            {n}
-                        </button>
-                    ))}
+            <div className="space-y-6">
+                <div className="flex justify-between items-end">
+                    <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Number of Credit Cards <span className="text-red-400">*</span></label>
+                    <span className="text-clay font-black text-xl">{formData.creditCardsCount}</span>
+                </div>
+                <input 
+                    type="range" min="1" max="10" step="1"
+                    value={formData.creditCardsCount}
+                    onChange={e => handleCardCountChange(parseInt(e.target.value))}
+                    className="w-full h-1 bg-white/5 rounded-full appearance-none cursor-pointer accent-clay"
+                />
+                <div className="flex justify-between text-[8px] font-black text-white/10 uppercase tracking-widest">
+                    <span>01 Card</span>
+                    <span>10 Cards</span>
                 </div>
             </div>
 
@@ -562,18 +564,20 @@ const WaitlistPage: React.FC = () => {
                 </div>
             </div>
 
-            <div className="space-y-4">
-                <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Monthly Average Spend</label>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                    {SPEND_BRACKETS.map(bracket => (
-                        <button 
-                            key={bracket}
-                            onClick={() => setFormData({...formData, monthlySpend: bracket})}
-                            className={`px-4 py-4 rounded-xl border text-[10px] font-black uppercase tracking-wider transition-all ${formData.monthlySpend === bracket ? 'bg-clay border-clay text-cream shadow-lg' : 'bg-white/5 border-white/10 text-white/40 hover:border-white/20'}`}
-                        >
-                            {bracket}
-                        </button>
-                    ))}
+            <div className="space-y-6">
+                <div className="flex justify-between items-end">
+                    <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Monthly Average Spend <span className="text-red-400">*</span></label>
+                    <span className="text-clay font-black text-xl">₹{formData.monthlySpend.toLocaleString()}</span>
+                </div>
+                <input 
+                    type="range" min="1000" max="1000000" step="5000"
+                    value={formData.monthlySpend}
+                    onChange={e => setFormData({...formData, monthlySpend: parseInt(e.target.value)})}
+                    className="w-full h-1 bg-white/5 rounded-full appearance-none cursor-pointer accent-clay"
+                />
+                <div className="flex justify-between text-[8px] font-black text-white/10 uppercase tracking-widest">
+                    <span>₹1K</span>
+                    <span>₹10 Lacs</span>
                 </div>
             </div>
 

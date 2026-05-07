@@ -87,7 +87,7 @@ export const AdminWaitlistTab: React.FC<AdminWaitlistTabProps> = ({
           <thead className="sticky top-0 z-20 shadow-sm">
             <tr className="bg-white/5 border-b border-white/5">
               <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-white/5">Applicant Identity</th>
-              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-white/5">Classification</th>
+              <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-white/5">Spend & Cards</th>
               <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-white/5">Registration Context</th>
               <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 bg-white/5">Status</th>
               <th className="px-8 py-5 text-[10px] uppercase font-black tracking-widest text-white/40 text-right bg-white/5">Administrative Actions</th>
@@ -107,28 +107,27 @@ export const AdminWaitlistTab: React.FC<AdminWaitlistTabProps> = ({
                   <td className="px-8 py-6">
                     <div className="flex items-center gap-4">
                       <div className="w-10 h-10 rounded-2xl bg-white/5 flex items-center justify-center font-serif font-black text-white/20 group-hover:bg-clay/10 group-hover:text-clay transition-colors">
-                        {entry.name[0].toUpperCase()}
+                        {entry.name ? entry.name[0].toUpperCase() : '?'}
                       </div>
                       <div>
                         <div className="font-bold text-white leading-tight">{entry.name}</div>
                         <div className="text-[11px] text-white/40 mt-0.5 lowercase">{entry.email}</div>
+                        {entry.mobile_number && <div className="text-[9px] text-white/20 mt-0.5">{entry.mobile_number}</div>}
                       </div>
                     </div>
                   </td>
                   <td className="px-8 py-6">
-                    <span className={`px-2.5 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider border ${
-                      entry.role === 'user' ? 'bg-blue-500/10 text-blue-400 border-blue-500/20' : 'bg-purple-500/10 text-purple-400 border-purple-500/20'
-                    }`}>
-                      {entry.role}
-                    </span>
+                    <div className="space-y-1">
+                      <div className="text-[11px] font-bold text-white">{entry.monthly_spend || '₹0'}</div>
+                      <div className="text-[9px] font-black uppercase tracking-widest text-white/20">{entry.credit_cards_count || 0} Cards</div>
+                    </div>
                   </td>
                   <td className="px-8 py-6">
                     <div className="text-[11px] font-bold text-white/60 uppercase tracking-tight">
-                      {entry.role === 'user' ? (
-                        <span className="flex items-center gap-2"><Filter size={12} className="text-white/20" /> {entry.category} Preference</span>
-                      ) : (
-                        <span className="flex items-center gap-2"><Users size={12} className="text-white/20" /> {entry.company} Network</span>
-                      )}
+                      <div className="flex flex-col gap-1">
+                        <span className="flex items-center gap-2"><Filter size={12} className="text-white/20" /> {entry.most_used_for || 'N/A'}</span>
+                        <span className="text-[9px] text-white/20 uppercase tracking-widest">Via {entry.source_channel || 'Direct'}</span>
+                      </div>
                     </div>
                   </td>
                   <td className="px-8 py-6">
@@ -150,7 +149,7 @@ export const AdminWaitlistTab: React.FC<AdminWaitlistTabProps> = ({
                         onClick={() => onUpdateStatus(entry.id!, 'accepted')}
                         disabled={entry.status === 'accepted'}
                         className={`p-2.5 rounded-xl transition-all ${entry.status === 'accepted' ? 'text-clay bg-clay/10' : 'text-white/20 hover:text-clay hover:bg-clay/10 border border-transparent hover:border-clay/20 shadow-sm'}`}
-                        title="Authorize Entry"
+                        title="Accept Application"
                       >
                         <CheckCircle size={18} />
                       </button>
@@ -158,7 +157,7 @@ export const AdminWaitlistTab: React.FC<AdminWaitlistTabProps> = ({
                         onClick={() => onUpdateStatus(entry.id!, 'on_hold')}
                         disabled={entry.status === 'on_hold'}
                         className={`p-2.5 rounded-xl transition-all ${entry.status === 'on_hold' ? 'text-blue-400 bg-blue-500/10' : 'text-white/20 hover:text-blue-400 hover:bg-blue-500/10 border border-transparent hover:border-blue-500/20 shadow-sm'}`}
-                        title="Place on Hold"
+                        title="Hold Application"
                       >
                         <PauseCircle size={18} />
                       </button>
@@ -174,7 +173,7 @@ export const AdminWaitlistTab: React.FC<AdminWaitlistTabProps> = ({
                       <button 
                         onClick={() => onDelete('waitlist', entry.id!)}
                         className="p-2.5 text-white/20 hover:text-red-500 hover:bg-red-500/10 rounded-xl transition-all border border-transparent hover:border-red-500/20 shadow-sm"
-                        title="Purge Record"
+                        title="Delete Record"
                       >
                         <Trash2 size={18} />
                       </button>

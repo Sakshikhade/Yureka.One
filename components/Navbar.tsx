@@ -132,22 +132,53 @@ const Navbar: React.FC = () => {
                 </div>
                     
                 <div className="flex items-center gap-3 shrink-0">
-                    {user && currentUserStatus === 'admin' ? (
+                    {!user ? (
                         <>
                             <Link 
-                                to="/admin" 
-                                className="bg-clay text-cream text-[10px] font-black uppercase tracking-[0.2em] px-8 py-2.5 transition-all duration-500 rounded-full shadow-lg hover:shadow-clay/20 whitespace-nowrap"
+                                to="/login" 
+                                className="bg-[#34d399] text-black text-[10px] font-black uppercase tracking-[0.2em] px-6 py-2.5 transition-all duration-500 rounded-full shadow-[0_10px_30px_-10px_rgba(52,211,153,0.5)] hover:scale-105 whitespace-nowrap"
                             >
-                                Admin Panel
+                                Login
                             </Link>
+                            <Link 
+                                to="/join-waitlist" 
+                                className="bg-[#34d399] text-black text-[10px] font-black uppercase tracking-[0.2em] px-8 py-2.5 transition-all duration-500 rounded-full shadow-[0_10px_30px_-10px_rgba(52,211,153,0.5)] hover:scale-105 whitespace-nowrap"
+                            >
+                                Join Waitlist
+                            </Link>
+                        </>
+                    ) : (
+                        <div className="flex items-center gap-4">
+                            {currentUserStatus === 'admin' ? (
+                                <Link 
+                                    to="/admin" 
+                                    className="bg-clay text-cream text-[10px] font-black uppercase tracking-[0.2em] px-8 py-2.5 transition-all duration-500 rounded-full shadow-lg hover:shadow-clay/20 whitespace-nowrap"
+                                >
+                                    Admin Panel
+                                </Link>
+                            ) : currentUserStatus === 'accepted' ? (
+                                <Link 
+                                    to="/dashboard" 
+                                    className="bg-clay text-cream text-[10px] font-black uppercase tracking-[0.2em] px-8 py-2.5 transition-all duration-500 rounded-full shadow-lg hover:shadow-clay/20 whitespace-nowrap"
+                                >
+                                    Dashboard
+                                </Link>
+                            ) : (
+                                <Link 
+                                    to="/waiting" 
+                                    className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 hover:text-white px-4 whitespace-nowrap"
+                                >
+                                    My Status
+                                </Link>
+                            )}
                             <button 
                                 onClick={handleLogout}
                                 className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 hover:text-white px-4"
                             >
                                 Logout
                             </button>
-                        </>
-                    ) : null}
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -226,15 +257,52 @@ const Navbar: React.FC = () => {
                       className="mt-6"
                     >
                         <div className="flex flex-col gap-4 mt-6">
-                            {user && currentUserStatus === 'admin' && (
+                            {!user ? (
                                 <>
                                     <Link 
-                                        to="/admin" 
+                                        to="/login" 
                                         onClick={() => setIsMobileMenuOpen(false)}
-                                        className="w-full h-14 bg-clay text-cream font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full shadow-xl"
+                                        className="w-full h-14 bg-[#34d399] text-black font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full shadow-xl"
                                     >
-                                        Admin Panel
+                                        Login
                                     </Link>
+                                    <Link 
+                                        to="/join-waitlist" 
+                                        onClick={() => setIsMobileMenuOpen(false)}
+                                        className="w-full h-14 bg-[#34d399] text-black font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full shadow-xl"
+                                    >
+                                        Join Waitlist
+                                    </Link>
+                                </>
+                            ) : (
+                                <>
+                                    {currentUserStatus === 'admin' && (
+                                        <Link 
+                                            to="/admin" 
+                                            onClick={() => setIsMobileMenuOpen(false)}
+                                            className="w-full h-14 bg-clay text-cream font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full shadow-xl"
+                                        >
+                                            Admin Panel
+                                        </Link>
+                                    )}
+                                    {currentUserStatus === 'accepted' && (
+                                        <Link 
+                                            to="/dashboard" 
+                                            onClick={() => setIsMobileMenuOpen(false)}
+                                            className="w-full h-14 bg-clay text-cream font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full shadow-xl"
+                                        >
+                                            Dashboard
+                                        </Link>
+                                    )}
+                                    {(currentUserStatus === 'pending' || currentUserStatus === 'on-hold' || currentUserStatus === 'rejected') && (
+                                        <Link 
+                                            to="/waiting" 
+                                            onClick={() => setIsMobileMenuOpen(false)}
+                                            className="w-full h-14 bg-white/5 border border-white/10 text-white font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full"
+                                        >
+                                            My Status
+                                        </Link>
+                                    )}
                                     <button 
                                         onClick={() => { handleLogout(); setIsMobileMenuOpen(false); }}
                                         className="w-full h-14 bg-white/5 border border-white/10 text-white font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full mb-2"

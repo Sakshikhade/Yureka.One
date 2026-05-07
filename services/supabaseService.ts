@@ -335,8 +335,9 @@ export const joinWaitlist = async (entry: any) => {
   if (countError) throw countError;
   const rank = 1000 + (count || 0) + 1;
 
-  // 4. Generate Personal Referral Code (e.g., YRKMNY1001)
-  const personalReferralCode = `YRKMNY${rank}`;
+  // 4. Generate Personal Referral Code (e.g., YRKMNY1234)
+  const randomSuffix = Math.floor(1000 + Math.random() * 9000);
+  const personalReferralCode = `YRKMNY${randomSuffix}`;
 
   // 5. Prepare Payload
   const payload = cleanData({
@@ -380,4 +381,14 @@ export const fetchUserReferrals = async (referralCode: string) => {
 export const updateWaitlistMetadata = async (id: string, metadata: any) => {
   const { error } = await supabase.from('waitlist').update(metadata).eq('id', id);
   if (error) throw error;
+};
+
+export const getWaitlistEntry = async (email: string) => {
+  const { data, error } = await supabaseAdmin
+    .from('waitlist')
+    .select('*')
+    .eq('email', email.toLowerCase().trim())
+    .maybeSingle();
+  if (error) throw error;
+  return data;
 };

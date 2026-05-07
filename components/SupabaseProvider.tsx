@@ -202,7 +202,12 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           if (teamMember) {
             setCurrentUserStatus('admin');
           } else {
-            setCurrentUserStatus('none');
+            const { data: waitlist } = await supabaseAdmin.from('waitlist').select('status').eq('email', normalizedEmail).maybeSingle();
+            if (waitlist) {
+              setCurrentUserStatus(waitlist.status as any);
+            } else {
+              setCurrentUserStatus('none');
+            }
           }
         } catch (err) {
           setCurrentUserStatus('none');
@@ -228,7 +233,12 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           if (teamMember) {
             setCurrentUserStatus('admin');
           } else {
-            setCurrentUserStatus('none');
+            const { data: waitlist } = await supabaseAdmin.from('waitlist').select('status').eq('email', normalizedEmail).maybeSingle();
+            if (waitlist) {
+              setCurrentUserStatus(waitlist.status as any);
+            } else {
+              setCurrentUserStatus('none');
+            }
           }
         } catch (err) {
           setCurrentUserStatus('none');
