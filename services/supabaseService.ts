@@ -308,6 +308,7 @@ export const joinWaitlist = async (entry: any) => {
     .from('waitlist')
     .select('*')
     .eq('email', normalizedEmail)
+    .limit(1)
     .maybeSingle();
 
   if (existingError) throw existingError;
@@ -388,6 +389,7 @@ export const getWaitlistEntry = async (email: string) => {
     .from('waitlist')
     .select('*')
     .eq('email', email.toLowerCase().trim())
+    .limit(1)
     .maybeSingle();
   if (error) throw error;
   return data;
