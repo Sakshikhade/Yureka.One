@@ -586,6 +586,7 @@ const WaitlistPage: React.FC = () => {
                         onChange={e => setFormData({...formData, sourceChannel: e.target.value})}
                         className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-white outline-none focus:border-clay transition-all appearance-none text-xs"
                     >
+                        <option value="" className="bg-black">Select Discovery Channel</option>
                         {DISCOVERY_SOURCES.map(s => <option key={s} value={s} className="bg-black">{s}</option>)}
                     </select>
                 </div>
@@ -612,14 +613,28 @@ const WaitlistPage: React.FC = () => {
                 </motion.div>
             )}
 
-            <button 
-                onClick={handleSubmit}
-                disabled={isSubmitting}
-                className="w-full bg-white text-cream py-6 rounded-2xl flex items-center justify-center gap-6 group shadow-2xl active:scale-95 transition-all disabled:opacity-50"
-            >
-                <span className="text-sm font-black uppercase tracking-[0.4em] text-black">{isSubmitting ? 'Securing Spot...' : 'Join the Inner Circle'}</span>
-                {!isSubmitting && <Sparkles size={20} className="group-hover:rotate-12 transition-transform text-black" />}
-            </button>
+            <div className="space-y-4">
+                <button 
+                    onClick={handleSubmit}
+                    disabled={isSubmitting}
+                    className="w-full bg-white text-cream py-6 rounded-2xl flex items-center justify-center gap-6 group shadow-2xl active:scale-95 transition-all disabled:opacity-50"
+                >
+                    <span className="text-sm font-black uppercase tracking-[0.4em] text-black">{isSubmitting ? 'Securing Spot...' : 'Join the Inner Circle'}</span>
+                    {!isSubmitting && <Sparkles size={20} className="group-hover:rotate-12 transition-transform text-black" />}
+                </button>
+
+                {Object.keys(stepErrors).length > 0 && (
+                    <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-red-400 text-[10px] font-black uppercase tracking-widest text-center">
+                        {Object.values(stepErrors)[0]}
+                    </motion.p>
+                )}
+
+                {error && (
+                    <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-red-400 text-[10px] font-black uppercase tracking-widest text-center">
+                        {error}
+                    </motion.p>
+                )}
+            </div>
         </motion.div>
     );
 
