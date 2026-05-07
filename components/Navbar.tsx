@@ -141,12 +141,12 @@ const Navbar: React.FC = () => {
                 </div>
                     
                 <div className="flex items-center gap-3 shrink-0">
-                    <button 
-                        onClick={handleLogin}
-                        className="bg-clay text-cream text-[10px] font-black uppercase tracking-[0.2em] px-8 py-2.5 transition-all duration-500 rounded-full shadow-lg hover:shadow-clay/20 whitespace-nowrap"
+                    <Link 
+                        to="/login"
+                        className="bg-clay text-cream text-[10px] font-black uppercase tracking-[0.2em] px-8 py-2.5 transition-all duration-500 rounded-full shadow-lg hover:shadow-clay/20 whitespace-nowrap text-center"
                     >
                         Login
-                    </button>
+                    </Link>
                     <Link 
                         to="/join-waitlist" 
                         className="bg-clay text-cream text-[10px] font-black uppercase tracking-[0.2em] px-8 py-2.5 transition-all duration-500 rounded-full shadow-lg hover:shadow-clay/20 whitespace-nowrap"
@@ -239,12 +239,13 @@ const Navbar: React.FC = () => {
                       className="mt-6"
                     >
                         <div className="flex flex-col gap-4 mt-6">
-                            <button 
-                                onClick={() => { setIsMobileMenuOpen(false); handleLogin(); }}
+                            <Link 
+                                to="/login"
+                                onClick={() => setIsMobileMenuOpen(false)}
                                 className="w-full h-14 bg-clay text-cream font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full shadow-xl"
                             >
                                 Login
-                            </button>
+                            </Link>
                             <Link 
                                 to="/join-waitlist" 
                                 onClick={() => setIsMobileMenuOpen(false)} 

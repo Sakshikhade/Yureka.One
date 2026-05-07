@@ -44,6 +44,7 @@ const CardDetail = lazyWithRetry(() => import('./components/CardDetail'));
 const OurStory = lazyWithRetry(() => import('./components/OurStory'));
 const JournalPage = lazyWithRetry(() => import('./components/JournalPage'));
 const BlogDetail = lazyWithRetry(() => import('./components/BlogDetail'));
+const LoginPage = lazyWithRetry(() => import('./components/LoginPage'));
 const PrivacyPolicy = lazyWithRetry(() => import('./components/PrivacyPolicy'));
 const TermsOfService = lazyWithRetry(() => import('./components/TermsOfService'));
 const SecurityProtocolPage = lazyWithRetry(() => import('./components/SecurityProtocolPage'));
@@ -145,9 +146,14 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode; adminOnly?: boolean 
     );
   }
 
-  if (status === 'none') return <Navigate to="/join-waitlist" replace />;
+  if (status === 'none') {
+    // If they were trying to login, they should probably be told they aren't on the waitlist
+    // but for now, we follow the default: send to waitlist
+    return <Navigate to="/join-waitlist" replace />;
+  }
   if (status === 'pending' && location.pathname !== '/waiting') return <Navigate to="/waiting" replace />;
   if (status === 'accepted' && location.pathname === '/waiting') return <Navigate to="/dashboard" replace />;
+  if (status === 'admin' && location.pathname === '/waiting') return <Navigate to="/dashboard" replace />;
   
   return <>{children}</>;
 };
@@ -216,6 +222,7 @@ const AppContent: React.FC = () => {
               <Route path="/admin" element={
                   <AdminDashboard />
               } />
+              <Route path="/login" element={<LoginPage />} />
               <Route path="/dashboard" element={
                 <ProtectedRoute>
                   <DashboardLayout />
