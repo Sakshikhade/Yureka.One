@@ -197,11 +197,12 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       
       if (currentUser) {
         try {
-          const { data: teamMember } = await supabaseAdmin.from('users').select('role').eq('email', currentUser.email).maybeSingle();
+          const normalizedEmail = currentUser.email?.toLowerCase().trim() || '';
+          const { data: teamMember } = await supabaseAdmin.from('users').select('role').eq('email', normalizedEmail).maybeSingle();
           if (teamMember) {
             setCurrentUserStatus('admin');
           } else {
-            const { data: waitlist } = await supabaseAdmin.from('waitlist').select('status').eq('email', currentUser.email).maybeSingle();
+            const { data: waitlist } = await supabaseAdmin.from('waitlist').select('status').eq('email', normalizedEmail).maybeSingle();
             if (waitlist) {
               setCurrentUserStatus(waitlist.status === 'accepted' ? 'accepted' : 'pending');
             } else {
@@ -227,11 +228,12 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       setUser(currentUser);
       if (currentUser) {
         try {
-          const { data: teamMember } = await supabaseAdmin.from('users').select('role').eq('email', currentUser.email).maybeSingle();
+          const normalizedEmail = currentUser.email?.toLowerCase().trim() || '';
+          const { data: teamMember } = await supabaseAdmin.from('users').select('role').eq('email', normalizedEmail).maybeSingle();
           if (teamMember) {
             setCurrentUserStatus('admin');
           } else {
-            const { data: waitlist } = await supabaseAdmin.from('waitlist').select('status').eq('email', currentUser.email).maybeSingle();
+            const { data: waitlist } = await supabaseAdmin.from('waitlist').select('status').eq('email', normalizedEmail).maybeSingle();
             if (waitlist) {
               setCurrentUserStatus(waitlist.status === 'accepted' ? 'accepted' : 'pending');
             } else {
