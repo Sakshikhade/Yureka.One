@@ -54,10 +54,6 @@ const DISCOVERY_SOURCES = [
     'Linkedin', 'Instagram', 'WhatsApp', 'Referral', 'Youtube', 'Reddit', 'Product Hunt', 'Telegram', 'Twitter', 'Other'
 ];
 
-const SPEND_BRACKETS = [
-    '0-25K', '25K-50K', '50K-1 Lac', '1 Lac to 2.5Lac', '2.5 Lac to 5 Lac', 'More than 5 Lac'
-];
-
 const USAGE_CATEGORIES = ['Dining', 'Fuel', 'Online Shopping', 'Travel', 'Hotel', 'UPI'];
 
 const WaitlistPage: React.FC = () => {
@@ -248,6 +244,7 @@ const WaitlistPage: React.FC = () => {
 
     const validateStep4 = () => {
         const errors: Record<string, string> = {};
+        if (formData.mostUsedFor.length === 0) errors.mostUsedFor = 'Please select at least one spend category';
         if (!formData.sourceChannel) errors.sourceChannel = 'Please select how you discovered us';
         if (formData.sourceChannel === 'Other' && !formData.otherSource.trim()) errors.otherSource = 'Please specify your discovery source';
         setStepErrors(errors);
