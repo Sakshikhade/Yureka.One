@@ -8,6 +8,18 @@ import {
 import { useSupabase } from '../SupabaseProvider';
 import { gmailService, GMAIL_SCOPES } from '../../services/gmailService';
 
+const MailSync: React.FC = () => {
+    const { user, supabase } = useSupabase();
+    const [isLinking, setIsLinking] = useState(false);
+    const [isScanning, setIsScanning] = useState(false);
+    const [scanProgress, setScanProgress] = useState(0);
+    const [scanStatus, setScanStatus] = useState('');
+    const [results, setResults] = useState<{
+        transactions: any[];
+        bills: any[];
+        orders: any[];
+    }>({ transactions: [], bills: [], orders: [] });
+
     useEffect(() => {
         const fetchInitialData = async () => {
             const [txs, bills, orders] = await Promise.all([
