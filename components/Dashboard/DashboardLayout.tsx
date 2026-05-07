@@ -58,44 +58,8 @@ const DashboardLayout: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-cream flex overflow-hidden font-sans pt-0">
-            {/* Main Content Area */}
-            <main className="flex-1 relative overflow-y-auto no-scrollbar pb-20">
-                <div className="p-8 md:p-12 max-w-6xl mx-auto">
-                    {/* Header */}
-                    <header className="flex items-center justify-between mb-12">
-                        <div>
-                            <p className="text-[10px] font-black uppercase tracking-[0.5em] text-white/20 mb-2">Internal Portal</p>
-                            <h1 className="text-4xl italic tracking-tighter text-white">
-                                {NAV_ITEMS.find(i => i.id === activeTab)?.label}
-                            </h1>
-                        </div>
-                        <div className="flex items-center gap-4">
-                            <button className="w-12 h-12 bg-white/5 border border-white/10 rounded-full flex items-center justify-center text-white/40 hover:text-white transition-all relative">
-                                <Bell size={20} />
-                                <div className="absolute top-3 right-3 w-2 h-2 bg-clay rounded-full shadow-[0_0_10px_rgba(52,211,153,0.5)]" />
-                            </button>
-                            <div className="w-12 h-12 bg-clay text-cream rounded-full flex items-center justify-center font-bold text-lg shadow-2xl">
-                                {user?.user_metadata?.full_name?.[0] || 'U'}
-                            </div>
-                        </div>
-                    </header>
-
-                    <AnimatePresence mode="wait">
-                        <motion.div 
-                            key={activeTab}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -20 }}
-                            className="min-h-[60vh]"
-                        >
-                            {renderContent()}
-                        </motion.div>
-                    </AnimatePresence>
-                </div>
-            </main>
-
-            {/* Right Side Navigation */}
-            <aside className={`bg-white/[0.02] border-l border-white/5 w-80 fixed md:relative right-0 h-full z-50 transition-all duration-500 ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full md:translate-x-0 md:w-24'}`}>
+            {/* Left Side Navigation */}
+            <aside className={`bg-white/[0.02] border-r border-white/5 w-80 fixed md:relative left-0 h-full z-50 transition-all duration-500 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0 md:w-24'}`}>
                 <div className="h-full flex flex-col p-6">
                     {/* Brand */}
                     <div className="flex items-center gap-4 mb-12 px-2">
@@ -144,11 +108,47 @@ const DashboardLayout: React.FC = () => {
                 {/* Mobile Toggle */}
                 <button 
                     onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                    className="md:hidden absolute -left-12 top-8 w-12 h-12 bg-cream border-y border-l border-white/5 rounded-l-2xl flex items-center justify-center text-white/40"
+                    className="md:hidden absolute -right-12 top-8 w-12 h-12 bg-cream border-y border-r border-white/5 rounded-r-2xl flex items-center justify-center text-white/40"
                 >
                     <Menu size={20} />
                 </button>
             </aside>
+
+            {/* Main Content Area */}
+            <main className="flex-1 relative overflow-y-auto no-scrollbar pb-20">
+                <div className="p-8 md:p-12 max-w-6xl mx-auto">
+                    {/* Header */}
+                    <header className="flex items-center justify-between mb-12">
+                        <div>
+                            <p className="text-[10px] font-black uppercase tracking-[0.5em] text-white/20 mb-2">Internal Portal</p>
+                            <h1 className="text-4xl italic tracking-tighter text-white">
+                                {NAV_ITEMS.find(i => i.id === activeTab)?.label}
+                            </h1>
+                        </div>
+                        <div className="flex items-center gap-4">
+                            <button className="w-12 h-12 bg-white/5 border border-white/10 rounded-full flex items-center justify-center text-white/40 hover:text-white transition-all relative">
+                                <Bell size={20} />
+                                <div className="absolute top-3 right-3 w-2 h-2 bg-clay rounded-full shadow-[0_0_10px_rgba(52,211,153,0.5)]" />
+                            </button>
+                            <div className="w-12 h-12 bg-clay text-cream rounded-full flex items-center justify-center font-bold text-lg shadow-2xl">
+                                {user?.user_metadata?.full_name?.[0] || 'U'}
+                            </div>
+                        </div>
+                    </header>
+
+                    <AnimatePresence mode="wait">
+                        <motion.div 
+                            key={activeTab}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -20 }}
+                            className="min-h-[60vh]"
+                        >
+                            {renderContent()}
+                        </motion.div>
+                    </AnimatePresence>
+                </div>
+            </main>
         </div>
     );
 };
