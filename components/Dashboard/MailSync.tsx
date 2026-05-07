@@ -8,17 +8,23 @@ import {
 import { useSupabase } from '../SupabaseProvider';
 import { gmailService, GMAIL_SCOPES } from '../../services/gmailService';
 
-const MailSync: React.FC = () => {
-    const { user, supabase } = useSupabase();
-    const [isLinking, setIsLinking] = useState(false);
-    const [isScanning, setIsScanning] = useState(false);
-    const [scanProgress, setScanProgress] = useState(0);
-    const [scanStatus, setScanStatus] = useState('');
-    const [results, setResults] = useState<{
-        transactions: any[];
-        bills: any[];
-        orders: any[];
-    }>({ transactions: [], bills: [], orders: [] });
+    useEffect(() => {
+        const fetchInitialData = async () => {
+            const [txs, bills, orders] = await Promise.all([
+                supabase.from('user_transactions').select('*').eq('user_id', user?.id).order('transaction_date', { ascending: false }).limit(20),
+                supabase.from('user_bills').select('*').eq('user_id', user?.id).order('due_date', { ascending: false }),
+                supabase.from('user_shopping_orders').select('*').eq('user_id', user?.id).order('order_date', { ascending: false }).limit(20)
+            ]);
+
+            setResults({
+                transactions: txs.data || [],
+                bills: bills.data || [],
+                orders: orders.data || []
+            });
+        };
+
+        if (user) fetchInitialData();
+    }, [user, supabase]);
 
     const handleLinkGmail = async () => {
         setIsLinking(true);
@@ -134,6 +140,22 @@ const MailSync: React.FC = () => {
 
     return (
         <div className="space-y-8">
+            {/* Header / Sync Action */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+                <div>
+                    <h2 className="text-2xl italic tracking-tight text-white">Financial Portfolio</h2>
+                    <p className="text-xs text-white/20 uppercase tracking-[0.3em]">Synched from your primary Gmail</p>
+                </div>
+                <button 
+                    onClick={startScan}
+                    disabled={isScanning}
+                    className="flex items-center gap-3 px-6 py-3 bg-clay text-cream rounded-xl text-[10px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl shadow-clay/10 disabled:opacity-50"
+                >
+                    <RefreshCw size={14} className={isScanning ? 'animate-spin' : ''} />
+                    {isScanning ? 'Synchronizing...' : 'Neural Sync Now'}
+                </button>
+            </div>
+
             {/* Header Card */}
             <div className="bg-white/[0.03] border border-white/10 rounded-[2.5rem] p-10 relative overflow-hidden group">
                 <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
