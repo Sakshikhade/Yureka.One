@@ -12,10 +12,11 @@ import { useSupabase } from '../SupabaseProvider';
 import MyCards from './MyCards';
 import ReferralDashboard from './ReferralDashboard';
 import AccountSettings from './AccountSettings';
+import MailSync from './MailSync';
 
 const NAV_ITEMS = [
     { id: 'cards', label: 'Saved Cards', icon: CreditCard },
-    { id: 'sync', label: 'Mail Sync', icon: Mail, comingSoon: true },
+    { id: 'sync', label: 'Mail Sync', icon: Mail },
     { id: 'expenses', label: 'Expenses', icon: Receipt, comingSoon: true },
     { id: 'bills', label: 'Bills', icon: Wallet, comingSoon: true },
     { id: 'extension', label: 'Extension', icon: Zap, comingSoon: true },
@@ -40,6 +41,7 @@ const DashboardLayout: React.FC = () => {
     const renderContent = () => {
         switch (activeTab) {
             case 'cards': return <MyCards />;
+            case 'sync': return <MailSync />;
             case 'referrals': return <ReferralDashboard />;
             case 'profile': return <AccountSettings />;
             default: return (
