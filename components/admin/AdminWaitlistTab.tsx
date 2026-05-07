@@ -32,7 +32,13 @@ export const AdminWaitlistTab: React.FC<AdminWaitlistTabProps> = ({
     return <SkeletonTable />;
   }
 
-  const filteredWaitlist = waitlist.filter(entry => filter === 'all' || (entry.status || 'pending') === filter);
+  // Treat any status not explicitly in [accepted, on_hold, rejected] as 'pending'
+  const normalizeStatus = (s?: string | null) => {
+    if (s === 'accepted' || s === 'on_hold' || s === 'rejected') return s;
+    return 'pending';
+  };
+
+  const filteredWaitlist = waitlist.filter(entry => filter === 'all' || normalizeStatus(entry.status) === filter);
 
   const statusTabs = [
     { id: 'pending', label: 'New Applicants', icon: Clock, color: 'text-amber-500' },
@@ -51,7 +57,7 @@ export const AdminWaitlistTab: React.FC<AdminWaitlistTabProps> = ({
             const Icon = tab.icon;
             const count = tab.id === 'all' 
               ? waitlist.length 
-              : waitlist.filter(e => (e.status || 'pending') === tab.id).length;
+              : waitlist.filter(e => normalizeStatus(e.status) === tab.id).length;
               
             return (
               <button

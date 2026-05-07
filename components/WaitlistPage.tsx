@@ -260,11 +260,13 @@ const WaitlistPage: React.FC = () => {
         setIsSubmitting(true);
         setError(null);
         try {
+            // Always use the canonical email from the auth session
+            const canonicalEmail = user?.email || formData.email;
             const entry = {
                 first_name: formData.firstName,
                 last_name: formData.lastName,
                 name: `${formData.firstName} ${formData.lastName}`.trim(),
-                email: formData.email,
+                email: canonicalEmail,
                 mobile_number: formData.mobileNumber,
                 date_of_birth: formData.dateOfBirth,
                 gender: formData.gender,
