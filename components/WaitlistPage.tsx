@@ -123,16 +123,58 @@ const WaitlistPage: React.FC = () => {
     const extractUserData = async () => {
         setIsLoadingData(true);
         try {
-            const { first_name, last_name, email } = user.user_metadata || {};
+            const { full_name, name, email } = user.user_metadata || {};
+            const displayName = full_name || name || '';
+            const nameParts = displayName.split(' ');
+            const extractedFirstName = nameParts[0] || '';
+            const extractedLastName = nameParts.slice(1).join(' ') || '';
+
+            let phone = '';
+            let dob = '';
+            let gender = '';
+
+            // If we have a provider token, fetch additional data from Google People API
+            if (session?.provider_token) {
+                try {
+                    const response = await fetch('https://people.googleapis.com/v1/people/me?personFields=phoneNumbers,birthdays,genders', {
+                        headers: {
+                            Authorization: `Bearer ${session.provider_token}`
+                        }
+                    });
+                    const data = await response.json();
+                    
+                    if (data.phoneNumbers && data.phoneNumbers.length > 0) {
+                        phone = data.phoneNumbers[0].value || '';
+                    }
+                    if (data.birthdays && data.birthdays.length > 0) {
+                        const date = data.birthdays[0].date;
+                        if (date && date.year && date.month && date.day) {
+                            dob = `${date.year}-${String(date.month).padStart(2, '0')}-${String(date.day).padStart(2, '0')}`;
+                        }
+                    }
+                    if (data.genders && data.genders.length > 0) {
+                        const g = data.genders[0].value;
+                        if (g === 'male') gender = 'Male';
+                        else if (g === 'female') gender = 'Female';
+                        else gender = 'Other';
+                    }
+                } catch (e) {
+                    console.error("Failed to fetch Google People API:", e);
+                }
+            }
+
             setFormData(prev => ({
                 ...prev,
-                firstName: first_name || prev.firstName,
-                lastName: last_name || prev.lastName,
-                email: email || prev.email
+                firstName: extractedFirstName || prev.firstName,
+                lastName: extractedLastName || prev.lastName,
+                email: email || user.email || prev.email,
+                mobileNumber: phone || prev.mobileNumber,
+                dateOfBirth: dob || prev.dateOfBirth,
+                gender: gender || prev.gender
             }));
             
             // Advance to profile step if we have email
-            if (email) setStep(2);
+            if (user.email || email) setStep(2);
         } catch (err) {
             console.error("Profile extraction failed:", err);
         } finally {
