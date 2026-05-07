@@ -121,16 +121,19 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 
 const AppContent: React.FC = () => {
   const location = useLocation();
+  const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
+  const isDashboardRoute = location.pathname.startsWith('/dashboard');
+  const isSpecialRoute = isAdminRoute || isDashboardRoute;
 
   return (
-    <div className={`min-h-screen bg-cream font-sans text-white relative ${isAdminRoute ? 'pt-0' : 'pt-32 md:pt-36'}`}>
+    <div className={`min-h-screen bg-cream font-sans text-white relative ${isSpecialRoute ? 'pt-0' : 'pt-32 md:pt-36'}`}>
 
       <ScrollToTop />
-      {!isAdminRoute && <TopBanner />}
-      {!isAdminRoute && <Navbar />}
+      {!isSpecialRoute && <TopBanner />}
+      {!isSpecialRoute && <Navbar />}
       
-      <main className={`relative z-10 ${isAdminRoute ? 'pt-0' : ''}`}>
+      <main className={`relative z-10 ${isSpecialRoute ? 'pt-0' : ''}`}>
         <Suspense fallback={
           <div className="fixed inset-0 z-[100] bg-cream/80 backdrop-blur-xl flex items-center justify-center overflow-hidden">
             <motion.div 
@@ -218,8 +221,8 @@ const AppContent: React.FC = () => {
         </Suspense>
       </main>
 
-      {!isAdminRoute && location.pathname !== '/' && <Footer />}
-      {!isAdminRoute && <BottomBanner />}
+      {!isSpecialRoute && location.pathname !== '/' && <Footer />}
+      {!isSpecialRoute && <BottomBanner />}
 
       {!isAdminRoute && (
         <Link 
