@@ -138,73 +138,29 @@ const Navbar: React.FC = () => {
                       <Link to="/yureka-ai" className="text-white/40 hover:text-white font-bold text-[10px] transition-colors whitespace-nowrap uppercase tracking-[0.2em]">
                         YurekaAi
                       </Link>
+                </div>
                     
-                    <div className="flex items-center gap-3 bg-white/5 p-1 rounded-full border border-white/10 shrink-0">
-                        {user ? (
-                            <div className="flex items-center gap-2">
-                                {currentUserStatus === 'admin' && (
-                                    <Link 
-                                        to="/admin" 
-                                        className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 hover:text-white px-4"
-                                    >
-                                        Admin
-                                    </Link>
-                                )}
-                                <Link 
-                                    to={currentUserStatus === 'none' ? '/join-waitlist' : '/dashboard'} 
-                                    className="bg-clay text-cream text-[10px] font-black uppercase tracking-[0.2em] px-8 py-2.5 flex items-center gap-2 group transition-all duration-500 rounded-full shadow-lg hover:shadow-clay/20"
-                                >
-                                    {currentUserStatus === 'none' ? 'Join Waitlist' : 'Dashboard'}
-                                </Link>
-                                
-                                <div className="relative">
-                                    <button 
-                                        onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                                        className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all border border-white/10"
-                                    >
-                                        <User size={18} />
-                                    </button>
-                                    
-                                    <AnimatePresence>
-                                        {isUserMenuOpen && (
-                                            <>
-                                                <div className="fixed inset-0 z-40" onClick={() => setIsUserMenuOpen(false)} />
-                                                <motion.div
-                                                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                                                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                                                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                                                    className="absolute top-full right-0 mt-4 w-48 bg-black/80 backdrop-blur-3xl border border-white/10 rounded-2xl p-2 shadow-2xl z-50"
-                                                >
-                                                    <button 
-                                                        onClick={handleLogout}
-                                                        className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-red-500/10 text-red-400 transition-all text-[10px] font-black uppercase tracking-widest"
-                                                    >
-                                                        <LogOut size={14} />
-                                                        Sign Out
-                                                    </button>
-                                                </motion.div>
-                                            </>
-                                        )}
-                                    </AnimatePresence>
-                                </div>
-                            </div>
-                        ) : (
-                            <>
-                                <button 
-                                    onClick={handleLogin}
-                                    className="px-6 py-2.5 text-[10px] font-black uppercase tracking-[0.2em] text-white/60 hover:text-white transition-all rounded-full"
-                                >
-                                    Log In
-                                </button>
-                                <Link 
-                                    to="/join-waitlist" 
-                                    className="bg-clay text-cream text-[10px] font-black uppercase tracking-[0.2em] px-8 py-2.5 flex items-center gap-2 group transition-all duration-500 rounded-full shadow-lg hover:shadow-clay/20"
-                                >
-                                    Sign Up
-                                </Link>
-                            </>
-                        )}
-                    </div>
+                <div className="flex items-center gap-3 shrink-0">
+                    <button 
+                        onClick={handleLogin}
+                        className="bg-clay text-cream text-[10px] font-black uppercase tracking-[0.2em] px-8 py-2.5 transition-all duration-500 rounded-full shadow-lg hover:shadow-clay/20 whitespace-nowrap"
+                    >
+                        Login
+                    </button>
+                    <Link 
+                        to="/join-waitlist" 
+                        className="bg-clay text-cream text-[10px] font-black uppercase tracking-[0.2em] px-8 py-2.5 transition-all duration-500 rounded-full shadow-lg hover:shadow-clay/20 whitespace-nowrap"
+                    >
+                        SignUp
+                    </Link>
+                    {user && currentUserStatus === 'admin' && (
+                        <Link 
+                            to="/admin" 
+                            className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 hover:text-white px-4"
+                        >
+                            Admin
+                        </Link>
+                    )}
                 </div>
             </div>
 
@@ -283,47 +239,27 @@ const Navbar: React.FC = () => {
                       className="mt-6"
                     >
                         <div className="flex flex-col gap-4 mt-6">
-                            {user ? (
-                                <>
-                                    {currentUserStatus === 'admin' && (
-                                        <Link 
-                                            to="/admin" 
-                                            onClick={() => setIsMobileMenuOpen(false)}
-                                            className="w-full h-14 bg-white/5 border border-white/10 text-white font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full mb-2"
-                                        >
-                                            Admin Panel
-                                        </Link>
-                                    )}
-                                    <Link 
-                                        to={currentUserStatus === 'none' ? '/join-waitlist' : '/dashboard'} 
-                                        onClick={() => setIsMobileMenuOpen(false)}
-                                        className="w-full h-14 bg-clay text-cream font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full shadow-xl"
-                                    >
-                                        {currentUserStatus === 'none' ? 'Join Waitlist' : 'Dashboard'}
-                                    </Link>
-                                    <button 
-                                        onClick={handleLogout}
-                                        className="w-full h-14 bg-red-500/10 border border-red-500/20 text-red-400 font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full mt-4"
-                                    >
-                                        Sign Out
-                                    </button>
-                                </>
-                            ) : (
-                                <>
-                                    <button 
-                                        onClick={() => { setIsMobileMenuOpen(false); handleLogin(); }}
-                                        className="w-full h-14 bg-white/5 border border-white/10 text-white font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full"
-                                    >
-                                        Log In
-                                    </button>
-                                    <Link 
-                                        to="/join-waitlist" 
-                                        onClick={() => setIsMobileMenuOpen(false)} 
-                                        className="w-full h-14 bg-clay text-cream font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full shadow-xl"
-                                    >
-                                        Sign Up
-                                    </Link>
-                                </>
+                            <button 
+                                onClick={() => { setIsMobileMenuOpen(false); handleLogin(); }}
+                                className="w-full h-14 bg-clay text-cream font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full shadow-xl"
+                            >
+                                Login
+                            </button>
+                            <Link 
+                                to="/join-waitlist" 
+                                onClick={() => setIsMobileMenuOpen(false)} 
+                                className="w-full h-14 bg-clay text-cream font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full shadow-xl"
+                            >
+                                SignUp
+                            </Link>
+                            {user && currentUserStatus === 'admin' && (
+                                <Link 
+                                    to="/admin" 
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    className="w-full h-14 bg-white/5 border border-white/10 text-white font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full mb-2"
+                                >
+                                    Admin Panel
+                                </Link>
                             )}
                         </div>
                     </motion.div>
