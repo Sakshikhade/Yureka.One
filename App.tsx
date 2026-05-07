@@ -92,53 +92,15 @@ const ScrollToTop = () => {
 
 import { getUserRole } from './services/supabaseService';
 
-const ProtectedRoute: React.FC<{ children: React.ReactNode; adminOnly?: boolean }> = ({ children, adminOnly }) => {
-  const { user, supabase } = useSupabase();
-  const [status, setStatus] = React.useState<'loading' | 'accepted' | 'pending' | 'admin' | 'none'>('loading');
+const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { user, currentUserStatus } = useSupabase();
   const location = useLocation();
 
-  React.useEffect(() => {
-    if (!user) {
-      setStatus('none');
-      return;
-    }
-    checkStatus();
-  }, [user]);
+  if (!user) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
 
-  const checkStatus = async () => {
-    try {
-      // 1. Check if Admin
-      const role = await getUserRole(user!.email);
-      if (['admin', 'editor', 'writer'].includes(role)) {
-        setStatus('admin');
-        return;
-      }
-
-      if (adminOnly) {
-        setStatus('none');
-        return;
-      }
-
-      // 2. Check Waitlist Status
-      const { data, error } = await supabase
-        .from('waitlist')
-        .select('status')
-        .eq('email', user!.email)
-        .maybeSingle();
-
-      if (error || !data) {
-        setStatus('none');
-      } else if (data.status === 'accepted') {
-        setStatus('accepted');
-      } else {
-        setStatus('pending');
-      }
-    } catch (err) {
-      setStatus('none');
-    }
-  };
-
-  if (status === 'loading') {
+  if (currentUserStatus === 'loading') {
     return (
       <div className="fixed inset-0 z-[100] bg-cream flex items-center justify-center">
         <Loader2 className="animate-spin text-clay" size={40} />
@@ -146,14 +108,17 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode; adminOnly?: boolean 
     );
   }
 
-  if (status === 'none') {
-    // If they were trying to login, they should probably be told they aren't on the waitlist
-    // but for now, we follow the default: send to waitlist
+  if (currentUserStatus === 'none') {
     return <Navigate to="/join-waitlist" replace />;
   }
-  if (status === 'pending' && location.pathname !== '/waiting') return <Navigate to="/waiting" replace />;
-  if (status === 'accepted' && location.pathname === '/waiting') return <Navigate to="/dashboard" replace />;
-  if (status === 'admin' && location.pathname === '/waiting') return <Navigate to="/dashboard" replace />;
+
+  if (currentUserStatus === 'pending' && location.pathname !== '/waiting') {
+    return <Navigate to="/waiting" replace />;
+  }
+
+  if ((currentUserStatus === 'accepted' || currentUserStatus === 'admin') && location.pathname === '/waiting') {
+    return <Navigate to="/dashboard" replace />;
+  }
   
   return <>{children}</>;
 };

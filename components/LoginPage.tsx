@@ -8,27 +8,33 @@ const LoginPage: React.FC = () => {
     const { supabase, user, currentUserStatus } = useSupabase();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        if (user) {
+        if (user && currentUserStatus !== 'loading') {
             if (currentUserStatus === 'accepted' || currentUserStatus === 'admin') {
                 navigate('/dashboard');
             } else if (currentUserStatus === 'pending') {
                 navigate('/waiting');
+            } else if (currentUserStatus === 'none') {
+                setError("Neural record not found. Please join the waitlist to secure your access.");
+                setIsLoading(false);
             }
         }
     }, [user, currentUserStatus, navigate]);
 
     const handleGoogleLogin = async () => {
         setIsLoading(true);
-        const { error } = await supabase.auth.signInWithOAuth({
+        setError(null);
+        const { error: authError } = await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
-                redirectTo: window.location.origin + '/dashboard'
+                redirectTo: window.location.origin + '/login'
             }
         });
-        if (error) {
-            console.error(error);
+        if (authError) {
+            console.error(authError);
+            setError(authError.message);
             setIsLoading(false);
         }
     };
@@ -54,6 +60,19 @@ const LoginPage: React.FC = () => {
                 </div>
 
                 <div className="bg-white/[0.03] border border-white/10 rounded-[2.5rem] p-10 shadow-2xl backdrop-blur-xl space-y-8">
+                    <AnimatePresence>
+                        {error && (
+                            <motion.div 
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: 'auto' }}
+                                exit={{ opacity: 0, height: 0 }}
+                                className="bg-red-500/10 border border-red-500/20 p-4 rounded-xl"
+                            >
+                                <p className="text-red-400 text-[10px] font-black uppercase tracking-widest text-center">{error}</p>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+
                     <button 
                         onClick={handleGoogleLogin}
                         disabled={isLoading}
