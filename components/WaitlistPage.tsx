@@ -13,18 +13,39 @@ import { motion, AnimatePresence } from 'motion/react';
 
 // ─── MASTER DATA ───
 const BANK_LOGOS: Record<string, string> = {
-    'HDFC': '/assets/banks/hdfc.png', 'SBI': '/assets/banks/sbi.png', 'Axis': '/assets/banks/axis.png',
-    'ICICI': '/assets/banks/icici.png', 'Kotak': '/assets/banks/kotak.png', 'Yes Bank': '/assets/banks/yesbank.png',
-    'Amex': '/assets/banks/amex.png', 'IDFC': '/assets/banks/idfc.png', 'HSBC': '/assets/banks/hsbc.png',
-    'RBL': '/assets/banks/rbl.png', 'IndusInd': '/assets/banks/indusind.png', 'BOB': '/assets/banks/bob.png',
-    'SC': '/assets/banks/sc.png', 'Indian': '/assets/banks/indian.png', 'PNB': '/assets/banks/pnb.png',
-    'Canara': '/assets/banks/canara.png', 'DBS': '/assets/banks/dbs.png', 'IDBI': '/assets/banks/idbi.png',
-    'AU': '/assets/banks/au.png', 'Equitas': '/assets/banks/equitas.png', 'CSB': '/assets/banks/csb.png',
-    'Federal': '/assets/banks/federal.png', 'SBM': '/assets/banks/sbm.png', 'South Indian': '/assets/banks/southindian.png',
-    'Utkarsh Bank': '/assets/banks/utkarsh.png', 'Suryoday Bank': '/assets/banks/suryoday.png', 'Union Bank': '/assets/banks/union.png',
-    'Unity SFB': '/assets/banks/unity.png', 'DCB': '/assets/banks/dcb.png', 'Bank Of India': '/assets/banks/boi.png',
-    'J&K Bank': '/assets/banks/jk.png', 'CUB': '/assets/banks/cub.png', 'Slice SFB': '/assets/banks/slice.png',
-    'Dhanlaxmi Bank': '/assets/banks/dhanlaxmi.png', 'Indian Overseas Bank': '/assets/banks/iob.png'
+    'HDFC Bank': '/assets/banks/hdfc.png', 
+    'SBI Card': '/assets/banks/sbi.png', 
+    'Axis Bank': '/assets/banks/axis.png',
+    'ICICI Bank': '/assets/banks/icici.png', 
+    'Kotak Mahindra Bank': '/assets/banks/kotak.png', 
+    'YES Bank': '/assets/banks/yesbank.png',
+    'American Express': '/assets/banks/amex.png', 
+    'IDFC FIRST Bank': '/assets/banks/idfc.png', 
+    'HSBC': '/assets/banks/hsbc.png',
+    'RBL Bank': '/assets/banks/rbl.png', 
+    'IndusInd Bank': '/assets/banks/indusind.png', 
+    'Bank of Baroda': '/assets/banks/bob.png',
+    'Standard Chartered': '/assets/banks/sc.png', 
+    'Indian Bank': '/assets/banks/indian.png', 
+    'PNB': '/assets/banks/pnb.png',
+    'Canara Bank': '/assets/banks/canara.png', 
+    'DBS Bank': '/assets/banks/dbs.png', 
+    'IDBI Bank': '/assets/banks/idbi.png',
+    'AU Small Finance Bank': '/assets/banks/au.png', 
+    'Equitas Small Finance Bank': '/assets/banks/equitas.png', 
+    'CSB Bank': '/assets/banks/csb.png',
+    'Federal Bank': '/assets/banks/federal.png', 
+    'SBM Bank (India)': '/assets/banks/sbm.png', 
+    'South Indian Bank': '/assets/banks/southindian.png',
+    'Union Bank of India': '/assets/banks/union.png',
+    'Unity SFB': '/assets/banks/unity.png', 
+    'DCB Bank': '/assets/banks/dcb.png', 
+    'Bank of India': '/assets/banks/boi.png',
+    'J&K Bank': '/assets/banks/jk.png', 
+    'City Union Bank': '/assets/banks/cub.png', 
+    'Slice SFB': '/assets/banks/slice.png',
+    'Dhanlaxmi Bank': '/assets/banks/dhanlaxmi.png', 
+    'Indian Overseas Bank': '/assets/banks/iob.png'
 };
 
 const ALL_BANKS = Object.keys(BANK_LOGOS).sort();
@@ -64,7 +85,8 @@ const WaitlistPage: React.FC = () => {
         monthlySpend: '0-25K',
         referralCode: '',
         sourceChannel: 'Linkedin',
-        otherSource: ''
+        otherSource: '',
+        bankSearch: ''
     });
 
     const [openBankDropdown, setOpenBankDropdown] = useState<number | null>(null);
@@ -101,61 +123,33 @@ const WaitlistPage: React.FC = () => {
     const extractUserData = async () => {
         setIsLoadingData(true);
         try {
-            // Basic data from Supabase user metadata
-            const metadata = user?.user_metadata;
-            const fullName = metadata?.full_name || '';
-            const [first, ...lastParts] = fullName.split(' ');
-            
+            const { first_name, last_name, email } = user.user_metadata || {};
             setFormData(prev => ({
                 ...prev,
-                firstName: first || '',
-                lastName: lastParts.join(' ') || '',
-                email: user?.email || '',
+                firstName: first_name || prev.firstName,
+                lastName: last_name || prev.lastName,
+                email: email || prev.email
             }));
-
-            // Fetch extra data from People API if token is available
-            const providerToken = session?.provider_token;
-            if (providerToken) {
-                const response = await fetch('https://people.googleapis.com/v1/people/me?personFields=names,emailAddresses,phoneNumbers,birthdays,genders', {
-                    headers: { Authorization: `Bearer ${providerToken}` }
-                });
-                const data = await response.json();
-                
-                if (data.phoneNumbers?.[0]?.value) {
-                    setFormData(prev => ({ ...prev, mobileNumber: data.phoneNumbers[0].value }));
-                }
-                
-                if (data.birthdays?.[0]?.date) {
-                    const { year, month, day } = data.birthdays[0].date;
-                    const dob = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-                    setFormData(prev => ({ ...prev, dateOfBirth: dob }));
-                }
-
-                if (data.genders?.[0]?.value) {
-                    setFormData(prev => ({ ...prev, gender: data.genders[0].value }));
-                }
-            }
-
-            setStep(2); // Move to Profile Completion
+            
+            // Advance to profile step if we have email
+            if (email) setStep(2);
         } catch (err) {
-            console.error("Failed to extract data:", err);
-            setStep(2); // Continue anyway
+            console.error("Profile extraction failed:", err);
         } finally {
             setIsLoadingData(false);
         }
     };
 
-    // ─── CARD LOGIC ───
+    // ─── HELPERS ───
     const handleCardCountChange = (count: number) => {
-        const newCards = [...formData.creditCards];
-        if (count > newCards.length) {
-            for (let i = newCards.length; i < count; i++) {
-                newCards.push({ bank: '', card: '' });
-            }
+        const currentCards = [...formData.creditCards];
+        if (count > currentCards.length) {
+            const diff = count - currentCards.length;
+            for (let i = 0; i < diff; i++) currentCards.push({ bank: '', card: '' });
         } else {
-            newCards.splice(count);
+            currentCards.length = count;
         }
-        setFormData({ ...formData, creditCardsCount: count, creditCards: newCards });
+        setFormData({ ...formData, creditCardsCount: count, creditCards: currentCards });
     };
 
     const updateCardDetail = (index: number, field: 'bank' | 'card', value: string) => {
@@ -167,7 +161,7 @@ const WaitlistPage: React.FC = () => {
 
     const filteredCardsForBank = (bank: string) => {
         if (!bank) return [];
-        const searchBank = bank.toLowerCase();
+        const searchBank = bank.toLowerCase().replace(' bank', '').trim();
         return allCards.filter(c => {
             const issuer = (c.issuer || '').toLowerCase();
             const cardBank = (c.bank || '').toLowerCase();
@@ -376,7 +370,9 @@ const WaitlistPage: React.FC = () => {
                                 >
                                     <div className="flex items-center gap-3">
                                         {card.bank && BANK_LOGOS[card.bank] ? (
-                                            <img src={BANK_LOGOS[card.bank]} alt="" className="w-5 h-5 object-contain" />
+                                            <div className="w-5 h-5 bg-white rounded-full p-0.5 flex items-center justify-center overflow-hidden shrink-0">
+                                                <img src={BANK_LOGOS[card.bank]} alt="" className="w-full h-full object-contain" />
+                                            </div>
                                         ) : (
                                             <Landmark size={14} className="text-white/20" />
                                         )}
@@ -391,20 +387,35 @@ const WaitlistPage: React.FC = () => {
                                             <div className="fixed inset-0 z-40" onClick={() => setOpenBankDropdown(null)} />
                                             <motion.div 
                                                 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }}
-                                                className="absolute top-full left-0 right-0 mt-2 bg-cream border border-white/10 rounded-xl shadow-2xl z-50 max-h-60 overflow-y-auto no-scrollbar"
+                                                className="absolute top-full left-0 right-0 mt-2 bg-cream border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden"
                                             >
-                                                {ALL_BANKS.map(bank => (
-                                                    <button 
-                                                        key={bank}
-                                                        onClick={() => { updateCardDetail(idx, 'bank', bank); setOpenBankDropdown(null); }}
-                                                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-white/5 text-white transition-colors text-xs"
-                                                    >
-                                                        <div className="w-6 h-6 bg-white rounded-full p-1 flex items-center justify-center overflow-hidden border border-white/10">
-                                                            <img src={BANK_LOGOS[bank]} alt="" className="w-full h-full object-contain" />
-                                                        </div>
-                                                        <span className="font-bold tracking-tight">{bank}</span>
-                                                    </button>
-                                                ))}
+                                                <div className="p-2 border-b border-white/5 bg-white/5">
+                                                    <input 
+                                                        autoFocus
+                                                        type="text" 
+                                                        placeholder="Search Bank..."
+                                                        value={formData.bankSearch}
+                                                        onChange={e => setFormData({...formData, bankSearch: e.target.value})}
+                                                        className="w-full bg-black/40 border border-white/10 rounded-lg px-3 py-2 text-[10px] text-white outline-none focus:border-clay"
+                                                    />
+                                                </div>
+                                                <div className="max-h-60 overflow-y-auto no-scrollbar">
+                                                    {ALL_BANKS.filter(b => b.toLowerCase().includes(formData.bankSearch.toLowerCase())).map(bank => (
+                                                        <button 
+                                                            key={bank}
+                                                            onClick={() => { updateCardDetail(idx, 'bank', bank); setOpenBankDropdown(null); setFormData({...formData, bankSearch: ''}); }}
+                                                            className="w-full flex items-center gap-3 px-4 py-3 hover:bg-white/5 text-white transition-colors text-xs text-left"
+                                                        >
+                                                            <div className="w-6 h-6 bg-white rounded-full p-1 flex items-center justify-center overflow-hidden border border-white/10 shrink-0">
+                                                                <img src={BANK_LOGOS[bank]} alt="" className="w-full h-full object-contain" />
+                                                            </div>
+                                                            <span className="font-bold tracking-tight">{bank}</span>
+                                                        </button>
+                                                    ))}
+                                                    {ALL_BANKS.filter(b => b.toLowerCase().includes(formData.bankSearch.toLowerCase())).length === 0 && (
+                                                        <div className="p-4 text-center text-white/20 text-[10px] uppercase tracking-widest">No Bank Found</div>
+                                                    )}
+                                                </div>
                                             </motion.div>
                                         </>
                                     )}
@@ -517,8 +528,8 @@ const WaitlistPage: React.FC = () => {
                 disabled={isSubmitting}
                 className="w-full bg-white text-cream py-6 rounded-2xl flex items-center justify-center gap-6 group shadow-2xl active:scale-95 transition-all disabled:opacity-50"
             >
-                <span className="text-[11px] font-black uppercase tracking-[0.4em]">{isSubmitting ? 'Securing Spot...' : 'Join the Inner Circle'}</span>
-                {!isSubmitting && <Sparkles size={20} className="group-hover:rotate-12 transition-transform" />}
+                <span className="text-sm font-black uppercase tracking-[0.4em] text-black">{isSubmitting ? 'Securing Spot...' : 'Join the Inner Circle'}</span>
+                {!isSubmitting && <Sparkles size={20} className="group-hover:rotate-12 transition-transform text-black" />}
             </button>
         </motion.div>
     );
@@ -611,8 +622,12 @@ const WaitlistPage: React.FC = () => {
                 </AnimatePresence>
 
                 {error && (
-                    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-8 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-center">
-                        <p className="text-red-400 text-xs font-bold uppercase tracking-widest">{error}</p>
+                    <motion.div 
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="mt-8 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-xs text-center"
+                    >
+                        {error}
                     </motion.div>
                 )}
             </div>

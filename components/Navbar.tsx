@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, Menu, X, Sparkles, ChevronDown, LayoutGrid, Calculator, ArrowRightLeft } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { ArrowRight, Menu, X, Sparkles, ChevronDown, LayoutGrid, Calculator, ArrowRightLeft, LogOut, User } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { useSupabase } from './SupabaseProvider';
 
@@ -9,7 +9,9 @@ const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isExploreOpen, setIsExploreOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,6 +29,11 @@ const Navbar: React.FC = () => {
         redirectTo: redirectUrl
       } 
     });
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate('/');
   };
 
   const EXPLORE_ITEMS = [
@@ -134,7 +141,7 @@ const Navbar: React.FC = () => {
                     
                     <div className="flex items-center gap-3 bg-white/5 p-1 rounded-full border border-white/10 shrink-0">
                         {user ? (
-                            <>
+                            <div className="flex items-center gap-2">
                                 {currentUserStatus === 'admin' && (
                                     <Link 
                                         to="/admin" 
@@ -149,7 +156,38 @@ const Navbar: React.FC = () => {
                                 >
                                     {currentUserStatus === 'none' ? 'Join Waitlist' : 'Dashboard'}
                                 </Link>
-                            </>
+                                
+                                <div className="relative">
+                                    <button 
+                                        onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                                        className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all border border-white/10"
+                                    >
+                                        <User size={18} />
+                                    </button>
+                                    
+                                    <AnimatePresence>
+                                        {isUserMenuOpen && (
+                                            <>
+                                                <div className="fixed inset-0 z-40" onClick={() => setIsUserMenuOpen(false)} />
+                                                <motion.div
+                                                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                                                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                                                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                                                    className="absolute top-full right-0 mt-4 w-48 bg-black/80 backdrop-blur-3xl border border-white/10 rounded-2xl p-2 shadow-2xl z-50"
+                                                >
+                                                    <button 
+                                                        onClick={handleLogout}
+                                                        className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-red-500/10 text-red-400 transition-all text-[10px] font-black uppercase tracking-widest"
+                                                    >
+                                                        <LogOut size={14} />
+                                                        Sign Out
+                                                    </button>
+                                                </motion.div>
+                                            </>
+                                        )}
+                                    </AnimatePresence>
+                                </div>
+                            </div>
                         ) : (
                             <>
                                 <button 
@@ -160,7 +198,7 @@ const Navbar: React.FC = () => {
                                 </button>
                                 <Link 
                                     to="/join-waitlist" 
-                                    className="bg-clay text-cream text-[10px] font-black uppercase tracking-[0.2em] px-6 py-2.5 flex items-center gap-2 group transition-all duration-500 rounded-full shadow-lg hover:shadow-clay/20"
+                                    className="bg-clay text-cream text-[10px] font-black uppercase tracking-[0.2em] px-8 py-2.5 flex items-center gap-2 group transition-all duration-500 rounded-full shadow-lg hover:shadow-clay/20"
                                 >
                                     Sign Up
                                 </Link>
@@ -263,6 +301,12 @@ const Navbar: React.FC = () => {
                                     >
                                         {currentUserStatus === 'none' ? 'Join Waitlist' : 'Dashboard'}
                                     </Link>
+                                    <button 
+                                        onClick={handleLogout}
+                                        className="w-full h-14 bg-red-500/10 border border-red-500/20 text-red-400 font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full mt-4"
+                                    >
+                                        Sign Out
+                                    </button>
                                 </>
                             ) : (
                                 <>
