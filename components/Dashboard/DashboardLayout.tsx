@@ -13,11 +13,14 @@ import { useSupabase } from '../SupabaseProvider';
 import MyCards from './MyCards';
 import ReferralDashboard from './ReferralDashboard';
 import AccountSettings from './AccountSettings';
+import CategoriesPage from '../CategoriesPage';
+import YurekaOsPage from '../YurekaOsPage';
+import ComparePage from '../ComparePage';
 
 const EXPLORE_ITEMS = [
-    { id: 'categories', label: 'Categories', icon: LayoutGrid, path: '/categories' },
-    { id: 'tools', label: 'Free Tools', icon: Calculator, path: '/free-tools' },
-    { id: 'compare', label: 'Compare', icon: ArrowRightLeft, path: '/compare' },
+    { id: 'categories_hub', label: 'Categories', icon: LayoutGrid },
+    { id: 'tools_hub', label: 'Free Tools', icon: Calculator },
+    { id: 'compare_hub', label: 'Compare', icon: ArrowRightLeft },
 ];
 
 const NAV_ITEMS = [
@@ -48,6 +51,9 @@ const DashboardLayout: React.FC = () => {
     const renderContent = () => {
         switch (activeTab) {
             case 'cards': return <MyCards />;
+            case 'categories_hub': return <CategoriesPage />;
+            case 'tools_hub': return <YurekaOsPage />;
+            case 'compare_hub': return <ComparePage />;
             case 'referrals': return <ReferralDashboard />;
             case 'profile': return <AccountSettings />;
             default: return (
@@ -139,7 +145,7 @@ const DashboardLayout: React.FC = () => {
                                             {item.subItems.map((sub) => (
                                                 <button
                                                     key={sub.id}
-                                                    onClick={() => navigate(sub.path)}
+                                                    onClick={() => setActiveTab(sub.id)}
                                                     className="w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-white/30 hover:bg-white/5 hover:text-clay transition-all group/sub"
                                                 >
                                                     <sub.icon size={16} className="group-hover/sub:scale-110 transition-transform" />
@@ -187,8 +193,9 @@ const DashboardLayout: React.FC = () => {
                                 <div className="w-1.5 h-1.5 bg-clay rounded-full animate-pulse shadow-[0_0_10px_rgba(52,211,153,0.8)]" />
                                 <p className="text-[10px] font-black uppercase tracking-[0.6em] text-white/30">System Status: Optimal</p>
                             </div>
-                            <h1 className="text-6xl italic tracking-tighter text-white font-black leading-none">
-                                {NAV_ITEMS.find(i => i.id === activeTab)?.label}
+                            <h1 className="text-6xl italic tracking-tighter text-white font-black leading-none uppercase">
+                                {NAV_ITEMS.find(i => i.id === activeTab)?.label || 
+                                 EXPLORE_ITEMS.find(i => i.id === activeTab)?.label}
                             </h1>
                         </motion.div>
                         
