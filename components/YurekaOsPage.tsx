@@ -13,6 +13,12 @@ const YurekaOsPage: React.FC = () => {
   const basePath = isDashboard ? '/dashboard' : '';
   const { supabase } = useSupabase();
 
+  React.useEffect(() => {
+    if (isDashboard) {
+      navigate(`${basePath}/rewards-calculator`, { replace: true });
+    }
+  }, [isDashboard, navigate, basePath]);
+
   const handleCalculate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;

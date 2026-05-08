@@ -26,7 +26,7 @@ import WaitlistPage from '../WaitlistPage';
 
 const EXPLORE_ITEMS = [
     { id: 'categories', label: 'Categories', icon: LayoutGrid, path: '/dashboard/categories' },
-    { id: 'tools', label: 'Free Tools', icon: Calculator, path: '/dashboard/tools' },
+    { id: 'tools', label: 'Free Tools', icon: Calculator, path: '/dashboard/rewards-calculator' },
     { id: 'compare', label: 'Compare', icon: ArrowRightLeft, path: '/dashboard/compare' },
     { id: 'card-explorer', label: 'Card Explorer', icon: Compass, path: '/dashboard/card-explorer' },
 ];
@@ -242,7 +242,7 @@ const DashboardLayout: React.FC = () => {
                                 <Route path="cards" element={<MyCards />} />
                                 <Route path="categories" element={<CategoriesPage />} />
                                 <Route path="categories/:slug" element={<CategoryDetailPage />} />
-                                <Route path="tools" element={<YurekaOsPage />} />
+                                <Route path="tools" element={<RewardsTransferCalculator />} />
                                 <Route path="rewards-calculator" element={<RewardsTransferCalculator />} />
                                 <Route path="compare" element={<ComparePage />} />
                                 <Route path="compare/:slug" element={<ComparisonDetail />} />

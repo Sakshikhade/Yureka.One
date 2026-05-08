@@ -100,9 +100,12 @@ const RewardsTransferCalculator: React.FC = () => {
   const toDropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // If in dashboard, we assume access since user is authenticated
+    if (isDashboard) return;
+    
     const access = localStorage.getItem('yureka_points_access');
-    if (!access) navigate(`${basePath}/free-tools`);
-  }, [navigate, basePath]);
+    if (!access) navigate(`${basePath}/tools`);
+  }, [navigate, basePath, isDashboard]);
 
   // Click outside listener
   useEffect(() => {
