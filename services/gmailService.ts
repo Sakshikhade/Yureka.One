@@ -272,8 +272,6 @@ class GmailService {
       source_mail_id: message.id
     };
   }
-   };
-  }
 
   // --- UTILS ---
 
