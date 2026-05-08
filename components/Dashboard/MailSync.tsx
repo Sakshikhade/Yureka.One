@@ -118,21 +118,21 @@ const MailSync: React.FC = () => {
             // Phase 1: Transactions & Shopping (Deep Scan across categories)
             setScanStatus('Scanning Financial Core...');
             const coreQueries = [
-                `(₹ OR INR OR Rs OR "debited" OR "spent") after:${dateStr} category:primary`,
+                `(₹ OR INR OR Rs OR "debited" OR "spent" OR "amount") after:${dateStr} category:primary`,
                 `category:purchases after:${dateStr}`,
-                `"order confirmation" OR "shipped" OR "invoice" after:${dateStr} category:promotions`,
+                `"order confirmation" OR "shipped" OR "invoice" OR "receipt" after:${dateStr} category:promotions`,
                 `"payment" OR "transaction" after:${dateStr} category:social`
             ];
             
             let allMessages: any[] = [];
             for (const q of coreQueries) {
-                const msgs = await gmailService.fetchMessages(q, 40);
+                const msgs = await gmailService.fetchMessages(q, 100);
                 allMessages = [...allMessages, ...msgs];
             }
             
             const uniqueMessageIds = Array.from(new Set(allMessages.map(m => m.id)));
             const messageDetails = await Promise.all(
-                uniqueMessageIds.slice(0, 100).map(id => gmailService.getMessageDetails(id).catch(() => null))
+                uniqueMessageIds.slice(0, 150).map(id => gmailService.getMessageDetails(id).catch(() => null))
             );
 
             const fetchedTransactions: MailTransaction[] = [];

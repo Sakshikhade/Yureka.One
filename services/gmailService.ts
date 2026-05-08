@@ -112,22 +112,21 @@ class GmailService {
     const date = this.getHeader(message, 'Date');
     const content = this.getFullContent(message);
 
-    // Stricter Amount Extraction: Must have a currency symbol or keyword very close to numbers
-    const amountRegex = /(?:Rs\.?|INR|₹|Debited|Spent)\s*(?::|for|of)?\s*(?:Rs\.?|INR|₹)?\s*([\d,]+\.\d{2})/i;
+    // Relaxed Amount Extraction: Optional decimals, handle whole numbers too
+    const amountRegex = /(?:Rs\.?|INR|₹|Debited|Spent|Amount)\s*(?::|for|of)?\s*(?:Rs\.?|INR|₹)?\s*([\d,]+(?:\.\d{1,2})?)/i;
     const amountMatch = content.match(amountRegex) || snippet.match(amountRegex);
     if (!amountMatch) return null;
 
     const amount = parseFloat(amountMatch[1].replace(/,/g, ''));
-    if (isNaN(amount) || amount < 1) return null; // Ignore tiny amounts and failed parses
+    if (isNaN(amount) || amount < 1) return null; 
 
     // Platform/Merchant Detection - Prioritize 'From' header
     let merchant = this.extractPlatform(from, subject, content);
     
-    // If still unknown, look for "Paid to" or "at [Merchant]" specifically
     if (merchant === 'Unknown') {
-      const explicitMerchantRegex = /(?:paid to|at|to|merchant|billed by)\s+([A-Z0-9\s&]{3,20})(?:\s+on|\s+at|\.|\n)/i;
+      const explicitMerchantRegex = /(?:paid to|at|to|merchant|billed by|on)\s+([A-Z0-9\s&]{3,25})(?:\s+on|\s+at|\.|\n)/i;
       const mMatch = content.match(explicitMerchantRegex);
-      if (mMatch && !/account|card|bank|statement|otp|authorized|customer/i.test(mMatch[1])) {
+      if (mMatch && !/account|card|bank|statement|otp|authorized|customer|alert/i.test(mMatch[1])) {
         merchant = mMatch[1].trim();
       }
     }
@@ -157,14 +156,13 @@ class GmailService {
     const content = this.getFullContent(message);
     const subject = this.getHeader(message, 'Subject');
     
-    // Must be an actual statement or bill alert
-    if (!/statement|bill|due|outstanding/i.test(subject)) return null;
+    if (!/statement|bill|due|outstanding/i.test(subject + content)) return null;
 
     const banks = ['HDFC', 'ICICI', 'SBI', 'AXIS', 'AMEX', 'ONECARD', 'HSBC', 'KOTAK', 'CITI', 'INDUSIND', 'IDFC', 'RBL', 'YES BANK', 'FEDERAL', 'DBS', 'STANDARD CHARTERED'];
     const bankName = banks.find(b => new RegExp(b, 'i').test(subject + content)) || 'Financial Institution';
 
-    const totalAmountRegex = /(?:Total Amount Due|Outstanding|Amount Due|Total Payable|Current Outstanding|Total Bill)\s*(?::)?\s*(?:Rs\.?|INR|₹)?\s*([\d,]+\.\d{2})/i;
-    const minAmountRegex = /(?:Minimum Amount Due|Min Due|Minimum Payable|Min Amount)\s*(?::)?\s*(?:Rs\.?|INR|₹)?\s*([\d,]+\.\d{2})/i;
+    const totalAmountRegex = /(?:Total Amount Due|Outstanding|Amount Due|Total Payable|Current Outstanding|Total Bill)\s*(?::)?\s*(?:Rs\.?|INR|₹)?\s*([\d,]+(?:\.\d{1,2})?)/i;
+    const minAmountRegex = /(?:Minimum Amount Due|Min Due|Minimum Payable|Min Amount)\s*(?::)?\s*(?:Rs\.?|INR|₹)?\s*([\d,]+(?:\.\d{1,2})?)/i;
     
     const totalMatch = content.match(totalAmountRegex);
     const minMatch = content.match(minAmountRegex);
@@ -189,10 +187,9 @@ class GmailService {
     const content = this.getFullContent(message);
     const subject = this.getHeader(message, 'Subject');
     
-    // Require specific shopping transaction intent
-    if (!/order confirmation|shipped|delivery|invoice|receipt/i.test(subject.toLowerCase())) return null;
+    if (!/order|shipped|delivery|invoice|receipt|confirmation/i.test(subject.toLowerCase())) return null;
 
-    const priceRegex = /(?:Total|Amount Paid|Order Total|Grand Total|Payable|Invoice Amount)\s*:?\s*(?:Rs\.?|INR|₹)?\s*([\d,]+\.\d{2})/i;
+    const priceRegex = /(?:Total|Amount Paid|Order Total|Grand Total|Payable|Invoice Amount)\s*:?\s*(?:Rs\.?|INR|₹)?\s*([\d,]+(?:\.\d{1,2})?)/i;
     const priceMatch = content.match(priceRegex);
     
     // IF PRICE IS 0 OR MISSING, IT'S PROBABLY A NEWSLETTER - FILTER IT OUT
