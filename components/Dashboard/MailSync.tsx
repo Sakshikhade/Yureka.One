@@ -107,124 +107,118 @@ const MailSync: React.FC = () => {
 
         const sixMonthsAgo = new Date();
         sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
-        const dateStr = `${sixMonthsAgo.getFullYear()}/${(sixMonthsAgo.getMonth() + 1).toString().padStart(2, '0')}/${sixMonthsAgo.getDate().toString().padStart(2, '0')}`;
-
-        gmailService.setToken(token);
-        setIsScanning(true);
+    const startScan = async (isSilent = false) => {
+        if (!isSilent) setIsScanning(true);
         setError(null);
         setScanProgress(5);
-        setScanStatus('Initializing Neural Link...');
+        setScanStatus('Initializing Neural Uplink...');
 
         try {
-            const batchSize = 10;
+            const dateStr = new Date(Date.now() - 180 * 24 * 60 * 60 * 1000).toISOString().split('T')[0].replace(/-/g, '/');
             let totalItemsFound = 0;
-            
-            // Phase 1: Transactions (BROAD SEARCH)
-            setScanStatus('Scanning Ecosystem...');
-            const messages = await gmailService.fetchMessages(`(₹ OR INR OR Rs OR "amount debited" OR "spent on" OR "paid to") after:${dateStr}`, 60);
-            const fetchedTransactions: any[] = [];
-            
-            if (messages.length > 0) {
-                for (let i = 0; i < messages.length; i += batchSize) {
-                    const batch = messages.slice(i, i + batchSize);
-                    setScanStatus(`Analyzing Flow (${totalItemsFound} items identified)`);
-                    
-                    const detailsBatch = await Promise.all(
-                        batch.map(m => gmailService.getMessageDetails(m.id).catch(() => null))
-                    );
 
-                    for (const details of detailsBatch) {
-                        if (!details) continue;
-                        const parsed = gmailService.parseTransaction(details);
-                        if (parsed) {
-                            fetchedTransactions.push(parsed);
-                            totalItemsFound++;
-                        }
-                    }
-                    setScanProgress(5 + Math.min(25, Math.floor(((i + batchSize) / messages.length) * 25)));
-                }
+            // Phase 1: Transactions & Shopping (Deep Scan across categories)
+            setScanStatus('Scanning Financial Core...');
+            const coreQueries = [
+                `(₹ OR INR OR Rs OR "debited" OR "spent") after:${dateStr} category:primary`,
+                `category:purchases after:${dateStr}`,
+                `"order confirmation" OR "shipped" OR "invoice" after:${dateStr} category:promotions`,
+                `"payment" OR "transaction" after:${dateStr} category:social`
+            ];
+            
+            let allMessages: any[] = [];
+            for (const q of coreQueries) {
+                const msgs = await gmailService.fetchMessages(q, 40);
+                allMessages = [...allMessages, ...msgs];
             }
-            setScanProgress(30);
-
-            // Phase 2: Bills & Cards
-            setScanStatus('Detecting Liabilities...');
-            const billMessages = await gmailService.fetchMessages(`(statement OR bill OR due OR welcome OR card OR outstanding OR "minimum due") after:${dateStr}`, 40);
-            const fetchedBills: any[] = [];
-            const fetchedOwnedCards: any[] = [];
             
-            if (billMessages.length > 0) {
-                for (let i = 0; i < billMessages.length; i += batchSize) {
-                    setScanStatus(`Mapping Cards (${totalItemsFound} items identified)`);
-                    const batch = billMessages.slice(i, i + batchSize);
-                    const detailsBatch = await Promise.all(
-                        batch.map(m => gmailService.getMessageDetails(m.id).catch(() => null))
-                    );
+            const uniqueMessageIds = Array.from(new Set(allMessages.map(m => m.id)));
+            const messageDetails = await Promise.all(
+                uniqueMessageIds.slice(0, 100).map(id => gmailService.getMessageDetails(id).catch(() => null))
+            );
 
-                    for (const details of detailsBatch) {
-                        if (!details) continue;
-                        const bill = gmailService.parseBill(details);
-                        const card = gmailService.parseOwnedCard(details);
-                        if (bill) { fetchedBills.push(bill); totalItemsFound++; }
-                        if (card) { fetchedOwnedCards.push(card); totalItemsFound++; }
-                    }
-                    setScanProgress(30 + Math.min(20, Math.floor(((i + batchSize) / billMessages.length) * 20)));
-                }
-            }
-            setScanProgress(50);
+            const fetchedTransactions: MailTransaction[] = [];
+            const fetchedOrders: MailShoppingOrder[] = [];
 
-            // Phase 3: Applications
-            setScanStatus('Reviewing History...');
-            const appMessages = await gmailService.fetchMessages(`(application OR status OR reference OR rejection OR accepted OR rejected) after:${dateStr}`, 20);
-            const fetchedApps: any[] = [];
+            messageDetails.forEach(msg => {
+                if (!msg) return;
+                const tx = gmailService.parseTransaction(msg);
+                if (tx) { fetchedTransactions.push(tx); totalItemsFound++; }
+                
+                const order = gmailService.parseShoppingOrder(msg);
+                if (order) { fetchedOrders.push(order); totalItemsFound++; }
+            });
+            setScanProgress(40);
+
+            // Phase 2: Ecosystem (Cards & Applications)
+            setScanStatus('Analyzing Credit Ecosystem...');
+            const ecoQueries = [
+                `"welcome to" OR "your card" OR "statement" after:${dateStr}`,
+                `"application" OR "rejection" OR "approved" after:${dateStr}`
+            ];
             
-            if (appMessages.length > 0) {
-                for (let i = 0; i < appMessages.length; i += batchSize) {
-                    setScanStatus(`Analyzing Applications (${totalItemsFound} items identified)`);
-                    const batch = appMessages.slice(i, i + batchSize);
-                    const detailsBatch = await Promise.all(
-                        batch.map(m => gmailService.getMessageDetails(m.id).catch(() => null))
-                    );
-
-                    for (const details of detailsBatch) {
-                        if (!details) continue;
-                        const app = gmailService.parseCardApplication(details);
-                        if (app) { fetchedApps.push(app); totalItemsFound++; }
-                    }
-                    setScanProgress(50 + Math.min(20, Math.floor(((i + batchSize) / appMessages.length) * 20)));
-                }
+            let ecoMessages: any[] = [];
+            for (const q of ecoQueries) {
+                const msgs = await gmailService.fetchMessages(q, 30);
+                ecoMessages = [...ecoMessages, ...msgs];
             }
+
+            const uniqueEcoIds = Array.from(new Set(ecoMessages.map(m => m.id)));
+            const ecoDetails = await Promise.all(
+                uniqueEcoIds.slice(0, 50).map(id => gmailService.getMessageDetails(id).catch(() => null))
+            );
+
+            const rawCards: MailOwnedCard[] = [];
+            const rawApps: MailCardApplication[] = [];
+
+            ecoDetails.forEach(msg => {
+                if (!msg) return;
+                const card = gmailService.parseOwnedCard(msg);
+                if (card) rawCards.push(card);
+                
+                const app = gmailService.parseCardApplication(msg);
+                if (app) rawApps.push(app);
+            });
+
+            // Deduplicate Cards by Bank + Last Four
+            const fetchedCards = rawCards.filter((card, index, self) =>
+                index === self.findIndex((c) => (
+                    c.bank_name === card.bank_name && c.last_four === card.last_four
+                ))
+            );
+            totalItemsFound += fetchedCards.length;
+
+            // Deduplicate Applications by Bank + ID
+            const fetchedApps = rawApps.filter((app, index, self) =>
+                index === self.findIndex((a) => (
+                    a.bank_name === app.bank_name && a.application_id === app.application_id
+                ))
+            );
+            totalItemsFound += fetchedApps.length;
             setScanProgress(70);
 
-            // Phase 4: Shopping
-            setScanStatus('Harvesting Shopping...');
-            const shopMessages = await gmailService.fetchMessages(`(order OR "delivery of" OR shipment OR tracking OR invoice OR amazon OR flipkart OR swiggy OR zomato) after:${dateStr}`, 40);
-            const fetchedOrders: any[] = [];
+            // Phase 3: Bills & Statements
+            setScanStatus('Scanning Statements...');
+            const billMsgs = await gmailService.fetchMessages(`"statement" OR "amount due" OR "due date" after:${dateStr}`, 30);
+            const billDetails = await Promise.all(
+                billMsgs.slice(0, 30).map((m: any) => gmailService.getMessageDetails(m.id).catch(() => null))
+            );
             
-            if (shopMessages.length > 0) {
-                for (let i = 0; i < shopMessages.length; i += batchSize) {
-                    setScanStatus(`Processing Orders (${totalItemsFound} items identified)`);
-                    const batch = shopMessages.slice(i, i + batchSize);
-                    const detailsBatch = await Promise.all(
-                        batch.map(m => gmailService.getMessageDetails(m.id).catch(() => null))
-                    );
+            const fetchedBills: MailBill[] = [];
+            billDetails.forEach(msg => {
+                if (!msg) return;
+                const bill = gmailService.parseBill(msg);
+                if (bill) { fetchedBills.push(bill); totalItemsFound++; }
+            });
+            setScanProgress(90);
 
-                    for (const details of detailsBatch) {
-                        if (!details) continue;
-                        const order = gmailService.parseShoppingOrder(details);
-                        if (order) { fetchedOrders.push(order); totalItemsFound++; }
-                    }
-                    setScanProgress(70 + Math.min(25, Math.floor(((i + batchSize) / shopMessages.length) * 25)));
-                }
-            }
-            setScanProgress(95);
-
-            setScanStatus('Encrypting Insights...');
+            setScanStatus('Syncing Neural Data...');
             const savePromises = [];
-            if (fetchedTransactions.length > 0) savePromises.push(supabase.from('user_transactions').upsert(fetchedTransactions.map(t => ({ ...t, user_id: user?.id }))));
-            if (fetchedBills.length > 0) savePromises.push(supabase.from('user_bills').upsert(fetchedBills.map(b => ({ ...b, user_id: user?.id }))));
-            if (fetchedOrders.length > 0) savePromises.push(supabase.from('user_shopping_orders').upsert(fetchedOrders.map(o => ({ ...o, user_id: user?.id }))));
-            if (fetchedOwnedCards.length > 0) savePromises.push(supabase.from('user_owned_cards').upsert(fetchedOwnedCards.map(c => ({ ...c, user_id: user?.id }))));
-            if (fetchedApps.length > 0) savePromises.push(supabase.from('user_card_applications').upsert(fetchedApps.map(a => ({ ...a, user_id: user?.id }))));
+            if (fetchedTransactions.length > 0) savePromises.push(supabase.from('user_transactions').upsert(fetchedTransactions.map(t => ({ ...t, user_id: user?.id })), { onConflict: 'source_mail_id' }));
+            if (fetchedBills.length > 0) savePromises.push(supabase.from('user_bills').upsert(fetchedBills.map(b => ({ ...b, user_id: user?.id })), { onConflict: 'source_mail_id' }));
+            if (fetchedOrders.length > 0) savePromises.push(supabase.from('user_orders').upsert(fetchedOrders.map(o => ({ ...o, user_id: user?.id })), { onConflict: 'source_mail_id' }));
+            if (fetchedCards.length > 0) savePromises.push(supabase.from('user_owned_cards').upsert(fetchedCards.map(c => ({ ...c, user_id: user?.id })), { onConflict: 'source_mail_id' }));
+            if (fetchedApps.length > 0) savePromises.push(supabase.from('user_applications').upsert(fetchedApps.map(a => ({ ...a, user_id: user?.id })), { onConflict: 'source_mail_id' }));
             
             await Promise.all(savePromises);
 
@@ -232,9 +226,24 @@ const MailSync: React.FC = () => {
                 transactions: [...fetchedTransactions.slice(0, 10), ...prev.transactions.filter(t => !fetchedTransactions.find(ft => ft.source_mail_id === t.source_mail_id))].slice(0, 10),
                 bills: [...fetchedBills, ...prev.bills.filter(b => !fetchedBills.find(fb => fb.source_mail_id === b.source_mail_id))],
                 orders: [...fetchedOrders.slice(0, 10), ...prev.orders.filter(o => !fetchedOrders.find(fo => fo.source_mail_id === o.source_mail_id))].slice(0, 10),
-                ownedCards: [...fetchedOwnedCards, ...prev.ownedCards.filter(c => !fetchedOwnedCards.find(fc => fc.source_mail_id === c.source_mail_id))],
+                ownedCards: [...fetchedCards, ...prev.ownedCards.filter(c => !fetchedCards.find(fc => fc.source_mail_id === c.source_mail_id))],
                 applications: [...fetchedApps, ...prev.applications.filter(a => !fetchedApps.find(fa => fa.source_mail_id === a.source_mail_id))]
             }));
+            setScanProgress(100);
+            setScanStatus(`Sync Complete: ${totalItemsFound} items found`);
+            if (totalItemsFound === 0 && !isSilent) {
+                setError('NO_DATA_FOUND');
+            }
+        } catch (err: any) {
+            console.error('Scan failed:', err);
+            if (err.name === 'AbortError') {
+                setScanStatus('Connection Timeout');
+                setError('SCAN_TIMEOUT');
+            } else if (err.message === 'OAUTH_EXPIRED') {
+                setError('LINK_EXPIRED');
+            } else {
+                setError('SCAN_ERROR');
+            }
             setScanProgress(100);
             setScanStatus(`Sync Complete: ${totalItemsFound} items found`);
             if (totalItemsFound === 0 && !isSilent) {

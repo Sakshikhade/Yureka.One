@@ -112,34 +112,31 @@ class GmailService {
     const date = this.getHeader(message, 'Date');
     const content = this.getFullContent(message);
 
-    // Ultra-Inclusive Amount Extraction
-    const amountRegex = /(?:Rs\.?|INR|₹|Debited|Amount|Total|Paid|Spent|Withdrawal|Charged|Purchase|Cost)\s*(?::|for|of)?\s*(?:Rs\.?|INR|₹)?\s*([\d,]+\.?\d*)/i;
+    // Stricter Amount Extraction: Must have a currency symbol or keyword very close to numbers
+    const amountRegex = /(?:Rs\.?|INR|₹|Debited|Spent)\s*(?::|for|of)?\s*(?:Rs\.?|INR|₹)?\s*([\d,]+\.\d{2})/i;
     const amountMatch = content.match(amountRegex) || snippet.match(amountRegex);
     if (!amountMatch) return null;
 
     const amount = parseFloat(amountMatch[1].replace(/,/g, ''));
-    if (isNaN(amount) || amount === 0) return null;
+    if (isNaN(amount) || amount < 1) return null; // Ignore tiny amounts and failed parses
 
-    // Platform/Merchant Detection
+    // Platform/Merchant Detection - Prioritize 'From' header
     let merchant = this.extractPlatform(from, subject, content);
     
+    // If still unknown, look for "Paid to" or "at [Merchant]" specifically
     if (merchant === 'Unknown') {
-      const merchantKeywords = ['at', 'to', 'from', 'paid to', 'spent on', 'info:', 'merchant:', 'billed by', 'purchase at'];
-      for (const kw of merchantKeywords) {
-        const mRegex = new RegExp(`${kw}\\s+([^\\s.,\r\n]+(?:\\s+[^\\s.,\r\n]+){0,2})`, 'i');
-        const mMatch = content.match(mRegex);
-        if (mMatch && !/account|card|bank|statement|authorized/i.test(mMatch[1])) {
-          merchant = mMatch[1].trim();
-          break;
-        }
+      const explicitMerchantRegex = /(?:paid to|at|to|merchant|billed by)\s+([A-Z0-9\s&]{3,20})(?:\s+on|\s+at|\.|\n)/i;
+      const mMatch = content.match(explicitMerchantRegex);
+      if (mMatch && !/account|card|bank|statement|otp|authorized|customer/i.test(mMatch[1])) {
+        merchant = mMatch[1].trim();
       }
     }
 
     let category = 'Uncategorized';
     const normalizedText = (merchant + subject + content).toLowerCase();
-    if (/amazon|flipkart|myntra|ajio|nykaa|shopping|meesho|tata cliq/i.test(normalizedText)) category = 'Shopping';
-    else if (/zomato|swiggy|food|restaurant|dine|eat|rebel|magicpin/i.test(normalizedText)) category = 'Dining';
-    else if (/uber|ola|rapido|fuel|petrol|shell|hpcl|bpcl|irctc|redbus|indigo/i.test(normalizedText)) category = 'Transport';
+    if (/amazon|flipkart|myntra|ajio|nykaa|shopping|meesho|tata cliq|zara|h&m/i.test(normalizedText)) category = 'Shopping';
+    else if (/zomato|swiggy|food|restaurant|dine|eat|rebel|magicpin|starbucks/i.test(normalizedText)) category = 'Dining';
+    else if (/uber|ola|rapido|fuel|petrol|shell|hpcl|bpcl|irctc|redbus|indigo|air india/i.test(normalizedText)) category = 'Transport';
     else if (/netflix|hotstar|spotify|prime|youtube|apple.com|google play|pvr|inox|bookmyshow/i.test(normalizedText)) category = 'Entertainment';
     else if (/jio|airtel|vi |act |utility|bill|electricity|tata sky|dth|bescom|bsnl/i.test(normalizedText)) category = 'Bills';
 
@@ -160,13 +157,14 @@ class GmailService {
     const content = this.getFullContent(message);
     const subject = this.getHeader(message, 'Subject');
     
-    if (!/bill|statement|due|outstanding|outstanding bill|amount due|minimum due/i.test(subject + content)) return null;
+    // Must be an actual statement or bill alert
+    if (!/statement|bill|due|outstanding/i.test(subject)) return null;
 
-    const banks = ['HDFC', 'ICICI', 'SBI', 'AXIS', 'AMEX', 'ONECARD', 'HSBC', 'KOTAK', 'CITI', 'INDUSIND', 'IDFC', 'RBL', 'YES BANK', 'SCB', 'FEDERAL', 'DBS'];
+    const banks = ['HDFC', 'ICICI', 'SBI', 'AXIS', 'AMEX', 'ONECARD', 'HSBC', 'KOTAK', 'CITI', 'INDUSIND', 'IDFC', 'RBL', 'YES BANK', 'FEDERAL', 'DBS', 'STANDARD CHARTERED'];
     const bankName = banks.find(b => new RegExp(b, 'i').test(subject + content)) || 'Financial Institution';
 
-    const totalAmountRegex = /(?:Total Amount Due|Outstanding|Amount Due|Total Payable|Current Outstanding|Total Bill)\s*(?::)?\s*(?:Rs\.?|INR|₹)?\s*([\d,]+\.?\d*)/i;
-    const minAmountRegex = /(?:Minimum Amount Due|Min Due|Minimum Payable|Min Amount)\s*(?::)?\s*(?:Rs\.?|INR|₹)?\s*([\d,]+\.?\d*)/i;
+    const totalAmountRegex = /(?:Total Amount Due|Outstanding|Amount Due|Total Payable|Current Outstanding|Total Bill)\s*(?::)?\s*(?:Rs\.?|INR|₹)?\s*([\d,]+\.\d{2})/i;
+    const minAmountRegex = /(?:Minimum Amount Due|Min Due|Minimum Payable|Min Amount)\s*(?::)?\s*(?:Rs\.?|INR|₹)?\s*([\d,]+\.\d{2})/i;
     
     const totalMatch = content.match(totalAmountRegex);
     const minMatch = content.match(minAmountRegex);
@@ -191,20 +189,26 @@ class GmailService {
     const content = this.getFullContent(message);
     const subject = this.getHeader(message, 'Subject');
     
-    if (!/order|delivery|shipment|tracking|invoice|receipt|amazon|flipkart|myntra|ajio|meesho|order confirmation/i.test(subject + content)) return null;
+    // Require specific shopping transaction intent
+    if (!/order confirmation|shipped|delivery|invoice|receipt/i.test(subject.toLowerCase())) return null;
+
+    const priceRegex = /(?:Total|Amount Paid|Order Total|Grand Total|Payable|Invoice Amount)\s*:?\s*(?:Rs\.?|INR|₹)?\s*([\d,]+\.\d{2})/i;
+    const priceMatch = content.match(priceRegex);
+    
+    // IF PRICE IS 0 OR MISSING, IT'S PROBABLY A NEWSLETTER - FILTER IT OUT
+    if (!priceMatch) return null;
+    const price = parseFloat(priceMatch[1].replace(/,/g, ''));
+    if (price <= 0) return null;
 
     const merchant = this.extractPlatform(this.getHeader(message, 'From'), subject, content);
 
-    const orderIdRegex = /(?:Order ID|Order #|Reference|Transaction ID|Invoice #|Receipt ID|Tracking #)\s*:?\s*([A-Z0-9-]+)/i;
+    const orderIdRegex = /(?:Order ID|Order #|Reference|Transaction ID|Invoice #|Receipt ID)\s*:?\s*([A-Z0-9-]+)/i;
     const orderIdMatch = content.match(orderIdRegex);
-
-    const priceRegex = /(?:Total|Amount Paid|Order Total|Grand Total|Payable|Invoice Amount)\s*:?\s*(?:Rs\.?|INR|₹)?\s*([\d,]+\.?\d*)/i;
-    const priceMatch = content.match(priceRegex);
 
     return {
       item_name: subject.replace(/Order confirmation:|Your order has shipped:|Thank you for your order|Order details:|Invoice for your order/gi, '').trim(),
       merchant,
-      price: priceMatch ? parseFloat(priceMatch[1].replace(/,/g, '')) : 0,
+      price,
       order_date: new Date(this.getHeader(message, 'Date') || Date.now()).toISOString().split('T')[0],
       order_id: orderIdMatch ? orderIdMatch[1] : 'N/A',
       source_mail_id: message.id
@@ -216,21 +220,23 @@ class GmailService {
     const content = this.getFullContent(message);
     const subject = this.getHeader(message, 'Subject');
     
-    if (!/welcome to|statement|credit card|your card|limit|card approved/i.test(subject + content)) return null;
+    // Must be a specific "Your card is here" or statement email
+    if (!/welcome to|your card|card ending|limit|approved|statement/i.test(subject.toLowerCase() + content.toLowerCase())) return null;
 
     const banks = ['HDFC', 'ICICI', 'SBI', 'AXIS', 'AMEX', 'ONECARD', 'HSBC', 'KOTAK', 'CITI', 'INDUSIND', 'IDFC', 'RBL', 'YES BANK', 'FEDERAL'];
     const bankName = banks.find(b => new RegExp(b, 'i').test(subject + content));
     if (!bankName) return null;
 
+    const lastFourMatch = content.match(/(?:card ending in|card|x{4,}|[*]{4,})\s*(\d{4})/i);
+    if (!lastFourMatch) return null; // Don't add generic "Credit Card" entries
+
     const cardNames = ['Millennia', 'Regalia', 'Infinia', 'Amazon Pay', 'Coral', 'Rubyx', 'Sapphiro', 'Elite', 'Prime', 'ACE', 'Flipkart', 'Airtel', 'Platinum', 'Vistara', 'InterMiles'];
     const cardName = cardNames.find(c => new RegExp(c, 'i').test(content + subject)) || 'Credit Card';
-
-    const lastFourMatch = content.match(/(?:card ending in|card|x{4,}|[*]{4,})\s*(\d{4})/i);
 
     return {
       bank_name: bankName,
       card_name: cardName,
-      last_four: lastFourMatch ? lastFourMatch[1] : 'XXXX',
+      last_four: lastFourMatch[1],
       source_mail_id: message.id
     };
   }
@@ -240,28 +246,33 @@ class GmailService {
     const content = this.getFullContent(message);
     const subject = this.getHeader(message, 'Subject');
     
-    if (!/application|apply|request|status|rejection|accepted|rejected|declined/i.test(subject + content)) return null;
-
-    const banks = ['HDFC', 'ICICI', 'SBI', 'AXIS', 'AMEX', 'ONECARD', 'HSBC', 'KOTAK', 'CITI', 'INDUSIND', 'IDFC', 'RBL', 'FEDERAL'];
-    const bankName = banks.find(b => new RegExp(b, 'i').test(subject + content)) || 'Financial Institution';
-
-    let status: 'successful' | 'rejected' | 'pending' = 'pending';
+    // Status must be very explicit
     const text = (subject + content).toLowerCase();
+    let status: 'successful' | 'rejected' | 'pending' | null = null;
     
     if (/approved|congratulations|success|ready to use|welcome|accepted/i.test(text)) status = 'successful';
     else if (/regret|rejected|declined|not able to|unable to|rejection/i.test(text)) status = 'rejected';
     else if (/process|pending|received|verification|review|submitted/i.test(text)) status = 'pending';
 
-    const appIdMatch = content.match(/(?:Application|Ref|Reference)\s*(?:ID|Number|#)?\s*:?\s*([A-Z0-9-]+)/i);
+    if (!status) return null;
+
+    const banks = ['HDFC', 'ICICI', 'SBI', 'AXIS', 'AMEX', 'ONECARD', 'HSBC', 'KOTAK', 'CITI', 'INDUSIND', 'IDFC', 'RBL', 'FEDERAL'];
+    const bankName = banks.find(b => new RegExp(b, 'i').test(subject + content)) || 'Financial Institution';
+
+    // Must find a real ID, not a snippet
+    const appIdMatch = content.match(/(?:Application|Ref|Reference)\s*(?:ID|Number|#)?\s*:?\s*([A-Z0-9-]{5,})/i);
+    if (!appIdMatch && status === 'pending') return null; // Ignore vague pending requests
 
     return {
       bank_name: bankName,
       card_name: 'Credit Card',
       status,
-      application_id: appIdMatch ? appIdMatch[1] : 'N/A',
+      application_id: appIdMatch ? appIdMatch[1] : 'TRACKING-' + message.id.substring(0, 8).toUpperCase(),
       application_date: new Date(this.getHeader(message, 'Date') || Date.now()).toISOString().split('T')[0],
       source_mail_id: message.id
     };
+  }
+   };
   }
 
   // --- UTILS ---
