@@ -3,7 +3,8 @@ import { motion, AnimatePresence } from 'motion/react';
 import { 
     CreditCard, Mail, Receipt, Wallet, Store, 
     Gift, Zap, Sparkles, Users, User, 
-    LogOut, ChevronLeft, Menu, Bell
+    LogOut, ChevronLeft, Menu, Bell, ChevronDown,
+    LayoutGrid, Calculator, ArrowRightLeft
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useSupabase } from '../SupabaseProvider';
@@ -13,8 +14,16 @@ import MyCards from './MyCards';
 import ReferralDashboard from './ReferralDashboard';
 import AccountSettings from './AccountSettings';
 
+const EXPLORE_ITEMS = [
+    { id: 'categories', label: 'Categories', icon: LayoutGrid, path: '/categories' },
+    { id: 'tools', label: 'Free Tools', icon: Calculator, path: '/free-tools' },
+    { id: 'compare', label: 'Compare', icon: ArrowRightLeft, path: '/compare' },
+];
+
 const NAV_ITEMS = [
     { id: 'cards', label: 'Saved Cards', icon: CreditCard },
+    { id: 'explore', label: 'Explore', icon: Sparkles, subItems: EXPLORE_ITEMS },
+    { id: 'tools_hub', label: 'Tools', icon: Calculator, comingSoon: true },
     { id: 'expenses', label: 'Expenses', icon: Receipt, comingSoon: true },
     { id: 'bills', label: 'Bills', icon: Wallet, comingSoon: true },
     { id: 'extension', label: 'Extension', icon: Zap, comingSoon: true },
@@ -30,6 +39,7 @@ const DashboardLayout: React.FC = () => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('cards');
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [isExploreExpanded, setIsExploreExpanded] = useState(false);
 
     const handleLogout = async () => {
         await supabase.auth.signOut();
@@ -82,27 +92,65 @@ const DashboardLayout: React.FC = () => {
                     </motion.div>
 
                     {/* Nav Items */}
-                    <nav className="flex-1 space-y-3">
+                    <nav className="flex-1 space-y-3 dashboard-scroll overflow-y-auto pr-2">
                         {NAV_ITEMS.map((item, idx) => (
-                            <motion.button 
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: idx * 0.05 }}
-                                key={item.id}
-                                onClick={() => setActiveTab(item.id)}
-                                className={`w-full flex items-center gap-5 px-5 py-5 rounded-[1.5rem] transition-all group relative overflow-hidden ${activeTab === item.id ? 'bg-white text-black shadow-2xl shadow-white/5' : 'text-white/30 hover:bg-white/5 hover:text-white'}`}
-                            >
-                                <item.icon size={22} className={`${activeTab === item.id ? 'text-black' : 'group-hover:scale-110 transition-transform duration-500'}`} />
-                                {isSidebarOpen && (
-                                    <div className="flex flex-col items-start">
-                                        <span className="text-[11px] font-black uppercase tracking-[0.2em]">{item.label}</span>
-                                        {item.comingSoon && <span className="text-[7px] opacity-40 uppercase tracking-[0.3em] mt-0.5">Development</span>}
-                                    </div>
-                                )}
-                                {activeTab === item.id && (
-                                    <motion.div layoutId="nav-glow" className="absolute inset-0 bg-gradient-to-r from-transparent via-black/5 to-transparent animate-glass-shine" />
-                                )}
-                            </motion.button>
+                            <div key={item.id}>
+                                <motion.button 
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: idx * 0.05 }}
+                                    onClick={() => {
+                                        if (item.subItems) {
+                                            setIsExploreExpanded(!isExploreExpanded);
+                                        } else {
+                                            setActiveTab(item.id);
+                                        }
+                                    }}
+                                    className={`w-full flex items-center gap-5 px-5 py-5 rounded-[1.5rem] transition-all group relative overflow-hidden ${activeTab === item.id ? 'bg-white text-black shadow-2xl shadow-white/5' : 'text-white/30 hover:bg-white/5 hover:text-white'}`}
+                                >
+                                    <item.icon size={22} className={`${activeTab === item.id ? 'text-black' : 'group-hover:scale-110 transition-transform duration-500'}`} />
+                                    {isSidebarOpen && (
+                                        <div className="flex flex-1 items-center justify-between">
+                                            <div className="flex flex-col items-start text-left">
+                                                <span className="text-[11px] font-black uppercase tracking-[0.2em]">{item.label}</span>
+                                                {item.comingSoon && <span className="text-[7px] opacity-40 uppercase tracking-[0.3em] mt-0.5">Development</span>}
+                                            </div>
+                                            {item.subItems && (
+                                                <ChevronDown 
+                                                    size={14} 
+                                                    className={`transition-transform duration-500 ${isExploreExpanded ? 'rotate-180' : ''}`} 
+                                                />
+                                            )}
+                                        </div>
+                                    )}
+                                    {activeTab === item.id && (
+                                        <motion.div layoutId="nav-glow" className="absolute inset-0 bg-gradient-to-r from-transparent via-black/5 to-transparent animate-glass-shine" />
+                                    )}
+                                </motion.button>
+
+                                {/* Sub Items */}
+                                <AnimatePresence>
+                                    {item.subItems && isExploreExpanded && isSidebarOpen && (
+                                        <motion.div 
+                                            initial={{ height: 0, opacity: 0 }}
+                                            animate={{ height: 'auto', opacity: 1 }}
+                                            exit={{ height: 0, opacity: 0 }}
+                                            className="overflow-hidden mt-2 ml-6 space-y-1"
+                                        >
+                                            {item.subItems.map((sub) => (
+                                                <button
+                                                    key={sub.id}
+                                                    onClick={() => navigate(sub.path)}
+                                                    className="w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-white/30 hover:bg-white/5 hover:text-clay transition-all group/sub"
+                                                >
+                                                    <sub.icon size={16} className="group-hover/sub:scale-110 transition-transform" />
+                                                    <span className="text-[10px] font-black uppercase tracking-[0.2em]">{sub.label}</span>
+                                                </button>
+                                            ))}
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </div>
                         ))}
                     </nav>
 
