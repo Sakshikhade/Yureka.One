@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
-    Mail, Shield, RefreshCw, CheckCircle, 
+    Mail, ShieldCheck, RefreshCw, CheckCircle, 
     ArrowRight, AlertCircle, ShoppingBag, 
     CreditCard, Receipt, Loader2, Link as LinkIcon
 } from 'lucide-react';
