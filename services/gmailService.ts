@@ -104,10 +104,10 @@ class GmailService {
     if (isNaN(amount) || amount === 0) return null;
 
     // Platform/Merchant Detection
-    const merchantKeywords = ['at', 'to', 'from', 'paid to', 'spent on', 'info:', 'merchant:', 'billed by'];
     let merchant = this.extractPlatform(from, subject, content);
     
     if (merchant === 'Unknown') {
+      const merchantKeywords = ['at', 'to', 'from', 'paid to', 'spent on', 'info:', 'merchant:', 'billed by'];
       for (const kw of merchantKeywords) {
         const mRegex = new RegExp(`${kw}\\s+([^\\s.,\r\n]+(?:\\s+[^\\s.,\r\n]+){0,2})`, 'i');
         const mMatch = content.match(mRegex);
@@ -255,9 +255,9 @@ class GmailService {
     const detected = platforms.find(p => new RegExp(p, 'i').test(text));
     if (detected) return detected;
 
-    const fromMatch = from.match(/<([^@]+)@/);
+    const fromMatch = from.match(/@([^.]+)\./);
     if (fromMatch) {
-      const domain = fromMatch[1].split('.').pop();
+      const domain = fromMatch[1];
       if (domain && domain.length > 2) return domain.charAt(0).toUpperCase() + domain.slice(1);
     }
     
@@ -276,14 +276,27 @@ class GmailService {
       const part = parts.shift();
       if (part.parts) parts.push(...part.parts);
       if (part.body && part.body.data) {
-        try {
-          content += atob(part.body.data.replace(/-/g, '+').replace(/_/g, '/'));
-        } catch (e) {
-          // Ignore decode errors
-        }
+        content += this.decodeBase64(part.body.data);
       }
     }
     return content;
+  }
+
+  private decodeBase64(data: string) {
+    const base64 = data.replace(/-/g, '+').replace(/_/g, '/');
+    const pad = base64.length % 4;
+    const padded = pad ? base64 + '='.repeat(4 - pad) : base64;
+    try {
+      const binString = atob(padded);
+      const bytes = Uint8Array.from(binString, (m) => m.codePointAt(0)!);
+      return new TextDecoder().decode(bytes);
+    } catch (e) {
+      try {
+        return atob(padded);
+      } catch (err) {
+        return '';
+      }
+    }
   }
 }
 

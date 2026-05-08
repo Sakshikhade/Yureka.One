@@ -101,76 +101,95 @@ const MailSync: React.FC = () => {
 
         try {
             setScanStatus('Analyzing 6M Financial Traffic...');
-            const messages = await gmailService.fetchMessages(`subject:(receipt OR order OR payment OR "paid to" OR invoice OR shipping OR tracking) after:${dateStr}`, 50);
+            const messages = await gmailService.fetchMessages(`(receipt OR order OR payment OR "paid to" OR invoice OR shipping OR tracking) after:${dateStr}`, 50);
             const fetchedTransactions: any[] = [];
             
             if (messages.length > 0) {
-                for (let i = 0; i < messages.length; i++) {
-                    try {
-                        const details = await gmailService.getMessageDetails(messages[i].id);
+                const batchSize = 10;
+                for (let i = 0; i < messages.length; i += batchSize) {
+                    const batch = messages.slice(i, i + batchSize);
+                    const detailsBatch = await Promise.all(
+                        batch.map(m => gmailService.getMessageDetails(m.id).catch(e => {
+                            console.warn(`Failed to fetch ${m.id}:`, e);
+                            return null;
+                        }))
+                    );
+
+                    for (const details of detailsBatch) {
+                        if (!details) continue;
                         const parsed = gmailService.parseTransaction(details);
                         if (parsed) fetchedTransactions.push(parsed);
-                        setScanProgress(5 + Math.floor((i / messages.length) * 20));
-                    } catch (e) {
-                        console.warn(`Failed to parse transaction ${messages[i].id}:`, e);
                     }
+                    setScanProgress(5 + Math.min(20, Math.floor(((i + batchSize) / messages.length) * 20)));
                 }
             }
             setScanProgress(25);
 
             setScanStatus('Detecting Card Ecosystem...');
-            const billMessages = await gmailService.fetchMessages(`subject:(statement OR bill OR due OR welcome OR card OR outstanding OR "minimum due") after:${dateStr}`, 40);
+            const billMessages = await gmailService.fetchMessages(`(statement OR bill OR due OR welcome OR card OR outstanding OR "minimum due") after:${dateStr}`, 40);
             const fetchedBills: any[] = [];
             const fetchedOwnedCards: any[] = [];
             
             if (billMessages.length > 0) {
-                for (let i = 0; i < billMessages.length; i++) {
-                    try {
-                        const details = await gmailService.getMessageDetails(billMessages[i].id);
+                const batchSize = 10;
+                for (let i = 0; i < billMessages.length; i += batchSize) {
+                    const batch = billMessages.slice(i, i + batchSize);
+                    const detailsBatch = await Promise.all(
+                        batch.map(m => gmailService.getMessageDetails(m.id).catch(() => null))
+                    );
+
+                    for (const details of detailsBatch) {
+                        if (!details) continue;
                         const bill = gmailService.parseBill(details);
                         const card = gmailService.parseOwnedCard(details);
                         if (bill) fetchedBills.push(bill);
                         if (card) fetchedOwnedCards.push(card);
-                        setScanProgress(25 + Math.floor((i / billMessages.length) * 25));
-                    } catch (e) {
-                        console.warn(`Failed to parse bill/card ${billMessages[i].id}:`, e);
                     }
+                    setScanProgress(25 + Math.min(25, Math.floor(((i + batchSize) / billMessages.length) * 25)));
                 }
             }
             setScanProgress(50);
 
             setScanStatus('Scanning Applications...');
-            const appMessages = await gmailService.fetchMessages(`subject:(application OR status OR reference OR rejection OR accepted OR rejected) after:${dateStr}`, 20);
+            const appMessages = await gmailService.fetchMessages(`(application OR status OR reference OR rejection OR accepted OR rejected) after:${dateStr}`, 20);
             const fetchedApps: any[] = [];
             
             if (appMessages.length > 0) {
-                for (let i = 0; i < appMessages.length; i++) {
-                    try {
-                        const details = await gmailService.getMessageDetails(appMessages[i].id);
+                const batchSize = 10;
+                for (let i = 0; i < appMessages.length; i += batchSize) {
+                    const batch = appMessages.slice(i, i + batchSize);
+                    const detailsBatch = await Promise.all(
+                        batch.map(m => gmailService.getMessageDetails(m.id).catch(() => null))
+                    );
+
+                    for (const details of detailsBatch) {
+                        if (!details) continue;
                         const app = gmailService.parseCardApplication(details);
                         if (app) fetchedApps.push(app);
-                        setScanProgress(50 + Math.floor((i / appMessages.length) * 20));
-                    } catch (e) {
-                        console.warn(`Failed to parse application ${appMessages[i].id}:`, e);
                     }
+                    setScanProgress(50 + Math.min(20, Math.floor(((i + batchSize) / appMessages.length) * 20)));
                 }
             }
             setScanProgress(70);
 
             setScanStatus('Harvesting Shopping Data...');
-            const shopMessages = await gmailService.fetchMessages(`subject:(order OR "delivery of" OR shipment OR tracking OR invoice) after:${dateStr}`, 40);
+            const shopMessages = await gmailService.fetchMessages(`(order OR "delivery of" OR shipment OR tracking OR invoice) after:${dateStr}`, 40);
             const fetchedOrders: any[] = [];
             
             if (shopMessages.length > 0) {
-                for (let i = 0; i < shopMessages.length; i++) {
-                    try {
-                        const details = await gmailService.getMessageDetails(shopMessages[i].id);
+                const batchSize = 10;
+                for (let i = 0; i < shopMessages.length; i += batchSize) {
+                    const batch = shopMessages.slice(i, i + batchSize);
+                    const detailsBatch = await Promise.all(
+                        batch.map(m => gmailService.getMessageDetails(m.id).catch(() => null))
+                    );
+
+                    for (const details of detailsBatch) {
+                        if (!details) continue;
                         const order = gmailService.parseShoppingOrder(details);
                         if (order) fetchedOrders.push(order);
-                        setScanProgress(70 + Math.floor((i / shopMessages.length) * 20));
-                    } catch (e) {
-                        console.warn(`Failed to parse shop order ${shopMessages[i].id}:`, e);
                     }
+                    setScanProgress(70 + Math.min(20, Math.floor(((i + batchSize) / shopMessages.length) * 20)));
                 }
             }
             setScanProgress(90);
