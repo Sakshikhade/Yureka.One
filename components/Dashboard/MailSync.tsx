@@ -228,13 +228,13 @@ const MailSync: React.FC = () => {
             
             await Promise.all(savePromises);
 
-            setResults({
-                transactions: [...fetchedTransactions.slice(0, 10), ...results.transactions.filter(t => !fetchedTransactions.find(ft => ft.source_mail_id === t.source_mail_id))].slice(0, 10),
-                bills: [...fetchedBills, ...results.bills.filter(b => !fetchedBills.find(fb => fb.source_mail_id === b.source_mail_id))],
-                orders: [...fetchedOrders.slice(0, 10), ...results.orders.filter(o => !fetchedOrders.find(fo => fo.source_mail_id === o.source_mail_id))].slice(0, 10),
-                ownedCards: [...fetchedOwnedCards, ...results.ownedCards.filter(c => !fetchedOwnedCards.find(fc => fc.source_mail_id === c.source_mail_id))],
-                applications: [...fetchedApps, ...results.applications.filter(a => !fetchedApps.find(fa => fa.source_mail_id === a.source_mail_id))]
-            });
+            setResults(prev => ({
+                transactions: [...fetchedTransactions.slice(0, 10), ...prev.transactions.filter(t => !fetchedTransactions.find(ft => ft.source_mail_id === t.source_mail_id))].slice(0, 10),
+                bills: [...fetchedBills, ...prev.bills.filter(b => !fetchedBills.find(fb => fb.source_mail_id === b.source_mail_id))],
+                orders: [...fetchedOrders.slice(0, 10), ...prev.orders.filter(o => !fetchedOrders.find(fo => fo.source_mail_id === o.source_mail_id))].slice(0, 10),
+                ownedCards: [...fetchedOwnedCards, ...prev.ownedCards.filter(c => !fetchedOwnedCards.find(fc => fc.source_mail_id === c.source_mail_id))],
+                applications: [...fetchedApps, ...prev.applications.filter(a => !fetchedApps.find(fa => fa.source_mail_id === a.source_mail_id))]
+            }));
             setScanProgress(100);
             setScanStatus(`Sync Complete: ${totalItemsFound} items found`);
             if (totalItemsFound === 0 && !isSilent) {
@@ -409,6 +409,24 @@ const MailSync: React.FC = () => {
                         </div>
                         <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-[10px] font-black text-white/20">{results.transactions.length}</div>
                     </div>
+                    <div className="mb-8 p-6 glass-dark rounded-2xl border border-white/5">
+                        <div className="flex items-end gap-2 mb-4">
+                            <div className="flex-1 h-20 bg-white/5 rounded-lg relative overflow-hidden">
+                                <motion.div initial={{ height: 0 }} animate={{ height: '60%' }} className="absolute bottom-0 left-0 right-0 bg-clay/20" />
+                            </div>
+                            <div className="flex-1 h-32 bg-white/5 rounded-lg relative overflow-hidden">
+                                <motion.div initial={{ height: 0 }} animate={{ height: '85%' }} className="absolute bottom-0 left-0 right-0 bg-clay/40" />
+                            </div>
+                            <div className="flex-1 h-24 bg-white/5 rounded-lg relative overflow-hidden">
+                                <motion.div initial={{ height: 0 }} animate={{ height: '40%' }} className="absolute bottom-0 left-0 right-0 bg-clay/10" />
+                            </div>
+                            <div className="flex-1 h-40 bg-white/5 rounded-lg relative overflow-hidden">
+                                <motion.div initial={{ height: 0 }} animate={{ height: '100%' }} className="absolute bottom-0 left-0 right-0 bg-clay" />
+                            </div>
+                        </div>
+                        <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20 text-center">Neural Distribution Analysis</p>
+                    </div>
+
                     <div className="space-y-4">
                         {results.transactions.map((t, i) => (
                             <div key={i} className="flex items-center justify-between p-5 glass-card rounded-2xl hover:scale-[1.02]">
@@ -425,7 +443,7 @@ const MailSync: React.FC = () => {
                 <div className="glass-card rounded-[2.5rem] p-10 border-clay/10">
                     <div className="flex items-center justify-between mb-10">
                         <div className="flex items-center gap-4">
-                            <Shield className="text-clay" size={24} />
+                            <ShieldCheck className="text-clay" size={24} />
                             <h3 className="text-xl italic text-white font-black">Card Liability</h3>
                         </div>
                         <div className="w-8 h-8 rounded-full bg-clay/10 flex items-center justify-center text-[10px] font-black text-clay">{results.bills.length}</div>
