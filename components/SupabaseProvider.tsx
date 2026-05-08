@@ -63,16 +63,13 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [syncStatus, setSyncStatus] = useState<'connected' | 'reconnecting' | 'error'>('connected');
   const [isLoading, setIsLoading] = useState(true);
   const [isAdminDataLoaded, setIsAdminDataLoaded] = useState(false);
+  const isInitialLoad = useRef(true);
 
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
 
   // Force a manual re-sync by triggering the standalone fetchers
   const refreshAll = useCallback(async () => {
-    // Only set loading if we don't have any data yet
-    const hasData = cards.length > 0 || blogs.length > 0;
-    if (!hasData) setIsLoading(true);
-    
     try {
       if (isAdminRoute) {
         const [c, b, r, w, t, l] = await Promise.all([
@@ -106,7 +103,7 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     } finally {
       setIsLoading(false);
     }
-  }, [isAdminRoute, cards.length, blogs.length]);
+  }, [isAdminRoute]);
 
   useEffect(() => {
     let subs: Array<() => void> = [];
@@ -117,9 +114,10 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
     const setup = async () => {
       console.log('⚡️ SupabaseProvider setup initiated');
-      // Only set loading if we don't have any data yet
-      const hasData = cards.length > 0 || blogs.length > 0;
-      if (!hasData) setIsLoading(true);
+      // Only set loading if this is the absolute first mount and we have no data
+      if (isInitialLoad.current && cards.length === 0) {
+        setIsLoading(true);
+      }
       try {
         if (isAdminRoute) {
           console.log('⚡️ Admin route detected. Fetching session...');
@@ -182,6 +180,7 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       } finally {
         console.log('⚡️ SupabaseProvider setup complete.');
         setIsLoading(false);
+        isInitialLoad.current = false;
         clearTimeout(fallbackTimer);
       }
     };

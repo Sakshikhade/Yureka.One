@@ -94,7 +94,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
   const { currentUserStatus, isLoading } = useSupabase();
   const location = useLocation();
 
-  if (isLoading) {
+  if (isLoading && currentUserStatus === 'loading') {
     return (
       <div className="fixed inset-0 bg-cream flex items-center justify-center">
         <Loader2 className="animate-spin text-clay" size={48} />
