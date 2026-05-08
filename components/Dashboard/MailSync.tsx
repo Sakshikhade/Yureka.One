@@ -105,9 +105,7 @@ const MailSync: React.FC = () => {
             return;
         }
 
-        const sixMonthsAgo = new Date();
-        sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
-    const startScan = async (isSilent = false) => {
+        gmailService.setToken(token);
         if (!isSilent) setIsScanning(true);
         setError(null);
         setScanProgress(5);
