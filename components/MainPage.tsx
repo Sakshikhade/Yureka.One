@@ -46,12 +46,6 @@ const MainPage: React.FC = () => {
       />
       
       <div className="bg-cream min-h-screen selection:bg-clay/30">
-
-        {/* FULL-WIDTH HERO — outside the column grid for immersive edge-to-edge design */}
-        <Suspense fallback={<SkeletonHero />}>
-            <Hero />
-        </Suspense>
-
         {/* EDITORIAL 5-COLUMN ARCHITECTURE */}
         <div className="grid grid-cols-1 lg:grid-cols-5 w-full relative">
             
@@ -61,6 +55,10 @@ const MainPage: React.FC = () => {
             {/* COLUMNS 2, 3, 4: THE INTELLIGENCE CORE (60% WIDTH) */}
             <div className="col-span-1 lg:col-span-3 flex flex-col items-stretch relative z-10 min-w-0">
                 
+                <Suspense fallback={<SkeletonHero />}>
+                    <Hero />
+                </Suspense>
+
                 {/* Blue partner logo strip — immediately after hero headline */}
                 <Suspense fallback={<div className="h-16 bg-[#1a3fcb] animate-pulse" />}>
                     <PartnerLogos />

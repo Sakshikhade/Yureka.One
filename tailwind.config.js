@@ -10,13 +10,6 @@ export default {
         cream: '#0a0a0a', 
         ink: 'rgba(255, 255, 255, 0.9)',   
         clay: '#34d399',  
-        purple: {
-          light: '#a78bfa',
-          DEFAULT: '#8b5cf6',
-          dark: '#5b21b6',
-          deep: '#1e1b4b',
-          glow: 'rgba(139, 92, 246, 0.3)',
-        }
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
