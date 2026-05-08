@@ -244,21 +244,6 @@ const MailSync: React.FC = () => {
             } else {
                 setError('SCAN_ERROR');
             }
-            setScanProgress(100);
-            setScanStatus(`Sync Complete: ${totalItemsFound} items found`);
-            if (totalItemsFound === 0 && !isSilent) {
-                setError('NO_DATA_FOUND');
-            }
-        } catch (err: any) {
-            console.error('Scan failed:', err);
-            if (err.name === 'AbortError') {
-                setScanStatus('Connection Timeout');
-                setError('SCAN_TIMEOUT');
-            } else if (err.message === 'OAUTH_EXPIRED') {
-                setError('LINK_EXPIRED');
-            } else {
-                setError('SCAN_ERROR');
-            }
         } finally {
             setTimeout(() => {
                 setIsScanning(false);
