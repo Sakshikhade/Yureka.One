@@ -69,7 +69,10 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   // Force a manual re-sync by triggering the standalone fetchers
   const refreshAll = useCallback(async () => {
-    setIsLoading(true);
+    // Only set loading if we don't have any data yet
+    const hasData = cards.length > 0 || blogs.length > 0;
+    if (!hasData) setIsLoading(true);
+    
     try {
       if (isAdminRoute) {
         const [c, b, r, w, t, l] = await Promise.all([
@@ -103,7 +106,7 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     } finally {
       setIsLoading(false);
     }
-  }, [isAdminRoute]);
+  }, [isAdminRoute, cards.length, blogs.length]);
 
   useEffect(() => {
     let subs: Array<() => void> = [];
@@ -114,7 +117,9 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
     const setup = async () => {
       console.log('⚡️ SupabaseProvider setup initiated');
-      setIsLoading(true);
+      // Only set loading if we don't have any data yet
+      const hasData = cards.length > 0 || blogs.length > 0;
+      if (!hasData) setIsLoading(true);
       try {
         if (isAdminRoute) {
           console.log('⚡️ Admin route detected. Fetching session...');
