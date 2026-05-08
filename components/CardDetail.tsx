@@ -65,8 +65,8 @@ const CardDetail: React.FC = () => {
                 <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-clay mb-6">404 Card Not Found</p>
                 <h1 className="text-5xl font-heading font-extrabold text-white mb-4 tracking-tight uppercase">Credit Card Not Found</h1>
                 <p className="text-white/60 mb-10 max-w-md font-serif italic text-lg leading-relaxed">The credit card you are looking for may have been delisted or archived.</p>
-                <Link to={`${basePath}/cards`} className="bg-white text-[#0f0f0f] px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-clay hover:text-white transition-all">
-                    Return to Cards
+                <Link to={`${basePath}/card-explorer`} className="bg-white text-[#0f0f0f] px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-clay hover:text-white transition-all">
+                    Return to Explorer
                 </Link>
             </div>
         );
@@ -84,7 +84,7 @@ const CardDetail: React.FC = () => {
             {/* ── TOP NAV ── */}
             <div className="sticky top-[104px] md:top-20 z-[45] bg-[#0f0f0f]/90 backdrop-blur-xl border-b border-white/5">
                 <div className="max-w-[1200px] mx-auto px-6 h-16 flex items-center justify-between">
-                    <Link to={`${basePath}/cards`} className="flex items-center gap-2 text-white/60 hover:text-clay transition-colors group text-[10px] font-bold uppercase tracking-widest">
+                    <Link to={`${basePath}/card-explorer`} className="flex items-center gap-2 text-white/60 hover:text-clay transition-colors group text-[10px] font-bold uppercase tracking-widest">
                         <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
                         Card Explorer
                     </Link>
@@ -321,7 +321,7 @@ const CardDetail: React.FC = () => {
                             <a href={card.apply_link || "#"} className="bg-white text-black px-12 py-5 rounded-full font-bold uppercase tracking-widest text-[11px] hover:bg-slate-900 hover:text-white transition-all shadow-2xl">
                                 Apply Now
                             </a>
-                            <Link to="/join-waitlist" className="bg-black/10 border border-white/20 text-white px-12 py-5 rounded-full font-bold uppercase tracking-widest text-[11px] hover:bg-white/5 transition-all">
+                            <Link to={`${basePath}/join-waitlist`} className="bg-black/10 border border-white/20 text-white px-12 py-5 rounded-full font-bold uppercase tracking-widest text-[11px] hover:bg-white/5 transition-all">
                                 Get Early Access
                             </Link>
                         </div>

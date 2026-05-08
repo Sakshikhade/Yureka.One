@@ -25,23 +25,23 @@ import YurekaAIPage from '../YurekaAIPage';
 import WaitlistPage from '../WaitlistPage';
 
 const EXPLORE_ITEMS = [
-    { id: 'categories', label: 'Categories', icon: LayoutGrid, path: 'categories' },
-    { id: 'tools', label: 'Free Tools', icon: Calculator, path: 'tools' },
-    { id: 'compare', label: 'Compare', icon: ArrowRightLeft, path: 'compare' },
-    { id: 'card-explorer', label: 'Card Explorer', icon: Compass, path: 'card-explorer' },
+    { id: 'categories', label: 'Categories', icon: LayoutGrid, path: '/dashboard/categories' },
+    { id: 'tools', label: 'Free Tools', icon: Calculator, path: '/dashboard/tools' },
+    { id: 'compare', label: 'Compare', icon: ArrowRightLeft, path: '/dashboard/compare' },
+    { id: 'card-explorer', label: 'Card Explorer', icon: Compass, path: '/dashboard/card-explorer' },
 ];
 
 const NAV_ITEMS = [
-    { id: 'cards', label: 'Saved Cards', icon: CreditCard, path: 'cards' },
+    { id: 'cards', label: 'Saved Cards', icon: CreditCard, path: '/dashboard/cards' },
     { id: 'explore', label: 'Explore', icon: Sparkles, subItems: EXPLORE_ITEMS },
-    { id: 'expenses', label: 'Expenses', icon: Receipt, comingSoon: true, path: 'expenses' },
-    { id: 'bills', label: 'Bills', icon: Wallet, comingSoon: true, path: 'bills' },
-    { id: 'extension', label: 'Extension', icon: Zap, comingSoon: true, path: 'extension' },
-    { id: 'store', label: 'Store', icon: Store, comingSoon: true, path: 'store' },
-    { id: 'giftcards', label: 'GiftCards', icon: Gift, comingSoon: true, path: 'giftcards' },
-    { id: 'redemption', label: 'Redemption', icon: Sparkles, comingSoon: true, path: 'redemption' },
-    { id: 'referrals', label: 'Referral Dashboard', icon: Users, path: 'referrals' },
-    { id: 'profile', label: 'Profile', icon: User, path: 'profile' },
+    { id: 'expenses', label: 'Expenses', icon: Receipt, comingSoon: true, path: '/dashboard/expenses' },
+    { id: 'bills', label: 'Bills', icon: Wallet, comingSoon: true, path: '/dashboard/bills' },
+    { id: 'extension', label: 'Extension', icon: Zap, comingSoon: true, path: '/dashboard/extension' },
+    { id: 'store', label: 'Store', icon: Store, comingSoon: true, path: '/dashboard/store' },
+    { id: 'giftcards', label: 'GiftCards', icon: Gift, comingSoon: true, path: '/dashboard/giftcards' },
+    { id: 'redemption', label: 'Redemption', icon: Sparkles, comingSoon: true, path: '/dashboard/redemption' },
+    { id: 'referrals', label: 'Referral Dashboard', icon: Users, path: '/dashboard/referrals' },
+    { id: 'profile', label: 'Profile', icon: User, path: '/dashboard/profile' },
 ];
 
 const DashboardLayout: React.FC = () => {
@@ -52,8 +52,8 @@ const DashboardLayout: React.FC = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [isExploreExpanded, setIsExploreExpanded] = useState(false);
 
-    const activeTab = NAV_ITEMS.find(i => location.pathname.includes(`/dashboard/${i.path}`))?.id || 
-                      EXPLORE_ITEMS.find(i => location.pathname.includes(`/dashboard/${i.path}`))?.id || 'cards';
+    const activeTab = NAV_ITEMS.find(i => i.path && (location.pathname === i.path || location.pathname.startsWith(i.path + '/')))?.id || 
+                      EXPLORE_ITEMS.find(i => i.path && (location.pathname === i.path || location.pathname.startsWith(i.path + '/')))?.id || 'cards';
 
     const handleLogout = async () => {
         await supabase.auth.signOut();

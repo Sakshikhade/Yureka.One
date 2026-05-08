@@ -174,7 +174,7 @@ const CategoryDetailPage: React.FC = () => {
                     <Link to={`${basePath}/cards/${card.slug || card.id}`} className="w-full bg-clay text-black py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform">
                        Read More <ExternalLink size={14} />
                     </Link>
-                    <Link to="/yureka-ai" className="w-full bg-white/5 text-white/60 hover:text-white py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 border border-white/10 hover:border-white/20 transition-all group">
+                    <Link to={`${basePath}/yureka-ai`} className="w-full bg-white/5 text-white/60 hover:text-white py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 border border-white/10 hover:border-white/20 transition-all group">
                        <Sparkles size={14} className="group-hover:text-clay transition-colors" />
                        Ask AI
                     </Link>
