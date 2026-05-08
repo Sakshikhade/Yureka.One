@@ -14,6 +14,7 @@ const MailSync: React.FC = () => {
     const [isScanning, setIsScanning] = useState(false);
     const [scanProgress, setScanProgress] = useState(0);
     const [scanStatus, setScanStatus] = useState('');
+    const [error, setError] = useState<string | null>(null);
     const [results, setResults] = useState<{
         transactions: any[];
         bills: any[];
@@ -41,11 +42,22 @@ const MailSync: React.FC = () => {
             });
         };
 
-        if (user) fetchInitialData();
+        if (user) {
+            fetchInitialData();
+            // Silent background scan on mount
+            const triggerSync = async () => {
+                const { data: { session } } = await supabase.auth.getSession();
+                if (session?.provider_token) {
+                    startScan(true); // Silent mode
+                }
+            };
+            triggerSync();
+        }
     }, [user, supabase]);
 
     const handleLinkGmail = async () => {
         setIsLinking(true);
+        setError(null);
         try {
             const { data, error } = await supabase.auth.signInWithOAuth({
                 provider: 'google',
@@ -62,17 +74,18 @@ const MailSync: React.FC = () => {
             if (error) throw error;
         } catch (err) {
             console.error('Linking failed:', err);
+            setError('Authorization Failed');
         } finally {
             setIsLinking(false);
         }
     };
 
-    const startScan = async () => {
+    const startScan = async (isSilent = false) => {
         const { data: { session } } = await supabase.auth.getSession();
         const token = session?.provider_token;
 
         if (!token) {
-            alert("Please link your Gmail account with the required permissions first.");
+            if (!isSilent) setError('GMAIL_NOT_LINKED');
             return;
         }
 
@@ -82,12 +95,13 @@ const MailSync: React.FC = () => {
 
         gmailService.setToken(token);
         setIsScanning(true);
+        setError(null);
         setScanProgress(5);
         setScanStatus('Initializing Neural Link...');
 
         try {
             setScanStatus('Analyzing 6M Financial Traffic...');
-            const messages = await gmailService.fetchMessages(`subject:(receipt OR order OR payment OR "paid to") after:${dateStr}`, 40);
+            const messages = await gmailService.fetchMessages(`subject:(receipt OR order OR payment OR "paid to" OR invoice OR shipping OR tracking) after:${dateStr}`, 50);
             const fetchedTransactions: any[] = [];
             for (let i = 0; i < messages.length; i++) {
                 const details = await gmailService.getMessageDetails(messages[i].id);
@@ -97,7 +111,7 @@ const MailSync: React.FC = () => {
             }
 
             setScanStatus('Detecting Card Ecosystem...');
-            const billMessages = await gmailService.fetchMessages(`subject:(statement OR bill OR due OR welcome OR card) after:${dateStr}`, 30);
+            const billMessages = await gmailService.fetchMessages(`subject:(statement OR bill OR due OR welcome OR card OR outstanding OR "minimum due") after:${dateStr}`, 40);
             const fetchedBills: any[] = [];
             const fetchedOwnedCards: any[] = [];
             for (let i = 0; i < billMessages.length; i++) {
@@ -110,7 +124,7 @@ const MailSync: React.FC = () => {
             }
 
             setScanStatus('Scanning Applications...');
-            const appMessages = await gmailService.fetchMessages(`subject:(application OR status OR reference) after:${dateStr}`, 20);
+            const appMessages = await gmailService.fetchMessages(`subject:(application OR status OR reference OR rejection OR accepted OR rejected) after:${dateStr}`, 20);
             const fetchedApps: any[] = [];
             for (let i = 0; i < appMessages.length; i++) {
                 const details = await gmailService.getMessageDetails(appMessages[i].id);
@@ -120,7 +134,7 @@ const MailSync: React.FC = () => {
             }
 
             setScanStatus('Harvesting Shopping Data...');
-            const shopMessages = await gmailService.fetchMessages(`subject:(order OR "delivery of") after:${dateStr}`, 30);
+            const shopMessages = await gmailService.fetchMessages(`subject:(order OR "delivery of" OR shipment OR tracking OR invoice) after:${dateStr}`, 40);
             const fetchedOrders: any[] = [];
             for (let i = 0; i < shopMessages.length; i++) {
                 const details = await gmailService.getMessageDetails(shopMessages[i].id);
@@ -148,34 +162,68 @@ const MailSync: React.FC = () => {
             });
             setScanProgress(100);
             setScanStatus('Neural Sync Complete');
-        } catch (err) {
+        } catch (err: any) {
             console.error('Scan failed:', err);
-            setScanStatus('Link Error Occurred');
+            if (err.message === 'OAUTH_EXPIRED') {
+                setError('LINK_EXPIRED');
+            } else {
+                setError('SCAN_ERROR');
+            }
         } finally {
-            setTimeout(() => setIsScanning(false), 2000);
+            setTimeout(() => {
+                setIsScanning(false);
+                setScanStatus('');
+            }, 3000);
         }
     };
 
     return (
         <div className="space-y-16">
             {/* Action Header */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 glass-card p-10 rounded-[2.5rem]">
-                <div>
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 glass-card p-10 rounded-[2.5rem] relative overflow-hidden">
+                {isScanning && (
+                    <motion.div 
+                        initial={{ width: 0 }} animate={{ width: `${scanProgress}%` }}
+                        className="absolute bottom-0 left-0 h-1 bg-clay shadow-[0_0_15px_rgba(52,211,153,0.8)] transition-all duration-500"
+                    />
+                )}
+                
+                <div className="relative z-10">
                     <div className="flex items-center gap-3 mb-4">
-                        <div className="w-1.5 h-1.5 bg-clay rounded-full animate-pulse shadow-[0_0_10px_rgba(52,211,153,0.8)]" />
-                        <p className="text-[10px] font-black uppercase tracking-[0.5em] text-clay">Intelligence Hub</p>
+                        <div className={`w-1.5 h-1.5 bg-clay rounded-full ${isScanning ? 'animate-ping' : 'animate-pulse'} shadow-[0_0_10px_rgba(52,211,153,0.8)]`} />
+                        <p className="text-[10px] font-black uppercase tracking-[0.5em] text-clay">
+                            {isScanning ? `System Sync: ${scanStatus}` : error ? 'System Alert' : 'Intelligence Hub'}
+                        </p>
                     </div>
                     <h2 className="text-4xl italic tracking-tighter text-white font-black leading-none mb-3">Neural Synchronization</h2>
-                    <p className="text-white/30 text-sm font-serif italic">Deep-scanning 6 months of financial footprints across your ecosystem.</p>
+                    <p className="text-white/30 text-sm font-serif italic">
+                        {error === 'GMAIL_NOT_LINKED' ? 'Authorize your financial node to begin deep-scanning.' : 
+                         error === 'LINK_EXPIRED' ? 'Your neural link has expired. Re-authorization required.' :
+                         'Deep-scanning 6 months of financial footprints across your ecosystem.'}
+                    </p>
                 </div>
-                <button 
-                    onClick={startScan}
-                    disabled={isScanning}
-                    className="flex items-center gap-4 px-8 py-5 bg-white text-black rounded-2xl text-[11px] font-black uppercase tracking-[0.4em] hover:scale-[1.02] active:scale-95 transition-all shadow-2xl disabled:opacity-30 group"
-                >
-                    <RefreshCw size={18} className={`${isScanning ? 'animate-spin' : 'group-hover:rotate-180 transition-transform duration-700'}`} />
-                    {isScanning ? 'Processing...' : 'Initiate Deep Scan'}
-                </button>
+
+                <div className="relative z-10 flex gap-4">
+                    {error === 'GMAIL_NOT_LINKED' || error === 'LINK_EXPIRED' ? (
+                        <button 
+                            onClick={handleLinkGmail}
+                            disabled={isLinking}
+                            className="flex items-center gap-4 px-8 py-5 bg-clay text-black rounded-2xl text-[11px] font-black uppercase tracking-[0.4em] hover:scale-[1.02] active:scale-95 transition-all shadow-2xl group"
+                        >
+                            <LinkIcon size={18} className={isLinking ? 'animate-spin' : ''} />
+                            {isLinking ? 'Linking...' : 'Authorize Link'}
+                        </button>
+                    ) : (
+                        <button 
+                            onClick={() => startScan(false)}
+                            disabled={isScanning}
+                            className="flex items-center gap-4 px-8 py-5 bg-white text-black rounded-2xl text-[11px] font-black uppercase tracking-[0.4em] hover:scale-[1.02] active:scale-95 transition-all shadow-2xl disabled:opacity-30 group"
+                        >
+                            <RefreshCw size={18} className={`${isScanning ? 'animate-spin' : 'group-hover:rotate-180 transition-transform duration-700'}`} />
+                            {isScanning ? `${scanProgress}%` : 'Initiate Deep Scan'}
+                        </button>
+                    )}
+                </div>
             </div>
 
             {/* Intelligence Overview */}
@@ -339,55 +387,6 @@ const MailSync: React.FC = () => {
                 </div>
             </div>
 
-            {/* Neural Scanning Holograph */}
-            <AnimatePresence>
-                {isScanning && (
-                    <motion.div 
-                        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                        className="fixed inset-0 bg-black/90 backdrop-blur-3xl z-[100] flex items-center justify-center p-10"
-                    >
-                        <div className="max-w-xl w-full text-center space-y-12">
-                            <div className="relative w-48 h-48 mx-auto">
-                                <motion.div 
-                                    animate={{ rotate: 360 }}
-                                    transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
-                                    className="absolute inset-0 border-t-2 border-clay rounded-full shadow-[0_0_30px_rgba(52,211,153,0.3)]"
-                                />
-                                <motion.div 
-                                    animate={{ rotate: -360 }}
-                                    transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-                                    className="absolute inset-4 border-b-2 border-white/20 rounded-full"
-                                />
-                                <div className="absolute inset-8 bg-clay/10 rounded-full flex items-center justify-center border border-clay/20 shadow-inner">
-                                    <RefreshCw size={56} className="text-clay animate-spin" />
-                                </div>
-                            </div>
-
-                            <div className="space-y-6">
-                                <div className="flex flex-col items-center">
-                                    <span className="text-[10px] font-black uppercase tracking-[0.8em] text-clay mb-2">Neural Synchronization</span>
-                                    <h3 className="text-4xl italic text-white font-black tracking-tighter">{scanStatus}</h3>
-                                </div>
-                                <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden border border-white/5 shadow-inner">
-                                    <motion.div 
-                                        initial={{ width: 0 }}
-                                        animate={{ width: `${scanProgress}%` }}
-                                        className="h-full bg-gradient-to-r from-clay/40 via-clay to-clay/40 shadow-[0_0_30px_rgba(52,211,153,0.8)]"
-                                    />
-                                </div>
-                                <div className="flex justify-between items-center px-2">
-                                    <p className="text-[10px] font-black uppercase tracking-[0.5em] text-white/20">{scanProgress}% Calibrated</p>
-                                    <div className="flex gap-1">
-                                        {[1,2,3].map(i => (
-                                            <motion.div key={i} animate={{ opacity: [0.2, 1, 0.2] }} transition={{ delay: i * 0.2, repeat: Infinity }} className="w-1 h-1 bg-clay rounded-full" />
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
         </div>
     );
 };
