@@ -71,21 +71,41 @@ ALTER TABLE user_orders ENABLE ROW LEVEL SECURITY;
 ALTER TABLE user_applications ENABLE ROW LEVEL SECURITY;
 
 -- Policies for user_transactions
+DROP POLICY IF EXISTS "Users can view their own transactions" ON user_transactions;
 CREATE POLICY "Users can view their own transactions" ON user_transactions FOR SELECT TO authenticated USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users can insert their own transactions" ON user_transactions;
 CREATE POLICY "Users can insert their own transactions" ON user_transactions FOR INSERT TO authenticated WITH CHECK (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users can update their own transactions" ON user_transactions;
 CREATE POLICY "Users can update their own transactions" ON user_transactions FOR UPDATE TO authenticated USING (auth.uid() = user_id);
 
 -- Policies for user_bills
+DROP POLICY IF EXISTS "Users can view their own bills" ON user_bills;
 CREATE POLICY "Users can view their own bills" ON user_bills FOR SELECT TO authenticated USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users can insert their own bills" ON user_bills;
 CREATE POLICY "Users can insert their own bills" ON user_bills FOR INSERT TO authenticated WITH CHECK (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users can update their own bills" ON user_bills;
 CREATE POLICY "Users can update their own bills" ON user_bills FOR UPDATE TO authenticated USING (auth.uid() = user_id);
 
 -- Policies for user_orders
+DROP POLICY IF EXISTS "Users can view their own orders" ON user_orders;
 CREATE POLICY "Users can view their own orders" ON user_orders FOR SELECT TO authenticated USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users can insert their own orders" ON user_orders;
 CREATE POLICY "Users can insert their own orders" ON user_orders FOR INSERT TO authenticated WITH CHECK (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users can update their own orders" ON user_orders;
 CREATE POLICY "Users can update their own orders" ON user_orders FOR UPDATE TO authenticated USING (auth.uid() = user_id);
 
 -- Policies for user_applications
+DROP POLICY IF EXISTS "Users can view their own applications" ON user_applications;
 CREATE POLICY "Users can view their own applications" ON user_applications FOR SELECT TO authenticated USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users can insert their own applications" ON user_applications;
 CREATE POLICY "Users can insert their own applications" ON user_applications FOR INSERT TO authenticated WITH CHECK (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users can update their own applications" ON user_applications;
 CREATE POLICY "Users can update their own applications" ON user_applications FOR UPDATE TO authenticated USING (auth.uid() = user_id);
