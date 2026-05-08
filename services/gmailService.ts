@@ -112,8 +112,8 @@ class GmailService {
     const date = this.getHeader(message, 'Date');
     const content = this.getFullContent(message);
 
-    // Advanced Amount Extraction
-    const amountRegex = /(?:Rs\.?|INR|₹|Debited|Amount|Total|Paid)\s*(?::|for)?\s*([\d,]+\.?\d*)/i;
+    // Ultra-Inclusive Amount Extraction
+    const amountRegex = /(?:Rs\.?|INR|₹|Debited|Amount|Total|Paid|Spent|Withdrawal|Charged|Purchase|Cost)\s*(?::|for|of)?\s*(?:Rs\.?|INR|₹)?\s*([\d,]+\.?\d*)/i;
     const amountMatch = content.match(amountRegex) || snippet.match(amountRegex);
     if (!amountMatch) return null;
 
@@ -124,11 +124,11 @@ class GmailService {
     let merchant = this.extractPlatform(from, subject, content);
     
     if (merchant === 'Unknown') {
-      const merchantKeywords = ['at', 'to', 'from', 'paid to', 'spent on', 'info:', 'merchant:', 'billed by'];
+      const merchantKeywords = ['at', 'to', 'from', 'paid to', 'spent on', 'info:', 'merchant:', 'billed by', 'purchase at'];
       for (const kw of merchantKeywords) {
         const mRegex = new RegExp(`${kw}\\s+([^\\s.,\r\n]+(?:\\s+[^\\s.,\r\n]+){0,2})`, 'i');
         const mMatch = content.match(mRegex);
-        if (mMatch && !/account|card|bank|statement/i.test(mMatch[1])) {
+        if (mMatch && !/account|card|bank|statement|authorized/i.test(mMatch[1])) {
           merchant = mMatch[1].trim();
           break;
         }
@@ -179,7 +179,7 @@ class GmailService {
     return {
       bank_name: bankName,
       amount_due: parseFloat(totalMatch[1].replace(/,/g, '')),
-      minimum_due: minMatch ? parseFloat(minAmountRegex[1].replace(/,/g, '')) : 0,
+      minimum_due: minMatch ? parseFloat(minMatch[1].replace(/,/g, '')) : 0,
       due_date: dateMatch ? new Date(dateMatch[1]).toISOString().split('T')[0] : '',
       statement_date: new Date(this.getHeader(message, 'Date') || Date.now()).toISOString().split('T')[0],
       source_mail_id: message.id
