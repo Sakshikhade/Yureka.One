@@ -23,6 +23,21 @@ const MailSync: React.FC = () => {
         applications: any[];
     }>({ transactions: [], bills: [], orders: [], ownedCards: [], applications: [] });
 
+    // Watchdog to prevent permanent hang
+    useEffect(() => {
+        let timeout: any;
+        if (isScanning) {
+            timeout = setTimeout(() => {
+                if (isScanning) {
+                    setIsScanning(false);
+                    setScanStatus('Sync Timeout');
+                    setError('SCAN_TIMEOUT');
+                }
+            }, 60000); // 60s total watchdog
+        }
+        return () => clearTimeout(timeout);
+    }, [isScanning]);
+
     useEffect(() => {
         const fetchInitialData = async () => {
             const [txs, bills, orders, owned, apps] = await Promise.all([
@@ -49,6 +64,8 @@ const MailSync: React.FC = () => {
                 const { data: { session } } = await supabase.auth.getSession();
                 if (session?.provider_token) {
                     startScan(true); // Silent mode
+                } else {
+                    setError('GMAIL_NOT_LINKED');
                 }
             };
             triggerSync();
@@ -85,7 +102,7 @@ const MailSync: React.FC = () => {
         const token = session?.provider_token;
 
         if (!token) {
-            if (!isSilent) setError('GMAIL_NOT_LINKED');
+            setError('GMAIL_NOT_LINKED');
             return;
         }
 
@@ -100,19 +117,22 @@ const MailSync: React.FC = () => {
         setScanStatus('Initializing Neural Link...');
 
         try {
-            setScanStatus('Analyzing 6M Financial Traffic...');
+            const batchSize = 10;
+            
+            // Phase 1: Transactions
+            setScanStatus('Scanning Transactions...');
             const messages = await gmailService.fetchMessages(`(receipt OR order OR payment OR "paid to" OR invoice OR shipping OR tracking) after:${dateStr}`, 50);
             const fetchedTransactions: any[] = [];
             
             if (messages.length > 0) {
-                const batchSize = 10;
                 for (let i = 0; i < messages.length; i += batchSize) {
+                    const currentBatch = Math.floor(i / batchSize) + 1;
+                    const totalBatches = Math.ceil(messages.length / batchSize);
+                    setScanStatus(`Analyzing Transactions (Batch ${currentBatch}/${totalBatches})`);
+                    
                     const batch = messages.slice(i, i + batchSize);
                     const detailsBatch = await Promise.all(
-                        batch.map(m => gmailService.getMessageDetails(m.id).catch(e => {
-                            console.warn(`Failed to fetch ${m.id}:`, e);
-                            return null;
-                        }))
+                        batch.map(m => gmailService.getMessageDetails(m.id).catch(() => null))
                     );
 
                     for (const details of detailsBatch) {
@@ -125,14 +145,18 @@ const MailSync: React.FC = () => {
             }
             setScanProgress(25);
 
+            // Phase 2: Bills & Cards
             setScanStatus('Detecting Card Ecosystem...');
             const billMessages = await gmailService.fetchMessages(`(statement OR bill OR due OR welcome OR card OR outstanding OR "minimum due") after:${dateStr}`, 40);
             const fetchedBills: any[] = [];
             const fetchedOwnedCards: any[] = [];
             
             if (billMessages.length > 0) {
-                const batchSize = 10;
                 for (let i = 0; i < billMessages.length; i += batchSize) {
+                    const currentBatch = Math.floor(i / batchSize) + 1;
+                    const totalBatches = Math.ceil(billMessages.length / batchSize);
+                    setScanStatus(`Detecting Cards (Batch ${currentBatch}/${totalBatches})`);
+
                     const batch = billMessages.slice(i, i + batchSize);
                     const detailsBatch = await Promise.all(
                         batch.map(m => gmailService.getMessageDetails(m.id).catch(() => null))
@@ -150,13 +174,17 @@ const MailSync: React.FC = () => {
             }
             setScanProgress(50);
 
+            // Phase 3: Applications
             setScanStatus('Scanning Applications...');
             const appMessages = await gmailService.fetchMessages(`(application OR status OR reference OR rejection OR accepted OR rejected) after:${dateStr}`, 20);
             const fetchedApps: any[] = [];
             
             if (appMessages.length > 0) {
-                const batchSize = 10;
                 for (let i = 0; i < appMessages.length; i += batchSize) {
+                    const currentBatch = Math.floor(i / batchSize) + 1;
+                    const totalBatches = Math.ceil(appMessages.length / batchSize);
+                    setScanStatus(`Reviewing Applications (Batch ${currentBatch}/${totalBatches})`);
+
                     const batch = appMessages.slice(i, i + batchSize);
                     const detailsBatch = await Promise.all(
                         batch.map(m => gmailService.getMessageDetails(m.id).catch(() => null))
@@ -172,13 +200,17 @@ const MailSync: React.FC = () => {
             }
             setScanProgress(70);
 
+            // Phase 4: Shopping
             setScanStatus('Harvesting Shopping Data...');
             const shopMessages = await gmailService.fetchMessages(`(order OR "delivery of" OR shipment OR tracking OR invoice) after:${dateStr}`, 40);
             const fetchedOrders: any[] = [];
             
             if (shopMessages.length > 0) {
-                const batchSize = 10;
                 for (let i = 0; i < shopMessages.length; i += batchSize) {
+                    const currentBatch = Math.floor(i / batchSize) + 1;
+                    const totalBatches = Math.ceil(shopMessages.length / batchSize);
+                    setScanStatus(`Harvesting Shopping (Batch ${currentBatch}/${totalBatches})`);
+
                     const batch = shopMessages.slice(i, i + batchSize);
                     const detailsBatch = await Promise.all(
                         batch.map(m => gmailService.getMessageDetails(m.id).catch(() => null))
@@ -215,7 +247,10 @@ const MailSync: React.FC = () => {
             setScanStatus('Neural Sync Complete');
         } catch (err: any) {
             console.error('Scan failed:', err);
-            if (err.message === 'OAUTH_EXPIRED') {
+            if (err.name === 'AbortError') {
+                setScanStatus('Connection Timeout');
+                setError('SCAN_TIMEOUT');
+            } else if (err.message === 'OAUTH_EXPIRED') {
                 setError('LINK_EXPIRED');
             } else {
                 setError('SCAN_ERROR');

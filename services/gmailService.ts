@@ -58,11 +58,27 @@ class GmailService {
     this.accessToken = token;
   }
 
+  private async fetchWithTimeout(url: string, options: any = {}, timeout = 10000) {
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeout);
+    try {
+      const response = await fetch(url, {
+        ...options,
+        signal: controller.signal
+      });
+      clearTimeout(id);
+      return response;
+    } catch (e) {
+      clearTimeout(id);
+      throw e;
+    }
+  }
+
   async fetchMessages(query: string, maxResults = 50) {
     if (!this.accessToken) throw new Error('Not authenticated with Google');
 
     const url = `https://gmail.googleapis.com/gmail/v1/users/me/messages?q=${encodeURIComponent(query)}&maxResults=${maxResults}`;
-    const response = await fetch(url, {
+    const response = await this.fetchWithTimeout(url, {
       headers: { Authorization: `Bearer ${this.accessToken}` }
     });
 
@@ -78,7 +94,7 @@ class GmailService {
     if (!this.accessToken) throw new Error('Not authenticated with Google');
 
     const url = `https://gmail.googleapis.com/gmail/v1/users/me/messages/${messageId}`;
-    const response = await fetch(url, {
+    const response = await this.fetchWithTimeout(url, {
       headers: { Authorization: `Bearer ${this.accessToken}` }
     });
 
@@ -89,6 +105,7 @@ class GmailService {
   // --- PARSING LOGIC ---
 
   parseTransaction(message: any): MailTransaction | null {
+    if (!message || !message.payload) return null;
     const snippet = message.snippet || '';
     const subject = this.getHeader(message, 'Subject');
     const from = this.getHeader(message, 'From');
@@ -130,7 +147,7 @@ class GmailService {
       amount,
       currency: 'INR',
       merchant,
-      date: new Date(date).toISOString().split('T')[0],
+      date: new Date(date || Date.now()).toISOString().split('T')[0],
       category,
       source_mail_id: message.id,
       mail_subject: subject,
@@ -139,6 +156,7 @@ class GmailService {
   }
 
   parseBill(message: any): MailBill | null {
+    if (!message || !message.payload) return null;
     const content = this.getFullContent(message);
     const subject = this.getHeader(message, 'Subject');
     
@@ -161,14 +179,15 @@ class GmailService {
     return {
       bank_name: bankName,
       amount_due: parseFloat(totalMatch[1].replace(/,/g, '')),
-      minimum_due: minMatch ? parseFloat(minMatch[1].replace(/,/g, '')) : 0,
+      minimum_due: minMatch ? parseFloat(minAmountRegex[1].replace(/,/g, '')) : 0,
       due_date: dateMatch ? new Date(dateMatch[1]).toISOString().split('T')[0] : '',
-      statement_date: new Date(this.getHeader(message, 'Date')).toISOString().split('T')[0],
+      statement_date: new Date(this.getHeader(message, 'Date') || Date.now()).toISOString().split('T')[0],
       source_mail_id: message.id
     };
   }
 
   parseShoppingOrder(message: any): MailShoppingOrder | null {
+    if (!message || !message.payload) return null;
     const content = this.getFullContent(message);
     const subject = this.getHeader(message, 'Subject');
     
@@ -186,13 +205,14 @@ class GmailService {
       item_name: subject.replace(/Order confirmation:|Your order has shipped:|Thank you for your order|Order details:|Invoice for your order/gi, '').trim(),
       merchant,
       price: priceMatch ? parseFloat(priceMatch[1].replace(/,/g, '')) : 0,
-      order_date: new Date(this.getHeader(message, 'Date')).toISOString().split('T')[0],
+      order_date: new Date(this.getHeader(message, 'Date') || Date.now()).toISOString().split('T')[0],
       order_id: orderIdMatch ? orderIdMatch[1] : 'N/A',
       source_mail_id: message.id
     };
   }
 
   parseOwnedCard(message: any): MailOwnedCard | null {
+    if (!message || !message.payload) return null;
     const content = this.getFullContent(message);
     const subject = this.getHeader(message, 'Subject');
     
@@ -216,6 +236,7 @@ class GmailService {
   }
 
   parseCardApplication(message: any): MailCardApplication | null {
+    if (!message || !message.payload) return null;
     const content = this.getFullContent(message);
     const subject = this.getHeader(message, 'Subject');
     
@@ -238,7 +259,7 @@ class GmailService {
       card_name: 'Credit Card',
       status,
       application_id: appIdMatch ? appIdMatch[1] : 'N/A',
-      application_date: new Date(this.getHeader(message, 'Date')).toISOString().split('T')[0],
+      application_date: new Date(this.getHeader(message, 'Date') || Date.now()).toISOString().split('T')[0],
       source_mail_id: message.id
     };
   }
@@ -265,15 +286,18 @@ class GmailService {
   }
 
   private getHeader(message: any, name: string) {
+    if (!message || !message.payload || !message.payload.headers) return '';
     return message.payload.headers.find((h: any) => h.name === name)?.value || '';
   }
 
   private getFullContent(message: any) {
+    if (!message || !message.payload) return '';
     let parts = [message.payload];
     let content = '';
 
     while (parts.length > 0) {
       const part = parts.shift();
+      if (!part) continue;
       if (part.parts) parts.push(...part.parts);
       if (part.body && part.body.data) {
         content += this.decodeBase64(part.body.data);
@@ -283,6 +307,7 @@ class GmailService {
   }
 
   private decodeBase64(data: string) {
+    if (!data) return '';
     const base64 = data.replace(/-/g, '+').replace(/_/g, '/');
     const pad = base64.length % 4;
     const padded = pad ? base64 + '='.repeat(4 - pad) : base64;
