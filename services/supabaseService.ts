@@ -394,3 +394,67 @@ export const getWaitlistEntry = async (email: string) => {
   if (error) throw error;
   return data;
 };
+
+// --- RANK ENGINE ---
+
+/**
+ * Fetches referral stats for a user by their personal referral code.
+ * Returns total referrals and how many have been approved by admin.
+ */
+export const fetchReferralStats = async (personalReferralCode: string) => {
+  const { data, error } = await supabaseAdmin
+    .from('waitlist')
+    .select('id, status')
+    .eq('referral_code', personalReferralCode);
+
+  if (error) throw error;
+
+  const total = data?.length || 0;
+  const approved = data?.filter((r: any) => r.status === 'accepted').length || 0;
+  return { total, approved };
+};
+
+/**
+ * Rank Formula:
+ *   Each referral reduces rank by 15 positions.
+ *   Each admin-approved referral reduces rank by an extra 35 positions.
+ *   Rank can never go below 1.
+ */
+export const RANK_BOOST_PER_REFERRAL = 15;
+export const RANK_BOOST_PER_APPROVAL = 35;
+
+export const computeAndUpdateRank = async (email: string) => {
+  // 1. Fetch the user's waitlist entry
+  const entry = await getWaitlistEntry(email);
+  if (!entry) throw new Error('No waitlist entry found for this email.');
+
+  const baseRank: number = entry.rank || 1000;
+  const personalCode: string = entry.personal_referral_code || '';
+
+  // 2. Fetch referral stats
+  let stats = { total: 0, approved: 0 };
+  if (personalCode) {
+    stats = await fetchReferralStats(personalCode);
+  }
+
+  // 3. Apply formula
+  const boost = (stats.total * RANK_BOOST_PER_REFERRAL) + (stats.approved * RANK_BOOST_PER_APPROVAL);
+  const effectiveRank = Math.max(1, baseRank - boost);
+
+  // 4. Persist updated rank back to DB
+  const { error: updateError } = await supabaseAdmin
+    .from('waitlist')
+    .update({ rank: effectiveRank })
+    .eq('id', entry.id);
+
+  if (updateError) throw updateError;
+
+  return {
+    baseRank,
+    effectiveRank,
+    totalReferrals: stats.total,
+    approvedReferrals: stats.approved,
+    rankBoost: boost,
+    entry: { ...entry, rank: effectiveRank },
+  };
+};

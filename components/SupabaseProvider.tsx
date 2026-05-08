@@ -35,7 +35,7 @@ interface SupabaseContextType {
   logs: any[];
   user: any | null;
   session: any | null;
-  currentUserStatus: 'none' | 'pending' | 'accepted' | 'admin' | 'loading';
+  currentUserStatus: 'none' | 'pending' | 'accepted' | 'admin' | 'loading' | 'rejected' | 'on-hold';
   syncStatus: 'connected' | 'reconnecting' | 'error';
   isLoading: boolean;
   isAdminDataLoaded: boolean;
@@ -59,7 +59,7 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   
   const [user, setUser] = useState<any | null>(null);
   const [session, setSession] = useState<any | null>(null);
-  const [currentUserStatus, setCurrentUserStatus] = useState<'none' | 'pending' | 'accepted' | 'admin' | 'loading'>('loading');
+  const [currentUserStatus, setCurrentUserStatus] = useState<'none' | 'pending' | 'accepted' | 'admin' | 'loading' | 'rejected' | 'on-hold'>('loading');
   const [syncStatus, setSyncStatus] = useState<'connected' | 'reconnecting' | 'error'>('connected');
   const [isLoading, setIsLoading] = useState(true);
   const [isAdminDataLoaded, setIsAdminDataLoaded] = useState(false);
