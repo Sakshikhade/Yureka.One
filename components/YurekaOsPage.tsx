@@ -1,6 +1,6 @@
 import React from 'react';
 import { Gift, Zap, ShieldCheck, ArrowRight, Star, Percent, Utensils, ShoppingBag, Loader2 } from 'lucide-react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { useSupabase } from './SupabaseProvider';
 

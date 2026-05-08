@@ -6,7 +6,7 @@ import {
     Send, MessageCircle, Copy, Globe, ChevronDown, Calendar, 
     Mail, Phone, Trash2
 } from 'lucide-react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { joinWaitlist, fetchCardsPublic } from '../services/supabaseService';
 import { useSupabase } from './SupabaseProvider';
 import { motion, AnimatePresence } from 'motion/react';
