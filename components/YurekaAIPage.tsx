@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Sparkles, Brain, CreditCard, ShoppingBag, Gift, TrendingUp,
@@ -224,6 +224,10 @@ const LiveChatDemo = () => {
 };
 
 const YurekaAIPage: React.FC = () => {
+  const location = useLocation();
+  const isDashboard = location.pathname.startsWith('/dashboard');
+  const basePath = isDashboard ? '/dashboard' : '';
+
   return (
     <div className="relative min-h-screen bg-cream overflow-x-hidden selection:bg-clay selection:text-cream">
       {/* Background Glows */}
@@ -268,7 +272,7 @@ const YurekaAIPage: React.FC = () => {
 
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Link
-                to="/join-waitlist"
+                to={`${basePath}/join-waitlist`}
                 className="group relative overflow-hidden bg-clay text-cream px-10 py-5 rounded-2xl font-bold uppercase tracking-widest text-xs flex items-center justify-center gap-3 shadow-2xl shadow-clay/10 hover:shadow-clay/30 transition-all"
               >
                 <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
@@ -277,7 +281,7 @@ const YurekaAIPage: React.FC = () => {
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
-                to="/rewards-calculator"
+                to={`${basePath}/rewards-calculator`}
                 className="px-10 py-5 rounded-2xl font-bold uppercase tracking-widest text-xs border border-white/10 text-white/70 hover:text-white hover:border-clay/40 transition-all flex items-center justify-center gap-2 backdrop-blur-sm"
               >
                 Try Rewards Calculator
@@ -511,7 +515,7 @@ const YurekaAIPage: React.FC = () => {
                     </div>
                   ))}
                 </div>
-                <Link to="/join-waitlist" className="inline-flex items-center gap-3 px-8 py-4 bg-clay text-cream rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-white transition-all group shadow-lg shadow-clay/10">
+                <Link to={`${basePath}/join-waitlist`} className="inline-flex items-center gap-3 px-8 py-4 bg-clay text-cream rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-white transition-all group shadow-lg shadow-clay/10">
                   Get RewardX Access <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
@@ -580,7 +584,7 @@ const YurekaAIPage: React.FC = () => {
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
                 <Link
-                  to="/join-waitlist"
+                  to={`${basePath}/join-waitlist`}
                   className="group relative overflow-hidden bg-clay text-cream px-12 py-5 rounded-2xl font-bold uppercase tracking-widest text-xs flex items-center justify-center gap-3 shadow-2xl shadow-clay/10 hover:shadow-clay/30 transition-all"
                 >
                   <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
@@ -589,7 +593,7 @@ const YurekaAIPage: React.FC = () => {
                   <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <Link
-                  to="/rewards-calculator"
+                  to={`${basePath}/rewards-calculator`}
                   className="border border-white/10 text-white/50 hover:text-white hover:border-clay/40 px-12 py-5 rounded-2xl font-bold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-2 backdrop-blur-sm"
                 >
                   Try the Rewards Calculator

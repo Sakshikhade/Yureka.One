@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   ArrowLeft, Sparkles, Star, Zap, Info, ChevronRight, 
@@ -20,6 +20,10 @@ const CATEGORY_META: Record<string, any> = {
 
 const CategoryDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
+  const location = useLocation();
+  const isDashboard = location.pathname.startsWith('/dashboard');
+  const basePath = isDashboard ? '/dashboard' : '';
+  
   const [cards, setCards] = useState<Card[]>([]);
   const [loading, setLoading] = useState(true);
   const meta = CATEGORY_META[slug || ''] || { name: slug?.replace('-', ' '), icon: '💳', color: 'from-emerald-500/20', benefits: ['Optimized rewards', 'Curated benefits'] };
@@ -46,7 +50,7 @@ const CategoryDetailPage: React.FC = () => {
       {/* Dynamic Hero Section */}
       <section className={`relative pt-16 pb-20 px-6 overflow-hidden bg-gradient-to-b ${meta.color} to-transparent`}>
          <div className="max-w-7xl mx-auto relative z-10">
-            <Link to="/categories" className="inline-flex items-center gap-2 text-white/40 hover:text-clay transition-colors text-[10px] font-black uppercase tracking-[0.3em] mb-12 group">
+            <Link to={`${basePath}/categories`} className="inline-flex items-center gap-2 text-white/40 hover:text-clay transition-colors text-[10px] font-black uppercase tracking-[0.3em] mb-12 group">
                <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
                Back to Categories
             </Link>
@@ -167,7 +171,7 @@ const CategoryDetailPage: React.FC = () => {
 
                   {/* Action Buttons */}
                   <div className="w-full lg:w-48 flex flex-col gap-3">
-                    <Link to={`/cards/${card.slug || card.id}`} className="w-full bg-clay text-black py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform">
+                    <Link to={`${basePath}/cards/${card.slug || card.id}`} className="w-full bg-clay text-black py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform">
                        Read More <ExternalLink size={14} />
                     </Link>
                     <Link to="/yureka-ai" className="w-full bg-white/5 text-white/60 hover:text-white py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 border border-white/10 hover:border-white/20 transition-all group">
@@ -191,7 +195,7 @@ const CategoryDetailPage: React.FC = () => {
                 <h3 className="text-xl font-heading font-black text-white uppercase">Neural Gap Detected</h3>
                 <p className="text-white/40 max-w-sm mx-auto text-sm">We currently don't have enough verified cards for this category. Our engine is actively auditing new products.</p>
              </div>
-             <Link to="/categories" className="text-clay text-[10px] font-black uppercase tracking-widest hover:underline">
+             <Link to={`${basePath}/categories`} className="text-clay text-[10px] font-black uppercase tracking-widest hover:underline">
                 Back to all categories
              </Link>
           </div>

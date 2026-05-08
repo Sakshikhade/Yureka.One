@@ -6,7 +6,7 @@ import {
     LogOut, ChevronLeft, Menu, Bell, ChevronDown,
     LayoutGrid, Calculator, ArrowRightLeft
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { useSupabase } from '../SupabaseProvider';
 
 // Sub-components (to be built)
@@ -14,65 +14,56 @@ import MyCards from './MyCards';
 import ReferralDashboard from './ReferralDashboard';
 import AccountSettings from './AccountSettings';
 import CategoriesPage from '../CategoriesPage';
+import CategoryDetailPage from '../CategoryDetailPage';
 import YurekaOsPage from '../YurekaOsPage';
 import ComparePage from '../ComparePage';
+import ComparisonDetail from '../ComparisonDetail';
+import RewardsTransferCalculator from '../RewardsTransferCalculator';
+import CardDetail from '../CardDetail';
+import CardExplorer from '../CardExplorer';
+import YurekaAIPage from '../YurekaAIPage';
+import WaitlistPage from '../WaitlistPage';
 
 const EXPLORE_ITEMS = [
-    { id: 'categories_hub', label: 'Categories', icon: LayoutGrid },
-    { id: 'tools_hub', label: 'Free Tools', icon: Calculator },
-    { id: 'compare_hub', label: 'Compare', icon: ArrowRightLeft },
+    { id: 'categories', label: 'Categories', icon: LayoutGrid, path: 'categories' },
+    { id: 'tools', label: 'Free Tools', icon: Calculator, path: 'tools' },
+    { id: 'compare', label: 'Compare', icon: ArrowRightLeft, path: 'compare' },
 ];
 
 const NAV_ITEMS = [
-    { id: 'cards', label: 'Saved Cards', icon: CreditCard },
+    { id: 'cards', label: 'Saved Cards', icon: CreditCard, path: 'cards' },
     { id: 'explore', label: 'Explore', icon: Sparkles, subItems: EXPLORE_ITEMS },
-    { id: 'expenses', label: 'Expenses', icon: Receipt, comingSoon: true },
-    { id: 'bills', label: 'Bills', icon: Wallet, comingSoon: true },
-    { id: 'extension', label: 'Extension', icon: Zap, comingSoon: true },
-    { id: 'store', label: 'Store', icon: Store, comingSoon: true },
-    { id: 'giftcards', label: 'GiftCards', icon: Gift, comingSoon: true },
-    { id: 'redemption', label: 'Redemption', icon: Sparkles, comingSoon: true },
-    { id: 'referrals', label: 'Referral Dashboard', icon: Users },
-    { id: 'profile', label: 'Profile', icon: User },
+    { id: 'expenses', label: 'Expenses', icon: Receipt, comingSoon: true, path: 'expenses' },
+    { id: 'bills', label: 'Bills', icon: Wallet, comingSoon: true, path: 'bills' },
+    { id: 'extension', label: 'Extension', icon: Zap, comingSoon: true, path: 'extension' },
+    { id: 'store', label: 'Store', icon: Store, comingSoon: true, path: 'store' },
+    { id: 'giftcards', label: 'GiftCards', icon: Gift, comingSoon: true, path: 'giftcards' },
+    { id: 'redemption', label: 'Redemption', icon: Sparkles, comingSoon: true, path: 'redemption' },
+    { id: 'referrals', label: 'Referral Dashboard', icon: Users, path: 'referrals' },
+    { id: 'profile', label: 'Profile', icon: User, path: 'profile' },
 ];
 
 const DashboardLayout: React.FC = () => {
     const { user, supabase } = useSupabase();
-    const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState('cards');
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-    const [isExploreExpanded, setIsExploreExpanded] = useState(false);
+    const location = useLocation();
+    const activeTab = NAV_ITEMS.find(i => location.pathname.includes(`/dashboard/${i.path}`))?.id || 
+                      EXPLORE_ITEMS.find(i => location.pathname.includes(`/dashboard/${i.path}`))?.id || 'cards';
 
-    const handleLogout = async () => {
-        await supabase.auth.signOut();
-        navigate('/');
-    };
-
-    const renderContent = () => {
-        switch (activeTab) {
-            case 'cards': return <MyCards />;
-            case 'categories_hub': return <CategoriesPage />;
-            case 'tools_hub': return <YurekaOsPage />;
-            case 'compare_hub': return <ComparePage />;
-            case 'referrals': return <ReferralDashboard />;
-            case 'profile': return <AccountSettings />;
-            default: return (
-                <div className="flex flex-col items-center justify-center h-full text-center py-20">
-                    <motion.div 
-                        initial={{ scale: 0.8, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        className="w-24 h-24 bg-clay/10 rounded-[2rem] flex items-center justify-center border border-clay/20 mb-8"
-                    >
-                        <Zap size={40} className="text-clay animate-pulse" />
-                    </motion.div>
-                    <h2 className="text-4xl italic tracking-tighter text-white mb-4">Under Construction</h2>
-                    <p className="text-white/40 max-w-sm mx-auto font-serif italic text-lg">
-                        Our intelligence engine is currently calibrating this module for elite performance.
-                    </p>
-                </div>
-            );
-        }
-    };
+    const renderEmpty = () => (
+        <div className="flex flex-col items-center justify-center h-full text-center py-20">
+            <motion.div 
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                className="w-24 h-24 bg-clay/10 rounded-[2rem] flex items-center justify-center border border-clay/20 mb-8"
+            >
+                <Zap size={40} className="text-clay animate-pulse" />
+            </motion.div>
+            <h2 className="text-4xl italic tracking-tighter text-white mb-4">Under Construction</h2>
+            <p className="text-white/40 max-w-sm mx-auto font-serif italic text-lg">
+                Our intelligence engine is currently calibrating this module for elite performance.
+            </p>
+        </div>
+    );
 
     return (
         <div className="min-h-screen bg-mesh flex overflow-hidden font-sans pt-0 selection:bg-clay selection:text-black">
@@ -100,38 +91,52 @@ const DashboardLayout: React.FC = () => {
                     <nav className="flex-1 space-y-3 dashboard-scroll overflow-y-auto pr-2">
                         {NAV_ITEMS.map((item, idx) => (
                             <div key={item.id}>
-                                <motion.button 
-                                    initial={{ opacity: 0, x: -20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: idx * 0.05 }}
-                                    onClick={() => {
-                                        if (item.subItems) {
-                                            setIsExploreExpanded(!isExploreExpanded);
-                                        } else {
-                                            setActiveTab(item.id);
-                                        }
-                                    }}
-                                    className={`w-full flex items-center gap-5 px-5 py-5 rounded-[1.5rem] transition-all group relative overflow-hidden ${activeTab === item.id ? 'bg-white text-black shadow-2xl shadow-white/5' : 'text-white/30 hover:bg-white/5 hover:text-white'}`}
-                                >
-                                    <item.icon size={22} className={`${activeTab === item.id ? 'text-black' : 'group-hover:scale-110 transition-transform duration-500'}`} />
-                                    {isSidebarOpen && (
-                                        <div className="flex flex-1 items-center justify-between">
-                                            <div className="flex flex-col items-start text-left">
-                                                <span className="text-[11px] font-black uppercase tracking-[0.2em]">{item.label}</span>
-                                                {item.comingSoon && <span className="text-[7px] opacity-40 uppercase tracking-[0.3em] mt-0.5">Development</span>}
-                                            </div>
-                                            {item.subItems && (
+                                {item.subItems ? (
+                                    <motion.button 
+                                        initial={{ opacity: 0, x: -20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ delay: idx * 0.05 }}
+                                        onClick={() => setIsExploreExpanded(!isExploreExpanded)}
+                                        className={`w-full flex items-center gap-5 px-5 py-5 rounded-[1.5rem] transition-all group relative overflow-hidden ${activeTab === item.id ? 'bg-white text-black shadow-2xl shadow-white/5' : 'text-white/30 hover:bg-white/5 hover:text-white'}`}
+                                    >
+                                        <item.icon size={22} className={`${activeTab === item.id ? 'text-black' : 'group-hover:scale-110 transition-transform duration-500'}`} />
+                                        {isSidebarOpen && (
+                                            <div className="flex flex-1 items-center justify-between">
+                                                <div className="flex flex-col items-start text-left">
+                                                    <span className="text-[11px] font-black uppercase tracking-[0.2em]">{item.label}</span>
+                                                    {item.comingSoon && <span className="text-[7px] opacity-40 uppercase tracking-[0.3em] mt-0.5">Development</span>}
+                                                </div>
                                                 <ChevronDown 
                                                     size={14} 
                                                     className={`transition-transform duration-500 ${isExploreExpanded ? 'rotate-180' : ''}`} 
                                                 />
+                                            </div>
+                                        )}
+                                        {activeTab === item.id && (
+                                            <motion.div layoutId="nav-glow" className="absolute inset-0 bg-gradient-to-r from-transparent via-black/5 to-transparent animate-glass-shine" />
+                                        )}
+                                    </motion.button>
+                                ) : (
+                                    <Link to={item.path!}>
+                                        <motion.div 
+                                            initial={{ opacity: 0, x: -20 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            transition={{ delay: idx * 0.05 }}
+                                            className={`w-full flex items-center gap-5 px-5 py-5 rounded-[1.5rem] transition-all group relative overflow-hidden ${activeTab === item.id ? 'bg-white text-black shadow-2xl shadow-white/5' : 'text-white/30 hover:bg-white/5 hover:text-white'}`}
+                                        >
+                                            <item.icon size={22} className={`${activeTab === item.id ? 'text-black' : 'group-hover:scale-110 transition-transform duration-500'}`} />
+                                            {isSidebarOpen && (
+                                                <div className="flex flex-col items-start text-left">
+                                                    <span className="text-[11px] font-black uppercase tracking-[0.2em]">{item.label}</span>
+                                                    {item.comingSoon && <span className="text-[7px] opacity-40 uppercase tracking-[0.3em] mt-0.5">Development</span>}
+                                                </div>
                                             )}
-                                        </div>
-                                    )}
-                                    {activeTab === item.id && (
-                                        <motion.div layoutId="nav-glow" className="absolute inset-0 bg-gradient-to-r from-transparent via-black/5 to-transparent animate-glass-shine" />
-                                    )}
-                                </motion.button>
+                                            {activeTab === item.id && (
+                                                <motion.div layoutId="nav-glow" className="absolute inset-0 bg-gradient-to-r from-transparent via-black/5 to-transparent animate-glass-shine" />
+                                            )}
+                                        </motion.div>
+                                    </Link>
+                                )}
 
                                 {/* Sub Items */}
                                 <AnimatePresence>
@@ -143,14 +148,14 @@ const DashboardLayout: React.FC = () => {
                                             className="overflow-hidden mt-2 ml-6 space-y-1"
                                         >
                                             {item.subItems.map((sub) => (
-                                                <button
+                                                <Link
                                                     key={sub.id}
-                                                    onClick={() => setActiveTab(sub.id)}
+                                                    to={sub.path}
                                                     className="w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-white/30 hover:bg-white/5 hover:text-clay transition-all group/sub"
                                                 >
                                                     <sub.icon size={16} className="group-hover/sub:scale-110 transition-transform" />
                                                     <span className="text-[10px] font-black uppercase tracking-[0.2em]">{sub.label}</span>
-                                                </button>
+                                                </Link>
                                             ))}
                                         </motion.div>
                                     )}
@@ -221,15 +226,23 @@ const DashboardLayout: React.FC = () => {
                     </header>
 
                     <AnimatePresence mode="wait">
-                        <motion.div 
-                            key={activeTab}
-                            initial={{ opacity: 0, y: 40 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -40 }}
-                            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                        >
-                            {renderContent()}
-                        </motion.div>
+                            <Routes>
+                                <Route index element={<MyCards />} />
+                                <Route path="cards" element={<MyCards />} />
+                                <Route path="categories" element={<CategoriesPage />} />
+                                <Route path="categories/:slug" element={<CategoryDetailPage />} />
+                                <Route path="tools" element={<YurekaOsPage />} />
+                                <Route path="rewards-calculator" element={<RewardsTransferCalculator />} />
+                                <Route path="compare" element={<ComparePage />} />
+                                <Route path="compare/:slug" element={<ComparisonDetail />} />
+                                <Route path="cards" element={<CardExplorer />} />
+                                <Route path="cards/:slug" element={<CardDetail />} />
+                                <Route path="yureka-ai" element={<YurekaAIPage />} />
+                                <Route path="join-waitlist" element={<WaitlistPage />} />
+                                <Route path="referrals" element={<ReferralDashboard />} />
+                                <Route path="profile" element={<AccountSettings />} />
+                                <Route path="*" element={renderEmpty()} />
+                            </Routes>
                     </AnimatePresence>
                 </div>
             </main>

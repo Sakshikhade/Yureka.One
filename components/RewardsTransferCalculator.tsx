@@ -12,7 +12,7 @@ import {
   TrendingUp,
   History
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import SEO from './SEO';
 import { transferMatrix } from '../data/transferMatrix';
 
@@ -93,13 +93,16 @@ const RewardsTransferCalculator: React.FC = () => {
   const [visibleCount, setVisibleCount] = useState(20);
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const isDashboard = location.pathname.startsWith('/dashboard');
+  const basePath = isDashboard ? '/dashboard' : '';
   const fromDropdownRef = useRef<HTMLDivElement>(null);
   const toDropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const access = localStorage.getItem('yureka_points_access');
-    if (!access) navigate('/free-tools');
-  }, [navigate]);
+    if (!access) navigate(`${basePath}/free-tools`);
+  }, [navigate, basePath]);
 
   // Click outside listener
   useEffect(() => {
@@ -352,7 +355,10 @@ const RewardsTransferCalculator: React.FC = () => {
         </div>
 
         {/* Login Banner */}
-        <div className="bg-white/5 rounded-[2rem] border border-white/5 p-5 mb-10 flex items-center justify-between group cursor-pointer hover:bg-white/[0.03] transition-all shadow-xl">
+        <div 
+          onClick={() => navigate(`${basePath}/profile`)}
+          className="bg-white/5 rounded-[2rem] border border-white/5 p-5 mb-10 flex items-center justify-between group cursor-pointer hover:bg-white/[0.03] transition-all shadow-xl"
+        >
           <div className="flex items-center gap-5 text-white/40 font-bold uppercase tracking-[0.2em] text-[10px]">
             <div className="w-10 h-10 rounded-2xl bg-cream flex items-center justify-center border border-white/5 group-hover:border-emerald-500/20 transition-all">
               <User size={18} className="text-emerald-400" />

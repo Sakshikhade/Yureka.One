@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { 
   Plane, ShoppingBag, Wallet, Fuel, Tag, Bike, Utensils, Users, 
   ShoppingBasket, Star, Hotel, Briefcase, Sofa, GraduationCap, 
@@ -36,6 +36,10 @@ const CATEGORIES = [
 ];
 
 const CategoriesPage: React.FC = () => {
+  const location = useLocation();
+  const isDashboard = location.pathname.startsWith('/dashboard');
+  const basePath = isDashboard ? '/dashboard' : '';
+
   return (
     <div className="min-h-screen bg-cream pb-20">
       <SEO 
@@ -88,7 +92,7 @@ const CategoriesPage: React.FC = () => {
               transition={{ delay: index * 0.03 }}
             >
               <Link 
-                to={`/categories/${category.slug}`}
+                to={`${basePath}/categories/${category.slug}`}
                 className="group relative block bg-white/5 border border-white/5 rounded-[2rem] p-6 hover:border-clay/40 transition-all duration-500 overflow-hidden h-full"
               >
                 {/* Background Glow */}
@@ -128,7 +132,7 @@ const CategoriesPage: React.FC = () => {
             <h2 className="text-2xl md:text-3xl font-heading font-black text-white uppercase">Still Unsure?</h2>
             <p className="text-white/40 text-sm max-w-md">Let our Intelligence Engine match you with the perfect card based on your unique credit profile.</p>
           </div>
-          <Link to="/yureka-ai" className="bg-clay text-black px-10 py-4 rounded-full font-black uppercase tracking-widest flex items-center gap-2 hover:scale-105 transition-transform shrink-0">
+          <Link to={`${basePath}/yureka-ai`} className="bg-clay text-black px-10 py-4 rounded-full font-black uppercase tracking-widest flex items-center gap-2 hover:scale-105 transition-transform shrink-0">
              Consult Yureka AI <ArrowRight size={18} />
           </Link>
         </div>

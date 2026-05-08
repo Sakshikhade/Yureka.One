@@ -59,6 +59,9 @@ const USAGE_CATEGORIES = ['Dining', 'Fuel', 'Online Shopping', 'Travel', 'Hotel'
 const WaitlistPage: React.FC = () => {
     const { supabase, user, session, cards: allCards } = useSupabase();
     const navigate = useNavigate();
+    const location = useLocation();
+    const isDashboard = location.pathname.startsWith('/dashboard');
+    const basePath = isDashboard ? '/dashboard' : '';
     const [searchParams] = useSearchParams();
 
     const [step, setStep] = useState(1);
@@ -103,7 +106,7 @@ const WaitlistPage: React.FC = () => {
             provider: 'google',
             options: {
                 scopes: 'https://www.googleapis.com/auth/user.phonenumbers.read https://www.googleapis.com/auth/user.birthday.read https://www.googleapis.com/auth/user.gender.read',
-                redirectTo: window.location.origin + '/join-waitlist'
+                redirectTo: window.location.origin + `${basePath}/join-waitlist`
             }
         });
         if (error) setError(error.message);
@@ -688,7 +691,7 @@ const WaitlistPage: React.FC = () => {
                 </div>
             </div>
 
-            <Link to="/" className="inline-block mt-16 text-[10px] font-black uppercase tracking-[0.5em] text-white/20 hover:text-clay transition-all">Back to Archive</Link>
+            <Link to={basePath || "/"} className="inline-block mt-16 text-[10px] font-black uppercase tracking-[0.5em] text-white/20 hover:text-clay transition-all">Back to Archive</Link>
         </motion.div>
     );
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { 
   ArrowRight, Search, Sparkles, X, ChevronDown, 
   ArrowRightLeft, Star, Zap, Info, Shield, 
@@ -45,6 +45,9 @@ const POPULAR_COMPARISONS = [
 
 const ComparePage: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const isDashboard = location.pathname.startsWith('/dashboard');
+  const basePath = isDashboard ? '/dashboard' : '';
   const [allCards, setAllCards] = useState<Card[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCards, setSelectedCards] = useState<string[]>(['', '', '']);
@@ -75,7 +78,7 @@ const ComparePage: React.FC = () => {
       return card?.slug || id;
     });
     
-    navigate(`/compare/${slugs.join('-vs-')}`);
+    navigate(`${basePath}/compare/${slugs.join('-vs-')}`);
   };
 
   return (
@@ -244,7 +247,7 @@ const ComparePage: React.FC = () => {
  
                      {/* Action Button */}
                      <Link 
-                       to={`/compare/${comp.cards.map(c => c.slug).join('-vs-')}`}
+                       to={`${basePath}/compare/${comp.cards.map(c => c.slug).join('-vs-')}`}
                        className="w-full bg-white/5 border border-white/10 text-white/80 py-5 rounded-2xl text-[12px] font-black uppercase tracking-[0.2em] hover:bg-clay hover:text-black transition-all duration-500 flex items-center justify-center gap-3 shadow-xl hover:shadow-clay/20"
                      >
                         View Comparison <ArrowRight size={18} />

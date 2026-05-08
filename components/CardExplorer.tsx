@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { 
     ArrowUpRight, Zap, ShieldCheck, Plane, Search, 
     X, ChevronRight, Star, Landmark, Coffee, Fuel, CreditCard, 
@@ -50,6 +50,10 @@ function ShoppingBag(props: any) { return <Briefcase {...props} />; } // fallbac
 
 const CardExplorer: React.FC = () => {
     const { cards: cardsList, isLoading } = useSupabase();
+    const location = useLocation();
+    const isDashboard = location.pathname.startsWith('/dashboard');
+    const basePath = isDashboard ? '/dashboard' : '';
+    
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedBanks, setSelectedBanks] = useState<string[]>([]);
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -258,7 +262,7 @@ const CardExplorer: React.FC = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {filteredCards.map((card, index) => (
                             <motion.div key={card.id} layout initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: (index % 4) * 0.05 }} className="group">
-                                <Link to={`/cards/${card.slug || card.id}`} className="block h-full">
+                                <Link to={`${basePath}/cards/${card.slug || card.id}`} className="block h-full">
                                     <div className="bg-white/5 rounded-[2.5rem] border border-white/5 p-2 h-full flex flex-col hover:border-clay/30 hover:bg-white/[0.07] transition-all duration-500 group">
                                         <div className="relative aspect-video md:aspect-[1.6/1] rounded-[2rem] overflow-hidden mb-4 md:mb-6 bg-white/[0.03]">
                                             <ImageWithLoader src={card.image} alt={card.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />

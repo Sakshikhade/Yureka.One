@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { 
     ArrowLeft, Share2, Star, CheckCircle2, 
     Zap, ExternalLink, ShieldCheck, CreditCard,
@@ -14,6 +14,10 @@ import SEO from './SEO';
 
 const CardDetail: React.FC = () => {
     const { slug } = useParams<{ slug: string }>();
+    const location = useLocation();
+    const isDashboard = location.pathname.startsWith('/dashboard');
+    const basePath = isDashboard ? '/dashboard' : '';
+    
     const [card, setCard] = useState<Card | null>(null);
     const [related, setRelated] = useState<Card[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -61,7 +65,7 @@ const CardDetail: React.FC = () => {
                 <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-clay mb-6">404 Card Not Found</p>
                 <h1 className="text-5xl font-heading font-extrabold text-white mb-4 tracking-tight uppercase">Credit Card Not Found</h1>
                 <p className="text-white/60 mb-10 max-w-md font-serif italic text-lg leading-relaxed">The credit card you are looking for may have been delisted or archived.</p>
-                <Link to="/cards" className="bg-white text-[#0f0f0f] px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-clay hover:text-white transition-all">
+                <Link to={`${basePath}/cards`} className="bg-white text-[#0f0f0f] px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-clay hover:text-white transition-all">
                     Return to Cards
                 </Link>
             </div>
@@ -80,7 +84,7 @@ const CardDetail: React.FC = () => {
             {/* ── TOP NAV ── */}
             <div className="sticky top-[104px] md:top-20 z-[45] bg-[#0f0f0f]/90 backdrop-blur-xl border-b border-white/5">
                 <div className="max-w-[1200px] mx-auto px-6 h-16 flex items-center justify-between">
-                    <Link to="/cards" className="flex items-center gap-2 text-white/60 hover:text-clay transition-colors group text-[10px] font-bold uppercase tracking-widest">
+                    <Link to={`${basePath}/cards`} className="flex items-center gap-2 text-white/60 hover:text-clay transition-colors group text-[10px] font-bold uppercase tracking-widest">
                         <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
                         Card Explorer
                     </Link>
@@ -288,7 +292,7 @@ const CardDetail: React.FC = () => {
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                             {related.map(item => (
-                                <Link key={item.id} to={`/cards/${item.slug || item.id}`} className="group">
+                                <Link key={item.id} to={`${basePath}/cards/${item.slug || item.id}`} className="group">
                                     <div className="bg-white/5 border border-white/5 rounded-[2rem] p-6 hover:bg-white/10 transition-all">
                                         <div className="aspect-[1.58/1] rounded-xl overflow-hidden mb-6 bg-white/5 p-4">
                                             <ImageWithLoader src={item.image} alt="" className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />

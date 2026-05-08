@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { 
   ArrowLeft, Check, X, Shield, Zap, Sparkles, Loader2, Star, 
@@ -13,6 +13,10 @@ import SEO from './SEO';
 
 const ComparisonDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
+  const location = useLocation();
+  const isDashboard = location.pathname.startsWith('/dashboard');
+  const basePath = isDashboard ? '/dashboard' : '';
+  
   const [cards, setCards] = useState<Card[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -61,7 +65,7 @@ const ComparisonDetail: React.FC = () => {
       <section className="relative pt-12 pb-24 overflow-hidden bg-clay">
          <div className="absolute inset-0 bg-gradient-to-r from-[#2ab884]/50 to-transparent pointer-events-none" />
          <div className="max-w-7xl mx-auto px-6 relative z-10">
-            <Link to="/compare" className="inline-flex items-center gap-2 text-black/60 hover:text-black transition-colors text-[10px] font-black uppercase tracking-[0.3em] mb-12">
+            <Link to={`${basePath}/compare`} className="inline-flex items-center gap-2 text-black/60 hover:text-black transition-colors text-[10px] font-black uppercase tracking-[0.3em] mb-12">
                <ArrowLeft size={14} /> Back to Selection
             </Link>
             
@@ -131,7 +135,7 @@ const ComparisonDetail: React.FC = () => {
                      </ul>
                   </div>
 
-                  <Link to={`/cards/${card.slug || card.id}`} className="w-full bg-clay text-black py-5 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-[#2ab884] transition-all">
+                  <Link to={`${basePath}/cards/${card.slug || card.id}`} className="w-full bg-clay text-black py-5 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-[#2ab884] transition-all">
                      Read Full Review <ChevronRight size={14} />
                   </Link>
                </motion.div>
@@ -320,7 +324,7 @@ const ComparisonDetail: React.FC = () => {
                        Apply Securely <MousePointer2 size={16} />
                     </a>
                   )}
-                  <Link to={`/cards/${card.slug || card.id}`} className="w-full bg-white/5 border border-white/10 text-white/60 py-5 rounded-2xl text-[11px] font-black uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-white hover:text-black transition-all">
+                  <Link to={`${basePath}/cards/${card.slug || card.id}`} className="w-full bg-white/5 border border-white/10 text-white/60 py-5 rounded-2xl text-[11px] font-black uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-white hover:text-black transition-all">
                      View Deep Dive <ExternalLink size={16} />
                   </Link>
                </div>

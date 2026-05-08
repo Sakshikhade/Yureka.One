@@ -8,6 +8,9 @@ const YurekaOsPage: React.FC = () => {
   const [email, setEmail] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const isDashboard = location.pathname.startsWith('/dashboard');
+  const basePath = isDashboard ? '/dashboard' : '';
   const { supabase } = useSupabase();
 
   const handleCalculate = async (e: React.FormEvent) => {
@@ -19,11 +22,11 @@ const YurekaOsPage: React.FC = () => {
       const { error } = await supabase.from('waitlist').insert([{ email, source: 'yureka-os-hero' }]);
       if (error && error.code !== '23505') console.error('Error saving email:', error);
       localStorage.setItem('yureka_points_access', email);
-      navigate('/rewards-calculator');
+      navigate(`${basePath}/rewards-calculator`);
     } catch (err) {
       console.error('Calculation flow error:', err);
       localStorage.setItem('yureka_points_access', email); 
-      navigate('/rewards-calculator'); 
+      navigate(`${basePath}/rewards-calculator`); 
     } finally {
       setLoading(false);
     }
@@ -158,7 +161,7 @@ const YurekaOsPage: React.FC = () => {
 
                 <div className="text-center lg:text-left">
                   <p className="text-[10px] text-white/30 font-sans tracking-wide">
-                    By continuing, you agree to our <Link to="/terms" className="text-white underline">Terms of Service</Link>
+                    By continuing, you agree to our <Link to={`${basePath}/terms`} className="text-white underline">Terms of Service</Link>
                   </p>
                 </div>
               </form>
@@ -219,10 +222,10 @@ const YurekaOsPage: React.FC = () => {
               Ready to win the <br /> <span className="text-clay italic font-light">points game?</span>
             </h2>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Link to="/join-waitlist" className="bg-clay text-cream px-10 py-5 rounded-2xl font-bold uppercase tracking-widest text-[10px] transition-all hover:bg-white flex items-center justify-center gap-3 group">
+              <Link to={`${basePath}/join-waitlist`} className="bg-clay text-cream px-10 py-5 rounded-2xl font-bold uppercase tracking-widest text-[10px] transition-all hover:bg-white flex items-center justify-center gap-3 group">
                 Reserve your spot <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </Link>
-              <Link to="/cards" className="border border-white/10 hover:border-clay/30 text-white px-10 py-5 rounded-2xl font-bold uppercase tracking-widest text-[10px] transition-all flex items-center justify-center backdrop-blur-sm">
+              <Link to={`${basePath}/cards`} className="border border-white/10 hover:border-clay/30 text-white px-10 py-5 rounded-2xl font-bold uppercase tracking-widest text-[10px] transition-all flex items-center justify-center backdrop-blur-sm">
                 Review Top Card Combinations
               </Link>
             </div>
