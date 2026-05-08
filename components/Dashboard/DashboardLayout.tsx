@@ -4,7 +4,7 @@ import {
     CreditCard, Mail, Receipt, Wallet, Store, 
     Gift, Zap, Sparkles, Users, User, 
     LogOut, ChevronLeft, Menu, Bell, ChevronDown,
-    LayoutGrid, Calculator, ArrowRightLeft
+    LayoutGrid, Calculator, ArrowRightLeft, Compass
 } from 'lucide-react';
 import { useNavigate, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { useSupabase } from '../SupabaseProvider';
@@ -28,6 +28,7 @@ const EXPLORE_ITEMS = [
     { id: 'categories', label: 'Categories', icon: LayoutGrid, path: 'categories' },
     { id: 'tools', label: 'Free Tools', icon: Calculator, path: 'tools' },
     { id: 'compare', label: 'Compare', icon: ArrowRightLeft, path: 'compare' },
+    { id: 'card-explorer', label: 'Card Explorer', icon: Compass, path: 'card-explorer' },
 ];
 
 const NAV_ITEMS = [
@@ -45,9 +46,19 @@ const NAV_ITEMS = [
 
 const DashboardLayout: React.FC = () => {
     const { user, supabase } = useSupabase();
+    const navigate = useNavigate();
     const location = useLocation();
+    
+    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [isExploreExpanded, setIsExploreExpanded] = useState(false);
+
     const activeTab = NAV_ITEMS.find(i => location.pathname.includes(`/dashboard/${i.path}`))?.id || 
                       EXPLORE_ITEMS.find(i => location.pathname.includes(`/dashboard/${i.path}`))?.id || 'cards';
+
+    const handleLogout = async () => {
+        await supabase.auth.signOut();
+        navigate('/');
+    };
 
     const renderEmpty = () => (
         <div className="flex flex-col items-center justify-center h-full text-center py-20">
@@ -235,7 +246,7 @@ const DashboardLayout: React.FC = () => {
                                 <Route path="rewards-calculator" element={<RewardsTransferCalculator />} />
                                 <Route path="compare" element={<ComparePage />} />
                                 <Route path="compare/:slug" element={<ComparisonDetail />} />
-                                <Route path="cards" element={<CardExplorer />} />
+                                <Route path="card-explorer" element={<CardExplorer />} />
                                 <Route path="cards/:slug" element={<CardDetail />} />
                                 <Route path="yureka-ai" element={<YurekaAIPage />} />
                                 <Route path="join-waitlist" element={<WaitlistPage />} />
