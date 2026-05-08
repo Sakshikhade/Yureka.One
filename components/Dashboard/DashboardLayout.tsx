@@ -23,7 +23,6 @@ const EXPLORE_ITEMS = [
 const NAV_ITEMS = [
     { id: 'cards', label: 'Saved Cards', icon: CreditCard },
     { id: 'explore', label: 'Explore', icon: Sparkles, subItems: EXPLORE_ITEMS },
-    { id: 'tools_hub', label: 'Tools', icon: Calculator, comingSoon: true },
     { id: 'expenses', label: 'Expenses', icon: Receipt, comingSoon: true },
     { id: 'bills', label: 'Bills', icon: Wallet, comingSoon: true },
     { id: 'extension', label: 'Extension', icon: Zap, comingSoon: true },
