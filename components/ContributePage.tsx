@@ -30,6 +30,7 @@ const ContributePage: React.FC = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   
   const { cards } = useSupabase();
+  const [selectedBank, setSelectedBank] = useState<string>('');
   const [selectedCardId, setSelectedCardId] = useState<string>('');
 
   // Unified state for the giant Add Card form
@@ -224,19 +225,40 @@ const ContributePage: React.FC = () => {
                       
                       {/* CARD SELECTOR FOR UPDATE / REMOVE */}
                       {(activeTab === 'update' || activeTab === 'remove') && (
-                        <div className="space-y-2 mb-8">
-                          <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-2 ml-1">Select Card <span className="text-red-500">*</span></label>
-                          <select 
-                            required 
-                            value={selectedCardId} 
-                            onChange={(e) => setSelectedCardId(e.target.value)} 
-                            className="w-full bg-white/5 border border-white/5 rounded-2xl p-4 focus:ring-2 focus:ring-clay outline-none transition-all text-white appearance-none"
-                          >
-                            <option value="" className="bg-cream">Choose a card from the database</option>
-                            {cards.map(c => (
-                              <option key={c.id} value={c.id} className="bg-cream">{c.name} ({c.bank})</option>
-                            ))}
-                          </select>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                          <div className="space-y-2">
+                            <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-2 ml-1">Select Bank <span className="text-red-500">*</span></label>
+                            <select 
+                              required 
+                              value={selectedBank} 
+                              onChange={(e) => {
+                                setSelectedBank(e.target.value);
+                                setSelectedCardId(''); // Reset card selection when bank changes
+                              }} 
+                              className="w-full bg-white/5 border border-white/5 rounded-2xl p-4 focus:ring-2 focus:ring-clay outline-none transition-all text-white appearance-none"
+                            >
+                              <option value="" className="bg-cream">Choose Bank</option>
+                              {Array.from(new Set(cards.map(c => c.bank).filter(Boolean))).sort().map(bank => (
+                                <option key={bank} value={bank} className="bg-cream">{bank}</option>
+                              ))}
+                            </select>
+                          </div>
+                          
+                          <div className="space-y-2">
+                            <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-2 ml-1">Select Card <span className="text-red-500">*</span></label>
+                            <select 
+                              required 
+                              disabled={!selectedBank}
+                              value={selectedCardId} 
+                              onChange={(e) => setSelectedCardId(e.target.value)} 
+                              className="w-full bg-white/5 border border-white/5 rounded-2xl p-4 focus:ring-2 focus:ring-clay outline-none transition-all text-white appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              <option value="" className="bg-cream">{selectedBank ? 'Choose a card from the database' : 'Select a bank first'}</option>
+                              {cards.filter(c => c.bank === selectedBank).map(c => (
+                                <option key={c.id} value={c.id} className="bg-cream">{c.name}</option>
+                              ))}
+                            </select>
+                          </div>
                         </div>
                       )}
 
