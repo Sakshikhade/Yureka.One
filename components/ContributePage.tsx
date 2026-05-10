@@ -136,6 +136,14 @@ const ContributePage: React.FC = () => {
     return `${safeBank}-${safeName}`.replace(/^-+|-+$/g, '');
   };
 
+  if (!cards) {
+    return (
+      <div className="min-h-screen bg-cream flex items-center justify-center">
+        <Loader2 className="text-clay animate-spin" size={48} />
+      </div>
+    );
+  }
+
   const tabs: { id: TabType; label: string; icon: React.ReactNode; desc: string }[] = [
     { id: 'add', label: 'Missing Card', icon: <PlusCircle size={18} />, desc: 'Suggest a card we haven\'t added yet.' },
     { id: 'update', label: 'Update Details', icon: <AlertTriangle size={18} />, desc: 'Report incorrect fees, rewards, or perks.' },
@@ -216,7 +224,7 @@ const ContributePage: React.FC = () => {
                   <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                     {/* Tabs */}
                     <div className="flex flex-col sm:flex-row gap-3 mb-12">
-                      {tabs.map((t) => (
+                      {tabs?.map((t) => (
                         <button
                           key={t.id} onClick={() => setActiveTab(t.id)} type="button"
                           className={`flex-1 flex flex-col items-start p-4 rounded-2xl border transition-all duration-300 ${
@@ -251,7 +259,7 @@ const ContributePage: React.FC = () => {
                               className="w-full bg-white/5 border border-white/5 rounded-2xl p-4 focus:ring-2 focus:ring-clay outline-none transition-all text-white appearance-none"
                             >
                               <option value="" className="bg-cream">Choose Bank</option>
-                              {Array.from(new Set((cards || []).map(c => c.bank).filter(Boolean))).sort().map(bank => (
+                              {Array.from(new Set((cards || []).filter(Boolean).map(c => c.bank).filter(Boolean))).sort().map(bank => (
                                 <option key={bank} value={bank} className="bg-cream">{bank}</option>
                               ))}
                             </select>
@@ -267,7 +275,7 @@ const ContributePage: React.FC = () => {
                               className="w-full bg-white/5 border border-white/5 rounded-2xl p-4 focus:ring-2 focus:ring-clay outline-none transition-all text-white appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                               <option value="" className="bg-cream">{selectedBank ? 'Choose a card from the database' : 'Select a bank first'}</option>
-                              {(cards || []).filter(c => c.bank === selectedBank).map(c => (
+                              {(cards || []).filter(Boolean).filter(c => c.bank === selectedBank).map(c => (
                                 <option key={c.id} value={c.id} className="bg-cream">{c.name}</option>
                               ))}
                             </select>
@@ -289,7 +297,7 @@ const ContributePage: React.FC = () => {
                                   <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-2 ml-1">Financial Node</label>
                                   <select required value={form.bank} onChange={e => setForm({...form, bank: e.target.value, issuer: e.target.value})} className="w-full bg-white/5 border border-white/5 rounded-2xl p-4 focus:ring-2 focus:ring-clay outline-none transition-all text-white appearance-none">
                                     <option value="" className="bg-cream">Select Issuer</option>
-                                    {ALL_BANKS.map(b => <option key={b} value={b} className="bg-cream">{b}</option>)}
+                                    {ALL_BANKS?.map(b => <option key={b} value={b} className="bg-cream">{b}</option>)}
                                   </select>
                                 </div>
                               </div>
@@ -319,7 +327,7 @@ const ContributePage: React.FC = () => {
                                   <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-2 ml-1">Core Classification</label>
                                   <select required value={form.category} onChange={e => setForm({...form, category: e.target.value})} className="w-full bg-white/5 border border-white/5 rounded-2xl p-4 focus:ring-2 focus:ring-clay outline-none transition-all text-white appearance-none">
                                     <option value="" className="bg-cream">Select Sector</option>
-                                    {ALL_CATEGORIES.map(c => <option key={c} value={c} className="bg-cream">{c}</option>)}
+                                    {ALL_CATEGORIES?.map(c => <option key={c} value={c} className="bg-cream">{c}</option>)}
                                   </select>
                                 </div>
                                 <div>
@@ -387,7 +395,7 @@ const ContributePage: React.FC = () => {
                             <div>
                               <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-6 ml-1">Benefits Portfolio Architecture</label>
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                  {form.benefit_items.map((benefit: any, idx: number) => (
+                                  {(form?.benefit_items || []).map((benefit: any, idx: number) => (
                                     <div key={idx} className="flex items-start gap-4 bg-white/5 p-6 rounded-[2rem] relative group/item border border-white/5">
                                       <div className="flex-1 space-y-4">
                                           <input type="text" placeholder="Core Proposition" value={benefit.heading} onChange={e => { const newItems = [...form.benefit_items]; newItems[idx].heading = e.target.value; setForm({...form, benefit_items: newItems}); }} className="w-full bg-cream border border-white/10 rounded-xl p-3.5 text-sm font-black text-white focus:ring-2 focus:ring-clay outline-none placeholder:text-white/10" />
@@ -431,7 +439,7 @@ const ContributePage: React.FC = () => {
                                   <div className="space-y-6">
                                     <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-clay flex items-center gap-2"><Check size={14} /> Yield Parameters</label>
                                     <div className="space-y-3">
-                                      {form.grid_benefits.map((b: any, idx: number) => (
+                                      {(form?.grid_benefits || []).map((b: any, idx: number) => (
                                         <div key={idx} className="flex gap-3">
                                           <div className="w-1/3 bg-white/5 border border-white/5 rounded-xl p-3 text-[9px] font-black uppercase tracking-widest text-white/40 flex items-center">{b.title}</div>
                                           <input type="text" value={b.value} onChange={e => { const next = [...form.grid_benefits]; next[idx].value = e.target.value; setForm({...form, grid_benefits: next}); }} className="w-2/3 bg-cream border border-white/10 rounded-xl p-3 text-xs text-white font-bold focus:ring-1 focus:ring-clay outline-none" />
@@ -442,7 +450,7 @@ const ContributePage: React.FC = () => {
                                   <div className="space-y-6">
                                     <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-clay flex items-center gap-2"><Zap size={14} /> Protocol Fees</label>
                                     <div className="space-y-3">
-                                      {form.grid_fees.map((f: any, idx: number) => (
+                                      {(form?.grid_fees || []).map((f: any, idx: number) => (
                                         <div key={idx} className="flex gap-3">
                                           <div className="w-1/3 bg-white/5 border border-white/5 rounded-xl p-3 text-[9px] font-black uppercase tracking-widest text-white/40 flex items-center">{f.title}</div>
                                           <input type="text" value={f.value} onChange={e => { const next = [...form.grid_fees]; next[idx].value = e.target.value; setForm({...form, grid_fees: next}); }} className="w-2/3 bg-cream border border-white/10 rounded-xl p-3 text-xs text-white font-bold focus:ring-1 focus:ring-clay outline-none" />
@@ -458,7 +466,7 @@ const ContributePage: React.FC = () => {
                                       <button type="button" onClick={() => setForm({...form, pros: [...form.pros, '']})} className="text-clay hover:scale-125 transition-transform"><Plus size={18} /></button>
                                     </div>
                                     <div className="space-y-3">
-                                      {form.pros.map((p: string, i: number) => (
+                                      {(form?.pros || []).map((p: string, i: number) => (
                                         <div key={i} className="flex gap-3 group">
                                           <input type="text" value={p} onChange={e => { const next = [...form.pros]; next[i] = e.target.value; setForm({...form, pros: next}); }} className="flex-1 bg-cream border border-clay/20 rounded-xl p-3.5 text-xs text-white" />
                                           <button type="button" onClick={() => setForm({...form, pros: form.pros.filter((_:any, j:number) => i!==j)})} className="text-white/20 hover:text-red-500 transition-colors"><X size={16} /></button>
@@ -472,7 +480,7 @@ const ContributePage: React.FC = () => {
                                       <button type="button" onClick={() => setForm({...form, cons: [...form.cons, '']})} className="text-red-500 hover:scale-125 transition-transform"><Plus size={18} /></button>
                                     </div>
                                     <div className="space-y-3">
-                                      {form.cons.map((p: string, i: number) => (
+                                      {(form?.cons || []).map((p: string, i: number) => (
                                         <div key={i} className="flex gap-3 group">
                                           <input type="text" value={p} onChange={e => { const next = [...form.cons]; next[i] = e.target.value; setForm({...form, cons: next}); }} className="flex-1 bg-cream border border-red-500/20 rounded-xl p-3.5 text-xs text-white" />
                                           <button type="button" onClick={() => setForm({...form, cons: form.cons.filter((_:any, j:number) => i!==j)})} className="text-white/20 hover:text-red-500 transition-colors"><X size={16} /></button>
@@ -487,7 +495,7 @@ const ContributePage: React.FC = () => {
                                     <button type="button" onClick={() => setForm({...form, product_details: [...form.product_details, '']})} className="text-clay hover:scale-125 transition-transform"><Plus size={18} /></button>
                                   </div>
                                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    {form.product_details.map((p: string, i: number) => (
+                                    {(form?.product_details || []).map((p: string, i: number) => (
                                       <div key={i} className="flex gap-3 group">
                                         <input type="text" value={p} onChange={e => { const next = [...form.product_details]; next[i] = e.target.value; setForm({...form, product_details: next}); }} className="flex-1 bg-cream border border-white/10 rounded-xl p-3 text-xs text-white/80" />
                                         <button type="button" onClick={() => setForm({...form, product_details: form.product_details.filter((_:any, j:number) => i!==j)})} className="text-white/20 hover:text-red-500 transition-colors"><X size={16} /></button>
@@ -498,7 +506,7 @@ const ContributePage: React.FC = () => {
                                 <div className="space-y-6">
                                   <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-clay">Redemption Equilibrium Values</label>
                                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                    {form.redemption_table.map((r: any, i: number) => (
+                                    {(form?.redemption_table || []).map((r: any, i: number) => (
                                       <div key={i} className="bg-cream border border-white/10 rounded-2xl p-4 space-y-2">
                                         <div className="text-[9px] font-black uppercase tracking-widest text-white/30">{r.category}</div>
                                         <input type="text" value={r.value} onChange={el => { const next = [...form.redemption_table]; next[i].value = el.target.value; setForm({...form, redemption_table: next}); }} className="w-full bg-transparent border-none p-0 text-sm text-white font-bold focus:ring-0 outline-none" />
@@ -512,7 +520,7 @@ const ContributePage: React.FC = () => {
                                     <button type="button" onClick={() => setForm({...form, latest_news: [...form.latest_news, '']})} className="text-clay hover:scale-125 transition-transform"><Plus size={18} /></button>
                                   </div>
                                   <div className="space-y-3">
-                                    {form.latest_news.map((n: string, i: number) => (
+                                    {(form?.latest_news || []).map((n: string, i: number) => (
                                       <div key={i} className="flex gap-3 group">
                                         <div className="w-2 h-2 rounded-full bg-clay mt-4 shrink-0" />
                                         <input type="text" value={n} onChange={e => { const next = [...form.latest_news]; next[i] = e.target.value; setForm({...form, latest_news: next}); }} className="flex-1 bg-transparent border-b border-white/10 py-2 text-sm text-white/60 focus:text-white focus:border-clay outline-none transition-all" />
