@@ -20,11 +20,21 @@ const AdminUpdatesTab: React.FC = () => {
     if (!window.confirm(`Are you sure you want to add "${contribution.card_name}" to the live database?`)) return;
     setProcessingId(contribution.id || null);
     try {
-      await addCard({ ...contribution.payload, status: 'published' });
+      // Merge with required defaults to prevent DB errors
+      const fullCardData = {
+        type: 'Rewards',
+        color: 'from-blue-600 to-indigo-700',
+        benefits: [],
+        categories: [],
+        ...contribution.payload,
+        status: 'published'
+      };
+      
+      await addCard(fullCardData);
       await updateCardContributionStatus(contribution.id!, 'approved');
-    } catch (err) {
+    } catch (err: any) {
       console.error('Failed to approve:', err);
-      alert('Failed to approve the card addition.');
+      alert(`Failed to approve the card addition: ${err.message || 'Unknown error'}`);
     } finally {
       setProcessingId(null);
     }
@@ -41,9 +51,9 @@ const AdminUpdatesTab: React.FC = () => {
       
       await updateCard(cardId, payload);
       await updateCardContributionStatus(contribution.id!, 'resolved');
-    } catch (err) {
+    } catch (err: any) {
       console.error('Failed to update:', err);
-      alert('Failed to update the card.');
+      alert(`Failed to update the card: ${err.message || 'Unknown error'}`);
     } finally {
       setProcessingId(null);
     }
@@ -55,9 +65,9 @@ const AdminUpdatesTab: React.FC = () => {
     try {
       await deleteCard(contribution.payload.id);
       await updateCardContributionStatus(contribution.id!, 'resolved');
-    } catch (err) {
+    } catch (err: any) {
       console.error('Failed to remove:', err);
-      alert('Failed to remove the card.');
+      alert(`Failed to remove the card: ${err.message || 'Unknown error'}`);
     } finally {
       setProcessingId(null);
     }
