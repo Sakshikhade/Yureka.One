@@ -12,7 +12,7 @@ const Stats = lazy(() => import('./Stats'));
 const Marquee = lazy(() => import('./Marquee'));
 const Security = lazy(() => import('./Security'));
 const Community = lazy(() => import('./Community'));
-const ComingSoon = lazy(() => import('./ComingSoon'));
+const ContributeCTA = lazy(() => import('./ContributeCTA'));
 const FAQ = lazy(() => import('./FAQ'));
 const CalculatorCTA = lazy(() => import('./CalculatorCTA'));
 const RentalProtection = lazy(() => import('./RentalProtection'));
@@ -111,7 +111,7 @@ const MainPage: React.FC = () => {
 
                 <div className="content-auto">
                     <Suspense fallback={<div className="h-48" />}>
-                        <ComingSoon />
+                        <ContributeCTA />
                     </Suspense>
                 </div>
 

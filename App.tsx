@@ -57,7 +57,7 @@ const CategoriesPage = lazyWithRetry(() => import('./components/CategoriesPage')
 const CategoryDetailPage = lazyWithRetry(() => import('./components/CategoryDetailPage'));
 const ComparePage = lazyWithRetry(() => import('./components/ComparePage'));
 const ComparisonDetail = lazyWithRetry(() => import('./components/ComparisonDetail'));
-const ComingSoon = lazyWithRetry(() => import('./components/ComingSoon'));
+const ContributePage = lazyWithRetry(() => import('./components/ContributePage'));
 const LoginPage = lazyWithRetry(() => import('./components/LoginPage'));
 const WaitlistPage = lazyWithRetry(() => import('./components/WaitlistPage'));
 const WaitingPage = lazyWithRetry(() => import('./components/WaitingPage'));
@@ -183,7 +183,8 @@ const AppContent: React.FC = () => {
                 </ProtectedRoute>
               } />
               
-              <Route path="/coming-soon" element={<ComingSoon />} />
+              <Route path="/contribute" element={<ContributePage />} />
+              <Route path="/coming-soon" element={<Navigate to="/contribute" replace />} />
               
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/terms-of-service" element={<TermsOfService />} />
@@ -225,9 +226,9 @@ const AppContent: React.FC = () => {
 
       {!isAdminRoute && (
         <Link 
-          to="/coming-soon"
+          to="/contribute"
           className="fixed bottom-14 right-6 z-[100] bg-clay text-black p-4 rounded-full shadow-2xl hover:scale-110 transition-transform cursor-pointer border border-clay/20"
-          aria-label="Launch Intelligence Lab"
+          aria-label="Contribute to Matrix"
         >
           <button className="cursor-pointer" aria-hidden="true" tabIndex={-1}>
             <Sparkles size={28} />

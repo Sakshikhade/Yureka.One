@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { supabase, supabaseAdmin } from '../supabase';
-import { Card, Blog, Review, WaitlistEntry } from '../types';
+import { Card, Blog, Review, WaitlistEntry, CardContribution } from '../types';
 import { featuredCards } from '../data';
 import { 
   getCards, 
@@ -21,7 +21,9 @@ import {
   fetchReviewsAdmin,
   fetchWaitlist,
   fetchTeamMembersAdmin,
-  fetchAuditLogsAdmin
+  fetchAuditLogsAdmin,
+  fetchCardContributionsAdmin,
+  getCardContributionsAdmin
 } from '../services/supabaseService';
 import { SupabaseClient } from '@supabase/supabase-js';
 
@@ -33,6 +35,7 @@ interface SupabaseContextType {
   waitlist: WaitlistEntry[];
   team: any[];
   logs: any[];
+  cardContributions: CardContribution[];
   user: any | null;
   session: any | null;
   currentUserStatus: 'none' | 'pending' | 'accepted' | 'admin' | 'loading' | 'rejected' | 'on-hold';
@@ -45,6 +48,7 @@ interface SupabaseContextType {
   setReviews: React.Dispatch<React.SetStateAction<Review[]>>;
   setWaitlist: React.Dispatch<React.SetStateAction<WaitlistEntry[]>>;
   setTeam: React.Dispatch<React.SetStateAction<any[]>>;
+  setCardContributions: React.Dispatch<React.SetStateAction<CardContribution[]>>;
 }
 
 const SupabaseContext = createContext<SupabaseContextType | undefined>(undefined);
@@ -56,6 +60,7 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [waitlist, setWaitlist] = useState<WaitlistEntry[]>([]);
   const [team, setTeam] = useState<any[]>([]);
   const [logs, setLogs] = useState<any[]>([]);
+  const [cardContributions, setCardContributions] = useState<CardContribution[]>([]);
   
   const [user, setUser] = useState<any | null>(null);
   const [session, setSession] = useState<any | null>(null);
@@ -72,13 +77,14 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const refreshAll = useCallback(async () => {
     try {
       if (isAdminRoute) {
-        const [c, b, r, w, t, l] = await Promise.all([
+        const [c, b, r, w, t, l, cc] = await Promise.all([
           fetchCardsAdmin(),
           fetchBlogsAdmin(),
           fetchReviewsAdmin(),
           fetchWaitlist(),
           fetchTeamMembersAdmin(),
-          fetchAuditLogsAdmin()
+          fetchAuditLogsAdmin(),
+          fetchCardContributionsAdmin()
         ]);
         setCards(c || []);
         setBlogs(b || []);
@@ -86,6 +92,7 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         setWaitlist(w || []);
         setTeam(t || []);
         setLogs(l || []);
+        setCardContributions(cc || []);
       } else {
         const [c, b, r] = await Promise.all([
           fetchCardsPublic(),
@@ -136,6 +143,8 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             subs.push(getTeamMembersAdmin((data) => { console.log('⚡️ Admin team loaded'); setTeam(data); }));
             await new Promise(r => setTimeout(r, 100));
             subs.push(getAuditLogsAdmin((data) => { console.log('⚡️ Admin logs loaded'); setLogs(data); }));
+            await new Promise(r => setTimeout(r, 100));
+            subs.push(getCardContributionsAdmin((data) => { console.log('⚡️ Admin contributions loaded'); setCardContributions(data); }));
             setIsAdminDataLoaded(true);
             console.log('⚡️ Admin fetches complete.');
           } else {
@@ -261,9 +270,9 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       user,
       session,
       currentUserStatus,
-      cards, blogs, reviews, waitlist, team, logs, 
+      cards, blogs, reviews, waitlist, team, logs, cardContributions,
       syncStatus, isLoading, isAdminDataLoaded, refreshAll,
-      setCards, setBlogs, setReviews, setWaitlist, setTeam
+      setCards, setBlogs, setReviews, setWaitlist, setTeam, setCardContributions
     }}>
       {children}
     </SupabaseContext.Provider>

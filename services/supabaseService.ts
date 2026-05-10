@@ -1,5 +1,5 @@
 import { supabase, supabaseAdmin } from '../supabase';
-import { Blog, Card, WaitlistEntry, NewsletterEntry, Review } from '../types';
+import { Blog, Card, WaitlistEntry, NewsletterEntry, Review, CardContribution } from '../types';
 
 /**
  * Robust retry wrapper for Supabase fetches with exponential backoff.
@@ -457,4 +457,34 @@ export const computeAndUpdateRank = async (email: string) => {
     rankBoost: boost,
     entry: { ...entry, rank: effectiveRank },
   };
+};
+
+// --- CARD CONTRIBUTIONS (COMMUNITY INTEL) ---
+export const submitCardContribution = async (contribution: any) => {
+  const { data, error } = await supabase.from('card_contributions').insert([contribution]).select();
+  if (error) throw error;
+  return data[0];
+};
+
+export const fetchCardContributionsAdmin = async () => {
+  return await withRetry<any[]>(() => 
+    supabaseAdmin.from('card_contributions').select('*').order('created_at', { ascending: false })
+  );
+};
+
+export const getCardContributionsAdmin = (callback: (contributions: any[]) => void) => {
+  const execute = async () => { const data = await fetchCardContributionsAdmin(); callback(data || []); };
+  execute();
+  const sub = supabaseAdmin.channel('contributions-admin').on('postgres_changes', { event: '*', schema: 'public', table: 'card_contributions' }, () => execute()).subscribe();
+  return () => { sub.unsubscribe(); };
+};
+
+export const updateCardContributionStatus = async (id: string, status: string) => {
+  const { error } = await supabaseAdmin.from('card_contributions').update({ status }).eq('id', id);
+  if (error) throw error;
+};
+
+export const deleteCardContribution = async (id: string) => {
+  const { error } = await supabaseAdmin.from('card_contributions').delete().eq('id', id);
+  if (error) throw error;
 };

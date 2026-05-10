@@ -26,6 +26,7 @@ import { AdminHeader } from './admin/AdminHeader';
 import { AdminSidebar } from './admin/AdminSidebar';
 import { AdminBlogsTab } from './admin/AdminBlogsTab';
 import { AdminCardsTab } from './admin/AdminCardsTab';
+import AdminUpdatesTab from './admin/AdminUpdatesTab';
 import { AdminReviewsTab } from './admin/AdminReviewsTab';
 import { AdminWaitlistTab } from './admin/AdminWaitlistTab';
 import { AdminSettingsTab } from './admin/AdminSettingsTab';
@@ -113,7 +114,7 @@ const AdminDashboard: React.FC = () => {
   const [userRole, setUserRole] = useState<string>('user');
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'blogs' | 'cards' | 'waitlist' | 'settings' | 'logs' | 'reviews'>(
+  const [activeTab, setActiveTab] = useState<'blogs' | 'cards' | 'updates' | 'waitlist' | 'settings' | 'logs' | 'reviews'>(
     (localStorage.getItem('yureka_admin_tab') as any) || 'blogs'
   );
   const [waitlistFilter, setWaitlistFilter] = useState<'pending' | 'accepted' | 'rejected' | 'on_hold' | 'all'>('pending');
@@ -602,6 +603,7 @@ const AdminDashboard: React.FC = () => {
                 >
                   {activeTab === 'blogs' && <AdminBlogsTab onEdit={handleEdit} onDelete={confirmDelete} formatDateForInput={formatDateForInput} />}
                   {activeTab === 'cards' && <AdminCardsTab onEdit={handleEdit} onDelete={confirmDelete} />}
+                  {activeTab === 'updates' && <AdminUpdatesTab />}
                   {activeTab === 'reviews' && <AdminReviewsTab onEdit={handleEdit} onDelete={confirmDelete} />}
                   {activeTab === 'waitlist' && <AdminWaitlistTab filter={waitlistFilter} onFilterChange={setWaitlistFilter} onUpdateStatus={updateWaitlistStatus} onDelete={confirmDelete} />}
                   {activeTab === 'settings' && (
