@@ -64,9 +64,22 @@ const ContributePage: React.FC = () => {
 
   useEffect(() => {
     if (selectedCardId && (activeTab === 'update' || activeTab === 'remove')) {
-      const card = cards.find(c => c.id === selectedCardId);
+      const card = cards?.find(c => c.id === selectedCardId);
       if (card) {
-        setForm(JSON.parse(JSON.stringify(card)));
+        // Deep clone and ensure arrays are not null
+        const cardData = JSON.parse(JSON.stringify(card));
+        const safeCard = {
+          ...cardData,
+          benefit_items: cardData.benefit_items || [],
+          grid_benefits: cardData.grid_benefits || [],
+          grid_fees: cardData.grid_fees || [],
+          latest_news: cardData.latest_news || [],
+          product_details: cardData.product_details || [],
+          pros: cardData.pros || [],
+          cons: cardData.cons || [],
+          redemption_table: cardData.redemption_table || [],
+        };
+        setForm(safeCard);
       }
     } else if (activeTab === 'add') {
       // Keep empty form
@@ -238,7 +251,7 @@ const ContributePage: React.FC = () => {
                               className="w-full bg-white/5 border border-white/5 rounded-2xl p-4 focus:ring-2 focus:ring-clay outline-none transition-all text-white appearance-none"
                             >
                               <option value="" className="bg-cream">Choose Bank</option>
-                              {Array.from(new Set(cards.map(c => c.bank).filter(Boolean))).sort().map(bank => (
+                              {Array.from(new Set((cards || []).map(c => c.bank).filter(Boolean))).sort().map(bank => (
                                 <option key={bank} value={bank} className="bg-cream">{bank}</option>
                               ))}
                             </select>
@@ -254,7 +267,7 @@ const ContributePage: React.FC = () => {
                               className="w-full bg-white/5 border border-white/5 rounded-2xl p-4 focus:ring-2 focus:ring-clay outline-none transition-all text-white appearance-none disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                               <option value="" className="bg-cream">{selectedBank ? 'Choose a card from the database' : 'Select a bank first'}</option>
-                              {cards.filter(c => c.bank === selectedBank).map(c => (
+                              {(cards || []).filter(c => c.bank === selectedBank).map(c => (
                                 <option key={c.id} value={c.id} className="bg-cream">{c.name}</option>
                               ))}
                             </select>
