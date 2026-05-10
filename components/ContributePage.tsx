@@ -38,6 +38,7 @@ const ContributePage: React.FC = () => {
     name: '', bank: '', category: '', annual_fee: '', joining_fee: '',
     apply_link: '', author: '', benefit_items: [], best_for: '', cons: [], description: '',
     elite_rating: 4.5, rating: 4.5, intro_offer: '', issuer: '', image: null,
+    type: 'Rewards', color: 'from-blue-600 to-indigo-700', benefits: [], categories: [],
     grid_benefits: [
       {title: 'MOVIE & DINING', value: ''}, {title: 'REWARDS RATE', value: ''},
       {title: 'REWARD REDEMPTION', value: ''}, {title: 'TRAVEL', value: ''},
