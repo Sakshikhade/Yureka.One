@@ -10,7 +10,12 @@ import {
   ArrowRight, 
   CheckCircle2, 
   Clock,
-  Sparkles
+  Sparkles,
+  Zap,
+  Calendar,
+  BadgePercent,
+  UserPlus,
+  Phone
 } from 'lucide-react';
 import SEO from './SEO';
 
@@ -284,6 +289,160 @@ const ByEveryone: React.FC = () => {
              </p>
           </div>
 
+        </div>
+      </section>
+
+      {/* Pay Rent with Credit Card Features */}
+      <section className="relative py-32 px-6 bg-white/[0.01]">
+        <div className="max-w-6xl mx-auto text-center mb-20">
+          <h3 className="text-3xl md:text-5xl font-heading font-black tracking-tighter text-white mb-4 uppercase">
+            Yes, you can pay rent <br /> <span className="text-clay italic">using your credit card here</span>
+          </h3>
+          <p className="text-white/40 font-serif italic text-lg uppercase tracking-widest text-[10px] font-bold">
+            And yes, you still earn 1% back
+          </p>
+        </div>
+
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-0 border border-white/5 divide-y md:divide-y-0 md:divide-x divide-white/5">
+          {[
+            { 
+              val: '2 min', 
+              label: 'setup', 
+              desc: 'One-time setup, lightning fast payments',
+              icon: <Zap size={40} className="text-clay" />
+            },
+            { 
+              val: 'Collect points', 
+              label: '', 
+              desc: 'Collect points on every rent payment',
+              icon: <Coins size={40} className="text-clay" />
+            },
+            { 
+              val: '45', 
+              label: 'DAYS', 
+              desc: 'Interest-free window. Get upto 45 days of interest free breathing room',
+              icon: <Calendar size={40} className="text-clay" />
+            },
+            { 
+              val: 'Save 70%', 
+              label: '', 
+              desc: 'Industry low net effective convenience fee',
+              icon: <BadgePercent size={40} className="text-clay" />
+            }
+          ].map((feat, i) => (
+            <div key={i} className="p-10 flex flex-col items-center text-center group hover:bg-white/[0.02] transition-colors">
+               <div className="w-32 h-32 rounded-full border-2 border-white/5 flex items-center justify-center mb-8 group-hover:border-clay/20 transition-all">
+                  {feat.icon}
+               </div>
+               <div className="mb-4">
+                  <span className="block text-3xl font-black text-clay uppercase">{feat.val}</span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-white/20">{feat.label}</span>
+               </div>
+               <p className="text-white/40 font-serif italic text-sm leading-relaxed max-w-[200px]">
+                 {feat.desc}
+               </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Invite Tenant Section */}
+      <section className="relative py-32 px-6 overflow-hidden">
+        {/* Cityscape Silhouette Background */}
+        <div className="absolute bottom-0 left-0 w-full h-[300px] opacity-[0.05] pointer-events-none select-none flex items-end justify-center">
+           <div className="flex gap-4">
+              {[80, 120, 200, 150, 180, 250, 140, 160].map((h, i) => (
+                <div key={i} className="w-12 bg-clay" style={{ height: `${h}px` }} />
+              ))}
+           </div>
+        </div>
+
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <span className="text-[10px] font-black uppercase tracking-[0.6em] text-white/20 block mb-6">GET STARTED</span>
+          <h3 className="text-4xl md:text-6xl font-heading font-black tracking-tighter text-white mb-8">
+            Invite your <span className="text-clay italic">tenant</span>
+          </h3>
+          <p className="text-white/40 font-serif italic text-lg max-w-lg mx-auto mb-12">
+            Send them an invite to join Secured and activate your free rental cover.
+          </p>
+
+          <div className="max-w-md mx-auto bg-white/[0.02] border border-white/10 rounded-[2.5rem] p-8 md:p-10 backdrop-blur-xl">
+             <div className="text-left mb-6">
+                <label className="text-[9px] font-bold uppercase tracking-widest text-white/20 ml-2 mb-2 block">Tenant's phone number</label>
+                <div className="flex items-center bg-white/5 border border-white/10 rounded-2xl p-2 focus-within:border-clay/50 transition-all">
+                   <div className="flex items-center gap-2 px-4 border-r border-white/10">
+                      <span className="text-lg">🇮🇳</span>
+                      <span className="text-sm font-bold text-white/40">+91</span>
+                   </div>
+                   <input 
+                     type="tel" 
+                     placeholder="98765 43210" 
+                     className="bg-transparent border-none outline-none py-4 px-4 w-full text-white font-medium"
+                   />
+                </div>
+             </div>
+             <button className="w-full bg-clay text-white py-5 rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-white hover:text-black transition-all duration-500 shadow-xl shadow-clay/10">
+               Send Invite
+             </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Property Gallery / Grid Section */}
+      <section className="relative py-32 px-6">
+        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+           {[...Array(12)].map((_, i) => (
+             <motion.div 
+               key={i}
+               initial={{ opacity: 0, scale: 0.9 }}
+               whileInView={{ opacity: 1, scale: 1 }}
+               viewport={{ once: true }}
+               transition={{ delay: i * 0.05 }}
+               className="aspect-square bg-white/[0.02] border border-white/5 rounded-2xl overflow-hidden group relative"
+             >
+                <div className="absolute inset-0 bg-clay/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                <div className="w-full h-full bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05)_0%,transparent_100%)] flex items-center justify-center">
+                   <Home size={32} className="text-white/5 group-hover:text-white/20 transition-colors" />
+                </div>
+             </motion.div>
+           ))}
+        </div>
+      </section>
+
+      {/* Closing Illustration Section */}
+      <section className="relative py-32 px-6 overflow-hidden">
+        <div className="max-w-7xl mx-auto">
+           <div className="relative aspect-video rounded-[3rem] overflow-hidden group shadow-2xl border border-white/5">
+              <img 
+                src="/roman_renting_illustration_1778480248693.png" 
+                alt="Elite Renting" 
+                className="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-1000"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80" />
+              <div className="absolute inset-0 border-[10px] border-black/20 pointer-events-none" />
+           </div>
+
+           <div className="mt-20 flex flex-col md:flex-row items-center justify-between gap-12">
+              <div className="max-w-xl">
+                 <h2 className="text-4xl md:text-6xl font-heading font-black tracking-tighter leading-none mb-4">
+                   Welcome to the <br /> <span className="text-clay italic">right side of renting</span>
+                 </h2>
+              </div>
+              <div className="flex flex-col sm:flex-row items-center gap-6">
+                 <Link 
+                   to="/cards"
+                   className="bg-white/5 border border-white/10 text-white px-10 py-5 rounded-full font-bold uppercase tracking-widest text-[11px] hover:bg-white hover:text-black transition-all"
+                 >
+                   Explore Yureka
+                 </Link>
+                 <Link 
+                   to="/contribute"
+                   className="bg-white/5 border border-white/10 text-white px-10 py-5 rounded-full font-bold uppercase tracking-widest text-[11px] hover:bg-white hover:text-black transition-all"
+                 >
+                   Contact Us
+                 </Link>
+              </div>
+           </div>
         </div>
       </section>
 
