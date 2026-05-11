@@ -12,6 +12,7 @@ import { SupabaseProvider, useSupabase } from './components/SupabaseProvider';
 import { SkeletonCard } from './components/SkeletonLoaders';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import ContributionModal from './components/ContributionModal';
+import ContributionPopup from './components/ContributionPopup';
 
 // Robust Lazy Loader to handle chunk loading failures (common during new deploys)
 const lazyWithRetry = (componentImport: () => Promise<any>) =>
@@ -240,6 +241,8 @@ const AppContent: React.FC = () => {
           </button>
         </Link>
       )}
+
+      {(location.pathname === '/' || location.pathname === '/cards') && <ContributionPopup />}
     </div>
   );
 };

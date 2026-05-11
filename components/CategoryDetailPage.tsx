@@ -133,7 +133,7 @@ const CategoryDetailPage: React.FC = () => {
                        {/* Tags */}
                        {card.category && (
                          <div className="flex items-center gap-1.5 px-3 py-1 bg-clay/10 border border-clay/20 rounded-full">
-                           <Zap size={10} className="text-clay" />
+                         Research Query <Bot size={14} className="text-clay group-hover/ai:animate-pulse" />
                            <span className="text-[8px] font-black text-clay uppercase tracking-widest">{card.category}</span>
                          </div>
                        )}
@@ -176,7 +176,7 @@ const CategoryDetailPage: React.FC = () => {
                     </Link>
                     <Link to={`${basePath}/yureka-ai`} className="w-full bg-white/5 text-white/60 hover:text-white py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 border border-white/10 hover:border-white/20 transition-all group">
                        <Sparkles size={14} className="group-hover:text-clay transition-colors" />
-                       Ask AI
+                       Research Query
                     </Link>
                     <button className="text-[8px] font-bold text-white/20 uppercase tracking-widest hover:text-white/40 transition-colors text-center pt-2">
                        Report data issue
