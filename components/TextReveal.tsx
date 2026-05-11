@@ -43,7 +43,7 @@ const TextReveal: React.FC = () => {
           {/* Sign-off */}
           <div className="mt-12 md:mt-16 pt-8 border-t border-clay/10 inline-block">
             <p className="font-serif italic text-sm text-white/40">
-              — The Intelligence Bureau
+              — The Yureka Research Desk
             </p>
           </div>
 

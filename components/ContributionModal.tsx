@@ -154,10 +154,10 @@ const ContributionModal: React.FC = () => {
 
               <div className="space-y-4 text-center">
                 <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-clay/20 border border-clay/30 text-clay text-[10px] font-black uppercase tracking-widest mb-4">
-                  <Sparkles size={14} /> Community Intelligence
+                  <Sparkles size={14} /> Community Insights
                 </div>
                 <h2 className="text-3xl sm:text-4xl font-black text-white leading-tight">
-                  Help us build the <span className="text-clay">Matrix.</span>
+                  Help us build the <span className="text-clay">Database.</span>
                 </h2>
                 <p className="text-white/60 text-sm sm:text-base leading-relaxed max-w-lg mx-auto font-medium italic">
                   "Since we are just starting out, your contribution means a lot. Would you like to recommend a missing card to be added in our repository, or feel like some key information is missing of a particular card or you found out a discontinued card and report the same?"
@@ -198,7 +198,7 @@ const ContributionModal: React.FC = () => {
               <div className="flex items-center justify-between pt-6 border-t border-white/5">
                 <div className="flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.2em] text-white/20">
                   <Zap size={14} className="text-clay animate-pulse" />
-                  Powered by Community Alpha
+                  Powered by Community Insights
                 </div>
                 {!canClose && (
                   <div className="text-[9px] font-black uppercase tracking-[0.2em] text-clay/50">

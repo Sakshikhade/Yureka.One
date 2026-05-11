@@ -5,38 +5,38 @@ import { CheckCircle2, Search, Zap, ArrowRight, ShieldCheck, Cpu, Globe, Message
 const STEPS = [
   {
     id: 1,
-    tag: 'Pulse V2',
+    tag: 'Research Hub',
     title: 'Yureka AI',
-    description: 'A neural layer for your wallet. It decodes thousands of rewards rules in milliseconds to find your optimal swipe.',
-    cta: 'Join Internal Test',
-    availability: 'Limited Access Nodes',
+    description: 'A smart optimization layer for your wallet. It analyzes thousands of rewards rules in milliseconds to find your best card.',
+    cta: 'Join Early Access',
+    availability: 'Limited Release',
     side: 'left'
   },
   {
     id: 2,
-    tag: 'Yield Stack',
+    tag: 'Savings Engine',
     title: 'RewardX',
-    description: 'The definitive voucher engine. Stack institutional discounts with card multipliers for double-digit savings.',
-    cta: 'Join Internal Test',
-    availability: 'Limited Access Nodes',
+    description: 'The definitive savings tool. Combine bank offers with card rewards for significantly higher value.',
+    cta: 'Join Early Access',
+    availability: 'Limited Release',
     side: 'right'
   },
   {
     id: 3,
-    tag: 'Ghostwriter',
+    tag: 'Smart Assistant',
     title: 'Browser Extension',
-    description: 'Your checkout companion. It lives on your toolbar and applies the magic moment you hit any payment page.',
-    cta: 'Join Internal Test',
-    availability: 'Limited Access Nodes',
+    description: 'Your checkout companion. It lives on your toolbar and applies the best offers the moment you hit any payment page.',
+    cta: 'Join Early Access',
+    availability: 'Limited Release',
     side: 'left'
   },
   {
     id: 4,
     tag: 'The Registry',
     title: 'Waitlist',
-    description: 'Secure your spot in the ecosystem. We are rolling out access in controlled nodes to maintain protocol integrity.',
+    description: 'Secure your spot in the ecosystem. We are rolling out access in controlled phases to maintain system reliability.',
     cta: 'Join Waitlist',
-    availability: 'Open Protocol',
+    availability: 'Open Enrollment',
     side: 'right'
   }
 ];
@@ -51,7 +51,7 @@ const AIChatScreen = ({ isActive }: { isActive: boolean }) => (
         <motion.div animate={{ opacity: [0.2, 1, 0.2] }} transition={{ repeat: Infinity, duration: 2, delay: 0.2 }} className="w-2 h-2 rounded-full bg-amber-400" />
         <motion.div animate={{ opacity: [0.2, 1, 0.2] }} transition={{ repeat: Infinity, duration: 2, delay: 0.4 }} className="w-2 h-2 rounded-full bg-clay" />
       </div>
-      <span className="text-[10px] font-mono text-white/20 uppercase tracking-widest">Yureka Neural Engine  v.2.4b</span>
+      <span className="text-[10px] font-mono text-white/20 uppercase tracking-widest">Yureka Analysis Engine v.2.4b</span>
     </div>
 
     <div className="space-y-6 flex-1">
@@ -63,7 +63,7 @@ const AIChatScreen = ({ isActive }: { isActive: boolean }) => (
                 <div className="w-1.5 h-1.5 rounded-full bg-clay" />
               </div>
               <div className="bg-white/5 p-4 rounded-2xl rounded-tl-none shadow-sm border border-white/5">
-                <p className="text-[11px] text-white/70 leading-relaxed font-medium">Ready to pull the trigger on the MacBook 16. Should I stick with my Amex Gold?</p>
+                <p className="text-[11px] text-white/70 leading-relaxed font-medium">Buying a new laptop today. Should I use my Amex Gold for this?</p>
               </div>
             </motion.div>
 
@@ -74,7 +74,7 @@ const AIChatScreen = ({ isActive }: { isActive: boolean }) => (
                 </motion.div>
               </div>
               <div className="bg-clay p-4 rounded-2xl rounded-tr-none shadow-xl text-cream">
-                <p className="text-[11px] leading-relaxed font-bold">Hold up! Love the upgrade, but let's be strategic. Direct swipe on Amex is okay, but I've found a much better yield path for your specific wallet.</p>
+                <p className="text-[11px] leading-relaxed font-bold">Hold on! While Amex is good, I've found a way to get 3x more value by combining a specific voucher with your card rewards.</p>
               </div>
             </motion.div>
 
@@ -104,21 +104,21 @@ const AIChatScreen = ({ isActive }: { isActive: boolean }) => (
 const RewardXScreen = ({ isActive }: { isActive: boolean }) => (
   <div className="w-full h-full bg-cream p-6 flex flex-col border border-white/5">
     <div className="flex justify-between items-center mb-8">
-      <span className="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em]">Adaptive Yield Engine</span>
+      <span className="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em]">Adaptive Savings Engine</span>
       <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-white text-[10px] italic border border-white/10">Y</div>
     </div>
 
-    <h3 className="text-2xl font-serif text-white mb-1">Executive Protocol</h3>
+    <h3 className="text-2xl font-serif text-white mb-1">Savings Overview</h3>
     <div className="flex justify-between items-center mb-8">
-       <span className="text-[10px] font-mono text-clay uppercase tracking-widest">Yield Script Pulse</span>
+       <span className="text-[10px] font-mono text-clay uppercase tracking-widest">Total Savings Pulse</span>
        <motion.span animate={{ opacity: [0.6, 1, 0.6] }} transition={{ repeat: Infinity, duration: 2 }} className="text-xl font-medium text-clay">₹9,500</motion.span>
     </div>
 
     <div className="space-y-3">
       {[
-        { icon: <Layers size={14}/>, label: 'Merchant Cart', sub: 'Source Node', val: '₹50,000', color: 'bg-white/10 text-white' },
-        { icon: <Zap size={14}/>, label: 'RewardX Voucher', sub: 'Yield Executed', val: '-₹4,500', color: 'bg-clay text-cream', tag: '9% Instant' },
-        { icon: <Sparkles size={14}/>, label: 'Axis Magnus Multiplier', sub: 'Yield Executed', val: '-₹3,050', color: 'bg-white/20 text-white', tag: '10x Points' },
+        { icon: <Layers size={14}/>, label: 'Merchant Cart', sub: 'Original Price', val: '₹50,000', color: 'bg-white/10 text-white' },
+        { icon: <Zap size={14}/>, label: 'RewardX Savings', sub: 'Benefit Applied', val: '-₹4,500', color: 'bg-clay text-cream', tag: '9% Discount' },
+        { icon: <Sparkles size={14}/>, label: 'Card Rewards', sub: 'Value Added', val: '-₹3,050', color: 'bg-white/20 text-white', tag: '10x Points' },
       ].map((item, i) => (
         <motion.div 
           key={item.label}
@@ -210,8 +210,8 @@ const ExtensionScreen = ({ isActive }: { isActive: boolean }) => (
               <motion.div animate={{ rotate: [0, 10, -10, 0] }} transition={{ repeat: Infinity, duration: 3 }} className="w-5 h-5 rounded bg-cream flex items-center justify-center text-[8px] font-serif italic text-white">Y</motion.div>
               <span className="text-[8px] font-bold tracking-widest uppercase">Yureka+</span>
             </div>
-            <p className="text-[9px] leading-tight mb-3 font-bold">Found ₹5,400 in hidden vouchers.</p>
-            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full py-1.5 bg-clay text-cream text-[8px] font-bold uppercase tracking-widest rounded-lg shadow-lg">Apply Yield</motion.button>
+            <p className="text-[9px] leading-tight mb-3 font-bold">Found ₹5,400 in hidden savings.</p>
+            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full py-1.5 bg-clay text-cream text-[8px] font-bold uppercase tracking-widest rounded-lg shadow-lg">Apply Savings</motion.button>
           </motion.div>
         )}
       </AnimatePresence>
@@ -234,15 +234,15 @@ const WaitlistScreen = ({ isActive }: { isActive: boolean }) => (
       </motion.div>
     </div>
 
-    <h3 className="text-2xl font-serif text-white mt-8 mb-2">Protocol Access</h3>
-    <motion.p animate={{ opacity: [0.3, 0.6, 0.3] }} transition={{ repeat: Infinity, duration: 4 }} className="text-[10px] text-white/40 uppercase tracking-[0.3em] font-mono">Status: Awaiting Node Allocation</motion.p>
+    <h3 className="text-2xl font-serif text-white mt-8 mb-2">Early Access</h3>
+    <motion.p animate={{ opacity: [0.3, 0.6, 0.3] }} transition={{ repeat: Infinity, duration: 4 }} className="text-[10px] text-white/40 uppercase tracking-[0.3em] font-mono">Status: Awaiting Slot Allocation</motion.p>
     
     <div className="mt-12 w-full space-y-2">
       <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
         <motion.div animate={isActive ? { width: '75%' } : { width: '0%' }} transition={{ duration: 2, delay: 0.5 }} className="h-full bg-clay" />
       </div>
       <div className="flex justify-between text-[8px] font-mono text-white/20">
-        <motion.span animate={{ opacity: [0.5, 1, 0.5] }} transition={{ repeat: Infinity, duration: 2 }}>ENCRYPTING...</motion.span>
+        <motion.span animate={{ opacity: [0.5, 1, 0.5] }} transition={{ repeat: Infinity, duration: 2 }}>PROCESSING...</motion.span>
         <span>75%</span>
       </div>
     </div>

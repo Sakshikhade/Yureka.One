@@ -40,8 +40,8 @@ const MainPage: React.FC = () => {
   return (
     <>
       <SEO 
-        title="Yureka | AI-Driven Credit Card Intelligence" 
-        description="Maximize every spend with India's most advanced AI credit card optimizer. Match with 200+ cards and unlock elite rewards instantly."
+        title="Yureka | Expert Credit Card Analysis & Optimization" 
+        description="Maximize every spend with India's most advanced credit card optimizer. Match with 200+ cards and unlock elite rewards instantly."
         schema={homeSchema}
       />
       

@@ -77,8 +77,8 @@ const CardDetail: React.FC = () => {
     return (
         <div className="min-h-screen bg-[#0f0f0f] text-white/90 font-sans selection:bg-clay selection:text-white pb-32">
             <SEO 
-                title={`${card.name} | Review & Intelligence Analysis`}
-                description={card.description || `Comprehensive yield analysis of ${card.name} by ${card.bank}. Rewards, fees, and eligibility data.`}
+                title={`${card.name} | Detailed Review & Strategic Analysis`}
+                description={card.description || `Comprehensive reward analysis of ${card.name} by ${card.bank}. Rewards, fees, and eligibility data.`}
             />
 
             {/* ── TOP NAV ── */}

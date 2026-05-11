@@ -59,7 +59,7 @@ const Security: React.FC = () => {
                     <div>
                         <div className="flex items-center gap-2 text-clay mb-3">
                              <Lock size={14} strokeWidth={2.5} />
-                             <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Privacy Protocol</span>
+                             <span className="text-[10px] font-bold uppercase tracking-[0.4em]">Privacy Standards</span>
                         </div>
                         <h2 className="text-4xl md:text-5xl lg:text-6xl font-heading font-extrabold text-white uppercase tracking-tighter leading-none">Confidential</h2>
                     </div>
@@ -98,7 +98,7 @@ const Security: React.FC = () => {
                                     {/* Terminal Background */}
                                     <div className="absolute inset-0 flex flex-col p-6 opacity-80">
                                         <div className="flex justify-between items-center mb-6">
-                                            <div className="text-[10px] md:text-[12px] font-mono text-emerald-400/40 tracking-[0.3em] uppercase">SECURE_PROC_ID</div>
+                                            <div className="text-[10px] md:text-[12px] font-mono text-emerald-400/40 tracking-[0.3em] uppercase">SECURE_CARD_ID</div>
                                             <div className="flex gap-1.5">
                                                 <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                                                 <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/10" />
@@ -124,7 +124,7 @@ const Security: React.FC = () => {
                                             <div className="flex gap-3 whitespace-nowrap items-center mb-4">
                                                 <div className="w-2 h-2 rounded-sm bg-emerald-400 animate-ping" />
                                                 <span className="text-[12px] md:text-[14px] font-mono font-bold text-emerald-400 tracking-wider">
-                                                    YUREKA<span className="opacity-30">.</span>PROTOCOL
+                                                    YUREKA<span className="opacity-30">.</span>SAFEGUARD
                                                 </span>
                                             </div>
 
@@ -171,7 +171,7 @@ const Security: React.FC = () => {
                                     <div className="p-8 md:p-12 h-full flex flex-col justify-between">
                                         <div className="flex justify-between items-start">
                                             <div className="w-12 h-10 md:w-16 md:h-12 bg-gray-50 rounded-lg border border-gray-100 shadow-inner" />
-                                            <div className="text-[9px] md:text-[11px] font-bold text-gray-200 tracking-[0.4em] uppercase">SECURE ASSET</div>
+                                            <div className="text-[9px] md:text-[11px] font-bold text-gray-200 tracking-[0.4em] uppercase">SECURE CARD</div>
                                         </div>
                                         <div className="space-y-3 md:space-y-5">
                                             <div className="text-2xl md:text-4xl font-mono tracking-[0.1em] text-black">

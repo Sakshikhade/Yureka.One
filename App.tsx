@@ -154,8 +154,8 @@ const AppContent: React.FC = () => {
               <Route path="/cards" element={
                 <>
                   <SEO 
-                    title="Card Explorer | Find Your Perfect Credit Card" 
-                    description="Deep-dive into 200+ credit cards. Filter by rewards, lounge access, and lifestyle perks."
+                    title="Card Explorer | Professional Credit Card Search" 
+                    description="Expert analysis on 200+ credit cards. Filter by rewards, lounge access, and lifestyle perks."
                   />
                   <CardExplorer />
                 </>
@@ -231,7 +231,7 @@ const AppContent: React.FC = () => {
         <Link 
           to="/contribute"
           className="fixed bottom-14 right-6 z-[100] bg-clay text-black p-4 rounded-full shadow-2xl hover:scale-110 transition-transform cursor-pointer border border-clay/20"
-          aria-label="Contribute to Matrix"
+          aria-label="Submit a Contribution"
         >
           <button className="cursor-pointer" aria-hidden="true" tabIndex={-1}>
             <Sparkles size={28} />

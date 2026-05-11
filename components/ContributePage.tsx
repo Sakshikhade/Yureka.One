@@ -182,7 +182,7 @@ const ContributePage: React.FC = () => {
               <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50">Community Intel</span>
             </div>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-heading font-extrabold tracking-tighter text-white uppercase leading-[0.9]">
-              Refine The <span className="text-clay italic font-thin serif">Matrix.</span>
+              Build The <span className="text-clay italic font-thin serif">Database.</span>
             </h1>
           </motion.div>
 
@@ -198,9 +198,9 @@ const ContributePage: React.FC = () => {
                 </div>
                 <div>
                   <h2 className="text-2xl font-serif font-black text-white uppercase tracking-tight">
-                    {activeTab === 'add' ? 'Initialize Product' : activeTab === 'update' ? 'Modify Configuration' : 'Decommission Node'}
+                    {activeTab === 'add' ? 'Add New Card' : activeTab === 'update' ? 'Suggest Changes' : 'Report Removal'}
                   </h2>
-                  <p className="text-[10px] text-white/30 uppercase font-black tracking-widest mt-1">Status: Configuration Active</p>
+                  <p className="text-[10px] text-white/30 uppercase font-black tracking-widest mt-1">Status: Information Active</p>
                 </div>
               </div>
               <Link to="/cards" className="p-3 text-white/20 hover:text-white hover:bg-white/5 rounded-2xl transition-all border border-transparent hover:border-white/5">
@@ -219,16 +219,16 @@ const ContributePage: React.FC = () => {
                       <div className="absolute inset-0 bg-clay/20 blur-xl rounded-full" />
                       <CheckCircle2 size={48} className="text-clay relative z-10" />
                     </div>
-                    <h3 className="text-3xl font-heading font-bold text-white uppercase tracking-tight mb-4">Intelligence <span className="text-clay">Received</span></h3>
+                    <h3 className="text-3xl font-heading font-bold text-white uppercase tracking-tight mb-4">Submission <span className="text-clay">Received</span></h3>
                     <p className="text-white/50 max-w-md mx-auto text-sm md:text-base leading-relaxed mb-10">
-                      Thank you for contributing to the Yureka Matrix. Our neural review team will verify the details and update the system shortly.
+                      Thank you for contributing to Yureka. Our expert review team will verify the details and update the database shortly.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4">
                       <button onClick={() => setIsSuccess(false)} className="px-8 py-4 bg-white/5 text-white border border-white/10 rounded-full text-[11px] font-bold uppercase tracking-widest hover:bg-white/10 transition-colors">
                         Submit Another
                       </button>
                       <Link to="/cards" className="px-8 py-4 bg-clay text-cream rounded-full text-[11px] font-bold uppercase tracking-widest hover:bg-[#2bc28a] transition-colors shadow-lg shadow-clay/20">
-                        Return to Matrix
+                        Return to Explorer
                       </Link>
                     </div>
                   </motion.div>
@@ -306,19 +306,19 @@ const ContributePage: React.FC = () => {
                                   <input type="text" required value={form.name} onChange={e => setForm({...form, name: e.target.value})} className="w-full bg-white/5 border border-white/5 rounded-2xl p-4 focus:ring-2 focus:ring-clay outline-none transition-all text-white placeholder:text-white/10" placeholder="Entity Name" />
                                 </div>
                                 <div>
-                                  <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-2 ml-1">Financial Node</label>
+                                  <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-2 ml-1">Primary Bank</label>
                                   <select required value={form.bank} onChange={e => setForm({...form, bank: e.target.value, issuer: e.target.value})} className="w-full bg-white/5 border border-white/5 rounded-2xl p-4 focus:ring-2 focus:ring-clay outline-none transition-all text-white appearance-none">
-                                    <option value="" className="bg-cream">Select Issuer</option>
+                                    <option value="" className="bg-cream">Select Bank</option>
                                     {ALL_BANKS?.map(b => <option key={b} value={b} className="bg-cream">{b}</option>)}
                                   </select>
                                 </div>
                               </div>
                               <div>
                                   <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-2 ml-1 flex items-center justify-between">
-                                      Identification Slug 
-                                      <button type="button" onClick={() => setForm({...form, slug: generateSlug(form.name, form.bank)})} className="text-[9px] text-clay hover:underline uppercase font-black tracking-widest">Auto-Compute</button>
+                                      Reference ID (Slug) 
+                                      <button type="button" onClick={() => setForm({...form, slug: generateSlug(form.name, form.bank)})} className="text-[9px] text-clay hover:underline uppercase font-black tracking-widest">Generate ID</button>
                                   </label>
-                                  <input type="text" value={form.slug} onChange={e => setForm({...form, slug: e.target.value})} className="w-full bg-white/5 border border-white/5 rounded-2xl p-4 focus:ring-2 focus:ring-clay outline-none transition-all text-white font-mono text-xs" placeholder="system-generated-slug" />
+                                  <input type="text" value={form.slug} onChange={e => setForm({...form, slug: e.target.value})} className="w-full bg-white/5 border border-white/5 rounded-2xl p-4 focus:ring-2 focus:ring-clay outline-none transition-all text-white font-mono text-xs" placeholder="e.g. hdfc-infinia" />
                               </div>
                                 <div>
                                   <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-2 ml-1">Issuer Name</label>
@@ -331,7 +331,7 @@ const ContributePage: React.FC = () => {
                                       <input type="number" step="0.1" min="0" max="5" value={form.rating} onChange={e => setForm({...form, rating: parseFloat(e.target.value)})} className="w-full bg-white/5 border border-white/5 rounded-2xl p-4 focus:ring-2 focus:ring-clay outline-none transition-all text-white font-bold" />
                                     </div>
                                     <div>
-                                      <label className="block text-[10px] font-black uppercase tracking-widest text-clay mb-2 ml-1">Elite Alpha</label>
+                                      <label className="block text-[10px] font-black uppercase tracking-widest text-clay mb-2 ml-1">Elite Score</label>
                                       <input type="number" step="0.1" min="0" max="5" value={form.elite_rating} onChange={e => setForm({...form, elite_rating: parseFloat(e.target.value)})} className="w-full bg-clay/10 border border-clay/20 rounded-2xl p-4 focus:ring-2 focus:ring-clay outline-none transition-all text-clay font-black" />
                                     </div>
                                   </>
