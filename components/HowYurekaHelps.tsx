@@ -6,10 +6,10 @@ import { Bot, CreditCard, ScanLine, Calculator, ArrowRightLeft, Newspaper, Arrow
 const FEATURES = [
   {
     icon: Bot,
-    title: 'Ask AI',
+    title: 'Research Assistant',
     sub: 'Try Now →',
     subLink: '/yureka-ai',
-    description: 'Your personal credit card guru. Instantly get answers on features, exclusions, hacks, and the best ways to earn.',
+    description: 'Your personal credit card expert. Instantly get answers on features, exclusions, strategies, and the best ways to save.',
     gradient: 'from-clay/20 via-transparent to-transparent',
     iconBg: 'bg-clay/10 text-clay',
     preview: (
@@ -63,10 +63,10 @@ const FEATURES = [
   },
   {
     icon: ScanLine,
-    title: 'Deep Dive',
+    title: 'Strategic Analysis',
     sub: null,
     subLink: '/cards',
-    description: 'Skip the fine print. Get straight to the key benefits, offers, and hidden terms.',
+    description: 'Skip the fine print. Get straight to the key benefits, offers, and detailed terms.',
     gradient: 'from-purple-500/10 via-transparent to-transparent',
     iconBg: 'bg-purple-500/10 text-purple-400',
     preview: (

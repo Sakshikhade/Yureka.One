@@ -92,7 +92,7 @@ const CardExplorer: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-cream pb-32 overflow-x-hidden text-white/90 selection:bg-clay selection:text-cream">
-            <SEO title="Card Explorer | Yureka Credit Intelligence" description="Find the absolute best credit cards tailored to your spending habits using our advanced analysis engine." />
+            <SEO title="Card Explorer | Professional Card Research" description="Find the absolute best credit cards tailored to your spending habits using our advanced research framework." />
 
             {/* ── HERO ── */}
             <div className="relative pt-24 md:pt-40 pb-20 border-b border-white/5">
@@ -102,12 +102,12 @@ const CardExplorer: React.FC = () => {
                 
                 <div className="max-w-[1400px] mx-auto px-6 relative z-10 text-center">
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-                        <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-clay mb-6">Credit Card Intelligence</p>
+                        <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-clay mb-6">Card Research & Analysis</p>
                         <h1 className="text-5xl sm:text-7xl md:text-8xl font-heading font-extrabold text-white leading-[0.9] tracking-tighter mb-8">
                             Find Your<br /><span className="text-clay italic font-serif font-light">Perfect Card.</span>
                         </h1>
                         <p className="text-white/70 text-base md:text-xl font-serif italic max-w-2xl mx-auto leading-relaxed mb-16">
-                            Filtering {cardsList.length} cards to find your specific <br className="hidden md:block" /> path to maximum reward yield.
+                            Analyzing {cardsList.length} cards to find your specific <br className="hidden md:block" /> path to optimal rewards.
                         </p>
                     </motion.div>
 
@@ -152,7 +152,7 @@ const CardExplorer: React.FC = () => {
                                 </AnimatePresence>
                             </div>
 
-                            {/* Category - Refactored to Custom Dropdown */}
+                            {/* Category */}
                             <div className={`flex-1 px-8 py-4 border-b lg:border-b-0 lg:border-r border-white/5 text-left relative ${isCategoryMenuOpen ? 'z-50' : 'z-10'}`}>
                                 <label className="text-[9px] font-black uppercase tracking-[0.25em] text-white/60 mb-2 block">Category</label>
                                 <button onClick={() => { setIsCategoryMenuOpen(!isCategoryMenuOpen); setIsBankMenuOpen(false); setIsTypeMenuOpen(false); }} className="flex items-center justify-between w-full text-white font-black text-sm outline-none group/btn">
@@ -178,7 +178,7 @@ const CardExplorer: React.FC = () => {
                                                                     {catObj.image ? <img src={catObj.image} alt="" className="w-full h-full object-contain drop-shadow-md" /> : <Sparkles size={14} className={isSelected ? 'text-clay' : 'text-white/40'} />}
                                                                 </div>
                                                                 <span className="text-[10px] font-black uppercase tracking-[0.15em]">{cat}</span>
-                                                                {isSelected && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-clay shadow-[0_0_10px_rgba(52,211,153,0.5)]" />}
+                                                                {isSelected && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-clay shadow-[0_0_10_rgba(52,211,153,0.5)]" />}
                                                             </button>
                                                         );
                                                     })}
@@ -189,7 +189,7 @@ const CardExplorer: React.FC = () => {
                                 </AnimatePresence>
                             </div>
 
-                            {/* Type - Refactored to Custom Dropdown */}
+                            {/* Type */}
                             <div className={`flex-1 px-8 py-4 text-left relative ${isTypeMenuOpen ? 'z-50' : 'z-10'}`}>
                                 <label className="text-[9px] font-black uppercase tracking-[0.25em] text-white/60 mb-2 block">Card Type</label>
                                 <button onClick={() => { setIsTypeMenuOpen(!isTypeMenuOpen); setIsBankMenuOpen(false); setIsCategoryMenuOpen(false); }} className="flex items-center justify-between w-full text-white font-black text-sm outline-none group/btn">

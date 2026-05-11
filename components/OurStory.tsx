@@ -58,7 +58,7 @@ const OurStory: React.FC = () => {
             </div>
             {/* Categories */}
             <div className="border-t-2 border-b border-white/20 py-1.5 flex justify-center flex-wrap gap-4 md:gap-8 text-[10px] md:text-xs font-bold uppercase tracking-[0.15em] text-white/60">
-                <a href="#ai-match" className="cursor-pointer hover:text-clay transition-colors">AI Match</a>
+                <a href="#ai-match" className="cursor-pointer hover:text-clay transition-colors">Research Hub</a>
                 <a href="#rewards" className="cursor-pointer hover:text-clay transition-colors">Rewards</a>
                 <a href="#rules" className="cursor-pointer hover:text-clay transition-colors">Rules</a>
                 <a href="#money" className="cursor-pointer hover:text-clay transition-colors">Money</a>
@@ -114,9 +114,9 @@ const OurStory: React.FC = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 border-t border-white/10 pt-6">
                     <div className="col-span-1">
-                        <h4 className="font-bold text-[10px] uppercase mb-2 flex items-center gap-2 text-clay"><span className="w-1.5 h-1.5 bg-clay"></span> Yureka AI</h4>
+                        <h4 className="font-bold text-[10px] uppercase mb-2 flex items-center gap-2 text-clay"><span className="w-1.5 h-1.5 bg-clay"></span> Analysis Hub</h4>
                         <p className="font-serif text-sm leading-tight text-white/60">
-                            We scan 200+ cards in seconds to find your best match.
+                            We analyze 200+ cards in seconds to find your best match.
                         </p>
                     </div>
                     <div className="col-span-1 border-l border-white/10 pl-6">
@@ -142,7 +142,7 @@ const OurStory: React.FC = () => {
                     <p className="font-heading font-black text-3xl float-left mr-2 leading-none text-white/10">F</p>
 
                     <p className="font-serif text-sm leading-relaxed text-white/60 mb-4">
-                        We help you find cards with the best benefits and lowest fees.
+                        Skip the fine print. Get straight to the key benefits, offers, and detailed terms.
                     </p>
                     <p className="font-serif text-sm leading-relaxed text-white/40">
                         We believe in transparency. We don't charge you fees.
@@ -227,7 +227,7 @@ const OurStory: React.FC = () => {
                          <p className="text-clay font-serif text-xl italic mb-1">Editor's Note</p>
                          <h3 className="font-serif text-3xl font-bold leading-none mb-3 text-white">The Problem</h3>
                          <p className="font-serif text-sm leading-relaxed text-white/40">
-                             "There are too many credit cards in India. Most people have the wrong one. We fix that."
+                             Your personal credit card expert. Instantly get answers on features, exclusions, strategies, and the best ways to save.
                          </p>
                      </div>
                      <div className="mb-8">
@@ -320,7 +320,7 @@ const OurStory: React.FC = () => {
         {/* 5. BOTTOM GRID (Categories) */}
         <div className="grid grid-cols-1 md:grid-cols-4 border-t border-white/20 divide-y md:divide-y-0 md:divide-x divide-white/10">
             {[
-                { label: "Yureka AI", title: "Smart Match", desc: "Our AI finds the best card for your spending habits." },
+                { label: "Analysis Hub", title: "Smart Match", desc: "Our framework finds the best card for your spending habits." },
                 { label: "Rewards", title: "Vouchers", desc: "Get up to 8% off brand vouchers. Instant delivery." },
                 { label: "Financial", title: "Smart Money", desc: "Improve your credit score and access better financial products." },
                 { label: "Security", title: "Secure", desc: "Your data is safe with us. We don't share it." }
@@ -347,17 +347,17 @@ const OurStory: React.FC = () => {
             <FadeInSection>
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 border-t-4 border-white/20 pt-12">
                     <div className="lg:col-span-4">
-                        <span className="text-clay font-bold text-[10px] uppercase tracking-[0.3em] block mb-4">Neural Dispatch 01</span>
-                        <h2 className="text-4xl md:text-5xl font-heading font-black leading-none mb-6 uppercase text-white">The AI Match Engine.</h2>
+                        <span className="text-clay font-bold text-[10px] uppercase tracking-[0.3em] block mb-4">Research Note 01</span>
+                        <h2 className="text-4xl md:text-5xl font-heading font-black leading-none mb-6 uppercase text-white">The Analysis Engine.</h2>
                         <div className="bg-[#111111] text-white/90 p-6 font-sans font-medium text-lg leading-relaxed shadow-2xl transform -rotate-1 border border-white/5">
-                            "We don't guess. We compute. Every reward, every fee, every hidden clause scanned in 350ms."
+                            "We don't guess. We compute. Every reward, every fee, every clause analyzed in real-time."
                         </div>
                     </div>
 
                     <div className="lg:col-span-8 flex flex-col justify-center">
                         <div className="columns-1 md:columns-2 gap-10 font-serif text-lg leading-relaxed text-justify text-white/60">
                             <p className="mb-6">
-                                <span className="float-left text-7xl font-bold leading-[0.7] mr-3 mt-1 text-clay">O</span>ur neural core is trained on the collective logic of thousands of credit instruments. It understands that a 5% reward rate is meaningless if the redemption cap is low or the exclusion list is long.
+                                <span className="float-left text-7xl font-bold leading-[0.7] mr-3 mt-1 text-clay">O</span>ur core logic is trained on the collective data of thousands of credit instruments. It understands that a 5% reward rate is meaningless if the redemption cap is low or the exclusion list is long.
                             </p>
                             <p>
                                 By processing your spending patterns across 12 distinct categories, the engine simulates 12 months of usage for every card in our database. The result isn't a recommendation—it's a prediction of performance. Precision finance, finally tailored to the individual.
@@ -412,8 +412,8 @@ const OurStory: React.FC = () => {
                 <div className="relative border-4 border-white/10 p-8 md:p-16 overflow-hidden bg-white/[0.01]">
                     <div className="absolute top-0 right-0 p-4 font-blackletter text-6xl text-white/5 pointer-events-none">THE FINE PRINT</div>
                     <div className="max-w-3xl mx-auto text-center">
-                        <span className="text-clay font-bold text-[10px] uppercase tracking-[0.4em] mb-4 block">Registry Audit / Rules</span>
-                        <h2 className="text-4xl md:text-6xl font-serif font-bold leading-tight mb-8 italic underline decoration-clay/40 underline-offset-8 text-white">No More Cryptic Clauses.</h2>
+                        <span className="text-clay font-bold text-[10px] uppercase tracking-[0.4em] mb-4 block">Database Review / Rules</span>
+                        <h2 className="text-4xl md:text-6xl font-serif font-bold leading-tight mb-8 italic underline decoration-clay/40 underline-offset-8 text-white">Clear, Honest Disclosure.</h2>
                         <div className="space-y-8 font-serif text-lg leading-relaxed text-white/60">
                             <p>
                                 Banks profit from complexity. The 50-page Terms & Conditions document is a wall designed to prevent you from truly understanding the instrument you hold.
@@ -433,7 +433,7 @@ const OurStory: React.FC = () => {
                                 </div>
                             </div>
                             <p>
-                                We translate "Bank-Speak" into human intelligence. Our Rules engine highlights every exclusion, every cap, and every fee in plain text. Knowledge isn't just power—it's capital.
+                                We translate "Bank-Speak" into clear insights. Our Rules engine highlights every exclusion, every cap, and every fee in plain text. Knowledge isn't just power—it's capital.
                             </p>
                         </div>
                     </div>
@@ -450,7 +450,7 @@ const OurStory: React.FC = () => {
                              <div className="relative z-10">
                                 <h3 className="text-3xl font-serif font-bold mb-4 italic">Assets Over Liabilities.</h3>
                                 <p className="font-serif text-lg leading-relaxed opacity-40">
-                                    "A credit card is either a hole in your pocket or a bridge to your next major investment. You choose the architecture."
+                                    "A credit card is either a hole in your pocket or a bridge to your next major investment. You choose the planning."
                                 </p>
                              </div>
                              <div className="text-clay font-blackletter text-[10rem] absolute -bottom-10 -right-10 opacity-5 group-hover:rotate-12 transition-transform duration-1000">$</div>
@@ -461,10 +461,10 @@ const OurStory: React.FC = () => {
                         <h2 className="text-4xl md:text-5xl font-serif font-bold leading-none mb-6 text-white">Money: The Strategic Tool.</h2>
                         <div className="font-serif text-lg leading-relaxed text-justify text-white/60">
                             <p className="mb-6">
-                                We believe credit is an asset classes in its own right. When managed with precision, it allows for interest-free capital deployment and significant yield through reward arbitrage.
+                                We believe credit is an asset class in its own right. When managed with precision, it allows for interest-free capital deployment and significant yield through reward arbitrage.
                             </p>
                             <p>
-                                Yureka treats your wallet like a portfolio. We help you balance the "Risk-Reward" ratio of every card, ensuring that your credit score grows alongside your liquid savings. This isn't just about spending—it's about wealth architecture.
+                                Yureka treats your wallet like a portfolio. We help you balance the "Risk-Reward" ratio of every card, ensuring that your credit score grows alongside your liquid savings. This isn't just about spending—it's about wealth planning.
                             </p>
                         </div>
                     </div>
@@ -481,9 +481,9 @@ const OurStory: React.FC = () => {
                     </div>
 
                     <div className="lg:col-span-4 px-12 border-r border-white/5">
-                        <h4 className="font-bold text-[10px] uppercase tracking-[0.3em] mb-4 text-clay">Neural Engine</h4>
+                        <h4 className="font-bold text-[10px] uppercase tracking-[0.3em] mb-4 text-clay">Analysis Hub</h4>
                         <p className="font-serif text-sm leading-relaxed text-white/60">
-                            Our proprietary LLM-driven core parses bank policy PDF changes in real-time. No manual entry, no stale data.
+                            Our proprietary data-driven core parses bank policy changes in real-time. No manual entry, no stale data.
                         </p>
                     </div>
                     <div className="lg:col-span-4 px-12 border-r border-white/5">
@@ -553,7 +553,7 @@ const OurStory: React.FC = () => {
                         <ul className="space-y-4 font-bold text-[10px] uppercase tracking-widest text-white/30">
                             <li>• 500+ Luxury Partners</li>
                             <li>• 2-10% Immediate Savings</li>
-                            <li>• Instant Digital Registry</li>
+                            <li>• Instant Digital Access</li>
                         </ul>
                     </div>
                     <div className="lg:col-span-8">
@@ -571,7 +571,7 @@ const OurStory: React.FC = () => {
                                 <p className="font-serif italic opacity-30 text-sm">Join 10,000+ high-performance spenders today.</p>
                              </div>
                              <button className="bg-clay text-cream px-8 py-4 font-bold text-[10px] uppercase tracking-widest hover:bg-white transition-all cursor-pointer shadow-lg shadow-clay/10">
-                                Join the Registry
+                                Join the Early Access List
                              </button>
                         </div>
                     </div>
