@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Calculator, ArrowRight, TrendingUp, ShieldCheck } from 'lucide-react';
 
@@ -97,18 +98,18 @@ const CalculatorCTA: React.FC = () => {
             </div>
           </div>
           
-          <button 
-            onClick={() => setIsOpen(true)}
+          <Link 
+            to="/by-everyone-for-everyone"
             className="bg-white text-cream px-12 py-5 rounded-full font-bold uppercase tracking-widest text-[13px] hover:scale-105 active:scale-95 transition-all shadow-2xl hover:bg-clay hover:text-white flex items-center gap-3 group/btn"
           >
-            Run Comparison
+            Built for everyone, By Everyone
             <motion.div
               animate={{ x: [0, 5, 0] }}
               transition={{ repeat: Infinity, duration: 1.5 }}
             >
-              <Calculator size={18} className="group-hover:text-white text-emerald-600" />
+              <ArrowRight size={18} className="group-hover:text-white text-clay" />
             </motion.div>
-          </button>
+          </Link>
         </motion.div>
       </div>
 

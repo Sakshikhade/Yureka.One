@@ -63,6 +63,7 @@ const LoginPage = lazyWithRetry(() => import('./components/LoginPage'));
 const WaitlistPage = lazyWithRetry(() => import('./components/WaitlistPage'));
 const WaitingPage = lazyWithRetry(() => import('./components/WaitingPage'));
 const DashboardLayout = lazyWithRetry(() => import('./components/Dashboard/DashboardLayout'));
+const ByEveryone = lazyWithRetry(() => import('./components/ByEveryone'));
 
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -179,6 +180,7 @@ const AppContent: React.FC = () => {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/join-waitlist" element={<WaitlistPage />} />
               <Route path="/waiting" element={<WaitingPage />} />
+              <Route path="/by-everyone-for-everyone" element={<ByEveryone />} />
               
               <Route path="/dashboard/*" element={
                 <ProtectedRoute>
