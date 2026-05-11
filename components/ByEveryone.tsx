@@ -15,7 +15,13 @@ import {
   Calendar,
   BadgePercent,
   UserPlus,
-  Phone
+  Phone,
+  Minus,
+  Plus,
+  Share2,
+  Info,
+  ChevronDown,
+  X as XIcon
 } from 'lucide-react';
 import SEO from './SEO';
 
@@ -204,6 +210,258 @@ const ByEveryone: React.FC = () => {
               Secured changes that with a simple cashback today, and ultimately opens doors to renting benefits that you truly deserve.
             </p>
           </div>
+        </div>
+      </section>
+
+      {/* The True Cost of Renting - Comparison Section */}
+      <section className="relative py-32 px-6 bg-white/[0.01]">
+        <div className="max-w-4xl mx-auto text-center mb-20">
+          <h2 className="text-4xl md:text-6xl font-heading font-black tracking-tighter text-white mb-6 uppercase">The True Cost of Renting</h2>
+          <p className="text-white/40 font-serif italic text-lg max-w-2xl mx-auto">
+            Rent is never just rent. Add deposits, brokerage, furnishing, maintenance – the picture changes. Let's compare honestly.
+          </p>
+
+          <div className="mt-12 flex flex-col items-center gap-6">
+            <div className="bg-white/5 p-1 rounded-full border border-white/10 flex items-center">
+               <button className="px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-widest bg-clay text-white shadow-xl">Shared Living</button>
+               <button className="px-8 py-3 rounded-full text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-white transition-colors">Solo Living</button>
+            </div>
+            <div className="relative group w-64">
+               <div className="bg-white/5 border border-white/10 rounded-2xl px-6 py-4 flex items-center justify-between cursor-pointer group-hover:border-white/30 transition-all">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-white">HSR Layout</span>
+                  <ChevronDown size={16} className="text-white/40" />
+               </div>
+            </div>
+            <p className="text-[9px] font-bold uppercase tracking-widest text-white/20">Traditional rental defaults use average market rates from multiple sources.</p>
+          </div>
+        </div>
+
+        {/* Comparison Dashboard */}
+        <div className="max-w-6xl mx-auto mb-32">
+           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+              <div className="bg-clay p-8 rounded-[2rem] text-white shadow-2xl shadow-clay/20 transform hover:-translate-y-2 transition-transform duration-500">
+                 <h4 className="text-4xl font-black mb-2 tracking-tighter">₹83,225</h4>
+                 <p className="text-[10px] font-bold uppercase tracking-widest opacity-80 leading-relaxed">Saved on day 1 of moving into a Yureka home</p>
+              </div>
+              <div className="bg-[#3D2B1F] p-8 rounded-[2rem] text-white/90 border border-white/5 transform hover:-translate-y-2 transition-transform duration-500">
+                 <h4 className="text-4xl font-black mb-2 tracking-tighter">₹48,095</h4>
+                 <p className="text-[10px] font-bold uppercase tracking-widest opacity-60 leading-relaxed">Saved over 11 months due to additional costs</p>
+              </div>
+              <div className="bg-[#8B0000]/40 p-8 rounded-[2rem] text-white/90 border border-white/5 transform hover:-translate-y-2 transition-transform duration-500">
+                 <h4 className="text-4xl font-black mb-2 tracking-tighter">0</h4>
+                 <p className="text-[10px] font-bold uppercase tracking-widest opacity-60 leading-relaxed">Brokerage calls, landlord visits, flatmate interviews & painting...</p>
+              </div>
+           </div>
+
+           {/* Comparison Table */}
+           <div className="bg-white/[0.02] border border-white/10 rounded-[3rem] overflow-hidden backdrop-blur-xl">
+              <div className="grid grid-cols-3 border-b border-white/10 p-8">
+                 <div className="text-[11px] font-black uppercase tracking-widest text-white/20">Costs</div>
+                 <div className="text-center text-[11px] font-black uppercase tracking-widest text-clay">Yureka</div>
+                 <div className="text-center text-[11px] font-black uppercase tracking-widest text-white/20">Traditional Renting</div>
+              </div>
+
+              {[
+                { cat: 'Monthly Costs', items: [
+                  { label: 'Rent', yureka: '₹ 35,000', trad: '₹ 24,500' },
+                  { label: 'Maintenance', yureka: 'Inclusive', trad: '₹ 1,225' },
+                  { label: 'Furnishing', yureka: '200+ items included', trad: '₹ 6,000/mo', sub: '8 items via Furlenco/Rentomojo' }
+                ]},
+                { cat: 'Effective Monthly', items: [
+                  { label: 'Total Monthly', yureka: '₹ 35,000 /mo', trad: '₹ 31,725 /mo', highlight: true }
+                ]},
+                { cat: 'One-time & Hidden Costs', items: [
+                  { label: 'Security Deposit', yureka: '₹ 1,05,000', trad: '₹ 1,47,000', sub: '3 months vs 6 months typical' },
+                  { label: 'Brokerage', yureka: 'Zero, always!', trad: '₹ 24,500', sub: '1 month rent typical' },
+                  { label: 'Essentials', yureka: 'Included', trad: '₹ 20,000', sub: 'Kitchenware, curtains, bedding' },
+                  { label: 'Exit / Painting', yureka: '₹ 5,000', trad: '₹ 30,000', sub: 'Fixed exit fee vs surprise deductions' },
+                  { label: 'Flatmate Vacancy', yureka: 'We match flatmates', trad: '₹ 10,000', sub: 'Returns lost @ 12% p.a.' }
+                ]}
+              ].map((section, idx) => (
+                <div key={idx} className="border-b border-white/5">
+                   <div className="bg-white/[0.02] px-8 py-3 text-[9px] font-black uppercase tracking-widest text-white/10">{section.cat}</div>
+                   {section.items.map((item, i) => (
+                     <div key={i} className={`grid grid-cols-3 p-8 items-center ${item.highlight ? 'bg-clay/5' : ''}`}>
+                        <div className="space-y-1">
+                           <div className="text-sm font-bold text-white/80">{item.label}</div>
+                           {item.sub && <div className="text-[10px] text-white/20 italic">{item.sub}</div>}
+                        </div>
+                        <div className="text-center">
+                           <div className={`text-sm font-black ${item.yureka === 'Inclusive' || item.yureka === 'Included' || item.yureka === 'Zero, always!' ? 'text-emerald-500' : 'text-white'}`}>{item.yureka}</div>
+                        </div>
+                        <div className="text-center">
+                           <div className="text-sm font-bold text-white/40">{item.trad}</div>
+                        </div>
+                     </div>
+                   ))}
+                </div>
+              ))}
+
+              <div className="bg-clay p-10 grid grid-cols-3 items-center">
+                 <div className="space-y-1">
+                    <div className="text-xl font-black text-white uppercase tracking-tighter">Grand Total</div>
+                    <div className="text-[10px] font-bold text-white/60">11 Months</div>
+                 </div>
+                 <div className="text-center text-3xl font-black text-white tracking-tighter">₹ 4,01,550</div>
+                 <div className="text-center text-3xl font-black text-white/40 tracking-tighter">₹ 4,49,645</div>
+              </div>
+           </div>
+
+           {/* Share CTA */}
+           <div className="mt-12 flex flex-col md:flex-row items-center justify-between bg-white/[0.02] border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-xl">
+              <div className="flex items-center gap-6 mb-6 md:mb-0">
+                 <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center text-white/20">
+                    <Share2 size={32} />
+                 </div>
+                 <div>
+                    <h5 className="text-lg font-black text-white uppercase tracking-tighter">Share this calculation</h5>
+                    <p className="text-[11px] text-white/40 italic font-serif">Friend wants to know how Yureka is better? Share this with them!</p>
+                 </div>
+              </div>
+              <button className="bg-white text-black px-10 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-clay hover:text-white transition-all shadow-xl">
+                Share Calculation
+              </button>
+           </div>
+        </div>
+      </section>
+
+      {/* A Complete Home vs Just the Basics */}
+      <section className="relative py-32 px-6">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 mb-32">
+           <div className="lg:col-span-4">
+              <h3 className="text-4xl font-heading font-black tracking-tighter text-white mb-6 uppercase leading-none">A complete home vs <br /> Just the basics</h3>
+              <p className="text-white/40 font-serif italic text-lg leading-relaxed mb-8">
+                 Going home feels effortless because everything you need is already there. Yureka brings that same feeling to renting.
+              </p>
+              <button className="flex items-center gap-3 bg-white/5 border border-white/10 px-8 py-4 rounded-full text-[10px] font-black uppercase tracking-widest text-white hover:bg-white hover:text-black transition-all">
+                Chat with us
+              </button>
+           </div>
+
+           <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-white/[0.02] border border-white/10 rounded-[2.5rem] p-10 backdrop-blur-xl group hover:border-clay/30 transition-colors">
+                 <div className="text-clay text-4xl font-black mb-4">200+</div>
+                 <h5 className="text-[10px] font-black uppercase tracking-widest text-white/40 mb-8">Items included with Yureka</h5>
+                 <div className="space-y-6">
+                    <div>
+                       <div className="text-xs font-bold text-white mb-2 uppercase tracking-widest">Furniture</div>
+                       <p className="text-[11px] text-white/40 font-serif italic">Bed, mattress, wardrobe, desk, chair, sofa, 4-seater dining</p>
+                    </div>
+                    <div>
+                       <div className="text-xs font-bold text-white mb-2 uppercase tracking-widest">Appliances</div>
+                       <p className="text-[11px] text-white/40 font-serif italic">AC, washing machine, microwave, grinder, water purifier</p>
+                    </div>
+                    <div>
+                       <div className="text-xs font-bold text-white mb-2 uppercase tracking-widest">Kitchen</div>
+                       <p className="text-[11px] text-white/40 font-serif italic">Cookware, cutlery, crockery, full utensil set</p>
+                    </div>
+                 </div>
+              </div>
+              <div className="bg-white/[0.01] border border-white/5 rounded-[2.5rem] p-10 text-white/30">
+                 <div className="text-4xl font-black mb-4">8</div>
+                 <h5 className="text-[10px] font-black uppercase tracking-widest opacity-40 mb-8">Items typically rented</h5>
+                 <p className="text-[11px] font-serif italic mb-6">Bed, mattress, wardrobe, desk, chair, sofa, dining table, washing machine.</p>
+                 <p className="text-[11px] font-serif italic">No kitchenware, curtains, bedsheets, or appliances.</p>
+              </div>
+           </div>
+        </div>
+
+        {/* Comparison Checklist */}
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-32">
+           <div className="bg-white/[0.02] border border-white/10 rounded-[3rem] overflow-hidden backdrop-blur-xl grid grid-cols-2 divide-x divide-white/10">
+              <div className="p-10 space-y-4">
+                 <h5 className="text-[10px] font-black uppercase tracking-widest text-clay mb-6">With Yureka</h5>
+                 {[
+                   'Move in tomorrow', 'Zero brokerage, always', 'No landlord interaction', 
+                   '3 months deposit', 'Maintenance handled by Yureka', 'Designer home, ready to live',
+                   '₹5,000 exit fee – that\'s it', 'Wi-Fi & water purifier included', 'Flatmate matching by Yureka'
+                 ].map((check, i) => (
+                   <div key={i} className="flex items-center gap-3">
+                      <div className="w-5 h-5 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0">
+                         <CheckCircle2 size={12} className="text-emerald-500" />
+                      </div>
+                      <span className="text-[11px] text-white/60 font-serif italic">{check}</span>
+                   </div>
+                 ))}
+              </div>
+              <div className="p-10 space-y-4 bg-black/40">
+                 <h5 className="text-[10px] font-black uppercase tracking-widest text-white/20 mb-6">Traditional Renting</h5>
+                 {[
+                   '2-4 weeks of house hunting', '1 month rent to a broker', 'Monthly landlord visits & opinions',
+                   '6-10 months deposit locked up', 'You call the plumber yourself', 'Empty flat, start from zero',
+                   '₹30k+ painting & surprise deductions', 'Arrange and install yourself', 'Weeks of interviews & guessing'
+                 ].map((item, i) => (
+                   <div key={i} className="flex items-center gap-3">
+                      <div className="w-5 h-5 rounded-full bg-white/5 flex items-center justify-center shrink-0">
+                         <XIcon size={12} className="text-white/20" />
+                      </div>
+                      <span className="text-[11px] text-white/20 font-serif italic">{item}</span>
+                   </div>
+                 ))}
+              </div>
+           </div>
+           <div className="space-y-8">
+              <h3 className="text-4xl md:text-6xl font-heading font-black tracking-tighter text-white uppercase leading-none">Traditional renting comes with baggage.</h3>
+              <h4 className="text-4xl font-serif italic text-clay">Yureka doesn't.</h4>
+              <p className="text-white/40 font-serif italic text-lg leading-relaxed max-w-md">
+                 From move-in to maintenance, Yureka removes the hassles you'd usually inherit, because home should start with comfort, not with brokers, surprises, and endless admin.
+              </p>
+              <button className="bg-white text-black px-10 py-5 rounded-full font-bold uppercase tracking-widest text-[11px] hover:bg-clay hover:text-white transition-all shadow-xl">
+                 Chat with us
+              </button>
+           </div>
+        </div>
+
+        {/* Featured Properties Section */}
+        <div className="max-w-7xl mx-auto">
+           <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-heading font-black tracking-tighter text-white uppercase">Homes in <span className="text-clay italic">HSR Layout</span></h2>
+           </div>
+
+           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[
+                { name: 'Belmont', img: '/premium_apartment_interiors_1_1778480716810.png', tag: 'Female Only', price: '₹35,000' },
+                { name: 'Caesar', img: '/premium_apartment_interiors_2_1778480767298.png', tag: 'Available Now', price: '₹28,000' },
+                { name: 'Fairmont', img: '/premium_apartment_interiors_3_1778480897500.png', tag: 'Available Now', price: '₹36,000' }
+              ].map((prop, i) => (
+                <div key={i} className="bg-white/[0.02] border border-white/10 rounded-[2.5rem] overflow-hidden group hover:border-clay/50 transition-all duration-700 shadow-2xl">
+                   <div className="relative aspect-[4/3] overflow-hidden">
+                      <img src={prop.img} alt={prop.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+                      <div className="absolute top-6 left-6 bg-clay/90 backdrop-blur-md text-white text-[8px] font-black uppercase px-4 py-2 rounded-full tracking-widest">
+                         {prop.tag}
+                      </div>
+                   </div>
+                   <div className="p-8">
+                      <h4 className="text-3xl font-heading font-black text-white mb-6 tracking-tighter uppercase">{prop.name}</h4>
+                      <div className="grid grid-cols-2 gap-4 mb-8">
+                         <div className="flex items-center gap-2">
+                            <Clock size={14} className="text-clay" />
+                            <span className="text-[10px] font-bold text-white/40 uppercase tracking-widest">Available Now</span>
+                         </div>
+                         <div className="flex items-center gap-2 text-white/40">
+                            <MapPin size={14} />
+                            <span className="text-[10px] font-bold uppercase tracking-widest">3 BHK</span>
+                         </div>
+                      </div>
+                      <div className="pt-8 border-t border-white/5 flex items-end justify-between">
+                         <div>
+                            <div className="text-[10px] font-bold text-white/20 uppercase tracking-widest mb-1">Starting From</div>
+                            <div className="text-3xl font-black text-white">{prop.price}<span className="text-xs font-normal text-white/40 ml-1">/mo</span></div>
+                         </div>
+                         <button className="w-12 h-12 bg-clay text-white rounded-full flex items-center justify-center hover:scale-110 transition-transform">
+                            <ArrowRight size={20} />
+                         </button>
+                      </div>
+                   </div>
+                </div>
+              ))}
+           </div>
+
+           <div className="text-center mt-16">
+              <button className="bg-white/5 border border-white/10 text-white px-12 py-5 rounded-full font-bold uppercase tracking-widest text-[11px] hover:bg-white hover:text-black transition-all">
+                 View more in HSR Layout
+              </button>
+           </div>
         </div>
       </section>
 
