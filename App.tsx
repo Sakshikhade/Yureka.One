@@ -11,6 +11,7 @@ import TopBanner from './components/TopBanner';
 import { SupabaseProvider, useSupabase } from './components/SupabaseProvider';
 import { SkeletonCard } from './components/SkeletonLoaders';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import ContributionModal from './components/ContributionModal';
 
 // Robust Lazy Loader to handle chunk loading failures (common during new deploys)
 const lazyWithRetry = (componentImport: () => Promise<any>) =>
@@ -131,6 +132,8 @@ const AppContent: React.FC = () => {
       <ScrollToTop />
       {!isSpecialRoute && <TopBanner />}
       {!isSpecialRoute && <Navbar />}
+      
+      {!isAdminRoute && <ContributionModal />}
       
       <main className={`relative z-10 ${isSpecialRoute ? 'pt-0' : ''}`}>
         <Suspense fallback={

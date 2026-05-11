@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { 
   CheckCircle2, PlusCircle, AlertTriangle, Trash2, 
   ArrowRight, Sparkles, X, Loader2, Upload, Image as ImageIcon,
@@ -25,7 +25,11 @@ const ALL_CATEGORIES = [
 ];
 
 const ContributePage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<TabType>('add');
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const initialTab = (searchParams.get('tab') as TabType) || 'add';
+  
+  const [activeTab, setActiveTab] = useState<TabType>(initialTab);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   
@@ -62,6 +66,13 @@ const ContributePage: React.FC = () => {
   const [email, setEmail] = useState('');
   
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const tab = searchParams.get('tab') as TabType;
+    if (tab && (tab === 'add' || tab === 'update' || tab === 'remove')) {
+      setActiveTab(tab);
+    }
+  }, [location.search]);
 
   useEffect(() => {
     if (selectedCardId && (activeTab === 'update' || activeTab === 'remove')) {
