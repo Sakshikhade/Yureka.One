@@ -1,18 +1,18 @@
 import React, { useMemo } from 'react';
 import { motion } from 'motion/react';
 import { Card } from '../types';
-import { Star, TrendingUp, ArrowUpRight, Link as LinkIcon, Bot } from 'lucide-react';
+import { Star, TrendingUp, ArrowUpRight, Link as LinkIcon, Bot, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import ImageWithLoader from './ImageWithLoader';
 
-interface RentalProtectionProps {
+interface PortfolioOptimizationProps {
   cards: Card[];
 }
 
 const generateSlug = (name: string, bank: string) =>
   `${name}-${bank}`.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
-const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
+const RentalProtection: React.FC<PortfolioOptimizationProps> = ({ cards }) => {
   // Always pull these specific 4 elite cards if they exist, otherwise use fallbacks
   const targetIssuers = ['ICICI', 'Axis', 'Axis', 'HDFC'];
   const targetNames = ['Emeralde Private', 'Magnus', 'Atlas', 'Diners Club Black'];
@@ -60,20 +60,20 @@ const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
           className="space-y-5 mb-10 md:mb-12 max-w-4xl"
         >
           <p className="text-clay text-[10px] md:text-xs font-bold uppercase tracking-[0.4em]">
-            YOU INVESTED CRORES INTO{' '}
-            <span className="text-white border-b border-clay pb-0.5">THAT HOME</span>
+            OPTIMIZE YOUR{' '}
+            <span className="text-white border-b border-clay pb-0.5">FINANCIAL FOOTPRINT</span>
           </p>
 
           <h2 className="text-4xl md:text-6xl lg:text-7xl font-heading text-white tracking-tighter leading-[0.95] uppercase">
-            SECURE YOUR ASSET. <br/>MULTIPLY YOUR YIELD.
+            SECURE YOUR PORTFOLIO. <br/>MAXIMIZE YOUR YIELD.
           </h2>
 
           <p className="text-white/40 text-sm md:text-base font-sans max-w-2xl mx-auto leading-relaxed">
-            Secured maps your real estate portfolio to the world's most powerful credit engines. We identify the elite financial instruments that protect your cashflow and unlock hidden yield within your rental assets.
+            Yureka Secured maps your spending patterns to the world's most powerful credit engines. We identify the elite instruments that protect your liquidity and unlock systematic yield within your daily deployment.
           </p>
         </motion.div>
 
-        {/* Card List (Image 2 Redesign) */}
+        {/* Card List */}
         <div className="w-full space-y-6 mb-12">
           {displayCards.map((card, i) => {
             const slug = card.slug || generateSlug(card.name, card.bank || card.issuer || '');
@@ -104,13 +104,13 @@ const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
                     <div className="flex-1 text-left">
                       <div className="flex flex-wrap gap-2 mb-4">
                         <span className="flex items-center gap-1.5 px-3 py-1 bg-amber-500/10 text-amber-500 text-[9px] font-black uppercase tracking-widest rounded-full border border-amber-500/20">
-                          Premium <Star size={10} />
+                          Elite Yield <TrendingUp size={10} />
                         </span>
                         <span className="flex items-center gap-1.5 px-3 py-1 bg-blue-500/10 text-blue-400 text-[9px] font-black uppercase tracking-widest rounded-full border border-blue-500/20">
-                          Travel
+                          Portfolio Asset
                         </span>
                         <span className="flex items-center gap-1.5 px-3 py-1 bg-clay/10 text-clay text-[9px] font-black uppercase tracking-widest rounded-full border border-clay/20">
-                          Lounge Access
+                          Institutional Perks
                         </span>
                       </div>
                       <h3 className="text-2xl md:text-3xl font-heading font-black text-white leading-tight uppercase tracking-tighter mb-2 group-hover:text-clay transition-colors">
@@ -127,40 +127,40 @@ const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
                         to={`/cards/${slug}`}
                         className="w-full bg-[#2563eb] text-white py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-blue-600 transition-all shadow-[0_10px_20px_rgba(37,99,235,0.1)] group/btn"
                       >
-                        Read More <ArrowUpRight size={14} className="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+                        Analyze Instrument <ArrowUpRight size={14} className="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
                       </Link>
                       <Link 
                         to="/yureka-ai"
                         className="w-full bg-white/[0.04] border border-white/10 text-white/80 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-white/[0.08] transition-all group/ai"
                       >
-                        Ask AI <Bot size={14} className="text-clay group-hover/ai:animate-pulse" />
+                        Research Query <Bot size={14} className="text-clay group-hover/ai:animate-pulse" />
                       </Link>
                       <button className="text-[9px] text-white/20 hover:text-white/40 transition-colors uppercase tracking-widest font-bold">
-                        Report data issue
+                        Request Audit
                       </button>
                     </div>
                   </div>
 
-                  {/* Bottom Row: Data Table (Image 2 Style) */}
+                  {/* Bottom Row: Data Table */}
                   <div className="bg-white/[0.02] border border-white/5 rounded-3xl p-6 md:p-8 grid grid-cols-2 md:grid-cols-5 gap-8 items-center">
                     <div className="space-y-2">
-                      <span className="text-[8px] text-white/20 uppercase tracking-[0.25em] font-black block">Intro Offer</span>
+                      <span className="text-[8px] text-white/20 uppercase tracking-[0.25em] font-black block">Yield Protocol</span>
                       <p className="text-[11px] font-bold text-white/70 leading-relaxed italic font-serif line-clamp-2">{card.intro_offer || 'Elite Welcome Rewards'}</p>
                     </div>
                     <div className="space-y-2">
-                      <span className="text-[8px] text-white/20 uppercase tracking-[0.25em] font-black block">Annual Fees</span>
+                      <span className="text-[8px] text-white/20 uppercase tracking-[0.25em] font-black block">Annual Overhead</span>
                       <p className="text-base font-black text-white tracking-tight">₹{String(card.annual_fee ?? '0').replace(/[^0-9]/g, '') || '0'} <span className="text-[10px] text-white/20 font-medium">+ GST</span></p>
                     </div>
                     <div className="space-y-2">
-                      <span className="text-[8px] text-white/20 uppercase tracking-[0.25em] font-black block">Joining Fees</span>
+                      <span className="text-[8px] text-white/20 uppercase tracking-[0.25em] font-black block">Activation Fee</span>
                       <p className="text-base font-black text-white tracking-tight">₹{String((card.joining_fee || card.annual_fee) ?? '0').replace(/[^0-9]/g, '') || '0'} <span className="text-[10px] text-white/20 font-medium">+ GST</span></p>
                     </div>
                     <div className="space-y-2">
-                      <span className="text-[8px] text-white/20 uppercase tracking-[0.25em] font-black block">Reward Rate</span>
+                      <span className="text-[8px] text-white/20 uppercase tracking-[0.25em] font-black block">ROI Percentage</span>
                       <p className="text-base font-black text-clay tracking-tight">{card.rewards_rate || '3.33% → 33%'}</p>
                     </div>
                     <div className="space-y-2">
-                      <span className="text-[8px] text-white/20 uppercase tracking-[0.25em] font-black block">Rating</span>
+                      <span className="text-[8px] text-white/20 uppercase tracking-[0.25em] font-black block">Elite Ranking</span>
                       <div className="flex items-center gap-2">
                         <span className="text-base font-black text-white">{card.elite_rating || card.rating || '4.8'}</span>
                         <Star size={14} className="text-amber-400 fill-amber-400" />
@@ -182,7 +182,7 @@ const RentalProtection: React.FC<RentalProtectionProps> = ({ cards }) => {
             to="/cards"
             className="inline-block bg-clay text-cream px-12 py-5 rounded-full text-[10px] font-black uppercase tracking-[0.4em] shadow-2xl hover:shadow-clay/20 transition-all duration-300"
           >
-            Explore Full Catalog →
+            Audit Full Catalog →
           </Link>
         </motion.div>
 

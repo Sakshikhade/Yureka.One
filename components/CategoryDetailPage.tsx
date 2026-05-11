@@ -101,7 +101,7 @@ const CategoryDetailPage: React.FC = () => {
         {loading ? (
           <div className="flex flex-col items-center justify-center py-40 gap-4">
             <Loader2 className="animate-spin text-clay" size={40} />
-            <span className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em]">Syncing Neural Data...</span>
+            <span className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em]">Syncing Intelligence Hub...</span>
           </div>
         ) : cards.length > 0 ? (
           <div className="space-y-6">
@@ -133,7 +133,6 @@ const CategoryDetailPage: React.FC = () => {
                        {/* Tags */}
                        {card.category && (
                          <div className="flex items-center gap-1.5 px-3 py-1 bg-clay/10 border border-clay/20 rounded-full">
-                         Research Query <Bot size={14} className="text-clay group-hover/ai:animate-pulse" />
                            <span className="text-[8px] font-black text-clay uppercase tracking-widest">{card.category}</span>
                          </div>
                        )}

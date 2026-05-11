@@ -156,8 +156,8 @@ const AppContent: React.FC = () => {
               <Route path="/cards" element={
                 <>
                   <SEO 
-                    title="Card Explorer | Professional Credit Card Search" 
-                    description="Expert analysis on 200+ credit cards. Filter by rewards, lounge access, and lifestyle perks."
+                    title="Card Explorer | Professional Reward Analytics & Search" 
+                    description="Expert analysis on 200+ credit cards. Filter by systematic reward yield, lounge access, and elite lifestyle perks. Match with your perfect portfolio."
                   />
                   <CardExplorer />
                 </>
@@ -168,8 +168,8 @@ const AppContent: React.FC = () => {
               <Route path="/blogs" element={
                 <>
                   <SEO 
-                    title="Pulse | Expert Credit Card Journal" 
-                    description="Expert analysis on reward hacking, luxury travel, and the Indian credit landscape."
+                    title="Pulse | Strategic Financial Journal" 
+                    description="Expert analysis on credit arbitrage, reward point devaluation, and high-performance spending strategies in the Indian credit landscape."
                   />
                   <JournalPage />
                 </>
@@ -202,13 +202,13 @@ const AppContent: React.FC = () => {
               <Route path="/jobs" element={<CareersPage />} />
    
               <Route path="/yureka-ai" element={
-                 <>
-                   <SEO 
-                     title="Yureka AI | Your Credit Card Co-Pilot" 
-                     description="From picking the perfect credit card to maximising every reward point."
-                   />
-                   <YurekaAIPage />
-                 </>
+                <>
+                  <SEO 
+                    title="Assistant | Your Personal Credit Portfolio Co-Pilot" 
+                    description="From picking the perfect financial instrument to maximizing every systematic reward point. Your research assistant for elite credit."
+                  />
+                  <YurekaAIPage />
+                </>
               } />
               <Route path="/explorer" element={<Navigate to="/cards" replace />} />
               <Route path="/ai-magic" element={<Navigate to="/yureka-ai" replace />} />

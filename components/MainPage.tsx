@@ -15,7 +15,7 @@ const Community = lazy(() => import('./Community'));
 const ContributeCTA = lazy(() => import('./ContributeCTA'));
 const FAQ = lazy(() => import('./FAQ'));
 const CalculatorCTA = lazy(() => import('./CalculatorCTA'));
-const RentalProtection = lazy(() => import('./RentalProtection'));
+const RentalProtection = lazy(() => import('./RentalProtection')); // Repurposed for Portfolio Optimization
 const HowYurekaHelps = lazy(() => import('./HowYurekaHelps'));
 const Footer = lazy(() => import('./Footer'));
 const PartnerLogos = lazy(() => import('./PartnerLogos'));
@@ -40,8 +40,8 @@ const MainPage: React.FC = () => {
   return (
     <>
       <SEO 
-        title="Yureka | Expert Credit Card Analysis & Optimization" 
-        description="Maximize every spend with India's most advanced credit card optimizer. Match with 200+ cards and unlock elite rewards instantly."
+        title="Yureka.Money | Strategic Credit Reward Optimization" 
+        description="Maximize every financial deployment with India's most advanced credit reward analytics engine. reveal your highest possible reward yield across 200+ elite instruments."
         schema={homeSchema}
       />
       

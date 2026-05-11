@@ -9,7 +9,7 @@ const FEATURES = [
     title: 'Research Assistant',
     sub: 'Try Now →',
     subLink: '/yureka-ai',
-    description: 'Your personal credit card expert. Instantly get answers on features, exclusions, strategies, and the best ways to save.',
+    description: 'Your personal financial intelligence officer. Get instant audits on credit features, merchant exclusions, and hidden arbitrage strategies.',
     gradient: 'from-clay/20 via-transparent to-transparent',
     iconBg: 'bg-clay/10 text-clay',
     preview: (
@@ -37,7 +37,7 @@ const FEATURES = [
     title: 'Find Your Perfect Card',
     sub: 'Discover →',
     subLink: '/cards',
-    description: 'Browse top cards by category. From travel to cashback — discover what fits you best.',
+    description: 'Discovery engine for high-yield financial instruments. filter by systematic ROI, travel arbitrage, and elite lifestyle perks.',
     gradient: 'from-blue-500/10 via-transparent to-transparent',
     iconBg: 'bg-blue-500/10 text-blue-400',
     preview: (
@@ -66,7 +66,7 @@ const FEATURES = [
     title: 'Strategic Analysis',
     sub: null,
     subLink: '/cards',
-    description: 'Skip the fine print. Get straight to the key benefits, offers, and detailed terms.',
+    description: 'Bypass marketing PDFs. Access deep audits on real-world benefits, exclusion triggers, and complex reward structures.',
     gradient: 'from-purple-500/10 via-transparent to-transparent',
     iconBg: 'bg-purple-500/10 text-purple-400',
     preview: (
@@ -101,7 +101,7 @@ const FEATURES = [
     title: 'Rewards Calculator',
     sub: null,
     subLink: '/rewards-calculator',
-    description: 'Estimate your real-world earnings. Know exactly how much value each card brings you.',
+    description: 'Project your systematic reward yield. Know exactly how much financial delta each instrument adds to your portfolio.',
     gradient: 'from-amber-500/10 via-transparent to-transparent',
     iconBg: 'bg-amber-500/10 text-amber-400',
     preview: (
@@ -141,7 +141,7 @@ const FEATURES = [
     title: 'Compare Cards',
     sub: 'Compare →',
     subLink: '/cards',
-    description: 'Put your top picks head-to-head. See which card wins based on features and rewards.',
+    description: 'Institutional-grade comparison engine. Rank your top picks by net effective yield, fees, and reward velocity.',
     gradient: 'from-cyan-500/10 via-transparent to-transparent',
     iconBg: 'bg-cyan-500/10 text-cyan-400',
     preview: (
@@ -166,7 +166,7 @@ const FEATURES = [
     title: 'Card News',
     sub: 'Read →',
     subLink: '/blogs',
-    description: 'Stay updated with the latest offers, tips, and insights. Never miss a trick.',
+    description: 'Real-time intelligence on reward devaluations, new arbitrage opportunities, and elite credit market shifts.',
     gradient: 'from-rose-500/10 via-transparent to-transparent',
     iconBg: 'bg-rose-500/10 text-rose-400',
     preview: (

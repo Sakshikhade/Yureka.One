@@ -34,14 +34,14 @@ const Hero: React.FC = () => {
             >
                 <div className="flex justify-center items-center gap-6 mb-4 md:md-6">
                      <div className="h-[1px] bg-white/10 w-12 md:w-24"></div>
-                     <span className="text-clay font-bold text-xs uppercase tracking-[0.4em]">Strategic Wealth Management</span>
+                     <span className="text-clay font-bold text-xs uppercase tracking-[0.4em]">Advanced Financial Engineering</span>
                      <div className="h-[1px] bg-white/10 w-12 md:w-24"></div>
                 </div>
                 <h1 className="text-3xl sm:text-6xl md:text-7xl lg:text-[clamp(2.5rem,6vw,6.5rem)] leading-[0.9] font-heading font-extrabold text-white uppercase tracking-tight">
-                    Stop Guessing. <br className="hidden md:block" /> Start Winning.
+                    Yield Every Swipe. <br className="hidden md:block" /> Master the Game.
                 </h1>
                 <h3 className="text-xs sm:text-base xl:text-lg font-sans font-semibold text-white/60 mt-4 md:mt-6 max-w-3xl mx-auto leading-relaxed tracking-tight uppercase px-4 sm:px-0">
-                    We analyze <span className="text-white">200+ elite credit cards</span> through the Yureka Research Framework <br className="hidden lg:block" /> to reveal your highest possible reward value.
+                    Precision analytics on <span className="text-white">200+ institutional credit instruments</span>. reveal your highest possible systematic yield through the Yureka Matrix.
                 </h3>
 
                 
