@@ -341,9 +341,8 @@ const ContributePage: React.FC = () => {
                                   </div>
                                 )}
                               </div>
-                            </div>
 
-                            <div className="space-y-8">
+                              <div className="space-y-8">
                               <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-2 ml-1">Visual Identity Asset</label>
                               <div className="relative aspect-[1.6/1] rounded-[2rem] overflow-hidden bg-white/5 border-2 border-dashed border-white/10 group flex items-center justify-center">
                                 {form.image ? (
