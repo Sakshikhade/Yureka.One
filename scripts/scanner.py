@@ -305,13 +305,9 @@ def execute_financial_scanner(gmail_service):
     # Broad scan restricted to high-probability financial subjects
     query = 'subject:(bill OR transaction OR statement OR debited OR credited OR payment) OR has:attachment'
     
-    response = gmail_service.users().messages().list(userId='me', q=query, maxResults=500).execute()
+    # Optimize: Limit to top 80 most recent financial emails to ensure execution under 10 seconds
+    response = gmail_service.users().messages().list(userId='me', q=query, maxResults=80).execute()
     messages = response.get('messages', [])
-    
-    while 'nextPageToken' in response:
-        page_token = response['nextPageToken']
-        response = gmail_service.users().messages().list(userId='me', q=query, pageToken=page_token, maxResults=500).execute()
-        messages.extend(response.get('messages', []))
 
     for msg in messages:
         try:

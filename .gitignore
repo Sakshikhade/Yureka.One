@@ -30,3 +30,6 @@ firebase-service-account.json
 # Google OAuth Secrets & Tokens
 *.pickle
 credentials.json
+
+# Local financial cache
+data/
