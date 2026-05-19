@@ -192,14 +192,14 @@ def get_local_gmail_service():
             
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
+            try:
+                creds.refresh(Request())
+                with open(write_token_path, 'wb') as token:
+                    pickle.dump(creds, token)
+            except Exception as refresh_err:
+                raise Exception(f"Local token refresh failed: {str(refresh_err)}")
         else:
-            if not creds_path or not os.path.exists(creds_path):
-                raise FileNotFoundError("Missing 'credentials.json' in your local directory.")
-            flow = InstalledAppFlow.from_client_secrets_file(creds_path, SCOPES)
-            creds = flow.run_local_server(port=0)
-        with open(write_token_path, 'wb') as token:
-            pickle.dump(creds, token)
+            raise Exception("Local desktop OAuth credentials expired or invalid. Re-authorization required.")
             
     return build('gmail', 'v1', credentials=creds)
 
