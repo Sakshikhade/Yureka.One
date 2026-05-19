@@ -13,6 +13,8 @@ import { useSupabase } from '../SupabaseProvider';
 import MyCards from './MyCards';
 import ReferralDashboard from './ReferralDashboard';
 import AccountSettings from './AccountSettings';
+import Expenses from './Expenses';
+import Bills from './Bills';
 import CategoriesPage from '../CategoriesPage';
 import CategoryDetailPage from '../CategoryDetailPage';
 import YurekaOsPage from '../YurekaOsPage';
@@ -34,8 +36,8 @@ const EXPLORE_ITEMS = [
 const NAV_ITEMS = [
     { id: 'cards', label: 'Saved Cards', icon: CreditCard, path: '/dashboard/cards' },
     { id: 'explore', label: 'Explore', icon: Sparkles, subItems: EXPLORE_ITEMS },
-    { id: 'expenses', label: 'Expenses', icon: Receipt, comingSoon: true, path: '/dashboard/expenses' },
-    { id: 'bills', label: 'Bills', icon: Wallet, comingSoon: true, path: '/dashboard/bills' },
+    { id: 'expenses', label: 'Expenses', icon: Receipt, path: '/dashboard/expenses' },
+    { id: 'bills', label: 'Bills', icon: Wallet, path: '/dashboard/bills' },
     { id: 'extension', label: 'Extension', icon: Zap, comingSoon: true, path: '/dashboard/extension' },
     { id: 'store', label: 'Store', icon: Store, comingSoon: true, path: '/dashboard/store' },
     { id: 'giftcards', label: 'GiftCards', icon: Gift, comingSoon: true, path: '/dashboard/giftcards' },
@@ -252,6 +254,8 @@ const DashboardLayout: React.FC = () => {
                                 <Route path="join-waitlist" element={<WaitlistPage />} />
                                 <Route path="referrals" element={<ReferralDashboard />} />
                                 <Route path="profile" element={<AccountSettings />} />
+                                <Route path="expenses" element={<Expenses />} />
+                                <Route path="bills" element={<Bills />} />
                                 <Route path="*" element={renderEmpty()} />
                             </Routes>
                     </AnimatePresence>

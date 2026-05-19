@@ -96,6 +96,196 @@ async function startServer() {
     res.status(204).send();
   });
 
+  async function saveDataToSupabase(profile: any, transactions: any[]) {
+    if (!profile) return;
+    const email = profile.email || "toanweshbiswas@gmail.com";
+
+    // 1. Save profile to waitlist table
+    try {
+      const { data: existing } = await supabase
+        .from("waitlist")
+        .select("*")
+        .eq("email", email.toLowerCase().trim())
+        .limit(1)
+        .maybeSingle();
+
+      const dobFormatted = profile.dob ? profile.dob.split("/").reverse().join("-") : null;
+      const payload = {
+        name: profile.name || "",
+        first_name: (profile.name || "").split(" ")[0] || "",
+        last_name: (profile.name || "").split(" ")[1] || "",
+        mobile_number: profile.phone || "",
+        date_of_birth: dobFormatted,
+        gender: profile.gender || "",
+        status: "pending"
+      };
+
+      if (existing) {
+        const { error: updateError } = await supabase
+          .from("waitlist")
+          .update(payload)
+          .eq("id", existing.id);
+        if (updateError) throw updateError;
+        console.log(`Successfully updated Supabase waitlist profile for ${email}`);
+      } else {
+        const { count } = await supabase
+          .from("waitlist")
+          .select("*", { count: "exact", head: true });
+        const rank = 1000 + (count || 0) + 1;
+        const personalReferralCode = `YRKMNY${Math.floor(1000 + Math.random() * 9000)}`;
+
+        const { error: insertError } = await supabase
+          .from("waitlist")
+          .insert([{
+            ...payload,
+            email: email.toLowerCase().trim(),
+            rank,
+            personal_referral_code: personalReferralCode
+          }]);
+        if (insertError) throw insertError;
+        console.log(`Successfully created new Supabase waitlist profile for ${email}`);
+      }
+    } catch (err: any) {
+      console.warn("Supabase profile save warning:", err.message || err);
+    }
+
+    // 2. Save transactions to financial_ledger table
+    if (transactions && transactions.length > 0) {
+      try {
+        await supabase
+          .from("financial_ledger")
+          .delete()
+          .eq("user_email", email.toLowerCase().trim());
+
+        const rows = transactions.map(tx => ({
+          user_email: email.toLowerCase().trim(),
+          brand_name: tx.brandName || "",
+          amount: tx.amount || "",
+          description: tx.description || "",
+          date: tx.date || "",
+          sender: tx.sender || "",
+          type: tx.type || "Transaction"
+        }));
+
+        const { error: insertError } = await supabase
+          .from("financial_ledger")
+          .insert(rows);
+
+        if (insertError) throw insertError;
+        console.log(`Successfully persisted ${transactions.length} transactions to Supabase financial_ledger!`);
+      } catch (err: any) {
+        console.warn("Supabase transactions save warning (migration might be missing):", err.message || err);
+      }
+    }
+  }
+
+  // Get cached financial transactions & profile
+  app.get("/api/financial-ledger", async (req, res) => {
+    const userEmail = (req.query.email as string) || "toanweshbiswas@gmail.com";
+    try {
+      const { data: dbData, error: dbError } = await supabase
+        .from("financial_ledger")
+        .select("*")
+        .eq("user_email", userEmail.toLowerCase().trim());
+
+      if (!dbError && dbData && dbData.length > 0) {
+        const transactions = dbData.map(row => ({
+          brandName: row.brand_name,
+          amount: row.amount,
+          description: row.description,
+          date: row.date,
+          sender: row.sender,
+          type: row.type
+        }));
+        
+        const { data: profileRow } = await supabase
+          .from("waitlist")
+          .select("*")
+          .eq("email", userEmail.toLowerCase().trim())
+          .limit(1)
+          .maybeSingle();
+
+        const profile = profileRow ? {
+          name: profileRow.name,
+          dob: profileRow.date_of_birth ? profileRow.date_of_birth.split("-").reverse().join("/") : "",
+          gender: profileRow.gender,
+          phone: profileRow.mobile_number
+        } : {};
+
+        console.log(`Loaded ${transactions.length} transactions from Supabase for ${userEmail}`);
+        return res.json({ profile, transactions });
+      }
+    } catch (err) {
+      console.warn("Supabase load failed, falling back to local file cache:", err);
+    }
+
+    const fs = await import("fs/promises");
+    const cachePath = path.join(__dirname, "data", "financial_cache.json");
+    try {
+      const dataStr = await fs.readFile(cachePath, "utf-8");
+      const data = JSON.parse(dataStr);
+      res.json(data);
+    } catch (err) {
+      res.json({ profile: {}, transactions: [] });
+    }
+  });
+
+  // Email Deep Scanner API
+  app.post("/api/scan-email", async (req, res) => {
+    const { accessToken, fallbackData } = req.body;
+    const { spawn } = await import("child_process");
+    const pythonProcess = spawn("python3", [
+      path.join(__dirname, "scripts", "scanner.py"),
+      accessToken || "",
+      JSON.stringify(fallbackData || {})
+    ]);
+
+    let output = "";
+    let errorOutput = "";
+
+    pythonProcess.stdout.on("data", (data) => {
+      output += data.toString();
+    });
+
+    pythonProcess.stderr.on("data", (data) => {
+      errorOutput += data.toString();
+    });
+
+    pythonProcess.on("close", async (code) => {
+      if (code !== 0) {
+        console.error("Python deep scanner process failed with exit code:", code, errorOutput);
+        return res.status(500).json({ error: "Deep scanner script failed to execute", details: errorOutput });
+      }
+
+      try {
+        const result = JSON.parse(output.trim());
+        if (result.error) {
+          return res.status(400).json({ error: result.error });
+        }
+
+        // Persist to Supabase
+        await saveDataToSupabase(result.profile, result.transactions || []);
+
+        // Cache success output locally as fallback
+        const fs = await import("fs/promises");
+        const cacheDir = path.join(__dirname, "data");
+        try {
+          await fs.mkdir(cacheDir, { recursive: true });
+        } catch {}
+        await fs.writeFile(
+          path.join(cacheDir, "financial_cache.json"),
+          JSON.stringify(result, null, 2)
+        );
+
+        res.json(result);
+      } catch (err: any) {
+        console.error("Failed to parse Python deep scanner JSON response:", err, output);
+        res.status(500).json({ error: "Invalid JSON output from deep scanner script", raw: output });
+      }
+    });
+  });
+
+
   // Newsletters API
   app.get("/api/newsletters", async (req, res) => {
     const { data, error } = await supabase.from('newsletters').select('*').order('subscribed_at', { ascending: false });
@@ -203,6 +393,62 @@ async function startServer() {
       res.sendFile(path.resolve(distPath, 'index.html'));
     });
   }
+
+  async function runDeepScannerBackground() {
+    console.log("Auto-triggering background financial deep sync...");
+    const { spawn } = await import("child_process");
+    const pythonProcess = spawn("python3", [
+      path.join(__dirname, "scripts", "scanner.py"),
+      "",
+      "{}"
+    ]);
+    let output = "";
+    pythonProcess.stdout.on("data", (data) => {
+      output += data.toString();
+    });
+    pythonProcess.on("close", async (code) => {
+      if (code === 0) {
+        try {
+          const result = JSON.parse(output.trim());
+          if (!result.error) {
+            // Persist to Supabase in background
+            await saveDataToSupabase(result.profile, result.transactions || []);
+
+            const fs = await import("fs/promises");
+            const cacheDir = path.join(__dirname, "data");
+            try {
+              await fs.mkdir(cacheDir, { recursive: true });
+            } catch {}
+            await fs.writeFile(
+              path.join(cacheDir, "financial_cache.json"),
+              JSON.stringify(result, null, 2)
+            );
+            console.log("Successfully updated daily financial deep cache!");
+          }
+        } catch (e) {
+          console.error("Failed to parse background deep sync result:", e);
+        }
+      } else {
+        console.error("Background daily sync failed with exit code:", code);
+      }
+    });
+  }
+
+  function scheduleDailySync() {
+    console.log("Daily background email deep sync scheduled for 12:00 PM local time.");
+    setInterval(async () => {
+      const now = new Date();
+      if (now.getHours() === 12 && now.getMinutes() === 0) {
+        try {
+          await runDeepScannerBackground();
+        } catch (err) {
+          console.error("Failed executing scheduled background sync:", err);
+        }
+      }
+    }, 60000); // Check every 60 seconds
+  }
+
+  scheduleDailySync();
 
   app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server running on http://localhost:${PORT}`);
