@@ -5,7 +5,10 @@ import {
   Eye, MousePointerClick, CheckCircle2, AlertTriangle, Loader2, Copy, Check
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { createNotification, fetchAllNotificationsAdmin, fetchNotificationInteractionsAdmin, archiveNotification } from '../../services/supabaseService';
+import { 
+  createNotification, fetchAllNotificationsAdmin, fetchNotificationInteractionsAdmin, 
+  archiveNotification, deleteNotification, updateNotification 
+} from '../../services/supabaseService';
 
 const VariableItem = ({ tag, desc }: { tag: string, desc: string }) => {
   const [copied, setCopied] = useState(false);
@@ -41,6 +44,7 @@ export const AdminNotificationsTab: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [isComposing, setIsComposing] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   
   const [form, setForm] = useState({ title: '', message: '', type: 'info', image_url: '' });
   const [uploading, setUploading] = useState(false);
@@ -91,18 +95,28 @@ export const AdminNotificationsTab: React.FC = () => {
     
     setSubmitting(true);
     try {
-      await createNotification({
-        title: form.title,
-        message: form.message,
-        type: form.type,
-        created_by: user?.email || 'Admin',
-        image_url: form.image_url
-      });
+      if (editingId) {
+        await updateNotification(editingId, {
+          title: form.title,
+          message: form.message,
+          type: form.type,
+          image_url: form.image_url
+        });
+      } else {
+        await createNotification({
+          title: form.title,
+          message: form.message,
+          type: form.type,
+          created_by: user?.email || 'Admin',
+          image_url: form.image_url
+        });
+      }
       setIsComposing(false);
+      setEditingId(null);
       setForm({ title: '', message: '', type: 'info', image_url: '' });
       await loadData();
     } catch (err) {
-      alert("Failed to send notification.");
+      alert("Failed to save notification.");
     } finally {
       setSubmitting(false);
     }
@@ -116,6 +130,22 @@ export const AdminNotificationsTab: React.FC = () => {
     } catch (e) {
       alert("Failed to archive");
     }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!window.confirm("Permanently delete this notification? It will be moved to Trash.")) return;
+    try {
+      await deleteNotification(id, user?.email || 'Admin');
+      await loadData();
+    } catch (e) {
+      alert("Failed to delete notification");
+    }
+  };
+
+  const handleEdit = (n: any) => {
+    setForm({ title: n.title, message: n.message, type: n.type, image_url: n.image_url || '' });
+    setEditingId(n.id);
+    setIsComposing(true);
   };
 
   const getStats = (id: string) => {
@@ -210,12 +240,22 @@ export const AdminNotificationsTab: React.FC = () => {
                   </label>
                 </div>
 
-                <button 
-                  type="submit" disabled={submitting}
-                  className="w-full bg-clay text-black py-4 rounded-xl font-black uppercase tracking-[0.2em] hover:bg-clay/90 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
-                >
-                  {submitting ? <Loader2 size={16} className="animate-spin" /> : 'Launch Broadcast'}
-                </button>
+                <div className="flex gap-4">
+                  {editingId && (
+                    <button 
+                      type="button" onClick={() => { setIsComposing(false); setEditingId(null); setForm({ title: '', message: '', type: 'info', image_url: '' }); }}
+                      className="w-1/3 bg-white/10 text-white py-4 rounded-xl font-black uppercase tracking-[0.2em] hover:bg-white/20 transition-all flex items-center justify-center gap-2"
+                    >
+                      Cancel
+                    </button>
+                  )}
+                  <button 
+                    type="submit" disabled={submitting}
+                    className="flex-1 bg-clay text-black py-4 rounded-xl font-black uppercase tracking-[0.2em] hover:bg-clay/90 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                  >
+                    {submitting ? <Loader2 size={16} className="animate-spin" /> : (editingId ? 'Update Broadcast' : 'Launch Broadcast')}
+                  </button>
+                </div>
               </form>
             </div>
 
@@ -282,13 +322,30 @@ export const AdminNotificationsTab: React.FC = () => {
                         </div>
                         
                         {n.status === 'active' && (
-                          <button 
-                            onClick={() => handleArchive(n.id)}
-                            title="Archive (Hide from users)"
-                            className="p-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-colors"
-                          >
-                            <Archive size={16} />
-                          </button>
+                          <div className="flex items-center gap-2">
+                            <button 
+                              onClick={() => handleEdit(n)}
+                              title="Edit Notification"
+                              className="p-3 bg-white/5 text-white/60 rounded-xl hover:bg-white/10 hover:text-white transition-colors"
+                            >
+                              <CheckCircle2 size={16} className="hidden" /> {/* Using CheckCircle2 icon place holder? We need an Edit icon or just use Plus text */}
+                              Edit
+                            </button>
+                            <button 
+                              onClick={() => handleArchive(n.id)}
+                              title="Archive (Hide from users)"
+                              className="p-3 bg-white/5 text-white/60 rounded-xl hover:bg-white/10 hover:text-white transition-colors"
+                            >
+                              <Archive size={16} />
+                            </button>
+                            <button 
+                              onClick={() => handleDelete(n.id)}
+                              title="Delete (Move to Trash)"
+                              className="p-3 bg-red-500/10 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-colors"
+                            >
+                              <AlertTriangle size={16} />
+                            </button>
+                          </div>
                         )}
                       </div>
                     </div>

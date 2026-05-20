@@ -170,7 +170,22 @@ export const updateBlog = async (id: string, blogData: any) => {
   if (error) throw error;
 };
 
-export const deleteBlog = async (id: string) => {
+export const moveToTrash = async (entityType: string, originalId: string, payload: any, deletedBy: string) => {
+  const { error } = await supabaseAdmin.from('platform_trash').insert([{
+    entity_type: entityType,
+    original_id: originalId,
+    payload,
+    deleted_by: deletedBy
+  }]);
+  if (error) {
+    console.error("Failed to move to trash", error);
+    throw error;
+  }
+};
+
+export const deleteBlog = async (id: string, deletedBy: string = 'Admin') => {
+  const { data: blog } = await supabaseAdmin.from('blogs').select('*').eq('id', id).single();
+  if (blog) await moveToTrash('blog', id, blog, deletedBy);
   const { error } = await supabaseAdmin.from('blogs').delete().eq('id', id);
   if (error) throw error;
 };
@@ -186,7 +201,9 @@ export const updateCard = async (id: string, cardData: any) => {
   if (error) throw error;
 };
 
-export const deleteCard = async (id: string) => {
+export const deleteCard = async (id: string, deletedBy: string = 'Admin') => {
+  const { data: card } = await supabaseAdmin.from('cards').select('*').eq('id', id).single();
+  if (card) await moveToTrash('card', id, card, deletedBy);
   const { error } = await supabaseAdmin.from('cards').delete().eq('id', id);
   if (error) throw error;
 };
@@ -196,7 +213,9 @@ export const updateWaitlistStatus = async (id: string, status: string) => {
   if (error) throw error;
 };
 
-export const deleteWaitlistEntry = async (id: string) => {
+export const deleteWaitlistEntry = async (id: string, deletedBy: string = 'Admin') => {
+  const { data: entry } = await supabaseAdmin.from('waitlist').select('*').eq('id', id).single();
+  if (entry) await moveToTrash('waitlist', id, entry, deletedBy);
   const { error } = await supabaseAdmin.from('waitlist').delete().eq('id', id);
   if (error) throw error;
 };
@@ -212,7 +231,9 @@ export const updateReview = async (id: string, reviewData: any) => {
   if (error) throw error;
 };
 
-export const deleteReview = async (id: string) => {
+export const deleteReview = async (id: string, deletedBy: string = 'Admin') => {
+  const { data: review } = await supabaseAdmin.from('reviews').select('*').eq('id', id).single();
+  if (review) await moveToTrash('review', id, review, deletedBy);
   const { error } = await supabaseAdmin.from('reviews').delete().eq('id', id);
   if (error) throw error;
 };
@@ -228,7 +249,9 @@ export const updateUserRole = async (userId: string, role: string) => {
   if (error) throw error;
 };
 
-export const deleteUser = async (userId: string) => {
+export const deleteUser = async (userId: string, deletedBy: string = 'Admin') => {
+  const { data: user } = await supabaseAdmin.from('users').select('*').eq('id', userId).single();
+  if (user) await moveToTrash('user', userId, user, deletedBy);
   const { error } = await supabaseAdmin.from('users').delete().eq('id', userId);
   if (error) throw error;
 };
@@ -537,7 +560,58 @@ export const createNotification = async (payload: { title: string, message: stri
   return data[0];
 };
 
+export const updateNotification = async (id: string, payload: any) => {
+  const { error } = await supabaseAdmin.from('platform_notifications').update(payload).eq('id', id);
+  if (error) throw error;
+};
+
+export const deleteNotification = async (id: string, deletedBy: string = 'Admin') => {
+  const { data: notif } = await supabaseAdmin.from('platform_notifications').select('*').eq('id', id).single();
+  if (notif) await moveToTrash('notification', id, notif, deletedBy);
+  const { error } = await supabaseAdmin.from('platform_notifications').delete().eq('id', id);
+  if (error) throw error;
+};
+
 export const archiveNotification = async (id: string) => {
   const { error } = await supabaseAdmin.from('platform_notifications').update({ status: 'archived' }).eq('id', id);
+  if (error) throw error;
+};
+
+// --- TRASH SYSTEM ---
+
+export const fetchTrash = async () => {
+  return await withRetry<any[]>(() => supabaseAdmin.from('platform_trash').select('*').order('deleted_at', { ascending: false }));
+};
+
+export const restoreFromTrash = async (trashId: string) => {
+  const { data: trashRecord, error: fetchError } = await supabaseAdmin.from('platform_trash').select('*').eq('id', trashId).single();
+  if (fetchError || !trashRecord) throw fetchError || new Error("Trash record not found");
+
+  const { entity_type, payload } = trashRecord;
+  
+  let tableName = '';
+  switch (entity_type) {
+    case 'blog': tableName = 'blogs'; break;
+    case 'card': tableName = 'cards'; break;
+    case 'notification': tableName = 'platform_notifications'; break;
+    case 'user': tableName = 'users'; break;
+    case 'waitlist': tableName = 'waitlist'; break;
+    case 'review': tableName = 'reviews'; break;
+    default: throw new Error(`Unknown entity type: ${entity_type}`);
+  }
+
+  // Attempt to re-insert
+  const { error: insertError } = await supabaseAdmin.from(tableName).insert([payload]);
+  if (insertError) {
+    console.error(`Failed to restore ${entity_type}`, insertError);
+    throw insertError;
+  }
+
+  // Hard delete from trash
+  await hardDeleteTrash(trashId);
+};
+
+export const hardDeleteTrash = async (trashId: string) => {
+  const { error } = await supabaseAdmin.from('platform_trash').delete().eq('id', trashId);
   if (error) throw error;
 };

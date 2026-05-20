@@ -7,7 +7,8 @@ import {
   History, 
   LogOut,
   Bell,
-  Megaphone
+  Megaphone,
+  Trash2
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -38,7 +39,8 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
     { id: 'notifications', label: 'Notifications', icon: Megaphone, roles: ['admin'] },
     { id: 'waitlist', label: 'Waitlist', icon: Users, roles: ['admin'] },
     { id: 'settings', label: 'Admin Controls', icon: Settings, roles: ['admin'] },
-    { id: 'logs', label: 'Audit Trail', icon: History, roles: ['admin'] }
+    { id: 'logs', label: 'Audit Trail', icon: History, roles: ['admin'] },
+    { id: 'trash', label: 'Trash', icon: Trash2, roles: ['admin'] }
   ];
 
 
