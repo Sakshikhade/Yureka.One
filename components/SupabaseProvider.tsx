@@ -133,9 +133,21 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         const data = await res.json();
         if (data.error) {
           setLedgerError(data.error);
-        } else if (data.transactions) {
+        } else if (data.transactions && data.transactions.length > 0) {
           localStorage.setItem(cacheKey, JSON.stringify(data));
           setLedgerTransactions(data.transactions);
+        } else {
+          // Scanner returned 0 items (maybe rate limited). Fetch actual DB state to be safe.
+          try {
+            const dbRes = await fetch(`${API_BASE}/api/financial-ledger?email=${encodeURIComponent(userEmail)}`);
+            const dbData = await dbRes.json();
+            if (dbData.transactions) {
+              localStorage.setItem(cacheKey, JSON.stringify(dbData));
+              setLedgerTransactions(dbData.transactions);
+            }
+          } catch (e) {
+            console.error("Fallback DB fetch failed:", e);
+          }
         }
         setScanProgress(100);
       } else {
