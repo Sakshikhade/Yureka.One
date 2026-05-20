@@ -21,43 +21,6 @@ SCOPES = [
     'https://www.googleapis.com/auth/user.gender.read'
 ]
 
-class FinancialScanner:
-    def __init__(self, service):
-        self.service = service
-        # High-signal indicators with weightings
-        self.patterns = {
-            'bill': 5, 'statement': 5, 'transaction': 4, 
-            'debited': 5, 'credited': 5, 'due': 4, 'inr': 2
-        }
-
-    def get_financial_score(self, subject, snippet):
-        """Scores relevance to ensure only financial emails are processed."""
-        text = (subject + snippet).lower()
-        score = sum(weight for kw, weight in self.patterns.items() if kw in text)
-        return score
-
-    def extract_amount(self, text):
-        """Robust currency extraction that handles comma separation and decimal precision."""
-        match = re.search(r'(?:rs\.?|inr|₹|amount|total)\s*[:\s]*([\d,]+\.?\d*)', text, re.IGNORECASE)
-        if match:
-            clean_val = match.group(1).replace(',', '')
-            try: 
-                val = float(clean_val)
-                return f"₹ {val:,.2f}"
-            except: 
-                return "N/A"
-        return "N/A"
-
-    def classify_type(self, subject, snippet):
-        text = (subject + snippet).lower()
-        if any(k in text for k in ['statement', 'due', 'outstanding']): 
-            return 'Credit Card Bill'
-        if 'invoice' in text: 
-            return 'Invoice'
-        if 'bill' in text: 
-            return 'Bill'
-        return 'Transaction'
-
 def calculate_age(birthday_dict):
     if not birthday_dict:
         return "N/A"
@@ -259,91 +222,207 @@ def extract_all_body_and_attachments(service, message_id, payload):
                     
     return html_text, pdf_text
 
-def parse_transaction_data(combined_text, sender, subject, financial_scanner):
+def parse_transaction_data_expense(combined_text, sender, subject):
     sender_lower = sender.lower()
+    subject_lower = subject.lower()
     brand_name = re.sub(r'\s*<.*?>', '', sender).replace('"', '').replace("'", "").strip()
     
-    # Custom matches for exact precision if applicable
+    is_transit_status = any(k in subject_lower or k in combined_text.lower() for k in [
+        "packed", "out for delivery", "reached your city", "arriving early", "has been delivered", "shipment"
+    ])
+    
     amount = "N/A"
     normalized_text = re.sub(r'\s+', ' ', combined_text)
     
     if "eatclub" in sender_lower:
         match = re.search(r'(?:Online Paid|Grand Total|Total|Sub Total)[:\s]*[₹Rs\.?]*\s*([\d,]+\.\d{2})', normalized_text, re.IGNORECASE)
         if match:
-            amount = f"₹ {float(match.group(1).replace(',', '')):,.2f}"
+            amount = f"₹ {match.group(1)}"
+            
     elif "namecheap" in sender_lower:
         match = re.search(r'(?:Total|Charged|Amount)[:\s]*(?:US\s*\||\$)\s*([\d,]+\.\d{2})', normalized_text, re.IGNORECASE)
         if match:
-            amount = f"$ {float(match.group(1).replace(',', '')):,.2f}"
+            amount = f"$ {match.group(1)}"
+
     elif "phonepe" in sender_lower:
         match = re.search(r'(?:Transaction Value|Amount|Paid)[:\s]*[₹Rs\.?]*\s*([\d,]+(?:\.\d{2})?)', normalized_text, re.IGNORECASE)
         if match:
-            amount = f"₹ {float(match.group(1).replace(',', '')):,.2f}"
+            amount = f"₹ {match.group(1)}"
+
     elif "axis" in sender_lower:
         match = re.search(r'(?:debited for|spent|amount of|INR)[:\s]*INR\s*([\d,]+\.\d{2})', normalized_text, re.IGNORECASE)
         if match:
-            amount = f"₹ {float(match.group(1).replace(',', '')):,.2f}"
+            amount = f"₹ {match.group(1)}"
+
     elif "shiprocket" in sender_lower:
         match = re.search(r'(?:Invoice Total|Amount Paid|Total Amount|Paid Total)[:\s]*[₹Rs\.?]*\s*\b(\d+(?:\.\d{2})?)\b', normalized_text, re.IGNORECASE)
         if match:
-            amount = f"₹ {float(match.group(1).replace(',', '')):,.2f}"
+            amount = f"₹ {match.group(1)}"
+        elif is_transit_status:
+            return brand_name, "N/A", "N/A"
 
-    # Fallback to FinancialScanner amount parser
-    if amount == "N/A":
-        amount = financial_scanner.extract_amount(normalized_text)
+    if amount == "N/A" and not is_transit_status:
+        global_patterns = [
+            r'(?:Total|Amount|Paid|Net Payable)[:\s]*.*?([₹$]|Rs\.?|INR)\s*([\d,]+\.\d{2})',
+            r'(?:Total Amount|Grand Total|Total)[:\s]*[₹Rs]*\s*\b(\d+(?:\.\d{2})?)\b',
+            r'([₹$])\s*([\d,]+\.\d{2})'
+        ]
+        for pattern in global_patterns:
+            match = re.search(pattern, normalized_text, re.IGNORECASE)
+            if match:
+                if len(match.groups()) > 1:
+                    val = match.group(2)
+                    sym = match.group(1)
+                    if val not in ["1", "2"]:
+                        amount = f"{sym} {val}".strip()
+                        break
+                else:
+                    val = match.group(1)
+                    if val not in ["1", "2"]:
+                        amount = f"₹ {val}"
+                        break
 
-    # Context / details
-    subject_cleaned = re.sub(r'(Order Confirmed:|Your order|Invoice for|Receipt for|Your delivery from|Your purchase|Confirmed|Booking|#\d+|\d+)', '', subject, flags=re.IGNORECASE).strip()
-    description = subject_cleaned[:60] if len(subject_cleaned) > 5 else subject[:60].strip()
+    item_details = "N/A"
+    if "eatclub" in sender_lower and "product details" in combined_text.lower():
+        lines = combined_text.split('\n')
+        captured = []
+        start = False
+        for line in lines:
+            if any(k in line.lower() for k in ["product details", "item description"]):
+                start = True
+                continue
+            if start:
+                if any(k in line.lower() for k in ["sub total", "total", "customer details", "order information"]):
+                    break
+                cleaned = re.sub(r'\s+', ' ', line).strip()
+                if cleaned and not cleaned.replace('.', '').isdigit() and len(cleaned) > 3:
+                    if not any(x in cleaned.lower() for x in ["qty", "rate", "amount"]):
+                        captured.append(cleaned)
+        if captured:
+            item_details = " | ".join(captured[:3])
 
-    return brand_name, amount, description
+    if item_details == "N/A":
+        subject_cleaned = re.sub(r'(Order Confirmed:|Your order|Invoice for|Receipt for|Your delivery from|Your purchase|Confirmed|Booking|#\d+|\d+)', '', subject, flags=re.IGNORECASE).strip()
+        if len(subject_cleaned) > 5 and not any(x in subject_cleaned.lower() for x in ['successful', 'payment', 'thank you', 'alert']):
+            item_details = subject_cleaned
+        else:
+            item_details = subject.strip()
+
+    return brand_name, amount, item_details
+
+def extract_amount_bill(text):
+    match = re.search(r'(?:rs\.?|inr|₹|amount|total)\s*[:\s]*([\d,]+\.?\d*)', text, re.IGNORECASE)
+    if match:
+        clean_val = match.group(1).replace(',', '')
+        try:
+            val = float(clean_val)
+            return f"₹ {val:,.2f}"
+        except:
+            return "N/A"
+    return "N/A"
+
+def classify_type_bill(subject, snippet):
+    text = (subject + snippet).lower()
+    if any(k in text for k in ['statement', 'due', 'outstanding']): 
+        return 'Credit Card Bill'
+    if 'invoice' in text: 
+        return 'Invoice'
+    if 'bill' in text: 
+        return 'Bill'
+    return 'Bill Transaction'
 
 def execute_financial_scanner(gmail_service):
-    scanner = FinancialScanner(gmail_service)
     emails_data = []
     
-    # Broad scan restricted to high-probability financial subjects
-    query = 'subject:(bill OR transaction OR statement OR debited OR credited OR payment) OR has:attachment'
-    
-    # Optimize: Limit to top 80 most recent financial emails to ensure execution under 10 seconds
-    response = gmail_service.users().messages().list(userId='me', q=query, maxResults=80).execute()
-    messages = response.get('messages', [])
-
-    for msg in messages:
-        try:
-            msg_detail = gmail_service.users().messages().get(userId='me', id=msg['id'], format='full').execute()
-            payload = msg_detail.get('payload', {})
-            headers = payload.get('headers', [])
-            snippet = msg_detail.get('snippet', '')
-            
-            subject = next((h['value'] for h in headers if h['name'].lower() == 'subject'), '(No Subject)')
-            sender = next((h['value'] for h in headers if h['name'].lower() == 'from'), '(Unknown Sender)')
-            date = next((h['value'] for h in headers if h['name'].lower() == 'date'), '(Unknown Date)')
-            
-            # Apply relevance score
-            if scanner.get_financial_score(subject, snippet) >= 5:
+    # ----------------------------------------------------
+    # PIPELINE 1: EXPENSES (Script 1 logic)
+    # ----------------------------------------------------
+    query_expenses = 'category:purchases OR from:noreply@phonepe.com OR from:alerts@axis.bank.in OR from:info@net.shiprocket.in'
+    try:
+        sys.stderr.write("Running Pipeline 1: Expenses...\n")
+        response = gmail_service.users().messages().list(userId='me', q=query_expenses, maxResults=50).execute()
+        messages_expenses = response.get('messages', [])
+        
+        for msg in messages_expenses:
+            try:
+                msg_detail = gmail_service.users().messages().get(userId='me', id=msg['id'], format='full').execute()
+                payload = msg_detail.get('payload', {})
+                headers = payload.get('headers', [])
+                snippet = msg_detail.get('snippet', '')
+                
+                subject = next((h['value'] for h in headers if h['name'].lower() == 'subject'), '(No Subject)')
+                sender = next((h['value'] for h in headers if h['name'].lower() == 'from'), '(Unknown Sender)')
+                date = next((h['value'] for h in headers if h['name'].lower() == 'date'), '(Unknown Date)')
+                
                 html_content, pdf_content = extract_all_body_and_attachments(gmail_service, msg['id'], payload)
                 soup = BeautifulSoup(html_content, 'html.parser')
                 clean_html_text = soup.get_text(separator=' ').strip()
                 
                 unified_corpus = f"{clean_html_text}\n{snippet}\n{pdf_content}"
-                brand, amount, description = parse_transaction_data(unified_corpus, sender, subject, scanner)
+                brand, amount, description = parse_transaction_data_expense(unified_corpus, sender, subject)
                 
                 if amount != "N/A":
                     clean_date = re.sub(r'([\+\s-]\d{4}.*)$', '', date).strip()
-                    classified_type = scanner.classify_type(subject, snippet)
-                    
                     emails_data.append({
                         'brandName': brand,
                         'amount': amount,
                         'description': description,
                         'date': clean_date,
                         'sender': sender,
-                        'type': classified_type
+                        'type': 'Transaction'
                     })
-        except Exception as e:
-            sys.stderr.write(f"Failed parsing message {msg['id']}: {str(e)}\n")
-            
+            except Exception as e:
+                sys.stderr.write(f"Failed parsing expense message {msg['id']}: {str(e)}\n")
+    except Exception as e:
+        sys.stderr.write(f"Failed query_expenses list: {str(e)}\n")
+
+    # ----------------------------------------------------
+    # PIPELINE 2: BILLS (Script 2 logic)
+    # ----------------------------------------------------
+    query_bills = 'subject:(bill OR transaction OR statement OR debited OR credited OR payment) OR has:attachment'
+    try:
+        sys.stderr.write("Running Pipeline 2: Bills...\n")
+        response = gmail_service.users().messages().list(userId='me', q=query_bills, maxResults=50).execute()
+        messages_bills = response.get('messages', [])
+        
+        for msg in messages_bills:
+            try:
+                m = gmail_service.users().messages().get(
+                    userId='me', id=msg['id'], format='metadata', 
+                    metadataHeaders=['From', 'Subject', 'Date']
+                ).execute()
+                
+                headers_dict = {h['name'].lower(): h['value'] for h in m['payload']['headers']}
+                snippet = m.get('snippet', '')
+                
+                subject = headers_dict.get('subject', '(No Subject)')
+                sender = headers_dict.get('from', '(Unknown Sender)')
+                date = headers_dict.get('date', '(Unknown Date)')
+                
+                score = sum(5 if kw in (subject + snippet).lower() else 0 for kw in ['bill', 'statement', 'debited', 'credited', 'due'])
+                score += sum(4 if kw in (subject + snippet).lower() else 0 for kw in ['transaction', 'payment'])
+                score += sum(2 if kw in (subject + snippet).lower() else 0 for kw in ['inr'])
+                
+                if score >= 5:
+                    amount = extract_amount_bill(snippet)
+                    if amount != "N/A":
+                        brand = re.sub(r'\s*<.*?>', '', sender).replace('"', '').replace("'", "").strip()
+                        clean_date = re.sub(r'([\+\s-]\d{4}.*)$', '', date).strip()
+                        classified_type = classify_type_bill(subject, snippet)
+                        
+                        emails_data.append({
+                            'brandName': brand,
+                            'amount': amount,
+                            'description': subject[:60].strip(),
+                            'date': clean_date,
+                            'sender': sender,
+                            'type': classified_type
+                        })
+            except Exception as e:
+                sys.stderr.write(f"Failed parsing bill message {msg['id']}: {str(e)}\n")
+    except Exception as e:
+        sys.stderr.write(f"Failed query_bills list: {str(e)}\n")
+
     return emails_data
 
 def main():
@@ -357,7 +436,6 @@ def main():
     gmail_service = None
     people_service = None
     
-    # Priority 1: Try local token.pickle (works on developer machine)
     try:
         gmail_service = get_local_gmail_service()
         creds = gmail_service._http.credentials
@@ -366,7 +444,6 @@ def main():
     except Exception as local_err:
         sys.stderr.write(f"Local Desktop OAuth unavailable: {str(local_err)}\n")
 
-        # Priority 2: Use access token passed from browser session (manual resync)
         access_token = sys.argv[1] if len(sys.argv) > 1 else ""
         if access_token and access_token.strip():
             sys.stderr.write("Using browser access token from argv[1]...\n")
@@ -379,7 +456,6 @@ def main():
                 print(json.dumps({"error": f"Failed to initialize with access token: {str(e)}"}))
                 return
         else:
-            # Priority 3: Use refresh token from environment variables (Render background sync)
             refresh_token = os.environ.get("GOOGLE_REFRESH_TOKEN", "")
             client_id = os.environ.get("GOOGLE_CLIENT_ID", "")
             client_secret = os.environ.get("GOOGLE_CLIENT_SECRET", "")
@@ -408,7 +484,6 @@ def main():
                 print(json.dumps({"error": "AUTH_EXPIRED", "details": "No valid credentials found. Set GOOGLE_REFRESH_TOKEN, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET on Render."}))
                 return
 
-
     try:
         profile = fetch_user_profile(
             people_service,
@@ -427,7 +502,6 @@ def main():
         return
 
     try:
-        # Use our integrated broad financial scanner!
         transactions = execute_financial_scanner(gmail_service)
     except Exception as e:
         err_msg = str(e)

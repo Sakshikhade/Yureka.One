@@ -29,14 +29,9 @@ const Bills: React.FC = () => {
             const res = await fetch(`${API_BASE}/api/financial-ledger`);
             const data = await res.json();
             if (data.transactions) {
-                const billKeywords = ['bill', 'invoice', 'autopay', 'subscription', 'renew', 'recharge', 'premium', 'statement', 'spotify', 'netflix', 'aws', 'google one', 'axis', 'hdfc', 'sbi', 'icici', 'card alert'];
                 const filtered = (data.transactions || []).filter((tx: ParsedTransaction) => {
                     const type = (tx.type || '').toLowerCase();
-                    if (type && type !== 'transaction') return true;
-                    const desc = (tx.description || '').toLowerCase();
-                    const brand = (tx.brandName || '').toLowerCase();
-                    const sender = (tx.sender || '').toLowerCase();
-                    return billKeywords.some(kw => desc.includes(kw) || brand.includes(kw) || sender.includes(kw));
+                    return type !== 'transaction' && type !== '';
                 });
                 setTransactions(filtered);
             }
@@ -63,14 +58,9 @@ const Bills: React.FC = () => {
             if (data.error) {
                 setError(data.error);
             } else {
-                const billKeywords = ['bill', 'invoice', 'autopay', 'subscription', 'renew', 'recharge', 'premium', 'statement', 'spotify', 'netflix', 'aws', 'google one', 'axis', 'hdfc', 'sbi', 'icici', 'card alert'];
                 const filtered = (data.transactions || []).filter((tx: ParsedTransaction) => {
                     const type = (tx.type || '').toLowerCase();
-                    if (type && type !== 'transaction') return true;
-                    const desc = (tx.description || '').toLowerCase();
-                    const brand = (tx.brandName || '').toLowerCase();
-                    const sender = (tx.sender || '').toLowerCase();
-                    return billKeywords.some(kw => desc.includes(kw) || brand.includes(kw) || sender.includes(kw));
+                    return type !== 'transaction' && type !== '';
                 });
                 setTransactions(filtered);
             }
