@@ -154,27 +154,38 @@ async function startServer() {
     // 2. Save transactions to financial_ledger table
     if (transactions && transactions.length > 0) {
       try {
-        await supabase
+        // Fetch existing rows to deduplicate
+        const { data: existingRows } = await supabase
           .from("financial_ledger")
-          .delete()
+          .select("brand_name, amount, date")
           .eq("user_email", email.toLowerCase().trim());
 
-        const rows = transactions.map(tx => ({
-          user_email: email.toLowerCase().trim(),
-          brand_name: tx.brandName || "",
-          amount: tx.amount || "",
-          description: tx.description || "",
-          date: tx.date || "",
-          sender: tx.sender || "",
-          type: tx.type || "Transaction"
-        }));
+        const existingKeys = new Set(
+          (existingRows || []).map(r => `${r.brand_name}|${r.amount}|${r.date}`)
+        );
 
-        const { error: insertError } = await supabase
-          .from("financial_ledger")
-          .insert(rows);
+        const newRows = transactions
+          .filter(tx => !existingKeys.has(`${tx.brandName || ""}|${tx.amount || ""}|${tx.date || ""}`))
+          .map(tx => ({
+            user_email: email.toLowerCase().trim(),
+            brand_name: tx.brandName || "",
+            amount: tx.amount || "",
+            description: tx.description || "",
+            date: tx.date || "",
+            sender: tx.sender || "",
+            type: tx.type || "Transaction"
+          }));
 
-        if (insertError) throw insertError;
-        console.log(`Successfully persisted ${transactions.length} transactions to Supabase financial_ledger!`);
+        if (newRows.length > 0) {
+          const { error: insertError } = await supabase
+            .from("financial_ledger")
+            .insert(newRows);
+
+          if (insertError) throw insertError;
+          console.log(`Successfully appended ${newRows.length} new unique transactions to Supabase financial_ledger!`);
+        } else {
+          console.log(`No new unique transactions to insert.`);
+        }
       } catch (err: any) {
         console.warn("Supabase transactions save warning (migration might be missing):", err.message || err);
       }
