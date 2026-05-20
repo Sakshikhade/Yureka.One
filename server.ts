@@ -233,7 +233,8 @@ async function startServer() {
   app.post("/api/scan-email", async (req, res) => {
     const { accessToken, fallbackData } = req.body;
     const { spawn } = await import("child_process");
-    const pythonProcess = spawn("python3", [
+    const pythonExecutable = fs.existsSync('./venv/bin/python3') ? './venv/bin/python3' : 'python3';
+    const pythonProcess = spawn(pythonExecutable, [
       path.join(__dirname, "scripts", "scanner.py"),
       accessToken || "",
       JSON.stringify(fallbackData || {})
@@ -399,7 +400,8 @@ async function startServer() {
   async function runDeepScannerBackground() {
     console.log("Auto-triggering background financial deep sync...");
     const { spawn } = await import("child_process");
-    const pythonProcess = spawn("python3", [
+    const pythonExecutable = fs.existsSync('./venv/bin/python3') ? './venv/bin/python3' : 'python3';
+    const pythonProcess = spawn(pythonExecutable, [
       path.join(__dirname, "scripts", "scanner.py"),
       "",
       "{}"
