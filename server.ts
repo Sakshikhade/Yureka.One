@@ -1,5 +1,4 @@
 import express from "express";
-import { createServer as createViteServer } from "vite";
 import path from "path";
 import { fileURLToPath } from "url";
 import { createClient } from "@supabase/supabase-js";
@@ -377,6 +376,8 @@ async function startServer() {
 
   // --- Vite / Frontend Handling ---
   if (process.env.NODE_ENV !== "production") {
+    // Dynamically import vite (devDependency) only in dev mode
+    const { createServer: createViteServer } = await import("vite");
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
@@ -386,7 +387,8 @@ async function startServer() {
     const distPath = path.resolve(__dirname, 'dist');
     app.use(express.static(distPath));
     
-    app.get('*', (req, res) => {
+    // Express 5 requires named wildcard params — bare '*' is no longer valid
+    app.get('/{*splat}', (req, res) => {
       if (req.url.startsWith('/api')) {
         return res.status(404).json({ error: 'API not found' });
       }
