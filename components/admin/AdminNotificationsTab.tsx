@@ -2,10 +2,37 @@ import React, { useState, useEffect } from 'react';
 import { useSupabase } from '../SupabaseProvider';
 import { 
   BellRing, Plus, Archive, ExternalLink, RefreshCw, 
-  Eye, MousePointerClick, CheckCircle2, AlertTriangle, Loader2
+  Eye, MousePointerClick, CheckCircle2, AlertTriangle, Loader2, Copy, Check
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { createNotification, fetchAllNotificationsAdmin, fetchNotificationInteractionsAdmin, archiveNotification } from '../../services/supabaseService';
+
+const VariableItem = ({ tag, desc }: { tag: string, desc: string }) => {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(tag);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <li className="bg-black/40 p-3 rounded-lg border border-white/5 flex items-center justify-between group">
+      <div>
+        <code className="text-clay font-mono text-xs">{tag}</code>
+        <p className="text-white/40 text-[10px] uppercase tracking-wider mt-1">{desc}</p>
+      </div>
+      <button 
+        onClick={handleCopy}
+        type="button"
+        title="Copy variable"
+        className="p-2 rounded-lg bg-white/5 text-white/40 hover:text-white hover:bg-white/10 transition-colors"
+      >
+        {copied ? <Check size={14} className="text-clay" /> : <Copy size={14} />}
+      </button>
+    </li>
+  );
+};
 
 export const AdminNotificationsTab: React.FC = () => {
   const { user } = useSupabase();
@@ -205,10 +232,7 @@ export const AdminNotificationsTab: React.FC = () => {
                   { tag: '{{total_bills}}', desc: "Formatted INR sum of bills" },
                   { tag: '{{card_name}}', desc: "Name of their primary active card" }
                 ].map(v => (
-                  <li key={v.tag} className="bg-black/40 p-3 rounded-lg border border-white/5">
-                    <code className="text-clay font-mono text-xs">{v.tag}</code>
-                    <p className="text-white/40 text-[10px] uppercase tracking-wider mt-1">{v.desc}</p>
-                  </li>
+                  <VariableItem key={v.tag} tag={v.tag} desc={v.desc} />
                 ))}
               </ul>
             </div>
