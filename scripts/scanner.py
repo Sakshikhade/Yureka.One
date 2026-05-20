@@ -332,24 +332,47 @@ def classify_type_bill(subject, snippet):
 def execute_financial_scanner(gmail_service):
     emails_data = []
     
-    # Restrictive financial query to eliminate recruitment/personal noise
-    query = 'subject:(bill OR transaction OR statement OR debited OR payment OR invoice OR spent OR credited OR checkout) OR category:purchases OR from:phonepe.com OR from:axis.bank.in OR from:shiprocket.in OR from:eatclub.in'
+    # Restrictive financial query to eliminate recruitment/personal noise, expanded for standard merchants
+    query = 'subject:(bill OR transaction OR statement OR debited OR payment OR invoice OR spent OR credited OR checkout OR order OR receipt OR purchase OR booking) OR category:purchases OR from:phonepe.com OR from:axis.bank.in OR from:shiprocket.in OR from:eatclub.in OR from:swiggy.in OR from:zomato.com OR from:amazon.in OR from:flipkart.com OR from:uber.com OR from:olacabs.com OR from:makemytrip.com OR from:bookmyshow.com OR from:myntra.com OR from:nykaa.com OR from:blinkit.com OR from:zepto.co OR from:bigbasket.com'
     
     try:
         sys.stderr.write("Fetching email list from Gmail...\n")
         response = gmail_service.users().messages().list(userId='me', q=query, maxResults=120).execute()
         messages = response.get('messages', [])
-        sys.stderr.write(f"Scanning {len(messages)} potential financial emails...\n")
+        sys.stderr.write(f"Found {len(messages)} potential financial emails. Starting batch fetch...\n")
         
+        if not messages:
+            return []
+
+        # Batch fetch all message details in full format to prevent sequential HTTP requests
+        messages_details = {}
+        def batch_callback(request_id, response, exception):
+            if exception is None:
+                messages_details[request_id] = response
+            else:
+                sys.stderr.write(f"Batch fetch error for {request_id}: {str(exception)}\n")
+
+        # Process in chunks of 50 to respect Google API limits
+        chunk_size = 50
+        for i in range(0, len(messages), chunk_size):
+            chunk = messages[i:i+chunk_size]
+            batch = gmail_service.new_batch_http_request(callback=batch_callback)
+            for msg in chunk:
+                batch.add(gmail_service.users().messages().get(userId='me', id=msg['id'], format='full'), request_id=msg['id'])
+            batch.execute()
+
+        sys.stderr.write(f"Batch fetch complete. Processing {len(messages_details)} successfully retrieved emails...\n")
+
         for msg in messages:
+            msg_id = msg['id']
+            if msg_id not in messages_details:
+                continue
+            
+            m = messages_details[msg_id]
             try:
-                # Fast metadata fetch
-                m = gmail_service.users().messages().get(
-                    userId='me', id=msg['id'], format='metadata', 
-                    metadataHeaders=['From', 'Subject', 'Date']
-                ).execute()
-                
-                headers_dict = {h['name'].lower(): h['value'] for h in m['payload']['headers']}
+                payload = m.get('payload', {})
+                headers = payload.get('headers', [])
+                headers_dict = {h['name'].lower(): h['value'] for h in headers}
                 snippet = m.get('snippet', '')
                 
                 subject = headers_dict.get('subject', '(No Subject)')
@@ -361,8 +384,18 @@ def execute_financial_scanner(gmail_service):
                 score += sum(4 if kw in (subject + snippet).lower() else 0 for kw in ['transaction', 'payment'])
                 score += sum(2 if kw in (subject + snippet).lower() else 0 for kw in ['inr'])
                 
-                is_known_financial_sender = any(k in sender.lower() for k in ['phonepe', 'axis', 'shiprocket', 'eatclub', 'indusind', 'hdfc', 'sbi', 'icici', 'amex', 'hsbc', 'citi', 'kotak', 'yesbank', 'paytm', 'net.shiprocket.in'])
-                has_financial_keywords = score >= 4 or any(k in (subject + snippet).lower() for k in ['rs.', 'inr', '₹', 'usd', 'debited', 'credited', 'payment', 'transaction', 'invoice', 'bill', 'statement', 'spent', 'charged'])
+                is_known_financial_sender = any(k in sender.lower() for k in [
+                    'phonepe', 'axis', 'shiprocket', 'eatclub', 'indusind', 'hdfc', 'sbi', 'icici', 
+                    'amex', 'hsbc', 'citi', 'kotak', 'yesbank', 'paytm', 'net.shiprocket.in',
+                    'swiggy', 'zomato', 'amazon', 'flipkart', 'uber', 'ola', 'makemytrip', 'bookmyshow', 
+                    'myntra', 'nykaa', 'blinkit', 'zepto', 'bigbasket', 'tata 1mg', 'jiomart'
+                ])
+                
+                has_financial_keywords = score >= 4 or any(k in (subject + snippet).lower() for k in [
+                    'rs.', 'inr', '₹', 'usd', 'debited', 'credited', 'payment', 'transaction', 
+                    'invoice', 'bill', 'statement', 'spent', 'charged', 'receipt', 'order', 'purchase',
+                    'booking', 'ticket', 'flight', 'hotel', 'refund', 'paid'
+                ])
                 
                 if not (is_known_financial_sender or has_financial_keywords):
                     continue
@@ -384,11 +417,9 @@ def execute_financial_scanner(gmail_service):
                     brand, amount, description = parse_transaction_data_expense(snippet + " " + subject, sender, subject)
                     classified_type = 'Transaction'
 
-                # Fallback to full fetch if metadata did not contain a valid amount
+                # Fallback parsing using full body from batch retrieved message (NO extra HTTP requests)
                 if amount == "N/A":
-                    msg_detail = gmail_service.users().messages().get(userId='me', id=msg['id'], format='full').execute()
-                    payload = msg_detail.get('payload', {})
-                    html_content, pdf_content = extract_all_body_and_attachments(gmail_service, msg['id'], payload)
+                    html_content, pdf_content = extract_all_body_and_attachments(gmail_service, msg_id, payload)
                     soup = BeautifulSoup(html_content, 'html.parser')
                     clean_html_text = soup.get_text(separator=' ').strip()
                     unified_corpus = f"{clean_html_text}\n{snippet}\n{pdf_content}"
@@ -409,7 +440,7 @@ def execute_financial_scanner(gmail_service):
                         'type': classified_type
                     })
             except Exception as e:
-                sys.stderr.write(f"Failed parsing message {msg['id']}: {str(e)}\n")
+                sys.stderr.write(f"Failed parsing message {msg_id}: {str(e)}\n")
     except Exception as e:
         sys.stderr.write(f"Failed query list: {str(e)}\n")
 

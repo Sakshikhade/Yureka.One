@@ -27,6 +27,15 @@ import {
 } from '../services/supabaseService';
 import { SupabaseClient } from '@supabase/supabase-js';
 
+export interface ParsedTransaction {
+  brandName: string;
+  amount: string;
+  description: string;
+  date: string;
+  sender: string;
+  type?: string;
+}
+
 interface SupabaseContextType {
   supabase: SupabaseClient;
   cards: Card[];
@@ -49,6 +58,13 @@ interface SupabaseContextType {
   setWaitlist: React.Dispatch<React.SetStateAction<WaitlistEntry[]>>;
   setTeam: React.Dispatch<React.SetStateAction<any[]>>;
   setCardContributions: React.Dispatch<React.SetStateAction<CardContribution[]>>;
+  
+  // Ledger Integration
+  ledgerTransactions: ParsedTransaction[];
+  ledgerLoading: boolean;
+  ledgerError: string | null;
+  scanProgress: number;
+  syncLedger: (forceSync?: boolean) => Promise<void>;
 }
 
 const SupabaseContext = createContext<SupabaseContextType | undefined>(undefined);
@@ -69,6 +85,79 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [isLoading, setIsLoading] = useState(true);
   const [isAdminDataLoaded, setIsAdminDataLoaded] = useState(false);
   const isInitialLoad = useRef(true);
+
+  // Financial Ledger State
+  const [ledgerTransactions, setLedgerTransactions] = useState<ParsedTransaction[]>([]);
+  const [ledgerLoading, setLedgerLoading] = useState(false);
+  const [ledgerError, setLedgerError] = useState<string | null>(null);
+  const [scanProgress, setScanProgress] = useState(0);
+
+  const syncLedger = useCallback(async (forceSync = false) => {
+    const userEmail = session?.user?.email;
+    if (!userEmail) return;
+
+    setLedgerLoading(true);
+    setLedgerError(null);
+    const API_BASE = import.meta.env.PROD ? 'https://yureka-api.onrender.com' : 'http://localhost:3000';
+    const cacheKey = `yureka_financial_ledger_${userEmail}`;
+
+    if (!forceSync) {
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) {
+        try {
+          const data = JSON.parse(cached);
+          if (data.transactions) {
+            setLedgerTransactions(data.transactions);
+            setLedgerLoading(false);
+            return;
+          }
+        } catch (e) {
+          console.error("Cache parse error:", e);
+        }
+      }
+    }
+
+    try {
+      if (forceSync) {
+        setScanProgress(15);
+        const res = await fetch(`${API_BASE}/api/scan-email`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            accessToken: session?.provider_token || "",
+            fallbackData: {}
+          })
+        });
+        setScanProgress(60);
+        const data = await res.json();
+        if (data.error) {
+          setLedgerError(data.error);
+        } else if (data.transactions) {
+          localStorage.setItem(cacheKey, JSON.stringify(data));
+          setLedgerTransactions(data.transactions);
+        }
+        setScanProgress(100);
+      } else {
+        const res = await fetch(`${API_BASE}/api/financial-ledger?email=${encodeURIComponent(userEmail)}`);
+        const data = await res.json();
+        if (data.transactions) {
+          localStorage.setItem(cacheKey, JSON.stringify(data));
+          setLedgerTransactions(data.transactions);
+        }
+      }
+    } catch (err) {
+      console.error("Ledger sync error:", err);
+      setLedgerError("Failed to synchronize with email ledger.");
+    } finally {
+      setTimeout(() => setLedgerLoading(false), 500);
+    }
+  }, [session]);
+
+  useEffect(() => {
+    if (session?.user?.email) {
+      syncLedger(false);
+    }
+  }, [session, syncLedger]);
 
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
@@ -272,7 +361,8 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       currentUserStatus,
       cards, blogs, reviews, waitlist, team, logs, cardContributions,
       syncStatus, isLoading, isAdminDataLoaded, refreshAll,
-      setCards, setBlogs, setReviews, setWaitlist, setTeam, setCardContributions
+      setCards, setBlogs, setReviews, setWaitlist, setTeam, setCardContributions,
+      ledgerTransactions, ledgerLoading, ledgerError, scanProgress, syncLedger
     }}>
       {children}
     </SupabaseContext.Provider>

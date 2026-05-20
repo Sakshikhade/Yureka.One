@@ -16,88 +16,28 @@ interface ParsedTransaction {
 }
 
 const Bills: React.FC = () => {
-    const { session, supabase } = useSupabase();
-    const [transactions, setTransactions] = useState<ParsedTransaction[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+    const { 
+        session, 
+        supabase, 
+        ledgerTransactions, 
+        ledgerLoading: loading, 
+        ledgerError: error, 
+        scanProgress, 
+        syncLedger 
+    } = useSupabase();
+    
     const [searchQuery, setSearchQuery] = useState('');
-    const [scanProgress, setScanProgress] = useState(0);
 
-    const API_BASE = import.meta.env.PROD ? 'https://yureka-api.onrender.com' : 'http://localhost:3000';
-    const loadCache = async () => {
-        const userEmail = session?.user?.email || "";
-        const cacheKey = `yureka_financial_ledger_${userEmail}`;
-        const cached = sessionStorage.getItem(cacheKey);
-        if (cached) {
-            try {
-                const data = JSON.parse(cached);
-                if (data.transactions) {
-                    const filtered = (data.transactions || []).filter((tx: ParsedTransaction) => {
-                        const type = (tx.type || '').toLowerCase();
-                        return type !== 'transaction' && type !== '';
-                    });
-                    setTransactions(filtered);
-                }
-            } catch (e) {
-                console.error("Cache parse error:", e);
-            }
-        }
+    const transactions = useMemo(() => {
+        return (ledgerTransactions || []).filter((tx: ParsedTransaction) => {
+            const type = (tx.type || '').toLowerCase();
+            return type !== 'transaction' && type !== '';
+        });
+    }, [ledgerTransactions]);
 
-        try {
-            const res = await fetch(`${API_BASE}/api/financial-ledger?email=${encodeURIComponent(userEmail)}`);
-            const data = await res.json();
-            if (data.transactions) {
-                sessionStorage.setItem(cacheKey, JSON.stringify(data));
-                const filtered = (data.transactions || []).filter((tx: ParsedTransaction) => {
-                    const type = (tx.type || '').toLowerCase();
-                    return type !== 'transaction' && type !== '';
-                });
-                setTransactions(filtered);
-            }
-        } catch (err) {
-            console.error("Cache load error:", err);
-        }
+    const triggerSync = () => {
+        syncLedger(true);
     };
-
-    const triggerSync = async () => {
-        setLoading(true);
-        setError(null);
-        setScanProgress(15);
-        const userEmail = session?.user?.email || "";
-        const cacheKey = `yureka_financial_ledger_${userEmail}`;
-        try {
-            const res = await fetch(`${API_BASE}/api/scan-email`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    accessToken: session?.provider_token || "",
-                    fallbackData: {}
-                })
-            });
-            setScanProgress(60);
-            const data = await res.json();
-            if (data.error) {
-                setError(data.error);
-            } else {
-                sessionStorage.setItem(cacheKey, JSON.stringify(data));
-                const filtered = (data.transactions || []).filter((tx: ParsedTransaction) => {
-                    const type = (tx.type || '').toLowerCase();
-                    return type !== 'transaction' && type !== '';
-                });
-                setTransactions(filtered);
-            }
-        } catch (err) {
-            console.error("Bill fetch error:", err);
-            setError("Failed to synchronize with email ledger.");
-        } finally {
-            setScanProgress(100);
-            setTimeout(() => setLoading(false), 500);
-        }
-    };
-
-    useEffect(() => {
-        loadCache();
-    }, []);
 
     const connectGoogle = async () => {
         await supabase.auth.signInWithOAuth({
