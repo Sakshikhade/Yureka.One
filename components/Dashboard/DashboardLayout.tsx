@@ -75,7 +75,6 @@ const NotificationBell = () => {
             setUnreadCount(unread);
         };
         load();
-        
         // Setup real-time listener for new notifications
         const sub = supabase
             .channel('public:platform_notifications')
@@ -84,7 +83,11 @@ const NotificationBell = () => {
             })
             .subscribe();
 
+        // Fallback polling just in case realtime isn't enabled in DB
+        const interval = setInterval(load, 30000); // 30s fallback
+
         return () => {
+            clearInterval(interval);
             supabase.removeChannel(sub);
         };
     }, [user?.email]);
