@@ -357,27 +357,57 @@ def main():
     gmail_service = None
     people_service = None
     
-    # Try local credentials first
+    # Priority 1: Try local token.pickle (works on developer machine)
     try:
         gmail_service = get_local_gmail_service()
         creds = gmail_service._http.credentials
         people_service = build('people', 'v1', credentials=creds)
-        sys.stderr.write("Successfully initialized Gmail & People services using local Desktop OAuth context.\n")
+        sys.stderr.write("Successfully initialized services using local Desktop OAuth.\n")
     except Exception as local_err:
-        sys.stderr.write(f"Local Desktop OAuth failed/missing: {str(local_err)}. Falling back to access token...\n")
-        
-        if len(sys.argv) < 2:
-            print(json.dumps({"error": "Missing access token and local desktop credentials"}))
-            return
-            
-        access_token = sys.argv[1]
-        creds = Credentials(token=access_token)
-        try:
-            people_service = build('people', 'v1', credentials=creds)
-            gmail_service = build('gmail', 'v1', credentials=creds)
-        except Exception as e:
-            print(json.dumps({"error": f"Failed to initialize services with token: {str(e)}"}))
-            return
+        sys.stderr.write(f"Local Desktop OAuth unavailable: {str(local_err)}\n")
+
+        # Priority 2: Use access token passed from browser session (manual resync)
+        access_token = sys.argv[1] if len(sys.argv) > 1 else ""
+        if access_token and access_token.strip():
+            sys.stderr.write("Using browser access token from argv[1]...\n")
+            creds = Credentials(token=access_token)
+            try:
+                people_service = build('people', 'v1', credentials=creds)
+                gmail_service = build('gmail', 'v1', credentials=creds)
+                sys.stderr.write("Successfully initialized services using browser access token.\n")
+            except Exception as e:
+                print(json.dumps({"error": f"Failed to initialize with access token: {str(e)}"}))
+                return
+        else:
+            # Priority 3: Use refresh token from environment variables (Render background sync)
+            refresh_token = os.environ.get("GOOGLE_REFRESH_TOKEN", "")
+            client_id = os.environ.get("GOOGLE_CLIENT_ID", "")
+            client_secret = os.environ.get("GOOGLE_CLIENT_SECRET", "")
+
+            if refresh_token and client_id and client_secret:
+                sys.stderr.write("Using refresh token from environment variables for background sync...\n")
+                try:
+                    from google.oauth2.credentials import Credentials as OAuth2Credentials
+                    creds = OAuth2Credentials(
+                        token=None,
+                        refresh_token=refresh_token,
+                        client_id=client_id,
+                        client_secret=client_secret,
+                        token_uri="https://oauth2.googleapis.com/token",
+                        scopes=SCOPES
+                    )
+                    from google.auth.transport.requests import Request as GRequest
+                    creds.refresh(GRequest())
+                    people_service = build('people', 'v1', credentials=creds)
+                    gmail_service = build('gmail', 'v1', credentials=creds)
+                    sys.stderr.write("Successfully initialized services using env refresh token.\n")
+                except Exception as e:
+                    print(json.dumps({"error": f"Env refresh token auth failed: {str(e)}"}))
+                    return
+            else:
+                print(json.dumps({"error": "AUTH_EXPIRED", "details": "No valid credentials found. Set GOOGLE_REFRESH_TOKEN, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET on Render."}))
+                return
+
 
     try:
         profile = fetch_user_profile(
