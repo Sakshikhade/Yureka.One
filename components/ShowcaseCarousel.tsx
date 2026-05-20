@@ -13,41 +13,41 @@ interface ShowcaseCarouselProps {
 // Pill data
 // ─────────────────────────────────────────────────────────────
 const WITH_ROW1 = [
-  { icon: '⚡', text: 'AI-matched rewards',      bg: 'bg-clay text-cream' },
-  { icon: '🎯', text: 'Zero hidden fees',         bg: 'bg-clay text-cream' },
-  { icon: '💳', text: '200+ cards analyzed',      bg: 'bg-clay text-cream' },
-  { icon: '✅', text: 'Best card, guaranteed',    bg: 'bg-clay text-cream' },
-  { icon: '🔄', text: 'Instant comparison',       bg: 'bg-clay text-cream' },
-  { icon: '🤖', text: 'Neural matching',          bg: 'bg-clay text-cream' },
-  { icon: '🎁', text: 'Max rewards unlocked',     bg: 'bg-clay text-cream' },
+  { icon: '⚡', text: 'AI-matched rewards',      bg: 'bg-clay text-black' },
+  { icon: '🎯', text: 'Zero hidden fees',         bg: 'bg-clay text-black' },
+  { icon: '💳', text: '200+ cards analyzed',      bg: 'bg-clay text-black' },
+  { icon: '✅', text: 'Best card, guaranteed',    bg: 'bg-clay text-black' },
+  { icon: '🔄', text: 'Instant comparison',       bg: 'bg-clay text-black' },
+  { icon: '🤖', text: 'Neural matching',          bg: 'bg-clay text-black' },
+  { icon: '🎁', text: 'Max rewards unlocked',     bg: 'bg-clay text-black' },
 ];
 const WITH_ROW2 = [
-  { icon: '💰', text: '₹15k average savings',    bg: 'bg-clay text-cream' },
-  { icon: '📊', text: 'Reward math done for you', bg: 'bg-clay text-cream' },
-  { icon: '🏆', text: 'Top cluster match',        bg: 'bg-clay text-cream' },
-  { icon: '🔐', text: 'Unbiased, always',         bg: 'bg-clay text-cream' },
-  { icon: '📱', text: 'Chrome auto-apply',        bg: 'bg-clay text-cream' },
-  { icon: '⚡', text: 'Real-time audit',          bg: 'bg-clay text-cream' },
-  { icon: '🎯', text: 'Spend-matched card',       bg: 'bg-clay text-cream' },
+  { icon: '💰', text: '₹15k average savings',    bg: 'bg-clay text-black' },
+  { icon: '📊', text: 'Reward math done for you', bg: 'bg-clay text-black' },
+  { icon: '🏆', text: 'Top cluster match',        bg: 'bg-clay text-black' },
+  { icon: '🔐', text: 'Unbiased, always',         bg: 'bg-clay text-black' },
+  { icon: '📱', text: 'Chrome auto-apply',        bg: 'bg-clay text-black' },
+  { icon: '⚡', text: 'Real-time audit',          bg: 'bg-clay text-black' },
+  { icon: '🎯', text: 'Spend-matched card',       bg: 'bg-clay text-black' },
 ];
 
 const WITHOUT_ROW1 = [
-  { icon: '😵', text: 'Hours of research',        bg: 'bg-red-500/10 text-red-400/80 border border-red-500/20' },
-  { icon: '❓', text: 'Guessing the best card',   bg: 'bg-red-500/5 text-red-400/60 border border-red-500/10' },
-  { icon: '💸', text: 'Missing cashback',          bg: 'bg-red-500/10 text-red-400/80 border border-red-500/20' },
-  { icon: '😤', text: 'Bank rep bias',             bg: 'bg-red-500/5 text-red-400/60 border border-red-500/10' },
-  { icon: '📋', text: '200+ cards to compare',    bg: 'bg-red-500/10 text-red-400/80 border border-red-500/20' },
-  { icon: '⚠️', text: 'Wrong card fees',           bg: 'bg-red-500/5 text-red-400/60 border border-red-500/10' },
-  { icon: '😓', text: 'Confusing reward math',    bg: 'bg-red-500/10 text-red-400/80 border border-red-500/20' },
+  { icon: '😵', text: 'Hours of research',        bg: 'bg-red-950/60 text-red-200 border border-red-900/60' },
+  { icon: '❓', text: 'Guessing the best card',   bg: 'bg-red-950/40 text-red-200 border border-red-900/40' },
+  { icon: '💸', text: 'Missing cashback',          bg: 'bg-red-950/60 text-red-200 border border-red-900/60' },
+  { icon: '😤', text: 'Bank rep bias',             bg: 'bg-red-950/40 text-red-200 border border-red-900/40' },
+  { icon: '📋', text: '200+ cards to compare',    bg: 'bg-red-950/60 text-red-200 border border-red-900/60' },
+  { icon: '⚠️', text: 'Wrong card fees',           bg: 'bg-red-950/40 text-red-200 border border-red-900/40' },
+  { icon: '😓', text: 'Confusing reward math',    bg: 'bg-red-950/60 text-red-200 border border-red-900/60' },
 ];
 const WITHOUT_ROW2 = [
-  { icon: '🔍', text: 'Weeks of comparison',      bg: 'bg-red-500/5 text-red-400/60 border border-red-500/10' },
-  { icon: '💀', text: 'Trapped in low rewards',   bg: 'bg-red-500/10 text-red-400/80 border border-red-500/20' },
-  { icon: '📉', text: 'No savings strategy',      bg: 'bg-red-500/5 text-red-400/60 border border-red-500/10' },
-  { icon: '🏦', text: 'Bank-first advice',        bg: 'bg-red-500/10 text-red-400/80 border border-red-500/20' },
-  { icon: '❌', text: 'Missed joining bonus',     bg: 'bg-red-500/5 text-red-400/60 border border-red-500/10' },
-  { icon: '📱', text: 'Manual reward tracking',   bg: 'bg-red-500/10 text-red-400/80 border border-red-500/20' },
-  { icon: '😡', text: 'Hidden annual fees',       bg: 'bg-red-500/5 text-red-400/60 border border-red-500/10' },
+  { icon: '🔍', text: 'Weeks of comparison',      bg: 'bg-red-950/40 text-red-200 border border-red-900/40' },
+  { icon: '💀', text: 'Trapped in low rewards',   bg: 'bg-red-950/60 text-red-200 border border-red-900/60' },
+  { icon: '📉', text: 'No savings strategy',      bg: 'bg-red-950/40 text-red-200 border border-red-900/40' },
+  { icon: '🏦', text: 'Bank-first advice',        bg: 'bg-red-950/60 text-red-200 border border-red-900/60' },
+  { icon: '❌', text: 'Missed joining bonus',     bg: 'bg-red-950/40 text-red-200 border border-red-900/40' },
+  { icon: '📱', text: 'Manual reward tracking',   bg: 'bg-red-950/60 text-red-200 border border-red-900/60' },
+  { icon: '😡', text: 'Hidden annual fees',       bg: 'bg-red-950/40 text-red-200 border border-red-900/40' },
 ];
 
 // ─────────────────────────────────────────────────────────────
@@ -141,7 +141,7 @@ const ComparisonWidget: React.FC = () => {
                   Just pick your card,<br />
                   <span className="italic font-light text-clay">and start earning.</span>
                 </h3>
-                <p className="text-[10px] text-white/20 font-sans uppercase tracking-[0.3em] font-bold">
+                <p className="text-[11px] text-white/80 font-sans uppercase tracking-[0.3em] font-bold">
                   The Protocol executes the complex math. You keep the yield.
                 </p>
               </>
@@ -149,9 +149,9 @@ const ComparisonWidget: React.FC = () => {
               <>
                 <h3 className="text-2xl md:text-3xl font-serif text-white leading-snug mb-1.5 uppercase tracking-tighter">
                   Why settle for<br />
-                  <span className="italic font-light text-white/40 lowercase">sub-optimal?</span>
+                  <span className="italic font-light text-white/45 lowercase">sub-optimal?</span>
                 </h3>
-                <p className="text-[10px] text-white/20 font-sans uppercase tracking-[0.3em] font-bold">
+                <p className="text-[11px] text-white/80 font-sans uppercase tracking-[0.3em] font-bold">
                   Manual research is the slow lane to wealth.
                 </p>
               </>

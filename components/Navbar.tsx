@@ -91,7 +91,7 @@ const Navbar: React.FC = () => {
                                     transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                                     className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-64 pointer-events-auto"
                                 >
-                                    <div className="bg-white/[0.03]/90 backdrop-blur-3xl border border-white/10 rounded-[2rem] p-4 shadow-2xl">
+                                    <div className="bg-[#0f0f0f] border border-white/15 rounded-[2rem] p-4 shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
                                         <div className="flex flex-col gap-1">
                                             {EXPLORE_ITEMS.map((item) => (
                                                 <Link
@@ -100,11 +100,11 @@ const Navbar: React.FC = () => {
                                                     className="flex items-center gap-4 p-3 rounded-2xl hover:bg-white/5 transition-all group/item"
                                                 >
                                                     <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center group-hover/item:bg-clay/10 transition-colors">
-                                                        <item.icon size={18} className="text-white/40 group-hover/item:text-clay" />
+                                                        <item.icon size={18} className="text-white/70 group-hover/item:text-clay" />
                                                     </div>
                                                     <div className="flex flex-col">
                                                         <span className="text-[11px] font-black text-white uppercase tracking-wider">{item.name}</span>
-                                                        <span className="text-[9px] font-bold text-white/20 uppercase tracking-widest">{item.desc}</span>
+                                                        <span className="text-[9px] font-bold text-white/60 uppercase tracking-widest mt-0.5">{item.desc}</span>
                                                     </div>
                                                 </Link>
                                             ))}

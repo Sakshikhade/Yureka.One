@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { 
-  ArrowRight, Search, Sparkles, X, ChevronDown, 
+  ArrowRight, Sparkles, X, ChevronDown, 
   ArrowRightLeft, Star, Zap, Info, Shield, 
-  ZapOff, CheckCircle2, AlertCircle, Loader2
+  ZapOff, CheckCircle2, AlertCircle, Loader2, CreditCard
 } from 'lucide-react';
 import { getCards } from '../services/supabaseService';
 import { Card } from '../types';
@@ -34,7 +34,7 @@ const POPULAR_COMPARISONS = [
   {
     id: '3',
     title: 'Amazon Pay ICICI vs. Swiggy HDFC vs. Airtel Axis Bank',
-    category: 'Entry-Level Cashback Heros',
+    category: 'Entry-Level Cashback Heroes',
     cards: [
       { name: 'Amazon Pay ICICI', image: 'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/icici-bank-amazon-pay-icici.png', slug: 'amazon-pay-icici-icici-bank' },
       { name: 'Swiggy HDFC', image: 'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/hdfc-bank-swiggy-hdfc-bank.jpeg', slug: 'swiggy-hdfc-bank-hdfc-bank' },
@@ -72,7 +72,6 @@ const ComparePage: React.FC = () => {
     const validIds = selectedCards.filter(id => id !== '');
     if (validIds.length < 2) return;
     
-    // Create a slug like hdfc-infinia-vs-axis-magnus
     const slugs = validIds.map(id => {
       const card = allCards.find(c => c.id === id);
       return card?.slug || id;
@@ -82,66 +81,104 @@ const ComparePage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-cream pb-32">
+    <div className="min-h-screen bg-[#050505] text-white pb-32 overflow-hidden selection:bg-clay selection:text-black">
       <SEO 
         title="Credit Card Comparisons | Side-by-Side Analysis" 
         description="Compare up to 3 credit cards side-by-side. Deep-dive into fees, rewards, and eligibility to find your perfect match."
       />
 
       {/* Hero Header */}
-      <section className="relative pt-20 pb-16 overflow-hidden px-6">
-        <div className="absolute inset-0 bg-gradient-to-b from-clay/10 via-transparent to-transparent pointer-events-none" />
+      <section className="relative pt-24 pb-16 overflow-hidden px-6">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[300px] bg-[radial-gradient(circle_at_center,rgba(52,211,153,0.04)_0%,transparent_75%)] pointer-events-none" />
         
-        <div className="max-w-7xl mx-auto relative z-10">
+        <div className="max-w-7xl mx-auto relative z-10 text-center md:text-left mt-8">
            <motion.div 
              initial={{ opacity: 0, y: 20 }}
              animate={{ opacity: 1, y: 0 }}
              className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full backdrop-blur-xl mb-8"
            >
              <ArrowRightLeft size={14} className="text-clay" />
-             <span className="text-[10px] font-black text-white/60 uppercase tracking-[0.3em]">Neural Comparison Engine</span>
+             <span className="text-[10px] font-black text-white/70 uppercase tracking-[0.3em] font-mono">Neural Comparison Engine</span>
            </motion.div>
 
            <motion.h1 
              initial={{ opacity: 0, y: 20 }}
              animate={{ opacity: 1, y: 0 }}
              transition={{ delay: 0.1 }}
-             className="text-4xl md:text-6xl font-heading font-black text-white tracking-tighter uppercase"
+             className="text-4xl md:text-7xl font-heading font-black text-white tracking-tighter uppercase mb-4"
            >
-             Credit Card <span className="text-clay">Comparisons</span>
+             Credit Card <span className="text-clay relative italic">Comparisons<span className="absolute -bottom-1 left-0 w-full h-1 bg-clay/20" /></span>
            </motion.h1>
+           <p className="text-white/60 text-sm md:text-base max-w-xl leading-relaxed font-sans">
+             Institutional analysis of premium benefits, exclusion mapping, and net yield metrics.
+           </p>
         </div>
       </section>
 
       {/* Comparison Tool */}
-      <section className="max-w-7xl mx-auto px-6 -mt-4 relative z-20">
-         <div className="bg-white/5 border border-white/5 rounded-[3rem] p-8 md:p-12 shadow-2xl relative">
+      <section className="max-w-7xl mx-auto px-6 mt-4 relative z-20">
+         <div className="bg-gradient-to-b from-white/[0.03] to-transparent border border-white/10 rounded-[3rem] p-8 md:p-12 shadow-2xl relative backdrop-blur-xl">
             {/* Background pattern */}
             <div className="absolute top-0 right-0 w-64 h-64 bg-clay/5 blur-[100px] pointer-events-none" />
             
             <div className="relative z-10 space-y-12">
-               <div className="space-y-2">
+               <div className="space-y-2 border-b border-white/5 pb-6">
                   <h2 className="text-2xl font-heading font-black text-white uppercase">Choose Your Own Comparison</h2>
-                  <p className="text-white/40 text-sm">Select up to 3 cards to compare side by side</p>
+                  <p className="text-white/50 text-sm">Select up to 3 cards to compare side by side</p>
                </div>
 
-               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   {[0, 1, 2].map((i) => (
-                    <div key={i} className={`space-y-3 relative ${activeDropdown === i ? 'z-[100]' : 'z-10'}`}>
-                       <label className="text-[10px] font-black text-white/20 uppercase tracking-widest block ml-1">
-                          Card {i + 1} {i === 2 && <span className="text-white/10 lowercase tracking-normal">(Optional)</span>}
+                    <div key={i} className={`space-y-4 relative ${activeDropdown === i ? 'z-[100]' : 'z-10'}`}>
+                       <label className="text-[10px] font-black text-white/40 uppercase tracking-widest block ml-1 font-mono">
+                          Slot {i + 1} {i === 2 && <span className="text-white/20 lowercase tracking-normal">(Optional)</span>}
                        </label>
                        
                        <div className="relative">
                           <button 
                             onClick={() => setActiveDropdown(activeDropdown === i ? null : i)}
-                            className="w-full bg-white/5 border border-white/10 rounded-2xl p-5 text-left flex items-center justify-between group hover:border-white/20 transition-all backdrop-blur-xl"
+                            className="w-full bg-[#0d0d0d] border border-white/10 rounded-2xl p-5 text-left flex items-center justify-between group hover:border-white/20 transition-all backdrop-blur-xl shadow-lg"
                           >
-                             <span className={`text-sm font-bold uppercase tracking-tight ${selectedCards[i] ? 'text-white' : 'text-white/20'}`}>
+                             <span className={`text-sm font-bold uppercase tracking-tight ${selectedCards[i] ? 'text-white font-black' : 'text-white/35'}`}>
                                 {selectedCards[i] ? allCards.find(c => c.id === selectedCards[i])?.name : 'Select a card'}
                              </span>
-                             <ChevronDown size={18} className={`text-white/20 group-hover:text-white transition-transform duration-500 ${activeDropdown === i ? 'rotate-180' : ''}`} />
+                             <ChevronDown size={18} className={`text-white/30 group-hover:text-white transition-transform duration-500 ${activeDropdown === i ? 'rotate-180' : ''}`} />
                           </button>
+
+                          {/* Visual Slot Feedback */}
+                          <div className="mt-4">
+                            {selectedCards[i] ? (
+                              <motion.div 
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                className="relative aspect-[1.58/1] w-full rounded-2xl overflow-hidden border border-white/15 shadow-2xl group bg-[#0d0d0d] flex items-center justify-center group-hover:border-clay/35 transition-colors"
+                              >
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent z-10" />
+                                <img 
+                                  src={allCards.find(c => c.id === selectedCards[i])?.image} 
+                                  alt="" 
+                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
+                                />
+                                <span className="absolute bottom-4 left-4 z-20 text-[9px] font-black text-white uppercase tracking-widest font-mono bg-black/75 backdrop-blur-md px-2.5 py-1 rounded-md border border-white/10">
+                                  {allCards.find(c => c.id === selectedCards[i])?.bank}
+                                </span>
+                                <button 
+                                  onClick={(e) => { e.stopPropagation(); handleSelect(i, ''); }}
+                                  className="absolute top-3 right-3 z-20 w-7 h-7 rounded-full bg-black/70 backdrop-blur-md border border-white/10 flex items-center justify-center hover:bg-red-500/20 hover:border-red-500/30 transition-all text-white/70 hover:text-red-400"
+                                >
+                                  <X size={12} />
+                                </button>
+                              </motion.div>
+                            ) : (
+                              <div 
+                                onClick={() => setActiveDropdown(activeDropdown === i ? null : i)}
+                                className="aspect-[1.58/1] w-full rounded-2xl border border-white/5 border-dashed bg-white/[0.01] flex flex-col items-center justify-center text-white/15 hover:border-white/10 hover:bg-white/[0.02] cursor-pointer transition-all duration-300"
+                              >
+                                <CreditCard size={28} className="opacity-20 mb-2 group-hover:scale-110 transition-transform" />
+                                <span className="text-[9px] font-black uppercase tracking-widest opacity-35 font-mono">Empty Slot</span>
+                              </div>
+                            )}
+                          </div>
 
                           <AnimatePresence>
                              {activeDropdown === i && (
@@ -149,7 +186,7 @@ const ComparePage: React.FC = () => {
                                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
                                  animate={{ opacity: 1, y: 0, scale: 1 }}
                                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                                 className="absolute top-full left-0 right-0 mt-3 z-[100] bg-white/5 border border-white/10 rounded-3xl shadow-2xl overflow-hidden backdrop-blur-3xl"
+                                 className="absolute top-full left-0 right-0 mt-3 z-[100] bg-[#0d0d0d] border border-white/15 rounded-3xl shadow-2xl overflow-hidden backdrop-blur-3xl"
                                >
                                   <div className="max-h-72 overflow-y-auto custom-scrollbar p-2">
                                      {loading ? (
@@ -166,7 +203,7 @@ const ComparePage: React.FC = () => {
                                             </div>
                                             <div className="flex flex-col">
                                                <span className="text-[11px] font-black text-white uppercase tracking-wider">{card.name}</span>
-                                               <span className="text-[9px] font-bold text-white/20 uppercase tracking-widest">{card.bank}</span>
+                                               <span className="text-[9px] font-bold text-white/25 uppercase tracking-widest">{card.bank}</span>
                                             </div>
                                          </button>
                                        ))
@@ -180,7 +217,10 @@ const ComparePage: React.FC = () => {
                   ))}
                </div>
 
-               <div className="flex justify-end pt-4 border-t border-white/5">
+               <div className="flex justify-between items-center pt-8 border-t border-white/5">
+                  <div className="text-[10px] text-white/30 font-bold uppercase tracking-wider font-mono">
+                    {selectedCards.filter(id => id !== '').length} of 3 cards selected
+                  </div>
                   <button 
                     onClick={handleCompare}
                     disabled={selectedCards.filter(id => id !== '').length < 2}
@@ -194,13 +234,13 @@ const ComparePage: React.FC = () => {
       </section>
 
       {/* Popular Comparisons Grid */}
-      <section className="max-w-7xl mx-auto px-6 mt-24 space-y-12">
+      <section className="max-w-7xl mx-auto px-6 mt-32 space-y-12">
          <div className="space-y-2 text-center">
             <h2 className="text-3xl font-heading font-black text-white uppercase tracking-tight">Popular Comparisons</h2>
-            <p className="text-white/20 text-[10px] font-black uppercase tracking-[0.4em]">Expert curated neural matchups</p>
+            <p className="text-white/35 text-[10px] font-black uppercase tracking-[0.4em] font-mono">Expert curated neural matchups</p>
          </div>
 
-         <div className="flex flex-col gap-6">
+         <div className="flex flex-col gap-8">
             {POPULAR_COMPARISONS.map((comp, idx) => (
                <motion.div
                  key={comp.id}
@@ -208,26 +248,26 @@ const ComparePage: React.FC = () => {
                  whileInView={{ opacity: 1, y: 0 }}
                  viewport={{ once: true }}
                  transition={{ delay: idx * 0.1 }}
-                 className="group relative bg-white/5/40 backdrop-blur-3xl border border-white/5 rounded-[2.5rem] p-8 md:p-10 hover:border-clay/30 transition-all duration-700"
+                 className="group relative bg-gradient-to-b from-white/[0.02] to-transparent border border-white/10 rounded-[3rem] p-8 md:p-10 hover:border-clay/30 transition-all duration-700 shadow-2xl"
                >
                   <div className="flex flex-col space-y-8">
                      {/* Header */}
                      <div className="space-y-1">
                         <h3 className="text-xl font-heading font-bold text-white tracking-tight">{comp.title}</h3>
-                        <p className="text-[11px] font-bold text-white/30 uppercase tracking-[0.2em]">{comp.category}</p>
+                        <p className="text-[11px] font-bold text-white/30 uppercase tracking-[0.2em] font-mono">{comp.category}</p>
                      </div>
  
                      {/* Comparison Visualization */}
-                     <div className="flex items-center justify-between gap-4 py-4 overflow-x-auto no-scrollbar">
+                     <div className="flex items-center justify-between gap-6 py-4 overflow-x-auto no-scrollbar">
                         {comp.cards.map((cardRef, i) => {
                            const cardData = allCards.find(c => c.slug === cardRef.slug);
                            const displayImage = cardData?.image || cardRef.image;
                            
                            return (
                               <React.Fragment key={i}>
-                                 <div className="flex flex-col items-center gap-4 min-w-[140px] flex-1">
-                                    <div className="relative w-full aspect-[1.6/1] rounded-2xl overflow-hidden shadow-2xl group-hover:scale-[1.02] transition-transform duration-700 bg-white/5">
-                                       <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-10" />
+                                 <div className="flex flex-col items-center gap-4 min-w-[150px] flex-1">
+                                    <div className="relative w-full aspect-[1.58/1] rounded-2xl overflow-hidden shadow-2xl group-hover:scale-[1.02] transition-transform duration-700 bg-white/5 border border-white/5">
+                                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10" />
                                        <img 
                                          src={displayImage} 
                                          alt={cardRef.name} 
@@ -235,20 +275,20 @@ const ComparePage: React.FC = () => {
                                          onLoad={(e) => (e.currentTarget.style.opacity = '1')}
                                        />
                                     </div>
-                                    <span className="text-[10px] font-black text-white/40 uppercase tracking-widest">{cardRef.name}</span>
+                                    <span className="text-[10px] font-black text-white/40 uppercase tracking-widest font-mono">{cardRef.name}</span>
                                  </div>
                                  {i < comp.cards.length - 1 && (
-                                   <div className="text-sm font-black text-clay/40 px-2 italic shrink-0">VS</div>
+                                   <div className="text-sm font-black text-clay/50 px-2 italic shrink-0 font-serif">VS</div>
                                  )}
                               </React.Fragment>
                            );
                         })}
                      </div>
- 
+  
                      {/* Action Button */}
                      <Link 
                        to={`${basePath}/compare/${comp.cards.map(c => c.slug).join('-vs-')}`}
-                       className="w-full bg-white/5 border border-white/10 text-white/80 py-5 rounded-2xl text-[12px] font-black uppercase tracking-[0.2em] hover:bg-clay hover:text-black transition-all duration-500 flex items-center justify-center gap-3 shadow-xl hover:shadow-clay/20"
+                       className="w-full bg-white/5 border border-white/10 text-white/80 py-5 rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] hover:bg-clay hover:text-black transition-all duration-500 flex items-center justify-center gap-3 shadow-xl hover:shadow-clay/20 font-mono"
                      >
                         View Comparison <ArrowRight size={18} />
                      </Link>
@@ -259,7 +299,7 @@ const ComparePage: React.FC = () => {
       </section>
 
       {/* Value Prop */}
-      <section className="max-w-7xl mx-auto px-6 mt-32">
+      <section className="max-w-7xl mx-auto px-6 mt-32 border-t border-white/5 pt-20">
          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
             {[
                { icon: Shield, title: 'Unbiased Data', desc: 'Direct from bank records with no affiliate bias in neural scoring.' },
@@ -268,10 +308,10 @@ const ComparePage: React.FC = () => {
             ].map((prop, i) => (
                <div key={i} className="space-y-4 group">
                   <div className="w-12 h-12 bg-clay/10 rounded-2xl flex items-center justify-center group-hover:bg-clay transition-colors duration-500">
-                     <prop.icon className="text-clay group-hover:text-black transition-colors" />
+                     <prop.icon className="text-clay group-hover:text-black transition-colors" size={20} />
                   </div>
                   <h4 className="text-lg font-black text-white uppercase tracking-tight">{prop.title}</h4>
-                  <p className="text-white/40 text-sm leading-relaxed">{prop.desc}</p>
+                  <p className="text-white/50 text-sm leading-relaxed">{prop.desc}</p>
                </div>
             ))}
          </div>

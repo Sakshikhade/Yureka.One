@@ -37,10 +37,10 @@ const Hero: React.FC = () => {
                      <span className="text-clay font-bold text-xs uppercase tracking-[0.4em]">Advanced Financial Engineering</span>
                      <div className="h-[1px] bg-white/10 w-12 md:w-24"></div>
                 </div>
-                <h1 className="text-3xl sm:text-6xl md:text-7xl lg:text-[clamp(2.5rem,6vw,6.5rem)] leading-[0.9] font-heading font-extrabold text-white uppercase tracking-tight">
+                <h1 className="text-2xl sm:text-5xl md:text-6xl lg:text-[clamp(2rem,5vw,5.5rem)] leading-[0.95] font-heading font-extrabold text-white uppercase tracking-tight">
                     Yield Every Swipe. <br className="hidden md:block" /> Master the Game.
                 </h1>
-                <h3 className="text-xs sm:text-base xl:text-lg font-sans font-semibold text-white/60 mt-4 md:mt-6 max-w-3xl mx-auto leading-relaxed tracking-tight uppercase px-4 sm:px-0">
+                <h3 className="text-xs sm:text-base xl:text-lg font-sans font-semibold text-white mt-4 md:mt-6 max-w-3xl mx-auto leading-relaxed tracking-tight uppercase px-4 sm:px-0">
                     Precision analytics on <span className="text-white">200+ institutional credit instruments</span>. reveal your highest possible systematic yield through the Yureka Matrix.
                 </h3>
 

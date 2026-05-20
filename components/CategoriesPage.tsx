@@ -58,7 +58,7 @@ const CategoriesPage: React.FC = () => {
              className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full backdrop-blur-xl"
            >
              <Sparkles size={14} className="text-clay" />
-             <span className="text-[10px] font-black text-white/60 uppercase tracking-[0.3em]">Neural Classification</span>
+             <span className="text-[11px] font-black text-white/85 uppercase tracking-[0.3em]">Neural Classification</span>
            </motion.div>
 
            <motion.h1 
@@ -74,9 +74,9 @@ const CategoriesPage: React.FC = () => {
              initial={{ opacity: 0, y: 20 }}
              animate={{ opacity: 1, y: 0 }}
              transition={{ delay: 0.2 }}
-             className="max-w-2xl mx-auto text-white/40 text-sm md:text-base leading-relaxed"
+             className="max-w-2xl mx-auto text-white/85 text-base md:text-lg leading-relaxed font-medium"
            >
-             Unlock the power of strategic spending with our curated selection. Find cards that <span className="text-white font-bold underline decoration-clay decoration-2 underline-offset-4">transform everyday purchases</span> into meaningful rewards.
+             Unlock the power of strategic spending with our curated selection. Find cards that <span className="text-white font-extrabold underline decoration-clay decoration-2 underline-offset-4">transform everyday purchases</span> into meaningful rewards.
            </motion.p>
         </div>
       </section>
@@ -111,7 +111,7 @@ const CategoriesPage: React.FC = () => {
 
                   <div className="space-y-1">
                     <h3 className="text-[13px] font-black text-white uppercase tracking-tight group-hover:text-clay transition-colors">{category.name}</h3>
-                    <p className="text-[9px] font-bold text-white/20 uppercase tracking-widest line-clamp-1">{category.desc}</p>
+                    <p className="text-[10px] font-bold text-white/70 uppercase tracking-widest line-clamp-1">{category.desc}</p>
                   </div>
 
                   <div className="pt-2 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
@@ -130,7 +130,7 @@ const CategoriesPage: React.FC = () => {
         <div className="bg-gradient-to-r from-clay/10 to-transparent border border-white/5 rounded-[3rem] p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="space-y-4 text-center md:text-left">
             <h2 className="text-2xl md:text-3xl font-heading font-black text-white uppercase">Still Unsure?</h2>
-            <p className="text-white/40 text-sm max-w-md">Let our Intelligence Engine match you with the perfect card based on your unique credit profile.</p>
+            <p className="text-white/80 text-base max-w-md">Let our Intelligence Engine match you with the perfect card based on your unique credit profile.</p>
           </div>
           <Link to={`${basePath}/yureka-ai`} className="bg-clay text-black px-10 py-4 rounded-full font-black uppercase tracking-widest flex items-center gap-2 hover:scale-105 transition-transform shrink-0">
              Consult Yureka AI <ArrowRight size={18} />

@@ -596,22 +596,40 @@ const WaitlistPage: React.FC = () => {
     // ─── RENDERERS ───
 
     const renderStep1 = () => (
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center">
-            <div className="w-20 h-20 bg-clay/10 rounded-3xl flex items-center justify-center mx-auto mb-8 border border-clay/20 shadow-lg">
-                <Sparkles size={40} className="text-clay animate-pulse" />
+        <motion.div 
+            initial={{ opacity: 0, y: 30 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            className="max-w-md mx-auto text-center bg-gradient-to-b from-white/[0.03] to-transparent border border-white/10 rounded-[3rem] p-10 md:p-14 shadow-2xl relative backdrop-blur-xl overflow-hidden group"
+        >
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-clay to-transparent" />
+            <div className="w-16 h-16 bg-clay/10 rounded-2xl flex items-center justify-center mx-auto mb-8 border border-clay/20 shadow-[0_0_20px_rgba(52,211,153,0.15)] group-hover:scale-105 transition-transform duration-500">
+                <Sparkles size={28} className="text-clay" />
             </div>
-            <h2 className="text-4xl md:text-5xl italic tracking-tighter text-white mb-6">Begin Your Journey</h2>
-            <p className="text-white/40 text-lg mb-12 max-w-md mx-auto">Link your Gmail to unlock priority access, import spending ledger intelligence, and prefill your identity profile.</p>
+            
+            <h2 className="text-3xl md:text-4xl font-heading font-black text-white uppercase tracking-tighter mb-4 leading-none">
+               Begin Your <span className="text-clay italic">Journey</span>
+            </h2>
+            <p className="text-white/60 text-sm leading-relaxed mb-10 max-w-sm mx-auto font-sans">
+               Link your Gmail to unlock priority access, import spending ledger intelligence, and prefill your identity profile.
+            </p>
             
             <button 
                 onClick={handleGoogleSignup}
                 disabled={isLoadingData}
-                className="w-full max-w-md bg-white text-black py-6 rounded-2xl flex items-center justify-center gap-4 group hover:bg-clay hover:text-cream transition-all shadow-2xl active:scale-95 disabled:opacity-50 mx-auto"
+                className="w-full bg-white text-black py-5 rounded-2xl flex items-center justify-center gap-3.5 group hover:bg-clay hover:text-black transition-all duration-500 shadow-2xl active:scale-95 disabled:opacity-50 mx-auto"
             >
-                {isLoadingData ? <Loader2 className="animate-spin text-black" size={20} /> : <Globe size={20} className="group-hover:rotate-12 transition-transform" />}
-                <span className="text-xs font-black uppercase tracking-[0.3em] font-sans">Sign Up with Google</span>
+                {isLoadingData ? (
+                  <Loader2 className="animate-spin text-black" size={18} />
+                ) : (
+                  <svg className="w-5 h-5 shrink-0 group-hover:scale-110 transition-transform" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M12.24 10.285V14.4h6.887c-.275 1.565-1.88 4.604-6.887 4.604-4.33 0-7.866-3.577-7.866-8s3.536-8 7.866-8c2.46 0 4.105 1.025 5.047 1.926l3.247-3.125C18.232 1.637 15.522 1 12.24 1 6.033 1 12.24s5.033 11.24 11.24 11.24c6.478 0 10.793-4.537 10.793-10.985 0-.737-.08-1.3-.176-1.782h-10.62Z"/>
+                  </svg>
+                )}
+                <span className="text-xs font-black uppercase tracking-[0.25em] font-mono">Sign Up with Google</span>
             </button>
-            <p className="mt-8 text-[10px] font-bold uppercase tracking-widest text-white/20">Secure OAuth 2.0 Encryption & Read-only Access</p>
+            <p className="mt-8 text-[9px] font-bold uppercase tracking-widest text-white/30 font-mono">
+               Secure OAuth 2.0 Encryption & Read-only Access
+            </p>
         </motion.div>
     );
 
@@ -1176,7 +1194,7 @@ const WaitlistPage: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-cream pt-24 md:pt-32 pb-40 px-6 relative overflow-hidden font-serif selection:bg-clay/20">
+        <div className="min-h-screen bg-[#050505] pt-24 md:pt-32 pb-40 px-6 relative overflow-hidden font-sans selection:bg-clay/20">
             {/* Ambient background styling */}
             <div className="fixed inset-0 pointer-events-none opacity-[0.05]" style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
             <div className="fixed top-1/4 -left-1/4 w-[60%] h-[60%] bg-clay/5 blur-[120px] rounded-full pointer-events-none" />
