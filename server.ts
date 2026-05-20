@@ -98,9 +98,9 @@ async function startServer() {
     res.status(204).send();
   });
 
-  async function saveDataToSupabase(profile: any, transactions: any[]) {
+  async function saveDataToSupabase(profile: any, transactions: any[], explicitEmail?: string) {
     if (!profile) return;
-    const email = profile.email || "toanweshbiswas@gmail.com";
+    const email = explicitEmail || profile.email || "toanweshbiswas@gmail.com";
 
     // 1. Save profile to waitlist table
     try {
@@ -234,7 +234,7 @@ async function startServer() {
 
   // Email Deep Scanner API
   app.post("/api/scan-email", async (req, res) => {
-    const { accessToken, fallbackData } = req.body;
+    const { accessToken, email, fallbackData } = req.body;
     const { spawn } = await import("child_process");
     const pythonExecutable = fs.existsSync('./venv/bin/python3') ? './venv/bin/python3' : 'python3';
     const pythonProcess = spawn(pythonExecutable, [
@@ -267,7 +267,7 @@ async function startServer() {
         }
 
         // Persist to Supabase
-        await saveDataToSupabase(result.profile, result.transactions || []);
+        await saveDataToSupabase(result.profile, result.transactions || [], email || (fallbackData && fallbackData.email));
 
         // Cache success output locally as fallback
         const fs = await import("fs/promises");

@@ -125,7 +125,8 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             accessToken: session?.provider_token || "",
-            fallbackData: {}
+            email: userEmail,
+            fallbackData: { email: userEmail }
           })
         });
         setScanProgress(60);

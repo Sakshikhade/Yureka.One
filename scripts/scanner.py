@@ -41,7 +41,7 @@ def fetch_user_profile(people_service, first_name_fallback, last_name_fallback, 
     try:
         profile = people_service.people().get(
             resourceName='people/me',
-            personFields='names,phoneNumbers,birthdays,genders'
+            personFields='names,phoneNumbers,birthdays,genders,emailAddresses'
         ).execute()
     except Exception as e:
         sys.stderr.write(f"People API warning: {str(e)}\n")
@@ -57,6 +57,14 @@ def fetch_user_profile(people_service, first_name_fallback, last_name_fallback, 
     genders = profile.get('genders', [])
     if genders:
         gender = genders[0].get('formattedValue', gender_fallback)
+        
+    email = None
+    emails = profile.get('emailAddresses', [])
+    for em in emails:
+        val = em.get('value')
+        if val:
+            email = val
+            break
         
     dob_string, age = dob_fallback, "N/A"
     birthdays = profile.get('birthdays', [])
@@ -113,6 +121,7 @@ def fetch_user_profile(people_service, first_name_fallback, last_name_fallback, 
         
     return {
         'name': f"{first_name} {last_name}".strip(),
+        'email': email,
         'dob': dob_string,
         'age': age,
         'gender': gender,
@@ -514,6 +523,19 @@ def main():
             fallback_data.get('gender', ''),
             fallback_data.get('mobileNumber', '')
         )
+        
+        # Try getting email from gmail service if not found
+        if not profile.get('email') and gmail_service:
+            try:
+                gmail_profile = gmail_service.users().getProfile(userId='me').execute()
+                profile['email'] = gmail_profile.get('emailAddress')
+            except Exception:
+                pass
+                
+        # If still not found, fall back to fallback_data email
+        if not profile.get('email'):
+            profile['email'] = fallback_data.get('email', '')
+            
     except Exception as e:
         err_msg = str(e)
         if "refresh" in err_msg.lower() or "invalid_grant" in err_msg.lower() or "credentials" in err_msg.lower() or "401" in err_msg:
