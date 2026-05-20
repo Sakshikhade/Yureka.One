@@ -2,7 +2,7 @@ services:
   - type: web
     name: yureka-api
     env: node
-    buildCommand: npm install --include=dev && npm run build && pip3 install -r requirements.txt --break-system-packages && npm prune --production
+    buildCommand: npm install --include=dev && npm run build && pip3 install -r backend/requirements.txt --break-system-packages && npm prune --production
     startCommand: npm start
     envVars:
       - key: NODE_VERSION
