@@ -383,7 +383,8 @@ const WaitlistPage: React.FC = () => {
                 mobileNumber: formData.mobileNumber
             };
 
-            const response = await fetch('/api/scan-email', {
+            const API_BASE = import.meta.env.PROD ? 'https://yureka-api.onrender.com' : 'http://localhost:3000';
+            const response = await fetch(`${API_BASE}/api/scan-email`, {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json',

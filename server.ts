@@ -2,6 +2,7 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
+import cors from "cors";
 import { createClient } from "@supabase/supabase-js";
 import * as dotenv from "dotenv";
 
@@ -17,6 +18,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 async function startServer() {
   const app = express();
+  app.use(cors());
   const PORT = Number(process.env.PORT) || 3000;
 
   app.use(express.json());

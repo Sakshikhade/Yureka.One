@@ -23,9 +23,10 @@ const Bills: React.FC = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [scanProgress, setScanProgress] = useState(0);
 
+    const API_BASE = import.meta.env.PROD ? 'https://yureka-api.onrender.com' : 'http://localhost:3000';
     const loadCache = async () => {
         try {
-            const res = await fetch('/api/financial-ledger');
+            const res = await fetch(`${API_BASE}/api/financial-ledger`);
             const data = await res.json();
             if (data.transactions) {
                 const billKeywords = ['bill', 'invoice', 'autopay', 'subscription', 'renew', 'recharge', 'premium', 'statement', 'spotify', 'netflix', 'aws', 'google one', 'axis', 'hdfc', 'sbi', 'icici', 'card alert'];
@@ -49,7 +50,7 @@ const Bills: React.FC = () => {
         setError(null);
         setScanProgress(15);
         try {
-            const res = await fetch('/api/scan-email', {
+            const res = await fetch(`${API_BASE}/api/scan-email`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
