@@ -524,13 +524,14 @@ export const fetchNotificationInteractionsAdmin = async () => {
   return await withRetry<any[]>(() => supabaseAdmin.from('notification_interactions').select('*'));
 };
 
-export const createNotification = async (payload: { title: string, message: string, type?: string, created_by: string }) => {
+export const createNotification = async (payload: { title: string, message: string, type?: string, created_by: string, image_url?: string }) => {
   const { data, error } = await supabaseAdmin.from('platform_notifications').insert([{
     title: payload.title,
     message: payload.message,
     type: payload.type || 'info',
     status: 'active',
-    created_by: payload.created_by
+    created_by: payload.created_by,
+    image_url: payload.image_url || null
   }]).select();
   if (error) throw error;
   return data[0];

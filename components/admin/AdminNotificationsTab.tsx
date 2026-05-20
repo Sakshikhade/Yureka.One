@@ -15,7 +15,8 @@ export const AdminNotificationsTab: React.FC = () => {
   const [isComposing, setIsComposing] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   
-  const [form, setForm] = useState({ title: '', message: '', type: 'info' });
+  const [form, setForm] = useState({ title: '', message: '', type: 'info', image_url: '' });
+  const [uploading, setUploading] = useState(false);
 
   const loadData = async () => {
     setLoading(true);
@@ -37,6 +38,26 @@ export const AdminNotificationsTab: React.FC = () => {
     loadData();
   }, []);
 
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    try {
+      // We need supabaseAdmin. Dynamically importing it to avoid cyclic dependencies if any, 
+      // or just using regular supabase. Admin tab has RLS bypass if needed.
+      const { supabaseAdmin } = await import('../../supabase');
+      const path = `notifications/${Date.now()}_${file.name}`;
+      const { data, error } = await supabaseAdmin.storage.from('media').upload(path, file);
+      if (error) throw error;
+      const { data: publicUrlData } = supabaseAdmin.storage.from('media').getPublicUrl(data.path);
+      setForm(prev => ({ ...prev, image_url: publicUrlData.publicUrl }));
+    } catch (err: any) {
+      alert(`Image upload failed: ${err.message}`);
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.title || !form.message) return;
@@ -47,10 +68,11 @@ export const AdminNotificationsTab: React.FC = () => {
         title: form.title,
         message: form.message,
         type: form.type,
-        created_by: user?.email || 'Admin'
+        created_by: user?.email || 'Admin',
+        image_url: form.image_url
       });
       setIsComposing(false);
-      setForm({ title: '', message: '', type: 'info' });
+      setForm({ title: '', message: '', type: 'info', image_url: '' });
       await loadData();
     } catch (err) {
       alert("Failed to send notification.");
@@ -125,6 +147,28 @@ export const AdminNotificationsTab: React.FC = () => {
                   />
                 </div>
 
+                <div>
+                  <label className="block text-[10px] uppercase font-bold text-white/40 mb-2">Notification Image (Optional)</label>
+                  <div className="flex items-center gap-4">
+                    <input 
+                      type="file" accept="image/*"
+                      onChange={handleFileUpload}
+                      className="text-sm text-white/60 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-white/10 file:text-white hover:file:bg-white/20 transition-colors w-full"
+                    />
+                    {uploading && <Loader2 size={20} className="animate-spin text-clay shrink-0" />}
+                  </div>
+                  {form.image_url && (
+                    <div className="mt-4 relative w-32 h-20 rounded-xl overflow-hidden border border-white/10">
+                      <img src={form.image_url} alt="Notification" className="w-full h-full object-cover" />
+                      <button 
+                        type="button" 
+                        onClick={() => setForm({...form, image_url: ''})}
+                        className="absolute top-1 right-1 w-6 h-6 bg-black/50 hover:bg-red-500 rounded-full flex items-center justify-center text-white text-xs transition-colors"
+                      >✕</button>
+                    </div>
+                  )}
+                </div>
+
                 <div className="flex gap-4">
                   <label className="flex-1">
                     <span className="block text-[10px] uppercase font-bold text-white/40 mb-2">Type</span>
@@ -195,6 +239,11 @@ export const AdminNotificationsTab: React.FC = () => {
                           <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-white/40 uppercase font-bold">{n.type}</span>
                         </div>
                         <p className="text-sm text-white/60 mb-2">{n.message}</p>
+                        {n.image_url && (
+                          <div className="mb-3 w-32 h-20 rounded-lg overflow-hidden border border-white/5 relative">
+                            <img src={n.image_url} alt="Notification media" className="w-full h-full object-cover" />
+                          </div>
+                        )}
                         <p className="text-[10px] text-white/30 uppercase tracking-widest font-mono">Sent: {new Date(n.created_at).toLocaleString()} • By {n.created_by}</p>
                       </div>
 

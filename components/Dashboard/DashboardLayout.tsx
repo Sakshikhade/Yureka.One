@@ -49,7 +49,7 @@ const NAV_ITEMS = [
 ];
 
 const NotificationBell = () => {
-    const { user, ledgerTransactions, myCards } = useSupabase();
+    const { user, ledgerTransactions, myCards, supabase } = useSupabase();
     const [notifications, setNotifications] = useState<any[]>([]);
     const [unreadCount, setUnreadCount] = useState(0);
     const [isOpen, setIsOpen] = useState(false);
@@ -76,9 +76,17 @@ const NotificationBell = () => {
         };
         load();
         
-        // Optional: Poll every 60s
-        const interval = setInterval(load, 60000);
-        return () => clearInterval(interval);
+        // Setup real-time listener for new notifications
+        const sub = supabase
+            .channel('public:platform_notifications')
+            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'platform_notifications' }, () => {
+                load();
+            })
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(sub);
+        };
     }, [user?.email]);
 
     const handleOpen = async () => {
@@ -99,6 +107,7 @@ const NotificationBell = () => {
     };
 
     const resolveVariables = (msg: string) => {
+        if (!msg) return msg;
         let text = msg;
         const userName = user?.user_metadata?.full_name?.split(' ')[0] || user?.email?.split('@')[0] || 'Explorer';
         const cardName = myCards?.[0]?.name || 'your primary card';
@@ -166,13 +175,22 @@ const NotificationBell = () => {
                                             <div 
                                                 key={n.id} 
                                                 onClick={(e) => handleDismiss(e, n.id)}
-                                                className="p-4 rounded-2xl hover:bg-white/[0.03] transition-colors cursor-pointer group flex gap-4"
+                                                className="p-4 rounded-2xl hover:bg-white/[0.03] transition-colors cursor-pointer group flex flex-col gap-3"
                                             >
-                                                <div className="w-2 h-2 rounded-full bg-clay mt-2 shrink-0 shadow-[0_0_8px_#21deb3]" />
-                                                <div>
-                                                    <h4 className="text-white text-sm font-bold mb-1">{n.title}</h4>
-                                                    <p className="text-white/60 text-xs leading-relaxed">{resolveVariables(n.message)}</p>
-                                                    <p className="text-[9px] uppercase tracking-widest text-white/20 mt-3 font-mono">
+                                                <div className="flex gap-4">
+                                                    <div className="w-2 h-2 rounded-full bg-clay mt-2 shrink-0 shadow-[0_0_8px_#21deb3]" />
+                                                    <div className="flex-1">
+                                                        <h4 className="text-white text-sm font-bold mb-1">{resolveVariables(n.title)}</h4>
+                                                        <p className="text-white/60 text-xs leading-relaxed">{resolveVariables(n.message)}</p>
+                                                    </div>
+                                                </div>
+                                                {n.image_url && (
+                                                    <div className="w-full h-32 rounded-xl overflow-hidden mt-1 border border-white/5 relative ml-6">
+                                                        <img src={n.image_url} alt="Notification visual" className="w-full h-full object-cover" />
+                                                    </div>
+                                                )}
+                                                <div className="pl-6">
+                                                    <p className="text-[9px] uppercase tracking-widest text-white/20 font-mono">
                                                         {new Date(n.created_at).toLocaleDateString()}
                                                     </p>
                                                 </div>
