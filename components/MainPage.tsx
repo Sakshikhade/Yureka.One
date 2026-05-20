@@ -1,4 +1,5 @@
 import React, { Suspense, lazy } from 'react';
+import { Link } from 'react-router-dom';
 import HowItWorksStepper from './HowItWorksStepper';
 import SEO from './SEO';
 import { useSupabase } from './SupabaseProvider';
