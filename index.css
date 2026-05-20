@@ -3,7 +3,7 @@
 @tailwind utilities;
 
       html {
-        font-size: 13px; /* Scale everything down to match 50%-zoom density */
+        font-size: 15px; /* Boost global text sizing for premium readability */
         scroll-behavior: smooth;
         background-color: #0a0a0a;
         -webkit-tap-highlight-color: transparent;
@@ -13,7 +13,7 @@
         font-size: 16px;
         line-height: 1.6;
         background-color: #0a0a0a;
-        color: rgba(255, 255, 255, 0.9);
+        color: rgba(255, 255, 255, 0.95);
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         overflow-x: hidden;
@@ -50,9 +50,9 @@
       }
 
       /* Global Heading Sizes — tightened for premium density */
-      h1 { font-size: clamp(22px, 4vw, 42px); }
-      h2 { font-size: clamp(18px, 3vw, 28px); }
-      h3 { font-size: clamp(14px, 2.5vw, 20px); }
+      h1 { font-size: clamp(28px, 5vw, 54px); }
+      h2 { font-size: clamp(22px, 4vw, 36px); }
+      h3 { font-size: clamp(18px, 3vw, 26px); }
 
       .font-serif {
         font-family: 'Fraunces', serif; 
@@ -276,3 +276,41 @@
       .dashboard-scroll::-webkit-scrollbar-thumb:hover {
         background: rgba(52, 211, 153, 0.2);
       }
+
+      /* Global Accessibility & High-Contrast Overrides */
+      .text-white\/20,
+      .text-white\/25,
+      .text-white\/30,
+      .text-white\/40,
+      .text-white\/50 {
+        color: rgba(255, 255, 255, 0.78) !important;
+      }
+
+      .text-white\/60,
+      .text-white\/70,
+      .text-white\/80 {
+        color: rgba(255, 255, 255, 0.95) !important;
+      }
+
+      .text-gray-400,
+      .text-gray-500,
+      .text-neutral-400,
+      .text-neutral-500,
+      .text-zinc-400,
+      .text-zinc-500 {
+        color: rgba(255, 255, 255, 0.88) !important;
+      }
+
+      /* Elevate micro subtext sizes for enhanced legibility */
+      .text-\[8px\],
+      .text-\[9px\],
+      .text-\[10px\],
+      .text-\[11px\] {
+        font-size: 11px !important;
+        letter-spacing: 0.08em !important;
+      }
+
+      .text-xs {
+        font-size: 13px !important;
+      }
+
