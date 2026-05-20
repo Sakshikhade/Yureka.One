@@ -5,6 +5,7 @@ import {
     ShieldCheck, Bell, Sparkles, LogIn, Lock, ArrowUpRight
 } from 'lucide-react';
 import { useSupabase } from '../SupabaseProvider';
+import { ScannerProgress } from './ScannerProgress';
 
 interface ParsedTransaction {
     brandName: string;
@@ -150,27 +151,7 @@ const Bills: React.FC = () => {
             {/* Scanning Loader Progress */}
             <AnimatePresence>
                 {loading && (
-                    <motion.div
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        className="w-full bg-white/[0.01] border border-white/5 rounded-3xl p-6"
-                    >
-                        <div className="flex items-center justify-between text-xs mb-3">
-                            <span className="text-clay font-black uppercase tracking-wider flex items-center gap-2">
-                                <span className="w-1.5 h-1.5 bg-clay rounded-full animate-ping" />
-                                Running Python Deep Intelligence Scanner...
-                            </span>
-                            <span className="text-white/40">{scanProgress}%</span>
-                        </div>
-                        <div className="h-1 bg-white/5 rounded-full overflow-hidden">
-                            <motion.div 
-                                className="h-full bg-clay" 
-                                style={{ width: `${scanProgress}%` }}
-                                transition={{ duration: 0.3 }}
-                            />
-                        </div>
-                    </motion.div>
+                    <ScannerProgress progress={scanProgress} />
                 )}
             </AnimatePresence>
 
