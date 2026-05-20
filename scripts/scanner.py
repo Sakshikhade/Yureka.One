@@ -338,106 +338,99 @@ def classify_type_bill(subject, snippet):
         return 'Bill'
     return 'Bill Transaction'
 
-def execute_financial_scanner(gmail_service):
+def get_financial_score(subject, snippet):
+    """Scores email relevance for bill detection using weighted keyword matching (Script 2 approach)."""
+    patterns = {
+        'bill': 5, 'statement': 5, 'debited': 5, 'credited': 5,
+        'outstanding': 5, 'invoice': 5, 'due': 4, 'transaction': 4,
+        'payment': 4, 'inr': 2
+    }
+    text = (subject + snippet).lower()
+    return sum(weight for kw, weight in patterns.items() if kw in text)
+
+
+def extract_amount_from_snippet(text):
+    """Fast amount extraction from snippet/subject without full body parsing (Script 2 approach)."""
+    match = re.search(r'(?:rs\.?|inr|₹|amount|total)\s*[:\s]*([\d,]+\.?\d*)', text, re.IGNORECASE)
+    if match:
+        clean_val = match.group(1).replace(',', '')
+        try:
+            val = float(clean_val)
+            if val > 0:
+                return f"₹ {val:,.2f}"
+        except Exception:
+            pass
+    return "N/A"
+
+
+def execute_expense_scanner(gmail_service):
+    """
+    Script 1: Full-body purchase/expense scanner.
+    Targets category:purchases and known merchant senders.
+    Output type: 'Transaction' → shown in Expenses tab.
+    """
     emails_data = []
-    
-    # Restrictive financial query to eliminate recruitment/personal noise, expanded for standard merchants
-    query = 'subject:(bill OR transaction OR statement OR debited OR payment OR invoice OR spent OR credited OR checkout OR order OR receipt OR purchase OR booking) OR category:purchases OR from:phonepe.com OR from:axis.bank.in OR from:shiprocket.in OR from:eatclub.in OR from:swiggy.in OR from:zomato.com OR from:amazon.in OR from:flipkart.com OR from:uber.com OR from:olacabs.com OR from:makemytrip.com OR from:bookmyshow.com OR from:myntra.com OR from:nykaa.com OR from:blinkit.com OR from:zepto.co OR from:bigbasket.com'
-    
+    query = (
+        'category:purchases OR from:noreply@phonepe.com OR from:alerts@axis.bank.in '
+        'OR from:info@net.shiprocket.in OR from:shiprocket.in OR from:eatclub.in '
+        'OR from:swiggy.in OR from:zomato.com OR from:amazon.in OR from:flipkart.com '
+        'OR from:uber.com OR from:olacabs.com OR from:makemytrip.com '
+        'OR from:bookmyshow.com OR from:myntra.com OR from:nykaa.com '
+        'OR from:blinkit.com OR from:zepto.co OR from:bigbasket.com'
+    )
+
     try:
-        sys.stderr.write("Fetching email list from Gmail...\n")
-        response = gmail_service.users().messages().list(userId='me', q=query, maxResults=120).execute()
+        sys.stderr.write("Expense Scanner: Fetching purchase emails...\n")
+        response = gmail_service.users().messages().list(userId='me', q=query, maxResults=150).execute()
         messages = response.get('messages', [])
-        sys.stderr.write(f"Found {len(messages)} potential financial emails. Starting batch fetch...\n")
-        
+        sys.stderr.write(f"Expense Scanner: Found {len(messages)} emails. Batch fetching full bodies...\n")
+
         if not messages:
             return []
 
-        # Batch fetch all message details in full format to prevent sequential HTTP requests
         messages_details = {}
-        def batch_callback(request_id, response, exception):
+        def expense_batch_callback(request_id, response, exception):
             if exception is None:
                 messages_details[request_id] = response
             else:
-                sys.stderr.write(f"Batch fetch error for {request_id}: {str(exception)}\n")
+                sys.stderr.write(f"Expense batch error for {request_id}: {str(exception)}\n")
 
-        # Process in chunks of 50 to respect Google API limits
         chunk_size = 50
         for i in range(0, len(messages), chunk_size):
-            chunk = messages[i:i+chunk_size]
-            batch = gmail_service.new_batch_http_request(callback=batch_callback)
+            chunk = messages[i:i + chunk_size]
+            batch = gmail_service.new_batch_http_request(callback=expense_batch_callback)
             for msg in chunk:
-                batch.add(gmail_service.users().messages().get(userId='me', id=msg['id'], format='full'), request_id=msg['id'])
+                batch.add(
+                    gmail_service.users().messages().get(userId='me', id=msg['id'], format='full'),
+                    request_id=msg['id']
+                )
             batch.execute()
 
-        sys.stderr.write(f"Batch fetch complete. Processing {len(messages_details)} successfully retrieved emails...\n")
+        sys.stderr.write(f"Expense Scanner: Processing {len(messages_details)} emails...\n")
 
         for msg in messages:
             msg_id = msg['id']
             if msg_id not in messages_details:
                 continue
-            
             m = messages_details[msg_id]
             try:
                 payload = m.get('payload', {})
                 headers = payload.get('headers', [])
                 headers_dict = {h['name'].lower(): h['value'] for h in headers}
                 snippet = m.get('snippet', '')
-                
+
                 subject = headers_dict.get('subject', '(No Subject)')
                 sender = headers_dict.get('from', '(Unknown Sender)')
                 date = headers_dict.get('date', '(Unknown Date)')
-                
-                # Relevance score
-                score = sum(5 if kw in (subject + snippet).lower() else 0 for kw in ['bill', 'statement', 'debited', 'credited', 'due'])
-                score += sum(4 if kw in (subject + snippet).lower() else 0 for kw in ['transaction', 'payment'])
-                score += sum(2 if kw in (subject + snippet).lower() else 0 for kw in ['inr'])
-                
-                is_known_financial_sender = any(k in sender.lower() for k in [
-                    'phonepe', 'axis', 'shiprocket', 'eatclub', 'indusind', 'hdfc', 'sbi', 'icici', 
-                    'amex', 'hsbc', 'citi', 'kotak', 'yesbank', 'paytm', 'net.shiprocket.in',
-                    'swiggy', 'zomato', 'amazon', 'flipkart', 'uber', 'ola', 'makemytrip', 'bookmyshow', 
-                    'myntra', 'nykaa', 'blinkit', 'zepto', 'bigbasket', 'tata 1mg', 'jiomart'
-                ])
-                
-                has_financial_keywords = score >= 4 or any(k in (subject + snippet).lower() for k in [
-                    'rs.', 'inr', '₹', 'usd', 'debited', 'credited', 'payment', 'transaction', 
-                    'invoice', 'bill', 'statement', 'spent', 'charged', 'receipt', 'order', 'purchase',
-                    'booking', 'ticket', 'flight', 'hotel', 'refund', 'paid'
-                ])
-                
-                if not (is_known_financial_sender or has_financial_keywords):
-                    continue
 
-                # Determine Type
-                is_bill = False
-                if score >= 5 and any(k in (subject + snippet).lower() for k in ['bill', 'statement', 'due', 'outstanding', 'invoice']):
-                    is_bill = True
-                
-                amount = "N/A"
-                brand = re.sub(r'\s*<.*?>', '', sender).replace('"', '').replace("'", "").strip()
-                description = subject[:60].strip()
-                
-                # Parse from metadata first
-                if is_bill:
-                    amount = extract_amount_bill(snippet + " " + subject)
-                    classified_type = classify_type_bill(subject, snippet)
-                else:
-                    brand, amount, description = parse_transaction_data_expense(snippet + " " + subject, sender, subject)
-                    classified_type = 'Transaction'
+                # Full body extraction (Script 1 approach)
+                html_content, pdf_content = extract_all_body_and_attachments(gmail_service, msg_id, payload)
+                soup = BeautifulSoup(html_content, 'html.parser')
+                clean_html_text = soup.get_text(separator=' ').strip()
+                unified_corpus = f"{clean_html_text}\n{snippet}\n{pdf_content}"
 
-                # Fallback parsing using full body from batch retrieved message (NO extra HTTP requests)
-                if amount == "N/A":
-                    html_content, pdf_content = extract_all_body_and_attachments(gmail_service, msg_id, payload)
-                    soup = BeautifulSoup(html_content, 'html.parser')
-                    clean_html_text = soup.get_text(separator=' ').strip()
-                    unified_corpus = f"{clean_html_text}\n{snippet}\n{pdf_content}"
-                    
-                    if is_bill:
-                        amount = extract_amount_bill(unified_corpus)
-                    else:
-                        brand, amount, description = parse_transaction_data_expense(unified_corpus, sender, subject)
-                
+                brand, amount, description = parse_transaction_data_expense(unified_corpus, sender, subject)
+
                 if amount != "N/A":
                     clean_date = re.sub(r'([\+\s-]\d{4}.*)$', '', date).strip()
                     emails_data.append({
@@ -446,14 +439,116 @@ def execute_financial_scanner(gmail_service):
                         'description': description,
                         'date': clean_date,
                         'sender': sender,
-                        'type': classified_type
+                        'type': 'Transaction'
                     })
             except Exception as e:
-                sys.stderr.write(f"Failed parsing message {msg_id}: {str(e)}\n")
-    except Exception as e:
-        sys.stderr.write(f"Failed query list: {str(e)}\n")
+                sys.stderr.write(f"Expense Scanner: Failed parsing {msg_id}: {str(e)}\n")
 
+    except Exception as e:
+        sys.stderr.write(f"Expense Scanner: Query failed: {str(e)}\n")
+
+    sys.stderr.write(f"Expense Scanner: Extracted {len(emails_data)} expense transactions.\n")
     return emails_data
+
+
+def execute_bill_scanner(gmail_service):
+    """
+    Script 2: Fast metadata-only bill scanner using financial scoring.
+    Only fetches message headers + snippet — no full body, very fast.
+    Output types: Credit Card Bill / Invoice / Bill / Bill Transaction → shown in Bills tab.
+    """
+    emails_data = []
+    query = 'subject:(bill OR statement OR debited OR credited OR outstanding OR invoice OR due) OR has:attachment'
+
+    try:
+        sys.stderr.write("Bill Scanner: Fetching bill candidate emails...\n")
+        response = gmail_service.users().messages().list(userId='me', q=query, maxResults=500).execute()
+        messages = response.get('messages', [])
+        sys.stderr.write(f"Bill Scanner: Found {len(messages)} candidates. Scoring...\n")
+
+        if not messages:
+            return []
+
+        seen_keys = set()
+
+        for msg in messages:
+            try:
+                m = gmail_service.users().messages().get(
+                    userId='me', id=msg['id'], format='metadata',
+                    metadataHeaders=['From', 'Subject', 'Date']
+                ).execute()
+
+                headers = {h['name']: h['value'] for h in m['payload']['headers']}
+                snippet = m.get('snippet', '')
+                subject = headers.get('Subject', '(No Subject)')
+                sender = headers.get('From', '(Unknown Sender)')
+                date = headers.get('Date', '(Unknown Date)')
+
+                # Apply financial scoring filter — must score >= 5
+                score = get_financial_score(subject, snippet)
+                if score < 5:
+                    continue
+
+                # Fast amount extraction from snippet/subject
+                amount = extract_amount_from_snippet(snippet + " " + subject)
+                if amount == "N/A":
+                    continue
+
+                # Classify bill type
+                bill_type = classify_type_bill(subject, snippet)
+
+                brand = re.sub(r'\s*<.*?>', '', sender).replace('"', '').replace("'", "").strip()
+                description = subject[:80].strip()
+                clean_date = re.sub(r'([\+\s-]\d{4}.*)$', '', date).strip()
+
+                # Deduplicate by brand + date + amount
+                dedup_key = f"{brand}|{clean_date}|{amount}"
+                if dedup_key in seen_keys:
+                    continue
+                seen_keys.add(dedup_key)
+
+                emails_data.append({
+                    'brandName': brand,
+                    'amount': amount,
+                    'description': description,
+                    'date': clean_date,
+                    'sender': sender,
+                    'type': bill_type
+                })
+
+            except Exception as e:
+                sys.stderr.write(f"Bill Scanner: Failed parsing {msg['id']}: {str(e)}\n")
+
+    except Exception as e:
+        sys.stderr.write(f"Bill Scanner: Query failed: {str(e)}\n")
+
+    sys.stderr.write(f"Bill Scanner: Extracted {len(emails_data)} bill records.\n")
+    return emails_data
+
+
+def execute_financial_scanner(gmail_service):
+    """
+    Orchestrator: Runs both Script 1 (expenses) and Script 2 (bills) scanners,
+    then merges and deduplicates the results.
+    - Expenses → type='Transaction' → shown in Expenses tab
+    - Bills → type='Credit Card Bill'/'Invoice'/'Bill'/'Bill Transaction' → shown in Bills tab
+    """
+    sys.stderr.write("=== Starting Dual-Mode Financial Scanner ===\n")
+
+    expense_data = execute_expense_scanner(gmail_service)
+    bill_data = execute_bill_scanner(gmail_service)
+
+    # Merge with deduplication by brand+date+amount
+    seen = set()
+    combined = []
+    for item in expense_data + bill_data:
+        key = f"{item['brandName']}|{item['date']}|{item['amount']}"
+        if key not in seen:
+            seen.add(key)
+            combined.append(item)
+
+    sys.stderr.write(f"=== Total unique financial records: {len(combined)} (expenses: {len(expense_data)}, bills: {len(bill_data)}) ===\n")
+    return combined
 
 def main():
     fallback_data = {}
