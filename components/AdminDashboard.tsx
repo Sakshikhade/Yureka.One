@@ -31,6 +31,7 @@ import { AdminReviewsTab } from './admin/AdminReviewsTab';
 import { AdminWaitlistTab } from './admin/AdminWaitlistTab';
 import { AdminSettingsTab } from './admin/AdminSettingsTab';
 import { AdminLogsTab } from './admin/AdminLogsTab';
+import { AdminNotificationsTab } from './admin/AdminNotificationsTab';
 import { AdminModals } from './admin/AdminModals';
 
 const ADMIN_BANKS = [
@@ -114,7 +115,7 @@ const AdminDashboard: React.FC = () => {
   const [userRole, setUserRole] = useState<string>('user');
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'blogs' | 'cards' | 'updates' | 'waitlist' | 'settings' | 'logs' | 'reviews'>(
+  const [activeTab, setActiveTab] = useState<'blogs' | 'cards' | 'updates' | 'waitlist' | 'settings' | 'logs' | 'reviews' | 'notifications'>(
     (localStorage.getItem('yureka_admin_tab') as any) || 'blogs'
   );
   const [waitlistFilter, setWaitlistFilter] = useState<'pending' | 'accepted' | 'rejected' | 'on_hold' | 'all'>('pending');
@@ -614,6 +615,7 @@ const AdminDashboard: React.FC = () => {
                     />
                   )}
                   {activeTab === 'logs' && <AdminLogsTab />}
+                  {activeTab === 'notifications' && <AdminNotificationsTab />}
                 </motion.div>
               </AnimatePresence>
             </div>

@@ -488,3 +488,55 @@ export const deleteCardContribution = async (id: string) => {
   const { error } = await supabaseAdmin.from('card_contributions').delete().eq('id', id);
   if (error) throw error;
 };
+
+// --- PLATFORM NOTIFICATIONS ---
+
+export const fetchPlatformNotifications = async () => {
+  return await withRetry<any[]>(() => supabase.from('platform_notifications').select('*').eq('status', 'active').order('created_at', { ascending: false }));
+};
+
+export const fetchUserInteractions = async (userEmail: string) => {
+  return await withRetry<any[]>(() => supabase.from('notification_interactions').select('*').eq('user_email', userEmail));
+};
+
+export const logNotificationInteraction = async (notificationId: string, userEmail: string, username: string, action: 'read' | 'clicked') => {
+  try {
+    const { error } = await supabase.from('notification_interactions').insert([{
+      notification_id: notificationId,
+      user_email: userEmail,
+      username: username || userEmail,
+      action
+    }]);
+    if (error && error.code !== '23505') { // Ignore unique constraint violation (duplicate log)
+      console.warn("Failed to log notification interaction:", error);
+    }
+  } catch (e) {
+    console.warn("Failed to log notification interaction exception:", e);
+  }
+};
+
+export const fetchAllNotificationsAdmin = async () => {
+  return await withRetry<any[]>(() => supabaseAdmin.from('platform_notifications').select('*').order('created_at', { ascending: false }));
+};
+
+export const fetchNotificationInteractionsAdmin = async () => {
+  // Can be optimized by querying with count, but for now we fetch all
+  return await withRetry<any[]>(() => supabaseAdmin.from('notification_interactions').select('*'));
+};
+
+export const createNotification = async (payload: { title: string, message: string, type?: string, created_by: string }) => {
+  const { data, error } = await supabaseAdmin.from('platform_notifications').insert([{
+    title: payload.title,
+    message: payload.message,
+    type: payload.type || 'info',
+    status: 'active',
+    created_by: payload.created_by
+  }]).select();
+  if (error) throw error;
+  return data[0];
+};
+
+export const archiveNotification = async (id: string) => {
+  const { error } = await supabaseAdmin.from('platform_notifications').update({ status: 'archived' }).eq('id', id);
+  if (error) throw error;
+};

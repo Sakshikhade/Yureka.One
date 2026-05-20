@@ -26,6 +26,8 @@ import CardExplorer from '../CardExplorer';
 import YurekaAIPage from '../YurekaAIPage';
 import WaitlistPage from '../WaitlistPage';
 
+import { fetchPlatformNotifications, fetchUserInteractions, logNotificationInteraction } from '../../services/supabaseService';
+
 const EXPLORE_ITEMS = [
     { id: 'categories', label: 'Categories', icon: LayoutGrid, path: '/dashboard/categories' },
     { id: 'tools', label: 'Free Tools', icon: Calculator, path: '/dashboard/rewards-calculator' },
@@ -45,6 +47,147 @@ const NAV_ITEMS = [
     { id: 'referrals', label: 'Referral Dashboard', icon: Users, path: '/dashboard/referrals' },
     { id: 'profile', label: 'Profile', icon: User, path: '/dashboard/profile' },
 ];
+
+const NotificationBell = () => {
+    const { user, ledgerTransactions, myCards } = useSupabase();
+    const [notifications, setNotifications] = useState<any[]>([]);
+    const [unreadCount, setUnreadCount] = useState(0);
+    const [isOpen, setIsOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (!user?.email) return;
+        const load = async () => {
+            const [notifs, inters] = await Promise.all([
+                fetchPlatformNotifications(),
+                fetchUserInteractions(user.email!)
+            ]);
+            
+            // Filter out clicked (cleared) notifications
+            const clickedIds = new Set(inters?.filter(i => i.action === 'clicked').map(i => i.notification_id) || []);
+            const readIds = new Set(inters?.filter(i => i.action === 'read').map(i => i.notification_id) || []);
+            
+            const activeNotifs = (notifs || []).filter(n => !clickedIds.has(n.id));
+            setNotifications(activeNotifs);
+            
+            // Unread are active ones that haven't been 'read'
+            const unread = activeNotifs.filter(n => !readIds.has(n.id)).length;
+            setUnreadCount(unread);
+        };
+        load();
+        
+        // Optional: Poll every 60s
+        const interval = setInterval(load, 60000);
+        return () => clearInterval(interval);
+    }, [user?.email]);
+
+    const handleOpen = async () => {
+        setIsOpen(!isOpen);
+        if (!isOpen && unreadCount > 0) {
+            // Mark all as read when opening
+            setUnreadCount(0);
+            for (const n of notifications) {
+                await logNotificationInteraction(n.id, user.email!, user.user_metadata?.full_name || '', 'read');
+            }
+        }
+    };
+
+    const handleDismiss = async (e: React.MouseEvent, id: string) => {
+        e.stopPropagation();
+        setNotifications(prev => prev.filter(n => n.id !== id));
+        await logNotificationInteraction(id, user.email!, user.user_metadata?.full_name || '', 'clicked');
+    };
+
+    const resolveVariables = (msg: string) => {
+        let text = msg;
+        const userName = user?.user_metadata?.full_name?.split(' ')[0] || user?.email?.split('@')[0] || 'Explorer';
+        const cardName = myCards?.[0]?.name || 'your primary card';
+        
+        let totalExpenses = 0;
+        let totalBills = 0;
+        (ledgerTransactions || []).forEach(tx => {
+            const type = (tx.type || '').toLowerCase();
+            const amtStr = (tx.amount || '').replace(/[₹$,\s]/g, '');
+            const parsed = parseFloat(amtStr);
+            if (!isNaN(parsed)) {
+                if (type === 'transaction') totalExpenses += parsed;
+                else totalBills += parsed;
+            }
+        });
+
+        text = text.replace(/\{\{user_name\}\}/g, userName);
+        text = text.replace(/\{\{card_name\}\}/g, cardName);
+        text = text.replace(/\{\{total_expenses\}\}/g, `₹ ${totalExpenses.toLocaleString('en-IN')}`);
+        text = text.replace(/\{\{total_bills\}\}/g, `₹ ${totalBills.toLocaleString('en-IN')}`);
+        return text;
+    };
+
+    return (
+        <div className="relative z-[100]">
+            <button 
+                onClick={handleOpen}
+                className="w-14 h-14 glass-dark rounded-2xl flex items-center justify-center text-white/30 hover:text-white hover:border-white/20 transition-all relative group"
+            >
+                <Bell size={24} className={`transition-transform ${isOpen ? 'text-clay' : 'group-hover:rotate-12'}`} />
+                {unreadCount > 0 && (
+                    <div className="absolute -top-1 -right-1 w-5 h-5 bg-clay rounded-full shadow-[0_0_15px_rgba(52,211,153,1)] flex items-center justify-center text-[9px] text-black font-black">
+                        {unreadCount}
+                    </div>
+                )}
+            </button>
+
+            <AnimatePresence>
+                {isOpen && (
+                    <>
+                        <motion.div 
+                            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                            onClick={() => setIsOpen(false)}
+                            className="fixed inset-0 z-40"
+                        />
+                        <motion.div 
+                            initial={{ opacity: 0, y: 10, scale: 0.95 }} 
+                            animate={{ opacity: 1, y: 0, scale: 1 }} 
+                            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                            className="absolute top-[120%] right-0 w-80 sm:w-96 bg-black/90 backdrop-blur-2xl border border-white/10 shadow-2xl rounded-3xl z-50 overflow-hidden"
+                        >
+                            <div className="p-5 border-b border-white/5 flex items-center justify-between bg-white/[0.02]">
+                                <h3 className="font-bold text-white text-sm tracking-widest uppercase">Intel Updates</h3>
+                                <span className="text-[10px] text-clay font-mono">{notifications.length} Active</span>
+                            </div>
+                            
+                            <div className="max-h-[60vh] overflow-y-auto dashboard-scroll p-2">
+                                {notifications.length === 0 ? (
+                                    <div className="p-8 text-center text-white/30 text-xs font-bold uppercase tracking-widest">
+                                        No new intel available
+                                    </div>
+                                ) : (
+                                    <div className="space-y-1">
+                                        {notifications.map(n => (
+                                            <div 
+                                                key={n.id} 
+                                                onClick={(e) => handleDismiss(e, n.id)}
+                                                className="p-4 rounded-2xl hover:bg-white/[0.03] transition-colors cursor-pointer group flex gap-4"
+                                            >
+                                                <div className="w-2 h-2 rounded-full bg-clay mt-2 shrink-0 shadow-[0_0_8px_#21deb3]" />
+                                                <div>
+                                                    <h4 className="text-white text-sm font-bold mb-1">{n.title}</h4>
+                                                    <p className="text-white/60 text-xs leading-relaxed">{resolveVariables(n.message)}</p>
+                                                    <p className="text-[9px] uppercase tracking-widest text-white/20 mt-3 font-mono">
+                                                        {new Date(n.created_at).toLocaleDateString()}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </motion.div>
+                    </>
+                )}
+            </AnimatePresence>
+        </div>
+    );
+};
 
 const DashboardLayout: React.FC = () => {
     const { user, supabase } = useSupabase();
@@ -222,10 +365,7 @@ const DashboardLayout: React.FC = () => {
                             animate={{ opacity: 1, scale: 1 }}
                             className="flex items-center gap-6"
                         >
-                            <button className="w-14 h-14 glass-dark rounded-2xl flex items-center justify-center text-white/30 hover:text-white hover:border-white/20 transition-all relative group">
-                                <Bell size={24} className="group-hover:rotate-12 transition-transform" />
-                                <div className="absolute top-4 right-4 w-2 h-2 bg-clay rounded-full shadow-[0_0_15px_rgba(52,211,153,1)]" />
-                            </button>
+                            <NotificationBell />
                             <div className="flex items-center gap-4 pl-4 border-l border-white/5">
                                 <div className="text-right hidden sm:block">
                                     <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20">Authorized User</p>
