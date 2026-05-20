@@ -211,6 +211,18 @@ export const deleteCard = async (id: string, deletedBy: string = 'Admin') => {
 export const updateWaitlistStatus = async (id: string, status: string) => {
   const { error } = await supabaseAdmin.from('waitlist').update({ status }).eq('id', id);
   if (error) throw error;
+  
+  // When an admin approves a user, auto-sync their waitlist cards to their dashboard
+  if (status === 'accepted') {
+    try {
+      const { data: entry } = await supabaseAdmin.from('waitlist').select('email, credit_cards_details').eq('id', id).single();
+      if (entry?.email) {
+        await syncWaitlistCardsForUser(entry.email, entry.credit_cards_details || []);
+      }
+    } catch (syncErr) {
+      console.warn('Card sync after approval failed (non-fatal):', syncErr);
+    }
+  }
 };
 
 export const deleteWaitlistEntry = async (id: string, deletedBy: string = 'Admin') => {
@@ -396,6 +408,72 @@ export const addUserCard = async (cardData: any) => {
 export const removeUserCard = async (id: string) => {
   const { error } = await supabase.from('user_owned_cards').delete().eq('id', id);
   if (error) throw error;
+};
+
+export const updateUserCardPriority = async (userId: string, cardId: string, role: 'primary' | 'secondary' | 'none') => {
+  // First, clear the existing role from any other card for this user
+  if (role === 'primary') {
+    await supabase.from('user_owned_cards').update({ is_primary: false }).eq('user_id', userId);
+  } else if (role === 'secondary') {
+    await supabase.from('user_owned_cards').update({ is_secondary: false }).eq('user_id', userId);
+  }
+  
+  // Now set the new role on the chosen card
+  const update = role === 'primary' ? { is_primary: true, is_secondary: false }
+               : role === 'secondary' ? { is_secondary: true, is_primary: false }
+               : { is_primary: false, is_secondary: false };
+  
+  const { error } = await supabase.from('user_owned_cards').update(update).eq('id', cardId);
+  if (error) throw error;
+};
+
+/**
+ * Syncs the cards a user selected during waitlist signup into their user_owned_cards.
+ * Called automatically when an admin approves a user.
+ * Avoids duplicates by checking existing cards for the user.
+ */
+export const syncWaitlistCardsForUser = async (email: string, creditCardsDetails: any[]) => {
+  if (!creditCardsDetails || creditCardsDetails.length === 0) return;
+
+  // Find the Supabase Auth user ID by email
+  const { data: authUser, error: authErr } = await supabaseAdmin.auth.admin.listUsers();
+  if (authErr) { console.warn('Cannot list users for card sync:', authErr); return; }
+  
+  const matchedUser = authUser?.users?.find((u: any) => u.email?.toLowerCase() === email.toLowerCase());
+  if (!matchedUser) { console.warn('No auth user found for email:', email); return; }
+  
+  const userId = matchedUser.id;
+  
+  // Fetch existing cards to avoid duplicates
+  const { data: existing } = await supabaseAdmin.from('user_owned_cards').select('card_name, bank_name').eq('user_id', userId);
+  const existingKeys = new Set((existing || []).map((c: any) => `${c.bank_name}||${c.card_name}`.toLowerCase()));
+  
+  // Build inserts from waitlist card details
+  const toInsert: any[] = [];
+  creditCardsDetails.forEach((detail: any, idx: number) => {
+    const bankName = detail.bank || detail.bank_name || '';
+    const cardName = detail.card || detail.card_name || 'Unknown Card';
+    const key = `${bankName}||${cardName}`.toLowerCase();
+    
+    if (!existingKeys.has(key) && bankName) {
+      toInsert.push({
+        user_id: userId,
+        card_id: null,
+        bank_name: bankName,
+        card_name: cardName,
+        card_image: null,
+        synced_from_waitlist: true,
+        // First card from waitlist becomes primary, second becomes secondary
+        is_primary: idx === 0,
+        is_secondary: idx === 1
+      });
+    }
+  });
+  
+  if (toInsert.length > 0) {
+    const { error } = await supabaseAdmin.from('user_owned_cards').insert(toInsert);
+    if (error) console.warn('Failed to sync waitlist cards:', error);
+  }
 };
 
 export const fetchUserReferrals = async (referralCode: string) => {

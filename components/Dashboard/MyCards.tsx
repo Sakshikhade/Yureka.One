@@ -1,28 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
-    Plus, Trash2, Search, CreditCard, Landmark, 
-    ChevronDown, Loader2, Sparkles, AlertCircle
+    Plus, Trash2, CreditCard, Landmark, 
+    ChevronDown, Loader2, Sparkles, AlertCircle, Star, Shield, CheckCircle
 } from 'lucide-react';
 import { useSupabase } from '../SupabaseProvider';
-import { fetchUserCards, addUserCard, removeUserCard } from '../../services/supabaseService';
+import { fetchUserCards, addUserCard, removeUserCard, updateUserCardPriority } from '../../services/supabaseService';
 
 const BANK_LOGOS: Record<string, string> = {
-    'HDFC': '/assets/banks/hdfc.png', 'SBI': '/assets/banks/sbi.png', 'Axis': '/assets/banks/axis.png',
-    'ICICI': '/assets/banks/icici.png', 'Kotak': '/assets/banks/kotak.png', 'Yes Bank': '/assets/banks/yesbank.png',
-    'Amex': '/assets/banks/amex.png', 'IDFC': '/assets/banks/idfc.png', 'HSBC': '/assets/banks/hsbc.png',
-    'RBL': '/assets/banks/rbl.png', 'IndusInd': '/assets/banks/indusind.png', 'BOB': '/assets/banks/bob.png',
-    'SC': '/assets/banks/sc.png', 'Indian': '/assets/banks/indian.png', 'PNB': '/assets/banks/pnb.png',
+    'HDFC': '/assets/banks/hdfc.png', 'HDFC Bank': '/assets/banks/hdfc.png',
+    'SBI': '/assets/banks/sbi.png', 'SBI Card': '/assets/banks/sbi.png',
+    'Axis': '/assets/banks/axis.png', 'Axis Bank': '/assets/banks/axis.png',
+    'ICICI': '/assets/banks/icici.png', 'ICICI Bank': '/assets/banks/icici.png',
+    'Kotak': '/assets/banks/kotak.png', 'Kotak Mahindra Bank': '/assets/banks/kotak.png',
+    'Yes Bank': '/assets/banks/yesbank.png', 'YES Bank': '/assets/banks/yesbank.png',
+    'Amex': '/assets/banks/amex.png', 'American Express': '/assets/banks/amex.png',
+    'IDFC': '/assets/banks/idfc.png', 'IDFC FIRST Bank': '/assets/banks/idfc.png',
+    'HSBC': '/assets/banks/hsbc.png', 'RBL': '/assets/banks/rbl.png', 'RBL Bank': '/assets/banks/rbl.png',
+    'IndusInd': '/assets/banks/indusind.png', 'IndusInd Bank': '/assets/banks/indusind.png',
+    'BOB': '/assets/banks/bob.png', 'Bank of Baroda': '/assets/banks/bob.png',
+    'SC': '/assets/banks/sc.png', 'Standard Chartered': '/assets/banks/sc.png',
+    'Indian': '/assets/banks/indian.png', 'PNB': '/assets/banks/pnb.png',
     'Canara': '/assets/banks/canara.png', 'DBS': '/assets/banks/dbs.png', 'IDBI': '/assets/banks/idbi.png',
-    'AU': '/assets/banks/au.png', 'Equitas': '/assets/banks/equitas.png', 'CSB': '/assets/banks/csb.png',
-    'Federal': '/assets/banks/federal.png', 'SBM': '/assets/banks/sbm.png', 'South Indian': '/assets/banks/southindian.png',
-    'Utkarsh Bank': '/assets/banks/utkarsh.png', 'Suryoday Bank': '/assets/banks/suryoday.png', 'Union Bank': '/assets/banks/union.png',
-    'Unity SFB': '/assets/banks/unity.png', 'DCB': '/assets/banks/dcb.png', 'Bank Of India': '/assets/banks/boi.png',
-    'J&K Bank': '/assets/banks/jk.png', 'CUB': '/assets/banks/cub.png', 'Slice SFB': '/assets/banks/slice.png',
+    'AU': '/assets/banks/au.png', 'AU Small Finance Bank': '/assets/banks/au.png',
+    'Equitas': '/assets/banks/equitas.png', 'CSB': '/assets/banks/csb.png',
+    'Federal': '/assets/banks/federal.png', 'Federal Bank': '/assets/banks/federal.png',
+    'SBM': '/assets/banks/sbm.png', 'SBM Bank (India)': '/assets/banks/sbm.png',
+    'South Indian': '/assets/banks/southindian.png', 'Union Bank': '/assets/banks/union.png',
+    'Unity SFB': '/assets/banks/unity.png', 'DCB': '/assets/banks/dcb.png',
+    'Bank Of India': '/assets/banks/boi.png', 'J&K Bank': '/assets/banks/jk.png',
+    'CUB': '/assets/banks/cub.png', 'Slice SFB': '/assets/banks/slice.png',
     'Dhanlaxmi Bank': '/assets/banks/dhanlaxmi.png', 'Indian Overseas Bank': '/assets/banks/iob.png'
 };
 
-const ALL_BANKS = Object.keys(BANK_LOGOS).sort();
+const ALL_BANKS = [...new Set(Object.keys(BANK_LOGOS))].sort();
 
 const MyCards: React.FC = () => {
     const { user, cards: allCards } = useSupabase();
@@ -33,6 +44,7 @@ const MyCards: React.FC = () => {
     const [selectedCardId, setSelectedCardId] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [openBankDropdown, setOpenBankDropdown] = useState(false);
+    const [priorityUpdating, setPriorityUpdating] = useState<string | null>(null);
 
     useEffect(() => {
         if (user) loadCards();
@@ -59,7 +71,10 @@ const MyCards: React.FC = () => {
                 card_id: selectedCardId === 'Other' ? null : selectedCardId,
                 bank_name: selectedBank,
                 card_name: selectedCardId === 'Other' ? 'Other Card' : cardDetail?.name || 'Unknown Card',
-                card_image: cardDetail?.image || null
+                card_image: cardDetail?.image || null,
+                synced_from_waitlist: false,
+                is_primary: ownedCards.length === 0,   // First card auto-primary
+                is_secondary: ownedCards.length === 1  // Second card auto-secondary
             };
             await addUserCard(payload);
             await loadCards();
@@ -80,6 +95,18 @@ const MyCards: React.FC = () => {
             setOwnedCards(prev => prev.filter(c => c.id !== id));
         } catch (err) {
             alert("Failed to delete card.");
+        }
+    };
+
+    const handleSetRole = async (cardId: string, role: 'primary' | 'secondary' | 'none') => {
+        setPriorityUpdating(cardId);
+        try {
+            await updateUserCardPriority(user!.id, cardId, role);
+            await loadCards();
+        } catch (err) {
+            alert("Failed to update card role.");
+        } finally {
+            setPriorityUpdating(null);
         }
     };
 
@@ -155,6 +182,15 @@ const MyCards: React.FC = () => {
                 </button>
             </div>
 
+            {/* Primary & Secondary Role Legend */}
+            {ownedCards.length > 0 && (
+                <div className="flex items-center gap-6 text-[10px] font-black uppercase tracking-widest text-white/30">
+                    <div className="flex items-center gap-2"><Star size={12} className="text-yellow-400" /> Primary Card</div>
+                    <div className="flex items-center gap-2"><Shield size={12} className="text-blue-400" /> Secondary Card</div>
+                    <div className="flex items-center gap-2 ml-auto"><CheckCircle size={12} className="text-clay" /> Synced from Waitlist</div>
+                </div>
+            )}
+
             {/* Owned Cards Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 <AnimatePresence>
@@ -168,9 +204,35 @@ const MyCards: React.FC = () => {
                             whileHover={{ y: -10 }}
                             className="group relative"
                         >
+                            {/* Primary / Secondary glow ring */}
+                            {card.is_primary && (
+                                <div className="absolute inset-0 rounded-[2.5rem] ring-2 ring-yellow-400/40 shadow-[0_0_30px_rgba(250,204,21,0.15)] pointer-events-none z-10" />
+                            )}
+                            {card.is_secondary && !card.is_primary && (
+                                <div className="absolute inset-0 rounded-[2.5rem] ring-2 ring-blue-400/30 shadow-[0_0_20px_rgba(96,165,250,0.1)] pointer-events-none z-10" />
+                            )}
+
                             <div className="glass-card rounded-[2.5rem] p-8 hover:border-white/20 overflow-hidden relative">
-                                {/* Decorative Gradient */}
                                 <div className="absolute top-0 right-0 w-32 h-32 bg-clay/5 blur-[60px] rounded-full pointer-events-none" />
+
+                                {/* Role & Source Badges */}
+                                <div className="flex items-center gap-2 mb-4 flex-wrap">
+                                    {card.is_primary && (
+                                        <span className="flex items-center gap-1 text-[8px] font-black uppercase tracking-widest bg-yellow-400/10 text-yellow-400 border border-yellow-400/20 px-2.5 py-1 rounded-full">
+                                            <Star size={8} fill="currentColor" /> Primary
+                                        </span>
+                                    )}
+                                    {card.is_secondary && (
+                                        <span className="flex items-center gap-1 text-[8px] font-black uppercase tracking-widest bg-blue-400/10 text-blue-400 border border-blue-400/20 px-2.5 py-1 rounded-full">
+                                            <Shield size={8} /> Secondary
+                                        </span>
+                                    )}
+                                    {card.synced_from_waitlist && (
+                                        <span className="flex items-center gap-1 text-[8px] font-black uppercase tracking-widest bg-clay/10 text-clay border border-clay/20 px-2.5 py-1 rounded-full">
+                                            <CheckCircle size={8} /> Synced
+                                        </span>
+                                    )}
+                                </div>
                                 
                                 <motion.div 
                                     className="aspect-[1.58/1] bg-black/40 rounded-2xl overflow-hidden mb-8 relative preserve-3d"
@@ -189,7 +251,7 @@ const MyCards: React.FC = () => {
                                     </div>
                                 </motion.div>
 
-                                <div className="flex items-end justify-between">
+                                <div className="flex items-end justify-between mb-4">
                                     <div>
                                         <div className="flex items-center gap-2 mb-2">
                                             <p className="text-[8px] font-black uppercase tracking-[0.5em] text-clay">{card.bank_name}</p>
@@ -203,6 +265,34 @@ const MyCards: React.FC = () => {
                                         className="w-12 h-12 rounded-2xl flex items-center justify-center text-red-400/20 hover:bg-red-500/10 hover:text-red-400 transition-all border border-transparent hover:border-red-500/20"
                                     >
                                         <Trash2 size={20} />
+                                    </button>
+                                </div>
+
+                                {/* Priority role toggle buttons */}
+                                <div className="flex gap-2 pt-4 border-t border-white/5">
+                                    <button
+                                        onClick={() => handleSetRole(card.id, card.is_primary ? 'none' : 'primary')}
+                                        disabled={priorityUpdating === card.id}
+                                        className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-[8px] font-black uppercase tracking-widest transition-all ${
+                                            card.is_primary 
+                                                ? 'bg-yellow-400/10 text-yellow-400 border border-yellow-400/30' 
+                                                : 'bg-white/5 text-white/30 border border-white/5 hover:bg-yellow-400/5 hover:text-yellow-400/60 hover:border-yellow-400/10'
+                                        }`}
+                                    >
+                                        {priorityUpdating === card.id ? <Loader2 size={10} className="animate-spin" /> : <Star size={10} fill={card.is_primary ? 'currentColor' : 'none'} />}
+                                        Primary
+                                    </button>
+                                    <button
+                                        onClick={() => handleSetRole(card.id, card.is_secondary ? 'none' : 'secondary')}
+                                        disabled={priorityUpdating === card.id}
+                                        className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-[8px] font-black uppercase tracking-widest transition-all ${
+                                            card.is_secondary 
+                                                ? 'bg-blue-400/10 text-blue-400 border border-blue-400/30' 
+                                                : 'bg-white/5 text-white/30 border border-white/5 hover:bg-blue-400/5 hover:text-blue-400/60 hover:border-blue-400/10'
+                                        }`}
+                                    >
+                                        {priorityUpdating === card.id ? <Loader2 size={10} className="animate-spin" /> : <Shield size={10} />}
+                                        Secondary
                                     </button>
                                 </div>
                             </div>
