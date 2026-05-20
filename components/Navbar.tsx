@@ -55,7 +55,7 @@ const Navbar: React.FC = () => {
             <div className="flex items-center relative z-10 group cursor-pointer shrink-0">
                 <Link to="/" className="flex items-center gap-4 group">
                     <div className="font-heading font-black tracking-tighter text-lg md:text-xl text-white leading-none hover:opacity-80 transition-opacity flex items-baseline uppercase">
-                        YUREKA
+                        YUREKA<span className="text-clay">.</span>MONEY
                     </div>
                 </Link>
             </div>
@@ -64,56 +64,89 @@ const Navbar: React.FC = () => {
             <div className="hidden md:flex items-center relative z-10 shrink-0 gap-6 lg:gap-10">
                 <nav className="flex items-center gap-6 lg:gap-8">
                     <Link 
-                        to="/#features" 
-                        className="text-[10px] font-black uppercase tracking-[0.2em] text-white hover:text-clay transition-all py-1"
+                        to="/cards" 
+                        className={`text-[10px] font-black uppercase tracking-[0.2em] transition-all py-1 ${location.pathname === '/cards' ? 'text-clay' : 'text-white/40 hover:text-white'}`}
                     >
-                        Features
+                        Cards
                     </Link>
-                    <Link 
-                        to="/#how-it-works" 
-                        className="text-[10px] font-black uppercase tracking-[0.2em] text-white hover:text-clay transition-all py-1"
+
+                    {/* Explore Dropdown */}
+                    <div 
+                        className="relative"
+                        onMouseEnter={() => setIsExploreOpen(true)}
+                        onMouseLeave={() => setIsExploreOpen(false)}
                     >
-                        How It Works
-                    </Link>
+                        <button 
+                            className={`flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.2em] transition-all py-1 ${isExploreOpen ? 'text-clay' : 'text-white/40 hover:text-white'}`}
+                        >
+                            Explore <ChevronDown size={10} className={`transition-transform duration-500 ${isExploreOpen ? 'rotate-180' : ''}`} />
+                        </button>
+
+                        <AnimatePresence>
+                            {isExploreOpen && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                                    className="absolute top-full left-1/2 -translate-x-1/2 pt-4 w-64 pointer-events-auto"
+                                >
+                                    <div className="bg-[#0f0f0f] border border-white/15 rounded-[2rem] p-4 shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
+                                        <div className="flex flex-col gap-1">
+                                            {EXPLORE_ITEMS.map((item) => (
+                                                <Link
+                                                    key={item.name}
+                                                    to={item.path}
+                                                    className="flex items-center gap-4 p-3 rounded-2xl hover:bg-white/5 transition-all group/item"
+                                                >
+                                                    <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center group-hover/item:bg-clay/10 transition-colors">
+                                                        <item.icon size={18} className="text-white/70 group-hover/item:text-clay" />
+                                                    </div>
+                                                    <div className="flex flex-col">
+                                                        <span className="text-[11px] font-black text-white uppercase tracking-wider">{item.name}</span>
+                                                        <span className="text-[9px] font-bold text-white/60 uppercase tracking-widest mt-0.5">{item.desc}</span>
+                                                    </div>
+                                                </Link>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
+
                     <Link 
-                        to="/#rewards" 
-                        className="text-[10px] font-black uppercase tracking-[0.2em] text-white hover:text-clay transition-all py-1"
+                        to="/blogs" 
+                        className={`text-[10px] font-black uppercase tracking-[0.2em] transition-all py-1 ${location.pathname === '/blogs' ? 'text-clay' : 'text-white/40 hover:text-white'}`}
                     >
-                        Rewards
-                    </Link>
-                    <Link 
-                        to="/compare" 
-                        className={`text-[10px] font-black uppercase tracking-[0.2em] transition-all py-1 ${location.pathname === '/compare' ? 'text-clay' : 'text-white hover:text-clay'}`}
-                    >
-                        Compare Cards
-                    </Link>
-                    <Link 
-                        to="/rewards-calculator" 
-                        className={`text-[10px] font-black uppercase tracking-[0.2em] transition-all py-1 ${location.pathname === '/rewards-calculator' ? 'text-clay' : 'text-white hover:text-clay'}`}
-                    >
-                        Calculator
-                    </Link>
-                    <Link 
-                        to="/#faq" 
-                        className="text-[10px] font-black uppercase tracking-[0.2em] text-white hover:text-clay transition-all py-1"
-                    >
-                        FAQs
+                        Blogs
                     </Link>
                 </nav>
 
                 <div className="h-4 w-px bg-white/10" />
+
+                <div className="flex items-center gap-6 lg:gap-8">
+                      <Link to="/yureka-ai" className="text-white/40 hover:text-white font-bold text-[10px] transition-colors whitespace-nowrap uppercase tracking-[0.2em]">
+                        YurekaAi
+                      </Link>
+                </div>
                     
                 <div className="flex items-center gap-3 shrink-0">
                     {!user ? (
-                        <div className="flex flex-col items-center">
+                        <>
+                            <Link 
+                                to="/login" 
+                                className="bg-[#34d399] text-black text-[10px] font-black uppercase tracking-[0.2em] px-6 py-2.5 transition-all duration-500 rounded-full shadow-[0_10px_30px_-10px_rgba(52,211,153,0.5)] hover:scale-105 whitespace-nowrap"
+                            >
+                                Login
+                            </Link>
                             <Link 
                                 to="/join-waitlist" 
-                                className="bg-clay text-cream text-[10px] font-black uppercase tracking-[0.2em] px-8 py-2.5 transition-all duration-500 rounded-full shadow-[0_10px_30px_-10px_rgba(52,211,153,0.5)] hover:scale-105 whitespace-nowrap"
+                                className="bg-[#34d399] text-black text-[10px] font-black uppercase tracking-[0.2em] px-8 py-2.5 transition-all duration-500 rounded-full shadow-[0_10px_30px_-10px_rgba(52,211,153,0.5)] hover:scale-105 whitespace-nowrap"
                             >
                                 Join Waitlist
                             </Link>
-                            <span className="text-[8px] text-white/60 tracking-wider mt-1 uppercase font-bold hidden lg:block">Get early access with Google.</span>
-                        </div>
+                        </>
                     ) : (
                         <div className="flex items-center gap-4">
                             {currentUserStatus === 'admin' ? (
@@ -192,13 +225,13 @@ const Navbar: React.FC = () => {
                   
                   <nav className="flex flex-col gap-10">
                     {[
-                        { name: 'Features', path: '/#features', desc: 'Smarter spends. Better rewards.' },
-                        { name: 'How It Works', path: '/#how-it-works', desc: 'From inbox signal to smarter rewards' },
-                        { name: 'Rewards', path: '/#rewards', desc: 'Stack offers, gift cards & rewards' },
-                        { name: 'Compare Cards', path: '/compare', desc: 'Compare cards head to head' },
-                        { name: 'Calculator', path: '/rewards-calculator', desc: 'See the real value of your points' },
-                        { name: 'FAQs', path: '/#faq', desc: 'Questions, answered.' },
-                        { name: 'Join Waitlist', path: '/join-waitlist', desc: 'Get early access with Google.' }
+                        { name: 'Card Explorer', path: '/cards', desc: 'Expert audited credit selection' },
+                        { name: 'Categories', path: '/categories', desc: 'Browse by lifestyle & perks' },
+                        { name: 'Compare', path: '/compare', desc: 'Side-by-side strategic comparison' },
+                        { name: 'Explore', path: '/manifesto', desc: 'The decentralization of yield' },
+                        { name: 'Free Tools', path: '/free-tools', desc: 'Institutional grade calculators' },
+                        { name: 'Blogs', path: '/blogs', desc: 'The elite credit journal' },
+                        { name: 'Yureka AI', path: '/yureka-ai', desc: 'Access the intelligence hub' }
                     ].map((item, idx) => (
                         <motion.div
                           initial={{ opacity: 0, x: 20 }}
