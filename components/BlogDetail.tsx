@@ -171,7 +171,7 @@ const BlogDetail: React.FC = () => {
         return (
             <div className="min-h-screen bg-cream flex flex-col items-center justify-center p-6 text-center">
                 <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-clay mb-6">404 Not Found</p>
-                <h1 className="text-5xl font-heading font-extrabold text-white mb-4 tracking-tight">Article Not Found</h1>
+                <h1 className="text-5xl font-sans font-extrabold text-white mb-4 tracking-tight">Article Not Found</h1>
                 <p className="text-white/50 mb-10 max-w-md font-serif italic text-lg">The story you are looking for may have been archived or moved.</p>
                 <Link to="/blogs" className="bg-white text-black px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-clay transition-all">
                     Back to Journal
@@ -244,7 +244,7 @@ const BlogDetail: React.FC = () => {
                     </div>
 
                     {/* Title */}
-                    <h1 className="text-4xl sm:text-6xl font-heading font-extrabold leading-[1.05] text-transparent bg-clip-text bg-gradient-to-br from-white to-white/60 mb-8 tracking-tight">
+                    <h1 className="text-4xl sm:text-6xl font-sans font-extrabold leading-[1.05] text-transparent bg-clip-text bg-gradient-to-br from-white to-white/60 mb-8 tracking-tight">
                         {blog.title}
                     </h1>
 
@@ -296,7 +296,7 @@ const BlogDetail: React.FC = () => {
                              {extractedHtml ? (
                                 <div className="animate-in fade-in duration-700">
                                     <div className="prose prose-lg max-w-none
-                                        prose-headings:font-heading prose-headings:font-extrabold prose-headings:tracking-tight prose-headings:text-white
+                                    prose-headings:font-sans prose-headings:font-extrabold prose-headings:tracking-tight prose-headings:text-white
                                         prose-h2:text-3xl prose-h2:mt-16 prose-h2:mb-6 prose-h2:pb-4 prose-h2:border-b prose-h2:border-white/10
                                         prose-h3:text-2xl prose-h3:mt-12 prose-h3:mb-4
                                         prose-p:text-white/80 prose-p:leading-[1.85] prose-p:text-[17px] prose-p:font-serif
@@ -342,7 +342,7 @@ const BlogDetail: React.FC = () => {
                         </div>
                     ) : (
                         <div className="prose prose-lg max-w-none
-                            prose-headings:font-heading prose-headings:font-extrabold prose-headings:tracking-tight prose-headings:text-white
+                            prose-headings:font-sans prose-headings:font-extrabold prose-headings:tracking-tight prose-headings:text-white
                             prose-h2:text-3xl prose-h2:mt-16 prose-h2:mb-6 prose-h2:pb-4 prose-h2:border-b prose-h2:border-white/10
                             prose-h3:text-2xl prose-h3:mt-12 prose-h3:mb-4
                             prose-p:text-white/80 prose-p:leading-[1.85] prose-p:text-[17px] prose-p:font-serif
@@ -405,7 +405,7 @@ const BlogDetail: React.FC = () => {
                 <div className="mt-24 rounded-2xl bg-gradient-to-br from-[#123b2c] to-[#0a1f17] border border-clay/20 p-10 text-center relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-64 h-64 bg-clay/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
                     <p className="text-clay text-[10px] font-bold uppercase tracking-[0.4em] font-sans mb-4">Never miss a dispatch</p>
-                    <h3 className="text-3xl md:text-4xl font-heading font-extrabold text-white tracking-tight mb-3 relative z-10">
+                    <h3 className="text-3xl md:text-4xl font-sans font-extrabold text-white tracking-tight mb-3 relative z-10">
                         The future of credit is <span className="italic font-serif font-light text-clay">conversational.</span>
                     </h3>
                     <p className="text-white/60 font-serif italic mb-8 relative z-10">Join 50,000+ others on the AI-driven financial optimization platform.</p>

@@ -62,7 +62,7 @@ const CategoryDetailPage: React.FC = () => {
                      <motion.h1 
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
-                        className="text-4xl md:text-6xl font-heading font-black text-white tracking-tighter uppercase"
+                        className="text-4xl md:text-6xl font-sans font-extrabold text-white tracking-tighter uppercase"
                      >
                         {meta.name} <span className="text-white/20">Credit Cards</span>
                      </motion.h1>
@@ -88,7 +88,7 @@ const CategoryDetailPage: React.FC = () => {
                         <span>Analysis Status</span>
                         <span className="text-clay">Live</span>
                      </div>
-                     <div className="text-3xl font-heading font-black text-white">{cards.length}</div>
+                     <div className="text-3xl font-sans font-extrabold text-white">{cards.length}</div>
                      <p className="text-[9px] font-bold text-white/40 uppercase tracking-widest leading-relaxed">Verified cards matched for your <br />{meta.name} profile.</p>
                   </div>
                </div>
@@ -143,7 +143,7 @@ const CategoryDetailPage: React.FC = () => {
                     </div>
 
                     <div className="space-y-1">
-                       <h2 className="text-2xl md:text-3xl font-heading font-black text-white uppercase tracking-tight">{card.name}</h2>
+                       <h2 className="text-2xl md:text-3xl font-sans font-bold text-white uppercase tracking-tight">{card.name}</h2>
                        <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em]">{card.bank}</p>
                     </div>
 
@@ -191,7 +191,7 @@ const CategoryDetailPage: React.FC = () => {
                 <AlertCircle size={32} className="text-white/20" />
              </div>
              <div className="space-y-2">
-                <h3 className="text-xl font-heading font-black text-white uppercase">Neural Gap Detected</h3>
+                <h3 className="text-xl font-sans font-extrabold text-white uppercase">Neural Gap Detected</h3>
                 <p className="text-white/40 max-w-sm mx-auto text-sm">We currently don't have enough verified cards for this category. Our engine is actively auditing new products.</p>
              </div>
              <Link to={`${basePath}/categories`} className="text-clay text-[10px] font-black uppercase tracking-widest hover:underline">

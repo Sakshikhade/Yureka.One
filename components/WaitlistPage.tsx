@@ -159,7 +159,7 @@ function parseTransactionData(combinedText: string, sender: string, subject: str
                     const val = match[2];
                     const sym = match[1];
                     if (val !== "1" && val !== "2") {
-                        amount = `${sym} ${val}`.strip ? `${sym} ${val}`.trim() : `${sym} ${val}`;
+                        amount = `${sym} ${val}`.trim();
                         break;
                     }
                 } else {

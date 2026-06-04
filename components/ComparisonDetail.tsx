@@ -73,7 +73,7 @@ const ComparisonDetail: React.FC = () => {
                <motion.h1 
                  initial={{ opacity: 0, x: -20 }}
                  animate={{ opacity: 1, x: 0 }}
-                 className="text-3xl md:text-5xl font-heading font-black text-black tracking-tighter uppercase max-w-3xl leading-[1.1]"
+                 className="text-3xl md:text-5xl font-sans font-black text-black tracking-tighter uppercase max-w-3xl leading-[1.1]"
                >
                   {cards.map((c, i) => (
                     <React.Fragment key={c.id}>
@@ -113,7 +113,7 @@ const ComparisonDetail: React.FC = () => {
                      </div>
                      <div className="flex justify-between items-start">
                         <div>
-                           <h3 className="text-xl font-heading font-black text-white uppercase leading-none">{card.name}</h3>
+                           <h3 className="text-xl font-sans font-black text-white uppercase leading-none">{card.name}</h3>
                            <p className="text-[10px] font-bold text-white/20 uppercase tracking-widest mt-1">{card.bank}</p>
                         </div>
                         <div className="flex items-center gap-1 px-2 py-1 bg-amber-400/10 rounded-lg">
@@ -145,7 +145,7 @@ const ComparisonDetail: React.FC = () => {
          {/* Fees & Charges Matrix (Dynamic from Supabase) */}
          <section className="space-y-10">
             <div className="flex items-center gap-4">
-               <h2 className="text-2xl font-heading font-black text-white uppercase tracking-tight">Fees & Charges</h2>
+               <h2 className="text-2xl font-sans font-black text-white uppercase tracking-tight">Fees & Charges</h2>
                <div className="h-px flex-1 bg-white/5" />
             </div>
 
@@ -193,7 +193,7 @@ const ComparisonDetail: React.FC = () => {
          {/* Rewards & Features Program (Dynamic from Supabase) */}
          <section className="space-y-10">
             <div className="flex items-center gap-4">
-               <h2 className="text-2xl font-heading font-black text-white uppercase tracking-tight">Rewards & Features</h2>
+               <h2 className="text-2xl font-sans font-black text-white uppercase tracking-tight">Rewards & Features</h2>
                <div className="h-px flex-1 bg-white/5" />
             </div>
 
@@ -262,7 +262,7 @@ const ComparisonDetail: React.FC = () => {
          {/* Detailed Matrix Table (Pulling all card properties) */}
          <section className="space-y-10 pt-10">
             <div className="text-center space-y-2">
-               <h2 className="text-3xl font-heading font-black text-white uppercase tracking-tight">Comprehensive Matrix</h2>
+               <h2 className="text-3xl font-sans font-black text-white uppercase tracking-tight">Comprehensive Matrix</h2>
                <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em]">Synced Neural Synchronization</p>
             </div>
 

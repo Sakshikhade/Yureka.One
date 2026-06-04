@@ -49,7 +49,7 @@ const JournalPage: React.FC = () => {
                 <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-8 pb-10 border-b border-white/10 mb-12">
                     <div>
                         <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-clay mb-3">Yureka Editorial</p>
-                        <h1 className="text-5xl sm:text-7xl md:text-8xl font-heading font-extrabold text-white leading-[0.9] tracking-tighter">
+                        <h1 className="text-5xl sm:text-7xl md:text-8xl font-sans font-extrabold text-white leading-[0.9] tracking-tighter">
                             The<br /><span className="text-clay italic font-serif font-light">Journal.</span>
                         </h1>
                     </div>
@@ -110,7 +110,7 @@ const JournalPage: React.FC = () => {
                                      <span className="bg-clay text-cream text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-white/10 shadow-lg shadow-clay/20">{hero.category}</span>
                                      <span className="text-white/40 text-[10px] font-bold uppercase tracking-widest flex items-center gap-1.5"><Clock size={10} />{hero.read_time || '5 min read'}</span>
                                  </div>
-                                 <h2 className="text-3xl sm:text-5xl md:text-6xl font-heading font-extrabold text-white leading-[1.05] tracking-tight mb-5 group-hover:text-clay transition-colors">
+                                 <h2 className="text-3xl sm:text-5xl md:text-6xl font-sans font-extrabold text-white leading-[1.05] tracking-tight mb-5 group-hover:text-clay transition-colors">
                                      {hero.title}
                                  </h2>
                                  <p className="text-white/60 text-base md:text-lg font-serif leading-relaxed line-clamp-2 max-w-2xl italic">{hero.excerpt}</p>
@@ -148,7 +148,7 @@ const JournalPage: React.FC = () => {
                                         </span>
                                     </div>
                                     <div className="space-y-3 px-1">
-                                        <h3 className="text-lg font-heading font-bold text-white leading-[1.3] group-hover:text-clay transition-colors line-clamp-2">{post.title}</h3>
+                                        <h3 className="text-lg font-sans font-bold text-white leading-[1.3] group-hover:text-clay transition-colors line-clamp-2">{post.title}</h3>
                                         <p className="text-white/40 text-sm font-serif italic line-clamp-2 leading-relaxed">{post.excerpt}</p>
                                         <div className="flex items-center gap-2 pt-1">
                                             <div className="w-5 h-5 rounded-full bg-clay/20 flex items-center justify-center text-clay text-[8px] font-bold border border-clay/20">
@@ -195,7 +195,7 @@ const JournalPage: React.FC = () => {
                                     </span>
                                 </div>
                                 <div className="space-y-2.5 px-0.5">
-                                    <h3 className="text-base font-heading font-bold text-white/90 leading-[1.3] group-hover:text-clay transition-colors line-clamp-2">{post.title}</h3>
+                                    <h3 className="text-base font-sans font-bold text-white/90 leading-[1.3] group-hover:text-clay transition-colors line-clamp-2">{post.title}</h3>
                                     <p className="text-white/35 text-xs font-serif italic line-clamp-2 leading-relaxed">{post.excerpt}</p>
                                     <div className="flex items-center justify-between pt-1">
                                         <div className="flex items-center gap-2">
@@ -231,7 +231,7 @@ const JournalPage: React.FC = () => {
                     <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-black/10 rounded-full blur-2xl" />
                     <div className="relative max-w-2xl mx-auto space-y-8">
                         <p className="text-cream/60 text-[10px] font-bold uppercase tracking-[0.4em]">Weekly Dispatch</p>
-                        <h2 className="text-4xl md:text-6xl font-heading font-extrabold text-cream leading-tight tracking-tight">
+                        <h2 className="text-4xl md:text-6xl font-sans font-extrabold text-cream leading-tight tracking-tight">
                             Stay Ahead of<br />the Credit Curve
                         </h2>
                         <p className="text-cream/70 text-lg font-serif italic leading-relaxed">

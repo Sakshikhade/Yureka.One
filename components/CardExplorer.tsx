@@ -103,7 +103,7 @@ const CardExplorer: React.FC = () => {
                 <div className="max-w-[1400px] mx-auto px-6 relative z-10 text-center">
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
                         <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-clay mb-6">Card Research & Analysis</p>
-                        <h1 className="text-5xl sm:text-7xl md:text-8xl font-heading font-extrabold text-white leading-[0.9] tracking-tighter mb-8">
+                        <h1 className="text-5xl sm:text-7xl md:text-8xl font-sans font-extrabold text-white leading-[0.9] tracking-tighter mb-8">
                             Find Your<br /><span className="text-clay italic font-serif font-light">Perfect Card.</span>
                         </h1>
                         <p className="text-white/70 text-base md:text-xl font-serif italic max-w-2xl mx-auto leading-relaxed mb-16">
@@ -273,7 +273,7 @@ const CardExplorer: React.FC = () => {
                                         </div>
 
                                         <div className="flex-1 px-6 pb-6 flex flex-col">
-                                            <h3 className="text-lg font-heading font-extrabold text-white leading-tight tracking-tight mb-4 group-hover:text-clay transition-colors">{card.name}</h3>
+                                            <h3 className="text-lg font-sans font-bold text-white leading-tight tracking-tight mb-4 group-hover:text-clay transition-colors">{card.name}</h3>
                                             
                                             <div className="grid grid-cols-2 gap-4 mb-6 pt-4 border-t border-white/5">
                                                 <div>
@@ -289,7 +289,7 @@ const CardExplorer: React.FC = () => {
                                             <div className="mt-auto pt-4 flex items-center justify-between border-t border-white/5">
                                                 <div className="space-y-1">
                                                     <p className="text-[8px] font-bold uppercase tracking-widest text-white/40">Projected Savings</p>
-                                                    <p className="text-xl font-heading font-extrabold text-white tracking-tighter">
+                                                    <p className="text-xl font-sans font-extrabold text-white tracking-tighter">
                                                         {card.projected_savings || '—'} <span className="text-[9px] font-serif italic text-white/40 lowercase">/yr</span>
                                                     </p>
                                                 </div>

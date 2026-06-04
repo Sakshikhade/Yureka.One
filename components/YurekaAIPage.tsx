@@ -255,7 +255,7 @@ const YurekaAIPage: React.FC = () => {
               <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-clay">Yureka AI · Personalised Intelligence</span>
             </div>
 
-            <h1 className="text-3xl sm:text-6xl md:text-7xl font-heading font-extrabold tracking-tighter text-white leading-[1.05] mb-8 max-w-5xl mx-auto">
+            <h1 className="text-3xl sm:text-6xl md:text-7xl font-sans font-extrabold tracking-tighter text-white leading-[1.05] mb-8 max-w-5xl mx-auto">
               Your financial life,{' '}
               <span className="relative italic">
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-clay to-emerald-400">
@@ -299,7 +299,7 @@ const YurekaAIPage: React.FC = () => {
             {STATS.map((s) => (
               <div key={s.label} className="flex flex-col items-center p-6 bg-white/[0.03] border border-white/5 rounded-2xl shadow-2xl backdrop-blur-md">
                 <s.icon size={20} className="text-clay mb-3 opacity-70" />
-                <div className="text-2xl font-heading font-extrabold text-white tracking-tight mb-1">{s.value}</div>
+                <div className="text-2xl font-sans font-extrabold text-white tracking-tight mb-1">{s.value}</div>
                 <div className="text-[10px] text-white/30 font-bold uppercase tracking-widest text-center">{s.label}</div>
               </div>
             ))}
@@ -311,7 +311,7 @@ const YurekaAIPage: React.FC = () => {
 
           <div className="text-center mb-16">
             <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-clay mb-4">See it in action</p>
-            <h2 className="text-3xl sm:text-6xl font-heading font-extrabold text-white tracking-tighter leading-tight">
+            <h2 className="text-3xl sm:text-6xl font-sans font-extrabold text-white tracking-tighter leading-tight">
               Ask anything. <br className="sm:hidden" /> <span className="text-white/20 italic font-light">Get precision.</span>
             </h2>
           </div>
@@ -354,7 +354,7 @@ const YurekaAIPage: React.FC = () => {
 
           <div className="text-center mb-20">
             <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-clay mb-4">Full-spectrum Intelligence</p>
-            <h2 className="text-3xl sm:text-6xl font-heading font-extrabold text-white tracking-tighter leading-tight">
+            <h2 className="text-3xl sm:text-6xl font-sans font-extrabold text-white tracking-tighter leading-tight">
               Every angle of your <br className="hidden sm:block"/><span className="text-white/20 italic font-light">financial life, covered.</span>
             </h2>
           </div>
@@ -374,7 +374,7 @@ const YurekaAIPage: React.FC = () => {
                   <div className={`w-12 h-12 ${c.bg} rounded-2xl flex items-center justify-center ${c.text} mb-6 group-hover:scale-110 transition-transform duration-500`}>
                     <cap.icon size={24} />
                   </div>
-                  <h3 className="text-xl font-heading font-extrabold text-white mb-3 tracking-tight">{cap.title}</h3>
+                  <h3 className="text-xl font-sans font-extrabold text-white mb-3 tracking-tight">{cap.title}</h3>
                   <p className="text-white/40 text-sm leading-relaxed mb-6 min-h-[72px]">{cap.desc}</p>
                   <div className={`flex items-center justify-between border-t border-white/5 pt-5`}>
                     <span className="text-white/10 text-[10px] font-bold uppercase tracking-widest">AI Powered</span>
@@ -396,7 +396,7 @@ const YurekaAIPage: React.FC = () => {
               viewport={{ once: true }}
             >
               <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-purple-400 mb-6">Profile-to-Profile Intelligence</p>
-              <h2 className="text-3xl sm:text-5xl font-heading font-extrabold text-white tracking-tighter leading-tight mb-8">
+              <h2 className="text-3xl sm:text-5xl font-sans font-extrabold text-white tracking-tighter leading-tight mb-8">
                 Not generic.<br /><span className="text-white/20 italic font-light">Yours specifically.</span>
               </h2>
               <p className="text-white/60 text-xl leading-relaxed mb-10 font-serif">
@@ -454,7 +454,7 @@ const YurekaAIPage: React.FC = () => {
                 ].map(stat => (
                   <div key={stat.label} className="p-4 bg-white/[0.02] rounded-2xl border border-white/5">
                     <stat.icon size={16} className="text-clay/60 mb-2" />
-                    <div className="text-white font-heading font-extrabold text-lg tracking-tight">{stat.val}</div>
+                    <div className="text-white font-sans font-extrabold text-lg tracking-tight">{stat.val}</div>
                     <div className="text-white/20 text-[10px] font-bold uppercase tracking-widest">{stat.label}</div>
                   </div>
                 ))}
@@ -494,7 +494,7 @@ const YurekaAIPage: React.FC = () => {
                   <ShoppingBag size={12} className="text-emerald-400" />
                   <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-emerald-400">Built into Yureka AI</span>
                 </div>
-                <h2 className="text-4xl md:text-6xl font-heading font-extrabold text-white tracking-tighter leading-tight mb-6">
+                <h2 className="text-4xl md:text-6xl font-sans font-extrabold text-white tracking-tighter leading-tight mb-6">
                   RewardX <br /><span className="text-clay">by Yureka</span>
                 </h2>
                 <p className="text-white/60 text-xl leading-relaxed mb-10 font-serif">
@@ -548,9 +548,9 @@ const YurekaAIPage: React.FC = () => {
                     </motion.div>
                   ))}
                   <div className="flex items-center justify-between p-5 rounded-2xl bg-white/[0.02] border-2 border-clay/20 shadow-2xl shadow-clay/5">
-                    <span className="text-white font-heading font-extrabold text-lg">You Pay</span>
+                    <span className="text-white font-sans font-extrabold text-lg">You Pay</span>
                     <div className="text-right">
-                      <div className="text-white font-heading font-extrabold text-2xl">₹3,546</div>
+                      <div className="text-white font-sans font-extrabold text-2xl">₹3,546</div>
                       <div className="text-clay text-[10px] font-bold uppercase tracking-widest">You saved ₹654 · 15.6%</div>
                     </div>
                   </div>
@@ -575,7 +575,7 @@ const YurekaAIPage: React.FC = () => {
               <div className="inline-flex items-center justify-center w-20 h-20 bg-clay/5 border border-clay/10 rounded-[2rem] mb-10 mx-auto shadow-[0_0_30px_rgba(52,211,153,0.1)]">
                 <Brain size={36} className="text-clay" />
               </div>
-              <h2 className="text-3xl sm:text-6xl font-heading font-extrabold text-white tracking-tighter leading-tight mb-8">
+              <h2 className="text-3xl sm:text-6xl font-sans font-extrabold text-white tracking-tighter leading-tight mb-8">
                 Ready for your<br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-clay to-emerald-400">AI co-pilot?</span>
               </h2>

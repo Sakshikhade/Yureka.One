@@ -3,20 +3,19 @@ import HowItWorksStepper from './HowItWorksStepper';
 import SEO from './SEO';
 import { SupabaseProvider, useSupabase } from './SupabaseProvider';
 import { SkeletonCard, SkeletonHero } from './SkeletonLoaders';
+import HaloInfoSection from './HaloInfoSection';
+import HaloBackedBySection from './HaloBackedBySection';
+import HaloUseCasesSection from './HaloUseCasesSection';
+import JackPortfolio from './JackPortfolio';
 
 // Lazy load non-critical sections for performance
 const Hero = lazy(() => import('./Hero'));
 const TextReveal = lazy(() => import('./TextReveal'));
-const ShowcaseCarousel = lazy(() => import('./ShowcaseCarousel'));
 const Stats = lazy(() => import('./Stats'));
 const Marquee = lazy(() => import('./Marquee'));
-const Security = lazy(() => import('./Security'));
-const Community = lazy(() => import('./Community'));
-const ContributeCTA = lazy(() => import('./ContributeCTA'));
 const FAQ = lazy(() => import('./FAQ'));
 const CalculatorCTA = lazy(() => import('./CalculatorCTA'));
 const RentalProtection = lazy(() => import('./RentalProtection')); // Repurposed for Portfolio Optimization
-const HowYurekaHelps = lazy(() => import('./HowYurekaHelps'));
 const Footer = lazy(() => import('./Footer'));
 const PartnerLogos = lazy(() => import('./PartnerLogos'));
 
@@ -40,8 +39,8 @@ const MainPage: React.FC = () => {
   return (
     <>
       <SEO 
-        title="Yureka.Money | Strategic Credit Reward Optimization" 
-        description="Maximize every financial deployment with India's most advanced credit reward analytics engine. reveal your highest possible reward yield across 200+ elite instruments."
+        title="Jack -- 3D Creator" 
+        description="a 3d creator driven by crafting striking and unforgettable projects"
         schema={homeSchema}
       />
       
@@ -59,28 +58,29 @@ const MainPage: React.FC = () => {
                     <Hero />
                 </Suspense>
 
+                {/* Halo Info — Meet Yureka cards */}
+                <HaloInfoSection />
+
+                {/* Halo Backed By — partner marquee */}
+                <HaloBackedBySection />
+
+                {/* Halo Use Cases — Commerce video card */}
+                <HaloUseCasesSection />
+
+                {/* Jack 3D Creator Portfolio */}
+                <JackPortfolio />
+
                 {/* Blue partner logo strip — immediately after hero headline */}
                 <Suspense fallback={<div className="h-16 bg-[#1a3fcb] animate-pulse" />}>
                     <PartnerLogos />
                 </Suspense>
 
-                {/* How Yureka Helps — 6 feature cards grid, right below logo strip */}
-                <Suspense fallback={<div className="h-[600px] animate-pulse bg-white/5" />}>
-                    <HowYurekaHelps />
-                </Suspense>
+
 
                 
                 <Suspense fallback={<div className="h-40" />}>
-                    <div className="content-auto">
-                        <TextReveal />
-                    </div>
+                    <TextReveal />
                 </Suspense>
-
-                <section id="showcase" className="scroll-mt-24 content-auto">
-                    <Suspense fallback={<div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-6 py-6"><SkeletonCard /><SkeletonCard /><SkeletonCard /></div>}>
-                        <ShowcaseCarousel cards={cards} />
-                    </Suspense>
-                </section>
 
                 <div className="content-auto">
                     <HowItWorksStepper />
@@ -109,23 +109,8 @@ const MainPage: React.FC = () => {
                     <Marquee />
                 </div>
 
-                <div className="content-auto">
-                    <Suspense fallback={<div className="h-48" />}>
-                        <ContributeCTA />
-                    </Suspense>
-                </div>
 
-                <section id="security" className="scroll-mt-24 content-auto">
-                    <Suspense fallback={<div className="h-48 bg-[#1A2F2F] animate-pulse" />}>
-                        <Security />
-                    </Suspense>
-                </section>
 
-                <section id="reviews" className="scroll-mt-24 content-auto">
-                    <Suspense fallback={<div className="h-48" />}>
-                        <Community />
-                    </Suspense>
-                </section>
 
                 <section id="faq" className="scroll-mt-24 content-auto">
                     <Suspense fallback={<div className="h-48" />}>

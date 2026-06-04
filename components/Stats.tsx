@@ -60,8 +60,8 @@ const Stats: React.FC = () => {
                         <div className="w-1.5 h-1.5 bg-clay rounded-full animate-pulse"></div>
                         <h2 className="text-[10px] md:text-xs font-mono font-bold tracking-[0.3em] uppercase text-white/40">Our Numbers</h2>
                     </div>
-                    <h3 className="text-2xl md:text-4xl font-serif leading-none text-white tracking-tight uppercase">
-                        Why Use <br/><span className="italic font-light text-white/30">Us?</span>
+                    <h3 className="text-2xl md:text-4xl font-sans font-bold leading-none text-white tracking-tight uppercase">
+                        Why Use <br/><span className="font-serif italic font-light text-white/30">Us?</span>
                     </h3>
                 </motion.div>
                 <motion.div 
@@ -97,7 +97,7 @@ const Stats: React.FC = () => {
                      <span className="text-[10px] font-bold uppercase tracking-widest text-clay border border-clay/20 px-4 py-2 bg-clay/10 rounded-full backdrop-blur-sm shadow-sm group-hover:scale-105 transition-transform">Cards</span>
                      <span className="text-[10px] font-mono text-white/10">DAT.01</span>
                 </div>
-                <div className="text-5xl sm:text-6xl md:text-7xl text-white mb-4 tracking-tighter leading-none font-serif flex items-baseline gap-1">
+                <div className="text-5xl sm:text-6xl md:text-7xl text-white mb-4 tracking-tighter leading-none font-sans font-extrabold flex items-baseline gap-1">
                     <Counter end={248} suffix="" trigger={hasAnimated} />
                     <span className="text-base sm:text-lg opacity-20 italic">nodes</span>
                 </div>
@@ -118,7 +118,7 @@ const Stats: React.FC = () => {
                      <span className="text-[10px] font-bold uppercase tracking-widest text-clay border border-clay/20 px-4 py-2 bg-clay/10 rounded-full backdrop-blur-sm shadow-sm group-hover:scale-105 transition-transform">Accuracy</span>
                      <span className="text-[10px] font-mono text-white/10">ALG.02</span>
                 </div>
-                <div className="text-5xl sm:text-6xl md:text-7xl text-white mb-4 tracking-tighter leading-none font-serif">
+                <div className="text-5xl sm:text-6xl md:text-7xl text-white mb-4 tracking-tighter leading-none font-sans font-extrabold">
                     <Counter end={100} prefix="" suffix="%" trigger={hasAnimated} />
                 </div>
                 <h4 className="text-[11px] font-bold uppercase tracking-[0.3em] text-white mb-4 border-t border-white/10 pt-4 flex justify-between items-center w-full">
@@ -137,7 +137,7 @@ const Stats: React.FC = () => {
                      <span className="text-[10px] font-bold uppercase tracking-widest text-clay border border-clay/20 px-4 py-2 bg-clay/10 rounded-full backdrop-blur-sm shadow-sm group-hover:scale-105 transition-transform">Savings</span>
                      <span className="text-[10px] font-mono text-white/10">RES.03</span>
                 </div>
-                <div className="text-5xl sm:text-6xl md:text-7xl text-white mb-4 tracking-tighter leading-none font-serif flex items-baseline gap-1">
+                <div className="text-5xl sm:text-6xl md:text-7xl text-white mb-4 tracking-tighter leading-none font-sans font-extrabold flex items-baseline gap-1">
                     <Counter end={15} prefix="₹" suffix="k" trigger={hasAnimated} />
                     <span className="text-base sm:text-lg opacity-20 italic">yield</span>
                 </div>

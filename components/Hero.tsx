@@ -1,68 +1,104 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Sparkles } from 'lucide-react';
-import { motion } from 'motion/react';
+import { ArrowRight } from 'lucide-react';
+
+const heroBrands = [
+  { name: 'Stripe' },
+  { name: 'Coinbase' },
+  { name: 'Uniswap' },
+  { name: 'Aave' },
+  { name: 'Compound' },
+  { name: 'MakerDAO' },
+  { name: 'Chainlink' },
+];
 
 const Hero: React.FC = () => {
-  const fadeInUp = {
-    initial: { opacity: 0, y: 0 },
-    whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true },
-    transition: { duration: 0.8 }
-  };
-
   return (
-    <section id="hero" className="relative w-full flex flex-col items-center pt-2 md:pt-4 pb-6 bg-cream border-b border-white/10 overflow-hidden text-[#F2EFE9] scroll-mt-32">
+    <>
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes halo-marquee {
+          0% { transform: translateX(0%); }
+          100% { transform: translateX(-50%); }
+        }
+        .halo-marquee-track {
+          display: flex;
+          width: max-content;
+          animation: halo-marquee 22s linear infinite;
+        }
+      `}} />
 
-        {/* Background Grid/Lines - Flowing within the 3-column Core */}
-        <div className="absolute inset-0 pointer-events-none">
-            <div className="w-full h-full border-x border-white/5 relative opacity-30">
-                 <div className="absolute top-0 left-[33%] bottom-0 w-px bg-white/5 hidden lg:block"></div>
-                 <div className="absolute top-0 right-[33%] bottom-0 w-px bg-white/5 hidden lg:block"></div>
+      {/* Hero Section — full-viewport-height card within the col-span-3 column */}
+      <section
+        id="hero"
+        className="relative w-full flex flex-col bg-[#0a0a0a] overflow-hidden"
+        style={{ minHeight: 'calc(100vh - 8rem)' }}
+      >
+        {/* Padded inner wrapper: matches prompt's flex-1 px-6 pt-4 pb-6 flex items-end */}
+        <div className="flex-1 px-6 pt-4 pb-6 flex items-end">
+          {/* Rounded video card */}
+          <div
+            className="relative w-full rounded-2xl overflow-hidden"
+            style={{ height: 'calc(100vh - 10rem)' }}
+          >
+            {/* Background video */}
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="object-cover absolute inset-0 w-full h-full"
+              src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260423_161253_c72b1869-400f-45ed-ac0c-52f68c2ed5bd.mp4"
+            />
+
+            {/* Dark gradient at bottom so text stays readable */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent pointer-events-none z-[5]" />
+
+            {/* Content overlay */}
+            <div className="relative z-10 flex flex-col items-start justify-start h-full p-10 pt-20">
+              <h1
+                className="text-white text-5xl md:text-6xl font-extrabold leading-tight max-w-xl mb-4"
+                style={{ letterSpacing: '-0.04em' }}
+              >
+                Your Wealth<br />Works
+              </h1>
+
+              <p className="text-white/70 text-base md:text-lg max-w-md mb-8 leading-relaxed">
+                An automated, reward-powered digital dollar built for native passive earnings and effortless connection into DeFi.
+              </p>
+
+              {/* "Join us" pill button */}
+              <button className="inline-flex items-center gap-3 bg-white text-black text-base md:text-lg font-medium pl-8 pr-2 py-2 rounded-full hover:bg-zinc-100 transition-colors duration-200">
+                <span>Join us</span>
+                <span className="bg-black rounded-full p-2">
+                  <ArrowRight className="w-5 h-5 text-white" />
+                </span>
+              </button>
+
+              {/* Brand Marquee */}
+              <div className="mt-16 w-full max-w-md overflow-hidden">
+                <div className="halo-marquee-track">
+                  {heroBrands.map((brand, i) => (
+                    <span
+                      key={`a-${i}`}
+                      className="mx-7 shrink-0 text-white/60 whitespace-nowrap font-sans text-sm font-semibold tracking-wider uppercase"
+                    >
+                      {brand.name}
+                    </span>
+                  ))}
+                  {heroBrands.map((brand, i) => (
+                    <span
+                      key={`b-${i}`}
+                      className="mx-7 shrink-0 text-white/60 whitespace-nowrap font-sans text-sm font-semibold tracking-wider uppercase"
+                    >
+                      {brand.name}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-
-        <div className="relative z-10 w-full px-6 flex flex-col items-center">
-            
-            {/* --- MAIN HEADLINE SECTION (H1 for SEO) --- */}
-            <motion.div 
-                initial={fadeInUp.initial}
-                whileInView={fadeInUp.whileInView}
-                viewport={fadeInUp.viewport}
-                transition={{ ...fadeInUp.transition, delay: 0.2 }}
-                className="w-full text-center mb-6 md:mb-10 px-6 pt-6"
-            >
-                <div className="flex justify-center items-center gap-6 mb-4 md:md-6">
-                     <div className="h-[1px] bg-white/10 w-12 md:w-24"></div>
-                     <span className="text-clay font-bold text-xs uppercase tracking-[0.4em]">Advanced Financial Engineering</span>
-                     <div className="h-[1px] bg-white/10 w-12 md:w-24"></div>
-                </div>
-                <h1 className="text-2xl sm:text-5xl md:text-6xl lg:text-[clamp(2rem,5vw,5.5rem)] leading-[0.95] font-heading font-extrabold text-white uppercase tracking-tight">
-                    Yield Every Swipe. <br className="hidden md:block" /> Master the Game.
-                </h1>
-                <h3 className="text-xs sm:text-base xl:text-lg font-sans font-semibold text-white mt-4 md:mt-6 max-w-3xl mx-auto leading-relaxed tracking-tight uppercase px-4 sm:px-0">
-                    Precision analytics on <span className="text-white">200+ institutional credit instruments</span>. reveal your highest possible systematic yield through the Yureka Matrix.
-                </h3>
-
-                
-                <div className="mt-6 md:mt-8 mb-8 md:mb-10 flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-6 px-4">
-                    <Link to="/yureka-ai" className="group relative px-8 py-5 md:px-12 md:py-6 bg-white text-cream overflow-hidden rounded-full w-full sm:w-auto shadow-[0_8px_40px_-12px_rgba(0,0,0,0.8)] transition-all hover:-translate-y-1 hover:shadow-2xl text-center border border-transparent">
-                        <div className="absolute inset-0 w-full h-full bg-clay/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
-                        <span className="relative z-10 font-bold text-[10px] md:text-[11px] uppercase tracking-[0.3em] flex items-center justify-center gap-3">
-                            <Sparkles size={16} className="text-clay animate-pulse" /> Find Your Perfect Card
-                        </span>
-                    </Link>
-                    
-                    <Link to="/cards" className="group px-8 py-5 md:px-12 md:py-6 bg-white/5 text-[#F2EFE9] rounded-full w-full sm:w-auto border-2 border-white/10 hover:border-white/30 hover:bg-white/10 transition-all hover:-translate-y-1 text-center backdrop-blur-sm">
-                        <span className="font-bold text-[10px] md:text-[11px] uppercase tracking-[0.3em] flex items-center justify-center gap-3">
-                            Explore All Cards
-                        </span>
-                    </Link>
-                </div>
-            </motion.div>
-
-            </div>
-    </section>
+      </section>
+    </>
   );
 };
 

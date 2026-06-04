@@ -89,7 +89,7 @@ const CalculatorCTA: React.FC = () => {
             </motion.div>
             
             <div className="text-center md:text-left">
-              <h3 className="text-2xl md:text-4xl font-serif text-white font-bold tracking-tight mb-1">
+              <h3 className="text-2xl md:text-4xl font-sans text-white font-extrabold tracking-tight mb-1">
                 Yureka vs Standard
               </h3>
               <p className="text-white/40 text-base md:text-lg font-serif italic">
@@ -136,7 +136,7 @@ const CalculatorCTA: React.FC = () => {
                       <div className="w-10 h-10 bg-clay rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20">
                          <Calculator size={20} className="text-cream" />
                       </div>
-                      <h4 className="text-2xl font-serif font-bold text-white uppercase tracking-tight">Savings Intelligence</h4>
+                      <h4 className="text-2xl font-sans font-extrabold text-white uppercase tracking-tight">Savings Intelligence</h4>
                    </div>
                    <button 
                     onClick={() => setIsOpen(false)}
@@ -152,8 +152,8 @@ const CalculatorCTA: React.FC = () => {
                       <div>
                         <label className="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-3 block">Monthly Credit Spend</label>
                         <div className="flex items-baseline gap-2 mb-4">
-                          <span className="text-3xl font-serif text-white">₹</span>
-                          <span className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white tracking-tighter">
+                          <span className="text-3xl font-sans font-bold text-white">₹</span>
+                          <span className="text-4xl sm:text-5xl md:text-6xl font-sans font-bold text-white tracking-tighter">
                             {monthlySpend.toLocaleString('en-IN')}
                           </span>
                         </div>
@@ -197,12 +197,12 @@ const CalculatorCTA: React.FC = () => {
                       <div className="relative z-10">
                         <div className="mb-8">
                            <p className="text-[10px] font-bold uppercase tracking-widest text-white/30 mb-1">Standard Bank Match</p>
-                           <h5 className="text-2xl font-serif text-white/40">₹{results.standard}<span className="text-xs ml-1">/yr</span></h5>
+                           <h5 className="text-2xl font-sans font-bold text-white/40">₹{results.standard}<span className="text-xs ml-1">/yr</span></h5>
                         </div>
 
                         <div className="mb-8">
                            <p className="text-[10px] font-bold uppercase tracking-widest text-clay mb-1">Yureka Optimized</p>
-                           <h5 className="text-4xl sm:text-5xl font-serif font-bold text-white tracking-tight">₹{results.yureka}<span className="text-base ml-1">/yr</span></h5>
+                           <h5 className="text-4xl sm:text-5xl font-sans font-bold text-white tracking-tight">₹{results.yureka}<span className="text-base ml-1">/yr</span></h5>
                         </div>
                       </div>
 

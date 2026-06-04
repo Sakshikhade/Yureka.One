@@ -65,7 +65,7 @@ const CategoriesPage: React.FC = () => {
              initial={{ opacity: 0, y: 20 }}
              animate={{ opacity: 1, y: 0 }}
              transition={{ delay: 0.1 }}
-             className="text-4xl md:text-6xl font-heading font-black text-white tracking-tighter uppercase"
+             className="text-4xl md:text-6xl font-sans font-extrabold text-white tracking-tighter uppercase"
            >
              Your Path to <span className="text-clay">Smarter</span> Spends
            </motion.h1>
@@ -129,7 +129,7 @@ const CategoriesPage: React.FC = () => {
       <section className="max-w-7xl mx-auto px-6 mt-20">
         <div className="bg-gradient-to-r from-clay/10 to-transparent border border-white/5 rounded-[3rem] p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="space-y-4 text-center md:text-left">
-            <h2 className="text-2xl md:text-3xl font-heading font-black text-white uppercase">Still Unsure?</h2>
+            <h2 className="text-2xl md:text-3xl font-sans font-extrabold text-white uppercase">Still Unsure?</h2>
             <p className="text-white/80 text-base max-w-md">Let our Intelligence Engine match you with the perfect card based on your unique credit profile.</p>
           </div>
           <Link to={`${basePath}/yureka-ai`} className="bg-clay text-black px-10 py-4 rounded-full font-black uppercase tracking-widest flex items-center gap-2 hover:scale-105 transition-transform shrink-0">

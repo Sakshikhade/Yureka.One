@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+      * { font-family: 'Almarai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif; }
+
       html {
         font-size: 15px; /* Boost global text sizing for premium readability */
         scroll-behavior: smooth;
@@ -9,7 +11,7 @@
         -webkit-tap-highlight-color: transparent;
       }
       body {
-        font-family: 'Inter', sans-serif;
+        font-family: 'Almarai', sans-serif;
         font-size: 16px;
         line-height: 1.6;
         background-color: #0a0a0a;
@@ -26,7 +28,7 @@
 
       /* Heading modular scale and hierarchy */
       h1, .font-heading {
-        font-family: 'Outfit', sans-serif;
+        font-family: 'Almarai', sans-serif;
         font-weight: 800;
         line-height: 1.1;
         letter-spacing: -0.03em;
@@ -34,7 +36,7 @@
       }
 
       h2 {
-        font-family: 'Outfit', sans-serif;
+        font-family: 'Almarai', sans-serif;
         font-weight: 700;
         line-height: 1.15;
         letter-spacing: -0.02em;
@@ -42,7 +44,7 @@
       }
 
       h3 {
-        font-family: 'Outfit', sans-serif;
+        font-family: 'Almarai', sans-serif;
         font-weight: 700;
         line-height: 1.2;
         letter-spacing: -0.01em;
@@ -55,11 +57,11 @@
       h3 { font-size: clamp(18px, 3vw, 26px); }
 
       .font-serif {
-        font-family: 'Fraunces', serif; 
+        font-family: 'Instrument Serif', serif; 
       }
       
       .font-blackletter {
-        font-family: 'Fraunces', serif;
+        font-family: 'Instrument Serif', serif;
         font-weight: 900;
         font-variation-settings: "SOFT" 100;
       }
@@ -313,4 +315,71 @@
       .text-xs {
         font-size: 13px !important;
       }
+
+      /* Custom Noise Texture Utilities */
+      .noise-overlay {
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      }
+      .bg-noise {
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      }
+
+      /* Mindloop HSL variables & effects */
+      :root {
+        --background: 0 0% 0%;
+        --foreground: 0 0% 100%;
+        --card: 0 0% 5%;
+        --card-foreground: 0 0% 100%;
+        --primary: 0 0% 100%;
+        --primary-foreground: 0 0% 0%;
+        --secondary: 0 0% 12%;
+        --secondary-foreground: 0 0% 85%;
+        --muted: 0 0% 15%;
+        --muted-foreground: 0 0% 65%;
+        --accent: 170 15% 45%;
+        --accent-foreground: 0 0% 100%;
+        --border: 0 0% 20%;
+        --input: 0 0% 18%;
+        --ring: 0 0% 40%;
+        --hero-subtitle: 210 17% 95%;
+        --surface: #111111;
+        --accent-dim: rgba(52, 211, 153, 0.12);
+      }
+
+      .liquid-glass {
+        background: rgba(255, 255, 255, 0.01);
+        background-blend-mode: luminosity;
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        border: none;
+        box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+        position: relative;
+        overflow: hidden;
+      }
+      .liquid-glass::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        padding: 1.4px;
+        background: linear-gradient(180deg,
+          rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.15) 20%,
+          rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%,
+          rgba(255,255,255,0.15) 80%, rgba(255,255,255,0.45) 100%);
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        pointer-events: none;
+      }
+
+      .section-sep {
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .hero-heading {
+        background: linear-gradient(180deg, #646973 0%, #BBCCD7 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
 

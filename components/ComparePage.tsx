@@ -81,7 +81,7 @@ const ComparePage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white pb-32 overflow-hidden selection:bg-clay selection:text-black">
+    <div className="min-h-screen bg-[#0a0a0a] text-white pb-32 overflow-hidden selection:bg-clay selection:text-black">
       <SEO 
         title="Credit Card Comparisons | Side-by-Side Analysis" 
         description="Compare up to 3 credit cards side-by-side. Deep-dive into fees, rewards, and eligibility to find your perfect match."
@@ -105,7 +105,7 @@ const ComparePage: React.FC = () => {
              initial={{ opacity: 0, y: 20 }}
              animate={{ opacity: 1, y: 0 }}
              transition={{ delay: 0.1 }}
-             className="text-4xl md:text-7xl font-heading font-black text-white tracking-tighter uppercase mb-4"
+             className="text-4xl md:text-7xl font-sans font-extrabold text-white tracking-tighter uppercase mb-4"
            >
              Credit Card <span className="text-clay relative italic">Comparisons<span className="absolute -bottom-1 left-0 w-full h-1 bg-clay/20" /></span>
            </motion.h1>
@@ -123,7 +123,7 @@ const ComparePage: React.FC = () => {
             
             <div className="relative z-10 space-y-12">
                <div className="space-y-2 border-b border-white/5 pb-6">
-                  <h2 className="text-2xl font-heading font-black text-white uppercase">Choose Your Own Comparison</h2>
+                  <h2 className="text-2xl font-sans font-extrabold text-white uppercase">Choose Your Own Comparison</h2>
                   <p className="text-white/50 text-sm">Select up to 3 cards to compare side by side</p>
                </div>
 
@@ -137,7 +137,7 @@ const ComparePage: React.FC = () => {
                        <div className="relative">
                           <button 
                             onClick={() => setActiveDropdown(activeDropdown === i ? null : i)}
-                            className="w-full bg-[#0d0d0d] border border-white/10 rounded-2xl p-5 text-left flex items-center justify-between group hover:border-white/20 transition-all backdrop-blur-xl shadow-lg"
+                            className="w-full bg-[#111111] border border-white/10 rounded-2xl p-5 text-left flex items-center justify-between group hover:border-white/20 transition-all backdrop-blur-xl shadow-lg"
                           >
                              <span className={`text-sm font-bold uppercase tracking-tight ${selectedCards[i] ? 'text-white font-black' : 'text-white/35'}`}>
                                 {selectedCards[i] ? allCards.find(c => c.id === selectedCards[i])?.name : 'Select a card'}
@@ -151,7 +151,7 @@ const ComparePage: React.FC = () => {
                               <motion.div 
                                 initial={{ opacity: 0, scale: 0.95 }}
                                 animate={{ opacity: 1, scale: 1 }}
-                                className="relative aspect-[1.58/1] w-full rounded-2xl overflow-hidden border border-white/15 shadow-2xl group bg-[#0d0d0d] flex items-center justify-center group-hover:border-clay/35 transition-colors"
+                                className="relative aspect-[1.58/1] w-full rounded-2xl overflow-hidden border border-white/15 shadow-2xl group bg-[#111111] flex items-center justify-center group-hover:border-clay/35 transition-colors"
                               >
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent z-10" />
                                 <img 
@@ -186,7 +186,7 @@ const ComparePage: React.FC = () => {
                                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
                                  animate={{ opacity: 1, y: 0, scale: 1 }}
                                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                                 className="absolute top-full left-0 right-0 mt-3 z-[100] bg-[#0d0d0d] border border-white/15 rounded-3xl shadow-2xl overflow-hidden backdrop-blur-3xl"
+                                 className="absolute top-full left-0 right-0 mt-3 z-[100] bg-[#111111] border border-white/15 rounded-3xl shadow-2xl overflow-hidden backdrop-blur-3xl"
                                >
                                   <div className="max-h-72 overflow-y-auto custom-scrollbar p-2">
                                      {loading ? (
@@ -236,7 +236,7 @@ const ComparePage: React.FC = () => {
       {/* Popular Comparisons Grid */}
       <section className="max-w-7xl mx-auto px-6 mt-32 space-y-12">
          <div className="space-y-2 text-center">
-            <h2 className="text-3xl font-heading font-black text-white uppercase tracking-tight">Popular Comparisons</h2>
+            <h2 className="text-3xl font-sans font-extrabold text-white uppercase tracking-tight">Popular Comparisons</h2>
             <p className="text-white/35 text-[10px] font-black uppercase tracking-[0.4em] font-mono">Expert curated neural matchups</p>
          </div>
 
@@ -253,7 +253,7 @@ const ComparePage: React.FC = () => {
                   <div className="flex flex-col space-y-8">
                      {/* Header */}
                      <div className="space-y-1">
-                        <h3 className="text-xl font-heading font-bold text-white tracking-tight">{comp.title}</h3>
+                        <h3 className="text-xl font-sans font-bold text-white tracking-tight">{comp.title}</h3>
                         <p className="text-[11px] font-bold text-white/30 uppercase tracking-[0.2em] font-mono">{comp.category}</p>
                      </div>
  

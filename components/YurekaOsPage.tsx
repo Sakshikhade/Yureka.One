@@ -90,7 +90,7 @@ const YurekaOsPage: React.FC = () => {
                     </div>
                   </div>
                   
-                  <h2 className="text-5xl md:text-8xl font-heading font-extrabold text-white leading-[0.85] tracking-tighter">
+                  <h2 className="text-5xl md:text-8xl font-sans font-extrabold text-white leading-[0.85] tracking-tighter">
                     Your Card <br /> <span className="text-white/20 italic font-light">can unlock</span> <br /> wonders
                   </h2>
                   <div className="h-px w-full bg-white/10" />
@@ -128,7 +128,7 @@ const YurekaOsPage: React.FC = () => {
               </div>
               
               <div className="space-y-4">
-                <h1 className="text-5xl md:text-7xl font-heading font-extrabold tracking-tighter text-white leading-[0.9] lg:max-w-md mx-auto lg:mx-0">
+                <h1 className="text-5xl md:text-7xl font-sans font-extrabold tracking-tighter text-white leading-[0.9] lg:max-w-md mx-auto lg:mx-0">
                    Optimize your <br /> <span className="text-white/20 italic font-light">Reward</span> <br /> transfers.
                 </h1>
                 <p className="text-white/50 font-sans text-xl font-medium max-w-sm leading-relaxed mx-auto lg:mx-0">
@@ -179,7 +179,7 @@ const YurekaOsPage: React.FC = () => {
         <section className="mb-40">
            <div className="text-center mb-20">
               <h2 className="text-[10px] font-bold uppercase tracking-[0.4em] text-clay mb-4">Precision Engineering</h2>
-              <h3 className="text-4xl md:text-6xl font-heading font-extrabold tracking-tight text-white leading-tight">Built for rewards maximizers.</h3>
+              <h3 className="text-4xl md:text-6xl font-sans font-extrabold tracking-tight text-white leading-tight">Built for rewards maximizers.</h3>
            </div>
            
            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -199,7 +199,7 @@ const YurekaOsPage: React.FC = () => {
                  <div className={`w-14 h-14 ${feature.color.split(' ')[0]}/10 rounded-2xl flex items-center justify-center ${feature.color.split(' ')[1]} mb-8 group-hover:scale-110 transition-transform duration-500`}>
                    <feature.icon size={28} />
                  </div>
-                 <h4 className="text-2xl font-heading font-extrabold text-white mb-4 flex items-center gap-3">
+                 <h4 className="text-2xl font-sans font-extrabold text-white mb-4 flex items-center gap-3">
                     {feature.title}
                  </h4>
                  <p className="text-white/40 leading-relaxed mb-6 font-medium sm:h-20">
@@ -224,7 +224,7 @@ const YurekaOsPage: React.FC = () => {
           <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-clay/5 rounded-full blur-[100px]" />
           
           <div className="relative z-10 max-w-3xl mx-auto">
-            <h2 className="text-4xl md:text-7xl font-heading font-extrabold mb-8 leading-[0.9] tracking-tighter">
+            <h2 className="text-4xl md:text-7xl font-sans font-extrabold mb-8 leading-[0.9] tracking-tighter">
               Ready to win the <br /> <span className="text-clay italic font-light">points game?</span>
             </h2>
             <div className="flex flex-col sm:flex-row justify-center gap-4">

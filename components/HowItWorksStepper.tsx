@@ -1,361 +1,508 @@
-import React from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { CheckCircle2, Search, Zap, ArrowRight, ShieldCheck, Cpu, Globe, MessageSquare, Layers, Sparkles } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
+import { ArrowRight, Check, Instagram, Linkedin, Twitter } from 'lucide-react';
+import Hls from 'hls.js';
 
-const STEPS = [
-  {
-    id: 1,
-    tag: 'Research Hub',
-    title: 'Yureka AI',
-    description: 'A smart optimization layer for your wallet. It analyzes thousands of rewards rules in milliseconds to find your best card.',
-    cta: 'Join Early Access',
-    availability: 'Limited Release',
-    side: 'left'
-  },
-  {
-    id: 2,
-    tag: 'Savings Engine',
-    title: 'RewardX',
-    description: 'The definitive savings tool. Combine bank offers with card rewards for significantly higher value.',
-    cta: 'Join Early Access',
-    availability: 'Limited Release',
-    side: 'right'
-  },
-  {
-    id: 3,
-    tag: 'Smart Assistant',
-    title: 'Browser Extension',
-    description: 'Your checkout companion. It lives on your toolbar and applies the best offers the moment you hit any payment page.',
-    cta: 'Join Early Access',
-    availability: 'Limited Release',
-    side: 'left'
-  },
-  {
-    id: 4,
-    tag: 'The Registry',
-    title: 'Waitlist',
-    description: 'Secure your spot in the ecosystem. We are rolling out access in controlled phases to maintain system reliability.',
-    cta: 'Join Waitlist',
-    availability: 'Open Enrollment',
-    side: 'right'
-  }
-];
+// ==========================================
+// ANIMATION & LAYOUT CONFIGURATION
+// ==========================================
 
-// ── UI Components for the "Phones" ────────────────────────────────────────
+const fadeUp = (delay: number) => ({
+  initial: { opacity: 0, y: 20 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: '-100px' },
+  transition: { duration: 0.6, delay, ease: 'easeOut' as const },
+});
 
-const AIChatScreen = ({ isActive }: { isActive: boolean }) => (
-  <div className="w-full h-full bg-white/5 p-6 flex flex-col font-sans">
-    <div className="flex items-center justify-between mb-8">
-      <div className="flex gap-1.5">
-        <motion.div animate={{ opacity: [0.2, 1, 0.2] }} transition={{ repeat: Infinity, duration: 2 }} className="w-2 h-2 rounded-full bg-red-400" />
-        <motion.div animate={{ opacity: [0.2, 1, 0.2] }} transition={{ repeat: Infinity, duration: 2, delay: 0.2 }} className="w-2 h-2 rounded-full bg-amber-400" />
-        <motion.div animate={{ opacity: [0.2, 1, 0.2] }} transition={{ repeat: Infinity, duration: 2, delay: 0.4 }} className="w-2 h-2 rounded-full bg-clay" />
-      </div>
-      <span className="text-[10px] font-mono text-white/20 uppercase tracking-widest">Yureka Analysis Engine v.2.4b</span>
-    </div>
+// ==========================================
+// SCROLL-LINKED PARAGRAPH REVEAL COMPONENTS
+// ==========================================
 
-    <div className="space-y-6 flex-1">
-      <AnimatePresence>
-        {isActive && (
-          <div className="space-y-6">
-            <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.5 }} className="flex gap-3 items-start max-w-[90%]">
-              <div className="w-7 h-7 rounded-full bg-clay/10 flex items-center justify-center shrink-0 border border-clay/20">
-                <div className="w-1.5 h-1.5 rounded-full bg-clay" />
-              </div>
-              <div className="bg-white/5 p-4 rounded-2xl rounded-tl-none shadow-sm border border-white/5">
-                <p className="text-[11px] text-white/70 leading-relaxed font-medium">Buying a new laptop today. Should I use my Amex Gold for this?</p>
-              </div>
-            </motion.div>
+interface WordRevealProps {
+  word: string;
+  index: number;
+  totalWords: number;
+  scrollYProgress: MotionValue<number>;
+  isHighlight: boolean;
+}
 
-            <motion.div initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 1, duration: 0.5 }} className="flex gap-3 flex-row-reverse items-start max-w-[95%]">
-              <div className="w-7 h-7 rounded-full bg-clay flex items-center justify-center shrink-0 shadow-lg">
-                <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ repeat: Infinity, duration: 2 }}>
-                  <Cpu size={12} className="text-cream" />
-                </motion.div>
-              </div>
-              <div className="bg-clay p-4 rounded-2xl rounded-tr-none shadow-xl text-cream">
-                <p className="text-[11px] leading-relaxed font-bold">Hold on! While Amex is good, I've found a way to get 3x more value by combining a specific voucher with your card rewards.</p>
-              </div>
-            </motion.div>
+const WordReveal: React.FC<WordRevealProps> = ({
+  word,
+  index,
+  totalWords,
+  scrollYProgress,
+  isHighlight,
+}) => {
+  const progress = index / totalWords;
+  // Trigger stagger window
+  const start = Math.max(0, progress - 0.15);
+  const end = Math.min(1, progress + 0.05);
+  const adjustedEnd = end <= start ? start + 0.01 : end;
 
-            <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 2.5, duration: 0.5 }} className="flex gap-3 items-start max-w-[90%]">
-              <div className="w-7 h-7 rounded-full bg-clay/10 flex items-center justify-center shrink-0 border border-clay/20">
-                <div className="w-1.5 h-1.5 rounded-full bg-clay" />
-              </div>
-              <div className="bg-white/5 p-4 rounded-2xl rounded-tl-none shadow-sm border border-white/5">
-                <p className="text-[11px] text-white/70 leading-relaxed font-medium">Better than 5x points? How?</p>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-    </div>
-
-    <div className="mt-auto pt-4 flex items-center justify-between border-t border-white/5">
-       <div className="flex items-center gap-2">
-          <motion.div animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1.2, 0.8] }} transition={{ repeat: Infinity, duration: 1.5 }} className="w-2 h-2 rounded-full bg-clay" />
-          <span className="text-[9px] font-bold text-white/20 uppercase tracking-widest">Neural Active</span>
-       </div>
-       <Search size={14} className="text-white/20" />
-    </div>
-  </div>
-);
-
-const RewardXScreen = ({ isActive }: { isActive: boolean }) => (
-  <div className="w-full h-full bg-cream p-6 flex flex-col border border-white/5">
-    <div className="flex justify-between items-center mb-8">
-      <span className="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em]">Adaptive Savings Engine</span>
-      <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-white text-[10px] italic border border-white/10">Y</div>
-    </div>
-
-    <h3 className="text-2xl font-serif text-white mb-1">Savings Overview</h3>
-    <div className="flex justify-between items-center mb-8">
-       <span className="text-[10px] font-mono text-clay uppercase tracking-widest">Total Savings Pulse</span>
-       <motion.span animate={{ opacity: [0.6, 1, 0.6] }} transition={{ repeat: Infinity, duration: 2 }} className="text-xl font-medium text-clay">₹9,500</motion.span>
-    </div>
-
-    <div className="space-y-3">
-      {[
-        { icon: <Layers size={14}/>, label: 'Merchant Cart', sub: 'Original Price', val: '₹50,000', color: 'bg-white/10 text-white' },
-        { icon: <Zap size={14}/>, label: 'RewardX Savings', sub: 'Benefit Applied', val: '-₹4,500', color: 'bg-clay text-cream', tag: '9% Discount' },
-        { icon: <Sparkles size={14}/>, label: 'Card Rewards', sub: 'Value Added', val: '-₹3,050', color: 'bg-white/20 text-white', tag: '10x Points' },
-      ].map((item, i) => (
-        <motion.div 
-          key={item.label}
-          initial={{ y: 20, opacity: 0 }}
-          animate={isActive ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
-          transition={{ delay: i * 0.15, duration: 0.5 }}
-          className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-4 relative overflow-hidden"
-        >
-          {isActive && i === 1 && (
-            <motion.div 
-              initial={{ x: '-100%' }}
-              animate={{ x: '200%' }}
-              transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none"
-            />
-          )}
-          <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${item.color}`}>{item.icon}</div>
-          <div className="flex-1">
-            <div className="flex justify-between items-center mb-0.5">
-              <span className="text-xs font-bold text-white/90">{item.label}</span>
-              <span className={`text-xs font-medium ${item.val.startsWith('-') ? 'text-clay' : 'text-white/40'}`}>{item.val}</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-[9px] text-white/20 uppercase tracking-widest">{item.sub}</span>
-              {item.tag && <span className="text-[8px] font-bold px-1.5 py-0.5 bg-clay/10 text-clay rounded uppercase">{item.tag}</span>}
-            </div>
-          </div>
-        </motion.div>
-      ))}
-    </div>
-  </div>
-);
-
-const ExtensionScreen = ({ isActive }: { isActive: boolean }) => (
-  <div className="w-full h-full bg-white/5 p-6 flex flex-col">
-    <div className="w-full h-8 bg-white/5 border border-white/10 rounded-t-xl flex items-center px-4 gap-2 mb-6">
-      <div className="flex gap-1">
-        <motion.div animate={{ opacity: [0.2, 1, 0.2] }} transition={{ repeat: Infinity, duration: 1 }} className="w-1.5 h-1.5 rounded-full bg-white/10" />
-        <motion.div animate={{ opacity: [0.2, 1, 0.2] }} transition={{ repeat: Infinity, duration: 1, delay: 0.5 }} className="w-1.5 h-1.5 rounded-full bg-white/10" />
-      </div>
-      <div className="flex-1 h-4 bg-white/5 rounded-full px-3 flex items-center">
-        <span className="text-[7px] text-white/20 font-mono">amazon.in/cart/checkout</span>
-      </div>
-    </div>
-
-    <div className="flex-1 bg-white/[0.03] rounded-2xl p-4 shadow-sm border border-white/5 relative overflow-hidden">
-      <h4 className="text-[8px] font-bold text-white/20 uppercase tracking-[0.2em] mb-4">Shopping Cart (2 items)</h4>
-      
-      <div className="space-y-4">
-        <div className="flex gap-3">
-          <div className="w-12 h-12 bg-white/5 rounded-lg shrink-0 relative overflow-hidden">
-            <motion.div animate={{ opacity: [0.3, 0.6, 0.3] }} transition={{ repeat: Infinity, duration: 2 }} className="absolute inset-0 bg-clay/5" />
-          </div>
-          <div className="flex-1">
-            <div className="flex justify-between text-[10px] font-bold text-white/70">
-              <span>iPhone 15 Pro</span>
-              <span>₹1,24,900</span>
-            </div>
-            <span className="text-[8px] text-white/20 block mb-2">Natural Titanium • In Stock</span>
-          </div>
-        </div>
-
-        <div className="pt-4 border-t border-white/5">
-          <div className="flex justify-between items-center mb-1">
-             <span className="text-[10px] text-white/40">Subtotal</span>
-             <span className="text-[10px] font-medium text-white/80">₹1,54,890</span>
-          </div>
-          <div className="flex justify-between items-center mb-4">
-             <span className="text-[10px] text-white/40">Shipping</span>
-             <motion.span animate={{ opacity: [0.5, 1, 0.5] }} transition={{ repeat: Infinity, duration: 1.5 }} className="text-[10px] font-bold text-clay">FREE</motion.span>
-          </div>
-          <div className="flex justify-between items-center py-3 border-y border-white/5">
-             <span className="text-xs font-bold text-white">Total</span>
-             <span className="text-sm font-bold text-white">₹1,54,890</span>
-          </div>
-        </div>
-      </div>
-
-      <AnimatePresence>
-        {isActive && (
-          <motion.div 
-            initial={{ x: 100, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: 100, opacity: 0 }}
-            transition={{ delay: 0.8, type: 'spring', stiffness: 100 }}
-            className="absolute top-1/2 -right-4 -translate-y-1/2 w-32 bg-white text-cream p-4 rounded-2xl shadow-2xl z-20"
-          >
-            <div className="flex items-center gap-2 mb-3">
-              <motion.div animate={{ rotate: [0, 10, -10, 0] }} transition={{ repeat: Infinity, duration: 3 }} className="w-5 h-5 rounded bg-cream flex items-center justify-center text-[8px] font-serif italic text-white">Y</motion.div>
-              <span className="text-[8px] font-bold tracking-widest uppercase">Yureka+</span>
-            </div>
-            <p className="text-[9px] leading-tight mb-3 font-bold">Found ₹5,400 in hidden savings.</p>
-            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="w-full py-1.5 bg-clay text-cream text-[8px] font-bold uppercase tracking-widest rounded-lg shadow-lg">Apply Savings</motion.button>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  </div>
-);
-
-const WaitlistScreen = ({ isActive }: { isActive: boolean }) => (
-  <div className="w-full h-full bg-cream flex flex-col justify-center items-center p-8 text-center relative overflow-hidden border border-white/5">
-    <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
-    
-    <div className="w-20 h-20 rounded-full border border-white/10 flex items-center justify-center relative z-10">
-      <motion.div 
-        animate={{ rotate: 360 }}
-        transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-        className="absolute inset-0 border-t border-clay rounded-full"
-      />
-      <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ repeat: Infinity, duration: 3 }}>
-        <CheckCircle2 className="text-clay" size={32} />
-      </motion.div>
-    </div>
-
-    <h3 className="text-2xl font-serif text-white mt-8 mb-2">Early Access</h3>
-    <motion.p animate={{ opacity: [0.3, 0.6, 0.3] }} transition={{ repeat: Infinity, duration: 4 }} className="text-[10px] text-white/40 uppercase tracking-[0.3em] font-mono">Status: Awaiting Slot Allocation</motion.p>
-    
-    <div className="mt-12 w-full space-y-2">
-      <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
-        <motion.div animate={isActive ? { width: '75%' } : { width: '0%' }} transition={{ duration: 2, delay: 0.5 }} className="h-full bg-clay" />
-      </div>
-      <div className="flex justify-between text-[8px] font-mono text-white/20">
-        <motion.span animate={{ opacity: [0.5, 1, 0.5] }} transition={{ repeat: Infinity, duration: 2 }}>PROCESSING...</motion.span>
-        <span>75%</span>
-      </div>
-    </div>
-  </div>
-);
-
-// ── Main Stepper Component ──────────────────────────────────────────────────
-
-const HowItWorksStepper: React.FC = () => {
-  const [loopKey, setLoopKey] = React.useState(0);
-
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      setLoopKey(prev => prev + 1);
-    }, 8000); // 8 second cycle for all animations
-    return () => clearInterval(interval);
-  }, []);
+  // Transition opacity from 0.15 to 1 on scroll
+  const opacity = useTransform(scrollYProgress, [start, adjustedEnd], [0.15, 1]);
 
   return (
-    <div className="relative w-full bg-cream py-16 md:py-24">
-      <div className="max-w-7xl mx-auto px-6 space-y-24 md:space-y-36">
-        {STEPS.map((step, index) => {
-          return (
-            <motion.section
-              key={step.id}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="w-full flex items-center justify-center"
+    <motion.span
+      style={{ opacity }}
+      className={`inline-block mr-[0.25em] whitespace-nowrap ${
+        isHighlight ? 'text-white font-semibold' : 'text-neutral-400 font-normal'
+      }`}
+    >
+      {word}
+    </motion.span>
+  );
+};
+
+interface ParagraphRevealProps {
+  text: string;
+  highlightWords?: string[];
+  className?: string;
+}
+
+const ParagraphReveal: React.FC<ParagraphRevealProps> = ({
+  text,
+  highlightWords = [],
+  className = '',
+}) => {
+  const containerRef = useRef<HTMLParagraphElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start 0.9', 'end 0.4'],
+  });
+
+  const words = text.split(' ');
+  const totalWords = words.length;
+
+  return (
+    <p ref={containerRef} className={`flex flex-wrap justify-center text-center ${className}`}>
+      {words.map((word, i) => {
+        // Strip punctuation for matching
+        const cleanWord = word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()—]/g, '').toLowerCase();
+        const isHighlight = highlightWords.includes(cleanWord);
+
+        return (
+          <WordReveal
+            key={i}
+            word={word}
+            index={i}
+            totalWords={totalWords}
+            scrollYProgress={scrollYProgress}
+            isHighlight={isHighlight}
+          />
+        );
+      })}
+    </p>
+  );
+};
+
+// ==========================================
+// HLS PLAYER COMPONENT
+// ==========================================
+
+interface HlsPlayerProps {
+  src: string;
+  className?: string;
+}
+
+const HlsPlayer: React.FC<HlsPlayerProps> = ({ src, className = '' }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    let hls: Hls | null = null;
+
+    if (Hls.isSupported()) {
+      hls = new Hls();
+      hls.loadSource(src);
+      hls.attachMedia(video);
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        video.play().catch((err) => console.log('HLS Play error:', err));
+      });
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      // Fallback for Safari/iOS
+      video.src = src;
+      video.addEventListener('loadedmetadata', () => {
+        video.play().catch((err) => console.log('Native HLS Play error:', err));
+      });
+    }
+
+    return () => {
+      if (hls) {
+        hls.destroy();
+      }
+    };
+  }, [src]);
+
+  return <video ref={videoRef} muted loop playsInline className={className} />;
+};
+
+// ==========================================
+// MAIN STEPPER REPLACEMENT
+// ==========================================
+
+const HowItWorksStepper: React.FC = () => {
+  return (
+    <div className="w-full bg-black text-white font-sans flex flex-col items-center">
+      {/* SECTION 2: HERO */}
+      <section className="relative w-full min-h-screen flex flex-col justify-center items-center overflow-hidden py-24 px-6">
+        {/* Background Video */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover z-0 opacity-80"
+          src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260325_120549_0cd82c36-56b3-4dd9-b190-069cfc3a623f.mp4"
+        />
+
+        {/* Bottom Fade to Black */}
+        <div className="absolute bottom-0 inset-x-0 h-64 bg-gradient-to-t from-black to-transparent pointer-events-none z-10" />
+
+        {/* Hero Content */}
+        <div className="relative z-20 max-w-4xl mx-auto w-full flex flex-col items-center text-center mt-12 md:mt-16">
+          {/* Avatar Row */}
+          <motion.div
+            {...fadeUp(0.1)}
+            className="flex flex-col sm:flex-row items-center gap-4 mb-8"
+          >
+            <div className="flex -space-x-3">
+              {[
+                { name: 'avatar-1', unsplash: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80' },
+                { name: 'avatar-2', unsplash: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80' },
+                { name: 'avatar-3', unsplash: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80' },
+              ].map((avatar, idx) => (
+                <img
+                  key={idx}
+                  className="w-8 h-8 rounded-full border-2 border-black object-cover shrink-0"
+                  src={`/${avatar.name}.png`}
+                  onError={(e) => {
+                    e.currentTarget.src = avatar.unsplash;
+                  }}
+                  alt={`User avatar ${idx + 1}`}
+                />
+              ))}
+            </div>
+            <span className="text-neutral-400 text-sm tracking-wide">
+              7,000+ people already subscribed
+            </span>
+          </motion.div>
+
+          {/* Heading */}
+          <motion.h1
+            {...fadeUp(0.3)}
+            className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-medium tracking-[-2px] leading-none mb-6 max-w-3xl"
+          >
+            Get <span className="font-serif italic font-normal">Inspired</span> with Us
+          </motion.h1>
+
+          {/* Subtitle */}
+          <motion.p
+            {...fadeUp(0.5)}
+            className="text-neutral-200 text-base sm:text-lg max-w-xl mb-12 leading-relaxed"
+          >
+            Join our feed for meaningful updates, news around technology and a shared journey
+            toward depth and direction.
+          </motion.p>
+
+          {/* Email Subscription Box */}
+          <motion.div {...fadeUp(0.6)} className="w-full max-w-md">
+            <form
+              onSubmit={(e) => e.preventDefault()}
+              className="liquid-glass rounded-full p-1.5 flex items-center justify-between shadow-2xl border border-white/5"
             >
-              <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-24 items-center">
-                
-                {/* Phone Column */}
-                <div className={`flex justify-center ${step.side === 'right' ? 'lg:order-2' : 'lg:order-1'}`}>
-                  <div className="relative">
-                    <motion.div 
-                      animate={{ scale: [1, 1.05, 1], opacity: [0.1, 0.2, 0.1] }}
-                      transition={{ repeat: Infinity, duration: 10 }}
-                      className="absolute inset-0 bg-clay/10 blur-[120px] rounded-full scale-110" 
-                    />
-                    
-                    <div className="relative w-[280px] h-[580px] sm:w-[320px] sm:h-[640px] rounded-[3.5rem] border-[12px] border-[#1a1a1a] bg-cream shadow-[0_60px_120px_-30px_rgba(0,0,0,0.8)] overflow-hidden ring-1 ring-white/10">
-                      <div className="absolute inset-0 z-50 pointer-events-none bg-gradient-to-tr from-transparent via-white/[0.01] to-white/[0.04]" />
-                      <div className="absolute top-0 inset-x-0 h-9 flex justify-center z-[60]">
-                        <div className="w-28 h-7 bg-white/5 rounded-b-[2rem]" />
-                      </div>
+              <input
+                type="email"
+                placeholder="Enter your email"
+                required
+                className="bg-transparent border-none outline-none text-white text-sm px-6 py-2 flex-1 w-full focus:ring-0 placeholder:text-neutral-500"
+              />
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+                type="submit"
+                className="bg-white text-black font-semibold text-xs rounded-full px-8 py-3.5 tracking-wider uppercase select-none transition-shadow hover:shadow-[0_0_20px_rgba(255,255,255,0.25)]"
+              >
+                SUBSCRIBE
+              </motion.button>
+            </form>
+          </motion.div>
+        </div>
+      </section>
 
-                      <div className="absolute inset-0 pt-8">
-                        <div className="w-full h-full">
-                          <AnimatePresence mode="wait">
-                            <motion.div 
-                                key={loopKey}
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.5 }}
-                                className="w-full h-full"
-                            >
-                                {step.id === 1 && <AIChatScreen isActive={true} />}
-                                {step.id === 2 && <RewardXScreen isActive={true} />}
-                                {step.id === 3 && <ExtensionScreen isActive={true} />}
-                                {step.id === 4 && <WaitlistScreen isActive={true} />}
-                            </motion.div>
-                          </AnimatePresence>
-                        </div>
-                      </div>
-                    </div>
+      {/* SECTION 3: "SEARCH HAS CHANGED" */}
+      <section className="bg-black w-full py-32 px-6">
+        <div className="max-w-6xl mx-auto w-full flex flex-col items-center">
+          <motion.h2
+            {...fadeUp(0.1)}
+            className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-medium tracking-tight text-center leading-none mb-6"
+          >
+            Search has <span className="font-serif italic font-normal">changed.</span> Have you?
+          </motion.h2>
+
+          <motion.p
+            {...fadeUp(0.2)}
+            className="text-neutral-400 text-base sm:text-lg text-center max-w-2xl mb-24 leading-relaxed"
+          >
+            Traditional search queries are shifting toward contextual dialogs. Our ecosystem bridges
+            intelligent AI platform assistants with your personal discovery layers.
+          </motion.p>
+
+          {/* Platform Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 w-full mb-24">
+            {[
+              {
+                title: 'ChatGPT',
+                desc: 'Optimize custom instructions, direct routing, and structured summaries.',
+                asset: 'icon-chatgpt',
+                svg: (
+                  <svg className="w-16 h-16 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                  </svg>
+                ),
+              },
+              {
+                title: 'Perplexity',
+                desc: 'Generate immediate inline citations, detailed sources, and query synthesis.',
+                asset: 'icon-perplexity',
+                svg: (
+                  <svg className="w-16 h-16 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="m8 12 4-4 4 4M12 8v8" />
+                  </svg>
+                ),
+              },
+              {
+                title: 'Google AI',
+                desc: 'Harness multimodal context, Gemini workflows, and integrated web lookups.',
+                asset: 'icon-google',
+                svg: (
+                  <svg className="w-16 h-16 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <path d="M12 3v18M3 12h18" />
+                  </svg>
+                ),
+              },
+            ].map((card, idx) => (
+              <motion.div
+                key={idx}
+                {...fadeUp(idx * 0.15)}
+                className="liquid-glass border border-white/5 rounded-3xl p-8 flex flex-col items-center text-center hover:bg-neutral-900/10 transition-colors duration-300"
+              >
+                {/* 200x200 Image container */}
+                <div className="w-52 h-52 flex items-center justify-center rounded-2xl bg-neutral-950 border border-white/5 mb-8 relative overflow-hidden">
+                  {/* Default decorative vector */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-30">
+                    {card.svg}
                   </div>
+                  {/* Local asset file with unsplash fallback */}
+                  <img
+                    className="absolute inset-0 w-full h-full object-contain p-6"
+                    src={`/${card.asset}.png`}
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none'; // Hide if file missing so vector is clean
+                    }}
+                    alt={`${card.title} icon`}
+                  />
                 </div>
 
-                {/* Text Column */}
-                <div className={`flex flex-col items-center ${step.side === 'right' ? 'lg:order-1 lg:items-end text-center lg:text-right' : 'lg:order-2 lg:items-start text-center lg:text-left'}`}>
-                  <div className={`max-w-xl flex flex-col items-center ${step.side === 'right' ? 'lg:items-end' : 'lg:items-start'}`}>
-                    <span className="block text-clay text-[11px] font-bold uppercase tracking-[0.5em] mb-4">
-                      {step.tag}
-                    </span>
-                    
-                    <h2 className="text-4xl md:text-6xl lg:text-7xl font-serif text-white mb-4 leading-[0.95] tracking-tighter uppercase">
-                      {step.title.split(' ').map((word, i) => (
-                        <span key={i} className={i % 2 !== 0 ? 'italic font-light text-clay' : ''}>
-                          {word}{' '}
-                        </span>
-                      ))}
-                    </h2>
+                <h3 className="font-semibold text-lg text-white mb-3 tracking-tight">
+                  {card.title}
+                </h3>
+                <p className="text-neutral-400 text-sm leading-relaxed max-w-xs">
+                  {card.desc}
+                </p>
+              </motion.div>
+            ))}
+          </div>
 
-                    <p className={`text-white/60 text-lg md:text-xl font-sans leading-relaxed mb-6 max-w-md ${step.side === 'right' ? 'lg:ml-auto' : ''}`}>
-                      {step.description}
-                    </p>
+          {/* Tagline */}
+          <motion.div {...fadeUp(0.4)} className="w-full text-center">
+            <span className="text-neutral-500 text-xs sm:text-sm tracking-wider">
+              "If you don't answer the questions, someone else will."
+            </span>
+          </motion.div>
+        </div>
+      </section>
 
-                    <div className={`flex flex-col gap-6 items-center ${step.side === 'right' ? 'lg:items-end' : 'lg:items-start'}`}>
-                      <button className="group relative px-10 py-5 bg-white text-cream rounded-full text-[10px] font-bold uppercase tracking-[0.3em] overflow-hidden transition-all hover:scale-105 shadow-2xl">
-                        <span className="relative z-10 flex items-center justify-center gap-3 w-full">
-                          {step.cta} <ArrowRight size={14} className="group-hover:translate-x-1.5 transition-transform" />
-                        </span>
-                        <div className="absolute inset-0 bg-clay translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out" />
-                      </button>
+      {/* SECTION 4: MISSION */}
+      <section className="bg-black w-full pb-32 px-6">
+        <div className="max-w-4xl mx-auto w-full flex flex-col items-center">
+          {/* Loop Video */}
+          <motion.div
+            {...fadeUp(0.1)}
+            className="w-full max-w-md aspect-square rounded-[2.5rem] overflow-hidden mb-20 bg-neutral-950 border border-white/5"
+          >
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-cover"
+              src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260325_132944_a0d124bb-eaa1-4082-aa30-2310efb42b4b.mp4"
+            />
+          </motion.div>
 
-                      <div className="flex items-center gap-3 mt-2">
-                         <div className="w-1.5 h-1.5 rounded-full bg-clay animate-pulse" />
-                         <span className="text-[10px] font-bold text-white/20 uppercase tracking-[0.3em]">
-                           Availability: <span className="text-white/40">{step.availability}</span>
-                         </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+          {/* Scroll-driven Opacity Paragraphs */}
+          <div className="space-y-16">
+            <ParagraphReveal
+              text="We're building a space where curiosity meets clarity — where readers find depth, writers find reach, and every newsletter becomes a conversation worth having."
+              highlightWords={['curiosity', 'meets', 'clarity']}
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight text-center"
+            />
 
-              </div>
-            </motion.section>
-          );
-        })}
-      </div>
+            <ParagraphReveal
+              text="A platform where content, community, and insight flow together — with less noise, less friction, and more meaning for everyone involved."
+              className="text-xl sm:text-2xl lg:text-3xl font-medium text-center"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 5: SOLUTION */}
+      <section className="bg-black w-full py-32 px-6 border-t border-white/10">
+        <div className="max-w-6xl mx-auto w-full flex flex-col">
+          <motion.span
+            {...fadeUp(0.1)}
+            className="text-neutral-500 text-[10px] sm:text-xs tracking-[3px] uppercase mb-4"
+          >
+            SOLUTION
+          </motion.span>
+
+          <motion.h2
+            {...fadeUp(0.2)}
+            className="text-3xl sm:text-5xl md:text-6xl font-medium tracking-tight mb-16 max-w-2xl leading-none"
+          >
+            The platform for <span className="font-serif italic font-normal">meaningful</span> content
+          </motion.h2>
+
+          {/* aspect-[3/1] Video */}
+          <motion.div
+            {...fadeUp(0.35)}
+            className="w-full aspect-[2/1] md:aspect-[3/1] rounded-2xl md:rounded-3xl overflow-hidden mb-20 bg-neutral-950 border border-white/5"
+          >
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-cover"
+              src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260325_125119_8e5ae31c-0021-4396-bc08-f7aebeb877a2.mp4"
+            />
+          </motion.div>
+
+          {/* 4-Column Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 sm:gap-8">
+            {[
+              {
+                title: 'Curated Feed',
+                desc: 'Ditch the algos. Read hand-picked selections of premium insights from independent writers.',
+              },
+              {
+                title: 'Writer Tools',
+                desc: 'Minimalist editing interface, direct newsletter layouts, and built-in member analytics.',
+              },
+              {
+                title: 'Community',
+                desc: 'Deep discussions within comments, threads, and peer circles of similar domains.',
+              },
+              {
+                title: 'Distribution',
+                desc: 'Optimized delivery mechanisms ensuring your content meets inbox endpoints cleanly.',
+              },
+            ].map((feat, idx) => (
+              <motion.div key={idx} {...fadeUp(idx * 0.1)} className="flex flex-col items-start">
+                <h3 className="font-semibold text-base text-white mb-3 tracking-tight">
+                  {feat.title}
+                </h3>
+                <p className="text-neutral-400 text-sm leading-relaxed">
+                  {feat.desc}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 6: CTA SECTION */}
+      <section className="relative bg-black w-full py-40 px-6 border-t border-white/10 overflow-hidden flex items-center justify-center">
+        {/* Background HLS Video */}
+        <HlsPlayer
+          src="https://stream.mux.com/8wrHPCX2dC3msyYU9ObwqNdm00u3ViXvOSHUMRYSEe5Q.m3u8"
+          className="absolute inset-0 w-full h-full object-cover z-0 opacity-60"
+        />
+
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-black/55 z-10 pointer-events-none" />
+
+        {/* Content */}
+        <div className="relative z-20 max-w-xl mx-auto w-full flex flex-col items-center text-center">
+          {/* Concentric Circles Logo */}
+          <motion.div
+            {...fadeUp(0.1)}
+            className="w-10 h-10 rounded-full border-2 border-white/60 flex items-center justify-center mb-8 relative"
+          >
+            <div className="w-5 h-5 rounded-full border border-white/60" />
+          </motion.div>
+
+          {/* Heading */}
+          <motion.h2
+            {...fadeUp(0.2)}
+            className="text-4xl sm:text-5xl md:text-6xl font-medium tracking-tight mb-4 leading-none"
+          >
+            Start Your <span className="font-serif italic font-normal">Journey</span>
+          </motion.h2>
+
+          {/* Subtitle */}
+          <motion.p
+            {...fadeUp(0.3)}
+            className="text-neutral-400 text-sm sm:text-base mb-12 max-w-sm leading-relaxed"
+          >
+            Explore clean newsletter insights, connect with like-minded creators, or launch your own publication today.
+          </motion.p>
+
+          {/* Buttons Row */}
+          <motion.div
+            {...fadeUp(0.4)}
+            className="flex flex-col sm:flex-row items-center gap-4 w-full justify-center"
+          >
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="bg-white text-black font-semibold text-sm rounded-lg px-8 py-3.5 tracking-tight w-full sm:w-auto shadow-lg"
+            >
+              Subscribe Now
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="liquid-glass text-white border border-white/10 font-semibold text-sm rounded-lg px-8 py-3.5 tracking-tight w-full sm:w-auto hover:bg-neutral-900/35 transition-colors"
+            >
+              Start Writing
+            </motion.button>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* SECTION 7: FOOTER */}
+      <footer className="w-full bg-black py-16 px-6 sm:px-12 md:px-28 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+        <span className="text-neutral-500 text-sm">
+          &copy; 2026 Mindloop. All rights reserved.
+        </span>
+
+        <div className="flex items-center gap-8">
+          {['Privacy', 'Terms', 'Contact'].map((link) => (
+            <a
+              key={link}
+              href="#"
+              className="text-neutral-500 hover:text-white transition-colors duration-200 text-sm"
+            >
+              {link}
+            </a>
+          ))}
+        </div>
+      </footer>
     </div>
   );
 };
