@@ -26,7 +26,7 @@ import CardExplorer from '../CardExplorer';
 import YurekaAIPage from '../YurekaAIPage';
 import WaitlistPage from '../WaitlistPage';
 
-import { fetchPlatformNotifications, fetchUserInteractions, logNotificationInteraction } from '../../services/supabaseService';
+import { api, isApiError } from '../../lib/api/client';
 
 const EXPLORE_ITEMS = [
     { id: 'categories', label: 'Categories', icon: LayoutGrid, path: '/dashboard/categories' },
@@ -49,7 +49,7 @@ const NAV_ITEMS = [
 ];
 
 const NotificationBell = () => {
-    const { user, ledgerTransactions, myCards, supabase } = useSupabase();
+    const { user, ledgerTransactions } = useSupabase();
     const [notifications, setNotifications] = useState<any[]>([]);
     const [unreadCount, setUnreadCount] = useState(0);
     const [isOpen, setIsOpen] = useState(false);
@@ -58,38 +58,26 @@ const NotificationBell = () => {
     useEffect(() => {
         if (!user?.email) return;
         const load = async () => {
-            const [notifs, inters] = await Promise.all([
-                fetchPlatformNotifications(),
-                fetchUserInteractions(user.email!)
+            const [notifsRes, intersRes] = await Promise.all([
+                api.get<any[]>('/api/v1/notifications', { skipAuth: true }),
+                api.get<any[]>(`/api/v1/notifications/interactions?email=${encodeURIComponent(user.email!)}`)
             ]);
-            
-            // Filter out clicked (cleared) notifications
-            const clickedIds = new Set(inters?.filter(i => i.action === 'clicked').map(i => i.notification_id) || []);
-            const readIds = new Set(inters?.filter(i => i.action === 'read').map(i => i.notification_id) || []);
-            
-            const activeNotifs = (notifs || []).filter(n => !clickedIds.has(n.id));
+
+            const notifs = !isApiError(notifsRes) ? (notifsRes.data ?? []) : [];
+            const inters = !isApiError(intersRes) ? (intersRes.data ?? []) : [];
+
+            const clickedIds = new Set(inters.filter(i => i.action === 'clicked').map(i => i.notificationId));
+            const readIds = new Set(inters.filter(i => i.action === 'read').map(i => i.notificationId));
+
+            const activeNotifs = notifs.filter(n => !clickedIds.has(n.id));
             setNotifications(activeNotifs);
-            
-            // Unread are active ones that haven't been 'read'
-            const unread = activeNotifs.filter(n => !readIds.has(n.id)).length;
-            setUnreadCount(unread);
+            setUnreadCount(activeNotifs.filter(n => !readIds.has(n.id)).length);
         };
         load();
-        // Setup real-time listener for new notifications
-        const sub = supabase
-            .channel('public:platform_notifications')
-            .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'platform_notifications' }, () => {
-                load();
-            })
-            .subscribe();
 
-        // Fallback polling just in case realtime isn't enabled in DB
-        const interval = setInterval(load, 30000); // 30s fallback
-
-        return () => {
-            clearInterval(interval);
-            supabase.removeChannel(sub);
-        };
+        // Poll every 30s (no realtime needed)
+        const interval = setInterval(load, 30000);
+        return () => clearInterval(interval);
     }, [user?.email]);
 
     const handleOpen = async () => {
@@ -98,7 +86,11 @@ const NotificationBell = () => {
             // Mark all as read when opening
             setUnreadCount(0);
             for (const n of notifications) {
-                await logNotificationInteraction(n.id, user.email!, user.user_metadata?.full_name || '', 'read');
+                await api.post(`/api/v1/notifications/${n.id}/interact`, {
+                    user_email: user.email!,
+                    username: user.user_metadata?.full_name || '',
+                    action: 'read',
+                });
             }
         }
     };
@@ -106,14 +98,18 @@ const NotificationBell = () => {
     const handleDismiss = async (e: React.MouseEvent, id: string) => {
         e.stopPropagation();
         setNotifications(prev => prev.filter(n => n.id !== id));
-        await logNotificationInteraction(id, user.email!, user.user_metadata?.full_name || '', 'clicked');
+        await api.post(`/api/v1/notifications/${id}/interact`, {
+            user_email: user.email!,
+            username: user.user_metadata?.full_name || '',
+            action: 'clicked',
+        });
     };
 
     const resolveVariables = (msg: string) => {
         if (!msg) return msg;
         let text = msg;
         const userName = user?.user_metadata?.full_name?.split(' ')[0] || user?.email?.split('@')[0] || 'Explorer';
-        const cardName = myCards?.[0]?.name || 'your primary card';
+        const cardName = 'your primary card';
         
         let totalExpenses = 0;
         let totalBills = 0;
@@ -187,9 +183,9 @@ const NotificationBell = () => {
                                                         <p className="text-white/60 text-xs leading-relaxed">{resolveVariables(n.message)}</p>
                                                     </div>
                                                 </div>
-                                                {n.image_url && (
+                                                {n.imageUrl && (
                                                     <div className="w-full h-32 rounded-xl overflow-hidden mt-1 border border-white/5 relative ml-6">
-                                                        <img src={n.image_url} alt="Notification visual" className="w-full h-full object-cover" />
+                                                        <img src={n.imageUrl} alt="Notification visual" className="w-full h-full object-cover" />
                                                     </div>
                                                 )}
                                                 <div className="pl-6">

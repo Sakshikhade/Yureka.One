@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSupabase } from '../SupabaseProvider';
 import { Trash2, RefreshCw, Loader2, RotateCcw, AlertTriangle } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { fetchTrash, restoreFromTrash, hardDeleteTrash } from '../../services/supabaseService';
+import { api, isApiError } from '../../lib/api/client';
 
 export const AdminTrashTab: React.FC = () => {
   const { user } = useSupabase();
@@ -14,8 +14,8 @@ export const AdminTrashTab: React.FC = () => {
   const loadData = async () => {
     setLoading(true);
     try {
-      const items = await fetchTrash();
-      setTrashItems(items || []);
+      const res = await api.get<any[]>('/api/v1/admin/trash');
+      if (!isApiError(res)) setTrashItems(res.data ?? []);
     } catch (e) {
       console.error(e);
     } finally {
@@ -31,7 +31,8 @@ export const AdminTrashTab: React.FC = () => {
     if (!window.confirm("Restore this item to its original location?")) return;
     setProcessingId(id);
     try {
-      await restoreFromTrash(id);
+      const res = await api.post(`/api/v1/admin/trash/${id}/restore`, {});
+      if (isApiError(res)) throw new Error(res.error);
       await loadData();
     } catch (e: any) {
       alert("Failed to restore: " + e.message);
@@ -44,7 +45,8 @@ export const AdminTrashTab: React.FC = () => {
     if (!window.confirm("Permanently delete this item? This action cannot be undone.")) return;
     setProcessingId(id);
     try {
-      await hardDeleteTrash(id);
+      const res = await api.delete(`/api/v1/admin/trash/${id}`);
+      if (isApiError(res)) throw new Error(res.error);
       await loadData();
     } catch (e: any) {
       alert("Failed to delete: " + e.message);
@@ -53,17 +55,17 @@ export const AdminTrashTab: React.FC = () => {
     }
   };
 
-  const filteredItems = filter === 'all' ? trashItems : trashItems.filter(i => i.entity_type === filter);
+  const filteredItems = filter === 'all' ? trashItems : trashItems.filter(i => i.entityType === filter);
 
   const getEntityTitle = (item: any) => {
     const p = item.payload;
     if (!p) return 'Unknown';
-    if (item.entity_type === 'blog') return p.title || p.heading || 'Blog Post';
-    if (item.entity_type === 'card') return p.name || 'Card';
-    if (item.entity_type === 'notification') return p.title || 'Notification';
-    if (item.entity_type === 'user' || item.entity_type === 'waitlist') return p.full_name || p.email || 'User';
-    if (item.entity_type === 'review') return p.author || 'Review';
-    return item.original_id;
+    if (item.entityType === 'blog') return p.title || p.heading || 'Blog Post';
+    if (item.entityType === 'card') return p.name || 'Card';
+    if (item.entityType === 'notification') return p.title || 'Notification';
+    if (item.entityType === 'user' || item.entityType === 'waitlist') return p.full_name || p.email || 'User';
+    if (item.entityType === 'review') return p.author || 'Review';
+    return item.originalId;
   };
 
   return (
@@ -109,11 +111,11 @@ export const AdminTrashTab: React.FC = () => {
               >
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-1">
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-clay/10 text-clay uppercase font-bold">{item.entity_type}</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-clay/10 text-clay uppercase font-bold">{item.entityType}</span>
                     <h4 className="font-bold text-white text-lg">{getEntityTitle(item)}</h4>
                   </div>
-                  <p className="text-[10px] text-white/40 font-mono mt-2">ID: {item.original_id}</p>
-                  <p className="text-[10px] text-white/30 uppercase tracking-widest font-mono mt-1">Deleted: {new Date(item.deleted_at).toLocaleString()} • By {item.deleted_by || 'Unknown'}</p>
+                  <p className="text-[10px] text-white/40 font-mono mt-2">ID: {item.originalId}</p>
+                  <p className="text-[10px] text-white/30 uppercase tracking-widest font-mono mt-1">Deleted: {new Date(item.deletedAt).toLocaleString()} • By {item.deletedBy || 'Unknown'}</p>
                 </div>
 
                 <div className="flex items-center gap-3 shrink-0">

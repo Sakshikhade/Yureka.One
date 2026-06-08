@@ -5,7 +5,8 @@ import {
     ChevronDown, Loader2, Sparkles, AlertCircle, Star, Shield, CheckCircle
 } from 'lucide-react';
 import { useSupabase } from '../SupabaseProvider';
-import { fetchUserCards, addUserCard, removeUserCard, updateUserCardPriority } from '../../services/supabaseService';
+import { api, isApiError } from '../../lib/api/client';
+import type { UserOwnedCard as ApiUserOwnedCard } from '../../lib/api/types';
 
 const BANK_LOGOS: Record<string, string> = {
     'HDFC': '/assets/banks/hdfc.png', 'HDFC Bank': '/assets/banks/hdfc.png',
@@ -35,6 +36,17 @@ const BANK_LOGOS: Record<string, string> = {
 
 const ALL_BANKS = [...new Set(Object.keys(BANK_LOGOS))].sort();
 
+// Convert Java camelCase UserOwnedCard to the snake_case shape the render expects
+const toSnakeCard = (c: ApiUserOwnedCard) => ({
+    id: c.id,
+    bank_name: c.bankName,
+    card_name: c.cardName,
+    card_image: c.cardImage,
+    is_primary: c.isPrimary,
+    is_secondary: c.isSecondary,
+    synced_from_waitlist: c.syncedFromWaitlist,
+});
+
 const MyCards: React.FC = () => {
     const { user, cards: allCards } = useSupabase();
     const [ownedCards, setOwnedCards] = useState<any[]>([]);
@@ -52,8 +64,8 @@ const MyCards: React.FC = () => {
 
     const loadCards = async () => {
         try {
-            const data = await fetchUserCards(user!.id);
-            setOwnedCards(data || []);
+            const res = await api.get<ApiUserOwnedCard[]>('/api/v1/users/cards');
+            if (!isApiError(res)) setOwnedCards((res.data ?? []).map(toSnakeCard));
         } catch (err) {
             console.error("Failed to load cards:", err);
         } finally {
@@ -67,16 +79,14 @@ const MyCards: React.FC = () => {
         try {
             const cardDetail = allCards.find(c => c.id === selectedCardId);
             const payload = {
-                user_id: user!.id,
                 card_id: selectedCardId === 'Other' ? null : selectedCardId,
                 bank_name: selectedBank,
                 card_name: selectedCardId === 'Other' ? 'Other Card' : cardDetail?.name || 'Unknown Card',
                 card_image: cardDetail?.image || null,
                 synced_from_waitlist: false,
-                is_primary: ownedCards.length === 0,   // First card auto-primary
-                is_secondary: ownedCards.length === 1  // Second card auto-secondary
             };
-            await addUserCard(payload);
+            const res = await api.post<ApiUserOwnedCard>('/api/v1/users/cards', payload);
+            if (isApiError(res)) throw new Error(res.error);
             await loadCards();
             setIsAdding(false);
             setSelectedBank('');
@@ -91,7 +101,8 @@ const MyCards: React.FC = () => {
     const handleDeleteCard = async (id: string) => {
         if (!confirm("Are you sure you want to remove this card?")) return;
         try {
-            await removeUserCard(id);
+            const res = await api.delete(`/api/v1/users/cards/${id}`);
+            if (isApiError(res)) throw new Error(res.error);
             setOwnedCards(prev => prev.filter(c => c.id !== id));
         } catch (err) {
             alert("Failed to delete card.");
@@ -101,7 +112,8 @@ const MyCards: React.FC = () => {
     const handleSetRole = async (cardId: string, role: 'primary' | 'secondary' | 'none') => {
         setPriorityUpdating(cardId);
         try {
-            await updateUserCardPriority(user!.id, cardId, role);
+            const res = await api.patch(`/api/v1/users/cards/${cardId}/priority`, { role });
+            if (isApiError(res)) throw new Error(res.error);
             await loadCards();
         } catch (err) {
             alert("Failed to update card role.");

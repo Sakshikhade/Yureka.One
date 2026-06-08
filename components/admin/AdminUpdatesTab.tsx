@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useSupabase } from '../SupabaseProvider';
-import { updateCardContributionStatus, addCard, deleteCardContribution, updateCard, deleteCard } from '../../services/supabaseService';
+import { api, isApiError } from '../../lib/api/client';
+import { fromApiCard } from '../../lib/api/mappers';
+import type { Card as ApiCard } from '../../lib/api/types';
 import { 
   PlusCircle, AlertTriangle, Trash2, 
   Check, X, ChevronDown, ChevronUp, Loader2,
@@ -30,8 +32,10 @@ const AdminUpdatesTab: React.FC = () => {
         status: 'published'
       };
       
-      await addCard(fullCardData);
-      await updateCardContributionStatus(contribution.id!, 'approved');
+      const cardRes = await api.post<ApiCard>('/api/v1/admin/cards', fullCardData);
+      if (isApiError(cardRes)) throw new Error(cardRes.error);
+      const statusRes = await api.patch(`/api/v1/admin/contributions/${contribution.id}/status`, { status: 'approved' });
+      if (isApiError(statusRes)) throw new Error(statusRes.error);
     } catch (err: any) {
       console.error('Failed to approve:', err);
       alert(`Failed to approve the card addition: ${err.message || 'Unknown error'}`);
@@ -49,8 +53,10 @@ const AdminUpdatesTab: React.FC = () => {
       delete payload.id; // remove id before update
       delete payload.inaccuracyDetails; // remove notes
       
-      await updateCard(cardId, payload);
-      await updateCardContributionStatus(contribution.id!, 'resolved');
+      const cardRes = await api.put<ApiCard>(`/api/v1/admin/cards/${cardId}`, payload);
+      if (isApiError(cardRes)) throw new Error(cardRes.error);
+      const statusRes = await api.patch(`/api/v1/admin/contributions/${contribution.id}/status`, { status: 'resolved' });
+      if (isApiError(statusRes)) throw new Error(statusRes.error);
     } catch (err: any) {
       console.error('Failed to update:', err);
       alert(`Failed to update the card: ${err.message || 'Unknown error'}`);
@@ -63,8 +69,10 @@ const AdminUpdatesTab: React.FC = () => {
     if (!window.confirm(`Are you sure you want to permanently delete "${contribution.card_name}" from the database?`)) return;
     setProcessingId(contribution.id || null);
     try {
-      await deleteCard(contribution.payload.id);
-      await updateCardContributionStatus(contribution.id!, 'resolved');
+      const cardRes = await api.delete(`/api/v1/admin/cards/${contribution.payload.id}`);
+      if (isApiError(cardRes)) throw new Error(cardRes.error);
+      const statusRes = await api.patch(`/api/v1/admin/contributions/${contribution.id}/status`, { status: 'resolved' });
+      if (isApiError(statusRes)) throw new Error(statusRes.error);
     } catch (err: any) {
       console.error('Failed to remove:', err);
       alert(`Failed to remove the card: ${err.message || 'Unknown error'}`);
@@ -77,7 +85,8 @@ const AdminUpdatesTab: React.FC = () => {
     if (!window.confirm('Reject and delete this contribution?')) return;
     setProcessingId(id);
     try {
-      await deleteCardContribution(id);
+      const res = await api.delete(`/api/v1/admin/contributions/${id}`);
+      if (isApiError(res)) throw new Error(res.error);
     } catch (err) {
       console.error('Failed to reject:', err);
       alert('Failed to reject contribution.');

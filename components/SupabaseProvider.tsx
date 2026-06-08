@@ -3,28 +3,9 @@ import { useLocation } from 'react-router-dom';
 import { supabase, supabaseAdmin } from '../supabase';
 import { Card, Blog, Review, WaitlistEntry, CardContribution } from '../types';
 import { featuredCards } from '../data';
-import { 
-  getCards, 
-  getBlogs, 
-  getReviews, 
-  getCardsAdmin, 
-  getBlogsAdmin, 
-  getReviewsAdmin,
-  getWaitlist,
-  getTeamMembersAdmin,
-  getAuditLogsAdmin,
-  fetchCardsPublic,
-  fetchBlogsPublic,
-  fetchReviewsPublic,
-  fetchCardsAdmin,
-  fetchBlogsAdmin,
-  fetchReviewsAdmin,
-  fetchWaitlist,
-  fetchTeamMembersAdmin,
-  fetchAuditLogsAdmin,
-  fetchCardContributionsAdmin,
-  getCardContributionsAdmin
-} from '../services/supabaseService';
+import { api, isApiError } from '../lib/api/client';
+import { fromApiCard, fromApiBlog, fromApiReview, fromApiWaitlist, fromApiContribution } from '../lib/api/mappers';
+import type { Card as ApiCard, Blog as ApiBlog, Review as ApiReview, Waitlist as ApiWaitlist, CardContribution as ApiContribution } from '../lib/api/types';
 import { SupabaseClient } from '@supabase/supabase-js';
 
 export interface ParsedTransaction {
@@ -69,6 +50,57 @@ interface SupabaseContextType {
 
 const SupabaseContext = createContext<SupabaseContextType | undefined>(undefined);
 
+// Fetches all admin data from the Java API in parallel and updates state.
+async function loadAdminData(setters: {
+  setCards: (v: any) => void; setBlogs: (v: any) => void; setReviews: (v: any) => void;
+  setWaitlist: (v: any) => void; setTeam: (v: any) => void; setLogs: (v: any) => void;
+  setCardContributions: (v: any) => void;
+}) {
+  const [cRes, bRes, rRes, wRes, tRes, lRes, ccRes] = await Promise.all([
+    api.get<ApiCard[]>('/api/v1/admin/cards'),
+    api.get<ApiBlog[]>('/api/v1/admin/blogs'),
+    api.get<ApiReview[]>('/api/v1/admin/reviews'),
+    api.get<ApiWaitlist[]>('/api/v1/admin/waitlist'),
+    api.get<any[]>('/api/v1/admin/team'),
+    api.get<any[]>('/api/v1/admin/audit-logs'),
+    api.get<ApiContribution[]>('/api/v1/admin/contributions'),
+  ]);
+  if (!isApiError(cRes))  setters.setCards((cRes.data ?? []).map(fromApiCard));
+  if (!isApiError(bRes))  setters.setBlogs((bRes.data ?? []).map(fromApiBlog));
+  if (!isApiError(rRes))  setters.setReviews((rRes.data ?? []).map(fromApiReview));
+  if (!isApiError(wRes))  setters.setWaitlist((wRes.data ?? []).map(fromApiWaitlist));
+  if (!isApiError(tRes))  setters.setTeam(tRes.data ?? []);
+  if (!isApiError(lRes))  setters.setLogs(lRes.data ?? []);
+  if (!isApiError(ccRes)) setters.setCardContributions((ccRes.data ?? []).map(fromApiContribution));
+}
+
+// Resolves currentUserStatus for a given email using the Java API.
+// Checks role first (admin/editor/writer → 'admin'), then waitlist status.
+async function resolveUserStatus(
+  email: string
+): Promise<'none' | 'pending' | 'accepted' | 'admin' | 'rejected' | 'on-hold'> {
+  if (!email) return 'none';
+  try {
+    const roleRes = await api.get<{ role: string }>(
+      `/api/v1/auth/role?email=${encodeURIComponent(email)}`,
+      { skipAuth: true }
+    );
+    if (!isApiError(roleRes) && ['admin', 'editor', 'writer'].includes(roleRes.data?.role ?? '')) {
+      return 'admin';
+    }
+    const entryRes = await api.get<ApiWaitlist>(
+      `/api/v1/waitlist/entry?email=${encodeURIComponent(email)}`
+    );
+    if (!isApiError(entryRes) && entryRes.data) {
+      const s = entryRes.data.status;
+      return (s === 'on_hold' ? 'on-hold' : s) as ReturnType<typeof resolveUserStatus> extends Promise<infer R> ? R : never;
+    }
+  } catch {
+    // fall through
+  }
+  return 'none';
+}
+
 export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [cards, setCards] = useState<Card[]>([]);
   const [blogs, setBlogs] = useState<Blog[]>([]);
@@ -98,7 +130,6 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
     setLedgerLoading(true);
     setLedgerError(null);
-    const API_BASE = import.meta.env.PROD ? 'https://yureka-api.onrender.com' : 'http://localhost:3000';
     const cacheKey = `yureka_financial_ledger_${userEmail}`;
 
     if (!forceSync) {
@@ -120,42 +151,33 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     try {
       if (forceSync) {
         setScanProgress(15);
-        const res = await fetch(`${API_BASE}/api/scan-email`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            accessToken: session?.provider_token || "",
-            email: userEmail,
-            fallbackData: { email: userEmail }
-          })
-        });
+        const scanRes = await api.post<{ profile: any; transactions: any[] }>(
+          '/api/v1/ledger/scan',
+          { accessToken: session?.provider_token || '', email: userEmail, fallbackData: { email: userEmail } }
+        );
         setScanProgress(60);
-        const data = await res.json();
-        if (data.error) {
-          setLedgerError(data.error);
-        } else if (data.transactions && data.transactions.length > 0) {
-          localStorage.setItem(cacheKey, JSON.stringify(data));
-          setLedgerTransactions(data.transactions);
+        if (!isApiError(scanRes) && scanRes.data?.transactions?.length) {
+          localStorage.setItem(cacheKey, JSON.stringify(scanRes.data));
+          setLedgerTransactions(scanRes.data.transactions);
         } else {
-          // Scanner returned 0 items (maybe rate limited). Fetch actual DB state to be safe.
-          try {
-            const dbRes = await fetch(`${API_BASE}/api/financial-ledger?email=${encodeURIComponent(userEmail)}`);
-            const dbData = await dbRes.json();
-            if (dbData.transactions) {
-              localStorage.setItem(cacheKey, JSON.stringify(dbData));
-              setLedgerTransactions(dbData.transactions);
-            }
-          } catch (e) {
-            console.error("Fallback DB fetch failed:", e);
+          // Scanner returned 0 items — fall back to DB read
+          const dbRes = await api.get<{ profile: any; transactions: any[] }>(
+            `/api/v1/ledger?email=${encodeURIComponent(userEmail)}`
+          );
+          if (!isApiError(dbRes) && dbRes.data?.transactions) {
+            localStorage.setItem(cacheKey, JSON.stringify(dbRes.data));
+            setLedgerTransactions(dbRes.data.transactions);
           }
+          if (isApiError(scanRes)) setLedgerError(scanRes.error ?? null);
         }
         setScanProgress(100);
       } else {
-        const res = await fetch(`${API_BASE}/api/financial-ledger?email=${encodeURIComponent(userEmail)}`);
-        const data = await res.json();
-        if (data.transactions) {
-          localStorage.setItem(cacheKey, JSON.stringify(data));
-          setLedgerTransactions(data.transactions);
+        const res = await api.get<{ profile: any; transactions: any[] }>(
+          `/api/v1/ledger?email=${encodeURIComponent(userEmail)}`
+        );
+        if (!isApiError(res) && res.data?.transactions) {
+          localStorage.setItem(cacheKey, JSON.stringify(res.data));
+          setLedgerTransactions(res.data.transactions);
         }
       }
     } catch (err) {
@@ -179,31 +201,19 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const refreshAll = useCallback(async () => {
     try {
       if (isAdminRoute) {
-        const [c, b, r, w, t, l, cc] = await Promise.all([
-          fetchCardsAdmin(),
-          fetchBlogsAdmin(),
-          fetchReviewsAdmin(),
-          fetchWaitlist(),
-          fetchTeamMembersAdmin(),
-          fetchAuditLogsAdmin(),
-          fetchCardContributionsAdmin()
-        ]);
-        setCards(c || []);
-        setBlogs(b || []);
-        setReviews(r || []);
-        setWaitlist(w || []);
-        setTeam(t || []);
-        setLogs(l || []);
-        setCardContributions(cc || []);
+        await loadAdminData({ setCards, setBlogs, setReviews, setWaitlist, setTeam, setLogs, setCardContributions });
       } else {
-        const [c, b, r] = await Promise.all([
-          fetchCardsPublic(),
-          fetchBlogsPublic(),
-          fetchReviewsPublic()
+        const [cRes, bRes, rRes] = await Promise.all([
+          api.get<ApiCard[]>('/api/v1/cms/cards', { skipAuth: true }),
+          api.get<ApiBlog[]>('/api/v1/cms/blogs', { skipAuth: true }),
+          api.get<ApiReview[]>('/api/v1/cms/reviews', { skipAuth: true }),
         ]);
-        setCards((c && c.length > 0) ? c : featuredCards);
-        setBlogs(b || []);
-        setReviews(r || []);
+        const c = !isApiError(cRes) ? (cRes.data ?? []).map(fromApiCard) : [];
+        const b = !isApiError(bRes) ? (bRes.data ?? []).map(fromApiBlog) : [];
+        const r = !isApiError(rRes) ? (rRes.data ?? []).map(fromApiReview) : [];
+        setCards(c.length > 0 ? c : featuredCards);
+        setBlogs(b);
+        setReviews(r);
       }
       console.log('⚡️ Manual Cloud Resync Complete.');
     } catch (err) {
@@ -233,57 +243,44 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           // Check for session before attempting admin fetches
           const { data: { session } } = await supabase.auth.getSession();
           if (session) {
-            console.log('⚡️ Admin session found. Initiating fetches...');
-            subs.push(getCardsAdmin((data) => { console.log('⚡️ Admin cards loaded'); setCards(data); }));
-            await new Promise(r => setTimeout(r, 100));
-            subs.push(getBlogsAdmin((data) => { console.log('⚡️ Admin blogs loaded'); setBlogs(data); }));
-            await new Promise(r => setTimeout(r, 100));
-            subs.push(getReviewsAdmin((data) => { console.log('⚡️ Admin reviews loaded'); setReviews(data); }));
-            await new Promise(r => setTimeout(r, 100));
-            subs.push(getWaitlist((data) => { console.log('⚡️ Admin waitlist loaded'); setWaitlist(data); }));
-            await new Promise(r => setTimeout(r, 100));
-            subs.push(getTeamMembersAdmin((data) => { console.log('⚡️ Admin team loaded'); setTeam(data); }));
-            await new Promise(r => setTimeout(r, 100));
-            subs.push(getAuditLogsAdmin((data) => { console.log('⚡️ Admin logs loaded'); setLogs(data); }));
-            await new Promise(r => setTimeout(r, 100));
-            subs.push(getCardContributionsAdmin((data) => { console.log('⚡️ Admin contributions loaded'); setCardContributions(data); }));
+            console.log('⚡️ Admin session found. Fetching from Java API...');
+            await loadAdminData({ setCards, setBlogs, setReviews, setWaitlist, setTeam, setLogs, setCardContributions });
             setIsAdminDataLoaded(true);
             console.log('⚡️ Admin fetches complete.');
           } else {
             console.log('⚡️ No admin session found.');
           }
         } else {
-          console.log('⚡️ Public route detected. Initiating public fetches...');
-          subs.push(getCards(
-            (data) => { 
-              console.log('⚡️ Public cards loaded', data?.length);
-              setCards(data.length > 0 ? data : featuredCards); 
-            },
-            (err) => {
-              console.error('⚡️ Public cards fetch failed', err);
-              setSyncStatus('error');
-            }
-          ));
-          subs.push(getBlogs(
-            (data) => {
-              console.log('⚡️ Public blogs loaded', data?.length);
-              setBlogs(data.filter(b => b.id && b.title && b.title !== 'Untitled Journal'));
-            }, 
-            (err) => {
-              console.error('⚡️ Public blogs fetch failed', err);
-              setSyncStatus('error');
-            }
-          ));
-          subs.push(getReviews(
-            (data) => {
-              console.log('⚡️ Public reviews loaded', data?.length);
-              setReviews(data);
-            }, 
-            (err) => {
-              console.error('⚡️ Public reviews fetch failed', err);
-              setSyncStatus('error');
-            }
-          ));
+          console.log('⚡️ Public route detected. Fetching from Java API...');
+          const [cRes, bRes, rRes] = await Promise.all([
+            api.get<ApiCard[]>('/api/v1/cms/cards', { skipAuth: true }),
+            api.get<ApiBlog[]>('/api/v1/cms/blogs', { skipAuth: true }),
+            api.get<ApiReview[]>('/api/v1/cms/reviews', { skipAuth: true }),
+          ]);
+          if (!isApiError(cRes)) {
+            const mapped = (cRes.data ?? []).map(fromApiCard);
+            console.log('⚡️ Public cards loaded', mapped.length);
+            setCards(mapped.length > 0 ? mapped : featuredCards);
+          } else {
+            console.error('⚡️ Public cards fetch failed', cRes.error);
+            setSyncStatus('error');
+          }
+          if (!isApiError(bRes)) {
+            const mapped = (bRes.data ?? []).map(fromApiBlog).filter(b => b.id && b.title && b.title !== 'Untitled Journal');
+            console.log('⚡️ Public blogs loaded', mapped.length);
+            setBlogs(mapped);
+          } else {
+            console.error('⚡️ Public blogs fetch failed', bRes.error);
+            setSyncStatus('error');
+          }
+          if (!isApiError(rRes)) {
+            const mapped = (rRes.data ?? []).map(fromApiReview);
+            console.log('⚡️ Public reviews loaded', mapped.length);
+            setReviews(mapped);
+          } else {
+            console.error('⚡️ Public reviews fetch failed', rRes.error);
+            setSyncStatus('error');
+          }
         }
       } catch (err) {
         console.error("Supabase Setup Error:", err);
@@ -311,26 +308,11 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       setUser(currentUser);
       
       if (currentUser) {
-        try {
-          const normalizedEmail = currentUser.email?.toLowerCase().trim() || '';
-          const { data: teamMember } = await supabaseAdmin.from('users').select('role').eq('email', normalizedEmail).maybeSingle();
-          if (teamMember) {
-            setCurrentUserStatus('admin');
-          } else {
-            const { data: waitlist } = await supabaseAdmin.from('waitlist').select('status').eq('email', normalizedEmail).maybeSingle();
-            if (waitlist) {
-              setCurrentUserStatus(waitlist.status as any);
-            } else {
-              setCurrentUserStatus('none');
-            }
-          }
-        } catch (err) {
-          setCurrentUserStatus('none');
-        }
+        resolveUserStatus(currentUser.email || '').then(setCurrentUserStatus);
       } else {
         setCurrentUserStatus('none');
       }
-      
+
       if (_event === 'SIGNED_IN') {
         refreshAll();
       }
@@ -342,22 +324,7 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       const currentUser = session?.user || null;
       setUser(currentUser);
       if (currentUser) {
-        try {
-          const normalizedEmail = currentUser.email?.toLowerCase().trim() || '';
-          const { data: teamMember } = await supabaseAdmin.from('users').select('role').eq('email', normalizedEmail).maybeSingle();
-          if (teamMember) {
-            setCurrentUserStatus('admin');
-          } else {
-            const { data: waitlist } = await supabaseAdmin.from('waitlist').select('status').eq('email', normalizedEmail).maybeSingle();
-            if (waitlist) {
-              setCurrentUserStatus(waitlist.status as any);
-            } else {
-              setCurrentUserStatus('none');
-            }
-          }
-        } catch (err) {
-          setCurrentUserStatus('none');
-        }
+        resolveUserStatus(currentUser.email || '').then(setCurrentUserStatus);
       } else {
         setCurrentUserStatus('none');
       }

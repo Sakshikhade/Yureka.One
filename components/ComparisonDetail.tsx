@@ -7,7 +7,9 @@ import {
   ChevronRight, ExternalLink, Info, Globe, CreditCard,
   Gift, Percent, Wallet, MousePointer2
 } from 'lucide-react';
-import { getCards } from '../services/supabaseService';
+import { api, isApiError } from '../lib/api/client';
+import { fromApiCard } from '../lib/api/mappers';
+import type { Card as ApiCard } from '../lib/api/types';
 import { Card } from '../types';
 import SEO from './SEO';
 
@@ -21,16 +23,17 @@ const ComparisonDetail: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsub = getCards((allCards) => {
-      const cardSlugs = slug?.split('-vs-') || [];
-      const matchedCards = cardSlugs.map(s => 
-        allCards.find(c => c.slug === s || c.id === s)
-      ).filter((c): c is Card => !!c);
-      
-      setCards(matchedCards);
+    api.get<ApiCard[]>('/api/v1/cms/cards', { skipAuth: true }).then(res => {
+      if (!isApiError(res)) {
+        const allCards = (res.data ?? []).map(fromApiCard);
+        const cardSlugs = slug?.split('-vs-') || [];
+        const matchedCards = cardSlugs.map(s =>
+          allCards.find(c => c.slug === s || c.id === s)
+        ).filter((c): c is Card => !!c);
+        setCards(matchedCards);
+      }
       setLoading(false);
     });
-    return unsub;
   }, [slug]);
 
   if (loading) {

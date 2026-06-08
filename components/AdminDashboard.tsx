@@ -11,13 +11,11 @@ import {
   LayoutDashboard
 } from 'lucide-react';
 import { 
-  addBlog, updateBlog, deleteBlog,
-  addCard, updateCard, deleteCard,
-  deleteWaitlistEntry, updateWaitlistStatus,
-  inviteTeamMember, updateUserRole, deleteUser,
-  addReview, updateReview, deleteReview,
-  withRetry, cleanData, checkIfAdmin, getUserRole
+  cleanData
 } from '../services/supabaseService';
+import { api, isApiError } from '../lib/api/client';
+import { fromApiCard, fromApiBlog, fromApiReview } from '../lib/api/mappers';
+import type { Card as ApiCard, Blog as ApiBlog, Review as ApiReview, Waitlist as ApiWaitlist } from '../lib/api/types';
 import { Blog, Card, WaitlistEntry, Review } from '../types';
 import { useSupabase } from './SupabaseProvider';
 
@@ -45,6 +43,30 @@ const ADMIN_CATEGORIES = [
   'Shopping', 'Dining', 'Lounge Access', 'Lifetime Free', 'Business', 'UPI',
   'Travel Bookings', 'Catalogue Products', 'Experience'
 ];
+// Converts the admin form's snake_case card payload to the Java API's camelCase + JSON-stringified JSONB fields.
+function toApiCardPayload(c: any) {
+  return {
+    name: c.name, bank: c.bank, issuer: c.issuer, type: c.type,
+    image: c.image, slug: c.slug, status: c.status, color: c.color,
+    applyLink: c.apply_link, bestFor: c.best_for, category: c.category,
+    categories: c.categories, rating: c.rating, eliteRating: c.elite_rating,
+    rewardsRate: c.rewards_rate, projectedSavings: c.projected_savings,
+    annualFee: c.annual_fee, joiningFee: c.joining_fee, introOffer: c.intro_offer,
+    benefits: c.benefits, benefitItems: JSON.stringify(c.benefit_items ?? []),
+    verdict: c.verdict, description: c.description, author: c.author,
+    rewardType: c.reward_type, welcomeBenefits: c.welcome_benefits,
+    productDetails: c.product_details, pros: c.pros, cons: c.cons,
+    cashbackDetails: c.cashback_details, exclusions: c.exclusions,
+    comparisonCards: c.comparison_cards, latestNews: c.latest_news,
+    detailedFeatures: JSON.stringify(c.detailed_features ?? []),
+    redemptionTable: JSON.stringify(c.redemption_table ?? []),
+    eligibilityCriteria: JSON.stringify(c.eligibility_criteria ?? []),
+    gridBenefits: JSON.stringify(c.grid_benefits ?? []),
+    gridFees: JSON.stringify(c.grid_fees ?? []),
+    finalVerdictText: c.final_verdict_text, finalReviewImage: c.final_review_image,
+  };
+}
+
 const DEFAULT_BLOG_FORM = {
   title: '', slug: '', excerpt: '', content: '', author: '', category: 'Credit Cards',
   image: 'https://picsum.photos/seed/blog/800/600', read_time: '5 min read',
@@ -190,7 +212,8 @@ const AdminDashboard: React.FC = () => {
       if (currentUser) {
         try {
           // Use the consolidated service helper for both check and role
-          const role = await getUserRole(currentUser.email);
+          const roleRes = await api.get<{ role: string }>(`/api/v1/auth/role?email=${encodeURIComponent(currentUser.email)}`, { skipAuth: true });
+          const role = !isApiError(roleRes) ? (roleRes.data?.role ?? 'user') : 'user';
           const isUserAdmin = ['admin', 'editor', 'writer'].includes(role);
           
           setUserRole(role);
@@ -273,22 +296,17 @@ const AdminDashboard: React.FC = () => {
 
       console.log(`🗑️ Deleting from ${collection} (ID: ${id})`);
 
-      // Use supabaseAdmin for deletions to ensure administrative actions always succeed
-      const { error } = await supabaseAdmin.from(collection).delete().eq('id', id);
-      
-      if (error) {
-        console.error("❌ Database Delete Error:", error);
-        throw error;
-      }
-
-      // LOG THE DELETION (Fire and forget)
-      supabase.from('audit_logs').insert([{
-        user_email: userEmail,
-        action: 'DELETE',
-        table_name: collection,
-        record_id: id,
-        record_name: 'REMOVED_ITEM'
-      }]).then();
+      const deleteRoutes: Record<string, string> = {
+        blogs:    `/api/v1/admin/blogs/${id}`,
+        cards:    `/api/v1/admin/cards/${id}`,
+        reviews:  `/api/v1/admin/reviews/${id}`,
+        waitlist: `/api/v1/admin/waitlist/${id}`,
+        users:    `/api/v1/admin/team/${id}`,
+      };
+      const route = deleteRoutes[collection];
+      if (!route) throw new Error(`Unknown collection: ${collection}`);
+      const delRes = await api.delete(route);
+      if (isApiError(delRes)) throw new Error(delRes.error);
 
     } catch (err: any) {
       console.error("💥 CRITICAL DELETE FAILURE:", err);
@@ -443,67 +461,61 @@ const AdminDashboard: React.FC = () => {
       console.log(`📤 Saving to ${collection}:`, finalPayload);
 
       const isUpdate = !!editingItem;
-      const recordId = editingItem?.id || 'new';
-      const recordName = activeTab === 'blogs' ? blogForm.title : (activeTab === 'cards' ? cardForm.name : (activeTab === 'reviews' ? reviewForm.author : teamForm.email));
 
-      // Use supabaseAdmin to bypass RLS and ensure reliability for admin users
-      const query = isUpdate 
-        ? supabaseAdmin.from(collection).update(finalPayload).eq('id', editingItem.id)
-        : supabaseAdmin.from(collection).insert([finalPayload]);
-      
-      const { data, error: saveError } = await query.select();
+      let savedItem: any = null;
 
-      if (saveError) {
-        console.error("❌ Database Save Error:", saveError);
-        throw new Error(saveError.message || "Failed to save to database. Check your network or permissions.");
-      }
-
-      if (!data || data.length === 0) {
-        throw new Error("The operation was successful, but the database did not return the new record. Try refreshing.");
-      }
-
-      const savedItem = data[0];
-
-      // Update global state - SupabaseProvider listeners will also pick this up, 
-      // but we update locally for immediate UX response.
-      if (isUpdate) {
-        if (collection === 'blogs') setBlogs(prev => prev.map(i => i.id === editingItem.id ? savedItem : i));
-        else if (collection === 'cards') setCards(prev => prev.map(i => i.id === editingItem.id ? savedItem : i));
-        else if (collection === 'reviews') setReviews(prev => prev.map(i => i.id === editingItem.id ? savedItem : i));
-        else if (collection === 'users') setTeam(prev => prev.map(i => i.id === editingItem.id ? savedItem : i));
-      } else {
-        if (collection === 'blogs') setBlogs(prev => [savedItem, ...prev]);
-        else if (collection === 'cards') setCards(prev => [savedItem, ...prev]);
-        else if (collection === 'reviews') setReviews(prev => [savedItem, ...prev]);
-        else if (collection === 'users') setTeam(prev => [savedItem, ...prev]);
+      if (collection === 'blogs') {
+        const res = isUpdate
+          ? await api.put<ApiBlog>(`/api/v1/admin/blogs/${editingItem.id}`, finalPayload)
+          : await api.post<ApiBlog>('/api/v1/admin/blogs', finalPayload);
+        if (isApiError(res)) throw new Error(res.error);
+        savedItem = fromApiBlog(res.data!);
+        if (isUpdate) setBlogs(prev => prev.map(i => i.id === editingItem.id ? savedItem : i));
+        else setBlogs(prev => [savedItem, ...prev]);
+      } else if (collection === 'cards') {
+        const apiPayload = toApiCardPayload(finalPayload);
+        const res = isUpdate
+          ? await api.put<ApiCard>(`/api/v1/admin/cards/${editingItem.id}`, apiPayload)
+          : await api.post<ApiCard>('/api/v1/admin/cards', apiPayload);
+        if (isApiError(res)) throw new Error(res.error);
+        savedItem = fromApiCard(res.data!);
+        if (isUpdate) setCards(prev => prev.map(i => i.id === editingItem.id ? savedItem : i));
+        else setCards(prev => [savedItem, ...prev]);
+      } else if (collection === 'reviews') {
+        const reviewPayload = { ...finalPayload, companyLogo: finalPayload.company_logo };
+        delete reviewPayload.company_logo;
+        const res = isUpdate
+          ? await api.put<ApiReview>(`/api/v1/admin/reviews/${editingItem.id}`, reviewPayload)
+          : await api.post<ApiReview>('/api/v1/admin/reviews', reviewPayload);
+        if (isApiError(res)) throw new Error(res.error);
+        savedItem = fromApiReview(res.data!);
+        if (isUpdate) setReviews(prev => prev.map(i => i.id === editingItem.id ? savedItem : i));
+        else setReviews(prev => [savedItem, ...prev]);
+      } else if (collection === 'users') {
+        if (isUpdate) {
+          const res = await api.patch(`/api/v1/admin/team/${editingItem.id}/role`, { role: finalPayload.role });
+          if (isApiError(res)) throw new Error(res.error);
+          savedItem = res.data;
+          setTeam(prev => prev.map(i => i.id === editingItem.id ? savedItem : i));
+        } else {
+          const res = await api.post(`/api/v1/admin/team`, { email: finalPayload.email, role: finalPayload.role });
+          if (isApiError(res)) throw new Error(res.error);
+          savedItem = res.data;
+          setTeam(prev => [savedItem, ...prev]);
+        }
       }
 
       showNotification(`${isUpdate ? 'Updated' : 'Created'} successfully!`);
       setIsModalOpen(false);
       setEditingItem(null);
 
-      // Audit Logging (Fire and forget)
-      supabase.from('audit_logs').insert([{
-        user_email: userEmail,
-        action: isUpdate ? 'UPDATE' : 'INSERT',
-        table_name: collection,
-        record_id: savedItem.id,
-        record_name: recordName
-      }]).then();
-
-      // IF NEW TEAM MEMBER, SEND NOTIFICATION
+      // Send welcome email for new team members
       if (!isUpdate && activeTab === 'settings') {
-        fetch("/api/notify-team-member", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: teamForm.email,
-            role: teamForm.role,
-            firstName: teamForm.email.split('@')[0]
-          })
-        }).then(res => res.json())
-          .then(data => console.log("Notification status:", data))
-          .catch(e => console.error("Notification failed:", e));
+        api.post('/api/v1/admin/notify', {
+          email: teamForm.email,
+          role: teamForm.role,
+          firstName: teamForm.email.split('@')[0],
+        }).catch(e => console.error("Notification failed:", e));
       }
 
     } catch (err: any) {
@@ -607,7 +619,11 @@ const AdminDashboard: React.FC = () => {
                   {activeTab === 'cards' && <AdminCardsTab onEdit={handleEdit} onDelete={confirmDelete} />}
                   {activeTab === 'updates' && <AdminUpdatesTab />}
                   {activeTab === 'reviews' && <AdminReviewsTab onEdit={handleEdit} onDelete={confirmDelete} />}
-                  {activeTab === 'waitlist' && <AdminWaitlistTab filter={waitlistFilter} onFilterChange={setWaitlistFilter} onUpdateStatus={updateWaitlistStatus} onDelete={confirmDelete} />}
+                  {activeTab === 'waitlist' && <AdminWaitlistTab filter={waitlistFilter} onFilterChange={setWaitlistFilter} onUpdateStatus={async (id: string, status: string) => {
+                    const res = await api.patch(`/api/v1/admin/waitlist/${id}/status`, { status });
+                    if (isApiError(res)) throw new Error(res.error);
+                    setWaitlist(prev => prev.map((w: any) => w.id === id ? { ...w, status } : w));
+                  }} onDelete={confirmDelete} />}
                   {activeTab === 'settings' && (
                     <AdminSettingsTab 
                       onAddMember={getAddAction()!} 

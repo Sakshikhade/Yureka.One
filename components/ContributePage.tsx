@@ -7,7 +7,7 @@ import {
   Check, Plus, Zap, Lock
 } from 'lucide-react';
 import SEO from './SEO';
-import { submitCardContribution } from '../services/supabaseService';
+import { api, isApiError } from '../lib/api/client';
 import { useSupabase } from './SupabaseProvider';
 
 type TabType = 'add' | 'update' | 'remove';
@@ -113,13 +113,13 @@ const ContributePage: React.FC = () => {
         payload = { id: selectedCardId, removalReason, card_name: form.name };
       }
       
-      await submitCardContribution({
+      const res = await api.post('/api/v1/contributions', {
         type: activeTab,
-        status: 'pending',
-        card_name: form.name,
-        email: email,
-        payload: payload
-      });
+        cardName: form.name,
+        email,
+        payload,
+      }, { skipAuth: true });
+      if (isApiError(res)) throw new Error(res.error);
       
       setIsSuccess(true);
       window.scrollTo({ top: 0, behavior: 'smooth' });

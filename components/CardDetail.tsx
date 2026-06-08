@@ -6,7 +6,9 @@ import {
     ArrowRight, Clock, Sparkles, ChevronRight,
     TrendingUp, Info, ChevronDown, Landmark, Globe, Trophy
 } from 'lucide-react';
-import { getCardBySlug, fetchCardsPublic } from '../services/supabaseService';
+import { api, isApiError } from '../lib/api/client';
+import { fromApiCard } from '../lib/api/mappers';
+import type { Card as ApiCard } from '../lib/api/types';
 import { Card } from '../types';
 import ImageWithLoader from './ImageWithLoader';
 import { motion, AnimatePresence } from 'motion/react';
@@ -32,13 +34,16 @@ const CardDetail: React.FC = () => {
         if (!slug) return;
         setIsLoading(true);
         const fetchCard = async () => {
-            const data = await getCardBySlug(slug);
-            setCard(data);
-            setIsLoading(false);
-            if (data) {
-                const all = await fetchCardsPublic();
-                setRelated((all || []).filter(c => c.id !== data.id && c.bank === data.bank).slice(0, 3));
+            const res = await api.get<ApiCard>(`/api/v1/cms/cards/${slug}`, { skipAuth: true });
+            if (!isApiError(res) && res.data) {
+                const data = fromApiCard(res.data);
+                setCard(data);
+                const allRes = await api.get<ApiCard[]>('/api/v1/cms/cards', { skipAuth: true });
+                if (!isApiError(allRes)) {
+                    setRelated((allRes.data ?? []).map(fromApiCard).filter(c => c.id !== data.id && c.bank === data.bank).slice(0, 3));
+                }
             }
+            setIsLoading(false);
         };
         fetchCard();
         window.scrollTo(0, 0);

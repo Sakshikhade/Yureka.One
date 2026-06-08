@@ -7,7 +7,9 @@ import {
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { getBlogBySlug, fetchBlogsPublic } from '../services/supabaseService';
+import { api, isApiError } from '../lib/api/client';
+import { fromApiBlog } from '../lib/api/mappers';
+import type { Blog as ApiBlog } from '../lib/api/types';
 import { Blog } from '../types';
 import ImageWithLoader from './ImageWithLoader';
 import { motion, AnimatePresence } from 'motion/react';
@@ -42,13 +44,16 @@ const BlogDetail: React.FC = () => {
         setExtractedHtml(null);
         
         const fetchBlog = async () => {
-            const data = await getBlogBySlug(slug);
+            const res = await api.get<ApiBlog>(`/api/v1/cms/blogs/${slug}`, { skipAuth: true });
+            const data = !isApiError(res) && res.data ? fromApiBlog(res.data) : null;
             setBlog(data);
             setIsLoading(false);
-            
+
             if (data) {
-                const all = await fetchBlogsPublic();
-                setRelated((all || []).filter(b => b.id !== data.id && b.category === data.category).slice(0, 3));
+                const allRes = await api.get<ApiBlog[]>('/api/v1/cms/blogs', { skipAuth: true });
+                if (!isApiError(allRes)) {
+                    setRelated((allRes.data ?? []).map(fromApiBlog).filter(b => b.id !== data.id && b.category === data.category).slice(0, 3));
+                }
                 
                 // Try to fetch and extract content for seamless reading
                 if (data.external_link) {

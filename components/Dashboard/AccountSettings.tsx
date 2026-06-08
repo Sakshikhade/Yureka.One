@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { 
-    User, Mail, Phone, Calendar, GenderReveal, 
+import {
+    User, Mail, Phone, Calendar,
     Save, ShieldCheck, Loader2, Sparkles, Check
 } from 'lucide-react';
 import { useSupabase } from '../SupabaseProvider';
-import { updateWaitlistMetadata } from '../../services/supabaseService';
+import { api, isApiError } from '../../lib/api/client';
+import type { Waitlist as ApiWaitlist } from '../../lib/api/types';
 
 const AccountSettings: React.FC = () => {
-    const { user, supabase } = useSupabase();
+    const { user } = useSupabase();
     const [isLoading, setIsLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
@@ -29,20 +30,16 @@ const AccountSettings: React.FC = () => {
 
     const loadAccountData = async () => {
         try {
-            const { data: entry } = await supabase
-                .from('waitlist')
-                .select('*')
-                .eq('email', user!.email)
-                .single();
-
-            if (entry) {
-                setWaitlistId(entry.id);
+            const res = await api.get<ApiWaitlist>(`/api/v1/waitlist/entry?email=${encodeURIComponent(user!.email)}`);
+            if (!isApiError(res) && res.data) {
+                const entry = res.data;
+                setWaitlistId(entry.id ?? null);
                 setFormData({
-                    firstName: entry.first_name || '',
-                    lastName: entry.last_name || '',
+                    firstName: entry.firstName || '',
+                    lastName: entry.lastName || '',
                     email: entry.email || '',
-                    mobileNumber: entry.mobile_number || '',
-                    dateOfBirth: entry.date_of_birth || '',
+                    mobileNumber: entry.mobileNumber || '',
+                    dateOfBirth: entry.dateOfBirth || '',
                     gender: entry.gender || ''
                 });
             }
@@ -57,11 +54,12 @@ const AccountSettings: React.FC = () => {
         if (!waitlistId) return;
         setIsSaving(true);
         try {
-            await updateWaitlistMetadata(waitlistId, {
+            const res = await api.patch(`/api/v1/waitlist/${waitlistId}/metadata`, {
                 mobile_number: formData.mobileNumber,
                 date_of_birth: formData.dateOfBirth,
-                gender: formData.gender
+                gender: formData.gender,
             });
+            if (isApiError(res)) throw new Error(res.error);
             setShowSuccess(true);
             setTimeout(() => setShowSuccess(false), 3000);
         } catch (err) {
