@@ -238,20 +238,14 @@ const AdminDashboard: React.FC = () => {
 
   const handleLogout = async () => { await supabase.auth.signOut(); };
   const handleLogin = async () => {
-    // Dynamically detect the correct production URL
-    const isCustomDomain = window.location.hostname === 'yureka.money';
-    const productionUrl = isCustomDomain 
-      ? 'https://yureka.money/admin' 
-      : 'https://yurekamoney.netlify.app/admin';
-    
-    const devUrl = window.location.origin + '/admin';
     const isLocal = window.location.hostname === 'localhost';
+    const redirectTo = isLocal
+      ? window.location.origin + '/admin'
+      : `${import.meta.env.VITE_ADMIN_PORTAL_URL ?? window.location.origin}/admin`;
 
-    await supabase.auth.signInWithOAuth({ 
-      provider: 'google', 
-      options: { 
-        redirectTo: isLocal ? devUrl : productionUrl 
-      } 
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo }
     });
   };
 

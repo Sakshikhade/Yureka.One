@@ -1,10 +1,11 @@
 import React, { useRef } from 'react';
-import { 
-  Loader2, 
-  Upload, 
+import {
+  Loader2,
+  Upload,
   Image as ImageIcon,
   Check,
-  X
+  X,
+  Zap
 } from 'lucide-react';
 
 interface ReviewFormProps {
