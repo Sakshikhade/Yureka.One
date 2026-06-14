@@ -167,9 +167,9 @@ const ContactButton: React.FC = () => (
 );
 
 /** Ghost outline pill button */
-const LiveProjectButton: React.FC = () => (
+const LiveProjectButton: React.FC<{ label?: string }> = ({ label = 'Live Project' }) => (
   <button className="rounded-full border-2 border-[#D7E2EA] text-[#D7E2EA] font-medium uppercase tracking-widest px-6 py-2.5 sm:px-8 sm:py-3 text-xs sm:text-sm hover:bg-[#D7E2EA]/10 transition-colors duration-200 cursor-pointer focus:outline-none whitespace-nowrap flex-shrink-0">
-    Live Project
+    {label}
   </button>
 );
 
@@ -294,20 +294,20 @@ const AboutSection: React.FC = () => (
   <section className="relative min-h-screen bg-[#0C0C0C] text-[#D7E2EA] flex flex-col items-center justify-center py-20 overflow-hidden">
     {/* Decorative corner icons — hidden on mobile to avoid overlap */}
     <FadeIn delay={0.1} x={-80} y={0} duration={0.9} className="hidden md:block absolute top-[4%] left-[2%] z-10 pointer-events-none">
-      <img src="https://shrug-person-78902957.figma.site/_components/v2/ebb2b8f25d8e24d5f0a5ca8af4c950de81aa2fd7/moon_icon.11395d36.png"
-        alt="" className="w-[120px] md:w-[180px] object-contain select-none" />
+      <img src="/assets/about-icon-cash-check.png" loading="lazy"
+        alt="" className="w-[160px] md:w-[230px] object-contain select-none" />
     </FadeIn>
     <FadeIn delay={0.25} x={-80} y={0} duration={0.9} className="hidden md:block absolute bottom-[8%] left-[4%] z-10 pointer-events-none">
-      <img src="https://shrug-person-78902957.figma.site/_components/v2/ebb2b8f25d8e24d5f0a5ca8af4c950de81aa2fd7/p59_1.4659672e.png"
-        alt="" className="w-[90px] md:w-[150px] object-contain select-none" />
+      <img src="/assets/about-icon-shopping-bag.png" loading="lazy"
+        alt="" className="w-[130px] md:w-[200px] object-contain select-none" />
     </FadeIn>
     <FadeIn delay={0.15} x={80} y={0} duration={0.9} className="hidden md:block absolute top-[4%] right-[2%] z-10 pointer-events-none">
-      <img src="https://shrug-person-78902957.figma.site/_components/v2/ebb2b8f25d8e24d5f0a5ca8af4c950de81aa2fd7/lego_icon-1.703bb594.png"
-        alt="" className="w-[120px] md:w-[180px] object-contain select-none" />
+      <img src="/assets/about-icon-location-map.png" loading="lazy"
+        alt="" className="w-[160px] md:w-[230px] object-contain select-none" />
     </FadeIn>
     <FadeIn delay={0.3} x={80} y={0} duration={0.9} className="hidden md:block absolute bottom-[8%] right-[4%] z-10 pointer-events-none">
-      <img src="https://shrug-person-78902957.figma.site/_components/v2/ebb2b8f25d8e24d5f0a5ca8af4c950de81aa2fd7/Group_134-1.2e04f3ce.png"
-        alt="" className="w-[110px] md:w-[170px] object-contain select-none" />
+      <img src="/assets/about-icon-crystal-cube.png" loading="lazy"
+        alt="" className="w-[150px] md:w-[220px] object-contain select-none" />
     </FadeIn>
 
     {/* Content — constrained to columns 2-4 */}
@@ -319,7 +319,7 @@ const AboutSection: React.FC = () => (
         </h2>
       </FadeIn>
 
-      <AnimatedText text="With a relentless focus on systemic reward maximization and elite digital assets, we build the bridges that connect everyday transactions with high-performance DeFi yield. Let's work together to optimize your wealth." />
+      <AnimatedText text="With a relentless focus on systemic reward maximization and elite digital assets, we build the bridges that connect everyday transactions with high-performance yield. Let's work together to optimize your wealth. Spend on Yureka Brands, pay using anything — any credit card / UPI / BNPL, earn assured rewards as well as Cash/Gold back on every purchase that you do at Yureka Partner Brands — it's a promise." />
 
       <div className="mt-6 sm:mt-10 md:mt-14">
         <FadeIn delay={0.2} y={30}>
@@ -388,7 +388,7 @@ const ServicesSection: React.FC = () => (
 
 const projects = [
   {
-    num: '01', name: 'SHOP', category: '500+ Brands',
+    num: '01', name: 'Power Shopper Report Card', category: 'Show Us', liveLabel: 'Join Waitlist',
     images: {
       c1a: 'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055344_5eff02e0-87a5-41ce-b64f-eb08da8f33db.png&w=1280&q=85',
       c1b: 'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055431_11d841fd-8b41-46a5-82e4-b04f2407a7d8.png&w=1280&q=85',
@@ -396,7 +396,7 @@ const projects = [
     },
   },
   {
-    num: '02', name: 'SAVE', category: 'Yureka contributes upto 30% of the bill.',
+    num: '02', name: 'Score above 100 to be an eligible Yureka User', category: 'Yureka Score', liveLabel: 'Check your Yureka Score Now',
     images: {
       c1a: 'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055654_911201c5-36d9-4bc6-bac7-331adfce159f.png&w=1280&q=85',
       c1b: 'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055723_5ceda0b8-d9c2-4665-b2e3-83ba19ba76d1.png&w=1280&q=85',
@@ -404,7 +404,7 @@ const projects = [
     },
   },
   {
-    num: '03', name: 'EARN', category: 'Assured ROI on every purchase upto 10%',
+    num: '03', name: 'Link your credit card for best rewards and returns', category: 'Credit card points booster', liveLabel: 'Link your Email Now',
     images: {
       c1a: 'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055759_963cfb0b-4bd1-4b0f-9d0a-09bd6cf95b2f.png&w=1280&q=85',
       c1b: 'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_060108_438f781a-9846-4dcc-89ab-c4e6cb830f5b.png&w=1280&q=85',
@@ -412,7 +412,7 @@ const projects = [
     },
   },
   {
-    num: '04', name: 'REPEAT', category: 'This is not the new RITUAL',
+    num: '04', name: 'Invite your Friends, Relatives, Partners', category: 'Refer', liveLabel: 'Invite Now',
     images: {
       c1a: 'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055344_5eff02e0-87a5-41ce-b64f-eb08da8f33db.png&w=1280&q=85',
       c1b: 'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055431_11d841fd-8b41-46a5-82e4-b04f2407a7d8.png&w=1280&q=85',
@@ -460,7 +460,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, scrollYProgre
               </h3>
             </div>
           </div>
-          <LiveProjectButton />
+          <LiveProjectButton label={project.liveLabel} />
         </div>
 
         {/* Image grid */}
@@ -498,10 +498,10 @@ const ProjectsSection: React.FC = () => {
     >
       <ColContent className="flex flex-col items-center">
         <h2
-          className="hero-heading font-black uppercase text-center mb-16 sm:mb-20 md:mb-28 tracking-tight leading-none w-full"
-          style={{ fontSize: 'clamp(3rem, 10vw, 120px)' }}
+          className="hero-heading font-black uppercase text-center mb-16 sm:mb-20 md:mb-28 tracking-tight leading-none w-fit"
+          style={{ fontSize: 'clamp(2.5rem, 8vw, 98px)' }}
         >
-          Ecosystem
+          Eligibility
         </h2>
 
         {/* Stacking cards container — uses its own full-bleed height for scroll calculation */}

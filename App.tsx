@@ -6,8 +6,6 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import SEO from './components/SEO';
 import SocialProof from './components/SocialProof';
-import BottomBanner from './components/BottomBanner';
-import TopBanner from './components/TopBanner';
 import { SupabaseProvider, useSupabase } from './components/SupabaseProvider';
 import { SkeletonCard } from './components/SkeletonLoaders';
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -42,6 +40,7 @@ const lazyWithRetry = (componentImport: () => Promise<any>) =>
 // Lazy Loaded Pages
 const MainPage = lazyWithRetry(() => import('./components/MainPage'));
 const CardExplorer = lazyWithRetry(() => import('./components/CardExplorer'));
+const BrandExplorer = lazyWithRetry(() => import('./components/BrandExplorer'));
 const CardDetail = lazyWithRetry(() => import('./components/CardDetail'));
 const OurStory = lazyWithRetry(() => import('./components/OurStory'));
 const JournalPage = lazyWithRetry(() => import('./components/JournalPage'));
@@ -127,12 +126,101 @@ const AppContent: React.FC = () => {
   const isAdminRoute = location.pathname.startsWith('/admin');
   const isDashboardRoute = location.pathname.startsWith('/dashboard');
   const isSpecialRoute = isAdminRoute || isDashboardRoute;
+  // Home page implements its own editorial 5-column grid (incl. its own Footer) — every
+  // other non-special route is wrapped in the same grid here so content stays within
+  // columns 2-4 (the 60%-width "Intelligence Core") with empty margin columns 1 & 5.
+  const applyEditorialGrid = !isSpecialRoute && location.pathname !== '/';
+
+  const appRoutes = (
+              <Routes>
+              <Route path="/" element={<MainPage />} />
+
+              <Route path="/cards" element={
+                <>
+                  <SEO
+                    title="Card Explorer | Professional Reward Analytics & Search"
+                    description="Expert analysis on 200+ credit cards. Filter by systematic reward yield, lounge access, and elite lifestyle perks. Match with your perfect portfolio."
+                  />
+                  <CardExplorer />
+                </>
+              } />
+
+              <Route path="/cards/:slug" element={<CardDetail />} />
+
+              <Route path="/brands" element={
+                <>
+                  <SEO
+                    title="Brand Explorer | Discover Reward Partners"
+                    description="Browse 80+ partner brands across shopping, travel, food, and lifestyle to maximize your card rewards and cashback."
+                  />
+                  <BrandExplorer />
+                </>
+              } />
+
+              <Route path="/blogs" element={
+                <>
+                  <SEO
+                    title="Pulse | Strategic Financial Journal"
+                    description="Expert analysis on credit arbitrage, reward point devaluation, and high-performance spending strategies in the Indian credit landscape."
+                  />
+                  <JournalPage />
+                </>
+              } />
+
+              <Route path="/blogs/:slug" element={<BlogDetail />} />
+
+              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/join-waitlist" element={<WaitlistPage />} />
+              <Route path="/waiting" element={<WaitingPage />} />
+              <Route path="/by-everyone-for-everyone" element={<ByEveryone />} />
+
+              <Route path="/dashboard/*" element={
+                <ProtectedRoute>
+                  <DashboardLayout />
+                </ProtectedRoute>
+              } />
+
+              <Route path="/contribute" element={<ContributePage />} />
+              <Route path="/coming-soon" element={<Navigate to="/contribute" replace />} />
+
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-of-service" element={<TermsOfService />} />
+              <Route path="/security-protocol" element={<SecurityProtocolPage />} />
+              <Route path="/community-guidelines" element={<CommunityGuidelines />} />
+              <Route path="/free-tools" element={<YurekaOsPage />} />
+              <Route path="/yureka-os" element={<Navigate to="/free-tools" replace />} />
+              <Route path="/manifesto" element={<OurStory />} />
+              <Route path="/jobs" element={<CareersPage />} />
+
+              <Route path="/yureka-ai" element={
+                <>
+                  <SEO
+                    title="Assistant | Your Personal Credit Portfolio Co-Pilot"
+                    description="From picking the perfect financial instrument to maximizing every systematic reward point. Your research assistant for elite credit."
+                  />
+                  <YurekaAIPage />
+                </>
+              } />
+              <Route path="/explorer" element={<Navigate to="/cards" replace />} />
+              <Route path="/ai-magic" element={<Navigate to="/yureka-ai" replace />} />
+              <Route path="/ai" element={<Navigate to="/yureka-ai" replace />} />
+              <Route path="/matrix" element={<Navigate to="/rewards-calculator" replace />} />
+              <Route path="/journal" element={<Navigate to="/blogs" replace />} />
+              <Route path="/rewards-calculator" element={<RewardsTransferCalculator />} />
+              <Route path="/categories" element={<CategoriesPage />} />
+              <Route path="/categories/:slug" element={<CategoryDetailPage />} />
+              <Route path="/compare" element={<ComparePage />} />
+              <Route path="/compare/:slug" element={<ComparisonDetail />} />
+
+              <Route path="*" element={<MainPage />} />
+            </Routes>
+  );
 
   return (
-    <div className={`min-h-screen bg-cream font-sans text-white relative ${isSpecialRoute ? 'pt-0' : 'pt-32 md:pt-36'}`}>
+    <div className={`min-h-screen bg-cream font-sans text-white relative ${isSpecialRoute ? 'pt-0' : 'pt-24 md:pt-28'}`}>
 
       <ScrollToTop />
-      {!isSpecialRoute && <TopBanner />}
       {!isSpecialRoute && <Navbar />}
       
       {!isAdminRoute && <ContributionModal />}
@@ -150,85 +238,26 @@ const AppContent: React.FC = () => {
           </div>
         }>
           <ErrorBoundary>
-            <Routes>
-              <Route path="/" element={<MainPage />} />
-              
-              <Route path="/cards" element={
-                <>
-                  <SEO 
-                    title="Card Explorer | Professional Reward Analytics & Search" 
-                    description="Expert analysis on 200+ credit cards. Filter by systematic reward yield, lounge access, and elite lifestyle perks. Match with your perfect portfolio."
-                  />
-                  <CardExplorer />
-                </>
-              } />
-              
-              <Route path="/cards/:slug" element={<CardDetail />} />
-              
-              <Route path="/blogs" element={
-                <>
-                  <SEO 
-                    title="Pulse | Strategic Financial Journal" 
-                    description="Expert analysis on credit arbitrage, reward point devaluation, and high-performance spending strategies in the Indian credit landscape."
-                  />
-                  <JournalPage />
-                </>
-              } />
-              
-              <Route path="/blogs/:slug" element={<BlogDetail />} />
-              
-              <Route path="/admin" element={<AdminDashboard />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/join-waitlist" element={<WaitlistPage />} />
-              <Route path="/waiting" element={<WaitingPage />} />
-              <Route path="/by-everyone-for-everyone" element={<ByEveryone />} />
-              
-              <Route path="/dashboard/*" element={
-                <ProtectedRoute>
-                  <DashboardLayout />
-                </ProtectedRoute>
-              } />
-              
-              <Route path="/contribute" element={<ContributePage />} />
-              <Route path="/coming-soon" element={<Navigate to="/contribute" replace />} />
-              
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/terms-of-service" element={<TermsOfService />} />
-              <Route path="/security-protocol" element={<SecurityProtocolPage />} />
-              <Route path="/community-guidelines" element={<CommunityGuidelines />} />
-              <Route path="/free-tools" element={<YurekaOsPage />} />
-              <Route path="/yureka-os" element={<Navigate to="/free-tools" replace />} />
-              <Route path="/manifesto" element={<OurStory />} />
-              <Route path="/jobs" element={<CareersPage />} />
-   
-              <Route path="/yureka-ai" element={
-                <>
-                  <SEO 
-                    title="Assistant | Your Personal Credit Portfolio Co-Pilot" 
-                    description="From picking the perfect financial instrument to maximizing every systematic reward point. Your research assistant for elite credit."
-                  />
-                  <YurekaAIPage />
-                </>
-              } />
-              <Route path="/explorer" element={<Navigate to="/cards" replace />} />
-              <Route path="/ai-magic" element={<Navigate to="/yureka-ai" replace />} />
-              <Route path="/ai" element={<Navigate to="/yureka-ai" replace />} />
-              <Route path="/matrix" element={<Navigate to="/rewards-calculator" replace />} />
-              <Route path="/journal" element={<Navigate to="/blogs" replace />} />
-              <Route path="/rewards-calculator" element={<RewardsTransferCalculator />} />
-              <Route path="/categories" element={<CategoriesPage />} />
-              <Route path="/categories/:slug" element={<CategoryDetailPage />} />
-              <Route path="/compare" element={<ComparePage />} />
-              <Route path="/compare/:slug" element={<ComparisonDetail />} />
-   
-              <Route path="*" element={<MainPage />} />
-            </Routes>
+            {applyEditorialGrid ? (
+              <div className="grid grid-cols-1 lg:grid-cols-5 w-full relative">
+                {/* COLUMN 1: LEFT MARGIN */}
+                <div className="hidden lg:block border-r border-white/5 bg-white/[0.02] h-full min-h-screen" />
+
+                {/* COLUMNS 2-4: INTELLIGENCE CORE (60% WIDTH) */}
+                <div className="col-span-1 lg:col-span-3 flex flex-col items-stretch relative z-10 min-w-0">
+                  {appRoutes}
+                  <Footer />
+                </div>
+
+                {/* COLUMN 5: RIGHT MARGIN */}
+                <div className="hidden lg:block border-l border-white/5 bg-white/[0.02] h-full min-h-screen" />
+              </div>
+            ) : (
+              appRoutes
+            )}
           </ErrorBoundary>
         </Suspense>
       </main>
-
-      {!isSpecialRoute && location.pathname !== '/' && <Footer />}
-      {!isSpecialRoute && <BottomBanner />}
 
       {!isAdminRoute && (
         <Link 

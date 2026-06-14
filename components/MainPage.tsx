@@ -1,4 +1,5 @@
 import React, { Suspense, lazy } from 'react';
+import HowItWorksStepper from './HowItWorksStepper';
 import SEO from './SEO';
 import { SupabaseProvider } from './SupabaseProvider';
 import { SkeletonCard, SkeletonHero } from './SkeletonLoaders';
@@ -84,6 +85,10 @@ const MainPage: React.FC = () => {
                 <Suspense fallback={<div className="h-40" />}>
                     <TextReveal />
                 </Suspense>
+
+                <div className="content-auto">
+                    <HowItWorksStepper />
+                </div>
 
                 <Suspense fallback={<div className="h-32 animate-pulse bg-white/5" />}>
                     <div className="content-auto">

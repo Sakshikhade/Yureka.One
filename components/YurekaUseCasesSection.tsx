@@ -16,10 +16,10 @@ const YurekaUseCasesSection: React.FC = () => {
             className="font-cirka text-5xl md:text-6xl font-medium leading-none mb-6 text-white"
             style={{ letterSpacing: '-0.04em' }}
           >
-            Use modes
+            We hate Gatekeeping
           </h2>
           <p className="font-overpass-mono text-white/60 text-base leading-relaxed max-w-sm">
-            Yureka Money powers a wide range of modes for builders, companies and treasuries wanting safe and rewarding stablecoin integrations plus more.
+            Encash your reward points / Digital gold for new purchases, Gift Cards, Bill Discounts or directly to your Bank Account. Absolute zero gatekeeping.
           </p>
         </div>
 

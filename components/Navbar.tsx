@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, Menu, X, Sparkles, ChevronDown, LayoutGrid, Calculator, ArrowRightLeft, LogOut, User } from 'lucide-react';
+import { ArrowRight, Menu, X, Sparkles, ChevronDown, LayoutGrid, Calculator, ArrowRightLeft, LogOut, User, Tag } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { useSupabase } from './SupabaseProvider';
@@ -29,6 +29,7 @@ const Navbar: React.FC = () => {
 
   const EXPLORE_ITEMS = [
     { name: 'Categories', path: '/categories', icon: LayoutGrid, desc: 'Find cards by lifestyle' },
+    { name: 'Brands', path: '/brands', icon: Tag, desc: 'Top reward partner brands' },
     { name: 'Tools', path: '/free-tools', icon: Calculator, desc: 'Institutional calculators' },
     { name: 'Compare', path: '/compare', icon: ArrowRightLeft, desc: 'Side-by-side analysis' }
   ];
@@ -36,7 +37,7 @@ const Navbar: React.FC = () => {
   return (
     <>
       <header 
-        className="fixed inset-x-0 top-10 md:top-12 flex justify-center z-[100] pointer-events-none"
+        className="fixed inset-x-0 top-4 md:top-6 flex justify-center z-[100] pointer-events-none"
       >
         <motion.div 
             initial={{ y: -20, opacity: 0 }}
@@ -61,7 +62,7 @@ const Navbar: React.FC = () => {
             </div>
 
             {/* Desktop Menu */}
-            <div className="hidden md:flex items-center relative z-10 shrink-0 gap-6 lg:gap-10">
+            <div className="hidden lg:flex items-center relative z-10 shrink-0 gap-6 lg:gap-10">
                 <nav className="flex items-center gap-6 lg:gap-8">
                     <Link 
                         to="/cards" 
@@ -227,6 +228,7 @@ const Navbar: React.FC = () => {
                     {[
                         { name: 'Card Explorer', path: '/cards', desc: 'Expert audited credit selection' },
                         { name: 'Categories', path: '/categories', desc: 'Browse by lifestyle & perks' },
+                        { name: 'Brands', path: '/brands', desc: 'Top reward partner brands' },
                         { name: 'Compare', path: '/compare', desc: 'Side-by-side strategic comparison' },
                         { name: 'Explore', path: '/manifesto', desc: 'The decentralization of yield' },
                         { name: 'Free Tools', path: '/free-tools', desc: 'Institutional grade calculators' },

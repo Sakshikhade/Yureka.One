@@ -67,6 +67,24 @@ const ScrollytellingVideo: React.FC<ScrollytellingVideoProps> = ({
   const [loadState, setLoadState] = useState<'loading' | 'buffering' | 'ready'>('loading');
   const [loadPct, setLoadPct]     = useState(0);
 
+  // ── Responsive scroll track length ────────────────────────────────────────
+  // On tablet/mobile the scrub track is shortened so users don't scroll
+  // through long stretches of black padding to reveal the video.
+  const [effectiveMultiplier, setEffectiveMultiplier] = useState(() =>
+    typeof window !== 'undefined' && window.innerWidth < 1024
+      ? scrollMultiplier * (2 / 3)
+      : scrollMultiplier
+  );
+
+  useEffect(() => {
+    const update = () => {
+      setEffectiveMultiplier(window.innerWidth < 1024 ? scrollMultiplier * (2 / 3) : scrollMultiplier);
+    };
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, [scrollMultiplier]);
+
   // ── Mutable scrub state (no re-renders) ───────────────────────────────────
   const targetTimeRef  = useRef(0);
   const currentTimeRef = useRef(0);
@@ -262,7 +280,7 @@ const ScrollytellingVideo: React.FC<ScrollytellingVideoProps> = ({
   return (
     <div
       ref={outerRef}
-      style={{ height: `${scrollMultiplier * 100}vh` }}
+      style={{ height: `${effectiveMultiplier * 100}vh` }}
       className={`relative w-full bg-black ${className}`}
     >
       {/* Sticky pane – stays pinned while the outer div scrolls */}

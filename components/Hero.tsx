@@ -52,28 +52,28 @@ const Hero: React.FC = () => {
             {/* Content overlay */}
             <div className="relative z-10 flex flex-col items-start justify-start h-full p-10 pt-20">
               <h1
-                className="font-cirka text-black text-5xl md:text-6xl font-extrabold leading-tight max-w-xl mb-4"
+                className="font-cirka text-black text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight max-w-3xl mb-4"
                 style={{ letterSpacing: '-0.04em' }}
               >
-                Your Wealth<br />Works
+                Stop Letting Banks Hold Your Rewards<br />—Earn 15% More with Yureka.
               </h1>
 
-              <p className="font-overpass-mono text-black/70 text-base md:text-lg max-w-md mb-8 leading-relaxed">
-                An automated, reward-powered digital dollar built for native passive earnings and effortless connection into DeFi.
+              <p className="font-overpass-mono text-black/70 text-base md:text-2xl font-bold max-w-md mb-8 leading-relaxed whitespace-nowrap">
+                Introducing India's 1st SavingsOs
               </p>
 
-              {/* "Join us" pill button */}
-              <button className="inline-flex items-center gap-3 bg-white text-black text-base md:text-lg font-medium pl-8 pr-2 py-2 rounded-full hover:bg-zinc-100 transition-colors duration-200">
-                <span>Join us</span>
-                <span className="bg-black rounded-full p-2">
+              {/* "Join the Waitlist" pill button */}
+              <button className="inline-flex items-center gap-3 bg-white text-black text-lg md:text-xl font-medium pl-9 pr-2.5 py-2.5 rounded-full hover:bg-zinc-100 transition-colors duration-200">
+                <span>Join the Waitlist</span>
+                <span className="bg-black rounded-full p-2.5">
                   <ArrowRight className="w-5 h-5 text-white" />
                 </span>
               </button>
 
             </div>
 
-            {/* Brand Marquee — positioned on the ribbon between both hands */}
-            <div className="absolute left-0 right-0 z-20 overflow-hidden border-y border-black/20 py-[6px] backdrop-blur-sm" style={{ top: '82.7%' }}>
+            {/* Brand Marquee — positioned on the ribbon between both hands, spanning only the middle column (section 3) of the 5-column grid */}
+            <div className="absolute left-[calc(45%-28px)] right-[calc(21%-255px)] z-20 overflow-hidden py-[6px]" style={{ top: 'calc(78% + 37px)', maskImage: 'linear-gradient(to left, black 0px, black 179px, transparent 179px, transparent 261px, black 261px, black 100%)', WebkitMaskImage: 'linear-gradient(to left, black 0px, black 179px, transparent 179px, transparent 261px, black 261px, black 100%)' }}>
               <div className="yureka-marquee-track">
                 {heroBrands.map((brand, i) => (
                   <span

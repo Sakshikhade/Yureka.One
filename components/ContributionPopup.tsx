@@ -70,7 +70,7 @@ const ContributionPopup: React.FC = () => {
           exit={{ opacity: 0, y: 100, scale: 0.9 }}
           className="fixed bottom-8 right-8 z-[100] w-full max-w-md p-1"
         >
-          <div className="bg-[#0A0A0A]/90 backdrop-blur-2xl border border-white/10 rounded-[2rem] overflow-hidden shadow-2xl">
+          <div className="bg-[#0A0A0A]/40 backdrop-blur-2xl border border-white/10 rounded-[2rem] overflow-hidden shadow-2xl">
             {/* Header */}
             <div className="p-6 pb-0 flex justify-between items-start">
               <div className="bg-clay/10 p-3 rounded-2xl">

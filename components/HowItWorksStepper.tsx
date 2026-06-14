@@ -248,37 +248,6 @@ const HowItWorksStepper: React.FC = () => {
         </div>
       </section>
 
-      {/* SECTION 4: MISSION */}
-      <section className="bg-black w-full pb-32 px-6">
-        <div className="max-w-4xl mx-auto w-full flex flex-col items-center">
-          {/* Loop Video */}
-          <motion.div
-            {...fadeUp(0.1)}
-            className="w-full max-w-xl aspect-square rounded-[2.5rem] overflow-hidden mb-20 bg-neutral-950 border border-white/5"
-          >
-            <img
-              className="w-full h-full object-contain p-2"
-              src="/assets/yureka-points.png"
-              alt="Yureka points illustration"
-            />
-          </motion.div>
-
-          {/* Scroll-driven Opacity Paragraphs */}
-          <div className="space-y-16">
-            <ParagraphReveal
-              text="We're building a space where curiosity meets clarity — where readers find depth, writers find reach, and every newsletter becomes a conversation worth having."
-              highlightWords={['curiosity', 'meets', 'clarity']}
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight text-center"
-            />
-
-            <ParagraphReveal
-              text="A platform where content, community, and insight flow together — with less noise, less friction, and more meaning for everyone involved."
-              className="text-xl sm:text-2xl lg:text-3xl font-medium text-center"
-            />
-          </div>
-        </div>
-      </section>
-
       {/* SECTION 5: SOLUTION */}
       <section className="bg-black w-full py-32 px-6 border-t border-white/10">
         <div className="max-w-6xl mx-auto w-full flex flex-col">
@@ -333,6 +302,37 @@ const HowItWorksStepper: React.FC = () => {
                 </p>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 4: MISSION */}
+      <section className="bg-black w-full pb-32 px-6">
+        <div className="max-w-4xl mx-auto w-full flex flex-col items-center">
+          {/* Loop Video */}
+          <motion.div
+            {...fadeUp(0.1)}
+            className="w-full max-w-xl aspect-square rounded-[2.5rem] overflow-hidden mb-20 bg-neutral-950 border border-white/5"
+          >
+            <img
+              className="w-full h-full object-contain p-2"
+              src="/assets/yureka-points.png"
+              alt="Yureka points illustration"
+            />
+          </motion.div>
+
+          {/* Scroll-driven Opacity Paragraphs */}
+          <div className="space-y-16">
+            <ParagraphReveal
+              text="We're building a space where curiosity meets clarity — where readers find depth, writers find reach, and every newsletter becomes a conversation worth having."
+              highlightWords={['curiosity', 'meets', 'clarity']}
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight text-center"
+            />
+
+            <ParagraphReveal
+              text="A platform where content, community, and insight flow together — with less noise, less friction, and more meaning for everyone involved."
+              className="text-xl sm:text-2xl lg:text-3xl font-medium text-center"
+            />
           </div>
         </div>
       </section>
