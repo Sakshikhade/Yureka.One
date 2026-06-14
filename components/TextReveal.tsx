@@ -226,7 +226,7 @@ const TextReveal: React.FC = () => {
             muted
             playsInline
             className="absolute inset-0 w-full h-full object-cover z-0"
-            src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_170732_8a9ccda6-5cff-4628-b164-059c500a2b41.mp4"
+            src="/assets/cta_fold.mp4"
           />
 
           {/* Noise Overlay */}
@@ -307,8 +307,7 @@ const TextReveal: React.FC = () => {
 
       {/* SECTION 3: FEATURES */}
       <section className="relative min-h-screen bg-black py-24 px-6 md:px-12 w-full overflow-hidden">
-        {/* Subtle Background Noise */}
-        <div className="absolute inset-0 bg-noise opacity-[0.15] pointer-events-none z-0" />
+
 
         <div className="relative z-10 max-w-6xl mx-auto w-full flex flex-col">
           <div className="text-center mb-20">
@@ -329,16 +328,13 @@ const TextReveal: React.FC = () => {
 
           {/* Grid Layout: Responsive breakpoints */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 lg:h-[480px] gap-3 sm:gap-2 md:gap-1">
-            {/* Card 1: Video Card */}
+            {/* Card 1: Image Card */}
             <FeatureCardEntrance index={0}>
               <div className="relative rounded-2xl overflow-hidden min-h-[320px] lg:h-full flex flex-col justify-end p-6 z-10">
-                <video
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="absolute inset-0 w-full h-full object-cover z-0"
-                  src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260406_133058_0504132a-0cf3-4450-a370-8ea3b05c95d4.mp4"
+                <img
+                  className="absolute inset-0 w-full h-full object-contain bg-black z-0"
+                  src="/assets/creative_canvas.png"
+                  alt="Your creative canvas"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none z-10" />
                 <span className="text-[#E1E0CC] text-lg font-medium relative z-20">
@@ -349,14 +345,14 @@ const TextReveal: React.FC = () => {
 
             {/* Card 2: Project Storyboard */}
             <FeatureCardEntrance index={1}>
-              <div className="bg-[#212121] rounded-2xl p-6 lg:h-full flex flex-col justify-between">
+              <div className="bg-black rounded-2xl p-6 lg:h-full flex flex-col justify-between border border-white/5">
                 <div>
                   <img
-                    className="w-10 h-10 sm:w-12 sm:h-12 rounded object-cover shadow-md"
-                    src="https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260405_171918_4a5edc79-d78f-4637-ac8b-53c43c220606.png&w=1280&q=85"
-                    alt="Storyboard icon"
+                    className="w-full h-48 object-contain mb-2"
+                    src="/assets/feat-card-question.png"
+                    alt="Project Storyboard"
                   />
-                  <h3 className="text-[#E1E0CC] font-medium text-lg mt-5 tracking-tight uppercase">
+                  <h3 className="text-[#E1E0CC] font-medium text-lg mt-3 tracking-tight uppercase">
                     Project Storyboard. <span className="text-gray-500 font-normal">(01)</span>
                   </h3>
                   <ul className="space-y-3 mt-5">
@@ -386,14 +382,14 @@ const TextReveal: React.FC = () => {
 
             {/* Card 3: Smart Critiques */}
             <FeatureCardEntrance index={2}>
-              <div className="bg-[#212121] rounded-2xl p-6 lg:h-full flex flex-col justify-between">
+              <div className="bg-black rounded-2xl p-6 lg:h-full flex flex-col justify-between border border-white/5">
                 <div>
                   <img
-                    className="w-10 h-10 sm:w-12 sm:h-12 rounded object-cover shadow-md"
-                    src="https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260405_171741_ed9845ab-f5b2-4018-8ce7-07cc01823522.png&w=1280&q=85"
-                    alt="Critiques icon"
+                    className="w-full h-48 object-contain mb-2"
+                    src="/assets/feat-card-visa.png"
+                    alt="Smart Critiques"
                   />
-                  <h3 className="text-[#E1E0CC] font-medium text-lg mt-5 tracking-tight uppercase">
+                  <h3 className="text-[#E1E0CC] font-medium text-lg mt-3 tracking-tight uppercase">
                     Smart Critiques. <span className="text-gray-500 font-normal">(02)</span>
                   </h3>
                   <ul className="space-y-3 mt-5">
@@ -422,14 +418,14 @@ const TextReveal: React.FC = () => {
 
             {/* Card 4: Immersion Capsule */}
             <FeatureCardEntrance index={3}>
-              <div className="bg-[#212121] rounded-2xl p-6 lg:h-full flex flex-col justify-between">
+              <div className="bg-black rounded-2xl p-6 lg:h-full flex flex-col justify-between border border-white/5">
                 <div>
                   <img
-                    className="w-10 h-10 sm:w-12 sm:h-12 rounded object-cover shadow-md"
-                    src="https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260405_171809_f56666dc-c099-4778-ad82-9ad4f209567b.png&w=1280&q=85"
-                    alt="Immersion icon"
+                    className="w-full h-48 object-contain mb-2"
+                    src="/assets/feat-card-gift.png"
+                    alt="Immersion Capsule"
                   />
-                  <h3 className="text-[#E1E0CC] font-medium text-lg mt-5 tracking-tight uppercase">
+                  <h3 className="text-[#E1E0CC] font-medium text-lg mt-3 tracking-tight uppercase">
                     Immersion Capsule. <span className="text-gray-500 font-normal">(03)</span>
                   </h3>
                   <ul className="space-y-3 mt-5">

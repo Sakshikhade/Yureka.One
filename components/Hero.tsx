@@ -15,14 +15,14 @@ const Hero: React.FC = () => {
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: `
-        @keyframes halo-marquee {
+        @keyframes yureka-marquee {
           0% { transform: translateX(0%); }
           100% { transform: translateX(-50%); }
         }
-        .halo-marquee-track {
+        .yureka-marquee-track {
           display: flex;
           width: max-content;
-          animation: halo-marquee 22s linear infinite;
+          animation: yureka-marquee 22s linear infinite;
         }
       `}} />
 
@@ -39,29 +39,26 @@ const Hero: React.FC = () => {
             className="relative w-full rounded-2xl overflow-hidden"
             style={{ height: 'calc(100vh - 10rem)' }}
           >
-            {/* Background video */}
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="object-cover absolute inset-0 w-full h-full"
-              src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260423_161253_c72b1869-400f-45ed-ac0c-52f68c2ed5bd.mp4"
+            {/* Background image — Ben Franklin */}
+            <img
+              src="/images/hero-bg.jpg"
+              alt="Hero background"
+              className="absolute inset-0 w-full h-full object-cover object-right-bottom"
             />
 
             {/* Dark gradient at bottom so text stays readable */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent pointer-events-none z-[5]" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent pointer-events-none z-[5]" />
 
             {/* Content overlay */}
             <div className="relative z-10 flex flex-col items-start justify-start h-full p-10 pt-20">
               <h1
-                className="text-white text-5xl md:text-6xl font-extrabold leading-tight max-w-xl mb-4"
+                className="font-cirka text-black text-5xl md:text-6xl font-extrabold leading-tight max-w-xl mb-4"
                 style={{ letterSpacing: '-0.04em' }}
               >
                 Your Wealth<br />Works
               </h1>
 
-              <p className="text-white/70 text-base md:text-lg max-w-md mb-8 leading-relaxed">
+              <p className="font-overpass-mono text-black/70 text-base md:text-lg max-w-md mb-8 leading-relaxed">
                 An automated, reward-powered digital dollar built for native passive earnings and effortless connection into DeFi.
               </p>
 
@@ -73,26 +70,27 @@ const Hero: React.FC = () => {
                 </span>
               </button>
 
-              {/* Brand Marquee */}
-              <div className="mt-16 w-full max-w-md overflow-hidden">
-                <div className="halo-marquee-track">
-                  {heroBrands.map((brand, i) => (
-                    <span
-                      key={`a-${i}`}
-                      className="mx-7 shrink-0 text-white/60 whitespace-nowrap font-sans text-sm font-semibold tracking-wider uppercase"
-                    >
-                      {brand.name}
-                    </span>
-                  ))}
-                  {heroBrands.map((brand, i) => (
-                    <span
-                      key={`b-${i}`}
-                      className="mx-7 shrink-0 text-white/60 whitespace-nowrap font-sans text-sm font-semibold tracking-wider uppercase"
-                    >
-                      {brand.name}
-                    </span>
-                  ))}
-                </div>
+            </div>
+
+            {/* Brand Marquee — positioned on the ribbon between both hands */}
+            <div className="absolute left-0 right-0 z-20 overflow-hidden border-y border-black/20 py-[6px] backdrop-blur-sm" style={{ top: '82.7%' }}>
+              <div className="yureka-marquee-track">
+                {heroBrands.map((brand, i) => (
+                  <span
+                    key={`a-${i}`}
+                    className="mx-7 shrink-0 text-black/60 whitespace-nowrap font-sans text-sm font-semibold tracking-wider uppercase"
+                  >
+                    {brand.name}
+                  </span>
+                ))}
+                {heroBrands.map((brand, i) => (
+                  <span
+                    key={`b-${i}`}
+                    className="mx-7 shrink-0 text-black/60 whitespace-nowrap font-sans text-sm font-semibold tracking-wider uppercase"
+                  >
+                    {brand.name}
+                  </span>
+                ))}
               </div>
             </div>
           </div>

@@ -18,7 +18,7 @@ const SEO: React.FC<SEOProps> = ({
   schema
 }) => {
   React.useEffect(() => {
-    const fullTitle = title === "Jack -- 3D Creator" || title.includes('|') ? title : `${title} | Yureka.money`;
+    const fullTitle = title.includes('Yureka') || title.includes('|') ? title : `${title} | Yureka.money`;
     document.title = fullTitle;
     
     // Update simple meta tags

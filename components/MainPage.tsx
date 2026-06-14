@@ -3,13 +3,12 @@ import HowItWorksStepper from './HowItWorksStepper';
 import SEO from './SEO';
 import { SupabaseProvider, useSupabase } from './SupabaseProvider';
 import { SkeletonCard, SkeletonHero } from './SkeletonLoaders';
-import HaloInfoSection from './HaloInfoSection';
-import HaloBackedBySection from './HaloBackedBySection';
-import HaloUseCasesSection from './HaloUseCasesSection';
-import JackPortfolio from './JackPortfolio';
-
 // Lazy load non-critical sections for performance
 const Hero = lazy(() => import('./Hero'));
+const YurekaInfoSection = lazy(() => import('./YurekaInfoSection'));
+const YurekaBackedBySection = lazy(() => import('./YurekaBackedBySection'));
+const YurekaUseCasesSection = lazy(() => import('./YurekaUseCasesSection'));
+const YurekaPortfolio = lazy(() => import('./YurekaPortfolio'));
 const TextReveal = lazy(() => import('./TextReveal'));
 const Stats = lazy(() => import('./Stats'));
 const Marquee = lazy(() => import('./Marquee'));
@@ -39,8 +38,8 @@ const MainPage: React.FC = () => {
   return (
     <>
       <SEO 
-        title="Jack -- 3D Creator" 
-        description="a 3d creator driven by crafting striking and unforgettable projects"
+        title="Yureka Money -- Reward-Powered Digital Dollar" 
+        description="An automated, reward-powered digital dollar built for native passive earnings and effortless connection into DeFi."
         schema={homeSchema}
       />
       
@@ -58,17 +57,25 @@ const MainPage: React.FC = () => {
                     <Hero />
                 </Suspense>
 
-                {/* Halo Info — Meet Yureka cards */}
-                <HaloInfoSection />
-
-                {/* Halo Backed By — partner marquee */}
-                <HaloBackedBySection />
-
-                {/* Halo Use Cases — Commerce video card */}
-                <HaloUseCasesSection />
-
-                {/* Jack 3D Creator Portfolio */}
-                <JackPortfolio />
+                {/* Yureka Info — Meet Yureka cards */}
+                <Suspense fallback={<div className="h-96 bg-white/5 animate-pulse rounded-3xl" />}>
+                    <YurekaInfoSection />
+                </Suspense>
+ 
+                {/* Yureka Backed By — partner marquee */}
+                <Suspense fallback={<div className="h-64 bg-white/5 animate-pulse rounded-3xl" />}>
+                    <YurekaBackedBySection />
+                </Suspense>
+ 
+                {/* Yureka Use Cases — Commerce video card */}
+                <Suspense fallback={<div className="h-96 bg-white/5 animate-pulse rounded-3xl" />}>
+                    <YurekaUseCasesSection />
+                </Suspense>
+ 
+                {/* Yureka Portfolio */}
+                <Suspense fallback={<div className="h-[600px] bg-white/5 animate-pulse rounded-3xl" />}>
+                    <YurekaPortfolio />
+                </Suspense>
 
                 {/* Blue partner logo strip — immediately after hero headline */}
                 <Suspense fallback={<div className="h-16 bg-[#1a3fcb] animate-pulse" />}>
