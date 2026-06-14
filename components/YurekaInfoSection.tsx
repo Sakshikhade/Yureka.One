@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
+import LazyVideo from './LazyVideo';
 
 const YurekaInfoSection: React.FC = () => {
   return (
@@ -38,13 +39,9 @@ const YurekaInfoSection: React.FC = () => {
 
         {/* Card 1 — spans 2 cols, background video */}
         <div className="lg:col-span-2 relative rounded-2xl overflow-hidden bg-black min-h-80">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="object-cover absolute inset-0 w-full h-full z-0 pointer-events-none select-none"
+          <LazyVideo
             src="/assets/rewards.mp4"
+            className="object-cover absolute inset-0 w-full h-full z-0 pointer-events-none select-none"
           />
         </div>
 

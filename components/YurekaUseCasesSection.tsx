@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
+import LazyVideo from './LazyVideo';
 
 const YurekaUseCasesSection: React.FC = () => {
   return (
@@ -24,13 +25,9 @@ const YurekaUseCasesSection: React.FC = () => {
 
         {/* Right column — video card */}
         <div className="relative rounded-3xl overflow-hidden min-h-[560px] bg-black">
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="object-contain absolute inset-0 w-full h-full"
+          <LazyVideo
             src="/assets/bankrewards.mp4"
+            className="object-contain absolute inset-0 w-full h-full"
           />
         </div>
 

@@ -30,13 +30,15 @@ The app runs as a single Express server:
 
 In production (Netlify), `netlify.toml` proxies all `/api/*` calls to `https://yureka-api.onrender.com` — the Render deployment runs `server.ts` directly with `tsx`.
 
-### Supabase as the Entire Backend
+### Java Backend Migration (in progress)
 
-There is no separate database or ORM layer. All persistence goes through two Supabase clients defined in `supabase.ts`:
-- `supabase` — anon key, respects Row Level Security (RLS), used for all public-facing reads
-- `supabaseAdmin` — service role key, bypasses RLS, used exclusively in `AdminDashboard` and admin service functions
+The app is mid-migration from "Supabase as the entire backend" to a separate **Java/Spring Boot backend** (spec in `docs/java-backend-spec.md`, endpoint reference in `docs/API.md` and `docs/RESPONSE_STRUCTURE.md`). The new backend owns the same Postgres (Supabase-managed) DB and is reachable via `lib/api/client.ts`.
 
-All data-access logic lives in `services/supabaseService.ts`, which wraps every Supabase call in `withRetry()` (3 retries with exponential backoff). Use `fetchXxxPublic()` functions for user-facing reads and `fetchXxxAdmin()` functions for admin writes.
+- `lib/api/client.ts` — thin fetch wrapper (`api.get/post/put/patch/delete`). Base URL from `VITE_API_BASE_URL` (defaults to `http://localhost:8080`). Auto-attaches the Supabase session JWT as `Authorization: Bearer <token>` unless `skipAuth: true`. All responses are a `YurekaResponse<T>` envelope (`{ data, status, error?, details? }`) — check with `isApiError(res)` / `isValidationError(res)`.
+- `lib/api/types.ts` — camelCase entity types matching the Java/JPA schema (`Card`, `Blog`, `Review`, `Waitlist`, `UserOwnedCard`, `PlatformNotification`, etc.), plus JSON-string fields (e.g. `benefitItems`, `gridBenefits`) that need `JSON.parse()`.
+- `lib/api/mappers.ts` — `fromApiXxx()` functions convert the Java camelCase shapes (with JSON-string fields parsed via `safeJsonParse`) back to the legacy snake_case types in `types.ts`, so existing components don't need to change.
+
+**Current state**: most read paths (public CMS data, admin CMS data, ledger, dashboard, waitlist) go through `/api/v1/...` via `lib/api/client.ts`. `services/supabaseService.ts` (the old `withRetry()`-wrapped direct-Supabase layer) is legacy — only `cleanData` from it is still used (in `AdminDashboard.tsx`). The two Supabase clients in `supabase.ts` (`supabase` anon, `supabaseAdmin` service-role) are now used primarily for **auth** (session/JWT) rather than data access. When adding new data fetches, prefer `api.get/post/...` + the mapper functions over `supabaseService`.
 
 ### Global State via `SupabaseProvider`
 
@@ -44,6 +46,8 @@ All data-access logic lives in `services/supabaseService.ts`, which wraps every 
 - Auth state: `user`, `session`, `currentUserStatus` (`none | pending | accepted | admin | loading | rejected | on-hold`)
 - CMS data: `cards`, `blogs`, `reviews`, `waitlist`, `team`, `cardContributions`
 - Financial ledger: `ledgerTransactions`, `ledgerLoading`, `syncLedger()`
+
+It now fetches via the Java API (`api.get('/api/v1/cms/cards', { skipAuth: true })` etc. for public routes, `/api/v1/admin/...` for admin routes via `loadAdminData()`), mapping responses through `fromApiCard`/`fromApiBlog`/etc. `currentUserStatus` is resolved via `resolveUserStatus()` — checks `/api/v1/auth/role` first (admin/editor/writer → `'admin'`), then `/api/v1/waitlist/entry` for the waitlist status.
 
 `currentUserStatus` drives routing in `App.tsx` via `ProtectedRoute`. The `/dashboard/*` routes are gated — `pending`/`on-hold`/`rejected` users get redirected to `/waiting`, unauthenticated users to `/login`.
 
@@ -55,6 +59,21 @@ Layout rules in `AppContent`:
 - Admin (`/admin`) and Dashboard (`/dashboard/*`) routes: no Navbar, no Footer, no TopBanner
 - Home (`/`) route: no Footer
 - All other routes: full layout with Navbar + Footer
+
+### Homepage Layout (`components/MainPage.tsx`)
+
+The homepage uses an "editorial 5-column" grid (`grid-cols-1 lg:grid-cols-5`): empty margin columns 1 and 5 (`border-white/5 bg-white/[0.02]`), with all content in the col-span-3 core. Sections render in this order:
+
+1. `Hero` — full-viewport rounded video/image card with headline, "Join us" CTA, and a brand-name marquee overlay
+2. `YurekaInfoSection` — "Meet Yureka" heading + 2x4 card grid (video/image + copy cards)
+3. `YurekaBackedBySection` — "500+ Credit Cards analysed" blurb + scrolling bank-logo marquee (`bankLogos` array)
+4. `YurekaUseCasesSection` — "Use modes" copy + looping use-case video
+5. `YurekaPortfolio` (renamed from `JackPortfolio`) — composite section: `MarqueeSection` (card image marquee from `cards`), `AboutSection`, `ServicesSection` ("What you get?"), `ProjectsSection` (scroll-stacked project cards)
+6. `PartnerLogos`, `TextReveal`, `HowItWorksStepper`, `RentalProtection` (repurposed for "Portfolio Optimization"), `CalculatorCTA`, `Stats`, `Marquee`, `FAQ`, `Footer`
+
+All sections except `HowItWorksStepper` are lazy-loaded via `React.lazy` + `Suspense` with skeleton fallbacks.
+
+`components/ScrollytellingVideo.tsx` is a reusable scroll-scrubbed video component: it draws decoded video frames to a `<canvas>` based on scroll position (lerp-smoothed), using an `IntersectionObserver` for proximity-gated preload (`rootMargin: 800px`) — not currently wired into `MainPage` but available for scroll-driven video sections.
 
 ### Admin Dashboard (`components/AdminDashboard.tsx`)
 
@@ -97,6 +116,12 @@ Tailwind is configured with a dark-mode-first design system (despite the class n
 - `surface` = `#111111`, `surface-hi` = `#1a1a1a`
 - `ink` = `rgba(255, 255, 255, 0.9)` (body text)
 
+Fonts (`fontFamily` in `tailwind.config.js`):
+- `font-cirka` — display/heading font (falls back to Instrument Serif/Georgia), used for new homepage section headings (`Hero`, `YurekaInfoSection`, `YurekaUseCasesSection`)
+- `font-overpass-mono` — monospace body copy on the new homepage sections
+- `font-kanit` — used in `YurekaPortfolio`
+- `font-sans` / `font-heading` = Almarai, `font-serif` / `font-blackletter` = Instrument Serif (pre-existing)
+
 ### Path Alias
 
 `@/` maps to the repo root (configured in both `vite.config.ts` and `tsconfig.json`).
@@ -117,6 +142,7 @@ Required in `.env` (Vite prefix for client-side access):
 VITE_SUPABASE_URL
 VITE_SUPABASE_ANON_KEY
 VITE_SUPABASE_SERVICE_ROLE_KEY   # Admin-only operations; optional (falls back to anon)
+VITE_API_BASE_URL                # Java backend base URL (default http://localhost:8080)
 VITE_GOOGLE_CLIENT_ID            # Gmail OAuth
 VITE_GEMINI_API_KEY              # YurekaAI page
 GOOGLE_CLIENT_ID                 # Server-side OAuth

@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { motion, useInView, useScroll, useTransform, MotionValue } from 'framer-motion';
 import { ArrowRight, Check } from 'lucide-react';
+import LazyVideo from './LazyVideo';
 
 // ==========================================
 // SHARED ANIMATION COMPONENTS
@@ -220,13 +221,9 @@ const TextReveal: React.FC = () => {
       <section className="relative w-full min-h-[600px] lg:h-screen p-4 md:p-6 bg-black flex flex-col">
         <div className="relative flex-1 w-full rounded-2xl md:rounded-[2rem] overflow-hidden flex flex-col justify-end">
           {/* Background Video */}
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="absolute inset-0 w-full h-full object-cover z-0"
+          <LazyVideo
             src="/assets/cta_fold.mp4"
+            className="absolute inset-0 w-full h-full object-cover z-0"
           />
 
           {/* Noise Overlay */}

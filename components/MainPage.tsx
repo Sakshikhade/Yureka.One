@@ -1,7 +1,6 @@
 import React, { Suspense, lazy } from 'react';
-import HowItWorksStepper from './HowItWorksStepper';
 import SEO from './SEO';
-import { SupabaseProvider, useSupabase } from './SupabaseProvider';
+import { SupabaseProvider } from './SupabaseProvider';
 import { SkeletonCard, SkeletonHero } from './SkeletonLoaders';
 // Lazy load non-critical sections for performance
 const Hero = lazy(() => import('./Hero'));
@@ -14,13 +13,10 @@ const Stats = lazy(() => import('./Stats'));
 const Marquee = lazy(() => import('./Marquee'));
 const FAQ = lazy(() => import('./FAQ'));
 const CalculatorCTA = lazy(() => import('./CalculatorCTA'));
-const RentalProtection = lazy(() => import('./RentalProtection')); // Repurposed for Portfolio Optimization
 const Footer = lazy(() => import('./Footer'));
 const PartnerLogos = lazy(() => import('./PartnerLogos'));
 
 const MainPage: React.FC = () => {
-  const { cards } = useSupabase();
-
   // JSON-LD Structured Data for the Homepage
   const homeSchema = {
     "@context": "https://schema.org",
@@ -88,17 +84,6 @@ const MainPage: React.FC = () => {
                 <Suspense fallback={<div className="h-40" />}>
                     <TextReveal />
                 </Suspense>
-
-                <div className="content-auto">
-                    <HowItWorksStepper />
-                </div>
-
-                <section id="secured" className="scroll-mt-24 content-auto">
-                    <Suspense fallback={<div className="h-48" />}>
-                        <RentalProtection cards={cards} />
-                    </Suspense>
-                </section>
-
 
                 <Suspense fallback={<div className="h-32 animate-pulse bg-white/5" />}>
                     <div className="content-auto">

@@ -201,14 +201,22 @@ const MarqueeSection: React.FC = () => {
   const [offset, setOffset] = useState(0);
 
   useEffect(() => {
-    const onScroll = () => {
+    let rafId: number | null = null;
+    const update = () => {
+      rafId = null;
       if (!sectionRef.current) return;
       const rect = sectionRef.current.getBoundingClientRect();
       setOffset((window.innerHeight - rect.top) * 0.3);
     };
+    const onScroll = () => {
+      if (rafId === null) rafId = requestAnimationFrame(update);
+    };
     window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener('scroll', onScroll);
+    update();
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (rafId !== null) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   // Filter cards to find valid image URLs
