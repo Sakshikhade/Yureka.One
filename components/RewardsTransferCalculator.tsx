@@ -117,7 +117,7 @@ const RewardsTransferCalculator: React.FC = () => {
     if (isDashboard) return;
     
     const access = localStorage.getItem('yureka_points_access');
-    if (!access) navigate(`${basePath}/tools`);
+    if (!access) navigate(`${basePath}/free-tools`);
   }, [navigate, basePath, isDashboard]);
 
   // Lazy-load the transfer matrix dataset (~900KB) instead of bundling it
@@ -201,7 +201,9 @@ const RewardsTransferCalculator: React.FC = () => {
         
         {/* Controls Section */}
         <div className="bg-white/5 rounded-3xl border border-white/5 p-6 sm:p-8 mb-6 shadow-2xl relative group">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 blur-[100px] rounded-full -mr-32 -mt-32" />
+          <div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 blur-[100px] rounded-full -mr-32 -mt-32" />
+          </div>
           
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-end relative z-10">
             
@@ -370,7 +372,7 @@ const RewardsTransferCalculator: React.FC = () => {
                   value={amount || ''} 
                   onFocus={(e) => e.target.select()}
                   onChange={e => setAmount(Math.max(0, Number(e.target.value)))}
-                  className="flex-1 bg-transparent border-none outline-none text-2xl font-bold text-white text-center tracking-tight"
+                  className="flex-1 min-w-0 bg-transparent border-none outline-none text-2xl font-bold text-white text-center tracking-tight"
                 />
               </div>
             </div>

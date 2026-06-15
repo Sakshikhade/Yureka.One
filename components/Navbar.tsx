@@ -184,7 +184,7 @@ const Navbar: React.FC = () => {
             </div>
 
              {/* Mobile Toggle */}
-             <div className="md:hidden flex items-center ml-auto gap-4">
+             <div className="lg:hidden flex items-center ml-auto gap-4">
                   <button 
                     className="p-2.5 bg-white/5 border border-white/10 rounded-full text-white hover:bg-white/10 transition-all shadow-lg"
                     onClick={() => setIsMobileMenuOpen(true)}

@@ -1,13 +1,13 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import {
-    Search, Tag, X, LayoutGrid, Zap, Sparkle, Store, Gem, UtensilsCrossed,
+    Search, Tag, LayoutGrid, Zap, Sparkle, Store, Gem, UtensilsCrossed,
     ShoppingBasket, ShoppingCart, Flame, Plane, BedDouble, Shirt, Sparkles,
     Gamepad2, Watch, Film, Crown, Smartphone, Sofa, Dumbbell, Glasses,
-    Baby, Pill, Footprints, Tv, ShoppingBag,
+    Baby, Pill, Footprints, Tv, ShoppingBag, ChevronDown,
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 import SEO from './SEO';
-import { brands, BRAND_CATEGORIES } from '../brandsData';
+import { brands, BRAND_CATEGORIES, Brand } from '../brandsData';
 
 const CATEGORY_ICONS: Record<string, React.ElementType> = {
     'All': LayoutGrid,
@@ -44,28 +44,79 @@ const STATS = [
     { label: 'Up to 20% Cashback', icon: Flame },
 ];
 
+const slugify = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+
+const BrandCard: React.FC<{ brand: Brand; index: number }> = ({ brand, index }) => (
+    <motion.div initial={{ opacity: 0, scale: 0.98 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true, margin: '100px' }} transition={{ delay: (index % 4) * 0.05 }} className="group">
+        <div className="bg-white/5 rounded-[2.5rem] border border-white/5 p-2 h-full flex flex-col hover:border-clay/30 hover:bg-white/[0.07] hover:-translate-y-1 transition-all duration-500 shadow-lg shadow-black/20 hover:shadow-2xl hover:shadow-clay/5">
+            <div
+                className={`relative aspect-video md:aspect-[1.6/1] rounded-[2rem] overflow-hidden mb-4 flex items-center justify-center ${brand.image && brand.bgColor ? '' : 'bg-white/[0.03]'}`}
+                style={brand.image && brand.bgColor ? { backgroundColor: brand.bgColor } : undefined}
+            >
+                {!(brand.image && brand.bgColor) && (
+                    <div className={`absolute w-28 h-28 rounded-full bg-gradient-to-br ${brand.color} opacity-10 blur-3xl group-hover:opacity-30 transition-opacity duration-700`} />
+                )}
+                {brand.image ? (
+                    <img src={brand.image} alt={brand.name} loading="lazy" className="relative w-full h-full object-contain p-3 group-hover:scale-110 transition-transform duration-700" />
+                ) : (
+                    <div className={`relative w-16 h-16 rounded-2xl bg-gradient-to-br ${brand.color} flex items-center justify-center text-white font-black text-2xl shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}>
+                        {brand.name.charAt(0)}
+                    </div>
+                )}
+            </div>
+
+            <h3 className="text-sm font-sans font-bold text-white text-center px-4 pb-6 uppercase tracking-wider group-hover:text-clay transition-colors">{brand.name}</h3>
+        </div>
+    </motion.div>
+);
+
 const BrandExplorer: React.FC = () => {
     const [searchQuery, setSearchQuery] = useState('');
-    const [activeCategory, setActiveCategory] = useState('All');
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    const categories = BRAND_CATEGORIES.slice(1);
 
     const categoryCounts = useMemo(() => {
         const counts: Record<string, number> = { All: brands.length };
-        BRAND_CATEGORIES.slice(1).forEach(cat => {
+        categories.forEach(cat => {
             counts[cat] = brands.filter(b => b.categories.includes(cat)).length;
         });
         return counts;
+    }, [categories]);
+
+    const categorySections = useMemo(() => {
+        const query = searchQuery.toLowerCase();
+        return categories.map(cat => ({
+            category: cat,
+            brands: brands.filter(b => b.categories.includes(cat) && b.name.toLowerCase().includes(query)),
+        }));
+    }, [categories, searchQuery]);
+
+    const totalMatches = useMemo(() => {
+        const query = searchQuery.toLowerCase();
+        return brands.filter(b => b.name.toLowerCase().includes(query)).length;
+    }, [searchQuery]);
+
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+                setDropdownOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
-    const filteredBrands = useMemo(() => {
-        return brands.filter(brand => {
-            const matchesSearch = brand.name.toLowerCase().includes(searchQuery.toLowerCase());
-            const matchesCategory = activeCategory === 'All' || brand.categories.includes(activeCategory);
-            return matchesSearch && matchesCategory;
-        });
-    }, [searchQuery, activeCategory]);
-
-    const hasActiveFilters = activeCategory !== 'All' || searchQuery !== '';
-    const resetFilters = () => { setSearchQuery(''); setActiveCategory('All'); };
+    const handleJumpTo = (category: string) => {
+        setDropdownOpen(false);
+        if (category === 'All') {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+        }
+        const el = document.getElementById(`category-${slugify(category)}`);
+        el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
 
     return (
         <div className="min-h-screen bg-mesh pb-32 overflow-x-hidden text-white/90 selection:bg-clay selection:text-cream">
@@ -98,106 +149,92 @@ const BrandExplorer: React.FC = () => {
                         </div>
                     </motion.div>
 
-                    {/* ── CATEGORY FILTER BAR ── */}
-                    <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="max-w-6xl mx-auto px-4">
-                        <div className="bg-cream/60 backdrop-blur-3xl rounded-[3rem] border border-white/10 p-5 shadow-2xl relative group/bar">
-                            <div className="absolute inset-0 bg-gradient-to-r from-clay/5 to-transparent opacity-0 group-hover/bar:opacity-100 transition-opacity duration-1000 rounded-[3rem] pointer-events-none" />
+                    {/* ── SEARCH + JUMP TO CATEGORY ── */}
+                    <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="max-w-4xl mx-auto px-4">
+                        <div className="bg-cream/60 backdrop-blur-3xl rounded-[2.5rem] border border-white/10 p-3 shadow-2xl flex flex-col sm:flex-row items-center gap-3">
+                            <div className="relative w-full group flex-1">
+                                <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-white/40 group-focus-within:text-clay transition-colors" size={18} />
+                                <input type="text" placeholder="Search brands..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
+                                    className="w-full pl-14 pr-6 py-4 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-clay transition-all text-sm text-white"
+                                />
+                            </div>
 
-                            <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/40 mb-3 px-3 text-left">Filter By Category</p>
+                            <div className="relative w-full sm:w-auto shrink-0" ref={dropdownRef}>
+                                <button onClick={() => setDropdownOpen(o => !o)}
+                                    className="w-full sm:w-auto flex items-center justify-between gap-3 px-6 py-4 bg-white/5 border border-white/10 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] text-white/70 hover:text-white hover:border-clay/40 transition-all sm:min-w-[220px]"
+                                >
+                                    <span className="flex items-center gap-2">
+                                        <LayoutGrid size={14} className="text-clay" />
+                                        Jump To Category
+                                    </span>
+                                    <ChevronDown size={14} className={`text-white/40 transition-transform duration-300 ${dropdownOpen ? 'rotate-180' : ''}`} />
+                                </button>
 
-                            <div
-                                className="flex items-center gap-2 overflow-x-auto no-scrollbar px-2 py-1 relative"
-                                style={{
-                                    maskImage: 'linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent)',
-                                    WebkitMaskImage: 'linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent)',
-                                }}
-                            >
-                                {BRAND_CATEGORIES.map(cat => {
-                                    const Icon = CATEGORY_ICONS[cat] || Tag;
-                                    const isActive = activeCategory === cat;
-                                    return (
-                                        <button key={cat} onClick={() => setActiveCategory(cat)}
-                                            className={`shrink-0 flex items-center gap-2 px-5 py-3 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 border ${isActive ? 'bg-clay text-cream border-clay shadow-lg shadow-clay/20 scale-[1.03]' : 'text-white/60 border-transparent hover:text-white hover:bg-white/5 hover:border-white/10'}`}
+                                {dropdownOpen && (
+                                    <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2 }}
+                                        className="absolute right-0 left-0 sm:left-auto mt-2 w-full sm:w-72 max-h-96 overflow-y-auto bg-[#111111] border border-white/10 rounded-2xl shadow-2xl z-50 p-2 text-left"
+                                    >
+                                        <button onClick={() => handleJumpTo('All')}
+                                            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-[10px] font-black uppercase tracking-[0.2em] text-white/70 hover:bg-white/5 hover:text-clay transition-colors"
                                         >
-                                            <Icon size={13} className={isActive ? 'text-cream' : 'text-white/30'} />
-                                            {cat}
-                                            <span className={`text-[8px] font-bold rounded-full px-1.5 py-0.5 ${isActive ? 'bg-cream/20 text-cream' : 'bg-white/5 text-white/30'}`}>{categoryCounts[cat]}</span>
+                                            <LayoutGrid size={14} className="text-white/30" />
+                                            All Brands
+                                            <span className="ml-auto text-[9px] font-bold text-white/30">{categoryCounts.All}</span>
                                         </button>
-                                    );
-                                })}
+                                        {categories.map(cat => {
+                                            const Icon = CATEGORY_ICONS[cat] || Tag;
+                                            return (
+                                                <button key={cat} onClick={() => handleJumpTo(cat)}
+                                                    className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-[10px] font-black uppercase tracking-[0.2em] text-white/70 hover:bg-white/5 hover:text-clay transition-colors"
+                                                >
+                                                    <Icon size={14} className="text-white/30" />
+                                                    {cat}
+                                                    <span className="ml-auto text-[9px] font-bold text-white/30">{categoryCounts[cat]}</span>
+                                                </button>
+                                            );
+                                        })}
+                                    </motion.div>
+                                )}
                             </div>
                         </div>
                     </motion.div>
                 </div>
             </div>
 
-            {/* ── CONTROLS ── */}
+            {/* ── CATEGORY SECTIONS ── */}
             <div className="max-w-[1400px] mx-auto px-6 py-12">
-                <div className="flex flex-col md:flex-row justify-between items-center gap-6 mb-16">
-                    <div className="relative w-full max-w-md group">
-                        <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-white/40 group-focus-within:text-clay transition-colors" size={18} />
-                        <input type="text" placeholder="Search brands..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full pl-16 pr-8 py-5 bg-white/5 border border-white/10 rounded-2xl outline-none focus:border-clay transition-all text-sm text-white"
-                        />
-                    </div>
-
-                    <div className="flex items-center gap-4">
-                        {activeCategory !== 'All' && (
-                            <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-clay/10 border border-clay/20 text-[10px] font-bold uppercase tracking-[0.2em] text-clay">
-                                {activeCategory}
-                                <button onClick={() => setActiveCategory('All')} className="hover:text-white transition-colors">
-                                    <X size={12} />
-                                </button>
-                            </div>
-                        )}
-                        <p className="text-[10px] font-bold text-white/40 uppercase tracking-[0.3em] whitespace-nowrap">
-                            {filteredBrands.length} {filteredBrands.length === 1 ? 'Brand' : 'Brands'}
-                        </p>
-                    </div>
-                </div>
-
-                {/* ── GRID ── */}
-                <AnimatePresence mode="popLayout">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        {filteredBrands.map((brand, index) => (
-                            <motion.div key={brand.id} layout initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: (index % 4) * 0.05 }} className="group">
-                                <div className="bg-white/5 rounded-[2.5rem] border border-white/5 p-2 h-full flex flex-col hover:border-clay/30 hover:bg-white/[0.07] hover:-translate-y-1 transition-all duration-500 shadow-lg shadow-black/20 hover:shadow-2xl hover:shadow-clay/5">
-                                    <div
-                                        className={`relative aspect-video md:aspect-[1.6/1] rounded-[2rem] overflow-hidden mb-4 flex items-center justify-center ${brand.image && brand.bgColor ? '' : 'bg-white/[0.03]'}`}
-                                        style={brand.image && brand.bgColor ? { backgroundColor: brand.bgColor } : undefined}
-                                    >
-                                        {!(brand.image && brand.bgColor) && (
-                                            <div className={`absolute w-28 h-28 rounded-full bg-gradient-to-br ${brand.color} opacity-10 blur-3xl group-hover:opacity-30 transition-opacity duration-700`} />
-                                        )}
-                                        {brand.image ? (
-                                            <img src={brand.image} alt={brand.name} className="relative w-full h-full object-contain p-3 group-hover:scale-110 transition-transform duration-700" />
-                                        ) : (
-                                            <div className={`relative w-16 h-16 rounded-2xl bg-gradient-to-br ${brand.color} flex items-center justify-center text-white font-black text-2xl shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}>
-                                                {brand.name.charAt(0)}
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    <h3 className="text-sm font-sans font-bold text-white text-center px-4 pb-6 uppercase tracking-wider group-hover:text-clay transition-colors">{brand.name}</h3>
+                {categorySections.map(({ category, brands: sectionBrands }) => {
+                    if (sectionBrands.length === 0) return null;
+                    const Icon = CATEGORY_ICONS[category] || Tag;
+                    return (
+                        <section key={category} id={`category-${slugify(category)}`} className="scroll-mt-28 mb-20">
+                            <div className="flex items-center gap-4 mb-8">
+                                <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-clay/10 border border-clay/20 text-clay shrink-0">
+                                    <Icon size={20} />
                                 </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                </AnimatePresence>
+                                <div>
+                                    <h2 className="text-2xl md:text-3xl font-cirka font-medium text-white tracking-tight">{category}</h2>
+                                    <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/40 mt-1">
+                                        {sectionBrands.length} {sectionBrands.length === 1 ? 'Brand' : 'Brands'}
+                                    </p>
+                                </div>
+                            </div>
 
-                {filteredBrands.length === 0 && (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                                {sectionBrands.map((brand, index) => (
+                                    <BrandCard key={brand.id} brand={brand} index={index} />
+                                ))}
+                            </div>
+                        </section>
+                    );
+                })}
+
+                {searchQuery !== '' && totalMatches === 0 && (
                     <div className="text-center py-48">
                         <Tag className="mx-auto mb-6 text-white/20" size={40} />
-                        <p className="text-[10px] font-bold uppercase tracking-[0.5em] text-white/40 italic">No brands found matching criteria</p>
-                        <button onClick={resetFilters}
-                            className="mt-8 text-clay text-[11px] font-bold uppercase tracking-widest hover:underline">Reset Filters</button>
-                    </div>
-                )}
-
-                {hasActiveFilters && filteredBrands.length > 0 && (
-                    <div className="text-center mt-16">
-                        <button onClick={resetFilters}
-                            className="text-white/40 text-[10px] font-bold uppercase tracking-[0.3em] hover:text-clay transition-colors">Clear Filters</button>
+                        <p className="text-[10px] font-bold uppercase tracking-[0.5em] text-white/40 italic">No brands found matching "{searchQuery}"</p>
+                        <button onClick={() => setSearchQuery('')}
+                            className="mt-8 text-clay text-[11px] font-bold uppercase tracking-widest hover:underline">Clear Search</button>
                     </div>
                 )}
             </div>
