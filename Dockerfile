@@ -1,8 +1,8 @@
 FROM node:20-alpine AS deps
 RUN npm install -g pnpm@9
 WORKDIR /app
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-RUN pnpm install --frozen-lockfile
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile --config.allow-build=esbuild
 
 FROM node:20-alpine AS build
 RUN npm install -g pnpm@9
@@ -23,8 +23,8 @@ RUN pnpm build
 FROM node:20-alpine
 RUN npm install -g pnpm@9 && apk add --no-cache python3
 WORKDIR /app
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-RUN pnpm install --frozen-lockfile --prod
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile --prod --config.allow-build=esbuild
 COPY --from=build /app/dist ./dist
 COPY server.ts tsconfig.json ./
 COPY scripts/ ./scripts/
