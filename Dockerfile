@@ -1,16 +1,19 @@
 FROM node:20-alpine AS deps
-RUN corepack enable
+RUN npm install -g pnpm@9
 WORKDIR /app
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile
 
 FROM node:20-alpine AS build
-RUN corepack enable
+RUN npm install -g pnpm@9
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+# hadolint ignore=DL3025
 ARG GEMINI_API_KEY
+# hadolint ignore=DL3025
 ARG VITE_SUPABASE_URL
+# hadolint ignore=DL3025
 ARG VITE_SUPABASE_ANON_KEY
 RUN echo "GEMINI_API_KEY=${GEMINI_API_KEY}" > .env && \
     echo "VITE_SUPABASE_URL=${VITE_SUPABASE_URL}" >> .env && \
@@ -18,7 +21,7 @@ RUN echo "GEMINI_API_KEY=${GEMINI_API_KEY}" > .env && \
 RUN pnpm build
 
 FROM node:20-alpine
-RUN corepack enable && apk add --no-cache python3
+RUN npm install -g pnpm@9 && apk add --no-cache python3
 WORKDIR /app
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile --prod
