@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.git/
+*.log
+.env
+.env.local
+data/
+.vscode/
+.idea/
+*.pickle
+credentials.json
+firebase-service-account.json
+scratch/
