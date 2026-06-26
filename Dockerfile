@@ -1,10 +1,10 @@
-FROM node:20-alpine AS deps
+FROM node:22-alpine AS deps
 RUN npm install -g pnpm@9
 WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile --config.allow-build=esbuild
 
-FROM node:20-alpine AS build
+FROM node:22-alpine AS build
 RUN npm install -g pnpm@9
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
@@ -20,7 +20,7 @@ RUN echo "GEMINI_API_KEY=${GEMINI_API_KEY}" > .env && \
     echo "VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY}" >> .env
 RUN pnpm build
 
-FROM node:20-alpine
+FROM node:22-alpine
 RUN npm install -g pnpm@9 && apk add --no-cache python3
 WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
