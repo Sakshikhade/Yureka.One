@@ -303,19 +303,19 @@ const AboutSection: React.FC = () => (
     {/* Decorative corner icons — hidden on mobile to avoid overlap */}
     <FadeIn delay={0.1} x={-80} y={0} duration={0.9} className="hidden md:block absolute top-[4%] left-[2%] z-10 pointer-events-none">
       <img src="/assets/about-icon-cash-check.png" loading="lazy"
-        alt="" className="w-[160px] md:w-[230px] object-contain select-none" />
+        alt="" className="w-[120px] md:w-[170px] object-contain select-none" />
     </FadeIn>
     <FadeIn delay={0.25} x={-80} y={0} duration={0.9} className="hidden md:block absolute bottom-[8%] left-[4%] z-10 pointer-events-none">
       <img src="/assets/about-icon-shopping-bag.png" loading="lazy"
-        alt="" className="w-[130px] md:w-[200px] object-contain select-none" />
+        alt="" className="w-[100px] md:w-[150px] object-contain select-none" />
     </FadeIn>
     <FadeIn delay={0.15} x={80} y={0} duration={0.9} className="hidden md:block absolute top-[4%] right-[2%] z-10 pointer-events-none">
       <img src="/assets/about-icon-location-map.png" loading="lazy"
-        alt="" className="w-[160px] md:w-[230px] object-contain select-none" />
+        alt="" className="w-[120px] md:w-[170px] object-contain select-none" />
     </FadeIn>
     <FadeIn delay={0.3} x={80} y={0} duration={0.9} className="hidden md:block absolute bottom-[8%] right-[4%] z-10 pointer-events-none">
       <img src="/assets/about-icon-crystal-cube.png" loading="lazy"
-        alt="" className="w-[150px] md:w-[220px] object-contain select-none" />
+        alt="" className="w-[110px] md:w-[160px] object-contain select-none" />
     </FadeIn>
 
     {/* Content — constrained to columns 2-4 */}
@@ -338,65 +338,11 @@ const AboutSection: React.FC = () => (
   </section>
 );
 
-// ─── SECTION 4: SERVICES ────────────────────────────────────────────────────
-
-const services = [
-  { num: '01', name: '500+ Brands', desc: 'We have over 500+ Brands , 150+ Hotels , 70+ Lounges, 10+ Airlines partnered exclusively for Yureka Users' },
-  { num: '02', name: 'Yureka pays upto 30% of the total bill', desc: 'When you are about to make a full bill transaction , We jumps in and sponsors  upto 30% from our end as a gesture of love.' },
-  { num: '03', name: 'Assured Cashback upto 10% on every transaction ', desc: 'When ever you make a purchase from any of our partners you get assured cashback  upto 10% of what you have paid.' },
-  { num: '04', name: 'Assured Goldback Upto 10% on every transaction ', desc: 'When ever you make a purchase from any of our partners you get assured goldback upto 10% of what you have paid.' },
-  { num: '05', name: 'Reward Poins Upto 10% on every transaction', desc: 'When ever you make a purchase from any of our partners you get assured reward point upto 10% of what you have paid. These reward points are 100% cash equivalent redeemable across yureka partner brands' },
-  { num: '06', name: '360 Degree Redeemption', desc: 'Redeem all your credit card points smartly for almost 5X returns for your vacations , brands , hotels , flight tickets and everything that you can see here' },
-];
-
-const ServicesSection: React.FC = () => (
-  <section className="bg-white text-[#0C0C0C] rounded-t-[40px] sm:rounded-t-[50px] md:rounded-t-[60px] py-20 sm:py-24 md:py-32 relative z-10 w-full overflow-hidden">
-    <ColContent className="flex flex-col items-center">
-      <h2
-        className="text-[#0C0C0C] font-black uppercase text-center mb-16 sm:mb-20 md:mb-28 tracking-tight leading-none w-full whitespace-nowrap"
-        style={{ fontSize: 'clamp(1.5rem, 6vw, 72px)' }}
-      >
-        What you get ?
-      </h2>
-
-      <div className="w-full flex flex-col">
-        {services.map((item, i) => (
-          <FadeIn
-            key={item.num}
-            delay={i * 0.1}
-            y={40}
-            className="w-full border-t border-[#0C0C0C]/15 py-8 sm:py-10 md:py-12 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-8 md:gap-12 last:border-b last:border-[#0C0C0C]/15"
-          >
-            {/* Number */}
-            <div
-              className="font-black text-[#0C0C0C] select-none leading-none flex-shrink-0"
-              style={{ fontSize: 'clamp(2.5rem, 8vw, 100px)', minWidth: 'clamp(3rem, 9vw, 110px)' }}
-            >
-              {item.num}
-            </div>
-            {/* Text */}
-            <div className="flex flex-col gap-1.5 flex-grow min-w-0">
-              <h3 className="font-medium text-[#0C0C0C] uppercase leading-tight tracking-tight"
-                style={{ fontSize: 'clamp(1rem, 2.2vw, 2rem)' }}>
-                {item.name}
-              </h3>
-              <p className="font-light text-[#0C0C0C]/60 leading-relaxed"
-                style={{ fontSize: 'clamp(0.85rem, 1.5vw, 1.2rem)' }}>
-                {item.desc}
-              </p>
-            </div>
-          </FadeIn>
-        ))}
-      </div>
-    </ColContent>
-  </section>
-);
-
 // ─── SECTION 5: PROJECTS ────────────────────────────────────────────────────
 
 const projects = [
   {
-    num: '01', name: 'Power Shopper Report Card', category: 'Show Us', liveLabel: 'Join Waitlist',
+    num: '01', name: 'Join Waitlist - We approve 1000 Users every week.', category: '', liveLabel: 'Join Waitlist',
     images: {
       c1a: 'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055344_5eff02e0-87a5-41ce-b64f-eb08da8f33db.png&w=1280&q=85',
       c1b: 'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055431_11d841fd-8b41-46a5-82e4-b04f2407a7d8.png&w=1280&q=85',
@@ -404,7 +350,7 @@ const projects = [
     },
   },
   {
-    num: '02', name: 'Score above 100 to be an eligible Yureka User', category: 'Yureka Score', liveLabel: 'Check your Yureka Score Now',
+    num: '02', name: 'Get the Exclusive YU Pass', category: '', liveLabel: 'Check Benefits of YU Pass',
     images: {
       c1a: 'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055654_911201c5-36d9-4bc6-bac7-331adfce159f.png&w=1280&q=85',
       c1b: 'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055723_5ceda0b8-d9c2-4665-b2e3-83ba19ba76d1.png&w=1280&q=85',
@@ -412,7 +358,7 @@ const projects = [
     },
   },
   {
-    num: '03', name: 'Link your credit card for best rewards and returns', category: 'Credit card points booster', liveLabel: 'Link your Email Now',
+    num: '03', name: 'Yureka Ecosystem', category: '', liveLabel: 'Explore Ecosystem',
     images: {
       c1a: 'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055759_963cfb0b-4bd1-4b0f-9d0a-09bd6cf95b2f.png&w=1280&q=85',
       c1b: 'https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_060108_438f781a-9846-4dcc-89ab-c4e6cb830f5b.png&w=1280&q=85',
@@ -459,9 +405,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, scrollYProgre
               {project.num}
             </span>
             <div className="flex flex-col pb-1">
-              <span className="text-[10px] sm:text-xs uppercase tracking-widest text-[#D7E2EA]/50 font-light">
-                {project.category}
-              </span>
+              {project.category && (
+                <span className="text-[10px] sm:text-xs uppercase tracking-widest text-[#D7E2EA]/50 font-light">
+                  {project.category}
+                </span>
+              )}
               <h3 className="text-[#D7E2EA] font-bold uppercase leading-none tracking-tight"
                 style={{ fontSize: 'clamp(1rem, 2.5vw, 2.2rem)' }}>
                 {project.name}
@@ -509,7 +457,7 @@ const ProjectsSection: React.FC = () => {
           className="hero-heading font-black uppercase text-center mb-16 sm:mb-20 md:mb-28 tracking-tight leading-none w-fit"
           style={{ fontSize: 'clamp(2.5rem, 8vw, 98px)' }}
         >
-          Eligibility
+          SavingOs
         </h2>
 
         {/* Stacking cards container — uses its own full-bleed height for scroll calculation */}
@@ -535,7 +483,6 @@ const YurekaPortfolio: React.FC = () => (
   >
     <MarqueeSection />
     <AboutSection />
-    <ServicesSection />
     <ProjectsSection />
   </div>
 );

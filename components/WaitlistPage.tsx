@@ -5,7 +5,7 @@ import {
     Loader2, CreditCard, Landmark, Share2, Twitter, Instagram, 
     Send, MessageCircle, Copy, Globe, ChevronDown, Calendar, 
     Mail, Phone, Trash2, Activity, TrendingUp, DollarSign, Award,
-    Percent, Database, Search, RefreshCw, Smartphone
+    Percent, Database, Search, RefreshCw, Smartphone, LogIn
 } from 'lucide-react';
 import { Link, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { api, isApiError } from '../lib/api/client';
@@ -217,7 +217,7 @@ function parseTransactionData(combinedText: string, sender: string, subject: str
 }
 
 const WaitlistPage: React.FC = () => {
-    const { supabase, user, session, cards: allCards } = useSupabase();
+    const { supabase, user, session, cards: allCards, currentUserStatus } = useSupabase();
     const navigate = useNavigate();
     const location = useLocation();
     const isDashboard = location.pathname.startsWith('/dashboard');
@@ -285,12 +285,19 @@ const WaitlistPage: React.FC = () => {
         setIsLoadingData(false);
     };
 
-    // ─── DATA EXTRACTION ───
+    // ─── DATA EXTRACTION (skip for existing accounts — route them to where they belong) ───
     useEffect(() => {
-        if (user && step === 1) {
-            extractUserData();
+        if (!user || step !== 1 || currentUserStatus === 'loading') return;
+
+        if (currentUserStatus === 'admin') { navigate('/admin'); return; }
+        if (currentUserStatus === 'accepted') { navigate('/dashboard'); return; }
+        if (currentUserStatus === 'pending' || currentUserStatus === 'on-hold' || currentUserStatus === 'rejected') {
+            navigate('/waiting');
+            return;
         }
-    }, [user]);
+
+        extractUserData();
+    }, [user, currentUserStatus]);
 
     const extractUserData = async () => {
         setIsLoadingData(true);
@@ -599,7 +606,7 @@ const WaitlistPage: React.FC = () => {
             exit={{ opacity: 0, y: -20 }}
             className="max-w-sm mx-auto"
         >
-            <div className="text-center bg-white/[0.03] border border-white/10 rounded-[2.5rem] p-10 md:p-14 shadow-2xl relative backdrop-blur-xl overflow-hidden">
+            <div id="join-waitlist-card" className="text-center bg-white/[0.03] border border-white/10 rounded-[2.5rem] p-10 md:p-14 shadow-2xl relative backdrop-blur-xl overflow-hidden">
                 <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-clay/50 to-transparent" />
 
                 <div className="w-14 h-14 bg-clay/10 rounded-2xl flex items-center justify-center mx-auto mb-8 border border-clay/20">
@@ -610,7 +617,7 @@ const WaitlistPage: React.FC = () => {
                     Get Early Access
                 </h2>
                 <p className="text-white/50 text-sm leading-relaxed mb-10 max-w-xs mx-auto">
-                    Connect with Google to join the waitlist. We'll set up your profile automatically.
+                    Already on the list? Sign in below. New here? We'll set up your profile automatically.
                 </p>
 
                 <button
@@ -1197,6 +1204,25 @@ const WaitlistPage: React.FC = () => {
             <div className="fixed bottom-1/4 -right-1/4 w-[60%] h-[60%] bg-clay/5 blur-[120px] rounded-full pointer-events-none" />
 
             <div className="max-w-4xl mx-auto relative z-10">
+                {step === 1 && (
+                    <div className="flex flex-col items-center gap-3 mb-10">
+                        <button
+                            onClick={handleGoogleSignup}
+                            disabled={isLoadingData}
+                            className="group flex items-center gap-2.5 text-[10px] font-black uppercase tracking-[0.2em] text-clay bg-clay/10 border border-clay/30 rounded-full px-7 py-3 shadow-[0_8px_24px_-8px_rgba(52,211,153,0.4)] transition-all duration-300 hover:bg-clay hover:text-black hover:scale-105 hover:shadow-[0_8px_30px_-6px_rgba(52,211,153,0.6)] disabled:opacity-50"
+                        >
+                            <LogIn size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+                            Login
+                        </button>
+                        <button
+                            onClick={() => document.getElementById('join-waitlist-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' })}
+                            className="text-[9px] font-bold uppercase tracking-[0.3em] text-white/30 hover:text-clay transition-colors duration-300"
+                        >
+                            Or Join Waitlist
+                        </button>
+                    </div>
+                )}
+
                 {/* Step indicator */}
                 {step < 5 && (
                     <div className="mb-14 md:mb-20 max-w-sm mx-auto">

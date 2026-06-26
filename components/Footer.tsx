@@ -86,8 +86,12 @@ const Footer: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="bg-[#0e0e0e] border border-white/8 rounded-2xl md:rounded-[1.75rem] overflow-hidden shadow-[0_40px_80px_-20px_rgba(0,0,0,0.8)]"
+          className="relative bg-white/[0.05] border border-white/10 rounded-2xl md:rounded-[1.75rem] overflow-hidden shadow-[0_40px_80px_-20px_rgba(0,0,0,0.8)] backdrop-blur-2xl"
         >
+          {/* Green shine accents */}
+          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-clay/60 to-transparent pointer-events-none" />
+          <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-[420px] h-[200px] bg-clay/10 blur-[100px] rounded-full pointer-events-none" />
+
           {/* ── Top area: logo + columns ────────────────────────── */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-0 px-8 md:px-10 pt-10 pb-8">
             {/* Brand column */}
