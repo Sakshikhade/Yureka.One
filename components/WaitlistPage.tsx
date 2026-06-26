@@ -5,7 +5,7 @@ import {
     Loader2, CreditCard, Landmark, Share2, Twitter, Instagram, 
     Send, MessageCircle, Copy, Globe, ChevronDown, Calendar, 
     Mail, Phone, Trash2, Activity, TrendingUp, DollarSign, Award,
-    Percent, Database, Search, RefreshCw, Smartphone
+    Percent, Database, Search, RefreshCw, Smartphone, LogIn
 } from 'lucide-react';
 import { Link, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { api, isApiError } from '../lib/api/client';
@@ -217,7 +217,7 @@ function parseTransactionData(combinedText: string, sender: string, subject: str
 }
 
 const WaitlistPage: React.FC = () => {
-    const { supabase, user, session, cards: allCards } = useSupabase();
+    const { supabase, user, session, cards: allCards, currentUserStatus } = useSupabase();
     const navigate = useNavigate();
     const location = useLocation();
     const isDashboard = location.pathname.startsWith('/dashboard');
@@ -285,12 +285,19 @@ const WaitlistPage: React.FC = () => {
         setIsLoadingData(false);
     };
 
-    // ─── DATA EXTRACTION ───
+    // ─── DATA EXTRACTION (skip for existing accounts — route them to where they belong) ───
     useEffect(() => {
-        if (user && step === 1) {
-            extractUserData();
+        if (!user || step !== 1 || currentUserStatus === 'loading') return;
+
+        if (currentUserStatus === 'admin') { navigate('/admin'); return; }
+        if (currentUserStatus === 'accepted') { navigate('/dashboard'); return; }
+        if (currentUserStatus === 'pending' || currentUserStatus === 'on-hold' || currentUserStatus === 'rejected') {
+            navigate('/waiting');
+            return;
         }
-    }, [user]);
+
+        extractUserData();
+    }, [user, currentUserStatus]);
 
     const extractUserData = async () => {
         setIsLoadingData(true);
@@ -592,158 +599,175 @@ const WaitlistPage: React.FC = () => {
     // ─── RENDERERS ───
 
     const renderStep1 = () => (
-        <motion.div 
-            initial={{ opacity: 0, y: 30 }} 
-            animate={{ opacity: 1, y: 0 }} 
-            className="max-w-md mx-auto text-center bg-gradient-to-b from-white/[0.03] to-transparent border border-white/10 rounded-[3rem] p-10 md:p-14 shadow-2xl relative backdrop-blur-xl overflow-hidden group"
+        <motion.div
+            key="step1"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="max-w-sm mx-auto"
         >
-            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-clay to-transparent" />
-            <div className="w-16 h-16 bg-clay/10 rounded-2xl flex items-center justify-center mx-auto mb-8 border border-clay/20 shadow-[0_0_20px_rgba(52,211,153,0.15)] group-hover:scale-105 transition-transform duration-500">
-                <Sparkles size={28} className="text-clay" />
+            <div id="join-waitlist-card" className="text-center bg-white/[0.03] border border-white/10 rounded-[2.5rem] p-10 md:p-14 shadow-2xl relative backdrop-blur-xl overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-clay/50 to-transparent" />
+
+                <div className="w-14 h-14 bg-clay/10 rounded-2xl flex items-center justify-center mx-auto mb-8 border border-clay/20">
+                    <Sparkles size={22} className="text-clay" />
+                </div>
+
+                <h2 className="text-3xl font-heading font-black text-white uppercase tracking-tighter mb-3 leading-tight">
+                    Get Early Access
+                </h2>
+                <p className="text-white/50 text-sm leading-relaxed mb-10 max-w-xs mx-auto">
+                    Already on the list? Sign in below. New here? We'll set up your profile automatically.
+                </p>
+
+                <button
+                    onClick={handleGoogleSignup}
+                    disabled={isLoadingData}
+                    className="w-full bg-white text-black py-4 rounded-2xl flex items-center justify-center gap-3 hover:bg-clay transition-all duration-300 shadow-xl active:scale-[0.98] disabled:opacity-50"
+                >
+                    {isLoadingData ? (
+                        <Loader2 className="animate-spin" size={18} />
+                    ) : (
+                        <svg viewBox="0 0 24 24" className="w-5 h-5 shrink-0">
+                            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                        </svg>
+                    )}
+                    <span className="text-[11px] font-black uppercase tracking-[0.2em]">
+                        {isLoadingData ? 'Connecting…' : 'Continue with Google'}
+                    </span>
+                </button>
+
+                <p className="mt-6 text-[9px] font-bold uppercase tracking-widest text-white/25">
+                    Read-only · No spam · Secure OAuth 2.0
+                </p>
             </div>
-            
-            <h2 className="text-3xl md:text-4xl font-heading font-black text-white uppercase tracking-tighter mb-4 leading-none">
-               Begin Your <span className="text-clay italic">Journey</span>
-            </h2>
-            <p className="text-white/60 text-sm leading-relaxed mb-10 max-w-sm mx-auto font-sans">
-               Link your Gmail to unlock priority access, import spending ledger intelligence, and prefill your identity profile.
-            </p>
-            
-            <button 
-                onClick={handleGoogleSignup}
-                disabled={isLoadingData}
-                className="w-full bg-white text-black py-5 rounded-2xl flex items-center justify-center gap-3.5 group hover:bg-clay hover:text-black transition-all duration-500 shadow-2xl active:scale-95 disabled:opacity-50 mx-auto"
-            >
-                {isLoadingData ? (
-                  <Loader2 className="animate-spin text-black" size={18} />
-                ) : (
-                  <svg className="w-5 h-5 shrink-0 group-hover:scale-110 transition-transform" viewBox="0 0 24 24">
-                    <path fill="currentColor" d="M12.24 10.285V14.4h6.887c-.275 1.565-1.88 4.604-6.887 4.604-4.33 0-7.866-3.577-7.866-8s3.536-8 7.866-8c2.46 0 4.105 1.025 5.047 1.926l3.247-3.125C18.232 1.637 15.522 1 12.24 1 6.033 1 12.24s5.033 11.24 11.24 11.24c6.478 0 10.793-4.537 10.793-10.985 0-.737-.08-1.3-.176-1.782h-10.62Z"/>
-                  </svg>
-                )}
-                <span className="text-xs font-black uppercase tracking-[0.25em] font-mono">Sign Up with Google</span>
-            </button>
-            <p className="mt-8 text-[9px] font-bold uppercase tracking-widest text-white/30 font-mono">
-               Secure OAuth 2.0 Encryption & Read-only Access
-            </p>
         </motion.div>
     );
 
     const renderStep2 = () => (
-        <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-10">
-            <div className="text-center mb-12">
-                <h3 className="text-3xl italic text-white mb-2">Refine Your Identity</h3>
-                <p className="text-white/40 text-sm">We've prefilled what we could from your Google account.</p>
+        <motion.div key="step2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-6">
+            <div className="text-center">
+                <h3 className="text-3xl font-heading font-black text-white uppercase tracking-tighter mb-2">Your Profile</h3>
+                <p className="text-white/40 text-sm">We've auto-filled what we could from your Google account.</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="space-y-2">
-                    <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">First Name <span className="text-red-400">*</span></label>
-                    <input 
-                        type="text" value={formData.firstName}
-                        onChange={e => { setFormData({...formData, firstName: e.target.value}); setStepErrors(p => ({...p, firstName: ''})); }}
-                        className={`w-full bg-white/5 border rounded-xl px-6 py-4 text-white outline-none focus:border-clay transition-all ${stepErrors.firstName ? 'border-red-500' : 'border-white/10'}`}
-                    />
-                    {stepErrors.firstName && <p className="text-red-400 text-[10px] mt-1">{stepErrors.firstName}</p>}
+            <div className="bg-white/[0.02] border border-white/8 rounded-[2rem] p-8 space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div className="space-y-2">
+                        <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/30">First Name <span className="text-red-400">*</span></label>
+                        <input
+                            type="text" value={formData.firstName} placeholder="Jane"
+                            onChange={e => { setFormData({...formData, firstName: e.target.value}); setStepErrors(p => ({...p, firstName: ''})); }}
+                            className={`w-full bg-black/30 border rounded-xl px-5 py-3.5 text-white text-sm outline-none focus:border-clay/60 focus:bg-white/5 transition-all ${stepErrors.firstName ? 'border-red-500/60' : 'border-white/10'}`}
+                        />
+                        {stepErrors.firstName && <p className="text-red-400 text-[10px]">{stepErrors.firstName}</p>}
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/30">Last Name <span className="text-red-400">*</span></label>
+                        <input
+                            type="text" value={formData.lastName} placeholder="Doe"
+                            onChange={e => { setFormData({...formData, lastName: e.target.value}); setStepErrors(p => ({...p, lastName: ''})); }}
+                            className={`w-full bg-black/30 border rounded-xl px-5 py-3.5 text-white text-sm outline-none focus:border-clay/60 focus:bg-white/5 transition-all ${stepErrors.lastName ? 'border-red-500/60' : 'border-white/10'}`}
+                        />
+                        {stepErrors.lastName && <p className="text-red-400 text-[10px]">{stepErrors.lastName}</p>}
+                    </div>
                 </div>
-                <div className="space-y-2">
-                    <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Last Name <span className="text-red-400">*</span></label>
-                    <input 
-                        type="text" value={formData.lastName}
-                        onChange={e => { setFormData({...formData, lastName: e.target.value}); setStepErrors(p => ({...p, lastName: ''})); }}
-                        className={`w-full bg-white/5 border rounded-xl px-6 py-4 text-white outline-none focus:border-clay transition-all ${stepErrors.lastName ? 'border-red-500' : 'border-white/10'}`}
-                    />
-                    {stepErrors.lastName && <p className="text-red-400 text-[10px] mt-1">{stepErrors.lastName}</p>}
-                </div>
-            </div>
 
-            <div className="space-y-2">
-                <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Associated Mobile Number <span className="text-red-400">*</span></label>
-                <div className="relative">
-                    <Phone className="absolute left-6 top-1/2 -translate-y-1/2 text-white/20" size={18} />
-                    <input 
-                        type="tel" value={formData.mobileNumber} placeholder="+91 XXXXX XXXXX"
-                        onChange={e => { setFormData({...formData, mobileNumber: e.target.value}); setStepErrors(p => ({...p, mobileNumber: ''})); }}
-                        className={`w-full bg-white/5 border rounded-xl pl-16 pr-6 py-4 text-white outline-none focus:border-clay transition-all ${stepErrors.mobileNumber ? 'border-red-500' : 'border-white/10'}`}
-                    />
-                </div>
-                {stepErrors.mobileNumber && <p className="text-red-400 text-[10px] mt-1">{stepErrors.mobileNumber}</p>}
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-2">
-                    <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Date of Birth <span className="text-red-400">*</span></label>
+                    <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/30">Mobile Number <span className="text-red-400">*</span></label>
                     <div className="relative">
-                        <Calendar className="absolute left-6 top-1/2 -translate-y-1/2 text-white/20" size={18} />
-                        <input 
-                            type="date" value={formData.dateOfBirth}
-                            onChange={e => { setFormData({...formData, dateOfBirth: e.target.value}); setStepErrors(p => ({...p, dateOfBirth: ''})); }}
-                            className={`w-full bg-white/5 border rounded-xl pl-16 pr-6 py-4 text-white outline-none focus:border-clay transition-all appearance-none ${stepErrors.dateOfBirth ? 'border-red-500' : 'border-white/10'}`}
+                        <Phone className="absolute left-5 top-1/2 -translate-y-1/2 text-white/25" size={16} />
+                        <input
+                            type="tel" value={formData.mobileNumber} placeholder="+91 XXXXX XXXXX"
+                            onChange={e => { setFormData({...formData, mobileNumber: e.target.value}); setStepErrors(p => ({...p, mobileNumber: ''})); }}
+                            className={`w-full bg-black/30 border rounded-xl pl-14 pr-5 py-3.5 text-white text-sm outline-none focus:border-clay/60 focus:bg-white/5 transition-all ${stepErrors.mobileNumber ? 'border-red-500/60' : 'border-white/10'}`}
                         />
                     </div>
-                    {stepErrors.dateOfBirth && <p className="text-red-400 text-[10px] mt-1">{stepErrors.dateOfBirth}</p>}
+                    {stepErrors.mobileNumber && <p className="text-red-400 text-[10px]">{stepErrors.mobileNumber}</p>}
                 </div>
-                <div className="space-y-2">
-                    <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Gender <span className="text-red-400">*</span></label>
-                    <select 
-                        value={formData.gender}
-                        onChange={e => { setFormData({...formData, gender: e.target.value}); setStepErrors(p => ({...p, gender: ''})); }}
-                        className={`w-full bg-white/5 border rounded-xl px-6 py-4 text-white outline-none focus:border-clay transition-all appearance-none ${stepErrors.gender ? 'border-red-500' : 'border-white/10'}`}
-                    >
-                        <option value="" className="bg-black">Select Gender</option>
-                        <option value="Male" className="bg-black">Male</option>
-                        <option value="Female" className="bg-black">Female</option>
-                        <option value="Other" className="bg-black">Other</option>
-                    </select>
-                    {stepErrors.gender && <p className="text-red-400 text-[10px] mt-1">{stepErrors.gender}</p>}
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div className="space-y-2">
+                        <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/30">Date of Birth <span className="text-red-400">*</span></label>
+                        <div className="relative">
+                            <Calendar className="absolute left-5 top-1/2 -translate-y-1/2 text-white/25" size={16} />
+                            <input
+                                type="date" value={formData.dateOfBirth}
+                                onChange={e => { setFormData({...formData, dateOfBirth: e.target.value}); setStepErrors(p => ({...p, dateOfBirth: ''})); }}
+                                className={`w-full bg-black/30 border rounded-xl pl-14 pr-5 py-3.5 text-white text-sm outline-none focus:border-clay/60 focus:bg-white/5 transition-all appearance-none ${stepErrors.dateOfBirth ? 'border-red-500/60' : 'border-white/10'}`}
+                            />
+                        </div>
+                        {stepErrors.dateOfBirth && <p className="text-red-400 text-[10px]">{stepErrors.dateOfBirth}</p>}
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/30">Gender <span className="text-red-400">*</span></label>
+                        <select
+                            value={formData.gender}
+                            onChange={e => { setFormData({...formData, gender: e.target.value}); setStepErrors(p => ({...p, gender: ''})); }}
+                            className={`w-full bg-black/30 border rounded-xl px-5 py-3.5 text-white text-sm outline-none focus:border-clay/60 focus:bg-white/5 transition-all appearance-none ${stepErrors.gender ? 'border-red-500/60' : 'border-white/10'}`}
+                        >
+                            <option value="" className="bg-black">Select</option>
+                            <option value="Male" className="bg-black">Male</option>
+                            <option value="Female" className="bg-black">Female</option>
+                            <option value="Other" className="bg-black">Other</option>
+                        </select>
+                        {stepErrors.gender && <p className="text-red-400 text-[10px]">{stepErrors.gender}</p>}
+                    </div>
                 </div>
             </div>
 
-            <button 
+            <button
                 onClick={() => { if (validateStep2()) { setStep(3); setStepErrors({}); } }}
-                className="w-full bg-clay text-cream py-5 rounded-2xl flex items-center justify-center gap-4 group shadow-xl active:scale-95 transition-all"
+                className="w-full bg-clay text-black py-4 rounded-2xl flex items-center justify-center gap-3 font-black text-[11px] uppercase tracking-[0.25em] shadow-xl active:scale-[0.98] transition-all group"
             >
-                <span className="text-[10px] font-black uppercase tracking-[0.3em]">Continue to Financials</span>
-                <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
+                Continue
+                <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
             </button>
         </motion.div>
     );
 
     const renderStep3 = () => (
-        <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-10">
-            <div className="text-center mb-12">
-                <h3 className="text-3xl italic text-white mb-2">Credit Portfolio</h3>
-                <p className="text-white/40 text-sm">Help us understand your current credit reach.</p>
+        <motion.div key="step3" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-6">
+            <div className="text-center">
+                <h3 className="text-3xl font-heading font-black text-white uppercase tracking-tighter mb-2">Your Cards</h3>
+                <p className="text-white/40 text-sm">Tell us about the credit cards you currently hold.</p>
             </div>
 
-            <div className="space-y-6">
-                <div className="flex justify-between items-end">
-                    <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Number of Credit Cards <span className="text-red-400">*</span></label>
-                    <span className="text-clay font-black text-xl">{formData.creditCardsCount}</span>
+            <div className="bg-white/[0.02] border border-white/8 rounded-[2rem] p-8 space-y-5">
+                <div className="flex justify-between items-center">
+                    <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/30">Number of credit cards</label>
+                    <span className="text-clay font-black text-2xl tabular-nums">{formData.creditCardsCount}</span>
                 </div>
-                <input 
+                <input
                     type="range" min="1" max="10" step="1"
                     value={formData.creditCardsCount}
                     onChange={e => handleCardCountChange(parseInt(e.target.value))}
                     className="w-full h-1 bg-white/5 rounded-full appearance-none cursor-pointer accent-clay"
                 />
-                <div className="flex justify-between text-[8px] font-black text-white/10 uppercase tracking-widest">
-                    <span>01 Card</span>
-                    <span>10 Cards</span>
+                <div className="flex justify-between text-[8px] font-black text-white/15 uppercase tracking-widest">
+                    <span>1 card</span><span>10 cards</span>
                 </div>
             </div>
 
-            <div className="space-y-8">
+            <div className="space-y-4">
                 {formData.creditCards.map((card, idx) => (
-                    <div key={idx} className="p-6 bg-white/[0.03] rounded-2xl border border-white/5 space-y-6 relative">
-                        <div className="absolute -top-3 -left-3 w-8 h-8 bg-clay text-cream rounded-lg flex items-center justify-center text-[10px] font-black shadow-lg">0{idx + 1}</div>
-                        
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div key={idx} className="p-6 bg-white/[0.02] rounded-[2rem] border border-white/8 space-y-5">
+                        <div className="flex items-center gap-3">
+                            <div className="w-7 h-7 bg-clay/15 border border-clay/20 text-clay rounded-lg flex items-center justify-center text-[10px] font-black shrink-0">
+                                {String(idx + 1).padStart(2, '0')}
+                            </div>
+                            <span className="text-[9px] font-black uppercase tracking-[0.3em] text-white/30">Card {idx + 1}</span>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="space-y-2 relative">
-                                <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Select Bank</label>
-                                <button 
+                                <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/25">Bank</label>
+                                <button
                                     onClick={() => setOpenBankDropdown(openBankDropdown === idx ? null : idx)}
-                                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-clay transition-all text-xs flex items-center justify-between"
+                                    className="w-full bg-black/30 border border-white/10 hover:border-white/20 rounded-xl px-4 py-3 text-white text-sm flex items-center justify-between transition-all"
                                 >
                                     <div className="flex items-center gap-3">
                                         {card.bank && BANK_LOGOS[card.bank] ? (
@@ -751,46 +775,44 @@ const WaitlistPage: React.FC = () => {
                                                 <img src={BANK_LOGOS[card.bank]} alt="" className="w-full h-full object-contain" />
                                             </div>
                                         ) : (
-                                            <Landmark size={14} className="text-white/20" />
+                                            <Landmark size={14} className="text-white/25" />
                                         )}
-                                        <span>{card.bank || 'Choose Bank'}</span>
+                                        <span className={card.bank ? 'text-white' : 'text-white/30 text-sm'}>{card.bank || 'Select bank'}</span>
                                     </div>
-                                    <ChevronDown size={14} className={`text-white/20 transition-transform ${openBankDropdown === idx ? 'rotate-180' : ''}`} />
+                                    <ChevronDown size={14} className={`text-white/25 transition-transform duration-200 ${openBankDropdown === idx ? 'rotate-180' : ''}`} />
                                 </button>
 
                                 <AnimatePresence>
                                     {openBankDropdown === idx && (
                                         <>
                                             <div className="fixed inset-0 z-40" onClick={() => setOpenBankDropdown(null)} />
-                                            <motion.div 
-                                                initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }}
-                                                className="absolute top-full left-0 right-0 mt-2 bg-cream border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden"
+                                            <motion.div
+                                                initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }}
+                                                className="absolute top-full left-0 right-0 mt-2 bg-[#0f0f0f] border border-white/10 rounded-2xl shadow-2xl z-50 overflow-hidden"
                                             >
-                                                <div className="p-2 border-b border-white/5 bg-white/5">
-                                                    <input 
-                                                        autoFocus
-                                                        type="text" 
-                                                        placeholder="Search Bank..."
+                                                <div className="p-2 border-b border-white/5">
+                                                    <input
+                                                        autoFocus type="text" placeholder="Search bank…"
                                                         value={formData.bankSearch}
                                                         onChange={e => setFormData({...formData, bankSearch: e.target.value})}
-                                                        className="w-full bg-black/40 border border-white/10 rounded-lg px-3 py-2 text-[10px] text-white outline-none focus:border-clay"
+                                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-white outline-none focus:border-clay/50 placeholder:text-white/25"
                                                     />
                                                 </div>
-                                                <div className="max-h-60 overflow-y-auto no-scrollbar">
+                                                <div className="max-h-56 overflow-y-auto">
                                                     {ALL_BANKS.filter(b => b.toLowerCase().includes(formData.bankSearch.toLowerCase())).map(bank => (
-                                                        <button 
+                                                        <button
                                                             key={bank}
-                                                            onClick={() => { updateCardDetail(idx, 'bank', bank); setOpenBankDropdown(null); setFormData({...formData, bankSearch: ''}); }}
-                                                            className="w-full flex items-center gap-3 px-4 py-3 hover:bg-white/5 text-white transition-colors text-xs text-left"
+                                                            onClick={() => { updateCardDetail(idx, 'bank', bank); setOpenBankDropdown(null); setFormData(p => ({...p, bankSearch: ''})); }}
+                                                            className="w-full flex items-center gap-3 px-4 py-3 hover:bg-white/5 text-white text-sm transition-colors text-left"
                                                         >
-                                                            <div className="w-6 h-6 bg-white rounded-full p-1 flex items-center justify-center overflow-hidden border border-white/10 shrink-0">
+                                                            <div className="w-6 h-6 bg-white rounded-full p-1 flex items-center justify-center overflow-hidden shrink-0">
                                                                 <img src={BANK_LOGOS[bank]} alt="" className="w-full h-full object-contain" />
                                                             </div>
-                                                            <span className="font-bold tracking-tight">{bank}</span>
+                                                            {bank}
                                                         </button>
                                                     ))}
                                                     {ALL_BANKS.filter(b => b.toLowerCase().includes(formData.bankSearch.toLowerCase())).length === 0 && (
-                                                        <div className="p-4 text-center text-white/20 text-[10px] uppercase tracking-widest">No Bank Found</div>
+                                                        <div className="p-4 text-center text-white/25 text-xs">No banks found</div>
                                                     )}
                                                 </div>
                                             </motion.div>
@@ -799,16 +821,16 @@ const WaitlistPage: React.FC = () => {
                                 </AnimatePresence>
                             </div>
                             <div className="space-y-2">
-                                <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Select Card</label>
-                                <select 
+                                <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/25">Card Name</label>
+                                <select
                                     disabled={!card.bank}
                                     value={card.card}
                                     onChange={e => updateCardDetail(idx, 'card', e.target.value)}
-                                    className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-clay transition-all text-xs disabled:opacity-30"
+                                    className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-clay/60 transition-all appearance-none disabled:opacity-30 disabled:cursor-not-allowed"
                                 >
-                                    <option value="" className="bg-black">Choose Card</option>
+                                    <option value="" className="bg-black">Select card</option>
                                     {filteredCardsForBank(card.bank).map(c => <option key={c.id} value={c.name} className="bg-black">{c.name}</option>)}
-                                    <option value="Other" className="bg-black">Other / Not Listed</option>
+                                    <option value="Other" className="bg-black">Other / Not listed</option>
                                 </select>
                             </div>
                         </div>
@@ -816,250 +838,239 @@ const WaitlistPage: React.FC = () => {
                 ))}
             </div>
 
-            <div className="flex gap-4">
-                <button onClick={() => setStep(2)} className="flex-1 border border-white/10 text-white/40 py-5 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-white/5 transition-all">Back</button>
-                <button onClick={() => { if (validateStep3()) { setStep(4); setStepErrors({}); } }} className="flex-[2] bg-clay text-cream py-5 rounded-2xl flex items-center justify-center gap-4 group shadow-xl active:scale-95 transition-all">
-                    <span className="text-[10px] font-black uppercase tracking-[0.3em]">Next Step</span>
-                    <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
-                </button>
-            </div>
             {Object.keys(stepErrors).some(k => k.startsWith('card_')) && (
                 <p className="text-red-400 text-[10px] text-center">{Object.values(stepErrors).find(Boolean)}</p>
             )}
+
+            <div className="flex gap-3">
+                <button onClick={() => setStep(2)} className="flex-1 border border-white/10 text-white/40 py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.25em] hover:bg-white/5 transition-all">Back</button>
+                <button onClick={() => { if (validateStep3()) { setStep(4); setStepErrors({}); } }} className="flex-[2] bg-clay text-black py-4 rounded-2xl flex items-center justify-center gap-3 font-black text-[11px] uppercase tracking-[0.25em] shadow-xl active:scale-[0.98] transition-all group">
+                    Continue
+                    <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                </button>
+            </div>
         </motion.div>
     );
 
     const renderStep4 = () => (
-        <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-10">
-            <div className="text-center mb-12">
-                <h3 className="text-3xl italic text-white mb-2">Spending DNA</h3>
-                <p className="text-white/40 text-sm">Tell us how you use your capital.</p>
+        <motion.div key="step4" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-6">
+            <div className="text-center">
+                <h3 className="text-3xl font-heading font-black text-white uppercase tracking-tighter mb-2">Spending Habits</h3>
+                <p className="text-white/40 text-sm">Help us understand how you use your cards.</p>
             </div>
 
-            <div className="space-y-4">
-                <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Primary Credit Use Case (Min 1, Max 3)</label>
-                <div className="flex flex-wrap gap-3">
-                    {USAGE_CATEGORIES.map(cat => {
-                        const isSelected = formData.mostUsedFor.includes(cat);
-                        return (
-                            <button 
-                                key={cat}
-                                onClick={() => toggleUsageCategory(cat)}
-                                className={`px-6 py-4 rounded-xl border text-xs font-black uppercase tracking-widest transition-all ${isSelected ? 'bg-clay border-clay text-cream shadow-lg' : 'bg-white/5 border-white/10 text-white/40 hover:border-white/20'}`}
-                            >
-                                {cat}
-                            </button>
-                        );
-                    })}
+            <div className="bg-white/[0.02] border border-white/8 rounded-[2rem] p-8 space-y-8">
+                {/* Usage categories */}
+                <div className="space-y-4">
+                    <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/30">Where do you spend most? <span className="text-white/20 normal-case tracking-normal font-medium">(pick up to 3)</span></label>
+                    <div className="flex flex-wrap gap-2">
+                        {USAGE_CATEGORIES.map(cat => {
+                            const isSelected = formData.mostUsedFor.includes(cat);
+                            return (
+                                <button
+                                    key={cat}
+                                    onClick={() => toggleUsageCategory(cat)}
+                                    className={`px-5 py-2.5 rounded-xl border text-[11px] font-black uppercase tracking-wider transition-all ${
+                                        isSelected
+                                            ? 'bg-clay/15 border-clay/40 text-clay'
+                                            : 'bg-white/[0.03] border-white/10 text-white/40 hover:border-white/20 hover:text-white/60'
+                                    }`}
+                                >
+                                    {cat}
+                                </button>
+                            );
+                        })}
+                    </div>
+                    {stepErrors.mostUsedFor && <p className="text-red-400 text-[10px]">{stepErrors.mostUsedFor}</p>}
                 </div>
-            </div>
 
-            <div className="space-y-6">
-                <div className="flex justify-between items-end">
-                    <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Monthly Average Spend <span className="text-red-400">*</span></label>
-                    <span className="text-clay font-black text-xl">₹{formData.monthlySpend.toLocaleString()}</span>
-                </div>
-                <input 
-                    type="range" min="1000" max="1000000" step="5000"
-                    value={formData.monthlySpend}
-                    onChange={e => setFormData({...formData, monthlySpend: parseInt(e.target.value)})}
-                    className="w-full h-1 bg-white/5 rounded-full appearance-none cursor-pointer accent-clay"
-                />
-                <div className="flex justify-between text-[8px] font-black text-white/10 uppercase tracking-widest">
-                    <span>₹1K</span>
-                    <span>₹10 Lacs</span>
-                </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="space-y-2">
-                    <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Discovery Channel</label>
-                    <select 
-                        value={formData.sourceChannel}
-                        onChange={e => setFormData({...formData, sourceChannel: e.target.value})}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-white outline-none focus:border-clay transition-all appearance-none text-xs"
-                    >
-                        <option value="" className="bg-black">Select Discovery Channel</option>
-                        {DISCOVERY_SOURCES.map(s => <option key={s} value={s} className="bg-black">{s}</option>)}
-                    </select>
-                </div>
-                <div className="space-y-2">
-                    <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Referral Code (Optional)</label>
-                    <input 
-                        type="text" placeholder="YRKMNY-XXXX"
-                        value={formData.referralCode}
-                        onChange={e => setFormData({...formData, referralCode: e.target.value})}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-white outline-none focus:border-clay transition-all text-xs"
+                {/* Monthly spend */}
+                <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                        <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/30">Average monthly spend</label>
+                        <span className="text-clay font-black text-lg tabular-nums">₹{formData.monthlySpend.toLocaleString()}</span>
+                    </div>
+                    <input
+                        type="range" min="1000" max="1000000" step="5000"
+                        value={formData.monthlySpend}
+                        onChange={e => setFormData({...formData, monthlySpend: parseInt(e.target.value)})}
+                        className="w-full h-1 bg-white/5 rounded-full appearance-none cursor-pointer accent-clay"
                     />
+                    <div className="flex justify-between text-[8px] font-black text-white/15 uppercase tracking-widest">
+                        <span>₹1K</span><span>₹10 Lacs</span>
+                    </div>
                 </div>
+
+                {/* Discovery + Referral */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div className="space-y-2">
+                        <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/30">How did you find us?</label>
+                        <select
+                            value={formData.sourceChannel}
+                            onChange={e => setFormData({...formData, sourceChannel: e.target.value})}
+                            className="w-full bg-black/30 border border-white/10 rounded-xl px-5 py-3.5 text-white text-sm outline-none focus:border-clay/60 focus:bg-white/5 transition-all appearance-none"
+                        >
+                            <option value="" className="bg-black">Select a source</option>
+                            {DISCOVERY_SOURCES.map(s => <option key={s} value={s} className="bg-black">{s}</option>)}
+                        </select>
+                        {stepErrors.sourceChannel && <p className="text-red-400 text-[10px]">{stepErrors.sourceChannel}</p>}
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/30">Referral code <span className="text-white/20 normal-case tracking-normal font-medium">(optional)</span></label>
+                        <input
+                            type="text" placeholder="YRKMNY-XXXX"
+                            value={formData.referralCode}
+                            onChange={e => setFormData({...formData, referralCode: e.target.value})}
+                            className="w-full bg-black/30 border border-white/10 rounded-xl px-5 py-3.5 text-white text-sm outline-none focus:border-clay/60 focus:bg-white/5 transition-all placeholder:text-white/20"
+                        />
+                    </div>
+                </div>
+
+                {formData.sourceChannel === 'Other' && (
+                    <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
+                        <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/30">Please specify</label>
+                        <input
+                            type="text" placeholder="e.g. Newspaper, Billboard…"
+                            value={formData.otherSource}
+                            onChange={e => setFormData({...formData, otherSource: e.target.value})}
+                            className="w-full bg-black/30 border border-white/10 rounded-xl px-5 py-3.5 text-white text-sm outline-none focus:border-clay/60 focus:bg-white/5 transition-all placeholder:text-white/20"
+                        />
+                        {stepErrors.otherSource && <p className="text-red-400 text-[10px]">{stepErrors.otherSource}</p>}
+                    </motion.div>
+                )}
             </div>
 
-            {formData.sourceChannel === 'Other' && (
-                <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="space-y-2">
-                    <label className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Please Specify Source</label>
-                    <input 
-                        type="text" placeholder="e.g. Newspaper, Billboard..."
-                        value={formData.otherSource}
-                        onChange={e => setFormData({...formData, otherSource: e.target.value})}
-                        className="w-full bg-white/5 border border-white/10 rounded-xl px-6 py-4 text-white outline-none focus:border-clay transition-all text-xs"
-                    />
-                </motion.div>
+            {error && (
+                <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-red-400 text-[10px] font-black uppercase tracking-widest text-center">
+                    {error}
+                </motion.p>
             )}
 
-            <div className="space-y-4">
-                <button 
+            <div className="flex gap-3">
+                <button onClick={() => setStep(3)} className="flex-1 border border-white/10 text-white/40 py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.25em] hover:bg-white/5 transition-all">Back</button>
+                <button
                     onClick={handleSubmit}
                     disabled={isSubmitting}
-                    className="w-full bg-white text-black py-6 rounded-2xl flex items-center justify-center gap-6 group shadow-2xl active:scale-95 transition-all disabled:opacity-50"
+                    className="flex-[2] bg-clay text-black py-4 rounded-2xl flex items-center justify-center gap-3 font-black text-[11px] uppercase tracking-[0.25em] shadow-xl active:scale-[0.98] transition-all group disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                    <span className="text-sm font-black uppercase tracking-[0.4em] text-black font-sans">{isSubmitting ? 'Securing Spot...' : 'Join the Inner Circle'}</span>
-                    {!isSubmitting && <Sparkles size={20} className="group-hover:rotate-12 transition-transform text-black" />}
+                    {isSubmitting ? <Loader2 size={16} className="animate-spin" /> : <>Join the Waitlist <Sparkles size={16} className="group-hover:rotate-12 transition-transform" /></>}
                 </button>
-
-                {Object.keys(stepErrors).length > 0 && (
-                    <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-red-400 text-[10px] font-black uppercase tracking-widest text-center">
-                        {Object.values(stepErrors)[0]}
-                    </motion.p>
-                )}
-
-                {error && (
-                    <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-red-400 text-[10px] font-black uppercase tracking-widest text-center">
-                        {error}
-                    </motion.p>
-                )}
             </div>
         </motion.div>
     );
 
-    // ─── NEW STEP 5: DYNAMIC NEON GLASS CHECKLIST SCANNER ───
-    const renderStep5 = () => {
-        const getChecklistIcon = (state: string) => {
-            if (state === 'loading') return <Loader2 size={16} className="animate-spin text-clay" />;
-            if (state === 'success') return <Check size={16} className="text-clay font-bold" />;
-            if (state === 'failed') return <span className="text-red-400 font-bold text-xs">✕</span>;
-            return <div className="w-2.5 h-2.5 bg-white/10 rounded-full" />;
-        };
+    const renderStep5 = () => (
+        <motion.div key="step5" initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} className="max-w-md mx-auto text-center space-y-10">
+            <div className="space-y-4">
+                <div className="relative w-20 h-20 mx-auto flex items-center justify-center">
+                    <div className="absolute inset-0 border-2 border-white/5 rounded-full" />
+                    <motion.div
+                        className="absolute inset-0 border-2 border-t-clay border-r-transparent border-b-transparent border-l-transparent rounded-full"
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
+                    />
+                    <Sparkles size={26} className="text-clay" />
+                </div>
+                <h3 className="text-2xl font-heading font-black text-white uppercase tracking-tighter">Setting things up…</h3>
+                <p className="text-white/40 text-xs uppercase tracking-[0.2em]">Hang tight, this only takes a moment</p>
+            </div>
 
-        const getChecklistLabelStyle = (state: string) => {
-            if (state === 'loading') return 'text-white font-bold';
-            if (state === 'success') return 'text-white/80';
-            if (state === 'failed') return 'text-red-400/80 line-through';
-            return 'text-white/20';
-        };
+            <div className="bg-white/[0.02] border border-white/10 rounded-[2rem] p-8 text-left space-y-5">
+                {[
+                    { id: 'session', label: 'Verifying your Google account' },
+                    { id: 'profile', label: 'Reading your profile information' },
+                    { id: 'inbox',   label: 'Scanning your inbox' },
+                    { id: 'ledger',  label: 'Identifying spending patterns' }
+                ].map(item => {
+                    const state = (scanState as any)[item.id];
+                    return (
+                        <div key={item.id} className="flex items-center gap-4">
+                            <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 border transition-all duration-300 ${
+                                state === 'success' ? 'bg-clay/10 border-clay/30' :
+                                state === 'failed'  ? 'bg-red-500/10 border-red-500/20' :
+                                state === 'loading' ? 'bg-white/5 border-clay/20' :
+                                'bg-white/[0.02] border-white/8'
+                            }`}>
+                                {state === 'loading' && <Loader2 size={14} className="animate-spin text-clay" />}
+                                {state === 'success' && <Check size={14} className="text-clay" strokeWidth={3} />}
+                                {state === 'failed'  && <span className="text-red-400 text-xs font-black">✕</span>}
+                                {state === 'pending' && <div className="w-2 h-2 bg-white/15 rounded-full" />}
+                            </div>
+                            <span className={`text-sm transition-colors duration-300 ${
+                                state === 'loading' ? 'text-white font-medium' :
+                                state === 'success' ? 'text-white/55' :
+                                state === 'failed'  ? 'text-red-400/60 line-through' :
+                                'text-white/25'
+                            }`}>
+                                {item.label}
+                            </span>
+                        </div>
+                    );
+                })}
 
-        return (
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="max-w-md mx-auto space-y-12 text-center">
-                <div className="space-y-4">
-                    <div className="relative w-28 h-28 mx-auto flex items-center justify-center">
-                        <div className="absolute inset-0 border-4 border-white/5 rounded-full" />
-                        <motion.div 
-                            className="absolute inset-0 border-4 border-t-clay border-r-transparent border-b-transparent border-l-transparent rounded-full"
-                            animate={{ rotate: 360 }}
-                            transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
+                <div className="pt-5 border-t border-white/5 space-y-2">
+                    <div className="flex justify-between text-[9px] font-black text-white/25 uppercase tracking-[0.2em]">
+                        <span>Progress</span>
+                        <span>{scanProgress}%</span>
+                    </div>
+                    <div className="h-1 bg-white/5 rounded-full overflow-hidden">
+                        <motion.div
+                            className="h-full bg-clay rounded-full"
+                            animate={{ width: `${scanProgress}%` }}
+                            transition={{ duration: 0.4, ease: 'easeOut' }}
                         />
-                        <RefreshCw size={36} className="text-clay animate-spin" style={{ animationDuration: '6s' }} />
-                    </div>
-                    <h3 className="text-3xl italic text-white tracking-tighter">Decrypting Financial Profile</h3>
-                    <p className="text-white/40 text-xs uppercase tracking-[0.2em] font-sans">Connecting to security sandbox keys...</p>
-                </div>
-
-                <div className="bg-white/[0.02] border border-white/10 rounded-3xl p-8 text-left space-y-6 backdrop-blur-md relative overflow-hidden shadow-2xl">
-                    <div className="absolute -top-12 -right-12 w-24 h-24 bg-clay/5 blur-2xl rounded-full" />
-                    
-                    <div className="space-y-5">
-                        {[
-                            { id: 'session', label: 'Establishing Google API handshake session' },
-                            { id: 'profile', label: 'Resolving People directory identifiers' },
-                            { id: 'inbox', label: 'Syncing Gmail metadata transaction layers' },
-                            { id: 'ledger', label: 'Matching purchase patterns & amounts' }
-                        ].map(item => {
-                            const state = (scanState as any)[item.id];
-                            return (
-                                <div key={item.id} className="flex items-center gap-4 py-1">
-                                    <div className="w-7 h-7 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
-                                        {getChecklistIcon(state)}
-                                    </div>
-                                    <span className={`text-xs uppercase tracking-widest ${getChecklistLabelStyle(state)} font-sans transition-all`}>
-                                        {item.label}
-                                    </span>
-                                </div>
-                            );
-                        })}
-                    </div>
-
-                    <div className="pt-6 border-t border-white/5 space-y-2">
-                        <div className="flex justify-between text-[8px] font-black text-white/30 uppercase tracking-widest font-sans">
-                            <span>Extracting Datasets</span>
-                            <span>{scanProgress}% Completed</span>
-                        </div>
-                        <div className="h-1 bg-white/5 rounded-full overflow-hidden">
-                            <motion.div 
-                                className="h-full bg-clay" 
-                                animate={{ width: `${scanProgress}%` }}
-                                transition={{ duration: 0.3 }}
-                            />
-                        </div>
                     </div>
                 </div>
-            </motion.div>
-        );
-    };
+            </div>
+        </motion.div>
+    );
 
-    // ─── CONFIRMED & HIGH-END DYNAMIC FINANCIAL DASHBOARD (STEP 6) ───
     const renderStep6 = () => {
-        const filteredTxns = scannedTransactions.filter(t => 
-            t.brandName.toLowerCase().includes(ledgerSearch.toLowerCase()) || 
+        const filteredTxns = scannedTransactions.filter(t =>
+            t.brandName.toLowerCase().includes(ledgerSearch.toLowerCase()) ||
             t.description.toLowerCase().includes(ledgerSearch.toLowerCase())
         );
 
         return (
-            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="space-y-16">
-                
-                {/* VIP Header Rank Card */}
-                <div className="text-center space-y-4">
-                    <div className="w-16 h-16 bg-clay/10 border border-clay/20 text-clay rounded-full flex items-center justify-center mx-auto shadow-2xl animate-pulse">
-                        <Check size={28} strokeWidth={2.5} />
+            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="space-y-12">
+
+                {/* Header */}
+                <div className="text-center space-y-3">
+                    <div className="w-14 h-14 bg-clay/10 border border-clay/20 rounded-full flex items-center justify-center mx-auto">
+                        <Check size={24} className="text-clay" strokeWidth={2.5} />
                     </div>
-                    <h2 className="text-4xl md:text-5xl italic tracking-tighter text-white">Access Confirmed.</h2>
-                    <p className="text-sm text-white/40 italic">Your rank is secured in our private alpha. Decrypted credentials shown below.</p>
+                    <h2 className="text-4xl md:text-5xl font-heading font-black text-white uppercase tracking-tighter">You're on the list!</h2>
+                    <p className="text-sm text-white/40">Your spot is saved. Here's a summary of what we found.</p>
                 </div>
 
-                {/* Grid Layout: Rank and Profile Details */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    
-                    {/* VIP Global Rank Card */}
-                    <div className="bg-white/[0.02] border border-white/10 rounded-[2.5rem] p-8 flex flex-col justify-between backdrop-blur-md shadow-2xl relative overflow-hidden group">
-                        <div className="absolute inset-0 bg-gradient-to-br from-clay/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-                        
-                        <div className="space-y-6 relative z-10">
+                {/* Rank + Profile */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                    {/* Rank card */}
+                    <div className="bg-white/[0.02] border border-white/10 rounded-[2rem] p-8 flex flex-col justify-between shadow-2xl">
+                        <div className="space-y-6">
                             <div>
-                                <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20 mb-3 font-sans">Waitlist Position</p>
-                                <p className="text-6xl md:text-7xl font-sans font-black text-white tracking-tighter leading-none">#{successData?.rank || 982}</p>
+                                <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20 mb-3">Your Position</p>
+                                <p className="text-6xl font-black text-white tracking-tighter leading-none">#{successData?.rank || 982}</p>
                             </div>
-                            
-                            <div className="pt-6 border-t border-white/5 space-y-4">
-                                <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20 font-sans">Referral Key</p>
-                                <div className="flex items-center gap-3 bg-black/40 p-1.5 rounded-xl border border-white/5">
-                                    <span className="flex-1 font-mono text-sm font-bold text-clay tracking-wider pl-3 truncate">{successData?.referralCode || 'YRKMNY-TEMP'}</span>
-                                    <button onClick={copyToClipboard} className="w-9 h-9 bg-clay text-cream rounded-lg flex items-center justify-center hover:scale-105 transition-transform"><Copy size={14} /></button>
+                            <div className="pt-5 border-t border-white/5 space-y-3">
+                                <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20">Referral Code</p>
+                                <div className="flex items-center gap-2 bg-black/40 p-1.5 rounded-xl border border-white/5">
+                                    <span className="flex-1 font-mono text-sm font-bold text-clay pl-3 truncate">{successData?.referralCode || 'YRKMNY-TEMP'}</span>
+                                    <button onClick={copyToClipboard} className="w-9 h-9 bg-clay text-black rounded-lg flex items-center justify-center hover:scale-105 transition-transform"><Copy size={14} /></button>
                                 </div>
                             </div>
                         </div>
-
-                        <div className="pt-8 relative z-10 space-y-4">
-                            <p className="text-[8px] font-black uppercase tracking-widest text-white/30 font-sans">Share priority key to climb rank</p>
-                            <div className="flex gap-2.5">
+                        <div className="pt-6 space-y-3">
+                            <p className="text-[8px] font-black uppercase tracking-widest text-white/25">Share to move up the list</p>
+                            <div className="flex gap-2">
                                 {[
                                     { icon: Twitter, action: () => shareOnSocial('twitter') },
                                     { icon: MessageCircle, action: () => shareOnSocial('whatsapp') },
                                     { icon: Send, action: () => shareOnSocial('telegram') },
                                     { icon: Share2, action: copyToClipboard }
                                 ].map((btn, i) => (
-                                    <button 
-                                        key={i} 
-                                        onClick={btn.action}
-                                        className="w-10 h-10 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-white hover:bg-clay hover:border-clay hover:scale-105 transition-all"
-                                    >
+                                    <button key={i} onClick={btn.action} className="w-10 h-10 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-white hover:bg-clay hover:border-clay hover:text-black hover:scale-105 transition-all">
                                         <btn.icon size={14} />
                                     </button>
                                 ))}
@@ -1067,31 +1078,28 @@ const WaitlistPage: React.FC = () => {
                         </div>
                     </div>
 
-                    {/* Verified Identity Profile Card */}
-                    <div className="lg:col-span-2 bg-white/[0.02] border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-md shadow-2xl relative overflow-hidden group">
-                        <div className="absolute inset-0 bg-gradient-to-br from-clay/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-                        <div className="absolute top-6 right-6 flex items-center gap-2 bg-clay/10 border border-clay/20 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest text-clay font-sans">
-                            <ShieldCheck size={10} /> Verified ID Profile
+                    {/* Profile card */}
+                    <div className="lg:col-span-2 bg-white/[0.02] border border-white/10 rounded-[2rem] p-8 shadow-2xl relative">
+                        <div className="absolute top-6 right-6 flex items-center gap-1.5 bg-clay/10 border border-clay/20 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest text-clay">
+                            <ShieldCheck size={10} /> Verified
                         </div>
-                        
-                        <div className="space-y-6 relative z-10">
+                        <div className="space-y-5">
                             <div>
-                                <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20 mb-1 font-sans">Identity Vector</p>
-                                <h4 className="text-2xl font-bold text-white tracking-tight">{scannedProfile?.name || `${formData.firstName} ${formData.lastName}`}</h4>
+                                <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white/20 mb-1">Name</p>
+                                <h4 className="text-2xl font-bold text-white">{scannedProfile?.name || `${formData.firstName} ${formData.lastName}`}</h4>
                             </div>
-
-                            <div className="grid grid-cols-2 md:grid-cols-3 gap-6 pt-6 border-t border-white/5">
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-5 pt-5 border-t border-white/5">
                                 {[
                                     { label: 'Date of Birth', value: scannedProfile?.dob || 'N/A' },
-                                    { label: 'Calculated Age', value: scannedProfile?.age !== 'N/A' ? `${scannedProfile?.age} Years` : 'N/A' },
-                                    { label: 'Gender Refinement', value: scannedProfile?.gender || 'N/A' },
-                                    { label: 'Mobile Anchor', value: scannedProfile?.phone || formData.mobileNumber || 'N/A' },
-                                    { label: 'Associated Email', value: user?.email || formData.email || 'N/A' },
-                                    { label: 'Security Handshake', value: session?.provider_token ? 'Google OAuth 2.0' : 'Supabase Native' }
+                                    { label: 'Age', value: scannedProfile?.age !== 'N/A' ? `${scannedProfile?.age} yrs` : 'N/A' },
+                                    { label: 'Gender', value: scannedProfile?.gender || 'N/A' },
+                                    { label: 'Phone', value: scannedProfile?.phone || formData.mobileNumber || 'N/A' },
+                                    { label: 'Email', value: user?.email || formData.email || 'N/A' },
+                                    { label: 'Auth Method', value: session?.provider_token ? 'Google OAuth 2.0' : 'Supabase' }
                                 ].map((item, i) => (
                                     <div key={i} className="space-y-1">
-                                        <p className="text-[8px] font-black uppercase tracking-widest text-white/20 font-sans">{item.label}</p>
-                                        <p className="text-xs font-bold text-white/80">{item.value}</p>
+                                        <p className="text-[8px] font-black uppercase tracking-widest text-white/20">{item.label}</p>
+                                        <p className="text-xs font-bold text-white/80 truncate">{item.value}</p>
                                     </div>
                                 ))}
                             </div>
@@ -1099,72 +1107,71 @@ const WaitlistPage: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Spending Summary Widget Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Stats row */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {[
-                        { label: 'Synchronized Inbox Ledgers', value: `${spendStats.count} Messages`, desc: 'Total parsed receipts and debit alerts', icon: Database },
-                        { label: 'Cumulative Extracted Spent', value: spendStats.total > 0 ? `₹ ${spendStats.total.toLocaleString()}` : 'N/A', desc: 'Sum of matched rupee currency parameters', icon: DollarSign },
-                        { label: 'High Density Spend Category', value: spendStats.topMerchant !== 'N/A' ? spendStats.topMerchant : 'N/A', desc: 'Highest frequency transaction origin', icon: TrendingUp }
+                        { label: 'Emails Scanned', value: `${spendStats.count}`, desc: 'Receipts and transaction alerts found', icon: Database },
+                        { label: 'Total Spending Found', value: spendStats.total > 0 ? `₹${spendStats.total.toLocaleString()}` : 'N/A', desc: 'Across all scanned emails', icon: DollarSign },
+                        { label: 'Top Merchant', value: spendStats.topMerchant !== 'N/A' ? spendStats.topMerchant : 'N/A', desc: 'Where you spend the most', icon: TrendingUp }
                     ].map((card, i) => (
-                        <div key={i} className="bg-white/[0.015] border border-white/5 rounded-2xl p-6 flex items-start gap-4 shadow-xl">
-                            <div className="w-10 h-10 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-clay shrink-0">
-                                <card.icon size={18} />
+                        <div key={i} className="bg-white/[0.015] border border-white/8 rounded-2xl p-5 flex items-start gap-4">
+                            <div className="w-9 h-9 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-clay shrink-0">
+                                <card.icon size={16} />
                             </div>
-                            <div className="space-y-1">
-                                <p className="text-[8px] font-black uppercase tracking-widest text-white/20 font-sans">{card.label}</p>
-                                <p className="text-lg font-bold text-white tracking-tight">{card.value}</p>
-                                <p className="text-[10px] text-white/40">{card.desc}</p>
+                            <div className="space-y-0.5 min-w-0">
+                                <p className="text-[8px] font-black uppercase tracking-widest text-white/20">{card.label}</p>
+                                <p className="text-base font-bold text-white truncate">{card.value}</p>
+                                <p className="text-[10px] text-white/35">{card.desc}</p>
                             </div>
                         </div>
                     ))}
                 </div>
 
-                {/* Scanned Interactive Ledger Table */}
-                <div className="bg-white/[0.02] border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-md shadow-2xl space-y-6">
+                {/* Transactions table */}
+                <div className="bg-white/[0.02] border border-white/10 rounded-[2rem] p-6 md:p-8 shadow-xl space-y-5">
                     <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                        <div className="space-y-1">
-                            <h4 className="text-xl font-bold text-white tracking-tight">Gmail Financial Transaction Index</h4>
-                            <p className="text-xs text-white/40">Real-time spending ledgers extracted using client-side OAuth decryption.</p>
+                        <div>
+                            <h4 className="text-lg font-bold text-white">Your Spending Summary</h4>
+                            <p className="text-xs text-white/35 mt-0.5">Transactions pulled from your Gmail inbox</p>
                         </div>
-                        
-                        {/* Search Control */}
                         <div className="relative max-w-xs w-full">
-                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" size={14} />
-                            <input 
-                                type="text"
-                                placeholder="Search transactions..."
+                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" size={13} />
+                            <input
+                                type="text" placeholder="Search transactions…"
                                 value={ledgerSearch}
                                 onChange={e => setLedgerSearch(e.target.value)}
-                                className="w-full bg-black/40 border border-white/15 rounded-xl pl-11 pr-4 py-2.5 text-xs text-white outline-none focus:border-clay font-sans"
+                                className="w-full bg-black/40 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white outline-none focus:border-clay/50 placeholder:text-white/20"
                             />
                         </div>
                     </div>
 
-                    <div className="overflow-x-auto no-scrollbar border border-white/5 rounded-2xl bg-black/20">
+                    <div className="overflow-x-auto rounded-2xl border border-white/5 bg-black/20">
                         <table className="w-full text-left border-collapse text-xs">
                             <thead>
-                                <tr className="border-b border-white/5 text-[9px] font-black uppercase tracking-[0.2em] text-white/30 font-sans bg-white/[0.01]">
-                                    <th className="px-6 py-4 font-black">Brand Name</th>
-                                    <th className="px-6 py-4 font-black">Amount</th>
-                                    <th className="px-6 py-4 font-black">Item / Description</th>
-                                    <th className="px-6 py-4 font-black">Date of Transaction</th>
-                                    <th className="px-6 py-4 font-black text-right">Verification</th>
+                                <tr className="border-b border-white/5 text-[9px] font-black uppercase tracking-[0.2em] text-white/25 bg-white/[0.01]">
+                                    <th className="px-5 py-3.5">Brand</th>
+                                    <th className="px-5 py-3.5">Amount</th>
+                                    <th className="px-5 py-3.5">Description</th>
+                                    <th className="px-5 py-3.5">Date</th>
+                                    <th className="px-5 py-3.5 text-right">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {filteredTxns.map((t, idx) => (
                                     <tr key={idx} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors group">
-                                        <td className="px-6 py-4 font-bold text-white flex items-center gap-2.5">
-                                            <div className="w-5 h-5 bg-white/5 border border-white/10 rounded-lg flex items-center justify-center text-[9px] font-black uppercase text-clay shrink-0">
-                                                {t.brandName.substring(0,2)}
+                                        <td className="px-5 py-3.5 font-bold text-white">
+                                            <div className="flex items-center gap-2.5">
+                                                <div className="w-5 h-5 bg-white/5 border border-white/10 rounded-md flex items-center justify-center text-[9px] font-black text-clay shrink-0">
+                                                    {t.brandName.substring(0,2)}
+                                                </div>
+                                                <span className="group-hover:text-clay transition-colors">{t.brandName}</span>
                                             </div>
-                                            <span className="group-hover:text-clay transition-colors">{t.brandName}</span>
                                         </td>
-                                        <td className="px-6 py-4 font-mono font-bold text-clay">{t.amount}</td>
-                                        <td className="px-6 py-4 text-white/60 font-sans max-w-xs truncate">{t.description}</td>
-                                        <td className="px-6 py-4 text-white/40">{t.date}</td>
-                                        <td className="px-6 py-4 text-right">
-                                            <span className="inline-flex items-center gap-1 bg-clay/10 border border-clay/20 px-2 py-0.5 rounded-md text-[8px] font-black uppercase tracking-widest text-clay font-sans">
+                                        <td className="px-5 py-3.5 font-mono font-bold text-clay">{t.amount}</td>
+                                        <td className="px-5 py-3.5 text-white/50 max-w-xs truncate">{t.description}</td>
+                                        <td className="px-5 py-3.5 text-white/35">{t.date}</td>
+                                        <td className="px-5 py-3.5 text-right">
+                                            <span className="inline-flex items-center gap-1 bg-clay/10 border border-clay/20 px-2 py-0.5 rounded-md text-[8px] font-black uppercase tracking-widest text-clay">
                                                 Verified
                                             </span>
                                         </td>
@@ -1172,8 +1179,8 @@ const WaitlistPage: React.FC = () => {
                                 ))}
                                 {filteredTxns.length === 0 && (
                                     <tr>
-                                        <td colSpan={5} className="px-6 py-12 text-center text-white/20 uppercase tracking-widest text-[9px] font-black">
-                                            {scannedTransactions.length === 0 ? 'No Gmail ledger elements found matching sync patterns' : 'No matching ledger logs'}
+                                        <td colSpan={5} className="px-5 py-10 text-center text-white/20 text-[9px] font-black uppercase tracking-widest">
+                                            {scannedTransactions.length === 0 ? 'No transactions found' : 'No matching transactions'}
                                         </td>
                                     </tr>
                                 )}
@@ -1182,8 +1189,8 @@ const WaitlistPage: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="text-center pt-8">
-                    <Link to={basePath || "/"} className="text-[10px] font-black uppercase tracking-[0.5em] text-white/20 hover:text-clay transition-all">Back to Archive</Link>
+                <div className="text-center pt-4">
+                    <Link to={basePath || "/"} className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 hover:text-clay transition-all">Back to Home</Link>
                 </div>
             </motion.div>
         );
@@ -1197,19 +1204,58 @@ const WaitlistPage: React.FC = () => {
             <div className="fixed bottom-1/4 -right-1/4 w-[60%] h-[60%] bg-clay/5 blur-[120px] rounded-full pointer-events-none" />
 
             <div className="max-w-4xl mx-auto relative z-10">
-                {/* Progress Bar */}
+                {step === 1 && (
+                    <div className="flex flex-col items-center gap-3 mb-10">
+                        <button
+                            onClick={handleGoogleSignup}
+                            disabled={isLoadingData}
+                            className="group flex items-center gap-2.5 text-[10px] font-black uppercase tracking-[0.2em] text-clay bg-clay/10 border border-clay/30 rounded-full px-7 py-3 shadow-[0_8px_24px_-8px_rgba(52,211,153,0.4)] transition-all duration-300 hover:bg-clay hover:text-black hover:scale-105 hover:shadow-[0_8px_30px_-6px_rgba(52,211,153,0.6)] disabled:opacity-50"
+                        >
+                            <LogIn size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+                            Login
+                        </button>
+                        <button
+                            onClick={() => document.getElementById('join-waitlist-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' })}
+                            className="text-[9px] font-bold uppercase tracking-[0.3em] text-white/30 hover:text-clay transition-colors duration-300"
+                        >
+                            Or Join Waitlist
+                        </button>
+                    </div>
+                )}
+
+                {/* Step indicator */}
                 {step < 5 && (
-                    <div className="mb-16 md:mb-24">
-                        <div className="flex justify-between items-end mb-4">
-                            <p className="text-clay font-bold text-[10px] uppercase tracking-[0.5em]">Phase 0{step}</p>
-                            <p className="text-white/20 font-bold text-[9px] uppercase tracking-[0.3em]">Step {step} of 4</p>
-                        </div>
-                        <div className="h-1 bg-white/5 rounded-full overflow-hidden">
-                            <motion.div 
-                                initial={{ width: 0 }}
-                                animate={{ width: `${(step / 4) * 100}%` }}
-                                className="h-full bg-clay shadow-[0_0_15px_rgba(52,211,153,0.5)]"
+                    <div className="mb-14 md:mb-20 max-w-sm mx-auto">
+                        <div className="flex items-center justify-between relative">
+                            {/* Connector track */}
+                            <div className="absolute left-0 right-0 top-[14px] h-[1px] bg-white/8 -z-0" />
+                            <motion.div
+                                className="absolute left-0 top-[14px] h-[1px] bg-clay -z-0 origin-left"
+                                initial={{ scaleX: 0 }}
+                                animate={{ scaleX: Math.max(0, (step - 1) / 3) }}
+                                transition={{ duration: 0.4, ease: 'easeOut' }}
+                                style={{ right: 0 }}
                             />
+                            {(['Account', 'Profile', 'Cards', 'Preferences'] as const).map((label, i) => {
+                                const s = i + 1;
+                                const done = step > s;
+                                const active = step === s;
+                                return (
+                                    <div key={label} className="flex flex-col items-center gap-2 z-10">
+                                        <div className={`w-7 h-7 rounded-full border flex items-center justify-center transition-all duration-300 ${
+                                            done   ? 'bg-clay border-clay' :
+                                            active ? 'bg-clay/10 border-clay shadow-[0_0_12px_rgba(52,211,153,0.4)]' :
+                                                     'bg-[#050505] border-white/15'
+                                        }`}>
+                                            {done
+                                                ? <Check size={12} className="text-black" strokeWidth={3} />
+                                                : <span className={`text-[10px] font-black ${active ? 'text-clay' : 'text-white/20'}`}>{s}</span>
+                                            }
+                                        </div>
+                                        <span className={`text-[9px] font-black uppercase tracking-[0.15em] transition-colors duration-300 ${active || done ? 'text-white/50' : 'text-white/15'}`}>{label}</span>
+                                    </div>
+                                );
+                            })}
                         </div>
                     </div>
                 )}

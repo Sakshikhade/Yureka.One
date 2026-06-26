@@ -10,7 +10,6 @@ import { SupabaseProvider, useSupabase } from './components/SupabaseProvider';
 import { SkeletonCard } from './components/SkeletonLoaders';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import ContributionModal from './components/ContributionModal';
-import ContributionPopup from './components/ContributionPopup';
 
 // Robust Lazy Loader to handle chunk loading failures (common during new deploys)
 const lazyWithRetry = (componentImport: () => Promise<any>) =>
@@ -59,7 +58,6 @@ const CategoryDetailPage = lazyWithRetry(() => import('./components/CategoryDeta
 const ComparePage = lazyWithRetry(() => import('./components/ComparePage'));
 const ComparisonDetail = lazyWithRetry(() => import('./components/ComparisonDetail'));
 const ContributePage = lazyWithRetry(() => import('./components/ContributePage'));
-const LoginPage = lazyWithRetry(() => import('./components/LoginPage'));
 const WaitlistPage = lazyWithRetry(() => import('./components/WaitlistPage'));
 const WaitingPage = lazyWithRetry(() => import('./components/WaitingPage'));
 const DashboardLayout = lazyWithRetry(() => import('./components/Dashboard/DashboardLayout'));
@@ -170,7 +168,7 @@ const AppContent: React.FC = () => {
               <Route path="/blogs/:slug" element={<BlogDetail />} />
 
               <Route path="/admin" element={<AdminDashboard />} />
-              <Route path="/login" element={<LoginPage />} />
+              <Route path="/login" element={<WaitlistPage />} />
               <Route path="/join-waitlist" element={<WaitlistPage />} />
               <Route path="/waiting" element={<WaitingPage />} />
               <Route path="/by-everyone-for-everyone" element={<ByEveryone />} />
@@ -271,7 +269,6 @@ const AppContent: React.FC = () => {
         </Link>
       )}
 
-      {(location.pathname === '/' || location.pathname === '/cards') && <ContributionPopup />}
     </div>
   );
 };

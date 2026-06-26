@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { motion, useInView, useScroll, useTransform, MotionValue } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { ArrowRight, Check } from 'lucide-react';
 import LazyVideo from './LazyVideo';
 
@@ -21,7 +21,7 @@ export const WordsPullUp: React.FC<WordsPullUpProps> = ({ text, className = '', 
   const words = text.split(' ');
 
   return (
-    <div ref={ref} className={`inline-flex flex-wrap justify-center ${className}`} style={style}>
+    <div ref={ref} className={`inline-flex flex-nowrap justify-center ${className}`} style={style}>
       {words.map((word, index) => {
         const isLastWord = index === words.length - 1;
 
@@ -164,63 +164,6 @@ export const WordsPullUpMultiStyle: React.FC<WordsPullUpMultiStyleProps> = ({
   );
 };
 
-interface AnimatedLetterProps {
-  char: string;
-  index: number;
-  totalChars: number;
-  scrollYProgress: MotionValue<number>;
-}
-
-const AnimatedLetter: React.FC<AnimatedLetterProps> = ({
-  char,
-  index,
-  totalChars,
-  scrollYProgress,
-}) => {
-  const charProgress = index / totalChars;
-  // Staggering range: [charProgress - 0.1, charProgress + 0.05]
-  const startRange = Math.max(0, charProgress - 0.1);
-  const endRange = Math.min(1, charProgress + 0.05);
-  const adjustedEndRange = endRange <= startRange ? startRange + 0.01 : endRange;
-
-  const opacity = useTransform(scrollYProgress, [startRange, adjustedEndRange], [0.2, 1]);
-
-  return (
-    <motion.span style={{ opacity }} className="inline-block whitespace-pre">
-      {char}
-    </motion.span>
-  );
-};
-
-const ParagraphScrollReveal: React.FC<{ text: string }> = ({ text }) => {
-  const containerRef = useRef<HTMLParagraphElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start 0.85', 'end 0.35'],
-  });
-
-  const chars = text.split('');
-  const totalChars = chars.length;
-
-  return (
-    <p
-      ref={containerRef}
-      className="text-[#E1E0CC] text-xs sm:text-sm md:text-base leading-relaxed text-center max-w-2xl mx-auto flex flex-wrap justify-center gap-y-0.5"
-      style={{ color: '#E1E0CC' }}
-    >
-      {chars.map((char, index) => (
-        <AnimatedLetter
-          key={index}
-          char={char}
-          index={index}
-          totalChars={totalChars}
-          scrollYProgress={scrollYProgress}
-        />
-      ))}
-    </p>
-  );
-};
-
 // ==========================================
 // CARD ENTRANCE WRAPPER
 // ==========================================
@@ -308,7 +251,7 @@ const TextReveal: React.FC = () => {
       <section className="bg-black py-24 px-6 md:px-12 w-full">
         <div className="bg-[#101010] rounded-[2rem] p-8 md:p-16 max-w-6xl mx-auto w-full flex flex-col items-center justify-center">
           <span className="text-[#DEDBC8] text-[10px] sm:text-xs tracking-widest uppercase mb-8 text-center block select-none">
-            Credit Card Rituals
+            Built for Indian Philisophy
           </span>
 
           <div className="text-center mb-12">
@@ -317,24 +260,21 @@ const TextReveal: React.FC = () => {
               containerClassName="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl max-w-4xl mx-auto leading-snug text-center"
               segments={[
                 {
-                  text: 'Credit card not only helps during cash crunch, it always gives back reward points which you can redeem for high value premium experience. It can be a fully sponsored vacation or a flight ticket or a hotel stay or a premium dinner or a movie, anything that you can basically think of. ',
+                  text: "We at Yureka, want to bring India's first AI native platform which gives you returns on every penny that you spend. Not just mere cashback or dead coins. ",
                   className: 'font-normal text-[#E1E0CC]',
                 },
                 {
-                  text: 'We let you pick the right high engaging and premium redemption option exclusively available on Yureka.',
-                  className: 'font-serif italic text-primary',
+                  text: 'We give everyone assured cashback, goldback and reward points on every purchase you do on our platform. Everything 100% redeemable on Premium Experiences, Dining, Flight, Hotels, Quick Commerce, Shoppings, anything across the globe that you can think of.',
+                  className: 'font-normal text-primary',
                 },
               ]}
             />
           </div>
-
-          <ParagraphScrollReveal text="There are over 110 Million active credit card users in India, with over ₹800 Million+ worth of reward points getting wasted every year." />
-          <ParagraphScrollReveal text="Don't waste your points on not-so-worthy gift cards but on high-value experiences that you really like and enjoy." />
         </div>
       </section>
 
       {/* SECTION 3: FEATURES */}
-      <section className="relative min-h-screen bg-black py-24 px-6 md:px-12 w-full overflow-hidden">
+      <section className="relative bg-black py-24 px-6 md:px-12 w-full overflow-hidden">
 
 
         <div className="relative z-10 max-w-6xl mx-auto w-full flex flex-col">
@@ -343,11 +283,11 @@ const TextReveal: React.FC = () => {
               containerClassName="flex-col gap-2"
               segments={[
                 {
-                  text: 'Studio-grade workflows for visionary creators.',
+                  text: 'Built for PowerShoppers like you.',
                   className: 'text-xl sm:text-2xl md:text-3xl lg:text-4xl font-normal text-[#DEDBC8] block',
                 },
                 {
-                  text: 'Built for pure vision. Powered by art.',
+                  text: 'Zero Asterisk, No Terms & Conditions.',
                   className: 'text-xl sm:text-2xl md:text-3xl lg:text-4xl font-normal text-gray-500 block mt-2',
                 },
               ]}
@@ -366,7 +306,7 @@ const TextReveal: React.FC = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none z-10" />
                 <span className="text-[#E1E0CC] text-lg font-medium relative z-20">
-                  Your creative canvas.
+                  Your Personalised SavingOs
                 </span>
               </div>
             </FeatureCardEntrance>
@@ -381,14 +321,14 @@ const TextReveal: React.FC = () => {
                     alt="Project Storyboard"
                   />
                   <h3 className="text-[#E1E0CC] font-medium text-lg mt-3 tracking-tight uppercase">
-                    Project Storyboard. <span className="text-gray-500 font-normal">(01)</span>
+                    Pay using anything. <span className="text-gray-500 font-normal">(01)</span>
                   </h3>
                   <ul className="space-y-3 mt-5">
                     {[
-                      'Real-time shot sequencing',
-                      'Interactive frame layout',
-                      'Collaborative moodboards',
-                      'Asset version control',
+                      'Credit Cards',
+                      'UPI',
+                      'Debit Cards',
+                      'BNPL',
                     ].map((item, i) => (
                       <li key={i} className="flex items-start gap-2 text-xs sm:text-sm text-gray-400">
                         <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" style={{ color: '#DEDBC8' }} />
@@ -397,14 +337,6 @@ const TextReveal: React.FC = () => {
                     ))}
                   </ul>
                 </div>
-                <a
-                  href="#"
-                  className="group/link inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:text-white transition-colors mt-8"
-                  style={{ color: '#DEDBC8' }}
-                >
-                  <span>Learn more</span>
-                  <ArrowRight className="w-3.5 h-3.5 transform -rotate-45 transition-transform group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5" />
-                </a>
               </div>
             </FeatureCardEntrance>
 
@@ -418,13 +350,13 @@ const TextReveal: React.FC = () => {
                     alt="Smart Critiques"
                   />
                   <h3 className="text-[#E1E0CC] font-medium text-lg mt-3 tracking-tight uppercase">
-                    Smart Critiques. <span className="text-gray-500 font-normal">(02)</span>
+                    Assured Returns <span className="text-gray-500 font-normal">(02)</span>
                   </h3>
                   <ul className="space-y-3 mt-5">
                     {[
-                      'AI-powered frame analysis',
-                      'Contextual review notes',
-                      'Major editing tool integrations',
+                      'Assured Cashback',
+                      'Assured Goldback',
+                      'Assured Reward Points',
                     ].map((item, i) => (
                       <li key={i} className="flex items-start gap-2 text-xs sm:text-sm text-gray-400">
                         <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" style={{ color: '#DEDBC8' }} />
@@ -433,14 +365,6 @@ const TextReveal: React.FC = () => {
                     ))}
                   </ul>
                 </div>
-                <a
-                  href="#"
-                  className="group/link inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:text-white transition-colors mt-8"
-                  style={{ color: '#DEDBC8' }}
-                >
-                  <span>Learn more</span>
-                  <ArrowRight className="w-3.5 h-3.5 transform -rotate-45 transition-transform group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5" />
-                </a>
               </div>
             </FeatureCardEntrance>
 
@@ -454,13 +378,13 @@ const TextReveal: React.FC = () => {
                     alt="Immersion Capsule"
                   />
                   <h3 className="text-[#E1E0CC] font-medium text-lg mt-3 tracking-tight uppercase">
-                    Immersion Capsule. <span className="text-gray-500 font-normal">(03)</span>
+                    Premium Experiences <span className="text-gray-500 font-normal">(03)</span>
                   </h3>
                   <ul className="space-y-3 mt-5">
                     {[
-                      'Deep focus notification silencing',
-                      'Ambient generative soundscapes',
-                      'Creative schedule syncing',
+                      'Flights & Hotels',
+                      'Dining & Events',
+                      'Luxury & Shoppings',
                     ].map((item, i) => (
                       <li key={i} className="flex items-start gap-2 text-xs sm:text-sm text-gray-400">
                         <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" style={{ color: '#DEDBC8' }} />
@@ -469,14 +393,6 @@ const TextReveal: React.FC = () => {
                     ))}
                   </ul>
                 </div>
-                <a
-                  href="#"
-                  className="group/link inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:text-white transition-colors mt-8"
-                  style={{ color: '#DEDBC8' }}
-                >
-                  <span>Learn more</span>
-                  <ArrowRight className="w-3.5 h-3.5 transform -rotate-45 transition-transform group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5" />
-                </a>
               </div>
             </FeatureCardEntrance>
           </div>

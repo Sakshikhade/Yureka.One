@@ -426,7 +426,7 @@ const WaitingPage: React.FC = () => {
                 <div className="text-center">
                     <Link to="/" className="inline-flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.5em] text-white/20 hover:text-clay transition-all group">
                         <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
-                        Return to Archives
+                        Back to Home
                     </Link>
                 </div>
             </motion.div>

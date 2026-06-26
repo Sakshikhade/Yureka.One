@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, Menu, X, Sparkles, ChevronDown, LayoutGrid, Calculator, ArrowRightLeft, LogOut, User, Tag } from 'lucide-react';
+import { ArrowRight, Menu, X, Sparkles, ChevronDown, LayoutGrid, Calculator, ArrowRightLeft, LogOut, User, CreditCard, Tag } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { useSupabase } from './SupabaseProvider';
@@ -28,8 +28,9 @@ const Navbar: React.FC = () => {
   };
 
   const EXPLORE_ITEMS = [
-    { name: 'Categories', path: '/categories', icon: LayoutGrid, desc: 'Find cards by lifestyle' },
+    { name: 'Cards', path: '/cards', icon: CreditCard, desc: 'Expert audited credit selection' },
     { name: 'Brands', path: '/brands', icon: Tag, desc: 'Top reward partner brands' },
+    { name: 'Categories', path: '/categories', icon: LayoutGrid, desc: 'Find cards by lifestyle' },
     { name: 'Tools', path: '/free-tools', icon: Calculator, desc: 'Institutional calculators' },
     { name: 'Compare', path: '/compare', icon: ArrowRightLeft, desc: 'Side-by-side analysis' }
   ];
@@ -54,7 +55,10 @@ const Navbar: React.FC = () => {
         >
             {/* Logo Section */}
             <div className="flex items-center relative z-10 group cursor-pointer shrink-0">
-                <Link to="/" className="flex items-center gap-4 group">
+                <Link to="/" className="flex items-center gap-3 group">
+                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white flex items-center justify-center shrink-0 overflow-hidden">
+                        <img src="/assets/ym-logo.jpeg" alt="Yureka.Money" className="w-[115%] h-[115%] object-contain" />
+                    </div>
                     <div className="font-heading font-black tracking-tighter text-lg md:text-xl text-white leading-none hover:opacity-80 transition-opacity flex items-baseline uppercase">
                         YUREKA<span className="text-clay">.</span>MONEY
                     </div>
@@ -63,21 +67,20 @@ const Navbar: React.FC = () => {
 
             {/* Desktop Menu */}
             <div className="hidden lg:flex items-center relative z-10 shrink-0 gap-6 lg:gap-10">
-                <nav className="flex items-center gap-6 lg:gap-8">
-                    <Link 
-                        to="/cards" 
-                        className={`text-[10px] font-black uppercase tracking-[0.2em] transition-all py-1 ${location.pathname === '/cards' ? 'text-clay' : 'text-white/40 hover:text-white'}`}
-                    >
-                        Cards
-                    </Link>
+                <div className="flex items-center gap-6 lg:gap-8">
+                      <Link to="/yureka-ai" className="text-white/40 hover:text-white font-bold text-[10px] transition-colors whitespace-nowrap uppercase tracking-[0.2em]">
+                        YurekaAi
+                      </Link>
+                </div>
 
+                <nav className="flex items-center gap-6 lg:gap-8">
                     {/* Explore Dropdown */}
-                    <div 
+                    <div
                         className="relative"
                         onMouseEnter={() => setIsExploreOpen(true)}
                         onMouseLeave={() => setIsExploreOpen(false)}
                     >
-                        <button 
+                        <button
                             className={`flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.2em] transition-all py-1 ${isExploreOpen ? 'text-clay' : 'text-white/40 hover:text-white'}`}
                         >
                             Explore <ChevronDown size={10} className={`transition-transform duration-500 ${isExploreOpen ? 'rotate-180' : ''}`} />
@@ -115,39 +118,18 @@ const Navbar: React.FC = () => {
                             )}
                         </AnimatePresence>
                     </div>
-
-                    <Link 
-                        to="/blogs" 
-                        className={`text-[10px] font-black uppercase tracking-[0.2em] transition-all py-1 ${location.pathname === '/blogs' ? 'text-clay' : 'text-white/40 hover:text-white'}`}
-                    >
-                        Blogs
-                    </Link>
                 </nav>
 
                 <div className="h-4 w-px bg-white/10" />
 
-                <div className="flex items-center gap-6 lg:gap-8">
-                      <Link to="/yureka-ai" className="text-white/40 hover:text-white font-bold text-[10px] transition-colors whitespace-nowrap uppercase tracking-[0.2em]">
-                        YurekaAi
-                      </Link>
-                </div>
-                    
                 <div className="flex items-center gap-3 shrink-0">
                     {!user ? (
-                        <>
-                            <Link 
-                                to="/login" 
-                                className="bg-[#34d399] text-black text-[10px] font-black uppercase tracking-[0.2em] px-6 py-2.5 transition-all duration-500 rounded-full shadow-[0_10px_30px_-10px_rgba(52,211,153,0.5)] hover:scale-105 whitespace-nowrap"
-                            >
-                                Login
-                            </Link>
-                            <Link 
-                                to="/join-waitlist" 
-                                className="bg-[#34d399] text-black text-[10px] font-black uppercase tracking-[0.2em] px-8 py-2.5 transition-all duration-500 rounded-full shadow-[0_10px_30px_-10px_rgba(52,211,153,0.5)] hover:scale-105 whitespace-nowrap"
-                            >
-                                Join Waitlist
-                            </Link>
-                        </>
+                        <Link
+                            to="/join-waitlist"
+                            className="bg-[#34d399] text-black text-[10px] font-black uppercase tracking-[0.2em] px-8 py-2.5 transition-all duration-500 rounded-full shadow-[0_10px_30px_-10px_rgba(52,211,153,0.5)] hover:scale-105 whitespace-nowrap"
+                        >
+                            SignIn or SignUp
+                        </Link>
                     ) : (
                         <div className="flex items-center gap-4">
                             {currentUserStatus === 'admin' ? (
@@ -232,7 +214,6 @@ const Navbar: React.FC = () => {
                         { name: 'Compare', path: '/compare', desc: 'Side-by-side strategic comparison' },
                         { name: 'Explore', path: '/manifesto', desc: 'The decentralization of yield' },
                         { name: 'Free Tools', path: '/free-tools', desc: 'Institutional grade calculators' },
-                        { name: 'Blogs', path: '/blogs', desc: 'The elite credit journal' },
                         { name: 'Yureka AI', path: '/yureka-ai', desc: 'Access the intelligence hub' }
                     ].map((item, idx) => (
                         <motion.div
@@ -260,22 +241,13 @@ const Navbar: React.FC = () => {
                     >
                         <div className="flex flex-col gap-4 mt-6">
                             {!user ? (
-                                <>
-                                    <Link 
-                                        to="/login" 
-                                        onClick={() => setIsMobileMenuOpen(false)}
-                                        className="w-full h-14 bg-[#34d399] text-black font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full shadow-xl"
-                                    >
-                                        Login
-                                    </Link>
-                                    <Link 
-                                        to="/join-waitlist" 
-                                        onClick={() => setIsMobileMenuOpen(false)}
-                                        className="w-full h-14 bg-[#34d399] text-black font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full shadow-xl"
-                                    >
-                                        Join Waitlist
-                                    </Link>
-                                </>
+                                <Link
+                                    to="/join-waitlist"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    className="w-full h-14 bg-[#34d399] text-black font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full shadow-xl"
+                                >
+                                    SignIn or SignUp
+                                </Link>
                             ) : (
                                 <>
                                     {currentUserStatus === 'admin' && (

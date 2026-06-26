@@ -284,10 +284,10 @@ const ScrollytellingVideo: React.FC<ScrollytellingVideoProps> = ({
       className={`relative w-full bg-black ${className}`}
     >
       {/* Sticky pane – stays pinned while the outer div scrolls */}
-      <div className="sticky top-0 h-screen w-full flex items-center justify-center py-10 px-6 sm:px-12 md:px-20 overflow-hidden">
+      <div className="sticky top-0 h-screen w-full flex items-center justify-center py-2 px-6 sm:px-12 md:px-20 overflow-hidden">
 
         {/* Island container */}
-        <div className="relative w-full max-w-6xl rounded-3xl overflow-hidden shadow-[0_40px_120px_rgba(0,0,0,0.8)] bg-black border border-white/[0.06] aspect-video">
+        <div className="relative w-full max-w-[1600px] rounded-3xl overflow-hidden shadow-[0_40px_120px_rgba(0,0,0,0.8)] bg-black border border-white/[0.06] aspect-video">
 
           {/* Visible canvas – GPU-composited, opaque */}
           <canvas

@@ -7,7 +7,7 @@ const YurekaInfoSection: React.FC = () => {
     <section className="bg-[#0a0a0a] px-6 py-24 w-full border-t border-white/10">
 
       {/* Row 1: heading + button, then full-width intro text */}
-      <div className="mb-16">
+      <div className="mb-24 md:mb-32">
         <div className="mb-8">
           <h2
             className="font-cirka text-white text-4xl md:text-5xl font-bold leading-tight mb-8"
@@ -70,7 +70,7 @@ const YurekaInfoSection: React.FC = () => {
       </div>
 
       {/* Row 3: Duplicated 4-col card grid (reversed order) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-16">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-24 md:mt-32">
 
         {/* Card 1 — dark (left side) */}
         <div className="bg-surface border border-white/[0.07] rounded-2xl p-7 min-h-80 flex flex-col">

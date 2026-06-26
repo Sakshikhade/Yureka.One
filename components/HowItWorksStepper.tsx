@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
 import { ScrollytellingVideo } from './ScrollytellingVideo';
 
@@ -140,7 +141,7 @@ const HowItWorksStepper: React.FC = () => {
             {...fadeUp(0.3)}
             className="font-cirka text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-medium tracking-[-2px] leading-none mb-6 max-w-3xl"
           >
-            Get <span className="font-serif italic font-normal">Inspired</span> with Us
+            Already <span className="font-serif italic font-normal">Excited</span>?
           </motion.h1>
 
           {/* Subtitle */}
@@ -148,31 +149,18 @@ const HowItWorksStepper: React.FC = () => {
             {...fadeUp(0.5)}
             className="font-overpass-mono text-neutral-200 text-base sm:text-lg max-w-xl mb-12 leading-relaxed"
           >
-            Join our feed for meaningful updates, news around technology and a shared journey
-            toward depth and direction.
+            Yureka is only exclusive to power-shoppers. If you are the one, you will get in.
+            Or else hard luck.
           </motion.p>
 
-          {/* Email Subscription Box */}
-          <motion.div {...fadeUp(0.6)} className="w-full max-w-md">
-            <form
-              onSubmit={(e) => e.preventDefault()}
-              className="liquid-glass rounded-full p-1.5 flex items-center justify-between shadow-2xl border border-white/5"
+          {/* Join Waitlist CTA */}
+          <motion.div {...fadeUp(0.6)}>
+            <Link
+              to="/join-waitlist"
+              className="bg-white text-black font-semibold text-xs rounded-full px-10 py-4 tracking-wider uppercase select-none transition-shadow hover:shadow-[0_0_20px_rgba(255,255,255,0.25)] inline-block"
             >
-              <input
-                type="email"
-                placeholder="Enter your email"
-                required
-                className="bg-transparent border-none outline-none text-white text-sm px-6 py-2 flex-1 w-full focus:ring-0 placeholder:text-neutral-500"
-              />
-              <motion.button
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.98 }}
-                type="submit"
-                className="bg-white text-black font-semibold text-xs rounded-full px-8 py-3.5 tracking-wider uppercase select-none transition-shadow hover:shadow-[0_0_20px_rgba(255,255,255,0.25)]"
-              >
-                SUBSCRIBE
-              </motion.button>
-            </form>
+              JOIN WAITLIST
+            </Link>
           </motion.div>
         </div>
       </section>
@@ -185,33 +173,32 @@ const HowItWorksStepper: React.FC = () => {
             {...fadeUp(0.1)}
             className="font-cirka text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-medium tracking-tight text-center leading-none mb-6"
           >
-            Search has <span className="font-serif italic font-normal">changed.</span> Have you?
+            Rewards has <span className="font-serif italic font-normal">changed.</span> You will have too!
           </motion.h2>
 
           <motion.p
             {...fadeUp(0.2)}
             className="font-overpass-mono text-neutral-400 text-base sm:text-lg text-center max-w-2xl mb-24 leading-relaxed"
           >
-            Traditional search queries are shifting toward contextual dialogs. Our ecosystem bridges
-            intelligent AI platform assistants with your personal discovery layers.
+            From LUXURY BRANDS to DAILY ESSENTIALS, We have got it all.
           </motion.p>
 
           {/* Platform Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 w-full mb-24">
             {[
               {
-                title: 'ChatGPT',
-                desc: 'Optimize custom instructions, direct routing, and structured summaries.',
+                title: 'Use Yureka for everyday SPENDS',
+                desc: 'Using Yureka for everyday spends for atleast 6 Months would get you a 3D/4N Vacation, all for FREE.',
                 asset: '/assets/card-visa.png',
               },
               {
-                title: 'Perplexity',
-                desc: 'Generate immediate inline citations, detailed sources, and query synthesis.',
+                title: 'We pay 3% of the bill for your daily essentials',
+                desc: "We won't let you pay full, Every purchase we pay somepart. Promise",
                 asset: '/assets/card-rewards.png',
               },
               {
-                title: 'Google AI',
-                desc: 'Harness multimodal context, Gemini workflows, and integrated web lookups.',
+                title: 'No Limit, Valid for entire 365 Days',
+                desc: 'All the rewards, cashback, goldback remains the same throughout the year. No Deadlines or Expiry',
                 asset: '/assets/card-calendar.png',
               },
             ].map((card, idx) => (
@@ -238,76 +225,14 @@ const HowItWorksStepper: React.FC = () => {
               </motion.div>
             ))}
           </div>
-
-          {/* Tagline */}
-          <motion.div {...fadeUp(0.4)} className="w-full text-center">
-            <span className="text-neutral-500 text-xs sm:text-sm tracking-wider">
-              "If you don't answer the questions, someone else will."
-            </span>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* SECTION 5: SOLUTION */}
-      <section className="bg-black w-full py-32 px-6 border-t border-white/10">
-        <div className="max-w-6xl mx-auto w-full flex flex-col">
-          <motion.span
-            {...fadeUp(0.1)}
-            className="text-neutral-500 text-[10px] sm:text-xs tracking-[3px] uppercase mb-4"
-          >
-            SOLUTION
-          </motion.span>
-
-          <motion.h2
-            {...fadeUp(0.2)}
-            className="font-cirka text-3xl sm:text-5xl md:text-6xl font-medium tracking-tight mb-16 max-w-2xl leading-none"
-          >
-            The platform for <span className="font-serif italic font-normal">meaningful</span> content
-          </motion.h2>
         </div>
       </section>
 
       {/* SECTION 5B: SCROLLYTELLING VIDEO — rewards-desktop-final.mp4 */}
       <ScrollytellingVideo src="/assets/rewards-desktop-final.mp4" scrollMultiplier={3} />
 
-      {/* SECTION 5C: 4-column feature grid */}
-      <section className="bg-black w-full pb-32 px-6">
-        <div className="max-w-6xl mx-auto w-full flex flex-col">
-          {/* 4-Column Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 sm:gap-8">
-            {[
-              {
-                title: 'Curated Feed',
-                desc: 'Ditch the algos. Read hand-picked selections of premium insights from independent writers.',
-              },
-              {
-                title: 'Writer Tools',
-                desc: 'Minimalist editing interface, direct newsletter layouts, and built-in member analytics.',
-              },
-              {
-                title: 'Community',
-                desc: 'Deep discussions within comments, threads, and peer circles of similar domains.',
-              },
-              {
-                title: 'Distribution',
-                desc: 'Optimized delivery mechanisms ensuring your content meets inbox endpoints cleanly.',
-              },
-            ].map((feat, idx) => (
-              <motion.div key={idx} {...fadeUp(idx * 0.1)} className="flex flex-col items-start">
-                <h3 className="font-cirka font-semibold text-base text-white mb-3 tracking-tight">
-                  {feat.title}
-                </h3>
-                <p className="font-overpass-mono text-neutral-400 text-sm leading-relaxed">
-                  {feat.desc}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* SECTION 4: MISSION */}
-      <section className="bg-black w-full pb-32 px-6">
+      <section className="bg-black w-full pb-16 px-6">
         <div className="max-w-4xl mx-auto w-full flex flex-col items-center">
           {/* Loop Video */}
           <motion.div
@@ -339,25 +264,6 @@ const HowItWorksStepper: React.FC = () => {
 
       {/* SECTION 6: VIDEO ISLAND — scrollytelling vault 4.mp4 */}
       <ScrollytellingVideo src="/assets/vault 4.mp4" scrollMultiplier={3} />
-
-      {/* SECTION 7: FOOTER */}
-      <footer className="w-full bg-black py-16 px-6 sm:px-12 md:px-28 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-        <span className="text-neutral-500 text-sm">
-          &copy; 2026 Mindloop. All rights reserved.
-        </span>
-
-        <div className="flex items-center gap-8">
-          {['Privacy', 'Terms', 'Contact'].map((link) => (
-            <a
-              key={link}
-              href="#"
-              className="text-neutral-500 hover:text-white transition-colors duration-200 text-sm"
-            >
-              {link}
-            </a>
-          ))}
-        </div>
-      </footer>
     </div>
   );
 };
