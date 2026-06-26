@@ -10,9 +10,7 @@ import {
   AlertCircle,
   LayoutDashboard
 } from 'lucide-react';
-import { 
-  cleanData
-} from '../services/supabaseService';
+
 import { api, isApiError } from '../lib/api/client';
 import { fromApiCard, fromApiBlog, fromApiReview } from '../lib/api/mappers';
 import type { Card as ApiCard, Blog as ApiBlog, Review as ApiReview, Waitlist as ApiWaitlist } from '../lib/api/types';
@@ -32,6 +30,21 @@ import { AdminLogsTab } from './admin/AdminLogsTab';
 import { AdminNotificationsTab } from './admin/AdminNotificationsTab';
 import { AdminTrashTab } from './admin/AdminTrashTab';
 import { AdminModals } from './admin/AdminModals';
+
+const cleanData = (obj: any) => {
+  const cleaned = { ...obj };
+  Object.keys(cleaned).forEach(key => {
+    if (cleaned[key] === undefined) delete cleaned[key];
+    if (key === 'scheduled_at' && cleaned[key] === '') cleaned[key] = null;
+    if (key === 'benefits' && Array.isArray(cleaned[key])) {
+      cleaned[key] = cleaned[key].filter((b: string) => b && typeof b === 'string' && b.trim() !== '');
+    }
+    if (key === 'benefit_items' && Array.isArray(cleaned[key])) {
+      cleaned[key] = cleaned[key].filter((b: any) => b && b.heading?.trim() !== '');
+    }
+  });
+  return cleaned;
+};
 
 const ADMIN_BANKS = [
   'HDFC', 'SBI', 'ICICI', 'Axis', 'Kotak', 'Yes Bank', 'RBL', 'Amex',
