@@ -10,9 +10,11 @@ jobs:
   google-indexing:
     name: Ping Google
     runs-on: ubuntu-latest
+    env:
+      GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
     steps:
       - name: Google Indexing Action
-        if: ${{ secrets.GCP_SA_KEY != '' }}
+        if: ${{ env.GCP_SA_KEY != '' }}
         uses: robingenz/action-google-indexing@v1.0.2
         with:
           siteUrl: 'https://yureka.money'
