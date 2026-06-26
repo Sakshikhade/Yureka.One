@@ -21,7 +21,7 @@ export const WordsPullUp: React.FC<WordsPullUpProps> = ({ text, className = '', 
   const words = text.split(' ');
 
   return (
-    <div ref={ref} className={`inline-flex flex-wrap justify-center ${className}`} style={style}>
+    <div ref={ref} className={`inline-flex flex-nowrap justify-center ${className}`} style={style}>
       {words.map((word, index) => {
         const isLastWord = index === words.length - 1;
 
@@ -322,7 +322,7 @@ const TextReveal: React.FC = () => {
                 },
                 {
                   text: 'We let you pick the right high engaging and premium redemption option exclusively available on Yureka.',
-                  className: 'font-serif italic text-primary',
+                  className: 'font-normal text-primary',
                 },
               ]}
             />
@@ -334,7 +334,7 @@ const TextReveal: React.FC = () => {
       </section>
 
       {/* SECTION 3: FEATURES */}
-      <section className="relative min-h-screen bg-black py-24 px-6 md:px-12 w-full overflow-hidden">
+      <section className="relative bg-black py-24 px-6 md:px-12 w-full overflow-hidden">
 
 
         <div className="relative z-10 max-w-6xl mx-auto w-full flex flex-col">

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, Menu, X, Sparkles, ChevronDown, LayoutGrid, Calculator, ArrowRightLeft, LogOut, User, Tag } from 'lucide-react';
+import { ArrowRight, Menu, X, Sparkles, ChevronDown, LayoutGrid, Calculator, ArrowRightLeft, LogOut, User } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { useSupabase } from './SupabaseProvider';
@@ -29,7 +29,6 @@ const Navbar: React.FC = () => {
 
   const EXPLORE_ITEMS = [
     { name: 'Categories', path: '/categories', icon: LayoutGrid, desc: 'Find cards by lifestyle' },
-    { name: 'Brands', path: '/brands', icon: Tag, desc: 'Top reward partner brands' },
     { name: 'Tools', path: '/free-tools', icon: Calculator, desc: 'Institutional calculators' },
     { name: 'Compare', path: '/compare', icon: ArrowRightLeft, desc: 'Side-by-side analysis' }
   ];
@@ -64,11 +63,18 @@ const Navbar: React.FC = () => {
             {/* Desktop Menu */}
             <div className="hidden lg:flex items-center relative z-10 shrink-0 gap-6 lg:gap-10">
                 <nav className="flex items-center gap-6 lg:gap-8">
-                    <Link 
-                        to="/cards" 
+                    <Link
+                        to="/cards"
                         className={`text-[10px] font-black uppercase tracking-[0.2em] transition-all py-1 ${location.pathname === '/cards' ? 'text-clay' : 'text-white/40 hover:text-white'}`}
                     >
                         Cards
+                    </Link>
+
+                    <Link
+                        to="/brands"
+                        className={`text-[10px] font-black uppercase tracking-[0.2em] transition-all py-1 ${location.pathname === '/brands' ? 'text-clay' : 'text-white/40 hover:text-white'}`}
+                    >
+                        Brands
                     </Link>
 
                     {/* Explore Dropdown */}
@@ -115,13 +121,6 @@ const Navbar: React.FC = () => {
                             )}
                         </AnimatePresence>
                     </div>
-
-                    <Link 
-                        to="/blogs" 
-                        className={`text-[10px] font-black uppercase tracking-[0.2em] transition-all py-1 ${location.pathname === '/blogs' ? 'text-clay' : 'text-white/40 hover:text-white'}`}
-                    >
-                        Blogs
-                    </Link>
                 </nav>
 
                 <div className="h-4 w-px bg-white/10" />
@@ -232,7 +231,6 @@ const Navbar: React.FC = () => {
                         { name: 'Compare', path: '/compare', desc: 'Side-by-side strategic comparison' },
                         { name: 'Explore', path: '/manifesto', desc: 'The decentralization of yield' },
                         { name: 'Free Tools', path: '/free-tools', desc: 'Institutional grade calculators' },
-                        { name: 'Blogs', path: '/blogs', desc: 'The elite credit journal' },
                         { name: 'Yureka AI', path: '/yureka-ai', desc: 'Access the intelligence hub' }
                     ].map((item, idx) => (
                         <motion.div

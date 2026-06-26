@@ -180,7 +180,7 @@ const Footer: React.FC = () => {
                 <ul className="space-y-3.5">
                   {[
                     { label: 'Waitlist Status', to: '/yureka-ai' },
-                    { label: 'Reward Guides', to: '/blogs' },
+                    { label: 'Blogs', to: '/blogs' },
                     { label: 'Privacy Policy', to: '/privacy-policy' },
                     { label: 'Terms of Service', to: '/terms-of-service' },
                   ].map(({ label, to }) => (

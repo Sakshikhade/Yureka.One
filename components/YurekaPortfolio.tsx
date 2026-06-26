@@ -180,19 +180,27 @@ const LiveProjectButton: React.FC<{ label?: string }> = ({ label = 'Live Project
 // ─── SECTION 2: MARQUEE ─────────────────────────────────────────────────────
 
 const fallbackCardImages = [
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/axis-bank-magnus.jpeg',
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/axis-bank-airtel-axis-bank.jpeg',
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/icici-bank-amazon-pay-icici.png',
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/hdfc-bank-business-regalia.webp',
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/hdfc-bank-regalia-gold.jpeg',
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/hdfc-bank-swiggy-ornge-hdfc-bank.webp',
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/hdfc-bank-tata-neu-infinity.jpeg',
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/icici-bank-emeralde.jpeg',
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/icici-bank-emeralde-private-metal.jpeg',
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/hdfc-bank-swiggy-blck-hdfc-bank.jpeg',
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/hdfc-bank-swiggy-hdfc-bank.jpeg',
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/axis-bank-atlas.jpeg',
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards/axis-bank-magnus-burgundy.jpeg'
+  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/axis-bank-magnus-burgundy.png',
+  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/axis-bank-supermoney-rupay.png',
+  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/idfc-first-bank-first-private-metal.png',
+  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/hsbc-travelone.png',
+  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/icici-bank-sapphiro.png',
+  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/kotak-mahindra-bank-kotak-solitaire.png',
+  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/sbm-bank-sbm-lifestyle.png',
+  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/icici-bank-times-black.png',
+  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/hdfc-bank-swiggy-hdfc-bank.png',
+  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/hdfc-bank-swiggy-blck-hdfc-bank.png',
+  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/kotak-mahindra-bank-shoppers-stop-kotak.png',
+  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/sbi-card-sbi-aurum.png',
+  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/rbl-bank-world-safari-lite.png',
+  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/kotak-mahindra-bank-kotak-air-credit-card.png',
+  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/hsbc-hsbc-premier-metal.png',
+  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/icici-bank-emeralde-private-metal.png',
+  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/kiwi-sbm-bank-kiwi-upi-credit-card.png',
+  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/hdfc-bank-marriott-bonvoy-hdfc.png',
+  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/hdfc-infinia-metal.png',
+  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/hdfc-bank-diners-club-black-metal.png',
+  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/indusind-bank-cred-sovereign.png'
 ];
 
 const MarqueeSection: React.FC = () => {

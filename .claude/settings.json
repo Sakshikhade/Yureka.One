@@ -52,7 +52,8 @@
       "Bash(python3 crop_grocery_logos.py)",
       "Bash(node check_grocery_brands.mjs)",
       "Bash(node check_grocery_crop.mjs)",
-      "Bash(node check_grocery_crop2.mjs)"
+      "Bash(node check_grocery_crop2.mjs)",
+      "Bash(curl -s \"http://localhost:3000/api/v1/cms/cards\")"
     ]
   }
 }
