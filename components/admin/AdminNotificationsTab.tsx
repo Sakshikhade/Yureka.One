@@ -5,10 +5,7 @@ import {
   Eye, MousePointerClick, CheckCircle2, AlertTriangle, Loader2, Copy, Check
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  createNotification, fetchAllNotificationsAdmin, fetchNotificationInteractionsAdmin, 
-  archiveNotification, deleteNotification, updateNotification 
-} from '../../services/supabaseService';
+import { api, isApiError } from '../../lib/api/client';
 
 const VariableItem = ({ tag, desc }: { tag: string, desc: string }) => {
   const [copied, setCopied] = useState(false);
@@ -52,12 +49,12 @@ export const AdminNotificationsTab: React.FC = () => {
   const loadData = async () => {
     setLoading(true);
     try {
-      const [notifs, inters] = await Promise.all([
-        fetchAllNotificationsAdmin(),
-        fetchNotificationInteractionsAdmin()
+      const [notifsRes, intersRes] = await Promise.all([
+        api.get<any[]>('/api/v1/admin/notifications'),
+        api.get<any[]>('/api/v1/admin/notifications/interactions'),
       ]);
-      setNotifications(notifs || []);
-      setInteractions(inters || []);
+      if (!isApiError(notifsRes)) setNotifications(notifsRes.data ?? []);
+      if (!isApiError(intersRes)) setInteractions(intersRes.data ?? []);
     } catch (e) {
       console.error(e);
     } finally {
@@ -96,20 +93,16 @@ export const AdminNotificationsTab: React.FC = () => {
     setSubmitting(true);
     try {
       if (editingId) {
-        await updateNotification(editingId, {
-          title: form.title,
-          message: form.message,
-          type: form.type,
-          image_url: form.image_url
+        const res = await api.put(`/api/v1/admin/notifications/${editingId}`, {
+          title: form.title, message: form.message, type: form.type, imageUrl: form.image_url,
         });
+        if (isApiError(res)) throw new Error(res.error);
       } else {
-        await createNotification({
-          title: form.title,
-          message: form.message,
-          type: form.type,
-          created_by: user?.email || 'Admin',
-          image_url: form.image_url
+        const res = await api.post('/api/v1/admin/notifications', {
+          title: form.title, message: form.message, type: form.type,
+          createdBy: user?.email || 'Admin', imageUrl: form.image_url,
         });
+        if (isApiError(res)) throw new Error(res.error);
       }
       setIsComposing(false);
       setEditingId(null);
@@ -125,7 +118,8 @@ export const AdminNotificationsTab: React.FC = () => {
   const handleArchive = async (id: string) => {
     if (!window.confirm("Archive this notification? It will no longer show up for users.")) return;
     try {
-      await archiveNotification(id);
+      const res = await api.patch(`/api/v1/admin/notifications/${id}/archive`, {});
+      if (isApiError(res)) throw new Error(res.error);
       await loadData();
     } catch (e) {
       alert("Failed to archive");
@@ -135,7 +129,8 @@ export const AdminNotificationsTab: React.FC = () => {
   const handleDelete = async (id: string) => {
     if (!window.confirm("Permanently delete this notification? It will be moved to Trash.")) return;
     try {
-      await deleteNotification(id, user?.email || 'Admin');
+      const res = await api.delete(`/api/v1/admin/notifications/${id}`);
+      if (isApiError(res)) throw new Error(res.error);
       await loadData();
     } catch (e) {
       alert("Failed to delete notification");
@@ -143,13 +138,13 @@ export const AdminNotificationsTab: React.FC = () => {
   };
 
   const handleEdit = (n: any) => {
-    setForm({ title: n.title, message: n.message, type: n.type, image_url: n.image_url || '' });
+    setForm({ title: n.title, message: n.message, type: n.type, image_url: n.imageUrl || '' });
     setEditingId(n.id);
     setIsComposing(true);
   };
 
   const getStats = (id: string) => {
-    const relevant = interactions.filter(i => i.notification_id === id);
+    const relevant = interactions.filter(i => i.notificationId === id);
     const reads = relevant.filter(i => i.action === 'read').length;
     const clicks = relevant.filter(i => i.action === 'clicked').length;
     return { reads, clicks };

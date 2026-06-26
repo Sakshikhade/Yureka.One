@@ -1,0 +1,10 @@
+services:
+  app:
+    image: ${IMAGE:-ghcr.io/yureks-money/yureka-money:latest}
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped

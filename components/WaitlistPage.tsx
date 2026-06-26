@@ -8,7 +8,8 @@ import {
     Percent, Database, Search, RefreshCw, Smartphone
 } from 'lucide-react';
 import { Link, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
-import { joinWaitlist, fetchCardsPublic } from '../services/supabaseService';
+import { api, isApiError } from '../lib/api/client';
+import type { Waitlist as ApiWaitlist, WaitlistJoinResult } from '../lib/api/types';
 import { useSupabase } from './SupabaseProvider';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -383,18 +384,14 @@ const WaitlistPage: React.FC = () => {
                 mobileNumber: formData.mobileNumber
             };
 
-            const API_BASE = import.meta.env.PROD ? 'https://yureka-api.onrender.com' : 'http://localhost:3000';
-            const response = await fetch(`${API_BASE}/api/scan-email`, {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json' 
-                },
-                body: JSON.stringify({
-                    accessToken: session.provider_token,
-                    fallbackData
-                })
-            });
+            const controller = new AbortController();
+            const timeout = setTimeout(() => controller.abort(), 60_000);
+
+            const scanRes = await api.post<{ profile: any; transactions: any[] }>(
+                '/api/v1/ledger/scan',
+                { accessToken: session.provider_token, email: session.user?.email, fallbackData }
+            );
+            clearTimeout(timeout);
 
             // Make checklist progress transitions feel realistic, smooth, and premium!
             setScanState(prev => ({ ...prev, profile: 'success', inbox: 'loading' }));
@@ -405,14 +402,12 @@ const WaitlistPage: React.FC = () => {
             setScanProgress(75);
             await new Promise(r => setTimeout(r, 600));
 
-            const data = await response.json();
-            
-            if (data.error) {
-                console.error("Backend deep scanner returned error:", data.error);
+            if (isApiError(scanRes)) {
+                console.error("Ledger scan returned error:", scanRes.error);
                 setScanState(prev => ({ ...prev, ledger: 'failed' }));
             } else {
-                setScannedProfile(data.profile || null);
-                setScannedTransactions(data.transactions || []);
+                setScannedProfile(scanRes.data?.profile || null);
+                setScannedTransactions(scanRes.data?.transactions || []);
                 setScanState(prev => ({ ...prev, ledger: 'success' }));
             }
         } catch (e) {
@@ -557,18 +552,19 @@ const WaitlistPage: React.FC = () => {
                 status: 'pending'
             };
 
-            const result = await joinWaitlist(entry);
-            setSuccessData({
-                rank: result.rank,
-                referralCode: result.personal_referral_code
-            });
-            setStep(5); // Transition directly to our dynamic loader phase!
-        } catch (err: any) {
-            if (err.message?.includes('duplicate key') || err.code === '23505') {
-                setError('You are already on our waitlist! Check your email for your referral code.');
-            } else {
-                setError(err.message || 'Failed to join waitlist. Please try again.');
+            const res = await api.post<WaitlistJoinResult>('/api/v1/waitlist/join', entry, { skipAuth: true });
+            if (isApiError(res)) {
+                setError(res.error || 'Failed to join waitlist. Please try again.');
+                return;
             }
+            const joined = res.data!.data;
+            setSuccessData({
+                rank: joined.rank ?? 1000,
+                referralCode: joined.personalReferralCode ?? ''
+            });
+            setStep(5);
+        } catch (err: any) {
+            setError(err.message || 'Failed to join waitlist. Please try again.');
         } finally {
             setIsSubmitting(false);
         }

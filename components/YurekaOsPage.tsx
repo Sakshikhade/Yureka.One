@@ -2,7 +2,7 @@ import React from 'react';
 import { Gift, Zap, ShieldCheck, ArrowRight, Star, Percent, Utensils, ShoppingBag, Loader2 } from 'lucide-react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { useSupabase } from './SupabaseProvider';
+import { api } from '../lib/api/client';
 
 const YurekaOsPage: React.FC = () => {
   const [email, setEmail] = React.useState('');
@@ -11,7 +11,6 @@ const YurekaOsPage: React.FC = () => {
   const location = useLocation();
   const isDashboard = location.pathname.startsWith('/dashboard');
   const basePath = isDashboard ? '/dashboard' : '';
-  const { supabase } = useSupabase();
 
   React.useEffect(() => {
     if (isDashboard) {
@@ -25,8 +24,7 @@ const YurekaOsPage: React.FC = () => {
 
     setLoading(true);
     try {
-      const { error } = await supabase.from('waitlist').insert([{ email, source: 'yureka-os-hero' }]);
-      if (error && error.code !== '23505') console.error('Error saving email:', error);
+      await api.post('/api/v1/waitlist/join', { email, source_channel: 'yureka-os-hero' }, { skipAuth: true });
       localStorage.setItem('yureka_points_access', email);
       navigate(`${basePath}/rewards-calculator`);
     } catch (err) {

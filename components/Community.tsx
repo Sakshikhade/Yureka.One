@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { getReviews } from '../services/supabaseService';
+import { api, isApiError } from '../lib/api/client';
+import { fromApiReview } from '../lib/api/mappers';
+import type { Review as ApiReview } from '../lib/api/types';
 import { Review } from '../types';
 import { Star, Apple, Play, CheckCircle, ShieldCheck } from 'lucide-react';
 import { motion, useScroll } from 'motion/react';
@@ -45,7 +47,7 @@ const fallbackReviews: Review[] = [
       quote: "CheQ is a user-friendly credit bill payment app that offers rewards and timely reminders. Earn 1% CheQ Chips on every transaction.",
       rating: 4,
       source: 'Google Play',
-      message: "Highly recommend 👍",
+      image: '',
       created_at: '2025-06-18T00:00:00Z'
   },
   {
@@ -53,6 +55,7 @@ const fallbackReviews: Review[] = [
     role: 'User',
     company: 'App Store',
     avatar: 'https://i.pravatar.cc/100?u=abbaby',
+    image: '',
     quote: "Using it for some time now. Processing fee is waived off again. That was the USP. So happy to use for card payment.",
     rating: 5,
     source: 'App Store',
@@ -157,10 +160,12 @@ const Community: React.FC = () => {
   });
 
   useEffect(() => {
-    const unsubscribe = getReviews((data) => {
-      setReviews(data.length > 0 ? data : fallbackReviews);
+    api.get<ApiReview[]>('/api/v1/cms/reviews', { skipAuth: true }).then(res => {
+      if (!isApiError(res)) {
+        const mapped = (res.data ?? []).map(fromApiReview);
+        setReviews(mapped.length > 0 ? mapped : fallbackReviews);
+      }
     });
-    return () => { if (typeof unsubscribe === 'function') unsubscribe(); };
   }, []);
 
   const featured = reviews.find(r => r.featured) || fallbackReviews[0];

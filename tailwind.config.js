@@ -45,6 +45,8 @@ export default {
         serif: ['"Instrument Serif"', 'serif'], 
         blackletter: ['"Instrument Serif"', 'serif'],
         kanit: ['Kanit', 'sans-serif'],
+        cirka: ['Cirka', '"Instrument Serif"', 'Georgia', 'serif'],
+        'overpass-mono': ['"Overpass Mono"', '"Courier New"', 'monospace'],
       },
       lineHeight: {
         tight: '1.1',

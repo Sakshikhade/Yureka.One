@@ -36,24 +36,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/sbi-card-krisflyer-sbi-card</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/advanced-hsbc</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/kotak-mahindra-bank-zen-signature</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://yureka.money/cards/axis-yoddha-axis-bank</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>weekly</changefreq>
@@ -66,20 +48,8 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/axis-vistara-infinite-axis-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/ace-axis-bank</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/samsung-axis-bank-infinite-axis-bank</loc>
-    <lastmod>2026-05-10</lastmod>
+    <loc>https://yureka.money/cards/sbi-card-krisflyer-sbi-card</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -96,26 +66,50 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/club-vistara-sbi-card-sbi-card</loc>
+    <loc>https://yureka.money/cards/doctor-sbi-card-sbi-card</loc>
     <lastmod>2026-04-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/kotak-mahindra-bank-zen-signature</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/ace-axis-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/axis-vistara-infinite-axis-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/club-vistara-sbi-card-sbi-card</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yureka.money/cards/vistara-signature-axis-bank</loc>
-    <lastmod>2026-05-10</lastmod>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yureka.money/cards/olympus-axis-bank</loc>
-    <lastmod>2026-05-10</lastmod>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/doctor-sbi-card-sbi-card</loc>
-    <lastmod>2026-04-30</lastmod>
+    <loc>https://yureka.money/cards/advanced-hsbc</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -126,19 +120,7 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/privilege-axis-bank</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://yureka.money/cards/first-private-idfc-first-bank</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/supermoney-rupay-axis-bank</loc>
     <lastmod>2026-05-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -162,18 +144,6 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/burgundy-private-axis-bank</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/magnus-axis-bank</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://yureka.money/cards/privilege-edge-axis-bank</loc>
     <lastmod>2026-05-10</lastmod>
     <changefreq>weekly</changefreq>
@@ -186,32 +156,32 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/easy-bandhan-bank</loc>
-    <lastmod>2026-05-10</lastmod>
+    <loc>https://yureka.money/cards/privilege-axis-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/burgundy-private-axis-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/magnus-axis-bank</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yureka.money/cards/spark-dbs-bank</loc>
-    <lastmod>2026-05-10</lastmod>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/kotak-air-credit-card-kotak-mahindra-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/fedfirst-federal-bank</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/celesta-signature-federal-bank</loc>
-    <lastmod>2026-05-10</lastmod>
+    <loc>https://yureka.money/cards/easy-bandhan-bank</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -228,44 +198,8 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/pioneer-private-indusind-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/pulse-samsung-pay-sbi-card</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/pixel-play-hdfc-bank</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/diners-club-rewardz-hdfc-bank</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://yureka.money/cards/rbl-mfin-welfare-rbl-bank</loc>
     <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/travelone-hsbc</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/coral-rupay-icici-bank</loc>
-    <lastmod>2026-05-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -276,8 +210,50 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/sapphiro-icici-bank</loc>
-    <lastmod>2026-05-10</lastmod>
+    <loc>https://yureka.money/cards/fedfirst-federal-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/kotak-air-credit-card-kotak-mahindra-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/celesta-signature-federal-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/pulse-samsung-pay-sbi-card</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/pioneer-private-indusind-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/pixel-play-hdfc-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/coral-rupay-icici-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/diners-club-rewardz-hdfc-bank</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -294,43 +270,7 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/lic-select-idfc-first-bank</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/vantage-dbs-bank</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/avios-visa-infinite-indusind-bank</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://yureka.money/cards/aura-edge-indusind-bank</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/indus-solitaire-indusind-bank</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/explorer-indusind-bank</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/indulge-indusind-bank</loc>
     <lastmod>2026-05-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -354,37 +294,49 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://yureka.money/cards/lic-select-idfc-first-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/indus-solitaire-indusind-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/vantage-dbs-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/avios-visa-infinite-indusind-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/explorer-indusind-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/indulge-indusind-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://yureka.money/cards/dbs-bank-vantage-dbs-bank-singapore</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/sbm-lifestyle-sbm-bank-india</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/811-dreamdifferent-kotak-mahindra-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/adani-one-icici-signature-icici-bank</loc>
-    <lastmod>2026-04-30</lastmod>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yureka.money/cards/air-now-kotak-air-kotak-mahindra-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/air-india-sbi-platinum-sbi-card</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -402,50 +354,50 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/airtel-axis-bank-axis-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/altura-au-small-finance-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/amazon-pay-icici-icici-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/amex-platinum-reserve-american-express</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/aspire-banking-rbl-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://yureka.money/cards/au-altura-plus-au-small-finance-bank</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/au-nomo-au-small-finance-bank</loc>
-    <lastmod>2026-04-30</lastmod>
+    <loc>https://yureka.money/cards/adani-one-icici-signature-icici-bank</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/au-vetta-au-small-finance-bank</loc>
-    <lastmod>2026-04-30</lastmod>
+    <loc>https://yureka.money/cards/air-india-sbi-platinum-sbi-card</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/airtel-axis-bank-axis-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/altura-au-small-finance-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/aspire-banking-rbl-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/amazon-pay-icici-icici-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/amex-platinum-reserve-american-express</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -463,36 +415,6 @@
   </url>
   <url>
     <loc>https://yureka.money/cards/bobcard-premier-bank-of-baroda</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/au-zenith-plus-au-small-finance-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/axis-burgundy-private-axis-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/axis-indigo-premium-axis-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/bajaj-finserv-dbs-supercard-dbs-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/bandhan-bank-visa-platinum-bandhan-bank</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -522,26 +444,32 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/bobcard-select-bank-of-baroda</loc>
-    <lastmod>2026-04-30</lastmod>
+    <loc>https://yureka.money/cards/au-vetta-au-small-finance-bank</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/bobcard-tiara-women-bank-of-baroda</loc>
-    <lastmod>2026-04-30</lastmod>
+    <loc>https://yureka.money/cards/axis-indigo-premium-axis-bank</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/boi-star-business-visa-bank-of-india</loc>
-    <lastmod>2026-04-30</lastmod>
+    <loc>https://yureka.money/cards/axis-burgundy-private-axis-bank</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/boi-star-classic-bank-of-india</loc>
-    <lastmod>2026-04-30</lastmod>
+    <loc>https://yureka.money/cards/bandhan-bank-visa-platinum-bandhan-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/bajaj-finserv-dbs-supercard-dbs-bank</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -558,12 +486,6 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/canara-classic-canara-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://yureka.money/cards/canara-platinum-canara-bank</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>weekly</changefreq>
@@ -571,12 +493,6 @@
   </url>
   <url>
     <loc>https://yureka.money/cards/canara-visa-corporate-canara-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/cashback-sbi-sbi-card</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -594,37 +510,37 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/hdfc-bizpower-hdfc-bank</loc>
-    <lastmod>2026-04-30</lastmod>
+    <loc>https://yureka.money/cards/bobcard-select-bank-of-baroda</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/cashback-hsbc</loc>
-    <lastmod>2026-05-10</lastmod>
+    <loc>https://yureka.money/cards/bobcard-tiara-women-bank-of-baroda</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/club-vistara-sbi-card-prime-sbi-card</loc>
-    <lastmod>2026-04-30</lastmod>
+    <loc>https://yureka.money/cards/boi-star-classic-bank-of-india</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/cred-indusind-bank-rupay-indusind-bank</loc>
-    <lastmod>2026-04-30</lastmod>
+    <loc>https://yureka.money/cards/canara-classic-canara-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/cashback-sbi-sbi-card</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yureka.money/cards/csb-bank-classic-csb-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/cub-csk-master-platinum-city-union-bank</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -636,38 +552,56 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/cred-sovereign-indusind-bank</loc>
-    <lastmod>2026-05-10</lastmod>
+    <loc>https://yureka.money/cards/cred-indusind-bank-rupay-indusind-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/hdfc-bizpower-hdfc-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/cashback-hsbc</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/cub-csk-master-platinum-city-union-bank</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yureka.money/cards/club-vistara-explorer-indusind-bank</loc>
-    <lastmod>2026-05-10</lastmod>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yureka.money/cards/cub-visa-classic-city-union-bank</loc>
-    <lastmod>2026-04-30</lastmod>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yureka.money/cards/dbs-omni-dbs-bank</loc>
-    <lastmod>2026-04-30</lastmod>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yureka.money/cards/digismart-standard-chartered</loc>
-    <lastmod>2026-04-30</lastmod>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yureka.money/cards/duet-rbl-bank</loc>
-    <lastmod>2026-04-30</lastmod>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -708,12 +642,6 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/etihad-guest-bank-of-baroda</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://yureka.money/cards/etihad-guest-sbi-card-sbi-card</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>weekly</changefreq>
@@ -739,24 +667,12 @@
   </url>
   <url>
     <loc>https://yureka.money/cards/finbooster-bankbazaar-yes-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/flipkart-axis-bank-axis-bank</loc>
-    <lastmod>2026-04-30</lastmod>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yureka.money/cards/google-pay-flex-axis-bank</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/first-millennia-idfc-first-bank</loc>
     <lastmod>2026-05-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -792,26 +708,32 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/hdfc-bharat-cashback-hdfc-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/hdfc-bizgrow-hdfc-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://yureka.money/cards/giga-business-hdfc-bank</loc>
     <lastmod>2026-05-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://yureka.money/cards/first-millennia-idfc-first-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/hdfc-bizgrow-hdfc-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/hdfc-bharat-cashback-hdfc-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://yureka.money/cards/gaj-metal-idfc-first-bank</loc>
-    <lastmod>2026-05-10</lastmod>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -828,25 +750,7 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/hdfc-diners-club-black-metal-hdfc-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://yureka.money/cards/hdfc-diners-club-privilege-hdfc-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/hdfc-infinia-metal-hdfc-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/hdfc-jet-privilege-world-hdfc-bank</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -858,37 +762,7 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/hdfc-paytm-select-hdfc-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/hdfc-regalia-gold-hdfc-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/hdfc-shoppers-stop-hdfc-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/indusind-platinum-aura-indusind-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://yureka.money/cards/hdfc-swiggy-ornge-hdfc-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/hdfc-tata-neu-infinity-hdfc-bank</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -900,38 +774,44 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/hsbc-liv-hsbc</loc>
-    <lastmod>2026-04-30</lastmod>
+    <loc>https://yureka.money/cards/hdfc-jet-privilege-world-hdfc-bank</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/hsbc-live-hsbc</loc>
-    <lastmod>2026-04-30</lastmod>
+    <loc>https://yureka.money/cards/hdfc-diners-club-black-metal-hdfc-bank</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/hsbc-premier-sc-standard-chartered</loc>
-    <lastmod>2026-04-30</lastmod>
+    <loc>https://yureka.money/cards/hdfc-paytm-select-hdfc-bank</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/hsbc-premier-mastercard-hsbc</loc>
-    <lastmod>2026-04-30</lastmod>
+    <loc>https://yureka.money/cards/hdfc-shoppers-stop-hdfc-bank</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/hsbc-premier-metal-hsbc</loc>
-    <lastmod>2026-04-30</lastmod>
+    <loc>https://yureka.money/cards/hdfc-regalia-gold-hdfc-bank</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/kotak-indigo-kachings-kotak-mahindra-bank</loc>
-    <lastmod>2026-04-30</lastmod>
+    <loc>https://yureka.money/cards/indusind-platinum-aura-indusind-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/hdfc-tata-neu-infinity-hdfc-bank</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -954,38 +834,62 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/icici-emeralde-private-metal-icici-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/icici-ishop-general-icici-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/icici-ishop-titanium-icici-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://yureka.money/cards/icici-parakram-icici-bank</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/idbi-royale-signature-idbi-bank</loc>
-    <lastmod>2026-04-30</lastmod>
+    <loc>https://yureka.money/cards/hsbc-live-hsbc</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/idfc-first-bank-indigo-6e-rewards-idfc-first-bank</loc>
-    <lastmod>2026-04-30</lastmod>
+    <loc>https://yureka.money/cards/icici-emeralde-private-metal-icici-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/hsbc-premier-sc-standard-chartered</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/hsbc-premier-mastercard-hsbc</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/hsbc-liv-hsbc</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/kotak-indigo-kachings-kotak-mahindra-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/icici-ishop-general-icici-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/icici-ishop-titanium-icici-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/idbi-royale-signature-idbi-bank</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -997,18 +901,6 @@
   </url>
   <url>
     <loc>https://yureka.money/cards/idfc-first-power-idfc-first-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/idfc-first-swyp-idfc-first-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/idfc-first-upi-credit-card-first-earn-idfc-first-bank</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -1026,19 +918,7 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/idfc-first-wow-black-idfc-first-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://yureka.money/cards/indian-bank-platinum-indian-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/indian-oil-axis-bank-axis-bank</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -1062,20 +942,26 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://yureka.money/cards/idfc-first-swyp-idfc-first-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/idfc-first-upi-credit-card-first-earn-idfc-first-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/indian-oil-axis-bank-axis-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://yureka.money/cards/indigo-sbi-card-sbi-card</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/indusind-celesta-indusind-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/indusind-club-vistara-explorer-indusind-bank</loc>
-    <lastmod>2026-04-30</lastmod>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -1092,31 +978,7 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/indusind-eazydiner-platinum-indusind-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/indusind-eazydiner-signature-indusind-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/indusind-jiobp-mobility-indusind-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://yureka.money/cards/insta-easy-axis-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/insta-platinum-icici-bank</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -1128,26 +990,50 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/jupiter-edge-jupiter-federal-bank</loc>
-    <lastmod>2026-04-30</lastmod>
+    <loc>https://yureka.money/cards/jupiter-edge-csb-csb-bank</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/jupiter-edge-csb-csb-bank</loc>
-    <lastmod>2026-04-30</lastmod>
+    <loc>https://yureka.money/cards/indusind-eazydiner-platinum-indusind-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/indusind-celesta-indusind-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/indusind-eazydiner-signature-indusind-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/indusind-jiobp-mobility-indusind-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/insta-platinum-icici-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/jupiter-edge-jupiter-federal-bank</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yureka.money/cards/kiwi-yes-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/kiwi-upi-credit-card-kiwi-sbm-bank</loc>
-    <lastmod>2026-04-30</lastmod>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -1158,19 +1044,7 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/kotak-fortune-gold-kotak-mahindra-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://yureka.money/cards/kotak-mojo-platinum-kotak-mahindra-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/kotak-pvr-platinum-kotak-mahindra-bank</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -1188,18 +1062,6 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/kotak-urbane-gold-kotak-mahindra-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/kotak-veer-select-kotak-mahindra-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://yureka.money/cards/kotak-white-reserve-kotak-mahindra-bank</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>weekly</changefreq>
@@ -1212,20 +1074,44 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://yureka.money/cards/kotak-fortune-gold-kotak-mahindra-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/kotak-pvr-platinum-kotak-mahindra-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/kotak-urbane-gold-kotak-mahindra-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://yureka.money/cards/kvb-platinum-karur-vysya-bank</loc>
-    <lastmod>2026-04-30</lastmod>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/kotak-veer-select-kotak-mahindra-bank</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yureka.money/cards/lic-axis-platinum-lic-cards-axis</loc>
-    <lastmod>2026-04-30</lastmod>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yureka.money/cards/rbl-play-rbl-bank</loc>
-    <lastmod>2026-04-30</lastmod>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -1254,24 +1140,6 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/manhattan-platinum-standard-chartered</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/marriott-bonvoy-hdfc-hdfc-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/lic-classic-idfc-first-bank</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://yureka.money/cards/mayura-metal-idfc-first-bank</loc>
     <lastmod>2026-05-10</lastmod>
     <changefreq>weekly</changefreq>
@@ -1296,14 +1164,20 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/miles-elite-sbi-card</loc>
-    <lastmod>2026-04-30</lastmod>
+    <loc>https://yureka.money/cards/lic-classic-idfc-first-bank</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/miles-prime-sbi-card</loc>
-    <lastmod>2026-04-30</lastmod>
+    <loc>https://yureka.money/cards/manhattan-platinum-standard-chartered</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/miles-elite-sbi-card</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -1326,12 +1200,6 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/niyo-global-niyo-equitas-sfb-dcb</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://yureka.money/cards/nri-bobcard-bank-of-baroda</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>weekly</changefreq>
@@ -1344,43 +1212,43 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/phonepe-purple-sbi-sbi-card</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/neo-axis-bank</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://yureka.money/cards/pinnacle-indusind-bank</loc>
     <lastmod>2026-05-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://yureka.money/cards/niyo-global-niyo-equitas-sfb-dcb</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/phonepe-purple-sbi-sbi-card</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/neo-axis-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://yureka.money/cards/pnb-rupay-platinum-punjab-national-bank</loc>
-    <lastmod>2026-04-30</lastmod>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yureka.money/cards/popcorn-rbl-bank</loc>
-    <lastmod>2026-04-30</lastmod>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yureka.money/cards/powermiles-equitas-equitas-small-finance-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/prestige-citi-now-axis</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -1392,20 +1260,8 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/platinum-icici-icici-bank</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://yureka.money/cards/platinum-indusind-indusind-bank</loc>
     <lastmod>2026-05-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/ratan-tata-axis-bank-axis-bank</loc>
-    <lastmod>2026-04-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -1434,44 +1290,26 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/rbl-indianoil-xtra-rbl-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://yureka.money/cards/rbl-insignia-preferred-rbl-bank</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://yureka.money/cards/platinum-icici-icici-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/rbl-indianoil-xtra-rbl-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://yureka.money/cards/rbl-nova-rbl-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/rbl-world-safari-rbl-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/rbl-world-safari-lite-rbl-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/rbl-zomato-edition-rbl-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/reliance-sbi-card-prime-sbi-card</loc>
-    <lastmod>2026-04-30</lastmod>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -1482,62 +1320,62 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://yureka.money/cards/reliance-sbi-card-prime-sbi-card</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/rbl-world-safari-lite-rbl-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/rbl-world-safari-rbl-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/rbl-zomato-edition-rbl-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://yureka.money/cards/reserve-axis-bank</loc>
-    <lastmod>2026-05-10</lastmod>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yureka.money/cards/rubyx-icici-bank</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/royale-platinum-idbi-bank</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/sbi-makemytrip-prime-sbi-card</loc>
-    <lastmod>2026-04-30</lastmod>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yureka.money/cards/saraswat-gold-saraswat-bank</loc>
-    <lastmod>2026-04-30</lastmod>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/sbi-makemytrip-prime-sbi-card</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yureka.money/cards/saraswat-gold-visa-saraswat-bank</loc>
-    <lastmod>2026-04-30</lastmod>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yureka.money/cards/savemax-bankbazaar-rbl-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/sbi-aurum-sbi-card</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/sapphiro-business-icici-bank</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/sbi-irctc-rupay-sbi-card</loc>
-    <lastmod>2026-04-30</lastmod>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -1560,50 +1398,50 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/sbi-prime-sbi-card</loc>
-    <lastmod>2026-04-30</lastmod>
+    <loc>https://yureka.money/cards/slice-card-sbm-sbm-bank</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/sbi-unnati-sbi-card</loc>
-    <lastmod>2026-04-30</lastmod>
+    <loc>https://yureka.money/cards/sapphiro-business-icici-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/sbi-irctc-rupay-sbi-card</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yureka.money/cards/sbm-travel-sbm-bank</loc>
-    <lastmod>2026-04-30</lastmod>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/sbi-unnati-sbi-card</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/sbi-prime-sbi-card</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yureka.money/cards/scapia-credit-card-scapia-federal-bank</loc>
-    <lastmod>2026-04-30</lastmod>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yureka.money/cards/scapia-federal-bank-federal-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/slice-card-sbm-sbm-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/shoppers-stop-kotak-kotak-mahindra-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/shoprite-rbl-bank</loc>
-    <lastmod>2026-04-30</lastmod>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -1620,43 +1458,7 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/lit-au-small-finance-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/scapia-travel-federal-bank</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/slice-credit-card-slice-quadrillion-bajaj</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/smart-standard-chartered</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/solitaire-business-kotak-mahindra-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://yureka.money/cards/spicejet-sbi-card-sbi-card</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/standard-chartered-smart-standard-chartered</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -1680,20 +1482,38 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/swiggy-blck-hdfc-hdfc-bank</loc>
-    <lastmod>2026-04-30</lastmod>
+    <loc>https://yureka.money/cards/lit-au-small-finance-bank</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/swiggy-hdfc-bank-hdfc-bank</loc>
-    <lastmod>2026-04-30</lastmod>
+    <loc>https://yureka.money/cards/slice-credit-card-slice-quadrillion-bajaj</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/union-classic-union-bank-of-india</loc>
-    <lastmod>2026-04-30</lastmod>
+    <loc>https://yureka.money/cards/scapia-travel-federal-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/standard-chartered-smart-standard-chartered</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/smart-standard-chartered</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/solitaire-business-kotak-mahindra-bank</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -1705,24 +1525,6 @@
   </url>
   <url>
     <loc>https://yureka.money/cards/union-select-rupay-union-bank-of-india</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/premiermiles-citi-now-axis-axis-bank-exciti</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/utkarsh-secured-credit-card-utkarsh-small-finance-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/varun-dhawan-entertainer-bank-of-baroda</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -1740,67 +1542,43 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://yureka.money/cards/union-classic-union-bank-of-india</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/swiggy-blck-hdfc-hdfc-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/utkarsh-secured-credit-card-utkarsh-small-finance-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/premiermiles-citi-now-axis-axis-bank-exciti</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/varun-dhawan-entertainer-bank-of-baroda</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://yureka.money/cards/cashback-citi-now-axis-axis-bank-exciti</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/visa-signet-federal-bank</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/visa-platinum-hsbc</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/wellness-plus-yes-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/xcite-ultra-au-small-finance-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/yatra-sbi-card-sbi-card</loc>
-    <lastmod>2026-04-30</lastmod>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yureka.money/cards/yes-bank-prosperity-rewards-plus-yes-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/yes-first-exclusive-yes-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/yes-first-preferred-yes-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/indianoil-citi-now-axis-axis-bank-exciti</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/yes-marquee-yes-bank</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -1812,13 +1590,55 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/yes-prosperity-rewards-yes-bank</loc>
-    <lastmod>2026-04-30</lastmod>
+    <loc>https://yureka.money/cards/wellness-plus-yes-bank</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/yes-savings-yes-bank</loc>
+    <loc>https://yureka.money/cards/visa-platinum-hsbc</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/xcite-ultra-au-small-finance-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/yes-first-exclusive-yes-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/yatra-sbi-card-sbi-card</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/yes-first-preferred-yes-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/indianoil-citi-now-axis-axis-bank-exciti</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/yes-marquee-yes-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/yes-prosperity-rewards-yes-bank</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -1854,19 +1674,7 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/swipe-up-au-swipeup-au-small-finance-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://yureka.money/cards/freo-credit-card-freo-idfc-first-karnataka-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/adani-one-icici-platinum-icici-bank</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -1878,32 +1686,44 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/military-force-hdfc-bank</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://yureka.money/cards/bizblack-hdfc-bank</loc>
     <lastmod>2026-05-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/times-black-icici-bank</loc>
-    <lastmod>2026-05-10</lastmod>
+    <loc>https://yureka.money/cards/yes-savings-yes-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/swipe-up-au-swipeup-au-small-finance-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/adani-one-icici-platinum-icici-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/military-force-hdfc-bank</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yureka.money/cards/rubyx-business-icici-bank</loc>
-    <lastmod>2026-05-10</lastmod>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yureka.money/cards/millennia-idbi-idbi-bank</loc>
-    <lastmod>2026-05-10</lastmod>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -1926,19 +1746,7 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/first-select-idfc-first-bank</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://yureka.money/cards/indian-bank-classic-indian-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/samman-indusind-indusind-bank</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -1950,44 +1758,8 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/kotak-solitaire-kotak-mahindra-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://yureka.money/cards/solaris-platinum-kotak-mahindra-bank</loc>
     <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/kotak-811-credit-card-kotak-mahindra-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/privy-league-signature-kotak-mahindra-bank</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/first-wealth-idfc-first-bank</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/first-private-metal-idfc-first-bank</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/poonawalla-fincorp-elite-indusind-bank</loc>
-    <lastmod>2026-05-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -2000,6 +1772,48 @@
   <url>
     <loc>https://yureka.money/cards/silk-inspire-kotak-mahindra-bank</loc>
     <lastmod>2026-04-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/first-select-idfc-first-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/kotak-solitaire-kotak-mahindra-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/samman-indusind-indusind-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/kotak-811-credit-card-kotak-mahindra-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/first-wealth-idfc-first-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/privy-league-signature-kotak-mahindra-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/poonawalla-fincorp-elite-indusind-bank</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
@@ -2022,12 +1836,6 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/sbi-card-krisflyer-sbi-card-apex</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://yureka.money/cards/sbi-card-irctc-sbi-card-premier</loc>
     <lastmod>2026-04-30</lastmod>
     <changefreq>weekly</changefreq>
@@ -2040,38 +1848,230 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://yureka.money/cards/standard-chartered-easemytrip-platinum</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
     <loc>https://yureka.money/cards/standard-chartered-super-value-titanium</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/yes-bank-yes-elite</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/axis-bank-my-zone</loc>
-    <lastmod>2026-05-10</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://yureka.money/cards/axis-bank-atlas</loc>
-    <lastmod>2026-05-10</lastmod>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://yureka.money/cards/axis-bank-magnus-burgundy</loc>
-    <lastmod>2026-05-10</lastmod>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/sbi-card-krisflyer-sbi-card-apex</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/standard-chartered-easemytrip-platinum</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/axis-bank-my-zone</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/yes-bank-yes-elite</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/axis-bank-atlas</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/supermoney-rupay-axis-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/first-private-metal-idfc-first-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/travelone-hsbc</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/sbm-lifestyle-sbm-bank-india</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/times-black-icici-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/swiggy-hdfc-bank-hdfc-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/shoppers-stop-kotak-kotak-mahindra-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/sbi-aurum-sbi-card</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/hsbc-premier-metal-hsbc</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/kiwi-upi-credit-card-kiwi-sbm-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/boi-star-business-visa-bank-of-india</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/sapphiro-icici-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/marriott-bonvoy-hdfc-hdfc-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/hdfc-infinia-metal-hdfc-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/cred-sovereign-indusind-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/811-dreamdifferent-kotak-mahindra-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/au-nomo-au-small-finance-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/au-zenith-plus-au-small-finance-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/samsung-axis-bank-infinite-axis-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/club-vistara-sbi-card-prime-sbi-card</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/etihad-guest-bank-of-baroda</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/flipkart-axis-bank-axis-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/idfc-first-bank-indigo-6e-rewards-idfc-first-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/idfc-first-wow-black-idfc-first-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/indusind-club-vistara-explorer-indusind-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/miles-prime-sbi-card</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/prestige-citi-now-axis</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/ratan-tata-axis-bank-axis-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/royale-platinum-idbi-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/shoprite-rbl-bank</loc>
+    <lastmod>2026-06-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://yureka.money/cards/visa-signet-federal-bank</loc>
+    <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>

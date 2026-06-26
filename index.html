@@ -56,22 +56,23 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Inter:wght@400;500;600&family=Instrument+Serif:ital@1&family=Kanit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700;800&family=Inter:wght@400;500;600&family=Instrument+Serif:ital@1&family=Kanit:wght@300;400;500;600;700;800;900&family=Overpass+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://rvqtlvgaqlgylipsaktm.supabase.co">
     <link rel="dns-prefetch" href="https://rvqtlvgaqlgylipsaktm.supabase.co">
-    <script>
-      // Security: Disable Right Click
-      document.addEventListener('contextmenu', event => event.preventDefault());
+    <script type="module">
+      // Security: Disable Right Click & DevTools shortcuts (production only)
+      if (!import.meta.env.DEV) {
+        document.addEventListener('contextmenu', event => event.preventDefault());
 
-      // Security: Disable Keyboard Shortucts for DevTools
-      document.addEventListener('keydown', e => {
-        if (e.keyCode === 123) { e.preventDefault(); return false; }
-        if (e.ctrlKey && e.shiftKey && e.keyCode === 73) { e.preventDefault(); return false; }
-        if (e.ctrlKey && e.shiftKey && e.keyCode === 74) { e.preventDefault(); return false; }
-        if (e.ctrlKey && e.shiftKey && e.keyCode === 67) { e.preventDefault(); return false; }
-        if (e.ctrlKey && e.keyCode === 85) { e.preventDefault(); return false; }
-        if (e.ctrlKey && e.keyCode === 83) { e.preventDefault(); return false; }
-      });
+        document.addEventListener('keydown', e => {
+          if (e.keyCode === 123) { e.preventDefault(); return false; }
+          if (e.ctrlKey && e.shiftKey && e.keyCode === 73) { e.preventDefault(); return false; }
+          if (e.ctrlKey && e.shiftKey && e.keyCode === 74) { e.preventDefault(); return false; }
+          if (e.ctrlKey && e.shiftKey && e.keyCode === 67) { e.preventDefault(); return false; }
+          if (e.ctrlKey && e.keyCode === 85) { e.preventDefault(); return false; }
+          if (e.ctrlKey && e.keyCode === 83) { e.preventDefault(); return false; }
+        });
+      }
     </script>
 </head>
   <body>

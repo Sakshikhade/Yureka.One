@@ -5,10 +5,12 @@ import {
     Send, Sparkles, Trophy, Star, Shield, Clock
 } from 'lucide-react';
 import { useSupabase } from '../SupabaseProvider';
-import { fetchUserReferrals } from '../../services/supabaseService';
+import { api, isApiError } from '../../lib/api/client';
+import { fromApiWaitlist } from '../../lib/api/mappers';
+import type { Waitlist as ApiWaitlist } from '../../lib/api/types';
 
 const ReferralDashboard: React.FC = () => {
-    const { user, supabase } = useSupabase();
+    const { user } = useSupabase();
     const [referrals, setReferrals] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [personalCode, setPersonalCode] = useState('');
@@ -19,16 +21,12 @@ const ReferralDashboard: React.FC = () => {
 
     const loadReferralData = async () => {
         try {
-            const { data: waitlistEntry } = await supabase
-                .from('waitlist')
-                .select('personal_referral_code')
-                .eq('email', user!.email)
-                .single();
-
-            if (waitlistEntry?.personal_referral_code) {
-                setPersonalCode(waitlistEntry.personal_referral_code);
-                const data = await fetchUserReferrals(waitlistEntry.personal_referral_code);
-                setReferrals(data || []);
+            const entryRes = await api.get<ApiWaitlist>(`/api/v1/waitlist/entry?email=${encodeURIComponent(user!.email)}`);
+            const code = !isApiError(entryRes) ? entryRes.data?.personalReferralCode : undefined;
+            if (code) {
+                setPersonalCode(code);
+                const refRes = await api.get<ApiWaitlist[]>(`/api/v1/waitlist/referrals?code=${encodeURIComponent(code)}`);
+                if (!isApiError(refRes)) setReferrals((refRes.data ?? []).map(fromApiWaitlist));
             }
         } catch (err) {
             console.error("Failed to load referrals:", err);

@@ -6,7 +6,9 @@ import {
   ArrowRightLeft, Star, Zap, Info, Shield, 
   ZapOff, CheckCircle2, AlertCircle, Loader2, CreditCard
 } from 'lucide-react';
-import { getCards } from '../services/supabaseService';
+import { api, isApiError } from '../lib/api/client';
+import { fromApiCard } from '../lib/api/mappers';
+import type { Card as ApiCard } from '../lib/api/types';
 import { Card } from '../types';
 import SEO from './SEO';
 
@@ -54,11 +56,10 @@ const ComparePage: React.FC = () => {
   const [activeDropdown, setActiveDropdown] = useState<number | null>(null);
 
   useEffect(() => {
-    const unsub = getCards((cards) => {
-      setAllCards(cards);
+    api.get<ApiCard[]>('/api/v1/cms/cards', { skipAuth: true }).then(res => {
+      if (!isApiError(res)) setAllCards((res.data ?? []).map(fromApiCard));
       setLoading(false);
     });
-    return unsub;
   }, []);
 
   const handleSelect = (index: number, cardId: string) => {

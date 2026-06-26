@@ -209,7 +209,7 @@ const HeroSection: React.FC = () => {
     <section className="relative h-screen w-full flex flex-col justify-between overflow-hidden px-6 md:px-10 pb-7 sm:pb-8 md:pb-10 pt-24 md:pt-36">
       {/* Spacer / Top Row since navbar is hidden inside page body */}
       <div className="w-full flex justify-between items-center pointer-events-none opacity-0 select-none">
-        <span className="text-sm">Jack</span>
+        <span className="text-sm">Yureka</span>
       </div>
 
       {/* Portrait (Centered absolutely with Magnet) */}
@@ -218,7 +218,7 @@ const HeroSection: React.FC = () => {
           <Magnet strength={3} padding={150} className="w-full h-full">
             <img
               src="https://shrug-person-78902957.figma.site/_components/v2/d24c01ad3a56fc65e942a1f501eb73db42d7cf9a/Rectangle_40443.81459862.png"
-              alt="Portrait of Jack"
+              alt="Portrait of Yureka"
               className="w-full object-contain pointer-events-none select-none drop-shadow-[0_20px_50px_rgba(0,0,0,0.7)]"
             />
           </Magnet>
@@ -229,7 +229,7 @@ const HeroSection: React.FC = () => {
       <div className="w-full overflow-hidden relative z-0 mt-6 sm:mt-4 md:-mt-5">
         <FadeIn delay={0.15} y={40} className="w-full">
           <h1 className="hero-heading font-black uppercase tracking-tight leading-[0.8] whitespace-nowrap w-full text-[14vw] sm:text-[15vw] md:text-[16vw] lg:text-[17.5vw] text-center select-none">
-            Hi, i&apos;m jack
+            Hi, i&apos;m yureka
           </h1>
         </FadeIn>
       </div>
@@ -434,28 +434,33 @@ interface ServiceItem {
 const SERVICES: ServiceItem[] = [
   {
     number: "01",
-    name: "3D Modeling",
-    description: "Creation of detailed objects, characters, or environments tailored to specific client needs, ideal for games, products, and visualizations.",
+    name: "500+ Brands",
+    description: "We have over 500+ Brands , 150+ Hotels , 70+ Lounges, 10+ Airlines partnered exclusively for Yureka Users",
   },
   {
     number: "02",
-    name: "Rendering",
-    description: "High-quality, photorealistic renders that showcase designs with custom lighting, textures, and materials to bring concepts to life.",
+    name: "Yureka pays upto 30% of the total bill",
+    description: "When you are about to make a full bill transaction , We jumps in and sponsors  upto 30% from our end as a gesture of love.",
   },
   {
     number: "03",
-    name: "Motion Design",
-    description: "Dynamic animations and motion graphics that add energy and storytelling to brands, products, and digital experiences.",
+    name: "Assured Cashback upto 10% on every transaction ",
+    description: "When ever you make a purchase from any of our partners you get assured cashback  upto 10% of what you have paid.",
   },
   {
     number: "04",
-    name: "Branding",
-    description: "Crafting cohesive visual identities -- from logos to full brand systems -- that communicate a clear and memorable presence.",
+    name: "Assured Goldback Upto 10% on every transaction ",
+    description: "When ever you make a purchase from any of our partners you get assured goldback upto 10% of what you have paid.",
   },
   {
     number: "05",
-    name: "Web Design",
-    description: "Designing clean, modern, and conversion-focused websites with attention to layout, typography, and user experience.",
+    name: "Reward Poins Upto 10% on every transaction",
+    description: "When ever you make a purchase from any of our partners you get assured reward point upto 10% of what you have paid. These reward points are 100% cash equivalent redeemable across yureka partner brands",
+  },
+  {
+    number: "06",
+    name: "360 Degree Redeemption",
+    description: "Redeem all your credit card points smartly for almost 5X returns for your vacations , brands , hotels , flight tickets and everything that you can see here",
   },
 ];
 
@@ -465,8 +470,8 @@ const ServicesSection: React.FC = () => {
       <div className="max-w-5xl mx-auto w-full">
         {/* Services Heading */}
         <FadeIn className="text-center mb-16 sm:mb-20 md:mb-28">
-          <h2 className="text-[#0C0C0C] font-black uppercase text-[12vw] sm:text-[10vw] md:text-[8vw] lg:text-[7.5vw] tracking-tight leading-none">
-            Services
+          <h2 className="text-[#0C0C0C] font-black uppercase text-[7vw] sm:text-[6vw] md:text-[5vw] lg:text-[4vw] tracking-tight leading-none whitespace-nowrap">
+            What you get ?
           </h2>
         </FadeIn>
 
@@ -514,27 +519,35 @@ interface Project {
 const PROJECTS: Project[] = [
   {
     number: "01",
-    category: "Client",
-    name: "Nextlevel Studio",
+    category: "500+ Brands",
+    name: "SHOP",
     img1: "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055344_5eff02e0-87a5-41ce-b64f-eb08da8f33db.png&w=1280&q=85",
     img2: "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055431_11d841fd-8b41-46a5-82e4-b04f2407a7d8.png&w=1280&q=85",
     img3: "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055451_e317bf2d-28d4-48cc-86b0-6f72f25b6327.png&w=1280&q=85",
   },
   {
     number: "02",
-    category: "Personal",
-    name: "Aura Brand Identity",
+    category: "Yureka contributes upto 30% of the bill.",
+    name: "SAVE",
     img1: "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055654_911201c5-36d9-4bc6-bac7-331adfce159f.png&w=1280&q=85",
     img2: "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055723_5ceda0b8-d9c2-4665-b2e3-83ba19ba76d1.png&w=1280&q=85",
     img3: "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055753_adc5dcbd-a8e6-49c0-b43a-9b030d835cea.png&w=1280&q=85",
   },
   {
     number: "03",
-    category: "Client",
-    name: "Solaris Digital",
+    category: "Assured ROI on every purchase upto 10%",
+    name: "EARN",
     img1: "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055759_963cfb0b-4bd1-4b0f-9d0a-09bd6cf95b2f.png&w=1280&q=85",
     img2: "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_060108_438f781a-9846-4dcc-89ab-c4e6cb830f5b.png&w=1280&q=85",
     img3: "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055818_9d062121-ad7e-46b9-999a-1a6a692ef1ee.png&w=1280&q=85",
+  },
+  {
+    number: "04",
+    category: "This is not the new RITUAL",
+    name: "REPEAT",
+    img1: "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055344_5eff02e0-87a5-41ce-b64f-eb08da8f33db.png&w=1280&q=85",
+    img2: "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055431_11d841fd-8b41-46a5-82e4-b04f2407a7d8.png&w=1280&q=85",
+    img3: "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055451_e317bf2d-28d4-48cc-86b0-6f72f25b6327.png&w=1280&q=85",
   },
 ];
 
@@ -624,7 +637,7 @@ const ProjectsSection: React.FC = () => {
         {/* Projects Heading */}
         <FadeIn className="text-center mb-16">
           <h2 className="hero-heading text-[12vw] sm:text-[10vw] md:text-[8vw] lg:text-[7.5vw] font-black uppercase tracking-tight leading-none mb-10">
-            Project
+            Rituals
           </h2>
         </FadeIn>
 
@@ -658,9 +671,9 @@ const ProjectsSection: React.FC = () => {
 // ============================================================================
 
 const HowYurekaHelps: React.FC = () => {
-  // Dynamically set the title to "Jack -- 3D Creator"
+  // Dynamically set the title to "Yureka Money"
   useEffect(() => {
-    document.title = "Jack -- 3D Creator";
+    document.title = "Yureka Money";
   }, []);
 
   return (

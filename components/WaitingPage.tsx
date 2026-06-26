@@ -8,8 +8,13 @@ import {
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSupabase } from './SupabaseProvider';
-import { getWaitlistEntry, computeAndUpdateRank, RANK_BOOST_PER_REFERRAL, RANK_BOOST_PER_APPROVAL } from '../services/supabaseService';
+import { api, isApiError } from '../lib/api/client';
+import { fromApiWaitlist } from '../lib/api/mappers';
+import type { Waitlist as ApiWaitlist, RankResult as ApiRankResult } from '../lib/api/types';
 import { WaitlistEntry } from '../types';
+
+const RANK_BOOST_PER_REFERRAL = 15;
+const RANK_BOOST_PER_APPROVAL = 35;
 
 interface RankResult {
     baseRank: number;
@@ -130,8 +135,8 @@ const WaitingPage: React.FC = () => {
         if (!user?.email) return;
         setIsLoading(true);
         try {
-            const data = await getWaitlistEntry(user.email);
-            setEntry(data);
+            const res = await api.get<ApiWaitlist>(`/api/v1/waitlist/entry?email=${encodeURIComponent(user.email)}`);
+            if (!isApiError(res) && res.data) setEntry(fromApiWaitlist(res.data));
         } catch (err) {
             console.error('Error fetching waitlist entry:', err);
         } finally {
@@ -144,9 +149,11 @@ const WaitingPage: React.FC = () => {
         setIsSyncing(true);
         setSyncError(null);
         try {
-            const result = await computeAndUpdateRank(user.email);
+            const res = await api.post<ApiRankResult>('/api/v1/waitlist/rank/compute', { email: user.email });
+            if (isApiError(res)) throw new Error(res.error);
+            const result = res.data!;
             setRankResult(result);
-            setEntry(result.entry);
+            setEntry(fromApiWaitlist(result.entry));
             setSyncDone(true);
             setIsModalOpen(false);
         } catch (err: any) {

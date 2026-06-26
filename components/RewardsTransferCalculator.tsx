@@ -14,7 +14,18 @@ import {
 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import SEO from './SEO';
-import { transferMatrix } from '../data/transferMatrix';
+
+interface TransferRow {
+  'Transfer From': string;
+  'Transfer To': string;
+  'From Category': string;
+  'To Category': string;
+  'Ratio': string;
+  'Ratio Float': number;
+  'Transfer Time': string;
+  'Via': string;
+  'Notes': string;
+}
 
 const VALUATION_MAP: Record<string, number> = {
   'AIRLINE': 0.95,
@@ -91,6 +102,8 @@ const RewardsTransferCalculator: React.FC = () => {
   const [showBonusesOnly, setShowBonusesOnly] = useState(false);
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const [visibleCount, setVisibleCount] = useState(20);
+  const [transferMatrix, setTransferMatrix] = useState<TransferRow[]>([]);
+  const [isMatrixLoading, setIsMatrixLoading] = useState(true);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -104,8 +117,16 @@ const RewardsTransferCalculator: React.FC = () => {
     if (isDashboard) return;
     
     const access = localStorage.getItem('yureka_points_access');
-    if (!access) navigate(`${basePath}/tools`);
+    if (!access) navigate(`${basePath}/free-tools`);
   }, [navigate, basePath, isDashboard]);
+
+  // Lazy-load the transfer matrix dataset (~900KB) instead of bundling it
+  useEffect(() => {
+    fetch('/data/transferMatrix.json')
+      .then(res => res.json())
+      .then((data: TransferRow[]) => setTransferMatrix(data))
+      .finally(() => setIsMatrixLoading(false));
+  }, []);
 
   // Click outside listener
   useEffect(() => {
@@ -129,7 +150,7 @@ const RewardsTransferCalculator: React.FC = () => {
     const tList = Array.from(tos).sort();
 
     return { fromPrograms: fList, toPrograms: tList };
-  }, []);
+  }, [transferMatrix]);
 
   // Sync logic: If user selects an incompatible program, clear the other side
   useEffect(() => {
@@ -159,7 +180,7 @@ const RewardsTransferCalculator: React.FC = () => {
       const yieldB = 1 / (b["Ratio Float"] || 1);
       return yieldB - yieldA;
     });
-  }, [selectedFrom, selectedTo]);
+  }, [selectedFrom, selectedTo, transferMatrix]);
 
   // Reset pagination when filters change
   useEffect(() => {
@@ -180,7 +201,9 @@ const RewardsTransferCalculator: React.FC = () => {
         
         {/* Controls Section */}
         <div className="bg-white/5 rounded-3xl border border-white/5 p-6 sm:p-8 mb-6 shadow-2xl relative group">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 blur-[100px] rounded-full -mr-32 -mt-32" />
+          <div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 blur-[100px] rounded-full -mr-32 -mt-32" />
+          </div>
           
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-end relative z-10">
             
@@ -349,7 +372,7 @@ const RewardsTransferCalculator: React.FC = () => {
                   value={amount || ''} 
                   onFocus={(e) => e.target.select()}
                   onChange={e => setAmount(Math.max(0, Number(e.target.value)))}
-                  className="flex-1 bg-transparent border-none outline-none text-2xl font-bold text-white text-center tracking-tight"
+                  className="flex-1 min-w-0 bg-transparent border-none outline-none text-2xl font-bold text-white text-center tracking-tight"
                 />
               </div>
             </div>
@@ -395,8 +418,18 @@ const RewardsTransferCalculator: React.FC = () => {
         {/* Results List */}
         <div className="space-y-6">
           <AnimatePresence mode='popLayout'>
-            {displayedResults.length === 0 ? (
-               <motion.div 
+            {isMatrixLoading ? (
+               <motion.div
+                 initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                 className="py-24 text-center bg-white/5 rounded-[3rem] border border-dashed border-white/5 text-white/20 flex flex-col items-center gap-6"
+               >
+                  <div className="w-20 h-20 rounded-full bg-emerald-500/5 flex items-center justify-center border border-emerald-500/10 animate-pulse">
+                    <TrendingUp size={40} strokeWidth={1} className="text-emerald-500/40" />
+                  </div>
+                  <p className="text-[11px] font-bold uppercase tracking-[0.4em] max-w-xs leading-loose">Loading conversion network...</p>
+               </motion.div>
+            ) : displayedResults.length === 0 ? (
+               <motion.div
                  initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                  className="py-24 text-center bg-white/5 rounded-[3rem] border border-dashed border-white/5 text-white/20 flex flex-col items-center gap-6"
                >

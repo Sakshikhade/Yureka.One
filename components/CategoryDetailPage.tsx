@@ -5,7 +5,9 @@ import {
   ArrowLeft, Sparkles, Star, Zap, Info, ChevronRight, 
   MessageSquare, ExternalLink, AlertCircle, Loader2
 } from 'lucide-react';
-import { getCards } from '../services/supabaseService';
+import { api, isApiError } from '../lib/api/client';
+import { fromApiCard } from '../lib/api/mappers';
+import type { Card as ApiCard } from '../lib/api/types';
 import { Card } from '../types';
 import SEO from './SEO';
 
@@ -29,15 +31,17 @@ const CategoryDetailPage: React.FC = () => {
   const meta = CATEGORY_META[slug || ''] || { name: slug?.replace('-', ' '), icon: '💳', color: 'from-emerald-500/20', benefits: ['Optimized rewards', 'Curated benefits'] };
 
   useEffect(() => {
-    const unsub = getCards((allCards) => {
-      const filtered = allCards.filter(c => 
-        c.category?.toLowerCase().includes(slug?.replace('-', ' ') || '') || 
-        c.benefits?.some(b => b.toLowerCase().includes(slug?.replace('-', ' ') || ''))
-      );
-      setCards(filtered);
+    api.get<ApiCard[]>('/api/v1/cms/cards', { skipAuth: true }).then(res => {
+      if (!isApiError(res)) {
+        const allCards = (res.data ?? []).map(fromApiCard);
+        const filtered = allCards.filter(c =>
+          c.category?.toLowerCase().includes(slug?.replace('-', ' ') || '') ||
+          c.benefits?.some(b => b.toLowerCase().includes(slug?.replace('-', ' ') || ''))
+        );
+        setCards(filtered);
+      }
       setLoading(false);
     });
-    return unsub;
   }, [slug]);
 
   return (
