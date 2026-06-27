@@ -278,18 +278,21 @@ const TextReveal: React.FC = () => {
 
 
         <div className="relative z-10 max-w-6xl mx-auto w-full flex flex-col">
-          <div className="text-center mb-20">
+          <div className="text-center mb-20 flex flex-col gap-2">
             <WordsPullUpMultiStyle
-              containerClassName="flex-col gap-2"
+              mode="inline"
+              containerClassName="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-normal"
               segments={[
-                {
-                  text: 'Built for PowerShoppers like you.',
-                  className: 'text-xl sm:text-2xl md:text-3xl lg:text-4xl font-normal text-[#DEDBC8] block',
-                },
-                {
-                  text: 'Zero Asterisk, No Terms & Conditions.',
-                  className: 'text-xl sm:text-2xl md:text-3xl lg:text-4xl font-normal text-gray-500 block mt-2',
-                },
+                { text: 'Built for', className: 'text-[#DEDBC8]' },
+                { text: 'PowerShoppers', className: 'text-clay' },
+                { text: 'like you.', className: 'text-[#DEDBC8]' },
+              ]}
+            />
+            <WordsPullUpMultiStyle
+              mode="inline"
+              containerClassName="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-normal mt-2"
+              segments={[
+                { text: 'Zero Asterisk, No Terms & Conditions.', className: 'text-gray-500' },
               ]}
             />
           </div>

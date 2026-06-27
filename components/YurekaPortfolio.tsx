@@ -321,9 +321,9 @@ const AboutSection: React.FC = () => (
     {/* Content — constrained to columns 2-4 */}
     <ColContent className="flex flex-col items-center text-center z-20 gap-10 sm:gap-14 md:gap-16">
       <FadeIn delay={0} y={40} className="w-full">
-        <h2 className="hero-heading font-black uppercase leading-none tracking-tight text-center"
+        <h2 className="font-black uppercase leading-none tracking-tight text-center"
           style={{ fontSize: 'clamp(3rem, 10vw, 120px)' }}>
-          About Yureka
+          <span className="hero-heading">About</span> <span className="text-white">Yureka</span>
         </h2>
       </FadeIn>
 
@@ -399,7 +399,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, scrollYProgre
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="flex items-end gap-3 sm:gap-5 flex-wrap">
             <span
-              className="font-black text-[#D7E2EA]/25 leading-none select-none"
+              className="font-black text-white/25 leading-none select-none"
               style={{ fontSize: 'clamp(2rem, 6vw, 7rem)' }}
             >
               {project.num}
@@ -454,10 +454,10 @@ const ProjectsSection: React.FC = () => {
     >
       <ColContent className="flex flex-col items-center">
         <h2
-          className="hero-heading font-black uppercase text-center mb-16 sm:mb-20 md:mb-28 tracking-tight leading-none w-fit"
+          className="font-black uppercase text-center mb-16 sm:mb-20 md:mb-28 tracking-tight leading-none w-fit"
           style={{ fontSize: 'clamp(2.5rem, 8vw, 98px)' }}
         >
-          SavingOs
+          <span className="hero-heading">Saving</span><span className="text-white">Os</span>
         </h2>
 
         {/* Stacking cards container — uses its own full-bleed height for scroll calculation */}

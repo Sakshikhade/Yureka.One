@@ -78,6 +78,11 @@
         text-transform: uppercase;
       }
 
+      /* All heading fonts — brand green */
+      h1, h2, h3, h4, h5, h6, .font-heading {
+        color: #00933b !important;
+      }
+
       /* Global Heading Sizes — tightened for premium density */
       h1 { font-size: clamp(28px, 5vw, 54px); }
       h2 { font-size: clamp(22px, 4vw, 36px); }
@@ -404,9 +409,11 @@
       }
 
       .hero-heading {
-        background: linear-gradient(180deg, #646973 0%, #BBCCD7 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        background: none;
+        -webkit-background-clip: initial;
+        background-clip: initial;
+        -webkit-text-fill-color: #00933b !important;
+        color: #00933b !important;
       }
 
 
