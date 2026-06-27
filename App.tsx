@@ -120,16 +120,18 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 // route-transition Suspense fallback so every loading state looks the same.
 const LoaderScreen: React.FC<{ zIndex: number }> = ({ zIndex }) => (
   <div
-    className="fixed inset-0 bg-cream flex flex-col items-center justify-center gap-6 overflow-hidden"
+    className="fixed inset-0 bg-cream flex items-center justify-center overflow-hidden"
     style={{ zIndex }}
   >
-    <div className="w-20 h-20 md:w-24 md:h-24 rounded-3xl overflow-hidden shadow-2xl loader-logo-pulse">
-      <img src="/logos/yureka-logo-512.png" alt="Yureka" className="w-full h-full object-cover" />
-    </div>
-    <p className="font-cirka text-white text-base md:text-lg tracking-[0.2em] uppercase">Yureka.Money</p>
-    <div className="relative w-40 md:w-56 h-1 bg-white/10 rounded-full overflow-hidden">
-      <div className="absolute inset-y-0 left-0 w-1/3 bg-clay rounded-full loader-bar-sweep" />
-    </div>
+    <video
+      src="/assets/loading.mp4"
+      autoPlay
+      loop
+      muted
+      playsInline
+      preload="auto"
+      className="w-full h-full object-cover"
+    />
   </div>
 );
 
