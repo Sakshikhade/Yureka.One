@@ -210,7 +210,7 @@ const ScrollytellingVideo: React.FC<ScrollytellingVideoProps> = ({
       };
 
       video.addEventListener('loadedmetadata', onMeta,     { once: true });
-      video.addEventListener('canplaythrough', onCanPlay,  { once: true });
+      video.addEventListener('canplay',        onCanPlay,  { once: true });
       video.addEventListener('progress',       onProgress);
       video.addEventListener('error', () => setLoadState('ready'), { once: true });
 

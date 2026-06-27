@@ -227,6 +227,7 @@ const AppContent: React.FC = () => {
               loop
               muted
               playsInline
+              preload="auto"
               className="w-40 h-40 object-contain"
             />
           </div>

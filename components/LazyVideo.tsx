@@ -7,8 +7,8 @@ interface LazyVideoProps {
 }
 
 /**
- * Autoplaying background video that defers loading until it's near the
- * viewport (rootMargin: 300px), via preload="none" + IntersectionObserver.
+ * Autoplaying background video that defers mounting (and therefore loading)
+ * until it's near the viewport (rootMargin: 300px), via IntersectionObserver.
  * Renders a same-sized placeholder div so layout doesn't shift once the
  * video mounts.
  */
@@ -41,7 +41,7 @@ const LazyVideo: React.FC<LazyVideoProps> = ({ src, className = '' }) => {
           loop
           muted
           playsInline
-          preload="none"
+          preload="auto"
           className={className}
           src={src}
         />
