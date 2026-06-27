@@ -116,6 +116,23 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
   return <>{children}</>;
 };
 
+// Full-bleed branded loader — used for both the initial app splash and the
+// route-transition Suspense fallback so every loading state looks the same.
+const LoaderScreen: React.FC<{ zIndex: number }> = ({ zIndex }) => (
+  <div
+    className="fixed inset-0 bg-cream flex flex-col items-center justify-center gap-6 overflow-hidden"
+    style={{ zIndex }}
+  >
+    <div className="w-20 h-20 md:w-24 md:h-24 rounded-3xl overflow-hidden shadow-2xl loader-logo-pulse">
+      <img src="/logos/yureka-logo-512.png" alt="Yureka" className="w-full h-full object-cover" />
+    </div>
+    <p className="font-cirka text-white text-base md:text-lg tracking-[0.2em] uppercase">Yureka.Money</p>
+    <div className="relative w-40 md:w-56 h-1 bg-white/10 rounded-full overflow-hidden">
+      <div className="absolute inset-y-0 left-0 w-1/3 bg-clay rounded-full loader-bar-sweep" />
+    </div>
+  </div>
+);
+
 const AppContent: React.FC = () => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
@@ -219,19 +236,7 @@ const AppContent: React.FC = () => {
       {!isSpecialRoute && <Navbar />}
 
       <main className={`relative z-10 ${isSpecialRoute ? 'pt-0' : ''}`}>
-        <Suspense fallback={
-          <div className="fixed inset-0 z-[100] bg-cream flex items-center justify-center overflow-hidden">
-            <video
-              src="/assets/loading.mp4"
-              autoPlay
-              loop
-              muted
-              playsInline
-              preload="auto"
-              className="w-full h-full object-cover"
-            />
-          </div>
-        }>
+        <Suspense fallback={<LoaderScreen zIndex={100} />}>
           <ErrorBoundary>
             {applyEditorialGrid ? (
               <div className="grid grid-cols-1 lg:grid-cols-5 w-full relative">
@@ -282,19 +287,7 @@ const App: React.FC = () => {
 
   return (
     <>
-      {showSplash && (
-        <div className="fixed inset-0 z-[200] bg-cream flex items-center justify-center overflow-hidden">
-          <video
-            src="/assets/loading.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="auto"
-            className="w-full h-full object-cover"
-          />
-        </div>
-      )}
+      {showSplash && <LoaderScreen zIndex={200} />}
       <BrowserRouter>
         <SupabaseProvider>
           <AppContent />
