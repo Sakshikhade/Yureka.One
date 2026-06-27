@@ -58,7 +58,7 @@ const Hero: React.FC = () => {
                 Stop Letting Banks Hold Your Rewards<br />—Earn 15% More with Yureka.
               </h1>
 
-              <p className="font-overpass-mono text-black/70 text-base md:text-2xl font-bold max-w-md mb-8 leading-relaxed whitespace-nowrap">
+              <p className="font-overpass-mono text-black/70 text-base md:text-2xl font-bold max-w-md mb-8 leading-relaxed">
                 Introducing India's 1st SavingsOs
               </p>
 

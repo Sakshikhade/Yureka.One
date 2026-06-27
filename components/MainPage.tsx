@@ -6,7 +6,6 @@ import { SkeletonCard, SkeletonHero } from './SkeletonLoaders';
 // Lazy load non-critical sections for performance
 const Hero = lazy(() => import('./Hero'));
 const YurekaInfoSection = lazy(() => import('./YurekaInfoSection'));
-const YurekaBackedBySection = lazy(() => import('./YurekaBackedBySection'));
 const YurekaUseCasesSection = lazy(() => import('./YurekaUseCasesSection'));
 const YurekaPortfolio = lazy(() => import('./YurekaPortfolio'));
 const TextReveal = lazy(() => import('./TextReveal'));
@@ -56,11 +55,6 @@ const MainPage: React.FC = () => {
                 {/* Yureka Info — Meet Yureka cards */}
                 <Suspense fallback={<div className="h-96 bg-white/5 animate-pulse rounded-3xl" />}>
                     <YurekaInfoSection />
-                </Suspense>
- 
-                {/* Yureka Backed By — partner marquee */}
-                <Suspense fallback={<div className="h-64 bg-white/5 animate-pulse rounded-3xl" />}>
-                    <YurekaBackedBySection />
                 </Suspense>
  
                 {/* Yureka Use Cases — Commerce video card */}

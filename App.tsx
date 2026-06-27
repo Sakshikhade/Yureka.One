@@ -9,7 +9,6 @@ import SocialProof from './components/SocialProof';
 import { SupabaseProvider, useSupabase } from './components/SupabaseProvider';
 import { SkeletonCard } from './components/SkeletonLoaders';
 import { ErrorBoundary } from './components/ErrorBoundary';
-import ContributionModal from './components/ContributionModal';
 
 // Robust Lazy Loader to handle chunk loading failures (common during new deploys)
 const lazyWithRetry = (componentImport: () => Promise<any>) =>
@@ -62,8 +61,6 @@ const WaitlistPage = lazyWithRetry(() => import('./components/WaitlistPage'));
 const WaitingPage = lazyWithRetry(() => import('./components/WaitingPage'));
 const DashboardLayout = lazyWithRetry(() => import('./components/Dashboard/DashboardLayout'));
 const ByEveryone = lazyWithRetry(() => import('./components/ByEveryone'));
-
-import { motion, AnimatePresence } from 'motion/react';
 
 // Optimized Scroll Management
 const ScrollToTop = () => {
@@ -220,19 +217,19 @@ const AppContent: React.FC = () => {
 
       <ScrollToTop />
       {!isSpecialRoute && <Navbar />}
-      
-      {!isAdminRoute && <ContributionModal />}
-      
+
       <main className={`relative z-10 ${isSpecialRoute ? 'pt-0' : ''}`}>
         <Suspense fallback={
-          <div className="fixed inset-0 z-[100] bg-cream/80 backdrop-blur-xl flex items-center justify-center overflow-hidden">
-            <motion.div 
-               animate={{ scale: [0.95, 1, 0.95], opacity: [0.5, 1, 0.5] }}
-               transition={{ duration: 2, repeat: Infinity }}
-               className="w-40 h-40 bg-cream rounded-[2rem] shadow-2xl flex items-center justify-center border border-white/5"
-            >
-               <Sparkles className="text-clay" size={48} />
-            </motion.div>
+          <div className="fixed inset-0 z-[100] bg-cream flex items-center justify-center overflow-hidden">
+            <video
+              src="/assets/loading.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="auto"
+              className="w-40 h-40 object-contain"
+            />
           </div>
         }>
           <ErrorBoundary>

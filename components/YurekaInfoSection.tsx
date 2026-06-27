@@ -13,7 +13,7 @@ const YurekaInfoSection: React.FC = () => {
             className="font-cirka text-white text-4xl md:text-5xl font-bold leading-tight mb-8"
             style={{ letterSpacing: '-0.03em' }}
           >
-            Meet Yureka.
+            Meet <span className="text-white">Yureka</span>.
           </h2>
 
           {/* "Join Waitlist Now" pill button */}
