@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect } from 'react';
+import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, useLocation, Navigate, Link } from 'react-router-dom';
 import { Loader2, Sparkles } from 'lucide-react';
 
@@ -228,7 +228,7 @@ const AppContent: React.FC = () => {
               muted
               playsInline
               preload="auto"
-              className="w-40 h-40 object-contain"
+              className="w-full h-full object-cover"
             />
           </div>
         }>
@@ -271,12 +271,36 @@ const AppContent: React.FC = () => {
 };
 
 const App: React.FC = () => {
+  // Initial branded splash — shows for a fixed window on first load while the
+  // real app mounts behind it, then reveals it. Not shown again on in-app route changes.
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowSplash(false), 4500);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <BrowserRouter>
-      <SupabaseProvider>
-        <AppContent />
-      </SupabaseProvider>
-    </BrowserRouter>
+    <>
+      {showSplash && (
+        <div className="fixed inset-0 z-[200] bg-cream flex items-center justify-center overflow-hidden">
+          <video
+            src="/assets/loading.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            className="w-full h-full object-cover"
+          />
+        </div>
+      )}
+      <BrowserRouter>
+        <SupabaseProvider>
+          <AppContent />
+        </SupabaseProvider>
+      </BrowserRouter>
+    </>
   );
 };
 
