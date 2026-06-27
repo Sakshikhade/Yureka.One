@@ -73,7 +73,7 @@ const Hero: React.FC = () => {
             </div>
 
             {/* Brand Marquee — positioned on the ribbon between both hands, spanning only the middle column (section 3) of the 5-column grid */}
-            <div className="absolute left-[calc(45%-28px)] right-[calc(21%-255px)] z-20 overflow-hidden py-[6px]" style={{ top: 'calc(78% + 16px)', maskImage: 'linear-gradient(to left, black 0px, black 179px, transparent 179px, transparent 261px, black 261px, black 100%)', WebkitMaskImage: 'linear-gradient(to left, black 0px, black 179px, transparent 179px, transparent 261px, black 261px, black 100%)' }}>
+            <div className="absolute left-[calc(45%-28px)] right-[calc(21%-255px)] z-20 overflow-hidden py-[6px]" style={{ top: 'calc(78% + 21px)', maskImage: 'linear-gradient(to left, black 0px, black 179px, transparent 179px, transparent 261px, black 261px, black 100%)', WebkitMaskImage: 'linear-gradient(to left, black 0px, black 179px, transparent 179px, transparent 261px, black 261px, black 100%)' }}>
               <div className="yureka-marquee-track">
                 {heroBrands.map((brand, i) => (
                   <span

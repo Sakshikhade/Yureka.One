@@ -40,13 +40,16 @@ export default {
         ring: 'hsl(var(--ring))',
       },
       fontFamily: {
+        // Sitewide type system: Cirka for headings, Almarai for everything else
+        // (subheadings, body, context). Legacy class names are kept so existing
+        // markup doesn't need touching, but they all resolve to one of these two.
         sans: ['Almarai', 'sans-serif'],
-        heading: ['Almarai', 'sans-serif'],
-        serif: ['"Instrument Serif"', 'serif'], 
-        blackletter: ['"Instrument Serif"', 'serif'],
-        kanit: ['Kanit', 'sans-serif'],
+        heading: ['Cirka', '"Instrument Serif"', 'Georgia', 'serif'],
+        serif: ['Almarai', 'sans-serif'],
+        blackletter: ['Cirka', '"Instrument Serif"', 'Georgia', 'serif'],
+        kanit: ['Almarai', 'sans-serif'],
         cirka: ['Cirka', '"Instrument Serif"', 'Georgia', 'serif'],
-        'overpass-mono': ['"Overpass Mono"', '"Courier New"', 'monospace'],
+        'overpass-mono': ['Almarai', 'sans-serif'],
       },
       lineHeight: {
         tight: '1.1',

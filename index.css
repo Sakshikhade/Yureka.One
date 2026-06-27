@@ -25,7 +25,7 @@
 }
 
 .font-overpass-mono {
-  font-family: 'Overpass Mono', 'Courier New', monospace !important;
+  font-family: 'Almarai', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
   font-feature-settings: 'kern' 1;
 }
 
@@ -53,9 +53,12 @@
         text-rendering: optimizeSpeed; /* Performance: Faster text rendering */
       }
 
-      /* Heading modular scale and hierarchy */
+      /* Heading modular scale and hierarchy — Cirka is the one heading font sitewide */
+      h1, h2, h3, h4, h5, h6, .font-heading, .font-blackletter {
+        font-family: 'Cirka', 'Instrument Serif', Georgia, serif !important;
+      }
+
       h1, .font-heading {
-        font-family: 'Almarai', sans-serif;
         font-weight: 800;
         line-height: 1.1;
         letter-spacing: -0.03em;
@@ -63,7 +66,6 @@
       }
 
       h2 {
-        font-family: 'Almarai', sans-serif;
         font-weight: 700;
         line-height: 1.15;
         letter-spacing: -0.02em;
@@ -71,7 +73,6 @@
       }
 
       h3 {
-        font-family: 'Almarai', sans-serif;
         font-weight: 700;
         line-height: 1.2;
         letter-spacing: -0.01em;
@@ -88,14 +89,14 @@
       h2 { font-size: clamp(22px, 4vw, 36px); }
       h3 { font-size: clamp(18px, 3vw, 26px); }
 
+      /* .font-serif is the one subheading/context font sitewide — Almarai, not a serif */
       .font-serif {
-        font-family: 'Instrument Serif', serif; 
+        font-family: 'Almarai', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
       }
-      
+
+      /* Non-heading-tag .font-blackletter usages (decorative display text) keep a heavy weight */
       .font-blackletter {
-        font-family: 'Instrument Serif', serif;
-        font-weight: 900;
-        font-variation-settings: "SOFT" 100;
+        font-weight: 700;
       }
       
       /* Rest of existing styles... */
