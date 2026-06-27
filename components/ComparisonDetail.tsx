@@ -112,7 +112,7 @@ const ComparisonDetail: React.FC = () => {
 
                   <div className="space-y-4">
                      <div className="aspect-[1.6/1] rounded-2xl overflow-hidden shadow-2xl bg-white/5 border border-white/5">
-                        <img src={card.image} alt={card.name} className="w-full h-full object-cover" />
+                        <img src={card.image} alt={card.name} className="w-full h-full object-contain" />
                      </div>
                      <div className="flex justify-between items-start">
                         <div>
@@ -157,7 +157,7 @@ const ComparisonDetail: React.FC = () => {
                   <div key={card.id} className="bg-white/5 border border-white/5 rounded-[2rem] p-8 space-y-8">
                      <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-lg overflow-hidden border border-white/10 shrink-0">
-                           <img src={card.image} alt="" className="w-full h-full object-cover" />
+                           <img src={card.image} alt="" className="w-full h-full object-contain" />
                         </div>
                         <span className="text-xs font-black text-white uppercase tracking-wider">{card.name}</span>
                      </div>
@@ -205,7 +205,7 @@ const ComparisonDetail: React.FC = () => {
                   <div key={card.id} className="bg-white/5 border border-white/5 rounded-[2rem] p-8 space-y-10 flex flex-col">
                      <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-lg overflow-hidden border border-white/10 shrink-0">
-                           <img src={card.image} alt="" className="w-full h-full object-cover" />
+                           <img src={card.image} alt="" className="w-full h-full object-contain" />
                         </div>
                         <span className="text-xs font-black text-white uppercase tracking-wider">{card.name}</span>
                      </div>

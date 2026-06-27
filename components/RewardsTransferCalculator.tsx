@@ -237,7 +237,7 @@ const RewardsTransferCalculator: React.FC = () => {
                 {isFromOpen && (
                   <motion.div 
                     initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }}
-                    className="absolute top-full left-0 right-0 z-[60] mt-3 bg-white/5 border border-white/10 shadow-3xl rounded-2xl overflow-hidden min-w-[300px]"
+                    className="absolute top-full left-0 right-0 z-[60] mt-3 bg-white/5 border border-white/10 shadow-3xl rounded-2xl overflow-hidden"
                   >
                     <div className="p-4 border-b border-white/5 bg-cream/50">
                       <div className="relative">
@@ -315,7 +315,7 @@ const RewardsTransferCalculator: React.FC = () => {
                 {isToOpen && (
                   <motion.div 
                     initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }}
-                    className="absolute top-full left-0 right-0 z-[60] mt-3 bg-white/5 border border-white/10 shadow-3xl rounded-2xl overflow-hidden min-w-[300px]"
+                    className="absolute top-full left-0 right-0 z-[60] mt-3 bg-white/5 border border-white/10 shadow-3xl rounded-2xl overflow-hidden"
                   >
                     <div className="p-4 border-b border-white/5 bg-cream/50">
                       <div className="relative">
@@ -472,7 +472,7 @@ const RewardsTransferCalculator: React.FC = () => {
                           <ProgramIcon name={item["Transfer To"]} fallbackColor="bg-emerald-900" size="w-16 h-16 sm:w-20 sm:h-20" />
                         </div>
                         <div className="space-y-2 flex-1 min-w-0">
-                          <h3 className="text-xl sm:text-2xl font-bold text-white uppercase tracking-tight truncate leading-tight">{item["Transfer To"]}</h3>
+                          <h3 className="text-xl sm:text-2xl font-bold text-white uppercase tracking-tight leading-tight">{item["Transfer To"]}</h3>
                           <div className="flex flex-wrap items-center gap-3 text-[10px] font-bold text-white/30 uppercase tracking-[0.2em]">
                             <span className="text-emerald-400">{item["Ratio"]} ratio</span>
                             <span className="w-1 h-1 bg-white/10 rounded-full" />

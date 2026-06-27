@@ -663,7 +663,7 @@ const AdminDashboard: React.FC = () => {
             initial={{ opacity: 0, y: 30, scale: 0.9, filter: 'blur(10px)' }}
             animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
             exit={{ opacity: 0, scale: 0.8, filter: 'blur(10px)' }}
-            className={`fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] px-6 py-4 rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-3xl border flex items-center gap-5 min-w-[340px] max-w-[90vw] ${
+            className={`fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] px-6 py-4 rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-3xl border flex items-center gap-5 w-[90vw] sm:w-auto sm:min-w-[340px] max-w-[90vw] ${
               notification.type === 'success' 
                 ? 'bg-white/5/90 border-clay/20 text-white' 
                 : 'bg-red-950/90 border-red-500/20 text-white'
