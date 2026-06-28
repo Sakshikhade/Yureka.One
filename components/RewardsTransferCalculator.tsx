@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import SEO from './SEO';
+import { staticPageMeta } from '../lib/seo/pageMeta';
 
 interface TransferRow {
   'Transfer From': string;
@@ -195,7 +196,7 @@ const RewardsTransferCalculator: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-cream font-sans text-white pb-20">
-      <SEO title="Transfer Calculator | Yureka" description="Optimize your rewards transfers with precision." />
+      <SEO {...staticPageMeta['/rewards-calculator']} />
 
       <div className="max-w-[1240px] mx-auto px-4 sm:px-6 pt-6 sm:pt-10">
         

@@ -251,7 +251,7 @@ const TextReveal: React.FC = () => {
       <section className="bg-black py-24 px-6 md:px-12 w-full">
         <div className="bg-[#101010] rounded-[2rem] p-8 md:p-16 max-w-6xl mx-auto w-full flex flex-col items-center justify-center">
           <span className="text-[#DEDBC8] text-[10px] sm:text-xs tracking-widest uppercase mb-8 text-center block select-none">
-            Built for Indian Philisophy
+            Engineered for the Serious User
           </span>
 
           <div className="text-center mb-12">
@@ -260,11 +260,11 @@ const TextReveal: React.FC = () => {
               containerClassName="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl max-w-4xl mx-auto leading-snug text-center"
               segments={[
                 {
-                  text: "We at Yureka, want to bring India's first AI native platform which gives you returns on every penny that you spend. Not just mere cashback or dead coins. ",
+                  text: 'Yureka.Money is India’s first AI-native wealth operating system, turning every transaction into a wealth-building event. We move beyond hollow cashbacks and expiring "dead coins." ',
                   className: 'font-normal text-[#E1E0CC]',
                 },
                 {
-                  text: 'We give everyone assured cashback, goldback and reward points on every purchase you do on our platform. Everything 100% redeemable on Premium Experiences, Dining, Flight, Hotels, Quick Commerce, Shoppings, anything across the globe that you can think of.',
+                  text: 'Instead, we offer assured Goldback and high-yield returns that grow in your vault—providing 100% liquidity for global lifestyle experiences, travel, and premium consumption.',
                   className: 'font-normal text-primary',
                 },
               ]}

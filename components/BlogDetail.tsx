@@ -14,6 +14,7 @@ import { Blog } from '../types';
 import ImageWithLoader from './ImageWithLoader';
 import { motion, AnimatePresence } from 'motion/react';
 import SEO from './SEO';
+import { blogPostingSchema, breadcrumbSchema } from '../lib/seo/structuredData';
 
 const BlogDetail: React.FC = () => {
     const { slug } = useParams<{ slug: string }>();
@@ -29,14 +30,12 @@ const BlogDetail: React.FC = () => {
     const shadowRef = useRef<HTMLDivElement>(null);
     const articleRef = useRef<HTMLDivElement>(null);
 
-    const blogSchema = blog ? {
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        "headline": blog.title,
-        "image": [blog.image],
-        "datePublished": blog.created_at,
-        "author": [{ "@type": "Person", "name": blog.author }]
-    } : undefined;
+    const blogSchemas = blog
+        ? [
+              breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Pulse', path: '/blogs' }, { name: blog.title, path: `/blogs/${blog.slug || slug}` }]),
+              blogPostingSchema({ title: blog.title, image: blog.image, createdAt: blog.created_at, updatedAt: blog.updated_at, author: blog.author, slug: blog.slug || slug }),
+          ]
+        : undefined;
 
     useEffect(() => {
         if (!slug) return;
@@ -194,7 +193,8 @@ const BlogDetail: React.FC = () => {
             <SEO
                 title={`${blog.title} | Yureka Journal`}
                 description={blog.excerpt || `Read the latest insights on ${blog.category} from ${blog.author}.`}
-                schema={blogSchema}
+                image={blog.image}
+                schema={blogSchemas}
             />
 
             {/* ── READING PROGRESS BAR ── */}

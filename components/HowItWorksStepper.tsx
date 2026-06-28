@@ -249,13 +249,13 @@ const HowItWorksStepper: React.FC = () => {
           {/* Scroll-driven Opacity Paragraphs */}
           <div className="space-y-16">
             <ParagraphReveal
-              text="We're building a space where curiosity meets clarity — where readers find depth, writers find reach, and every newsletter becomes a conversation worth having."
-              highlightWords={['curiosity', 'meets', 'clarity']}
+              text="We're building a space where intent meets ROI — where your daily routine finds purpose, your savings find scale, and every swipe becomes a wealth-building event."
+              highlightWords={['intent', 'meets', 'roi']}
               className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight text-center"
             />
 
             <ParagraphReveal
-              text="A platform where content, community, and insight flow together — with less noise, less friction, and more meaning for everyone involved."
+              text="A platform where lifestyle, logic, and liquidity flow together — with zero fluff, total transparency, and deeper meaning for everyone involved."
               className="text-xl sm:text-2xl lg:text-3xl font-medium text-center"
             />
           </div>

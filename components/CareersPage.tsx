@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ArrowRight, ArrowUpRight, Briefcase } from 'lucide-react';
 import ImageWithLoader from './ImageWithLoader';
+import SEO from './SEO';
+import { staticPageMeta } from '../lib/seo/pageMeta';
 
 interface FadeInSectionProps {
   children: React.ReactNode;
@@ -49,7 +51,8 @@ const roles = [
 const CareersPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-cream pt-4 md:pt-8 pb-20 font-sans text-white overflow-x-hidden selection:bg-clay selection:text-cream">
-      
+      <SEO {...staticPageMeta['/jobs']} />
+
       <div className="max-w-[1440px] mx-auto px-6 relative z-10">
         
         {/* Header - Classifieds Style */}

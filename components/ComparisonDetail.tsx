@@ -12,6 +12,7 @@ import { fromApiCard } from '../lib/api/mappers';
 import type { Card as ApiCard } from '../lib/api/types';
 import { Card } from '../types';
 import SEO from './SEO';
+import { breadcrumbSchema } from '../lib/seo/structuredData';
 
 const ComparisonDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -57,11 +58,14 @@ const ComparisonDetail: React.FC = () => {
   const dynamicFees = getAllKeys('grid_fees');
   const dynamicBenefits = getAllKeys('grid_benefits');
 
+  const comparisonNames = cards.map(c => c.name).join(' vs ');
+
   return (
     <div className="min-h-screen bg-cream pb-32">
-      <SEO 
-        title={`Comparison: ${cards.map(c => c.name).join(' vs ')}`} 
-        description="Side-by-side analysis of features, rewards, and eligibility."
+      <SEO
+        title={`${comparisonNames} | Credit Card Comparison`}
+        description={`Side-by-side comparison of ${comparisonNames} — fees, rewards, eligibility, and benefits.`}
+        schema={breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Compare', path: '/compare' }, { name: comparisonNames, path: `/compare/${slug}` }])}
       />
 
       {/* Hero Header */}

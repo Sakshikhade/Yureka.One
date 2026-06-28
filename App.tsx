@@ -9,6 +9,7 @@ import SocialProof from './components/SocialProof';
 import { SupabaseProvider, useSupabase } from './components/SupabaseProvider';
 import { SkeletonCard } from './components/SkeletonLoaders';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { staticPageMeta } from './lib/seo/pageMeta';
 
 // Robust Lazy Loader to handle chunk loading failures (common during new deploys)
 const lazyWithRetry = (componentImport: () => Promise<any>) =>
@@ -61,6 +62,7 @@ const WaitlistPage = lazyWithRetry(() => import('./components/WaitlistPage'));
 const WaitingPage = lazyWithRetry(() => import('./components/WaitingPage'));
 const DashboardLayout = lazyWithRetry(() => import('./components/Dashboard/DashboardLayout'));
 const ByEveryone = lazyWithRetry(() => import('./components/ByEveryone'));
+const NotFoundPage = lazyWithRetry(() => import('./components/NotFoundPage'));
 
 // Optimized Scroll Management
 const ScrollToTop = () => {
@@ -135,7 +137,7 @@ const LoaderScreen: React.FC<{ zIndex: number }> = ({ zIndex }) => (
   </div>
 );
 
-const AppContent: React.FC = () => {
+const AppContent: React.FC<{ showSplash: boolean }> = ({ showSplash }) => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
   const isDashboardRoute = location.pathname.startsWith('/dashboard');
@@ -151,10 +153,7 @@ const AppContent: React.FC = () => {
 
               <Route path="/cards" element={
                 <>
-                  <SEO
-                    title="Card Explorer | Professional Reward Analytics & Search"
-                    description="Expert analysis on 200+ credit cards. Filter by systematic reward yield, lounge access, and elite lifestyle perks. Match with your perfect portfolio."
-                  />
+                  <SEO {...staticPageMeta['/cards']} />
                   <CardExplorer />
                 </>
               } />
@@ -163,30 +162,44 @@ const AppContent: React.FC = () => {
 
               <Route path="/brands" element={
                 <>
-                  <SEO
-                    title="Brand Explorer | Discover Reward Partners"
-                    description="Browse 80+ partner brands across shopping, travel, food, and lifestyle to maximize your card rewards and cashback."
-                  />
+                  <SEO {...staticPageMeta['/brands']} />
                   <BrandExplorer />
                 </>
               } />
 
               <Route path="/blogs" element={
                 <>
-                  <SEO
-                    title="Pulse | Strategic Financial Journal"
-                    description="Expert analysis on credit arbitrage, reward point devaluation, and high-performance spending strategies in the Indian credit landscape."
-                  />
+                  <SEO {...staticPageMeta['/blogs']} />
                   <JournalPage />
                 </>
               } />
 
               <Route path="/blogs/:slug" element={<BlogDetail />} />
 
-              <Route path="/admin" element={<AdminDashboard />} />
-              <Route path="/login" element={<WaitlistPage />} />
-              <Route path="/join-waitlist" element={<WaitlistPage />} />
-              <Route path="/waiting" element={<WaitingPage />} />
+              <Route path="/admin" element={
+                <>
+                  <SEO {...staticPageMeta['/admin']} />
+                  <AdminDashboard />
+                </>
+              } />
+              <Route path="/login" element={
+                <>
+                  <SEO {...staticPageMeta['/login']} />
+                  <WaitlistPage />
+                </>
+              } />
+              <Route path="/join-waitlist" element={
+                <>
+                  <SEO {...staticPageMeta['/join-waitlist']} />
+                  <WaitlistPage />
+                </>
+              } />
+              <Route path="/waiting" element={
+                <>
+                  <SEO {...staticPageMeta['/waiting']} />
+                  <WaitingPage />
+                </>
+              } />
               <Route path="/by-everyone-for-everyone" element={<ByEveryone />} />
 
               <Route path="/dashboard/*" element={
@@ -209,10 +222,7 @@ const AppContent: React.FC = () => {
 
               <Route path="/yureka-ai" element={
                 <>
-                  <SEO
-                    title="Assistant | Your Personal Credit Portfolio Co-Pilot"
-                    description="From picking the perfect financial instrument to maximizing every systematic reward point. Your research assistant for elite credit."
-                  />
+                  <SEO {...staticPageMeta['/yureka-ai']} />
                   <YurekaAIPage />
                 </>
               } />
@@ -227,7 +237,7 @@ const AppContent: React.FC = () => {
               <Route path="/compare" element={<ComparePage />} />
               <Route path="/compare/:slug" element={<ComparisonDetail />} />
 
-              <Route path="*" element={<MainPage />} />
+              <Route path="*" element={<NotFoundPage />} />
             </Routes>
   );
 
@@ -238,7 +248,9 @@ const AppContent: React.FC = () => {
       {!isSpecialRoute && <Navbar />}
 
       <main className={`relative z-10 ${isSpecialRoute ? 'pt-0' : ''}`}>
-        <Suspense fallback={<LoaderScreen zIndex={100} />}>
+        {/* While the splash is up it already covers the screen at z-200, so skip
+            mounting a second <video> here — it would silently re-fetch loading.mp4. */}
+        <Suspense fallback={showSplash ? <div className="fixed inset-0 bg-cream" style={{ zIndex: 100 }} /> : <LoaderScreen zIndex={100} />}>
           <ErrorBoundary>
             {applyEditorialGrid ? (
               <div className="grid grid-cols-1 lg:grid-cols-5 w-full relative">
@@ -292,7 +304,7 @@ const App: React.FC = () => {
       {showSplash && <LoaderScreen zIndex={200} />}
       <BrowserRouter>
         <SupabaseProvider>
-          <AppContent />
+          <AppContent showSplash={showSplash} />
         </SupabaseProvider>
       </BrowserRouter>
     </>

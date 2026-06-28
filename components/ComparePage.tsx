@@ -11,6 +11,7 @@ import { fromApiCard } from '../lib/api/mappers';
 import type { Card as ApiCard } from '../lib/api/types';
 import { Card } from '../types';
 import SEO from './SEO';
+import { staticPageMeta } from '../lib/seo/pageMeta';
 
 const POPULAR_COMPARISONS = [
   {
@@ -83,10 +84,7 @@ const ComparePage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white pb-32 overflow-hidden selection:bg-clay selection:text-black">
-      <SEO 
-        title="Credit Card Comparisons | Side-by-Side Analysis" 
-        description="Compare up to 3 credit cards side-by-side. Deep-dive into fees, rewards, and eligibility to find your perfect match."
-      />
+      <SEO {...staticPageMeta['/compare']} />
 
       {/* Hero Header */}
       <section className="relative pt-24 pb-16 overflow-hidden px-6">

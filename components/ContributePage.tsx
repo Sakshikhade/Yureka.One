@@ -7,6 +7,7 @@ import {
   Check, Plus, Zap, Lock
 } from 'lucide-react';
 import SEO from './SEO';
+import { staticPageMeta } from '../lib/seo/pageMeta';
 import { api, isApiError } from '../lib/api/client';
 import { useSupabase } from './SupabaseProvider';
 
@@ -164,10 +165,7 @@ const ContributePage: React.FC = () => {
 
   return (
     <>
-      <SEO 
-        title="Contribute | Yureka Matrix" 
-        description="Help us improve the Yureka credit card matrix. Submit missing cards, report inaccurate details, or request card removals."
-      />
+      <SEO {...staticPageMeta['/contribute']} />
 
       <div className="min-h-screen bg-cream selection:bg-clay/30 pt-10 pb-24 px-4 md:px-12 relative overflow-hidden text-white">
         <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-clay/5 blur-[120px] rounded-full pointer-events-none" />

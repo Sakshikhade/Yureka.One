@@ -5,6 +5,8 @@ import fs from "fs";
 import cors from "cors";
 import { createClient } from "@supabase/supabase-js";
 import * as dotenv from "dotenv";
+import { resolveRouteMeta } from "./lib/seo/resolveRouteMeta";
+import { injectHtml } from "./lib/seo/inject";
 
 dotenv.config();
 
@@ -15,6 +17,14 @@ const __dirname = path.dirname(__filename);
 const supabaseUrl = process.env.VITE_SUPABASE_URL || "";
 const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY || ""; // Should ideally be SERVICE_ROLE_KEY
 const supabase = createClient(supabaseUrl, supabaseKey);
+
+// Fire a throwaway query at boot so the first real request (often a crawler
+// hitting a /cards/:slug or /blogs/:slug page) doesn't pay the ~1.5-2s cold
+// connection cost that the SEO meta injector's short timeout can't absorb.
+supabase.from('cards').select('id').limit(1).then(
+  () => console.log('Supabase connection warmed.'),
+  () => {}
+);
 
 async function startServer() {
   const app = express();
@@ -400,14 +410,35 @@ async function startServer() {
     app.use(vite.middlewares);
   } else {
     const distPath = path.resolve(__dirname, 'dist');
-    app.use(express.static(distPath));
-    
+    // index: false — otherwise express.static auto-serves the raw index.html
+    // for the exact "/" request (with its own ETag) before the catch-all
+    // below ever runs, silently skipping meta injection on the homepage only.
+    app.use(express.static(distPath, { index: false }));
+
+    // Read once at boot — every request injects route-specific meta into this
+    // same cached template string, so crawlers that don't execute JS still
+    // get a correct unique <title>/description/OG image/JSON-LD per URL.
+    const indexTemplate = fs.readFileSync(path.resolve(distPath, 'index.html'), 'utf-8');
+
     // Express 5 requires named wildcard params — bare '*' is no longer valid
-    app.get('/{*splat}', (req, res) => {
+    app.get('/{*splat}', async (req, res) => {
       if (req.url.startsWith('/api')) {
         return res.status(404).json({ error: 'API not found' });
       }
-      res.sendFile(path.resolve(distPath, 'index.html'));
+
+      try {
+        const resolved = await resolveRouteMeta(req.path, supabase);
+
+        if (resolved.redirect) {
+          return res.redirect(301, resolved.redirect);
+        }
+
+        const html = injectHtml(indexTemplate, resolved.meta, req.path, resolved.schemas);
+        res.status(resolved.status).set('Content-Type', 'text/html; charset=utf-8').send(html);
+      } catch (err) {
+        console.warn('SEO meta injection failed, serving plain index.html:', err);
+        res.sendFile(path.resolve(distPath, 'index.html'));
+      }
     });
   }
 

@@ -3,6 +3,8 @@ import { Gift, Zap, ShieldCheck, ArrowRight, Star, Percent, Utensils, ShoppingBa
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { api } from '../lib/api/client';
+import SEO from './SEO';
+import { staticPageMeta } from '../lib/seo/pageMeta';
 
 const YurekaOsPage: React.FC = () => {
   const [email, setEmail] = React.useState('');
@@ -38,6 +40,7 @@ const YurekaOsPage: React.FC = () => {
 
   return (
     <div className="relative min-h-screen bg-cream overflow-x-hidden selection:bg-clay selection:text-cream">
+      <SEO {...staticPageMeta['/free-tools']} />
       {/* Immersive Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-[-10%] left-[-5%] w-[40%] h-[40%] bg-clay/5 rounded-full blur-[120px]" />

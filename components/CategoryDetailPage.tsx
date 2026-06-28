@@ -10,6 +10,8 @@ import { fromApiCard } from '../lib/api/mappers';
 import type { Card as ApiCard } from '../lib/api/types';
 import { Card } from '../types';
 import SEO from './SEO';
+import { getCategoryPageMeta } from '../lib/seo/pageMeta';
+import { breadcrumbSchema } from '../lib/seo/structuredData';
 
 const CATEGORY_META: Record<string, any> = {
   'travel': { name: 'Travel', icon: '✈️', color: 'from-blue-500/20', benefits: ['Rewards on flights and hotels', 'Airport lounge access', 'Free hotel nights', 'Complimentary food vouchers', 'Free room upgrades'] },
@@ -44,11 +46,13 @@ const CategoryDetailPage: React.FC = () => {
     });
   }, [slug]);
 
+  const pageMeta = getCategoryPageMeta(slug || '');
+
   return (
     <div className="min-h-screen bg-cream pb-20">
-      <SEO 
-        title={`${meta.name} Credit Cards | Best of ${new Date().getFullYear()}`} 
-        description={`Compare the best ${meta.name} credit cards in India. Maximize your ${slug} rewards with our expert analysis.`}
+      <SEO
+        {...pageMeta}
+        schema={breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Categories', path: '/categories' }, { name: meta.name, path: `/categories/${slug}` }])}
       />
 
       {/* Dynamic Hero Section */}

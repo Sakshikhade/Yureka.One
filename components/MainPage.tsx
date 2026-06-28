@@ -3,6 +3,9 @@ import HowItWorksStepper from './HowItWorksStepper';
 import SEO from './SEO';
 import { SupabaseProvider } from './SupabaseProvider';
 import { SkeletonCard, SkeletonHero } from './SkeletonLoaders';
+import { SITE_URL, staticPageMeta } from '../lib/seo/pageMeta';
+import { faqPageSchema } from '../lib/seo/structuredData';
+import { faqQuestions } from '../data/faq';
 // Lazy load non-critical sections for performance
 const Hero = lazy(() => import('./Hero'));
 const YurekaInfoSection = lazy(() => import('./YurekaInfoSection'));
@@ -22,22 +25,18 @@ const MainPage: React.FC = () => {
     "@type": "WebSite",
     "name": "Yureka Money",
     "alternateName": "Yureka",
-    "url": "https://yureka.money",
+    "url": SITE_URL,
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://yureka.money/cards?q={search_term_string}",
+      "target": `${SITE_URL}/cards?q={search_term_string}`,
       "query-input": "required name=search_term_string"
     }
   };
 
   return (
     <>
-      <SEO 
-        title="Yureka Money -- Reward-Powered Digital Dollar" 
-        description="An automated, reward-powered digital dollar built for native passive earnings and effortless connection into DeFi."
-        schema={homeSchema}
-      />
-      
+      <SEO {...staticPageMeta['/']} schema={[homeSchema, faqPageSchema(faqQuestions)]} />
+
       <div className="bg-cream min-h-screen selection:bg-clay/30">
         {/* EDITORIAL 5-COLUMN ARCHITECTURE */}
         <div className="grid grid-cols-1 lg:grid-cols-5 w-full relative">
@@ -53,35 +52,42 @@ const MainPage: React.FC = () => {
                 </Suspense>
 
                 {/* Yureka Info — Meet Yureka cards */}
-                <Suspense fallback={<div className="h-96 bg-white/5 animate-pulse rounded-3xl" />}>
-                    <YurekaInfoSection />
-                </Suspense>
- 
+                <section id="meet-yureka" className="scroll-mt-24">
+                    <Suspense fallback={<div className="h-96 bg-white/5 animate-pulse rounded-3xl" />}>
+                        <YurekaInfoSection />
+                    </Suspense>
+                </section>
+
                 {/* Yureka Use Cases — Commerce video card */}
-                <Suspense fallback={<div className="h-96 bg-white/5 animate-pulse rounded-3xl" />}>
-                    <YurekaUseCasesSection />
-                </Suspense>
- 
+                <section id="use-cases" className="scroll-mt-24">
+                    <Suspense fallback={<div className="h-96 bg-white/5 animate-pulse rounded-3xl" />}>
+                        <YurekaUseCasesSection />
+                    </Suspense>
+                </section>
+
                 {/* Yureka Portfolio */}
-                <Suspense fallback={<div className="h-[600px] bg-white/5 animate-pulse rounded-3xl" />}>
-                    <YurekaPortfolio />
-                </Suspense>
+                <section id="portfolio" className="scroll-mt-24">
+                    <Suspense fallback={<div className="h-[600px] bg-white/5 animate-pulse rounded-3xl" />}>
+                        <YurekaPortfolio />
+                    </Suspense>
+                </section>
 
                 {/* Blue partner logo strip — immediately after hero headline */}
-                <Suspense fallback={<div className="h-16 bg-[#1a3fcb] animate-pulse" />}>
-                    <PartnerLogos />
-                </Suspense>
+                <section id="partners" className="scroll-mt-24">
+                    <Suspense fallback={<div className="h-16 bg-[#1a3fcb] animate-pulse" />}>
+                        <PartnerLogos />
+                    </Suspense>
+                </section>
 
+                <section id="yureka-ai" className="scroll-mt-24">
+                    <Suspense fallback={<div className="h-40" />}>
+                        <TextReveal />
+                    </Suspense>
+                </section>
 
-
-                
-                <Suspense fallback={<div className="h-40" />}>
-                    <TextReveal />
-                </Suspense>
-
-                <div className="content-auto">
+                <section id="how-it-works" className="scroll-mt-24 content-auto">
                     <HowItWorksStepper />
-                </div>
+                </section>
 
                 <section id="stats" className="scroll-mt-24 content-auto">
                     <Suspense fallback={<div className="h-48 bg-white/5 animate-pulse" />}>
@@ -89,9 +95,9 @@ const MainPage: React.FC = () => {
                     </Suspense>
                 </section>
 
-                <div className="w-full relative border-y border-white/5 content-auto">
+                <section id="brands" className="w-full relative border-y border-white/5 content-auto scroll-mt-24">
                     <Marquee />
-                </div>
+                </section>
 
 
 
