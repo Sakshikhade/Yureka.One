@@ -10,7 +10,7 @@ export default {
       colors: {
         cream: '#0a0a0a', 
         ink: 'rgba(255, 255, 255, 0.9)',   
-        clay: '#34d399',  
+        clay: '#00933b',
         surface: '#111111',
         'surface-hi': '#1a1a1a',
         primary: {

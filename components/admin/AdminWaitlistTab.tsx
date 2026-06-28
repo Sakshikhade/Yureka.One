@@ -42,7 +42,7 @@ export const AdminWaitlistTab: React.FC<AdminWaitlistTabProps> = ({
 
   const statusTabs = [
     { id: 'pending', label: 'New Applicants', icon: Clock, color: 'text-amber-500' },
-    { id: 'accepted', label: 'Accepted', icon: CheckCircle, color: 'text-green-500' },
+    { id: 'accepted', label: 'Accepted', icon: CheckCircle, color: 'text-[#00933b]' },
     { id: 'on_hold', label: 'On Hold', icon: PauseCircle, color: 'text-blue-500' },
     { id: 'rejected', label: 'Rejected', icon: XCircle, color: 'text-red-500' },
     { id: 'all', label: 'All Entries', icon: Filter, color: 'text-[#242424]' }

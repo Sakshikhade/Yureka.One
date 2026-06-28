@@ -35,8 +35,8 @@ const REWARDS = [
     tag: 'Smarter Business Spends',
     highlight: 'Saving upto 16.67%',
     text: 'on Tax payments just by using the right business credit cards with max benefit redemption options.',
-    color: 'from-emerald-500/10 to-transparent',
-    glow: 'group-hover:shadow-emerald-500/10',
+    color: 'from-[#00933b]/10 to-transparent',
+    glow: 'group-hover:shadow-[#00933b]/10',
   },
   {
     id: 5,

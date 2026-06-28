@@ -138,7 +138,7 @@ const NotificationBell = () => {
             >
                 <Bell size={24} className={`transition-transform ${isOpen ? 'text-clay' : 'group-hover:rotate-12'}`} />
                 {unreadCount > 0 && (
-                    <div className="absolute -top-1 -right-1 w-5 h-5 bg-clay rounded-full shadow-[0_0_15px_rgba(52,211,153,1)] flex items-center justify-center text-[9px] text-black font-black">
+                    <div className="absolute -top-1 -right-1 w-5 h-5 bg-clay rounded-full shadow-[0_0_15px_rgba(0,147,59,1)] flex items-center justify-center text-[9px] text-black font-black">
                         {unreadCount}
                     </div>
                 )}
@@ -177,7 +177,7 @@ const NotificationBell = () => {
                                                 className="p-4 rounded-2xl hover:bg-white/[0.03] transition-colors cursor-pointer group flex flex-col gap-3"
                                             >
                                                 <div className="flex gap-4">
-                                                    <div className="w-2 h-2 rounded-full bg-clay mt-2 shrink-0 shadow-[0_0_8px_#21deb3]" />
+                                                    <div className="w-2 h-2 rounded-full bg-clay mt-2 shrink-0 shadow-[0_0_8px_#00933b]" />
                                                     <div className="flex-1">
                                                         <h4 className="text-white text-sm font-bold mb-1">{resolveVariables(n.title)}</h4>
                                                         <p className="text-white/60 text-xs leading-relaxed">{resolveVariables(n.message)}</p>
@@ -249,7 +249,7 @@ const DashboardLayout: React.FC = () => {
                         animate={{ opacity: 1, x: 0 }}
                         className="flex items-center gap-5 mb-16 px-2"
                     >
-                        <div className="w-12 h-12 bg-clay rounded-2xl flex items-center justify-center shrink-0 shadow-[0_0_30px_rgba(52,211,153,0.3)]">
+                        <div className="w-12 h-12 bg-clay rounded-2xl flex items-center justify-center shrink-0 shadow-[0_0_30px_rgba(0,147,59,0.3)]">
                             <Zap size={24} className="text-black" />
                         </div>
                         {isSidebarOpen && (
@@ -368,7 +368,7 @@ const DashboardLayout: React.FC = () => {
                             animate={{ opacity: 1, y: 0 }}
                         >
                             <div className="flex items-center gap-3 mb-3">
-                                <div className="w-1.5 h-1.5 bg-clay rounded-full animate-pulse shadow-[0_0_10px_rgba(52,211,153,0.8)]" />
+                                <div className="w-1.5 h-1.5 bg-clay rounded-full animate-pulse shadow-[0_0_10px_rgba(0,147,59,0.8)]" />
                                 <p className="text-[10px] font-black uppercase tracking-[0.6em] text-white/30">System Status: Optimal</p>
                             </div>
                             <h1 className="text-6xl italic tracking-tighter text-white font-black leading-none uppercase">
@@ -388,7 +388,7 @@ const DashboardLayout: React.FC = () => {
                                     <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/20">Authorized User</p>
                                     <p className="text-xs font-bold text-white mt-0.5">{user?.user_metadata?.full_name || 'Guest Explorer'}</p>
                                 </div>
-                                <div className="w-14 h-14 bg-clay text-black rounded-2xl flex items-center justify-center font-black text-xl shadow-[0_0_30px_rgba(52,211,153,0.2)] hover:scale-105 transition-transform cursor-pointer">
+                                <div className="w-14 h-14 bg-clay text-black rounded-2xl flex items-center justify-center font-black text-xl shadow-[0_0_30px_rgba(0,147,59,0.2)] hover:scale-105 transition-transform cursor-pointer">
                                     {user?.user_metadata?.full_name?.[0] || 'U'}
                                 </div>
                             </div>

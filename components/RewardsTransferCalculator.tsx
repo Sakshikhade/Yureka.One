@@ -62,7 +62,7 @@ const PROGRAM_LOGOS: Record<string, string> = {
   'JAL Mileage Bank': '/logos/jal.png'
 };
 
-const ProgramIcon: React.FC<{ name: string | null, fallbackColor?: string, size?: string }> = ({ name, fallbackColor = 'bg-emerald-500', size = 'w-8 h-8' }) => {
+const ProgramIcon: React.FC<{ name: string | null, fallbackColor?: string, size?: string }> = ({ name, fallbackColor = 'bg-[#00933b]', size = 'w-8 h-8' }) => {
   if (!name) return <div className={`${size} rounded ${fallbackColor} flex items-center justify-center text-[10px] font-bold text-white uppercase`}>??</div>;
   
   // Try exact match first, then prefix match
@@ -202,21 +202,21 @@ const RewardsTransferCalculator: React.FC = () => {
         {/* Controls Section */}
         <div className="bg-white/5 rounded-3xl border border-white/5 p-6 sm:p-8 mb-6 shadow-2xl relative group">
           <div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 blur-[100px] rounded-full -mr-32 -mt-32" />
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#00933b]/5 blur-[100px] rounded-full -mr-32 -mt-32" />
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-end relative z-10">
             
             {/* Transfer From */}
             <div className="md:col-span-4 relative" ref={fromDropdownRef}>
-              <label className="text-[10px] font-bold text-emerald-400 uppercase tracking-[0.3em] block mb-3 px-1">Source Base</label>
+              <label className="text-[10px] font-bold text-[#00933b] uppercase tracking-[0.3em] block mb-3 px-1">Source Base</label>
               <div className="flex items-center gap-2">
                 <div 
                   onClick={() => setIsFromOpen(!isFromOpen)}
-                  className="flex-1 h-[64px] bg-cream border border-white/10 rounded-2xl px-5 flex items-center justify-between cursor-pointer hover:border-emerald-500/30 transition-all group shadow-inner"
+                  className="flex-1 h-[64px] bg-cream border border-white/10 rounded-2xl px-5 flex items-center justify-between cursor-pointer hover:border-[#00933b]/30 transition-all group shadow-inner"
                 >
                   <div className="flex items-center gap-4 overflow-hidden">
-                    <ProgramIcon name={selectedFrom} fallbackColor="bg-emerald-600" />
+                    <ProgramIcon name={selectedFrom} fallbackColor="bg-[#00933b]" />
                     <span className={`text-sm font-bold truncate ${selectedFrom ? 'text-white' : 'text-white/20'}`}>
                       {selectedFrom || 'Select source'}
                     </span>
@@ -245,7 +245,7 @@ const RewardsTransferCalculator: React.FC = () => {
                         <input 
                           autoFocus type="text" placeholder="Search programs..." 
                           value={fromSearchQuery} onChange={e => setFromSearchQuery(e.target.value)}
-                          className="w-full bg-cream rounded-xl pl-11 pr-4 py-3 text-sm outline-none border border-white/5 focus:border-emerald-500/30 transition-all"
+                          className="w-full bg-cream rounded-xl pl-11 pr-4 py-3 text-sm outline-none border border-white/5 focus:border-[#00933b]/30 transition-all"
                         />
                       </div>
                     </div>
@@ -264,16 +264,16 @@ const RewardsTransferCalculator: React.FC = () => {
                                 setIsFromOpen(false); 
                                 setFromSearchQuery(''); 
                               }}
-                              className={`px-4 py-3.5 hover:bg-emerald-500/10 rounded-xl cursor-pointer flex items-center gap-4 transition-all group ${selectedFrom === p ? 'bg-emerald-500/5' : ''}`}
+                              className={`px-4 py-3.5 hover:bg-[#00933b]/10 rounded-xl cursor-pointer flex items-center gap-4 transition-all group ${selectedFrom === p ? 'bg-[#00933b]/5' : ''}`}
                             >
-                              <ProgramIcon name={p} fallbackColor="bg-emerald-500/20" />
+                              <ProgramIcon name={p} fallbackColor="bg-[#00933b]/20" />
                               <div className="flex-1 flex flex-col">
-                                <span className={`text-sm font-bold transition-colors ${selectedFrom === p ? 'text-emerald-400' : 'text-white/60 group-hover:text-emerald-400'}`}>{p}</span>
+                                <span className={`text-sm font-bold transition-colors ${selectedFrom === p ? 'text-[#00933b]' : 'text-white/60 group-hover:text-[#00933b]'}`}>{p}</span>
                                 {selectedTo && !transferMatrix.some(r => r["Transfer From"].trim() === p && r["Transfer To"].trim() === selectedTo) && (
                                   <span className="text-[8px] text-white/10 uppercase tracking-tighter">Will clear target engine</span>
                                 )}
                               </div>
-                              {selectedFrom === p && <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(52,211,153,0.5)]" />}
+                              {selectedFrom === p && <div className="w-1.5 h-1.5 rounded-full bg-[#00933b] shadow-[0_0_10px_rgba(0,147,59,0.5)]" />}
                             </div>
                         ))
                       ) : (
@@ -287,14 +287,14 @@ const RewardsTransferCalculator: React.FC = () => {
 
             {/* Transfer To */}
             <div className="md:col-span-4 relative" ref={toDropdownRef}>
-              <label className="text-[10px] font-bold text-emerald-400 uppercase tracking-[0.3em] block mb-3 px-1">Target Engine</label>
+              <label className="text-[10px] font-bold text-[#00933b] uppercase tracking-[0.3em] block mb-3 px-1">Target Engine</label>
               <div className="flex items-center gap-2">
                 <div 
                   onClick={() => setIsToOpen(!isToOpen)}
-                  className="flex-1 h-[64px] bg-cream border border-white/10 rounded-2xl px-5 flex items-center justify-between cursor-pointer hover:border-emerald-500/30 transition-all group shadow-inner"
+                  className="flex-1 h-[64px] bg-cream border border-white/10 rounded-2xl px-5 flex items-center justify-between cursor-pointer hover:border-[#00933b]/30 transition-all group shadow-inner"
                 >
                   <div className="flex items-center gap-4 overflow-hidden">
-                    <ProgramIcon name={selectedTo} fallbackColor="bg-emerald-900" />
+                    <ProgramIcon name={selectedTo} fallbackColor="bg-[#00933b]" />
                     <span className={`text-sm font-bold truncate ${selectedTo ? 'text-white' : 'text-white/20'}`}>
                       {selectedTo || 'Select target'}
                     </span>
@@ -323,7 +323,7 @@ const RewardsTransferCalculator: React.FC = () => {
                         <input 
                           autoFocus type="text" placeholder="Search targets..." 
                           value={toSearchQuery} onChange={e => setToSearchQuery(e.target.value)}
-                          className="w-full bg-cream rounded-xl pl-11 pr-4 py-3 text-sm outline-none border border-white/5 focus:border-emerald-500/30 transition-all"
+                          className="w-full bg-cream rounded-xl pl-11 pr-4 py-3 text-sm outline-none border border-white/5 focus:border-[#00933b]/30 transition-all"
                         />
                       </div>
                     </div>
@@ -342,16 +342,16 @@ const RewardsTransferCalculator: React.FC = () => {
                                 setIsToOpen(false); 
                                 setToSearchQuery(''); 
                               }}
-                              className={`px-4 py-3.5 hover:bg-emerald-500/10 rounded-xl cursor-pointer flex items-center gap-4 transition-all group ${selectedTo === p ? 'bg-emerald-500/5' : ''}`}
+                              className={`px-4 py-3.5 hover:bg-[#00933b]/10 rounded-xl cursor-pointer flex items-center gap-4 transition-all group ${selectedTo === p ? 'bg-[#00933b]/5' : ''}`}
                             >
-                              <ProgramIcon name={p} fallbackColor="bg-emerald-500/20" />
+                              <ProgramIcon name={p} fallbackColor="bg-[#00933b]/20" />
                               <div className="flex-1 flex flex-col">
-                                <span className={`text-sm font-bold transition-colors ${selectedTo === p ? 'text-emerald-400' : 'text-white/60 group-hover:text-emerald-400'}`}>{p}</span>
+                                <span className={`text-sm font-bold transition-colors ${selectedTo === p ? 'text-[#00933b]' : 'text-white/60 group-hover:text-[#00933b]'}`}>{p}</span>
                                 {selectedFrom && !transferMatrix.some(r => r["Transfer From"].trim() === selectedFrom && r["Transfer To"].trim() === p) && (
                                   <span className="text-[8px] text-white/10 uppercase tracking-tighter">Will clear source base</span>
                                 )}
                               </div>
-                              {selectedTo === p && <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(52,211,153,0.5)]" />}
+                              {selectedTo === p && <div className="w-1.5 h-1.5 rounded-full bg-[#00933b] shadow-[0_0_10px_rgba(0,147,59,0.5)]" />}
                             </div>
                         ))
                       ) : (
@@ -365,8 +365,8 @@ const RewardsTransferCalculator: React.FC = () => {
 
             {/* Points */}
             <div className="md:col-span-4">
-              <label className="text-[10px] font-bold text-emerald-400 uppercase tracking-[0.3em] block mb-3 px-1">Node Value</label>
-              <div className="h-[64px] bg-cream border border-white/10 rounded-2xl px-5 flex items-center gap-2 focus-within:border-emerald-500/50 transition-all shadow-inner">
+              <label className="text-[10px] font-bold text-[#00933b] uppercase tracking-[0.3em] block mb-3 px-1">Node Value</label>
+              <div className="h-[64px] bg-cream border border-white/10 rounded-2xl px-5 flex items-center gap-2 focus-within:border-[#00933b]/50 transition-all shadow-inner">
                 <input 
                   type="number" 
                   value={amount || ''} 
@@ -386,12 +386,12 @@ const RewardsTransferCalculator: React.FC = () => {
           className="bg-white/5 rounded-[2rem] border border-white/5 p-5 mb-10 flex items-center justify-between group cursor-pointer hover:bg-white/[0.03] transition-all shadow-xl"
         >
           <div className="flex items-center gap-5 text-white/40 font-bold uppercase tracking-[0.2em] text-[10px]">
-            <div className="w-10 h-10 rounded-2xl bg-cream flex items-center justify-center border border-white/5 group-hover:border-emerald-500/20 transition-all">
-              <User size={18} className="text-emerald-400" />
+            <div className="w-10 h-10 rounded-2xl bg-cream flex items-center justify-center border border-white/5 group-hover:border-[#00933b]/20 transition-all">
+              <User size={18} className="text-[#00933b]" />
             </div>
             <span>Login to view your synced balances</span>
           </div>
-          <ArrowRight size={18} className="text-white/10 group-hover:text-emerald-400 group-hover:translate-x-2 transition-all mr-3" />
+          <ArrowRight size={18} className="text-white/10 group-hover:text-[#00933b] group-hover:translate-x-2 transition-all mr-3" />
         </div>
 
         {/* Results Toolbar */}
@@ -403,9 +403,9 @@ const RewardsTransferCalculator: React.FC = () => {
           <div className="flex items-center gap-3">
             <button 
               onClick={() => setShowBonusesOnly(!showBonusesOnly)}
-              className={`whitespace-nowrap px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] border transition-all flex items-center gap-2.5 ${showBonusesOnly ? 'bg-emerald-500/10 border-emerald-500/50 text-emerald-400 shadow-[0_0_20px_rgba(52,211,153,0.1)]' : 'bg-transparent border-white/10 text-white/40 hover:bg-white/5'}`}
+              className={`whitespace-nowrap px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] border transition-all flex items-center gap-2.5 ${showBonusesOnly ? 'bg-[#00933b]/10 border-[#00933b]/50 text-[#00933b] shadow-[0_0_20px_rgba(0,147,59,0.1)]' : 'bg-transparent border-white/10 text-white/40 hover:bg-white/5'}`}
             >
-              <Zap size={12} className={showBonusesOnly ? 'fill-emerald-400' : ''} />
+              <Zap size={12} className={showBonusesOnly ? 'fill-[#00933b]' : ''} />
               Bonus Only
             </button>
             <button className="whitespace-nowrap px-6 py-2.5 bg-transparent border border-white/10 text-white/40 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-white/5 transition-all flex items-center gap-2.5">
@@ -423,8 +423,8 @@ const RewardsTransferCalculator: React.FC = () => {
                  initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                  className="py-24 text-center bg-white/5 rounded-[3rem] border border-dashed border-white/5 text-white/20 flex flex-col items-center gap-6"
                >
-                  <div className="w-20 h-20 rounded-full bg-emerald-500/5 flex items-center justify-center border border-emerald-500/10 animate-pulse">
-                    <TrendingUp size={40} strokeWidth={1} className="text-emerald-500/40" />
+                  <div className="w-20 h-20 rounded-full bg-[#00933b]/5 flex items-center justify-center border border-[#00933b]/10 animate-pulse">
+                    <TrendingUp size={40} strokeWidth={1} className="text-[#00933b]/40" />
                   </div>
                   <p className="text-[11px] font-bold uppercase tracking-[0.4em] max-w-xs leading-loose">Loading conversion network...</p>
                </motion.div>
@@ -433,8 +433,8 @@ const RewardsTransferCalculator: React.FC = () => {
                  initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                  className="py-24 text-center bg-white/5 rounded-[3rem] border border-dashed border-white/5 text-white/20 flex flex-col items-center gap-6"
                >
-                  <div className="w-20 h-20 rounded-full bg-emerald-500/5 flex items-center justify-center border border-emerald-500/10">
-                    <TrendingUp size={40} strokeWidth={1} className="text-emerald-500/40" />
+                  <div className="w-20 h-20 rounded-full bg-[#00933b]/5 flex items-center justify-center border border-[#00933b]/10">
+                    <TrendingUp size={40} strokeWidth={1} className="text-[#00933b]/40" />
                   </div>
                   <p className="text-[11px] font-bold uppercase tracking-[0.4em] max-w-xs leading-loose">Initialize node selection to view optimized conversion routes.</p>
                </motion.div>
@@ -458,31 +458,31 @@ const RewardsTransferCalculator: React.FC = () => {
                   <motion.div 
                     layout initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
                     key={itemId}
-                    className="bg-white/5 rounded-[2.5rem] border border-white/5 p-6 sm:p-10 hover:shadow-3xl hover:border-emerald-500/20 transition-all group overflow-hidden relative"
+                    className="bg-white/5 rounded-[2.5rem] border border-white/5 p-6 sm:p-10 hover:shadow-3xl hover:border-[#00933b]/20 transition-all group overflow-hidden relative"
                   >
                     {/* Decorative glow background */}
-                    <div className="absolute top-0 right-0 w-48 h-48 bg-emerald-500/[0.02] blur-[80px] rounded-full group-hover:bg-emerald-500/[0.05] transition-all" />
+                    <div className="absolute top-0 right-0 w-48 h-48 bg-[#00933b]/[0.02] blur-[80px] rounded-full group-hover:bg-[#00933b]/[0.05] transition-all" />
                     
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10">
                       
                       {/* Program Logo & Info */}
                       <div className="lg:col-span-5 flex items-start gap-6 sm:gap-8">
                         <div className="relative group/logo">
-                          <div className="absolute inset-0 bg-emerald-500/20 blur-xl opacity-0 group-hover/logo:opacity-100 transition-all rounded-full" />
-                          <ProgramIcon name={item["Transfer To"]} fallbackColor="bg-emerald-900" size="w-16 h-16 sm:w-20 sm:h-20" />
+                          <div className="absolute inset-0 bg-[#00933b]/20 blur-xl opacity-0 group-hover/logo:opacity-100 transition-all rounded-full" />
+                          <ProgramIcon name={item["Transfer To"]} fallbackColor="bg-[#00933b]" size="w-16 h-16 sm:w-20 sm:h-20" />
                         </div>
                         <div className="space-y-2 flex-1 min-w-0">
                           <h3 className="text-xl sm:text-2xl font-bold text-white uppercase tracking-tight leading-tight">{item["Transfer To"]}</h3>
                           <div className="flex flex-wrap items-center gap-3 text-[10px] font-bold text-white/30 uppercase tracking-[0.2em]">
-                            <span className="text-emerald-400">{item["Ratio"]} ratio</span>
+                            <span className="text-[#00933b]">{item["Ratio"]} ratio</span>
                             <span className="w-1 h-1 bg-white/10 rounded-full" />
                             <span>via {item["Via"] || 'Direct'}</span>
                             <span className="w-1 h-1 bg-white/10 rounded-full hidden sm:block" />
                             <span className="hidden sm:block">{item["Transfer Time"] || 'Instant Sync'}</span>
                           </div>
                           {hasBonus && (
-                            <div className="flex items-center gap-2 text-[9px] font-bold text-emerald-400 mt-3 bg-emerald-500/10 px-4 py-1.5 rounded-full border border-emerald-500/20 w-fit uppercase tracking-widest">
-                               <Zap size={10} className="fill-emerald-400" />
+                            <div className="flex items-center gap-2 text-[9px] font-bold text-[#00933b] mt-3 bg-[#00933b]/10 px-4 py-1.5 rounded-full border border-[#00933b]/20 w-fit uppercase tracking-widest">
+                               <Zap size={10} className="fill-[#00933b]" />
                                50% Neural Bonus Applied
                             </div>
                           )}
@@ -497,9 +497,9 @@ const RewardsTransferCalculator: React.FC = () => {
                              if (next.has(itemId)) next.delete(itemId); else next.add(itemId);
                              setFavorites(next);
                           }}
-                          className={`p-4 rounded-full transition-all ${isFavorite ? 'text-emerald-400 bg-emerald-500/10' : 'text-white/10 hover:text-white/40 hover:bg-white/5'}`}
+                          className={`p-4 rounded-full transition-all ${isFavorite ? 'text-[#00933b] bg-[#00933b]/10' : 'text-white/10 hover:text-white/40 hover:bg-white/5'}`}
                         >
-                          <Heart size={20} fill={isFavorite ? 'currentColor' : 'none'} className={isFavorite ? 'scale-110 shadow-[0_0_20px_rgba(52,211,153,0.3)]' : ''} />
+                          <Heart size={20} fill={isFavorite ? 'currentColor' : 'none'} className={isFavorite ? 'scale-110 shadow-[0_0_20px_rgba(0,147,59,0.3)]' : ''} />
                         </button>
                       </div>
 
@@ -517,10 +517,10 @@ const RewardsTransferCalculator: React.FC = () => {
 
                         {/* Target Info */}
                         <div className="space-y-2">
-                          <div className="text-[9px] font-bold text-emerald-400 uppercase tracking-[0.3em]">Yield Result</div>
+                          <div className="text-[9px] font-bold text-[#00933b] uppercase tracking-[0.3em]">Yield Result</div>
                           <div className="flex items-center gap-3">
-                             <div className="w-5 h-5 rounded-lg bg-emerald-500/20 border border-emerald-500/30 text-[7px] text-emerald-400 font-bold flex items-center justify-center shrink-0 uppercase">YLD</div>
-                             <span className="text-2xl sm:text-3xl font-bold text-emerald-400 tracking-tighter">{formatNumber(yieldValue)}</span>
+                             <div className="w-5 h-5 rounded-lg bg-[#00933b]/20 border border-[#00933b]/30 text-[7px] text-[#00933b] font-bold flex items-center justify-center shrink-0 uppercase">YLD</div>
+                             <span className="text-2xl sm:text-3xl font-bold text-[#00933b] tracking-tighter">{formatNumber(yieldValue)}</span>
                           </div>
                           <div className="text-[11px] font-bold text-white/30 uppercase tracking-widest">est. ₹{formatNumber(estTargetVal)}</div>
                         </div>
@@ -544,7 +544,7 @@ const RewardsTransferCalculator: React.FC = () => {
                   <History size={16} />
                   Sync More Routes
                 </span>
-                <div className="absolute inset-0 bg-emerald-400 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out" />
+                <div className="absolute inset-0 bg-[#00933b] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out" />
               </button>
             </div>
           )}

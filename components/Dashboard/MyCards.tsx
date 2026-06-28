@@ -187,7 +187,7 @@ const MyCards: React.FC = () => {
 
                 <button 
                     onClick={() => setIsAdding(true)}
-                    className="bg-clay text-black rounded-[2rem] p-8 flex flex-col items-center justify-center gap-4 hover:scale-[1.02] active:scale-95 transition-all group shadow-[0_20px_40px_rgba(52,211,153,0.2)]"
+                    className="bg-clay text-black rounded-[2rem] p-8 flex flex-col items-center justify-center gap-4 hover:scale-[1.02] active:scale-95 transition-all group shadow-[0_20px_40px_rgba(0,147,59,0.2)]"
                 >
                     <Plus size={32} className="group-hover:rotate-90 transition-transform duration-500" />
                     <span className="text-[10px] font-black uppercase tracking-[0.4em]">Expand Portfolio</span>
@@ -329,7 +329,7 @@ const MyCards: React.FC = () => {
                             className="glass-dark border border-white/10 w-full max-w-xl rounded-[3rem] p-12 relative z-10 shadow-[0_40px_100px_rgba(0,0,0,0.8)] overflow-hidden"
                         >
                             <div className="absolute top-0 left-0 w-full h-1.5 bg-white/5">
-                                <motion.div initial={{ width: 0 }} animate={{ width: '100%' }} className="h-full bg-clay shadow-[0_0_20px_rgba(52,211,153,1)]" />
+                                <motion.div initial={{ width: 0 }} animate={{ width: '100%' }} className="h-full bg-clay shadow-[0_0_20px_rgba(0,147,59,1)]" />
                             </div>
 
                             <div className="flex items-center gap-4 mb-10">

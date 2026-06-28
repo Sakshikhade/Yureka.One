@@ -80,7 +80,7 @@ export const ScannerProgress: React.FC<{ progress: number }> = ({ progress }) =>
 
                     <div className="relative h-1.5 bg-white/5 rounded-full overflow-hidden">
                         <motion.div 
-                            className="absolute top-0 left-0 h-full bg-gradient-to-r from-clay/50 to-clay shadow-[0_0_10px_#21deb3]" 
+                            className="absolute top-0 left-0 h-full bg-gradient-to-r from-clay/50 to-clay shadow-[0_0_10px_#00933b]" 
                             style={{ width: `${displayProgress}%` }}
                             transition={{ type: 'spring', bounce: 0, duration: 0.8 }}
                         />

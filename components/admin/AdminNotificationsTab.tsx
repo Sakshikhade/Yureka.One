@@ -293,7 +293,7 @@ export const AdminNotificationsTab: React.FC = () => {
                     <div key={n.id} className={`p-6 rounded-2xl border ${n.status === 'active' ? 'bg-[#111] border-white/10' : 'bg-black/50 border-white/5 opacity-60'} flex flex-col md:flex-row gap-6 md:items-center justify-between`}>
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-1">
-                          <span className={`w-2 h-2 rounded-full ${n.status === 'active' ? 'bg-clay shadow-[0_0_10px_#21deb3]' : 'bg-white/20'}`} />
+                          <span className={`w-2 h-2 rounded-full ${n.status === 'active' ? 'bg-clay shadow-[0_0_10px_#00933b]' : 'bg-white/20'}`} />
                           <h4 className="font-bold text-white text-lg">{n.title}</h4>
                           <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-white/40 uppercase font-bold">{n.type}</span>
                         </div>

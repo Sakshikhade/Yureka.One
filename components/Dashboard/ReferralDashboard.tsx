@@ -66,11 +66,11 @@ const ReferralDashboard: React.FC = () => {
         <div className="space-y-16">
             {/* Referral Stats Header */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div className="md:col-span-2 glass-dark border border-clay/20 rounded-[3rem] p-12 flex flex-col justify-between relative overflow-hidden group shadow-[0_40px_80px_rgba(52,211,153,0.1)]">
+                <div className="md:col-span-2 glass-dark border border-clay/20 rounded-[3rem] p-12 flex flex-col justify-between relative overflow-hidden group shadow-[0_40px_80px_rgba(0,147,59,0.1)]">
                     <div className="absolute top-0 right-0 w-64 h-64 bg-clay/10 blur-[100px] rounded-full -mr-32 -mt-32 group-hover:bg-clay/20 transition-colors duration-1000" />
                     <div className="relative z-10">
                         <div className="flex items-center gap-3 mb-8">
-                            <div className="w-1.5 h-1.5 bg-clay rounded-full animate-pulse shadow-[0_0_10px_rgba(52,211,153,0.8)]" />
+                            <div className="w-1.5 h-1.5 bg-clay rounded-full animate-pulse shadow-[0_0_10px_rgba(0,147,59,0.8)]" />
                             <p className="text-[10px] font-black uppercase tracking-[0.6em] text-clay">Accelerator Mechanism</p>
                         </div>
                         
@@ -154,7 +154,7 @@ const ReferralDashboard: React.FC = () => {
                                         </div>
                                     </td>
                                     <td className="px-10 py-8">
-                                        <div className={`inline-flex items-center gap-3 px-5 py-2 rounded-full text-[9px] font-black uppercase tracking-[0.2em] ${ref.status === 'accepted' ? 'bg-clay/10 text-clay border border-clay/20 shadow-[0_0_15px_rgba(52,211,153,0.1)]' : 'bg-white/5 text-white/30 border border-white/10'}`}>
+                                        <div className={`inline-flex items-center gap-3 px-5 py-2 rounded-full text-[9px] font-black uppercase tracking-[0.2em] ${ref.status === 'accepted' ? 'bg-clay/10 text-clay border border-clay/20 shadow-[0_0_15px_rgba(0,147,59,0.1)]' : 'bg-white/5 text-white/30 border border-white/10'}`}>
                                             <div className={`w-1.5 h-1.5 rounded-full ${ref.status === 'accepted' ? 'bg-clay animate-pulse' : 'bg-white/20'}`} />
                                             {ref.status}
                                         </div>

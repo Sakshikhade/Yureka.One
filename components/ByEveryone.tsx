@@ -19,7 +19,7 @@ const ByEveryone: React.FC = () => {
 
       {/* Hero Section - The Collective Intelligence */}
       <section className="relative pt-20 pb-32 px-6 font-sans">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-[radial-gradient(circle_at_center,rgba(52,211,153,0.04)_0%,transparent_70%)] pointer-events-none" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-[radial-gradient(circle_at_center,rgba(0,147,59,0.04)_0%,transparent_70%)] pointer-events-none" />
         <div className="absolute inset-0 opacity-[0.02] pointer-events-none" 
              style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
 
@@ -62,15 +62,15 @@ const ByEveryone: React.FC = () => {
             <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none" />
             
             <svg className="w-full h-full absolute inset-0 text-white/5 pointer-events-none" viewBox="0 0 800 380">
-              <path d="M 150 190 Q 250 80 400 190 T 650 190" fill="none" stroke="rgba(52,211,153,0.15)" strokeWidth="2" strokeDasharray="6 6" />
-              <path d="M 150 190 Q 280 280 400 190 T 650 190" fill="none" stroke="rgba(52,211,153,0.15)" strokeWidth="1.5" />
+              <path d="M 150 190 Q 250 80 400 190 T 650 190" fill="none" stroke="rgba(0,147,59,0.15)" strokeWidth="2" strokeDasharray="6 6" />
+              <path d="M 150 190 Q 280 280 400 190 T 650 190" fill="none" stroke="rgba(0,147,59,0.15)" strokeWidth="1.5" />
               <path d="M 250 120 Q 400 20 550 120" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="1" />
               
               {/* Nodes */}
-              <circle cx="150" cy="190" r="6" fill="#34d399" className="animate-pulse" />
-              <circle cx="400" cy="190" r="12" fill="#000" stroke="#34d399" strokeWidth="3" />
-              <circle cx="400" cy="190" r="4" fill="#34d399" />
-              <circle cx="650" cy="190" r="6" fill="#34d399" className="animate-pulse" />
+              <circle cx="150" cy="190" r="6" fill="#00933b" className="animate-pulse" />
+              <circle cx="400" cy="190" r="12" fill="#000" stroke="#00933b" strokeWidth="3" />
+              <circle cx="400" cy="190" r="4" fill="#00933b" />
+              <circle cx="650" cy="190" r="6" fill="#00933b" className="animate-pulse" />
               
               <circle cx="270" cy="110" r="4" fill="#fff" opacity="0.3" />
               <circle cx="530" cy="110" r="4" fill="#fff" opacity="0.3" />
@@ -152,10 +152,10 @@ const ByEveryone: React.FC = () => {
           </motion.div>
 
           <div className="text-center mt-20 max-w-2xl mx-auto space-y-6 relative font-sans">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(52,211,153,0.04)_0%,transparent_70%)] pointer-events-none -z-10" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,147,59,0.04)_0%,transparent_70%)] pointer-events-none -z-10" />
             <h5 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/55 font-mono">Collective leverage is the future.</h5>
             <h4 className="text-4xl md:text-5xl font-heading font-black tracking-tighter leading-[1.1]">
-               Stop fighting <span className="bg-gradient-to-r from-clay to-emerald-400 bg-clip-text text-transparent font-extrabold italic uppercase tracking-tighter">the system</span> alone.
+               Stop fighting <span className="bg-gradient-to-r from-clay to-[#00933b] bg-clip-text text-transparent font-extrabold italic uppercase tracking-tighter">the system</span> alone.
             </h4>
             <p className="text-white/80 font-sans text-sm md:text-base leading-relaxed tracking-normal">
               Yureka.Money is the infrastructure for a more transparent financial world. We use community data to negotiate better, spend smarter, and win together.
@@ -208,8 +208,8 @@ const ByEveryone: React.FC = () => {
                            <div className="text-sm font-bold text-white/95">{item.label}</div>
                            {item.sub && <div className="text-[11px] text-white/60 font-medium italic">{item.sub}</div>}
                         </div>
-                        <div className="text-center px-4 py-2 bg-emerald-500/[0.02] border-x border-emerald-500/10">
-                           <div className={`text-sm font-black ${item.yureka.includes('Verified') || item.yureka.includes('Comprehensive') || item.yureka.includes('Optimized') || item.yureka.includes('Live') || item.yureka.includes('Elite') ? 'text-emerald-400 font-bold' : 'text-white'}`}>{item.yureka}</div>
+                        <div className="text-center px-4 py-2 bg-[#00933b]/[0.02] border-x border-[#00933b]/10">
+                           <div className={`text-sm font-black ${item.yureka.includes('Verified') || item.yureka.includes('Comprehensive') || item.yureka.includes('Optimized') || item.yureka.includes('Live') || item.yureka.includes('Elite') ? 'text-[#00933b] font-bold' : 'text-white'}`}>{item.yureka}</div>
                         </div>
                         <div className="text-center opacity-60">
                            <div className="text-sm font-medium text-white/80">{item.trad}</div>
@@ -219,7 +219,7 @@ const ByEveryone: React.FC = () => {
                 </div>
               ))}
 
-              <div className="bg-gradient-to-r from-clay to-emerald-600 p-10 grid grid-cols-3 items-center rounded-b-[3rem] shadow-[0_10px_40px_rgba(52,211,153,0.15)]">
+              <div className="bg-gradient-to-r from-clay to-[#00933b] p-10 grid grid-cols-3 items-center rounded-b-[3rem] shadow-[0_10px_40px_rgba(0,147,59,0.15)]">
                  <div className="space-y-1">
                     <div className="text-xl font-black text-black uppercase tracking-tighter leading-none">Yield Delta</div>
                     <div className="text-[10px] font-bold text-black/80 font-mono uppercase tracking-wider">Performance Gap</div>
@@ -334,15 +334,15 @@ const ByEveryone: React.FC = () => {
         <div className="max-w-7xl mx-auto">
            <div className="relative aspect-video rounded-[3rem] overflow-hidden group shadow-2xl border border-white/10 bg-[#0d0d0d] flex items-center justify-center">
               {/* Dynamic neural backdrop */}
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(52,211,153,0.06)_0%,transparent_65%)] pointer-events-none" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,147,59,0.06)_0%,transparent_65%)] pointer-events-none" />
               <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none" />
               
               {/* Glowing vector circles/lines connecting */}
               <svg className="w-full h-full absolute inset-0 text-white/5 pointer-events-none" viewBox="0 0 800 450">
                  <defs>
                     <radialGradient id="netGlow" cx="50%" cy="50%" r="50%">
-                       <stop offset="0%" stopColor="#34d399" stopOpacity="0.25" />
-                       <stop offset="100%" stopColor="#34d399" stopOpacity="0" />
+                       <stop offset="0%" stopColor="#00933b" stopOpacity="0.25" />
+                       <stop offset="100%" stopColor="#00933b" stopOpacity="0" />
                     </radialGradient>
                  </defs>
                  <circle cx="400" cy="225" r="160" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="5 5" className="animate-[spin_100s_linear_infinite]" />
@@ -354,10 +354,10 @@ const ByEveryone: React.FC = () => {
                  <path d="M 400 100 L 400 350" stroke="currentColor" strokeWidth="1" />
                  
                  {/* Interactive glowing dots */}
-                 <circle cx="240" cy="225" r="5" fill="#34d399" className="animate-ping" />
-                 <circle cx="560" cy="225" r="5" fill="#34d399" className="animate-ping" style={{ animationDelay: '1s' }} />
-                 <circle cx="400" cy="100" r="5" fill="#34d399" className="animate-ping" style={{ animationDelay: '0.5s' }} />
-                 <circle cx="400" cy="350" r="5" fill="#34d399" className="animate-ping" style={{ animationDelay: '1.5s' }} />
+                 <circle cx="240" cy="225" r="5" fill="#00933b" className="animate-ping" />
+                 <circle cx="560" cy="225" r="5" fill="#00933b" className="animate-ping" style={{ animationDelay: '1s' }} />
+                 <circle cx="400" cy="100" r="5" fill="#00933b" className="animate-ping" style={{ animationDelay: '0.5s' }} />
+                 <circle cx="400" cy="350" r="5" fill="#00933b" className="animate-ping" style={{ animationDelay: '1.5s' }} />
               </svg>
               
               <div className="relative z-10 text-center space-y-4 max-w-lg px-6">

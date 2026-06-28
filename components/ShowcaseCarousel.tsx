@@ -106,7 +106,7 @@ const ComparisonWidget: React.FC = () => {
           onClick={() => setMode('with')}
           className={`px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-500 ${
             mode === 'with'
-              ? 'bg-clay text-cream shadow-[0_0_20px_rgba(52,211,153,0.3)]'
+              ? 'bg-clay text-cream shadow-[0_0_20px_rgba(0,147,59,0.3)]'
               : 'text-white/40 hover:text-white/60'
           }`}
         >

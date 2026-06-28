@@ -1,31 +1,9 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 
-const heroBrands = [
-  { name: 'Stripe' },
-  { name: 'Coinbase' },
-  { name: 'Uniswap' },
-  { name: 'Aave' },
-  { name: 'Compound' },
-  { name: 'MakerDAO' },
-  { name: 'Chainlink' },
-];
-
 const Hero: React.FC = () => {
   return (
     <>
-      <style dangerouslySetInnerHTML={{ __html: `
-        @keyframes yureka-marquee {
-          0% { transform: translateX(0%); }
-          100% { transform: translateX(-50%); }
-        }
-        .yureka-marquee-track {
-          display: flex;
-          width: max-content;
-          animation: yureka-marquee 22s linear infinite;
-        }
-      `}} />
-
       {/* Hero Section — full-viewport-height card within the col-span-3 column */}
       <section
         id="hero"
@@ -70,28 +48,6 @@ const Hero: React.FC = () => {
                 </span>
               </button>
 
-            </div>
-
-            {/* Brand Marquee — positioned on the ribbon between both hands, spanning only the middle column (section 3) of the 5-column grid */}
-            <div className="absolute left-[calc(45%-28px)] right-[calc(21%-255px)] z-20 overflow-hidden py-[6px]" style={{ top: 'calc(78% + 21px)', maskImage: 'linear-gradient(to left, black 0px, black 179px, transparent 179px, transparent 261px, black 261px, black 100%)', WebkitMaskImage: 'linear-gradient(to left, black 0px, black 179px, transparent 179px, transparent 261px, black 261px, black 100%)' }}>
-              <div className="yureka-marquee-track">
-                {heroBrands.map((brand, i) => (
-                  <span
-                    key={`a-${i}`}
-                    className="mx-7 shrink-0 text-black/60 whitespace-nowrap font-sans text-sm font-semibold tracking-wider uppercase"
-                  >
-                    {brand.name}
-                  </span>
-                ))}
-                {heroBrands.map((brand, i) => (
-                  <span
-                    key={`b-${i}`}
-                    className="mx-7 shrink-0 text-black/60 whitespace-nowrap font-sans text-sm font-semibold tracking-wider uppercase"
-                  >
-                    {brand.name}
-                  </span>
-                ))}
-              </div>
             </div>
           </div>
         </div>

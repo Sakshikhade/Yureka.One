@@ -83,7 +83,7 @@ const GmailModal: React.FC<{
                 <button
                     onClick={onConfirm}
                     disabled={isLoading}
-                    className="w-full bg-clay text-black py-5 rounded-2xl font-black text-[11px] uppercase tracking-[0.4em] flex items-center justify-center gap-3 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_10px_40px_rgba(52,211,153,0.3)]"
+                    className="w-full bg-clay text-black py-5 rounded-2xl font-black text-[11px] uppercase tracking-[0.4em] flex items-center justify-center gap-3 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_10px_40px_rgba(0,147,59,0.3)]"
                 >
                     {isLoading ? (
                         <RefreshCw size={18} className="animate-spin" />
@@ -244,7 +244,7 @@ const WaitingPage: React.FC = () => {
                                 <motion.div
                                     animate={{ scale: [1, 1.2, 1] }}
                                     transition={{ duration: 2, repeat: Infinity }}
-                                    className="absolute -top-2 -right-2 w-8 h-8 bg-clay rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(52,211,153,0.6)]"
+                                    className="absolute -top-2 -right-2 w-8 h-8 bg-clay rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(0,147,59,0.6)]"
                                 >
                                     <Sparkles size={16} className="text-black" />
                                 </motion.div>
@@ -343,8 +343,8 @@ const WaitingPage: React.FC = () => {
                                         label: 'Admin Approved',
                                         value: rankResult.approvedReferrals,
                                         sub: `${rankResult.approvedReferrals} × ${RANK_BOOST_PER_APPROVAL} = ${rankResult.approvedReferrals * RANK_BOOST_PER_APPROVAL} positions`,
-                                        color: 'text-green-400',
-                                        border: 'border-green-400/20',
+                                        color: 'text-[#00933b]',
+                                        border: 'border-[#00933b]/20',
                                     },
                                     {
                                         icon: TrendingUp,

@@ -41,8 +41,8 @@ const YurekaOsPage: React.FC = () => {
       {/* Immersive Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-[-10%] left-[-5%] w-[40%] h-[40%] bg-clay/5 rounded-full blur-[120px]" />
-        <div className="absolute bottom-[10%] right-[-5%] w-[30%] h-[50%] bg-emerald-500/5 rounded-full blur-[100px]" />
-        <div className="absolute top-[20%] right-[10%] w-[20%] h-[20%] bg-emerald-200/5 rounded-full blur-[80px]" />
+        <div className="absolute bottom-[10%] right-[-5%] w-[30%] h-[50%] bg-[#00933b]/5 rounded-full blur-[100px]" />
+        <div className="absolute top-[20%] right-[10%] w-[20%] h-[20%] bg-[#00933b]/5 rounded-full blur-[80px]" />
         <div 
           className="absolute inset-0 opacity-[0.03] mix-blend-screen pointer-events-none" 
           style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, #ffffff 1px, transparent 1px)', backgroundSize: '20px 20px' }} 
@@ -93,7 +93,7 @@ const YurekaOsPage: React.FC = () => {
                   </h2>
                   <div className="h-px w-full bg-white/10" />
                   <p className="text-white/40 text-[10px] tracking-widest uppercase font-bold flex items-center gap-3">
-                    <span className="w-2 h-2 rounded-full bg-clay animate-pulse shadow-[0_0_8px_#34d399]" />
+                    <span className="w-2 h-2 rounded-full bg-clay animate-pulse shadow-[0_0_8px_#00933b]" />
                     Real-time valuations across 10+ partners
                   </p>
                 </motion.div>
@@ -192,7 +192,7 @@ const YurekaOsPage: React.FC = () => {
                  whileInView={{ opacity: 1, y: 0 }}
                  viewport={{ once: true }}
                  transition={{ delay: i * 0.1 }}
-                 className="group relative p-10 bg-white/[0.03] rounded-[2.5rem] border border-white/5 hover:border-clay/30 transition-all hover:shadow-[0_30px_60px_-12px_rgba(52,211,153,0.1)] backdrop-blur-md"
+                 className="group relative p-10 bg-white/[0.03] rounded-[2.5rem] border border-white/5 hover:border-clay/30 transition-all hover:shadow-[0_30px_60px_-12px_rgba(0,147,59,0.1)] backdrop-blur-md"
                >
                  <div className={`w-14 h-14 ${feature.color.split(' ')[0]}/10 rounded-2xl flex items-center justify-center ${feature.color.split(' ')[1]} mb-8 group-hover:scale-110 transition-transform duration-500`}>
                    <feature.icon size={28} />

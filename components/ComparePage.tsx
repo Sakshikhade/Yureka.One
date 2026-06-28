@@ -90,7 +90,7 @@ const ComparePage: React.FC = () => {
 
       {/* Hero Header */}
       <section className="relative pt-24 pb-16 overflow-hidden px-6">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[300px] bg-[radial-gradient(circle_at_center,rgba(52,211,153,0.04)_0%,transparent_75%)] pointer-events-none" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[300px] bg-[radial-gradient(circle_at_center,rgba(0,147,59,0.04)_0%,transparent_75%)] pointer-events-none" />
         
         <div className="max-w-7xl mx-auto relative z-10 text-center md:text-left mt-8">
            <motion.div 

@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
 import { useSupabase } from './SupabaseProvider';
 
 // ─── UTILITIES ──────────────────────────────────────────────────────────────
@@ -151,18 +152,13 @@ const AnimatedText: React.FC<{ text: string }> = ({ text }) => {
   );
 };
 
-/** Pill gradient CTA button */
+/** Primary pill CTA — matches the site-wide "Join the Waitlist" button language */
 const ContactButton: React.FC = () => (
-  <button
-    className="rounded-full text-white font-medium uppercase tracking-widest px-8 py-3 sm:px-10 sm:py-3.5 md:px-12 md:py-4 text-xs sm:text-sm md:text-base cursor-pointer hover:scale-[1.03] transition-transform duration-200 focus:outline-none"
-    style={{
-      background: 'linear-gradient(123deg, #18011F 7%, #B600A8 37%, #7621B0 72%, #BE4C00 100%)',
-      boxShadow: '0px 4px 4px rgba(181,1,167,0.25), inset 4px 4px 12px #7721B1',
-      outline: '2px solid white',
-      outlineOffset: '-3px',
-    }}
-  >
-    Contact Us
+  <button className="inline-flex items-center gap-3 bg-white text-black text-base sm:text-lg font-medium pl-8 pr-2 py-2 rounded-full hover:bg-zinc-100 transition-colors duration-200 cursor-pointer focus:outline-none">
+    <span>Join Waitlist</span>
+    <span className="bg-black rounded-full p-2.5">
+      <ArrowRight className="w-5 h-5 text-white" />
+    </span>
   </button>
 );
 
@@ -180,30 +176,101 @@ const LiveProjectButton: React.FC<{ label?: string }> = ({ label = 'Live Project
 // ─── SECTION 2: MARQUEE ─────────────────────────────────────────────────────
 
 const fallbackCardImages = [
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/axis-bank-magnus-burgundy.png',
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/axis-bank-supermoney-rupay.png',
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/idfc-first-bank-first-private-metal.png',
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/hsbc-travelone.png',
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/icici-bank-sapphiro.png',
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/kotak-mahindra-bank-kotak-solitaire.png',
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/sbm-bank-sbm-lifestyle.png',
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/icici-bank-times-black.png',
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/hdfc-bank-swiggy-hdfc-bank.png',
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/hdfc-bank-swiggy-blck-hdfc-bank.png',
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/kotak-mahindra-bank-shoppers-stop-kotak.png',
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/sbi-card-sbi-aurum.png',
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/rbl-bank-world-safari-lite.png',
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/kotak-mahindra-bank-kotak-air-credit-card.png',
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/hsbc-hsbc-premier-metal.png',
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/icici-bank-emeralde-private-metal.png',
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/kiwi-sbm-bank-kiwi-upi-credit-card.png',
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/hdfc-bank-marriott-bonvoy-hdfc.png',
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/hdfc-infinia-metal.png',
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/hdfc-bank-diners-club-black-metal.png',
-  'https://rvqtlvgaqlgylipsaktm.supabase.co/storage/v1/object/public/media/cards-transparent/indusind-bank-cred-sovereign.png'
+  '/assets/brand-logos-2/pvr-cinemas-logo.png',
+  '/assets/brand-logos-2/mango-logo.png',
+  '/assets/brand-logos-2/lenskart-logo.png',
+  '/assets/brand-logos/marriott-logo.png',
+  '/assets/brand-logos/westside-logo.png',
+  '/assets/brand-logos/taj-logo.jpeg',
+  '/assets/brand-logos-2/caratlane-logo.jpeg',
+  '/assets/brand-logos-2/mother-dairy-logo.png',
+  '/assets/brand-logos-2/cordelia-cruises-logo.png',
+  '/assets/brand-logos-2/uber-logo.png',
+  '/assets/brand-logos-2/swiggy-logo.jpeg',
+  '/assets/brand-logos-2/ray-ban-logo.jpeg',
+  '/assets/brand-logos/croma-logo.jpeg',
+  '/assets/brand-logos/mcdonalds-logo.png',
+  '/assets/brand-logos-2/cafe-coffee-day-logo.webp',
+  '/assets/brand-logos-2/max-logo.png',
+  '/assets/brand-logos-2/faasos-logo.jpeg',
+  '/assets/brand-logos-2/thalaiva-biryani-logo.jpeg',
+  '/assets/brand-logos-2/playstation-logo.jpeg',
+  '/assets/brand-logos-2/ixigo-logo.jpeg',
+  '/assets/brand-logos-2/cult-fit-logo.jpeg',
+  '/assets/brand-logos-2/dominos-logo.png',
+  '/assets/brand-logos/myntra-logo.jpeg',
+  '/assets/brand-logos-2/milton-logo.jpeg',
+  '/assets/brand-logos/bookmyshow-logo.png',
+  '/assets/brand-logos-2/puma-logo.jpeg',
+  '/assets/brand-logos/ajio-logo.jpeg',
+  '/assets/brand-logos-2/boat-logo.jpeg',
+  '/assets/brand-logos-2/skullcandy-logo.jpeg',
+  '/assets/brand-logos/starbucks-logo.png',
+  '/assets/brand-logos-2/superdry-logo.png',
+  '/assets/brand-logos-2/makemytrip-logo.png',
+  '/assets/brand-logos-2/blinkit-logo.png',
+  '/assets/brand-logos-2/the-bear-house-logo.png',
+  '/assets/brand-logos-2/firstcry-logo.jpeg',
+  '/assets/brand-logos/barbeque-nation-logo.png',
+  '/assets/brand-logos-2/oven-story-logo.jpeg',
+  '/assets/brand-logos-2/the-biryani-life-logo.png',
+  '/assets/brand-logos/xbox-logo.jpg',
+  '/assets/brand-logos-2/tira-logo.jpeg',
+  '/assets/brand-logos/hugoboss-logo.png',
+  '/assets/brand-logos/subway-logo.png',
+  '/assets/brand-logos-2/biba-logo.png',
+  '/assets/brand-logos-2/salty-logo.jpeg',
+  '/assets/brand-logos-2/ikea-logo.png',
+  '/assets/brand-logos-2/tim-hortons-logo.png',
+  '/assets/brand-logos-2/birkenstock-logo.png',
+  '/assets/brand-logos/snitch-logo.png',
+  '/assets/brand-logos/itc-hotels-logo.png',
+  '/assets/brand-logos-2/cinepolis-logo.jpeg',
+  '/assets/brand-logos-2/philips-logo.png',
+  '/assets/brand-logos-2/allen-solly-logo.jpeg',
+  '/assets/brand-logos-2/hamleys-logo.png',
+  '/assets/brand-logos-2/dailyobjects-logo.png',
+  '/assets/brand-logos-2/hush-puppies-logo.png',
+  '/assets/brand-logos-2/air-india-logo.png',
+  '/assets/brand-logos-2/third-wave-coffee-logo.jpeg',
+  '/assets/brand-logos-2/the-man-company-logo.png',
+  '/assets/brand-logos-2/wrangler-logo.png',
+  '/assets/brand-logos-2/behrouz-biryani-logo.jpeg',
+  '/assets/brand-logos-2/fastrack-logo.jpeg',
+  '/assets/brand-logos-2/levis-logo.png',
+  '/assets/brand-logos/versace-logo.jpeg',
+  '/assets/brand-logos-2/himalaya-logo.png',
+  '/assets/brand-logos-2/baskin-robbins-logo.jpeg',
+  '/assets/brand-logos-2/kalyan-jewellers-logo.jpeg',
+  '/assets/brand-logos/louis-philippe-logo.jpg',
+  '/assets/brand-logos/amazon-logo.png',
+  '/assets/brand-logos-2/lifestyle-logo.jpg',
+  '/assets/brand-logos-2/woodland-logo.jpeg',
+  '/assets/brand-logos/nykaa-logo.jpeg',
+  '/assets/brand-logos-2/aldo-logo.png',
+  '/assets/brand-logos-2/michael-kors-logo.jpeg',
+  '/assets/brand-logos-2/district-by-zomato-logo.jpeg',
+  '/assets/brand-logos-2/miraggio-logo.png',
+  '/assets/brand-logos-2/chumbak-logo.jpeg',
+  '/assets/brand-logos-2/crossword-logo.png',
+  '/assets/brand-logos-2/mokobara-logo.jpeg',
+  '/assets/brand-logos-2/steam-logo.png',
+  '/assets/brand-logos/eatsure-logo.png',
+  '/assets/brand-logos-2/jimmy-choo-logo.png',
+  '/assets/brand-logos-2/armani-exchange-logo.png',
+  '/assets/brand-logos/manyavar-logo.jpeg',
+  '/assets/brand-logos-2/neemans-logo.png',
+  '/assets/brand-logos-2/nua-logo.png',
+  '/assets/brand-logos-2/foxtale-logo.jpeg',
+  '/assets/brand-logos-2/zoomcar-logo.jpeg',
+  '/assets/brand-logos-2/wow-momo-logo.jpeg',
+  '/assets/brand-logos/zepto-logo.png',
+  '/assets/brand-logos-2/cleartrip-logo.png',
+  '/assets/brand-logos-2/tanishq-logo.jpeg',
+  '/assets/brand-logos-2/coach-logo.png'
 ];
 
-const MarqueeSection: React.FC = () => {
+const MarqueeSection: React.FC<{ noTopPad?: boolean; images?: string[] }> = ({ noTopPad = false, images }) => {
   const { cards } = useSupabase();
   const sectionRef = useRef<HTMLDivElement>(null);
   const [offset, setOffset] = useState(0);
@@ -232,7 +299,7 @@ const MarqueeSection: React.FC = () => {
     ? cards.map(c => c.image).filter(url => url && url.trim() !== '')
     : [];
 
-  const displayImages = cardImages.length > 0 ? cardImages : fallbackCardImages;
+  const displayImages = images ?? (cardImages.length > 0 ? cardImages : fallbackCardImages);
 
   // Split images into two rows
   const half = Math.ceil(displayImages.length / 2);
@@ -253,40 +320,40 @@ const MarqueeSection: React.FC = () => {
   const r2 = buildMarqueeRow(row2.length > 0 ? row2 : row1);
 
   return (
-    <section ref={sectionRef} className="bg-[#0C0C0C] pt-24 sm:pt-32 md:pt-40 pb-10 overflow-hidden w-full">
+    <section ref={sectionRef} className={`bg-[#0C0C0C] ${noTopPad ? 'pt-6' : 'pt-24 sm:pt-32 md:pt-40'} pb-10 overflow-hidden w-full`}>
       <div className="flex flex-col gap-3">
         <div
-          className="flex gap-3"
+          className="flex gap-4 sm:gap-5 md:gap-6"
           style={{ transform: `translate3d(${offset - 200}px,0px,0px)`, willChange: 'transform', transition: 'transform 75ms ease-out' }}
         >
           {r1.map((url, i) => (
             <div 
               key={`r1-${i}`} 
-              className="w-[260px] h-[167px] sm:w-[360px] sm:h-[232px] md:w-[420px] md:h-[270px] rounded-2xl bg-white/[0.02] border border-white/[0.05] p-3 sm:p-4 flex items-center justify-center flex-shrink-0 overflow-hidden shadow-2xl backdrop-blur-sm hover:scale-[1.03] transition-all duration-300"
+              className="w-[53px] h-[53px] sm:w-16 sm:h-16 md:w-[75px] md:h-[75px] lg:w-[85px] lg:h-[85px] rounded-full bg-white/[0.06] border border-white/15 p-1.5 sm:p-2 md:p-2 flex items-center justify-center flex-shrink-0 overflow-hidden shadow-2xl backdrop-blur-xl hover:scale-[1.06] transition-all duration-300"
             >
-              <img 
-                src={url} 
-                alt="" 
+              <img
+                src={url}
+                alt=""
                 loading="lazy"
-                className="w-full h-full object-contain rounded-xl drop-shadow-xl"
+                className="w-full h-full object-cover scale-125 drop-shadow-xl"
               />
             </div>
           ))}
         </div>
         <div
-          className="flex gap-3"
+          className="flex gap-4 sm:gap-5 md:gap-6"
           style={{ transform: `translate3d(${-(offset - 200)}px,0px,0px)`, willChange: 'transform', transition: 'transform 75ms ease-out' }}
         >
           {r2.map((url, i) => (
-            <div 
-              key={`r2-${i}`} 
-              className="w-[260px] h-[167px] sm:w-[360px] sm:h-[232px] md:w-[420px] md:h-[270px] rounded-2xl bg-white/[0.02] border border-white/[0.05] p-3 sm:p-4 flex items-center justify-center flex-shrink-0 overflow-hidden shadow-2xl backdrop-blur-sm hover:scale-[1.03] transition-all duration-300"
+            <div
+              key={`r2-${i}`}
+              className="w-[53px] h-[53px] sm:w-16 sm:h-16 md:w-[75px] md:h-[75px] lg:w-[85px] lg:h-[85px] rounded-full bg-white/[0.06] border border-white/15 p-1.5 sm:p-2 md:p-2 flex items-center justify-center flex-shrink-0 overflow-hidden shadow-2xl backdrop-blur-xl hover:scale-[1.06] transition-all duration-300"
             >
               <img 
                 src={url} 
                 alt="" 
                 loading="lazy"
-                className="w-full h-full object-contain rounded-xl drop-shadow-xl"
+                className="w-full h-full object-cover scale-125 drop-shadow-xl"
               />
             </div>
           ))}
@@ -323,7 +390,7 @@ const AboutSection: React.FC = () => (
       <FadeIn delay={0} y={40} className="w-full">
         <h2 className="font-black uppercase leading-none tracking-tight text-center"
           style={{ fontSize: 'clamp(3rem, 10vw, 120px)' }}>
-          <span className="hero-heading">About</span> <span className="text-white">Yureka</span>
+          <span className="font-sans hero-heading">About</span> <span className="font-cirka text-white">Yureka</span>
         </h2>
       </FadeIn>
 
@@ -457,7 +524,7 @@ const ProjectsSection: React.FC = () => {
           className="font-black uppercase text-center mb-16 sm:mb-20 md:mb-28 tracking-tight leading-none w-fit"
           style={{ fontSize: 'clamp(2.5rem, 8vw, 98px)' }}
         >
-          <span className="hero-heading">Saving</span><span className="text-white">Os</span>
+          <span className="font-sans hero-heading">Saving</span><span className="font-cirka text-white">Os</span>
         </h2>
 
         {/* Stacking cards container — uses its own full-bleed height for scroll calculation */}
@@ -481,7 +548,16 @@ const YurekaPortfolio: React.FC = () => (
     className="w-full bg-[#0C0C0C] text-[#D7E2EA] font-kanit"
     style={{ overflowX: 'clip' }}
   >
-    <MarqueeSection />
+    <MarqueeSection images={fallbackCardImages.slice(0, Math.ceil(fallbackCardImages.length / 2))} />
+    <div className="w-full flex flex-col items-center justify-center text-center py-6 sm:py-8 px-6">
+      <p className="font-sans text-white text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">
+        Partnered with Over <span className="font-cirka text-[#00933b]">700+ Brands</span>
+      </p>
+      <p className="font-sans text-white text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mt-2">
+        We are not stopping anytime soon
+      </p>
+    </div>
+    <MarqueeSection noTopPad images={fallbackCardImages.slice(Math.ceil(fallbackCardImages.length / 2))} />
     <AboutSection />
     <ProjectsSection />
   </div>

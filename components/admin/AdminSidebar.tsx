@@ -105,7 +105,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
                       repeat: Infinity,
                       ease: "easeInOut"
                     }}
-                    className="absolute left-1 w-1.5 h-8 bg-clay rounded-full shadow-[0_0_15px_rgba(52,211,153,0.5)]"
+                    className="absolute left-1 w-1.5 h-8 bg-clay rounded-full shadow-[0_0_15px_rgba(0,147,59,0.5)]"
                   />
                 )}
               </button>

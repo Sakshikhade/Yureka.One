@@ -91,7 +91,7 @@ const AccountSettings: React.FC = () => {
                 <div className="relative z-10 space-y-12">
                     <div className="flex flex-col md:flex-row items-center gap-10">
                         <div className="relative group">
-                            <div className="w-28 h-28 bg-clay text-black rounded-3xl flex items-center justify-center font-black text-3xl shadow-[0_20px_40px_rgba(52,211,153,0.3)] group-hover:scale-105 transition-transform duration-500">
+                            <div className="w-28 h-28 bg-clay text-black rounded-3xl flex items-center justify-center font-black text-3xl shadow-[0_20px_40px_rgba(0,147,59,0.3)] group-hover:scale-105 transition-transform duration-500">
                                 {formData.firstName?.[0] || 'U'}
                             </div>
                             <div className="absolute -bottom-2 -right-2 w-10 h-10 glass-dark border border-white/10 rounded-xl flex items-center justify-center text-clay shadow-xl">
@@ -100,7 +100,7 @@ const AccountSettings: React.FC = () => {
                         </div>
                         <div className="text-center md:text-left">
                             <div className="flex items-center gap-3 mb-2 justify-center md:justify-start">
-                                <div className="w-2 h-2 bg-clay rounded-full animate-pulse shadow-[0_0_10px_rgba(52,211,153,0.8)]" />
+                                <div className="w-2 h-2 bg-clay rounded-full animate-pulse shadow-[0_0_10px_rgba(0,147,59,0.8)]" />
                                 <p className="text-[10px] font-black uppercase tracking-[0.5em] text-clay">Identity Confirmed</p>
                             </div>
                             <h3 className="text-5xl font-black italic tracking-tighter text-white leading-none">

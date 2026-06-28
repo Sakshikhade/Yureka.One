@@ -111,7 +111,7 @@ const TermsOfService: React.FC = () => {
                 <section className="space-y-6">
                     <h2 className="text-3xl font-heading font-extrabold uppercase tracking-tight text-white border-b-2 border-white/10 pb-4">Cashback & Rewards</h2>
                     <p className="bg-white/5 text-white/80 p-8 md:p-12 mt-8 border border-white/10 rounded-[2rem] shadow-2xl relative overflow-hidden backdrop-blur-sm">
-                        <span className="absolute top-0 left-0 w-1.5 h-full bg-clay shadow-[0_0_15px_#34d399]"></span>
+                        <span className="absolute top-0 left-0 w-1.5 h-full bg-clay shadow-[0_0_15px_#00933b]"></span>
                         <span className="italic text-lg leading-relaxed block">
                             Cashback earned will be credited to the user’s Yureka.Money Wallet and can be used only on the Yureka.Money platform. Cashback may be used to pay up to 5% of the total bill amount in a single bill payment transaction and up to 100% of a subscription purchase. Cashback is non-transferable, non-withdrawable, and cannot be exchanged for cash.
                         </span>

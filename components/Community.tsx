@@ -186,12 +186,12 @@ const Community: React.FC = () => {
         {/* ── TRI-STREAM MARQUEE GRID (IMAGE 3) ── */}
         <div className="w-full relative z-10 text-white">
             <div className="text-center mb-16 space-y-4">
-                <div className="inline-flex items-center gap-2 bg-[#047857]/5 px-6 py-2 rounded-full border border-[#047857]/10 text-[#047857] text-[10px] font-black uppercase tracking-[0.4em]">
+                <div className="inline-flex items-center gap-2 bg-[#00933b]/5 px-6 py-2 rounded-full border border-[#00933b]/10 text-[#00933b] text-[10px] font-black uppercase tracking-[0.4em]">
                     <ShieldCheck size={14} className="animate-pulse" /> Verified Intelligence
                 </div>
                 <h2 className="text-4xl md:text-5xl lg:text-[clamp(1.5rem,4vw,4.5rem)] font-serif font-black text-white leading-[0.85] uppercase tracking-tighter">
                     Real Stories, <br />
-                    <span className="text-[#047857] italic font-light lowercase">Real</span> Yield.
+                    <span className="text-[#00933b] italic font-light lowercase">Real</span> Yield.
                 </h2>
             </div>
 
@@ -212,7 +212,7 @@ const Community: React.FC = () => {
             </div>
 
             <div className="mt-16 text-center">
-                <button className="bg-[#242424] text-white px-12 py-6 rounded-full text-xs font-bold uppercase tracking-[0.4em] shadow-2xl hover:bg-[#047857] hover:scale-105 transition-all active:scale-95">
+                <button className="bg-[#242424] text-white px-12 py-6 rounded-full text-xs font-bold uppercase tracking-[0.4em] shadow-2xl hover:bg-[#00933b] hover:scale-105 transition-all active:scale-95">
                     Share Your Journey →
                 </button>
             </div>

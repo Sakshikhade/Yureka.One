@@ -128,7 +128,7 @@ const SecurityProtocolPage: React.FC = () => {
 
                     {/* Reporting */}
                     <section className="pt-16 border-t border-white/10 text-center">
-                        <AlertCircle className="mx-auto text-emerald-500/50 mb-8" size={40} />
+                        <AlertCircle className="mx-auto text-[#00933b]/50 mb-8" size={40} />
                         <h2 className="text-3xl font-heading font-extrabold text-white uppercase tracking-tight mb-4">Report an Incident</h2>
                         <p className="text-white/40 font-serif italic mb-10 max-w-md mx-auto">
                             If you believe you have discovered a vulnerability or suspect your account has been compromised, contact our InfoSec team immediately.
