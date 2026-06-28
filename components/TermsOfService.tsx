@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { Shield, ChevronRight } from 'lucide-react';
+import SEO from './SEO';
+import { staticPageMeta } from '../lib/seo/pageMeta';
 
 const TermsOfService: React.FC = () => {
     // Scroll to top on mount
@@ -9,6 +11,7 @@ const TermsOfService: React.FC = () => {
 
     return (
         <div className="bg-cream min-h-screen text-white pb-32 selection:bg-clay selection:text-cream">
+            <SEO {...staticPageMeta['/terms-of-service']} />
             {/* Header Section */}
             <div className="pt-6 md:pt-16 pb-16 md:pb-24 border-b border-white/10 px-6">
                 <div className="max-w-4xl mx-auto text-center md:text-left">

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Shield, ChevronRight, Lock, EyeOff, ShieldCheck, Cpu, AlertCircle } from 'lucide-react';
 import { motion } from 'motion/react';
 import SEO from './SEO';
+import { staticPageMeta } from '../lib/seo/pageMeta';
 
 const SecurityProtocolPage: React.FC = () => {
     useEffect(() => {
@@ -10,7 +11,7 @@ const SecurityProtocolPage: React.FC = () => {
 
     return (
         <div className="bg-cream min-h-screen text-[#e5e5e5] pb-32 selection:bg-clay selection:text-cream">
-            <SEO title="Security Protocol | Yureka Infrastructure" description="Detailed technical documentation of Yureka's security architecture, cryptographic standards, and data privacy protocols." />
+            <SEO {...staticPageMeta['/security-protocol']} />
 
             {/* ── HERO ── */}
             <div className="relative pt-24 md:pt-40 pb-20 border-b border-white/5 overflow-hidden">

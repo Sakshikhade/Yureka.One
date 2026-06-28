@@ -1,4 +1,6 @@
 import React from 'react';
+import { DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE, formatTitle } from '../lib/seo/pageMeta';
+import { toGraph } from '../lib/seo/structuredData';
 
 interface SEOProps {
   title: string;
@@ -6,21 +8,25 @@ interface SEOProps {
   image?: string;
   canonical?: string;
   robots?: string;
-  schema?: object;
+  keywords?: string[];
+  /** A single JSON-LD object, or several — multiple objects are combined into
+   *  one @graph script so a page can emit e.g. BreadcrumbList + FinancialProduct. */
+  schema?: object | object[];
 }
 
-const SEO: React.FC<SEOProps> = ({ 
-  title, 
-  description = "Maximize every systematic reward, deployment with precision & unlock elite financial yield. India's premier institutional-grade credit intelligence engine.",
-  image = "https://yureka.money/favicon.png",
+const SEO: React.FC<SEOProps> = ({
+  title,
+  description = DEFAULT_DESCRIPTION,
+  image = DEFAULT_OG_IMAGE,
   canonical,
-  robots = "index, follow",
-  schema
+  robots = 'index, follow',
+  keywords,
+  schema,
 }) => {
   React.useEffect(() => {
-    const fullTitle = title.includes('Yureka') || title.includes('|') ? title : `${title} | Yureka.money`;
+    const fullTitle = formatTitle(title);
     document.title = fullTitle;
-    
+
     // Update simple meta tags
     const updateMeta = (selector: string, content: string) => {
       const el = document.querySelector(selector);
@@ -29,6 +35,7 @@ const SEO: React.FC<SEOProps> = ({
 
     updateMeta('meta[name="description"]', description);
     updateMeta('meta[name="robots"]', robots);
+    if (keywords?.length) updateMeta('meta[name="keywords"]', keywords.join(', '));
 
     // Update OG tags
     updateMeta('meta[property="og:title"]', fullTitle);
@@ -43,7 +50,7 @@ const SEO: React.FC<SEOProps> = ({
     updateMeta('meta[property="twitter:url"]', window.location.href);
 
     // Update Canonical
-    let canonicalTag = document.querySelector('link[rel="canonical"]');
+    const canonicalTag = document.querySelector('link[rel="canonical"]');
     if (canonicalTag) {
       canonicalTag.setAttribute('href', canonical || window.location.href);
     }
@@ -53,16 +60,16 @@ const SEO: React.FC<SEOProps> = ({
       const existingSchema = document.getElementById('seo-schema');
       if (existingSchema) existingSchema.remove();
 
+      const payload = Array.isArray(schema) ? toGraph(...schema) : schema;
       const script = document.createElement('script');
       script.id = 'seo-schema';
       script.type = 'application/ld+json';
-      script.innerHTML = JSON.stringify(schema);
+      script.innerHTML = JSON.stringify(payload);
       document.head.appendChild(script);
     }
-  }, [title, description, image, canonical, robots, schema]);
+  }, [title, description, image, canonical, robots, keywords, schema]);
 
   return null;
 };
-
 
 export default SEO;

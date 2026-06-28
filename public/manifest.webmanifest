@@ -1,11 +1,11 @@
 {
-  "name": "Yureka Money",
+  "name": "Yureka Money | India's AI-Native Wealth Operating System",
   "short_name": "Yureka",
-  "description": "AI-Driven Credit Card Intelligence and Rewards Optimization Engine.",
+  "description": "Compare 200+ Indian credit cards, earn assured Goldback on every spend, and grow your rewards in the Yureka Vault.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#F2EFE9",
-  "theme_color": "#047857",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
   "icons": [
     {
       "src": "/logos/yureka-logo-192.png",

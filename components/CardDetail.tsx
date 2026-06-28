@@ -13,6 +13,7 @@ import { Card } from '../types';
 import ImageWithLoader from './ImageWithLoader';
 import { motion, AnimatePresence } from 'motion/react';
 import SEO from './SEO';
+import { breadcrumbSchema, financialProductSchema } from '../lib/seo/structuredData';
 
 const CardDetail: React.FC = () => {
     const { slug } = useParams<{ slug: string }>();
@@ -70,7 +71,7 @@ const CardDetail: React.FC = () => {
                 <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-clay mb-6">404 Card Not Found</p>
                 <h1 className="text-5xl font-sans font-extrabold text-white mb-4 tracking-tight uppercase">Credit Card Not Found</h1>
                 <p className="text-white/60 mb-10 max-w-md font-serif italic text-lg leading-relaxed">The credit card you are looking for may have been delisted or archived.</p>
-                <Link to={`${basePath}/card-explorer`} className="bg-white text-[#0a0a0a] px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-clay hover:text-white transition-all">
+                <Link to={`${basePath}/cards`} className="bg-white text-[#0a0a0a] px-8 py-4 rounded-full font-bold uppercase tracking-widest text-[10px] hover:bg-clay hover:text-white transition-all">
                     Return to Explorer
                 </Link>
             </div>
@@ -78,18 +79,23 @@ const CardDetail: React.FC = () => {
     }
 
     const updatedOn = card.updated_on || new Date(card.updated_at || Date.now()).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-    
+
     return (
         <div className="min-h-screen bg-[#0a0a0a] text-white/90 font-sans selection:bg-clay selection:text-white pb-32">
-            <SEO 
+            <SEO
                 title={`${card.name} | Detailed Review & Strategic Analysis`}
                 description={card.description || `Comprehensive reward analysis of ${card.name} by ${card.bank}. Rewards, fees, and eligibility data.`}
+                image={card.image}
+                schema={[
+                    breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Cards', path: '/cards' }, { name: card.name, path: `/cards/${card.slug || card.id}` }]),
+                    financialProductSchema({ name: card.name, bank: card.bank, slug: card.slug, image: card.image, description: card.description, annualFee: card.annual_fee, joiningFee: card.joining_fee }),
+                ]}
             />
 
             {/* ── TOP NAV ── */}
             <div className="sticky top-[104px] md:top-20 z-[45] bg-[#0a0a0a]/90 backdrop-blur-xl border-b border-white/5">
                 <div className="max-w-[1200px] mx-auto px-6 h-16 flex items-center justify-between">
-                    <Link to={`${basePath}/card-explorer`} className="flex items-center gap-2 text-white/60 hover:text-clay transition-colors group text-[10px] font-bold uppercase tracking-widest">
+                    <Link to={`${basePath}/cards`} className="flex items-center gap-2 text-white/60 hover:text-clay transition-colors group text-[10px] font-bold uppercase tracking-widest">
                         <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
                         Card Explorer
                     </Link>

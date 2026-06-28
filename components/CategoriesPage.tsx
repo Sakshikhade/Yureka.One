@@ -8,6 +8,7 @@ import {
   ArrowRight, Sparkles, X
 } from 'lucide-react';
 import SEO from './SEO';
+import { staticPageMeta } from '../lib/seo/pageMeta';
 
 const CATEGORIES = [
   { id: 'travel', name: 'Travel', icon: Plane, image: '/images/categories/travel.png', color: 'from-blue-500 to-indigo-600', slug: 'travel', desc: 'Flights, Hotels & Stays' },
@@ -42,10 +43,7 @@ const CategoriesPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-cream pb-20">
-      <SEO 
-        title="Card Categories | Browse by Lifestyle" 
-        description="Find the perfect credit card tailored to your spending habits. Explore 20+ specialized categories."
-      />
+      <SEO {...staticPageMeta['/categories']} />
 
       {/* Hero Section */}
       <section className="relative pt-20 pb-12 overflow-hidden px-6">

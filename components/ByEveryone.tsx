@@ -8,14 +8,12 @@ import {
   Users
 } from 'lucide-react';
 import SEO from './SEO';
+import { staticPageMeta } from '../lib/seo/pageMeta';
 
 const ByEveryone: React.FC = () => {
   return (
     <div className="min-h-screen bg-[#050505] text-white overflow-hidden selection:bg-clay selection:text-black">
-      <SEO 
-        title="Community Intelligence | Yureka.Money" 
-        description="The world's most advanced community-driven credit intelligence engine. Join thousands of elite spenders sharing real-world rewards data and hidden hacks."
-      />
+      <SEO {...staticPageMeta['/by-everyone-for-everyone']} />
 
       {/* Hero Section - The Collective Intelligence */}
       <section className="relative pt-20 pb-32 px-6 font-sans">
