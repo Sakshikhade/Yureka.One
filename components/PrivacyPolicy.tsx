@@ -75,7 +75,7 @@ const PrivacyPolicy: React.FC = () => {
                         <li>Complying with legal obligations and enforcing our policies effectively.</li>
                     </ul>
                     <div className="bg-white/5 text-white/80 p-8 md:p-12 mt-8 border border-white/10 rounded-[2rem] shadow-2xl relative overflow-hidden backdrop-blur-sm">
-                        <div className="absolute top-0 left-0 w-1.5 h-full bg-clay shadow-[0_0_15px_#34d399]"></div>
+                        <div className="absolute top-0 left-0 w-1.5 h-full bg-clay shadow-[0_0_15px_#00933b]"></div>
                         <p className="italic text-lg leading-relaxed">
                             You have the right to withdraw your consent and opt out of receiving promotional communications from us at any time. You can typically do this by following the unsubscribe instructions provided in the communication (e.g., clicking the unsubscribe link in an email or replying "STOP" to a text message).
                         </p>

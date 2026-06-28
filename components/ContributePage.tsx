@@ -194,7 +194,7 @@ const ContributePage: React.FC = () => {
             <div className="p-8 border-b border-white/5 flex justify-between items-center bg-white/5 relative z-10">
               <div className="flex items-center gap-4">
                 <div className="w-10 h-10 bg-clay/10 rounded-xl flex items-center justify-center text-clay border border-clay/20">
-                   <div className="w-2.5 h-2.5 bg-clay rounded-full animate-pulse shadow-[0_0_10px_rgba(52,211,153,0.5)]" />
+                   <div className="w-2.5 h-2.5 bg-clay rounded-full animate-pulse shadow-[0_0_10px_rgba(0,147,59,0.5)]" />
                 </div>
                 <div>
                   <h2 className="text-2xl font-serif font-black text-white uppercase tracking-tight">
@@ -227,7 +227,7 @@ const ContributePage: React.FC = () => {
                       <button onClick={() => setIsSuccess(false)} className="px-8 py-4 bg-white/5 text-white border border-white/10 rounded-full text-[11px] font-bold uppercase tracking-widest hover:bg-white/10 transition-colors">
                         Submit Another
                       </button>
-                      <Link to="/cards" className="px-8 py-4 bg-clay text-cream rounded-full text-[11px] font-bold uppercase tracking-widest hover:bg-[#2bc28a] transition-colors shadow-lg shadow-clay/20">
+                      <Link to="/cards" className="px-8 py-4 bg-clay text-cream rounded-full text-[11px] font-bold uppercase tracking-widest hover:bg-[#00933b] transition-colors shadow-lg shadow-clay/20">
                         Return to Explorer
                       </Link>
                     </div>

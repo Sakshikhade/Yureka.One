@@ -62,7 +62,7 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
                 ease: "easeInOut"
               }}
               className={`w-1.5 h-1.5 rounded-full ${
-                syncStatus === 'connected' ? 'bg-clay shadow-[0_0_12px_rgba(52,211,153,0.8)]' : 
+                syncStatus === 'connected' ? 'bg-clay shadow-[0_0_12px_rgba(0,147,59,0.8)]' : 
                 syncStatus === 'reconnecting' ? 'bg-amber-500 shadow-[0_0_12px_rgba(245,158,11,0.8)]' : 
                 'bg-red-500 shadow-[0_0_12px_rgba(239,44,44,0.8)]'
               }`} 

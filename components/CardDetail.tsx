@@ -57,7 +57,7 @@ const CardDetail: React.FC = () => {
         return (
             <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
                 <div className="space-y-4 text-center">
-                    <div className="w-12 h-12 border-2 border-[#047857]/30 border-t-[#047857] rounded-full animate-spin mx-auto" />
+                    <div className="w-12 h-12 border-2 border-[#00933b]/30 border-t-[#00933b] rounded-full animate-spin mx-auto" />
                     <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/60">Loading Card Review...</p>
                 </div>
             </div>
@@ -139,7 +139,7 @@ const CardDetail: React.FC = () => {
                     {/* Visual Node */}
                     <div className="lg:col-span-5 flex flex-col gap-6">
                         <div className="aspect-[1.58/1] rounded-[2.5rem] bg-white/[0.03] border border-white/5 p-10 flex items-center justify-center relative overflow-hidden group">
-                            <div className="absolute inset-0 bg-[#047857]/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                            <div className="absolute inset-0 bg-[#00933b]/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
                             <ImageWithLoader src={card.image} alt={card.name} className="w-full h-full object-contain relative z-10 group-hover:scale-105 transition-transform duration-700" />
                         </div>
                         <div className="bg-white/5 rounded-[2rem] border border-white/5 p-8 space-y-6">
@@ -302,7 +302,7 @@ const CardDetail: React.FC = () => {
                                         <div className="aspect-[1.58/1] rounded-xl overflow-hidden mb-6 bg-white/5 p-4">
                                             <ImageWithLoader src={item.image} alt="" className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
                                         </div>
-                                        <h4 className="text-base font-bold text-white mb-2 group-hover:text-[#047857] transition-colors">{item.name}</h4>
+                                        <h4 className="text-base font-bold text-white mb-2 group-hover:text-[#00933b] transition-colors">{item.name}</h4>
                                         <div className="flex items-center justify-between pt-4 border-t border-white/5">
                                             <span className="text-[9px] font-bold uppercase tracking-widest text-white/50">{item.bank}</span>
                                             <ArrowRight size={14} className="text-white/40 group-hover:text-white group-hover:translate-x-1 transition-all" />
@@ -315,7 +315,7 @@ const CardDetail: React.FC = () => {
                 )}
 
                 {/* ── FINAL CTA ── */}
-                <div className="mt-48 bg-gradient-to-br from-[#047857] to-[#065f46] rounded-[3rem] p-12 md:p-24 text-center relative overflow-hidden">
+                <div className="mt-48 bg-gradient-to-br from-[#00933b] to-[#00933b] rounded-[3rem] p-12 md:p-24 text-center relative overflow-hidden">
                     <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0h20L0 20z' fill='%23fff' fill-opacity='1'/%3E%3C/svg%3E")` }} />
                     <div className="relative z-10 max-w-2xl mx-auto space-y-10">
                         <p className="text-[10px] font-bold uppercase tracking-[0.5em] text-white/80">Final Verdict</p>

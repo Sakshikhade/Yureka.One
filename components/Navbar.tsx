@@ -126,7 +126,7 @@ const Navbar: React.FC = () => {
                     {!user ? (
                         <Link
                             to="/join-waitlist"
-                            className="bg-[#34d399] text-black text-[10px] font-black uppercase tracking-[0.2em] px-8 py-2.5 transition-all duration-500 rounded-full shadow-[0_10px_30px_-10px_rgba(52,211,153,0.5)] hover:scale-105 whitespace-nowrap"
+                            className="bg-[#00933b] text-black text-[10px] font-black uppercase tracking-[0.2em] px-8 py-2.5 transition-all duration-500 rounded-full shadow-[0_10px_30px_-10px_rgba(0,147,59,0.5)] hover:scale-105 whitespace-nowrap"
                         >
                             SignIn or SignUp
                         </Link>
@@ -244,7 +244,7 @@ const Navbar: React.FC = () => {
                                 <Link
                                     to="/join-waitlist"
                                     onClick={() => setIsMobileMenuOpen(false)}
-                                    className="w-full h-14 bg-[#34d399] text-black font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full shadow-xl"
+                                    className="w-full h-14 bg-[#00933b] text-black font-black uppercase tracking-[0.25em] text-[10px] flex items-center justify-center rounded-full shadow-xl"
                                 >
                                     SignIn or SignUp
                                 </Link>

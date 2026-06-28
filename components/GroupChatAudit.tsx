@@ -16,7 +16,7 @@ const MESSAGES = [
   {
     id: 3, sender: 'Arjun',
     text: "Before you pick randomly — try Yureka.money. It audits your actual spend and gives the mathematically optimal card for YOUR profile. Not generic advice.",
-    time: '9:45 AM', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Arjun', accent: '#34d399', right: true,
+    time: '9:45 AM', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Arjun', accent: '#00933b', right: true,
   },
   {
     id: 4, sender: 'Kabir',
@@ -31,7 +31,7 @@ const MESSAGES = [
   {
     id: 6, sender: 'Arjun',
     text: "Zero bias, no bank sponsorship. Pure math. I've recovered ₹18k in missed rewards already 💰",
-    time: '9:49 AM', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Arjun', accent: '#34d399', right: true,
+    time: '9:49 AM', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Arjun', accent: '#00933b', right: true,
   },
 ];
 

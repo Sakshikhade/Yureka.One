@@ -12,13 +12,13 @@ import SEO from './SEO';
 const CATEGORIES = [
   { id: 'travel', name: 'Travel', icon: Plane, image: '/images/categories/travel.png', color: 'from-blue-500 to-indigo-600', slug: 'travel', desc: 'Flights, Hotels & Stays' },
   { id: 'shopping', name: 'Shopping', icon: ShoppingBag, image: '/images/categories/shopping.png', color: 'from-pink-500 to-rose-600', slug: 'shopping', desc: 'Online & Retail Therapy' },
-  { id: 'cashback', name: 'Cashback', icon: Wallet, image: '/images/categories/cashback.png', color: 'from-emerald-500 to-teal-600', slug: 'cashback', desc: 'Direct Savings on Every Spend' },
+  { id: 'cashback', name: 'Cashback', icon: Wallet, image: '/images/categories/cashback.png', color: 'from-[#00933b] to-teal-600', slug: 'cashback', desc: 'Direct Savings on Every Spend' },
   { id: 'fuel', name: 'Fuel', icon: Fuel, image: '/images/categories/fuel.png', color: 'from-amber-500 to-orange-600', slug: 'fuel', desc: 'Surcharge Waivers & Points' },
   { id: 'lifetime-free', name: 'Lifetime Free', icon: Tag, image: '/images/categories/lifetime-free.png', color: 'from-purple-500 to-violet-600', slug: 'lifetime-free', desc: 'Zero Annual Fees Forever' },
   { id: 'entry-level', name: 'Entry Level', icon: Bike, image: '/images/categories/entry-level.png', color: 'from-cyan-500 to-blue-600', slug: 'entry-level', desc: 'Perfect First Credit Cards' },
   { id: 'dining', name: 'Dining', icon: Utensils, image: '/images/categories/dining.png', color: 'from-orange-500 to-red-600', slug: 'dining', desc: 'Gourmet Rewards & Discounts' },
   { id: 'co-branded', name: 'Co-Branded', icon: Users, image: '/images/categories/co-branded.png', color: 'from-indigo-500 to-purple-600', slug: 'co-branded', desc: 'Partner Specific Benefits' },
-  { id: 'grocery', name: 'Grocery', icon: ShoppingBasket, image: '/images/categories/grocery.png', color: 'from-green-500 to-emerald-600', slug: 'grocery', desc: 'Daily Essentials Savings' },
+  { id: 'grocery', name: 'Grocery', icon: ShoppingBasket, image: '/images/categories/grocery.png', color: 'from-[#00933b] to-[#00933b]', slug: 'grocery', desc: 'Daily Essentials Savings' },
   { id: 'premium', name: 'Premium', icon: Star, image: '/images/categories/premium.png', color: 'from-yellow-400 to-amber-600', slug: 'premium', desc: 'Elite Perks & Concierge' },
   { id: 'hotel', name: 'Hotel', icon: Hotel, image: '/images/categories/hotel.png', color: 'from-blue-400 to-indigo-500', slug: 'hotel', desc: 'Stays & Luxury Hospitality' },
   { id: 'business', name: 'Business', icon: Briefcase, image: '/images/categories/business.png', color: 'from-slate-600 to-slate-800', slug: 'business', desc: 'Corporate Spends & Rewards' },
@@ -30,7 +30,7 @@ const CATEGORIES = [
   { id: 'airlines', name: 'Airlines', icon: Plane, image: '/images/categories/airlines.png', color: 'from-indigo-400 to-blue-500', slug: 'airlines', desc: 'Aviation & Flight Miles' },
   { id: 'health', name: 'Health', icon: Heart, image: '/images/categories/health.png', color: 'from-rose-400 to-red-500', slug: 'health', desc: 'Wellness & Medical Rewards' },
   { id: 'rent', name: 'Rent', icon: Home, image: '/images/categories/rent.png', color: 'from-indigo-400 to-blue-600', slug: 'rent', desc: 'Earn on Monthly Rentals' },
-  { id: 'insurance', name: 'Insurance', icon: Shield, image: '/images/categories/insurance.png', color: 'from-teal-400 to-emerald-500', slug: 'insurance', desc: 'Premium Payments & Protection' },
+  { id: 'insurance', name: 'Insurance', icon: Shield, image: '/images/categories/insurance.png', color: 'from-teal-400 to-[#00933b]', slug: 'insurance', desc: 'Premium Payments & Protection' },
   { id: 'upi', name: 'UPI', icon: Smartphone, image: '/images/categories/upi.png', color: 'from-purple-500 to-indigo-600', slug: 'upi', desc: 'Credit on UPI Transactions' },
   { id: 'education', name: 'Education', icon: School, image: '/images/categories/education.png', color: 'from-blue-600 to-cyan-500', slug: 'education', desc: 'Fees & Academic Spends' }
 ];

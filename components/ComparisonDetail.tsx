@@ -66,7 +66,7 @@ const ComparisonDetail: React.FC = () => {
 
       {/* Hero Header */}
       <section className="relative pt-12 pb-24 overflow-hidden bg-clay">
-         <div className="absolute inset-0 bg-gradient-to-r from-[#2ab884]/50 to-transparent pointer-events-none" />
+         <div className="absolute inset-0 bg-gradient-to-r from-[#00933b]/50 to-transparent pointer-events-none" />
          <div className="max-w-7xl mx-auto px-6 relative z-10">
             <Link to={`${basePath}/compare`} className="inline-flex items-center gap-2 text-black/60 hover:text-black transition-colors text-[10px] font-black uppercase tracking-[0.3em] mb-12">
                <ArrowLeft size={14} /> Back to Selection
@@ -138,7 +138,7 @@ const ComparisonDetail: React.FC = () => {
                      </ul>
                   </div>
 
-                  <Link to={`${basePath}/cards/${card.slug || card.id}`} className="w-full bg-clay text-black py-5 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-[#2ab884] transition-all">
+                  <Link to={`${basePath}/cards/${card.slug || card.id}`} className="w-full bg-clay text-black py-5 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-[#00933b] transition-all">
                      Read Full Review <ChevronRight size={14} />
                   </Link>
                </motion.div>

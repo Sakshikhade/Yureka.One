@@ -22,7 +22,7 @@ const COLOR_MAP: Record<string, { bg: string; text: string; glow: string; border
   clay:   { bg: 'bg-clay/10',   text: 'text-clay',   glow: 'shadow-clay/20',   border: 'border-clay/20' },
   teal:   { bg: 'bg-clay/10',   text: 'text-clay',   glow: 'shadow-clay/20',   border: 'border-clay/20' },
   purple: { bg: 'bg-purple-500/10', text: 'text-purple-500', glow: 'shadow-purple-500/20', border: 'border-purple-500/20' },
-  emerald: { bg: 'bg-emerald-500/10', text: 'text-emerald-500', glow: 'shadow-emerald-500/20', border: 'border-emerald-500/20' },
+  emerald: { bg: 'bg-[#00933b]/10', text: 'text-[#00933b]', glow: 'shadow-[#00933b]/20', border: 'border-[#00933b]/20' },
   blue:   { bg: 'bg-blue-500/10',   text: 'text-blue-500',   glow: 'shadow-blue-500/20',   border: 'border-blue-500/20' },
   rose:   { bg: 'bg-rose-500/10',   text: 'text-rose-500',   glow: 'shadow-rose-500/20',   border: 'border-rose-500/20' },
 };
@@ -144,7 +144,7 @@ const LiveChatDemo = () => {
         <div className="flex gap-1.5">
           <div className="w-3 h-3 rounded-full bg-red-500/40" />
           <div className="w-3 h-3 rounded-full bg-yellow-500/40" />
-          <div className="w-3 h-3 rounded-full bg-green-500/40" />
+          <div className="w-3 h-3 rounded-full bg-[#00933b]/40" />
         </div>
         <div className="flex-1 flex justify-center">
           <div className="flex items-center gap-2 px-4 py-1 bg-white/5 rounded-full border border-white/5">
@@ -233,7 +233,7 @@ const YurekaAIPage: React.FC = () => {
       {/* Background Glows */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-[-15%] left-[-10%] w-[50%] h-[50%] bg-clay/5 rounded-full blur-[140px]" />
-        <div className="absolute top-[30%] right-[-10%] w-[35%] h-[40%] bg-emerald-500/5 rounded-full blur-[120px]" />
+        <div className="absolute top-[30%] right-[-10%] w-[35%] h-[40%] bg-[#00933b]/5 rounded-full blur-[120px]" />
         <div
           className="absolute inset-0 opacity-[0.03]"
           style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, #ffffff 0.5px, transparent 0)', backgroundSize: '48px 48px' }}
@@ -258,7 +258,7 @@ const YurekaAIPage: React.FC = () => {
             <h1 className="text-3xl sm:text-6xl md:text-7xl font-sans font-extrabold tracking-tighter text-white leading-[1.05] mb-8 max-w-5xl mx-auto">
               Your financial life,{' '}
               <span className="relative italic">
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-clay to-emerald-400">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-clay to-[#00933b]">
                   optimised
                 </span>
                 <span className="absolute -bottom-1 left-0 right-0 h-px bg-gradient-to-r from-clay/0 via-clay/60 to-clay/0" />
@@ -434,7 +434,7 @@ const YurekaAIPage: React.FC = () => {
               className="bg-white/[0.03] border border-white/10 rounded-[2rem] p-8 space-y-6 shadow-2xl backdrop-blur-xl"
             >
               <div className="flex items-center gap-4 pb-6 border-b border-white/5">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-clay to-emerald-600 flex items-center justify-center text-cream font-black text-xl shadow-[0_0_20px_rgba(52,211,153,0.3)]">A</div>
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-clay to-[#00933b] flex items-center justify-center text-cream font-black text-xl shadow-[0_0_20px_rgba(0,147,59,0.3)]">A</div>
                 <div>
                   <div className="text-white font-bold">Aditya Sharma</div>
                   <div className="text-white/30 text-[10px] font-mono uppercase tracking-widest">Yureka AI Profile · Level 4</div>
@@ -468,7 +468,7 @@ const YurekaAIPage: React.FC = () => {
                   { msg: 'Transfer 50,000 Amex MR → Marriott Bonvoy before Jan 31 for best value', type: 'purple' },
                 ].map((alert, i) => (
                   <div key={i} className="flex items-start gap-3 p-3 bg-white/[0.02] border border-white/5 rounded-xl">
-                    <div className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${alert.type === 'emerald' ? 'bg-emerald-400' : alert.type === 'clay' ? 'bg-clay' : 'bg-purple-400'}`} />
+                    <div className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${alert.type === 'emerald' ? 'bg-[#00933b]' : alert.type === 'clay' ? 'bg-clay' : 'bg-purple-400'}`} />
                     <span className="text-white/50 text-xs leading-relaxed">{alert.msg}</span>
                   </div>
                 ))}
@@ -490,9 +490,9 @@ const YurekaAIPage: React.FC = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
               <div>
-                <div className="inline-flex items-center gap-2 px-4 py-2 mb-8 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
-                  <ShoppingBag size={12} className="text-emerald-400" />
-                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-emerald-400">Built into Yureka AI</span>
+                <div className="inline-flex items-center gap-2 px-4 py-2 mb-8 bg-[#00933b]/10 border border-[#00933b]/20 rounded-full">
+                  <ShoppingBag size={12} className="text-[#00933b]" />
+                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#00933b]">Built into Yureka AI</span>
                 </div>
                 <h2 className="text-4xl md:text-6xl font-sans font-extrabold text-white tracking-tighter leading-tight mb-6">
                   RewardX <br /><span className="text-clay">by Yureka</span>
@@ -572,12 +572,12 @@ const YurekaAIPage: React.FC = () => {
             <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-96 h-96 bg-clay/5 rounded-full blur-[100px] pointer-events-none" />
 
             <div className="relative z-10">
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-clay/5 border border-clay/10 rounded-[2rem] mb-10 mx-auto shadow-[0_0_30px_rgba(52,211,153,0.1)]">
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-clay/5 border border-clay/10 rounded-[2rem] mb-10 mx-auto shadow-[0_0_30px_rgba(0,147,59,0.1)]">
                 <Brain size={36} className="text-clay" />
               </div>
               <h2 className="text-3xl sm:text-6xl font-sans font-extrabold text-white tracking-tighter leading-tight mb-8">
                 Ready for your<br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-clay to-emerald-400">AI co-pilot?</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-clay to-[#00933b]">AI co-pilot?</span>
               </h2>
               <p className="text-white/40 text-xl max-w-2xl mx-auto leading-relaxed mb-12 font-serif">
                 Join the waitlist and get personalised access to Yureka AI, RewardX, and the full Rewards Engine.

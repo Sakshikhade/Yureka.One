@@ -225,7 +225,7 @@ const JournalPage: React.FC = () => {
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
-                    className="mt-32 rounded-3xl bg-gradient-to-br from-clay to-[#059669] p-12 md:p-20 text-center overflow-hidden relative"
+                    className="mt-32 rounded-3xl bg-gradient-to-br from-clay to-[#00933b] p-12 md:p-20 text-center overflow-hidden relative"
                 >
                     <div className="absolute -top-20 -right-20 w-64 h-64 bg-white/5 rounded-full blur-3xl" />
                     <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-black/10 rounded-full blur-2xl" />

@@ -32,7 +32,7 @@ const ContributeCTA: React.FC = () => {
           
           <Link 
             to="/contribute"
-            className="inline-flex h-14 px-10 items-center justify-center bg-clay text-cream rounded-full text-[11px] font-black uppercase tracking-widest hover:bg-[#2bc28a] hover:-translate-y-1 transition-all shadow-xl shadow-clay/20 gap-3"
+            className="inline-flex h-14 px-10 items-center justify-center bg-clay text-cream rounded-full text-[11px] font-black uppercase tracking-widest hover:bg-[#00933b] hover:-translate-y-1 transition-all shadow-xl shadow-clay/20 gap-3"
           >
             Contribute Intelligence <ArrowRight size={16} />
           </Link>

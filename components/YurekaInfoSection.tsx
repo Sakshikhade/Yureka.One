@@ -44,10 +44,12 @@ const YurekaInfoSection: React.FC = () => {
         {/* Card 2 — dark */}
         <div className="bg-surface border border-white/[0.07] rounded-2xl p-7 min-h-80 flex flex-col">
           <h3
-            className="font-cirka text-white text-2xl font-bold leading-snug min-h-[11rem] mb-4"
+            className="text-2xl font-bold leading-snug min-h-[11rem] mb-4"
             style={{ letterSpacing: '-0.02em' }}
           >
-            Shop across 500+ Brands
+            <span className="font-sans text-white">Shop across </span>
+            <span className="font-cirka text-[#00933b]">500+</span>
+            <span className="font-sans text-white"> Brands</span>
           </h3>
           <p className="font-overpass-mono text-white/60 text-base">
             We've partnered with brands that you use daily, be it ordering groceries from quick commerce or booking a flight ticket or a cab to your favorite movie — we have got everything covered.

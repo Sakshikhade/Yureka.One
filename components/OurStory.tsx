@@ -382,7 +382,7 @@ const OurStory: React.FC = () => {
                                 </p>
                             </div>
                             <div className="space-y-4">
-                                <h4 className="font-bold text-[10px] uppercase tracking-widest bg-emerald-500 text-cream inline-block px-2 py-1">Strategy B</h4>
+                                <h4 className="font-bold text-[10px] uppercase tracking-widest bg-[#00933b] text-cream inline-block px-2 py-1">Strategy B</h4>
                                 <p className="font-serif text-lg leading-snug text-white/80">
                                     Direct cashback liquid assets. For those who prefer immediate injection of capital back into their ecosystem.
                                 </p>

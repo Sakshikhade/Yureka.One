@@ -94,19 +94,18 @@ const Stats: React.FC = () => {
             {/* Stat 1 */}
             <motion.div variants={itemVariants} className="col-span-1 p-6 md:p-8 border-b md:border-b-0 md:border-r border-white/10 relative group hover:bg-clay/[0.1] transition-all duration-500">
                 <div className="flex justify-between items-start mb-6 text-white">
-                     <span className="text-[10px] font-bold uppercase tracking-widest text-clay border border-clay/20 px-4 py-2 bg-clay/10 rounded-full backdrop-blur-sm shadow-sm group-hover:scale-105 transition-transform">Cards</span>
+                     <span className="text-[10px] font-bold uppercase tracking-widest text-clay border border-clay/20 px-4 py-2 bg-clay/10 rounded-full backdrop-blur-sm shadow-sm group-hover:scale-105 transition-transform">Brands</span>
                      <span className="text-[10px] font-mono text-white/10">DAT.01</span>
                 </div>
                 <div className="text-5xl sm:text-6xl md:text-7xl text-white mb-4 tracking-tighter leading-none font-sans font-extrabold flex items-baseline gap-1">
-                    <Counter end={248} suffix="" trigger={hasAnimated} />
-                    <span className="text-base sm:text-lg opacity-20 italic">nodes</span>
+                    <Counter end={700} suffix="+" trigger={hasAnimated} />
+                    <span className="text-base sm:text-lg opacity-20 italic">Brands</span>
                 </div>
                 <h4 className="text-[11px] font-bold uppercase tracking-[0.3em] text-white mb-4 border-t border-white/10 pt-4 flex justify-between items-center w-full">
-                    <span>Cards Scanned</span>
-                    <span className="text-[9px] lowercase font-normal italic opacity-30">Live Lab Feed</span>
+                    <span>Built for Power Shoppers</span>
                 </h4>
                 <p className="text-white/40 text-sm font-sans leading-relaxed max-w-xs transition-opacity group-hover:opacity-100">
-                    We check fees and rewards for over 200+ credit cards across all major Indian banks. No bias, just pure neural data.
+                    We closely analyse daily spending of 1000+ individuals and then filtered out top 700+ brands for you.
                 </p>
                 {/* Subtle Hover Gradient */}
                 <div className="absolute inset-0 bg-gradient-to-br from-clay/0 via-transparent to-clay/0 group-hover:from-clay/[0.05] transition-all duration-700 pointer-events-none" />
@@ -126,7 +125,7 @@ const Stats: React.FC = () => {
                     <span className="text-[9px] lowercase font-normal italic opacity-30">AI-Verified</span>
                 </h4>
                 <p className="text-white/40 text-sm font-sans leading-relaxed max-w-xs transition-opacity group-hover:opacity-100">
-                    We scan 50+ unique spending patterns to make sure every recommendation fits your lifestyle with surgical precision.
+                    We match every one of those 1000+ spending profiles to the brands and cards that pay them back the most — upto 30% in cashback, goldback and reward points.
                 </p>
                 <div className="absolute inset-0 bg-gradient-to-br from-clay/0 via-transparent to-clay/0 group-hover:from-clay/[0.05] transition-all duration-700 pointer-events-none" />
             </motion.div>
@@ -146,7 +145,7 @@ const Stats: React.FC = () => {
                     <span className="text-[9px] lowercase font-normal italic opacity-30">Annualized</span>
                 </h4>
                 <p className="text-white/40 text-sm font-sans leading-relaxed max-w-xs transition-opacity group-hover:opacity-100">
-                    Users unlock an average of ₹15,000 per year by optimizing their core spending through our intelligence report.
+                    Power Shoppers who switch unlock an average of ₹15,000 every year by spending smarter across our 700+ partner brands.
                 </p>
                 <div className="absolute inset-0 bg-gradient-to-br from-clay/0 via-transparent to-clay/0 group-hover:from-clay/[0.05] transition-all duration-700 pointer-events-none" />
             </motion.div>

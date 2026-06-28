@@ -141,7 +141,7 @@ const CardExplorer: React.FC = () => {
                                                                     {BANK_LOGOS[bank] ? <img src={BANK_LOGOS[bank]} alt="" className="w-full h-full object-contain" /> : <Landmark size={14} className="text-cream" />}
                                                                 </div>
                                                                 <span className="text-[10px] font-black uppercase tracking-[0.15em]">{bank}</span>
-                                                                {isSelected && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-clay shadow-[0_0_10px_rgba(52,211,153,0.5)]" />}
+                                                                {isSelected && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-clay shadow-[0_0_10px_rgba(0,147,59,0.5)]" />}
                                                             </button>
                                                         );
                                                     })}
@@ -178,7 +178,7 @@ const CardExplorer: React.FC = () => {
                                                                     {catObj.image ? <img src={catObj.image} alt="" className="w-full h-full object-contain drop-shadow-md" /> : <Sparkles size={14} className={isSelected ? 'text-clay' : 'text-white/40'} />}
                                                                 </div>
                                                                 <span className="text-[10px] font-black uppercase tracking-[0.15em]">{cat}</span>
-                                                                {isSelected && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-clay shadow-[0_0_10_rgba(52,211,153,0.5)]" />}
+                                                                {isSelected && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-clay shadow-[0_0_10_rgba(0,147,59,0.5)]" />}
                                                             </button>
                                                         );
                                                     })}
@@ -211,7 +211,7 @@ const CardExplorer: React.FC = () => {
                                                                 className={`w-full flex items-center gap-4 px-5 py-4 rounded-[1.5rem] transition-all duration-500 ${isSelected ? 'bg-clay/10 text-clay' : 'text-white/60 hover:bg-white/5 hover:text-white'}`}
                                                             >
                                                                 <span className="text-[10px] font-black uppercase tracking-[0.15em]">{type}</span>
-                                                                {isSelected && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-clay shadow-[0_0_10px_rgba(52,211,153,0.5)]" />}
+                                                                {isSelected && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-clay shadow-[0_0_10px_rgba(0,147,59,0.5)]" />}
                                                             </button>
                                                         );
                                                     })}

@@ -14,7 +14,7 @@ import SEO from './SEO';
 const CATEGORY_META: Record<string, any> = {
   'travel': { name: 'Travel', icon: '✈️', color: 'from-blue-500/20', benefits: ['Rewards on flights and hotels', 'Airport lounge access', 'Free hotel nights', 'Complimentary food vouchers', 'Free room upgrades'] },
   'shopping': { name: 'Shopping', icon: '🛍️', color: 'from-pink-500/20', benefits: ['Online shopping cashback', 'Retail store discounts', 'Milestone gift vouchers', 'No-cost EMIs', 'Brand-specific perks'] },
-  'cashback': { name: 'Cashback', icon: '💰', color: 'from-emerald-500/20', benefits: ['Direct statement credit', 'Unlimited base cashback', 'Accelerated online earnings', 'Utility bill savings', 'Minimal redemption fees'] },
+  'cashback': { name: 'Cashback', icon: '💰', color: 'from-[#00933b]/20', benefits: ['Direct statement credit', 'Unlimited base cashback', 'Accelerated online earnings', 'Utility bill savings', 'Minimal redemption fees'] },
   'fuel': { name: 'Fuel', icon: '⛽', color: 'from-amber-500/20', benefits: ['1% fuel surcharge waiver', 'Accelerated fuel points', 'Vehicle maintenance offers', 'Roadside assistance', 'Emission test vouchers'] },
   'lifetime-free': { name: 'Lifetime Free', icon: '🏷️', color: 'from-purple-500/20', benefits: ['Zero joining fees', 'Zero annual fees forever', 'Basic reward structure', 'Standard lounge access', 'Easy approval process'] },
   'premium': { name: 'Premium', icon: '⭐', color: 'from-yellow-500/20', benefits: ['24/7 Dedicated concierge', 'Elite hotel memberships', 'Highest reward multipliers', 'Golf course access', 'Global lounge programs'] }
@@ -28,7 +28,7 @@ const CategoryDetailPage: React.FC = () => {
   
   const [cards, setCards] = useState<Card[]>([]);
   const [loading, setLoading] = useState(true);
-  const meta = CATEGORY_META[slug || ''] || { name: slug?.replace('-', ' '), icon: '💳', color: 'from-emerald-500/20', benefits: ['Optimized rewards', 'Curated benefits'] };
+  const meta = CATEGORY_META[slug || ''] || { name: slug?.replace('-', ' '), icon: '💳', color: 'from-[#00933b]/20', benefits: ['Optimized rewards', 'Curated benefits'] };
 
   useEffect(() => {
     api.get<ApiCard[]>('/api/v1/cms/cards', { skipAuth: true }).then(res => {

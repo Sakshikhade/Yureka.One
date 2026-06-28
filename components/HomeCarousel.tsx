@@ -237,14 +237,14 @@ const HomeCarousel = forwardRef<HomeCarouselHandle, HomeCarouselProps>(({
                     }}
                 >
                         <Link to="/cards" className="block w-full h-full group">
-                        <div className="w-full h-full bg-[#047857] flex flex-col items-center justify-center p-6 sm:p-8 text-center shadow-[10px_10px_0px_rgba(0,0,0,0.1)] border border-black/20 transition-all duration-300 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none">
+                        <div className="w-full h-full bg-[#00933b] flex flex-col items-center justify-center p-6 sm:p-8 text-center shadow-[10px_10px_0px_rgba(0,0,0,0.1)] border border-black/20 transition-all duration-300 hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none">
                             <div className="relative z-10">
                                 <div className="w-12 h-12 sm:w-16 sm:h-16 bg-cream text-black rounded-full flex items-center justify-center mb-4 sm:mb-6 mx-auto group-hover:scale-110 transition-transform duration-300 shadow-md">
                                     <ArrowRight size={20} className="sm:w-[24px] sm:h-[24px]" />
                                 </div>
                                 <h3 className="text-lg sm:text-xl font-serif text-cream mb-1 sm:mb-2 italic">Browse</h3>
                                 <h3 className="text-xl sm:text-2xl font-bold text-cream tracking-tight mb-4 sm:mb-6 uppercase">The<br/>Catalog</h3>
-                                <span className="inline-block px-4 sm:px-6 py-1.5 sm:py-2 border border-cream text-cream text-[9px] sm:text-[10px] font-bold tracking-widest uppercase hover:bg-cream hover:text-[#047857] transition-colors">
+                                <span className="inline-block px-4 sm:px-6 py-1.5 sm:py-2 border border-cream text-cream text-[9px] sm:text-[10px] font-bold tracking-widest uppercase hover:bg-cream hover:text-[#00933b] transition-colors">
                                     View Index
                                 </span>
                             </div>

@@ -75,9 +75,9 @@ const CareersPage: React.FC = () => {
                             We are a team of misfits building the future of credit. If you think the banking system is broken, come help us fix it with AI.
                         </p>
                         <ul className="space-y-3 text-sm font-mono text-white/80">
-                            <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-clay rounded-full shadow-[0_0_8px_#34d399]"></div> High Autonomy</li>
-                            <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-clay rounded-full shadow-[0_0_8px_#34d399]"></div> Competitive Equity</li>
-                            <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-clay rounded-full shadow-[0_0_8px_#34d399]"></div> Beautiful Office</li>
+                            <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-clay rounded-full shadow-[0_0_8px_#00933b]"></div> High Autonomy</li>
+                            <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-clay rounded-full shadow-[0_0_8px_#00933b]"></div> Competitive Equity</li>
+                            <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-clay rounded-full shadow-[0_0_8px_#00933b]"></div> Beautiful Office</li>
                         </ul>
                     </div>
                     

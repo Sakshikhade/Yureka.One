@@ -27,7 +27,7 @@ export const TeamForm: React.FC<TeamFormProps> = ({
     <form onSubmit={onSubmit} className="space-y-8">
       <div className="flex items-center gap-6 p-8 bg-white/5 rounded-[2rem] border border-white/5 mb-8 relative overflow-hidden backdrop-blur-xl">
         <div className="absolute top-0 right-0 w-32 h-32 bg-clay/5 blur-[40px] rounded-full -mr-16 -mt-16" />
-        <div className="w-14 h-14 bg-clay/10 rounded-2xl flex items-center justify-center text-clay border border-clay/20 shadow-[0_0_20px_rgba(52,211,153,0.1)]">
+        <div className="w-14 h-14 bg-clay/10 rounded-2xl flex items-center justify-center text-clay border border-clay/20 shadow-[0_0_20px_rgba(0,147,59,0.1)]">
           <Users size={28} />
         </div>
         <div className="relative z-10">

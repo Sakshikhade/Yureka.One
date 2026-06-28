@@ -1209,7 +1209,7 @@ const WaitlistPage: React.FC = () => {
                         <button
                             onClick={handleGoogleSignup}
                             disabled={isLoadingData}
-                            className="group flex items-center gap-2.5 text-[10px] font-black uppercase tracking-[0.2em] text-clay bg-clay/10 border border-clay/30 rounded-full px-7 py-3 shadow-[0_8px_24px_-8px_rgba(52,211,153,0.4)] transition-all duration-300 hover:bg-clay hover:text-black hover:scale-105 hover:shadow-[0_8px_30px_-6px_rgba(52,211,153,0.6)] disabled:opacity-50"
+                            className="group flex items-center gap-2.5 text-[10px] font-black uppercase tracking-[0.2em] text-clay bg-clay/10 border border-clay/30 rounded-full px-7 py-3 shadow-[0_8px_24px_-8px_rgba(0,147,59,0.4)] transition-all duration-300 hover:bg-clay hover:text-black hover:scale-105 hover:shadow-[0_8px_30px_-6px_rgba(0,147,59,0.6)] disabled:opacity-50"
                         >
                             <LogIn size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
                             Login
@@ -1244,7 +1244,7 @@ const WaitlistPage: React.FC = () => {
                                     <div key={label} className="flex flex-col items-center gap-2 z-10">
                                         <div className={`w-7 h-7 rounded-full border flex items-center justify-center transition-all duration-300 ${
                                             done   ? 'bg-clay border-clay' :
-                                            active ? 'bg-clay/10 border-clay shadow-[0_0_12px_rgba(52,211,153,0.4)]' :
+                                            active ? 'bg-clay/10 border-clay shadow-[0_0_12px_rgba(0,147,59,0.4)]' :
                                                      'bg-[#050505] border-white/15'
                                         }`}>
                                             {done
