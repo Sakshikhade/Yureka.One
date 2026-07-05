@@ -83,7 +83,7 @@ const CardExplorer: React.FC = () => {
     if (isLoading && cardsList.length === 0) {
         return (
             <div className="min-h-screen bg-cream pt-32 px-6">
-                <div className="max-w-[1400px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="max-w-[1400px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {[1,2,3,4,5,6,7,8].map(i => <SkeletonCard key={i} />)}
                 </div>
             </div>
@@ -259,7 +259,7 @@ const CardExplorer: React.FC = () => {
 
                 {/* ── GRID ── */}
                 <AnimatePresence mode="popLayout">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {filteredCards.map((card, index) => (
                             <motion.div key={card.id} layout initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: (index % 8) * 0.04 }} className="group">
                                 <Link to={`${basePath}/cards/${card.slug || card.id}`} className="block h-full">
