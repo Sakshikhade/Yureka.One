@@ -5,7 +5,7 @@ dist/
 *.log
 .env
 .env.local
-data/
+data/*.json
 .vscode/
 .idea/
 *.pickle
