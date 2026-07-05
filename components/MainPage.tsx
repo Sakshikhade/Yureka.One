@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import HowItWorksStepper from './HowItWorksStepper';
+const HowItWorksStepper = lazy(() => import('./HowItWorksStepper'));
 import SEO from './SEO';
 import { SupabaseProvider } from './SupabaseProvider';
 import { SkeletonCard, SkeletonHero } from './SkeletonLoaders';

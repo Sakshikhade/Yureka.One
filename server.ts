@@ -1,4 +1,5 @@
 import express from "express";
+import compression from "compression";
 import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
@@ -28,6 +29,7 @@ supabase.from('cards').select('id').limit(1).then(
 
 async function startServer() {
   const app = express();
+  app.use(compression());
   app.use(cors());
   const PORT = Number(process.env.PORT) || 3000;
 
@@ -413,7 +415,17 @@ async function startServer() {
     // index: false — otherwise express.static auto-serves the raw index.html
     // for the exact "/" request (with its own ETag) before the catch-all
     // below ever runs, silently skipping meta injection on the homepage only.
-    app.use(express.static(distPath, { index: false }));
+    app.use(express.static(distPath, {
+      index: false,
+      maxAge: '1y',
+      immutable: true,
+      setHeaders(res, filePath) {
+        // index.html must never be cached — it contains the runtime script tags
+        if (filePath.endsWith('index.html')) {
+          res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        }
+      },
+    }));
 
     // Read once at boot — every request injects route-specific meta into this
     // same cached template string, so crawlers that don't execute JS still

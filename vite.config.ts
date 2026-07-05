@@ -24,12 +24,17 @@ export default defineConfig(({ mode }) => {
           output: {
             manualChunks: {
               'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-              'vendor-motion': ['motion'],
+              'vendor-motion': ['motion', 'framer-motion'],
               'vendor-lucide': ['lucide-react'],
               'vendor-supabase': ['@supabase/supabase-js']
             }
           }
-        }
+        },
+        // Strip all console.log / debugger calls from production builds
+        minify: 'esbuild',
+      },
+      esbuild: {
+        drop: mode === 'production' ? ['console', 'debugger'] : [],
       }
     };
 });

@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
-import { supabase, supabaseAdmin } from '../supabase';
+import { supabase } from '../supabase';
 import { Card, Blog, Review, WaitlistEntry, CardContribution } from '../types';
 import { featuredCards } from '../data';
 import { api, isApiError } from '../lib/api/client';
@@ -81,16 +81,14 @@ async function resolveUserStatus(
 ): Promise<'none' | 'pending' | 'accepted' | 'admin' | 'rejected' | 'on-hold'> {
   if (!email) return 'none';
   try {
-    const roleRes = await api.get<{ role: string }>(
-      `/api/v1/auth/role?email=${encodeURIComponent(email)}`,
-      { skipAuth: true }
-    );
+    // Fire both checks in parallel — saves one full RTT for non-admin users
+    const [roleRes, entryRes] = await Promise.all([
+      api.get<{ role: string }>(`/api/v1/auth/role?email=${encodeURIComponent(email)}`, { skipAuth: true }),
+      api.get<ApiWaitlist>(`/api/v1/waitlist/entry?email=${encodeURIComponent(email)}`),
+    ]);
     if (!isApiError(roleRes) && ['admin', 'editor', 'writer'].includes(roleRes.data?.role ?? '')) {
       return 'admin';
     }
-    const entryRes = await api.get<ApiWaitlist>(
-      `/api/v1/waitlist/entry?email=${encodeURIComponent(email)}`
-    );
     if (!isApiError(entryRes) && entryRes.data) {
       const s = entryRes.data.status;
       return (s === 'on_hold' ? 'on-hold' : s) as ReturnType<typeof resolveUserStatus> extends Promise<infer R> ? R : never;
@@ -117,6 +115,7 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [isLoading, setIsLoading] = useState(true);
   const [isAdminDataLoaded, setIsAdminDataLoaded] = useState(false);
   const isInitialLoad = useRef(true);
+  const publicDataLoaded = useRef(false);
 
   // Financial Ledger State
   const [ledgerTransactions, setLedgerTransactions] = useState<ParsedTransaction[]>([]);
@@ -263,8 +262,7 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           } else {
             console.log('⚡️ No admin session found.');
           }
-        } else {
-          console.log('⚡️ Public route detected. Fetching from Java API...');
+        } else if (!publicDataLoaded.current) {
           const [cRes, bRes, rRes] = await Promise.all([
             api.get<ApiCard[]>('/api/v1/cms/cards', { skipAuth: true }),
             api.get<ApiBlog[]>('/api/v1/cms/blogs', { skipAuth: true }),
@@ -331,9 +329,9 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         console.error("Supabase Setup Error:", err);
         setSyncStatus('error');
       } finally {
-        console.log('⚡️ SupabaseProvider setup complete.');
         setIsLoading(false);
         isInitialLoad.current = false;
+        publicDataLoaded.current = true;
         clearTimeout(fallbackTimer);
       }
     };
@@ -357,10 +355,6 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       } else {
         setCurrentUserStatus('none');
       }
-
-      if (_event === 'SIGNED_IN') {
-        refreshAll();
-      }
     });
 
     // Get initial session
@@ -378,17 +372,25 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     return () => authSub.unsubscribe();
   }, []);
 
+  const contextValue = useMemo(() => ({
+    supabase,
+    user,
+    session,
+    currentUserStatus,
+    cards, blogs, reviews, waitlist, team, logs, cardContributions,
+    syncStatus, isLoading, isAdminDataLoaded, refreshAll,
+    setCards, setBlogs, setReviews, setWaitlist, setTeam, setCardContributions,
+    ledgerTransactions, ledgerLoading, ledgerError, scanProgress, syncLedger,
+  }), [
+    user, session, currentUserStatus,
+    cards, blogs, reviews, waitlist, team, logs, cardContributions,
+    syncStatus, isLoading, isAdminDataLoaded, refreshAll,
+    setCards, setBlogs, setReviews, setWaitlist, setTeam, setCardContributions,
+    ledgerTransactions, ledgerLoading, ledgerError, scanProgress, syncLedger,
+  ]);
+
   return (
-    <SupabaseContext.Provider value={{ 
-      supabase,
-      user,
-      session,
-      currentUserStatus,
-      cards, blogs, reviews, waitlist, team, logs, cardContributions,
-      syncStatus, isLoading, isAdminDataLoaded, refreshAll,
-      setCards, setBlogs, setReviews, setWaitlist, setTeam, setCardContributions,
-      ledgerTransactions, ledgerLoading, ledgerError, scanProgress, syncLedger
-    }}>
+    <SupabaseContext.Provider value={contextValue}>
       {children}
     </SupabaseContext.Provider>
   );
