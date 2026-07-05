@@ -51,12 +51,23 @@ const BlogDetail: React.FC = () => {
             // Supabase fallback
             if (!data) {
                 try {
-                    const { data: sb } = await supabase
+                    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(slug ?? '');
+                    const slugRes = await supabase
                         .from('blogs')
                         .select('*')
-                        .or(`slug.eq.${slug},id.eq.${slug}`)
+                        .eq('slug', slug)
                         .eq('status', 'published')
-                        .single();
+                        .maybeSingle();
+                    let sb = slugRes.data;
+                    if (!sb && isUuid) {
+                        const idRes = await supabase
+                            .from('blogs')
+                            .select('*')
+                            .eq('id', slug)
+                            .eq('status', 'published')
+                            .maybeSingle();
+                        sb = idRes.data;
+                    }
                     if (sb) data = sb as unknown as Blog;
                 } catch { /* stays null */ }
             }

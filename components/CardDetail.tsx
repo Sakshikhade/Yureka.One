@@ -81,16 +81,33 @@ const CardDetail: React.FC = () => {
             } else {
                 // Java API unavailable — fall back to Supabase direct
                 try {
-                    const { data: sbCard } = await supabase
+                    // UUID regex — only add id filter when the slug param is actually a UUID
+                    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(slug ?? '');
+                    let sbCard: Record<string, unknown> | null = null;
+
+                    // Try slug first (most common path)
+                    const slugRes = await supabase
                         .from('cards')
                         .select('*')
-                        .or(`slug.eq.${slug},id.eq.${slug}`)
+                        .eq('slug', slug)
                         .eq('status', 'published')
-                        .single();
+                        .maybeSingle();
+                    sbCard = slugRes.data;
+
+                    // If not found by slug and slug looks like a UUID, try by id
+                    if (!sbCard && isUuid) {
+                        const idRes = await supabase
+                            .from('cards')
+                            .select('*')
+                            .eq('id', slug)
+                            .eq('status', 'published')
+                            .maybeSingle();
+                        sbCard = idRes.data;
+                    }
+
                     if (sbCard) {
                         const data = sbCard as unknown as Card;
                         setCard(data);
-                        // Fetch related cards from same bank
                         const { data: sbRelated } = await supabase
                             .from('cards')
                             .select('*')
