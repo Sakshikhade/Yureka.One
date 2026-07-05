@@ -8,7 +8,7 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE, formatTitle, getCategoryPageMeta, SITE_URL, staticPageMeta, type PageMeta } from './pageMeta';
 import { blogPostingSchema, breadcrumbSchema, faqPageSchema, financialProductSchema } from './structuredData';
-import { faqQuestions } from '../../data/faq';
+import { faqQuestions } from '../faq';
 
 export const REDIRECTS: Record<string, string> = {
   '/explorer': '/cards',

@@ -5,7 +5,7 @@ import { SupabaseProvider } from './SupabaseProvider';
 import { SkeletonCard, SkeletonHero } from './SkeletonLoaders';
 import { SITE_URL, staticPageMeta } from '../lib/seo/pageMeta';
 import { faqPageSchema } from '../lib/seo/structuredData';
-import { faqQuestions } from '../data/faq';
+import { faqQuestions } from '../lib/faq';
 // Lazy load non-critical sections for performance
 const Hero = lazy(() => import('./Hero'));
 const YurekaInfoSection = lazy(() => import('./YurekaInfoSection'));

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Plus, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { faqQuestions } from '../data/faq';
+import { faqQuestions } from '../lib/faq';
 
 interface FAQItemProps {
   question: string;
