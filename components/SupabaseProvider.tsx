@@ -208,12 +208,25 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           api.get<ApiBlog[]>('/api/v1/cms/blogs', { skipAuth: true }),
           api.get<ApiReview[]>('/api/v1/cms/reviews', { skipAuth: true }),
         ]);
-        const c = !isApiError(cRes) ? (cRes.data ?? []).map(fromApiCard) : [];
-        const b = !isApiError(bRes) ? (bRes.data ?? []).map(fromApiBlog) : [];
-        const r = !isApiError(rRes) ? (rRes.data ?? []).map(fromApiReview) : [];
-        setCards(c.length > 0 ? c : featuredCards);
-        setBlogs(b);
-        setReviews(r);
+        if (!isApiError(cRes)) {
+          const c = (cRes.data ?? []).map(fromApiCard);
+          setCards(c.length > 0 ? c : featuredCards);
+        } else {
+          const { data: sbCards } = await supabase.from('cards').select('*').eq('status', 'published');
+          setCards(sbCards && sbCards.length > 0 ? sbCards as unknown as Card[] : featuredCards);
+        }
+        if (!isApiError(bRes)) {
+          setBlogs((bRes.data ?? []).map(fromApiBlog));
+        } else {
+          const { data: sbBlogs } = await supabase.from('blogs').select('*').eq('status', 'published');
+          setBlogs((sbBlogs ?? []) as unknown as Blog[]);
+        }
+        if (!isApiError(rRes)) {
+          setReviews((rRes.data ?? []).map(fromApiReview));
+        } else {
+          const { data: sbReviews } = await supabase.from('reviews').select('*');
+          setReviews((sbReviews ?? []) as unknown as Review[]);
+        }
       }
       console.log('⚡️ Manual Cloud Resync Complete.');
     } catch (err) {
@@ -257,29 +270,61 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             api.get<ApiBlog[]>('/api/v1/cms/blogs', { skipAuth: true }),
             api.get<ApiReview[]>('/api/v1/cms/reviews', { skipAuth: true }),
           ]);
+
+          // Cards — fall back to Supabase direct, then static hardcoded set
           if (!isApiError(cRes)) {
             const mapped = (cRes.data ?? []).map(fromApiCard);
-            console.log('⚡️ Public cards loaded', mapped.length);
+            console.log('⚡️ Public cards loaded from Java API', mapped.length);
             setCards(mapped.length > 0 ? mapped : featuredCards);
           } else {
-            console.error('⚡️ Public cards fetch failed', cRes.error);
-            setSyncStatus('error');
+            console.warn('⚡️ Java API unavailable for cards, falling back to Supabase direct');
+            try {
+              const { data: sbCards } = await supabase
+                .from('cards')
+                .select('*')
+                .eq('status', 'published');
+              const fallback = sbCards && sbCards.length > 0 ? sbCards as unknown as Card[] : featuredCards;
+              console.log('⚡️ Supabase fallback cards', fallback.length);
+              setCards(fallback);
+            } catch {
+              setCards(featuredCards);
+            }
           }
+
+          // Blogs — fall back to Supabase direct
           if (!isApiError(bRes)) {
             const mapped = (bRes.data ?? []).map(fromApiBlog).filter(b => b.id && b.title && b.title !== 'Untitled Journal');
-            console.log('⚡️ Public blogs loaded', mapped.length);
+            console.log('⚡️ Public blogs loaded from Java API', mapped.length);
             setBlogs(mapped);
           } else {
-            console.error('⚡️ Public blogs fetch failed', bRes.error);
-            setSyncStatus('error');
+            console.warn('⚡️ Java API unavailable for blogs, falling back to Supabase direct');
+            try {
+              const { data: sbBlogs } = await supabase
+                .from('blogs')
+                .select('*')
+                .eq('status', 'published')
+                .order('created_at', { ascending: false });
+              setBlogs((sbBlogs ?? []) as unknown as Blog[]);
+            } catch {
+              setBlogs([]);
+            }
           }
+
+          // Reviews — fall back to Supabase direct
           if (!isApiError(rRes)) {
             const mapped = (rRes.data ?? []).map(fromApiReview);
-            console.log('⚡️ Public reviews loaded', mapped.length);
+            console.log('⚡️ Public reviews loaded from Java API', mapped.length);
             setReviews(mapped);
           } else {
-            console.error('⚡️ Public reviews fetch failed', rRes.error);
-            setSyncStatus('error');
+            console.warn('⚡️ Java API unavailable for reviews, falling back to Supabase direct');
+            try {
+              const { data: sbReviews } = await supabase
+                .from('reviews')
+                .select('*');
+              setReviews((sbReviews ?? []) as unknown as Review[]);
+            } catch {
+              setReviews([]);
+            }
           }
         }
       } catch (err) {

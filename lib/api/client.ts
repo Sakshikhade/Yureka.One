@@ -2,12 +2,18 @@ import { supabase } from '../../supabase'
 import type { YurekaResponse } from './types'
 export { isApiError, isValidationError } from './types'
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080'
+// Empty string → relative URLs, which Netlify/Express proxy to the backend.
+// Set VITE_API_BASE_URL=http://localhost:8080 in .env for local Java dev.
+const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? ''
 
 // Auto-fetch the active Supabase session token
 async function getToken(): Promise<string | undefined> {
   const { data: { session } } = await supabase.auth.getSession()
   return session?.access_token ?? undefined
+}
+
+function errorResponse<T>(status: number, error: string): YurekaResponse<T> {
+  return { data: null, status, error, timestamp: new Date().toISOString() }
 }
 
 async function apiFetch<T>(
@@ -24,9 +30,19 @@ async function apiFetch<T>(
     ...(init.headers ?? {}),
   }
 
-  const res = await fetch(`${BASE_URL}${path}`, { ...init, headers })
+  let res: Response
+  try {
+    res = await fetch(`${BASE_URL}${path}`, { ...init, headers })
+  } catch {
+    return errorResponse<T>(0, 'Network error — backend unreachable')
+  }
 
-  return res.json() as Promise<YurekaResponse<T>>
+  const text = await res.text()
+  try {
+    return JSON.parse(text) as YurekaResponse<T>
+  } catch {
+    return errorResponse<T>(res.status || 502, 'Invalid response from server')
+  }
 }
 
 export const api = {
