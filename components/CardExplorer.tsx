@@ -266,11 +266,11 @@ const CardExplorer: React.FC = () => {
                                     <div className="bg-[#111111] rounded-3xl border border-white/[0.07] overflow-hidden h-full flex flex-col hover:border-clay/25 hover:shadow-[0_0_30px_rgba(52,211,153,0.06)] transition-all duration-500">
 
                                         {/* ── IMAGE ── */}
-                                        <div className="relative aspect-[4/3] bg-white overflow-hidden">
+                                        <div className="relative aspect-[4/3] bg-[#0a0a0a] overflow-hidden">
                                             <ImageWithLoader
                                                 src={card.image}
                                                 alt={card.name}
-                                                className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700"
+                                                className="w-full h-full object-cover scale-[1.06] group-hover:scale-[1.12] transition-transform duration-700"
                                             />
                                             <div className="absolute top-3 right-3 bg-black/65 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 flex items-center gap-1.5">
                                                 <div className="w-1.5 h-1.5 rounded-full bg-clay shadow-[0_0_6px_rgba(52,211,153,0.7)]" />
