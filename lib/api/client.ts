@@ -34,14 +34,17 @@ async function apiFetch<T>(
   try {
     res = await fetch(`${BASE_URL}${path}`, { ...init, headers })
   } catch {
-    return errorResponse<T>(0, 'Network error — backend unreachable')
+    // ECONNREFUSED / no network — must be >= 400 so isApiError() triggers fallback
+    return errorResponse<T>(503, 'Network error — backend unreachable')
   }
 
   const text = await res.text()
   try {
     return JSON.parse(text) as YurekaResponse<T>
   } catch {
-    return errorResponse<T>(res.status || 502, 'Invalid response from server')
+    // Backend returned non-JSON (e.g. HTML "Service Suspended").
+    // Force 502 so isApiError() triggers fallback — never use res.status (could be 200).
+    return errorResponse<T>(502, 'Invalid response from server')
   }
 }
 
