@@ -83,8 +83,8 @@ const CardExplorer: React.FC = () => {
     if (isLoading && cardsList.length === 0) {
         return (
             <div className="min-h-screen bg-cream pt-32 px-6">
-                <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {[1,2,3,4,5,6].map(i => <SkeletonCard key={i} />)}
+                <div className="max-w-[1400px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {[1,2,3,4,5,6,7,8].map(i => <SkeletonCard key={i} />)}
                 </div>
             </div>
         );
@@ -259,42 +259,54 @@ const CardExplorer: React.FC = () => {
 
                 {/* ── GRID ── */}
                 <AnimatePresence mode="popLayout">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         {filteredCards.map((card, index) => (
-                            <motion.div key={card.id} layout initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: (index % 4) * 0.05 }} className="group">
+                            <motion.div key={card.id} layout initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: (index % 8) * 0.04 }} className="group">
                                 <Link to={`${basePath}/cards/${card.slug || card.id}`} className="block h-full">
-                                    <div className="bg-white/5 rounded-[2.5rem] border border-white/5 p-2 h-full flex flex-col hover:border-clay/30 hover:bg-white/[0.07] transition-all duration-500 group">
-                                        <div className="relative aspect-video md:aspect-[1.6/1] rounded-[2rem] overflow-hidden mb-4 md:mb-6 bg-white/[0.03]">
-                                            <ImageWithLoader src={card.image} alt={card.name} className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700" />
-                                            <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 flex items-center gap-2">
-                                                <div className="w-1.5 h-1.5 rounded-full bg-clay" />
-                                                <span className="text-[9px] font-bold text-white/70 uppercase tracking-widest">{card.issuer || 'Prime'}</span>
+                                    <div className="bg-[#111111] rounded-3xl border border-white/[0.07] overflow-hidden h-full flex flex-col hover:border-clay/25 hover:shadow-[0_0_30px_rgba(52,211,153,0.06)] transition-all duration-500">
+
+                                        {/* ── IMAGE ── */}
+                                        <div className="relative aspect-[4/3] bg-white overflow-hidden">
+                                            <ImageWithLoader
+                                                src={card.image}
+                                                alt={card.name}
+                                                className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700"
+                                            />
+                                            <div className="absolute top-3 right-3 bg-black/65 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 flex items-center gap-1.5">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-clay shadow-[0_0_6px_rgba(52,211,153,0.7)]" />
+                                                <span className="text-[8px] font-black text-white uppercase tracking-[0.12em]">{card.issuer || card.bank || 'Card'}</span>
                                             </div>
                                         </div>
 
-                                        <div className="flex-1 px-6 pb-6 flex flex-col">
-                                            <h3 className="text-lg font-sans font-bold text-white leading-tight tracking-tight mb-4 line-clamp-2 min-h-[3.5rem] group-hover:text-clay transition-colors">{card.name}</h3>
+                                        {/* ── INFO ── */}
+                                        <div className="flex-1 p-5 flex flex-col gap-4">
+                                            <h3 className="text-[13px] font-black text-white uppercase tracking-tight leading-snug line-clamp-2 min-h-[2.6rem]">
+                                                {card.name}
+                                            </h3>
 
-                                            <div className="grid grid-cols-2 gap-4 mb-6 pt-4 border-t border-white/5">
+                                            <div className="grid grid-cols-2 gap-3 pt-3 border-t border-white/[0.06]">
                                                 <div>
-                                                    <p className="text-[8px] font-bold uppercase tracking-widest text-white/40 mb-1">Annual Fee</p>
-                                                    <p className="text-xs font-bold text-white">₹{card.annual_fee?.replace(/[^0-9]/g, '') || '0'}</p>
+                                                    <p className="text-[7px] font-bold uppercase tracking-[0.18em] text-white/35 mb-1">Annual Fee</p>
+                                                    <p className="text-sm font-bold text-white">
+                                                        {card.annual_fee ? (card.annual_fee.toLowerCase().includes('nil') || card.annual_fee === '0' ? '₹0' : `₹${card.annual_fee.replace(/[^0-9,]/g, '')}`) : '₹0'}
+                                                    </p>
                                                 </div>
                                                 <div>
-                                                    <p className="text-[8px] font-bold uppercase tracking-widest text-white/40 mb-1">Rating</p>
-                                                    <p className="text-xs font-bold text-clay">{card.elite_rating || card.rating || '4.5'}/5</p>
+                                                    <p className="text-[7px] font-bold uppercase tracking-[0.18em] text-white/35 mb-1">Rating</p>
+                                                    <p className="text-sm font-bold text-clay">{card.elite_rating || card.rating || '4.5'}/5</p>
                                                 </div>
                                             </div>
 
-                                            <div className="mt-auto pt-4 flex items-center justify-between gap-4 border-t border-white/5">
-                                                <div className="space-y-1 min-w-0">
-                                                    <p className="text-[8px] font-bold uppercase tracking-widest text-white/40">Projected Savings</p>
-                                                    <p className="text-xl font-sans font-extrabold text-white tracking-tighter line-clamp-1">
-                                                        {card.projected_savings || '—'} <span className="text-[9px] font-serif italic text-white/40 lowercase">/yr</span>
+                                            <div className="mt-auto pt-3 border-t border-white/[0.06] flex items-end justify-between gap-3">
+                                                <div className="min-w-0">
+                                                    <p className="text-[7px] font-bold uppercase tracking-[0.18em] text-white/35 mb-1">Projected Savings</p>
+                                                    <p className="text-base font-extrabold text-white tracking-tight leading-tight line-clamp-2">
+                                                        {card.projected_savings || '—'}
+                                                        {card.projected_savings && <span className="text-[8px] font-normal text-white/30 ml-1">/yr</span>}
                                                     </p>
                                                 </div>
-                                                <div className="w-10 h-10 shrink-0 rounded-2xl bg-white/5 flex items-center justify-center text-white/40 group-hover:bg-clay group-hover:text-cream transition-all">
-                                                    <ArrowRight size={18} />
+                                                <div className="w-8 h-8 shrink-0 rounded-full bg-white/[0.06] flex items-center justify-center text-white/30 group-hover:bg-clay group-hover:text-cream transition-all duration-300">
+                                                    <ArrowRight size={14} />
                                                 </div>
                                             </div>
                                         </div>

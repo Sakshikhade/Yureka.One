@@ -12,26 +12,20 @@ const Shimmer = () => (
 );
 
 export const SkeletonCard = () => (
-  <motion.div 
-    initial={{ opacity: 0, y: 20 }}
+  <motion.div
+    initial={{ opacity: 0, y: 16 }}
     animate={{ opacity: 1, y: 0 }}
-    className="bg-cream border border-black/5 rounded-3xl overflow-hidden relative p-6 h-[400px] flex flex-col shadow-sm"
+    className="bg-[#111111] border border-white/[0.07] rounded-3xl overflow-hidden flex flex-col"
   >
-    <div className="w-full h-48 bg-slate-100 rounded-2xl mb-6 relative overflow-hidden">
+    <div className="aspect-[4/3] bg-white/10 relative overflow-hidden">
       <Shimmer />
     </div>
-    <div className="h-8 bg-slate-100 rounded-lg w-3/4 mb-4 relative overflow-hidden">
-      <Shimmer />
-    </div>
-    <div className="h-4 bg-slate-100 rounded-lg w-1/2 mb-8 relative overflow-hidden">
-      <Shimmer />
-    </div>
-    <div className="mt-auto flex justify-between items-center">
-      <div className="h-10 bg-slate-100 rounded-xl w-32 relative overflow-hidden">
-        <Shimmer />
-      </div>
-      <div className="h-10 bg-slate-100 rounded-full w-10 relative overflow-hidden">
-        <Shimmer />
+    <div className="p-5 flex flex-col gap-4">
+      <div className="h-5 bg-white/10 rounded-lg w-4/5 relative overflow-hidden"><Shimmer /></div>
+      <div className="h-4 bg-white/10 rounded-lg w-2/5 relative overflow-hidden"><Shimmer /></div>
+      <div className="pt-3 border-t border-white/[0.06] flex justify-between items-end">
+        <div className="h-6 bg-white/10 rounded-lg w-28 relative overflow-hidden"><Shimmer /></div>
+        <div className="w-8 h-8 bg-white/10 rounded-full relative overflow-hidden"><Shimmer /></div>
       </div>
     </div>
   </motion.div>
