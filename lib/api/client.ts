@@ -18,9 +18,9 @@ function errorResponse<T>(status: number, error: string): YurekaResponse<T> {
 
 async function apiFetch<T>(
   path: string,
-  options?: RequestInit & { token?: string; skipAuth?: boolean }
+  options?: RequestInit & { token?: string; skipAuth?: boolean; timeoutMs?: number }
 ): Promise<YurekaResponse<T>> {
-  const { token: explicitToken, skipAuth, ...init } = options ?? {}
+  const { token: explicitToken, skipAuth, timeoutMs = 5000, ...init } = options ?? {}
 
   const token = skipAuth ? undefined : (explicitToken ?? await getToken())
 
@@ -30,15 +30,26 @@ async function apiFetch<T>(
     ...(init.headers ?? {}),
   }
 
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), timeoutMs)
+
   let res: Response
   try {
-    res = await fetch(`${BASE_URL}${path}`, { ...init, headers })
+    res = await fetch(`${BASE_URL}${path}`, { ...init, headers, signal: controller.signal })
   } catch {
-    // ECONNREFUSED / no network — must be >= 400 so isApiError() triggers fallback
+    // ECONNREFUSED / timeout / no network — must be >= 400 so isApiError() triggers fallback
     return errorResponse<T>(503, 'Network error — backend unreachable')
+  } finally {
+    clearTimeout(timer)
   }
 
-  const text = await res.text()
+  let text: string
+  try {
+    text = await res.text()
+  } catch {
+    return errorResponse<T>(502, 'Invalid response from server')
+  }
+
   try {
     return JSON.parse(text) as YurekaResponse<T>
   } catch {
@@ -48,19 +59,21 @@ async function apiFetch<T>(
   }
 }
 
+type ApiOptions = { token?: string; skipAuth?: boolean; timeoutMs?: number }
+
 export const api = {
-  get: <T>(path: string, options?: { token?: string; skipAuth?: boolean }) =>
+  get: <T>(path: string, options?: ApiOptions) =>
     apiFetch<T>(path, { method: 'GET', ...options }),
 
-  post: <T>(path: string, body: unknown, options?: { token?: string; skipAuth?: boolean }) =>
+  post: <T>(path: string, body: unknown, options?: ApiOptions) =>
     apiFetch<T>(path, { method: 'POST', body: JSON.stringify(body), ...options }),
 
-  put: <T>(path: string, body: unknown, options?: { token?: string; skipAuth?: boolean }) =>
+  put: <T>(path: string, body: unknown, options?: ApiOptions) =>
     apiFetch<T>(path, { method: 'PUT', body: JSON.stringify(body), ...options }),
 
-  patch: <T>(path: string, body: unknown, options?: { token?: string; skipAuth?: boolean }) =>
+  patch: <T>(path: string, body: unknown, options?: ApiOptions) =>
     apiFetch<T>(path, { method: 'PATCH', body: JSON.stringify(body), ...options }),
 
-  delete: <T>(path: string, options?: { token?: string; skipAuth?: boolean }) =>
+  delete: <T>(path: string, options?: ApiOptions) =>
     apiFetch<T>(path, { method: 'DELETE', ...options }),
 }

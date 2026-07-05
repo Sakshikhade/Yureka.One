@@ -241,7 +241,7 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     
     const fallbackTimer = setTimeout(() => {
       setIsLoading(false);
-    }, 8000);
+    }, 12000);
 
     const setup = async () => {
       console.log('⚡️ SupabaseProvider setup initiated');
@@ -328,6 +328,8 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       } catch (err) {
         console.error("Supabase Setup Error:", err);
         setSyncStatus('error');
+        // Ensure cards are never left empty — always fall back to the static set
+        setCards(prev => prev.length > 0 ? prev : featuredCards);
       } finally {
         setIsLoading(false);
         isInitialLoad.current = false;
