@@ -221,9 +221,8 @@ const CardDetail: React.FC = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-24">
                     {/* Visual Node */}
                     <div className="lg:col-span-5 flex flex-col gap-6">
-                        <div className="aspect-[1.58/1] rounded-[2.5rem] bg-white/[0.03] border border-white/5 p-10 flex items-center justify-center relative overflow-hidden group">
-                            <div className="absolute inset-0 bg-[#00933b]/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                            <ImageWithLoader src={card.image} alt={card.name} className="w-full h-full object-contain relative z-10 group-hover:scale-105 transition-transform duration-700" />
+                        <div className="aspect-[1.58/1] rounded-[2.5rem] bg-[#0a0a0a] border border-white/5 overflow-hidden relative group">
+                            <ImageWithLoader src={card.image} alt={card.name} className="w-full h-full object-cover scale-[1.04] group-hover:scale-[1.10] transition-transform duration-700" />
                         </div>
                         <div className="bg-white/5 rounded-[2rem] border border-white/5 p-8 space-y-6">
                             <div className="flex items-center justify-between">
@@ -386,14 +385,16 @@ const CardDetail: React.FC = () => {
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                             {related.map(item => (
                                 <Link key={item.id} to={`${basePath}/cards/${item.slug || item.id}`} className="group">
-                                    <div className="bg-white/5 border border-white/5 rounded-[2rem] p-6 hover:bg-white/10 transition-all">
-                                        <div className="aspect-[1.58/1] rounded-xl overflow-hidden mb-6 bg-white/5 p-4">
-                                            <ImageWithLoader src={item.image} alt="" className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
+                                    <div className="bg-white/5 border border-white/5 rounded-[2rem] overflow-hidden hover:bg-white/10 transition-all">
+                                        <div className="aspect-[1.58/1] overflow-hidden bg-[#0a0a0a]">
+                                            <ImageWithLoader src={item.image} alt="" className="w-full h-full object-cover scale-[1.04] group-hover:scale-[1.09] transition-transform duration-500" />
                                         </div>
-                                        <h4 className="text-base font-bold text-white mb-2 group-hover:text-[#00933b] transition-colors">{item.name}</h4>
-                                        <div className="flex items-center justify-between pt-4 border-t border-white/5">
-                                            <span className="text-[9px] font-bold uppercase tracking-widest text-white/50">{item.bank}</span>
-                                            <ArrowRight size={14} className="text-white/40 group-hover:text-white group-hover:translate-x-1 transition-all" />
+                                        <div className="p-6">
+                                            <h4 className="text-base font-bold text-white mb-2 group-hover:text-[#00933b] transition-colors">{item.name}</h4>
+                                            <div className="flex items-center justify-between pt-4 border-t border-white/5">
+                                                <span className="text-[9px] font-bold uppercase tracking-widest text-white/50">{item.bank}</span>
+                                                <ArrowRight size={14} className="text-white/40 group-hover:text-white group-hover:translate-x-1 transition-all" />
+                                            </div>
                                         </div>
                                     </div>
                                 </Link>
