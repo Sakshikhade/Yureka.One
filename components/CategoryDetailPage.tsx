@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   ArrowLeft, Sparkles, Star, Zap, Info, ChevronRight, 
   MessageSquare, ExternalLink, AlertCircle, Loader2
 } from 'lucide-react';
-import { api, isApiError } from '../lib/api/client';
-import { fromApiCard } from '../lib/api/mappers';
-import type { Card as ApiCard } from '../lib/api/types';
 import { Card } from '../types';
+import { useSupabase } from './SupabaseProvider';
 import SEO from './SEO';
 import { getCategoryPageMeta } from '../lib/seo/pageMeta';
 import { breadcrumbSchema } from '../lib/seo/structuredData';
@@ -28,23 +26,13 @@ const CategoryDetailPage: React.FC = () => {
   const isDashboard = location.pathname.startsWith('/dashboard');
   const basePath = isDashboard ? '/dashboard' : '';
   
-  const [cards, setCards] = useState<Card[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { cards: allCards, isLoading: ctxLoading } = useSupabase();
+  const loading = ctxLoading && allCards.length === 0;
   const meta = CATEGORY_META[slug || ''] || { name: slug?.replace('-', ' '), icon: '💳', color: 'from-[#00933b]/20', benefits: ['Optimized rewards', 'Curated benefits'] };
-
-  useEffect(() => {
-    api.get<ApiCard[]>('/api/v1/cms/cards', { skipAuth: true }).then(res => {
-      if (!isApiError(res)) {
-        const allCards = (res.data ?? []).map(fromApiCard);
-        const filtered = allCards.filter(c =>
-          c.category?.toLowerCase().includes(slug?.replace('-', ' ') || '') ||
-          c.benefits?.some(b => b.toLowerCase().includes(slug?.replace('-', ' ') || ''))
-        );
-        setCards(filtered);
-      }
-      setLoading(false);
-    });
-  }, [slug]);
+  const cards = allCards.filter(c =>
+    c.category?.toLowerCase().includes(slug?.replace('-', ' ') || '') ||
+    c.benefits?.some(b => b.toLowerCase().includes(slug?.replace('-', ' ') || ''))
+  );
 
   const pageMeta = getCategoryPageMeta(slug || '');
 

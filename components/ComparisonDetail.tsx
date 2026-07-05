@@ -7,10 +7,8 @@ import {
   ChevronRight, ExternalLink, Info, Globe, CreditCard,
   Gift, Percent, Wallet, MousePointer2
 } from 'lucide-react';
-import { api, isApiError } from '../lib/api/client';
-import { fromApiCard } from '../lib/api/mappers';
-import type { Card as ApiCard } from '../lib/api/types';
 import { Card } from '../types';
+import { useSupabase } from './SupabaseProvider';
 import SEO from './SEO';
 import { breadcrumbSchema } from '../lib/seo/structuredData';
 
@@ -20,22 +18,12 @@ const ComparisonDetail: React.FC = () => {
   const isDashboard = location.pathname.startsWith('/dashboard');
   const basePath = isDashboard ? '/dashboard' : '';
   
-  const [cards, setCards] = useState<Card[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    api.get<ApiCard[]>('/api/v1/cms/cards', { skipAuth: true }).then(res => {
-      if (!isApiError(res)) {
-        const allCards = (res.data ?? []).map(fromApiCard);
-        const cardSlugs = slug?.split('-vs-') || [];
-        const matchedCards = cardSlugs.map(s =>
-          allCards.find(c => c.slug === s || c.id === s)
-        ).filter((c): c is Card => !!c);
-        setCards(matchedCards);
-      }
-      setLoading(false);
-    });
-  }, [slug]);
+  const { cards: allCards, isLoading: ctxLoading } = useSupabase();
+  const loading = ctxLoading && allCards.length === 0;
+  const cardSlugs = slug?.split('-vs-') || [];
+  const cards = cardSlugs
+    .map(s => allCards.find(c => c.slug === s || c.id === s))
+    .filter((c): c is Card => !!c);
 
   if (loading) {
     return (

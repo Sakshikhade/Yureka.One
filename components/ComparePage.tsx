@@ -6,10 +6,8 @@ import {
   ArrowRightLeft, Star, Zap, Info, Shield, 
   ZapOff, CheckCircle2, AlertCircle, Loader2, CreditCard
 } from 'lucide-react';
-import { api, isApiError } from '../lib/api/client';
-import { fromApiCard } from '../lib/api/mappers';
-import type { Card as ApiCard } from '../lib/api/types';
 import { Card } from '../types';
+import { useSupabase } from './SupabaseProvider';
 import SEO from './SEO';
 import { staticPageMeta } from '../lib/seo/pageMeta';
 
@@ -51,17 +49,11 @@ const ComparePage: React.FC = () => {
   const location = useLocation();
   const isDashboard = location.pathname.startsWith('/dashboard');
   const basePath = isDashboard ? '/dashboard' : '';
-  const [allCards, setAllCards] = useState<Card[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { cards: contextCards, isLoading: ctxLoading } = useSupabase();
+  const allCards = contextCards;
+  const loading = ctxLoading && contextCards.length === 0;
   const [selectedCards, setSelectedCards] = useState<string[]>(['', '', '']);
   const [activeDropdown, setActiveDropdown] = useState<number | null>(null);
-
-  useEffect(() => {
-    api.get<ApiCard[]>('/api/v1/cms/cards', { skipAuth: true }).then(res => {
-      if (!isApiError(res)) setAllCards((res.data ?? []).map(fromApiCard));
-      setLoading(false);
-    });
-  }, []);
 
   const handleSelect = (index: number, cardId: string) => {
     const newSelected = [...selectedCards];

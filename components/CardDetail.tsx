@@ -10,6 +10,7 @@ import { api, isApiError } from '../lib/api/client';
 import { fromApiCard } from '../lib/api/mappers';
 import type { Card as ApiCard } from '../lib/api/types';
 import { Card } from '../types';
+import { supabase } from '../supabase';
 import ImageWithLoader from './ImageWithLoader';
 import { motion, AnimatePresence } from 'motion/react';
 import SEO from './SEO';
@@ -35,6 +36,7 @@ const CardDetail: React.FC = () => {
         if (!slug) return;
         setIsLoading(true);
         const fetchCard = async () => {
+            // Try Java API first
             const res = await api.get<ApiCard>(`/api/v1/cms/cards/${slug}`, { skipAuth: true });
             if (!isApiError(res) && res.data) {
                 const data = fromApiCard(res.data);
@@ -42,6 +44,31 @@ const CardDetail: React.FC = () => {
                 const allRes = await api.get<ApiCard[]>('/api/v1/cms/cards', { skipAuth: true });
                 if (!isApiError(allRes)) {
                     setRelated((allRes.data ?? []).map(fromApiCard).filter(c => c.id !== data.id && c.bank === data.bank).slice(0, 3));
+                }
+            } else {
+                // Java API unavailable — fall back to Supabase direct
+                try {
+                    const { data: sbCard } = await supabase
+                        .from('cards')
+                        .select('*')
+                        .or(`slug.eq.${slug},id.eq.${slug}`)
+                        .eq('status', 'published')
+                        .single();
+                    if (sbCard) {
+                        const data = sbCard as unknown as Card;
+                        setCard(data);
+                        // Fetch related cards from same bank
+                        const { data: sbRelated } = await supabase
+                            .from('cards')
+                            .select('*')
+                            .eq('status', 'published')
+                            .eq('bank', data.bank)
+                            .neq('id', data.id)
+                            .limit(3);
+                        setRelated((sbRelated ?? []) as unknown as Card[]);
+                    }
+                } catch {
+                    // card stays null → shows 404 state
                 }
             }
             setIsLoading(false);

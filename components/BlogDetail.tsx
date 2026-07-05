@@ -11,6 +11,7 @@ import { api, isApiError } from '../lib/api/client';
 import { fromApiBlog } from '../lib/api/mappers';
 import type { Blog as ApiBlog } from '../lib/api/types';
 import { Blog } from '../types';
+import { supabase } from '../supabase';
 import ImageWithLoader from './ImageWithLoader';
 import { motion, AnimatePresence } from 'motion/react';
 import SEO from './SEO';
@@ -43,15 +44,40 @@ const BlogDetail: React.FC = () => {
         setExtractedHtml(null);
         
         const fetchBlog = async () => {
+            // Try Java API first
             const res = await api.get<ApiBlog>(`/api/v1/cms/blogs/${slug}`, { skipAuth: true });
-            const data = !isApiError(res) && res.data ? fromApiBlog(res.data) : null;
+            let data: Blog | null = !isApiError(res) && res.data ? fromApiBlog(res.data) : null;
+
+            // Supabase fallback
+            if (!data) {
+                try {
+                    const { data: sb } = await supabase
+                        .from('blogs')
+                        .select('*')
+                        .or(`slug.eq.${slug},id.eq.${slug}`)
+                        .eq('status', 'published')
+                        .single();
+                    if (sb) data = sb as unknown as Blog;
+                } catch { /* stays null */ }
+            }
+
             setBlog(data);
             setIsLoading(false);
 
             if (data) {
+                // Related blogs — try Java API then Supabase
                 const allRes = await api.get<ApiBlog[]>('/api/v1/cms/blogs', { skipAuth: true });
                 if (!isApiError(allRes)) {
-                    setRelated((allRes.data ?? []).map(fromApiBlog).filter(b => b.id !== data.id && b.category === data.category).slice(0, 3));
+                    setRelated((allRes.data ?? []).map(fromApiBlog).filter(b => b.id !== data!.id && b.category === data!.category).slice(0, 3));
+                } else {
+                    const { data: sbRelated } = await supabase
+                        .from('blogs')
+                        .select('*')
+                        .eq('status', 'published')
+                        .eq('category', data.category || '')
+                        .neq('id', data.id)
+                        .limit(3);
+                    setRelated((sbRelated ?? []) as unknown as Blog[]);
                 }
                 
                 // Try to fetch and extract content for seamless reading

@@ -1,8 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { api, isApiError } from '../lib/api/client';
-import { fromApiReview } from '../lib/api/mappers';
-import type { Review as ApiReview } from '../lib/api/types';
+import React, { useRef } from 'react';
 import { Review } from '../types';
+import { useSupabase } from './SupabaseProvider';
 import { Star, Apple, Play, CheckCircle, ShieldCheck } from 'lucide-react';
 import { motion, useScroll } from 'motion/react';
 
@@ -151,22 +149,14 @@ const InfiniteColumn: React.FC<{ reviews: Review[]; speed?: number; reverse?: bo
 };
 
 const Community: React.FC = () => {
-  const [reviews, setReviews] = useState<Review[]>([]);
+  const { reviews: ctxReviews } = useSupabase();
+  const reviews: Review[] = ctxReviews.length > 0 ? ctxReviews : fallbackReviews;
   const sectionRef = useRef<HTMLDivElement>(null);
-  
+
   const { scrollYProgress } = useScroll({
       target: sectionRef,
       offset: ["start end", "end start"]
   });
-
-  useEffect(() => {
-    api.get<ApiReview[]>('/api/v1/cms/reviews', { skipAuth: true }).then(res => {
-      if (!isApiError(res)) {
-        const mapped = (res.data ?? []).map(fromApiReview);
-        setReviews(mapped.length > 0 ? mapped : fallbackReviews);
-      }
-    });
-  }, []);
 
   const featured = reviews.find(r => r.featured) || fallbackReviews[0];
   const regular = reviews.filter(r => r !== featured);
