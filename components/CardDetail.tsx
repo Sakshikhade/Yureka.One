@@ -16,6 +16,39 @@ import { motion, AnimatePresence } from 'motion/react';
 import SEO from './SEO';
 import { breadcrumbSchema, financialProductSchema } from '../lib/seo/structuredData';
 
+const formatFee = (fee: string | undefined | null): string => {
+    if (!fee) return '₹0 + GST';
+    const lower = fee.toLowerCase().trim();
+    if (['nil', 'na', 'n/a', 'free', 'lifetime free', '0', '₹0', 'zero'].includes(lower)) return 'Lifetime Free';
+    const numeric = fee.replace(/[^0-9]/g, '');
+    if (!numeric || numeric === '0') return 'Lifetime Free';
+    const num = parseInt(numeric, 10);
+    return `₹${num.toLocaleString('en-IN')} + GST`;
+};
+
+const formatSavings = (savings: string | undefined | null): string => {
+    if (!savings) return 'Varies';
+    const lower = savings.toLowerCase().trim();
+    if (['null', 'na', 'n/a', '0', '', 'nil'].includes(lower)) return 'Varies';
+    return savings.startsWith('₹') ? savings : `₹${savings}`;
+};
+
+const formatRate = (rate: string | undefined | null): string => {
+    if (!rate) return 'Standard';
+    const lower = rate.toLowerCase().trim();
+    if (['active', 'na', 'n/a', '', 'nil'].includes(lower)) return 'Accelerated';
+    return rate;
+};
+
+const formatDate = (dateStr: string | undefined | null): string => {
+    if (!dateStr) return 'N/A';
+    try {
+        return new Date(dateStr).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    } catch {
+        return dateStr;
+    }
+};
+
 const CardDetail: React.FC = () => {
     const { slug } = useParams<{ slug: string }>();
     const location = useLocation();
@@ -105,7 +138,7 @@ const CardDetail: React.FC = () => {
         );
     }
 
-    const updatedOn = card.updated_on || new Date(card.updated_at || Date.now()).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    const updatedOn = card.updated_on ? formatDate(card.updated_on) : formatDate(card.updated_at);
 
     return (
         <div className="min-h-screen bg-[#0a0a0a] text-white/90 font-sans selection:bg-clay selection:text-white pb-32">
@@ -180,30 +213,35 @@ const CardDetail: React.FC = () => {
                                 <span className="text-[10px] font-bold uppercase tracking-widest text-white/60">Rating</span>
                                 <div className="flex items-center gap-2 text-clay">
                                     <Trophy size={16} />
-                                    <span className="text-2xl font-sans font-bold tracking-tight">{card.elite_rating || card.rating || '4.8'}</span>
+                                    <span className="text-2xl font-sans font-bold tracking-tight">{(card.elite_rating && card.elite_rating > 0 ? card.elite_rating : null) ?? (card.rating && card.rating > 0 ? card.rating : null) ?? 4.5}</span>
                                     <span className="text-white/40 text-xs font-bold">/ 5.0</span>
                                 </div>
                             </div>
-                            <div className="space-y-4">
-                                <div className="h-2 bg-white/5 rounded-full overflow-hidden">
-                                    <div className="h-full bg-clay rounded-full" style={{ width: `${((card.elite_rating || card.rating || 4.8) / 5) * 100}%` }} />
-                                </div>
-                                <p className="text-[11px] text-white/70 font-serif italic leading-relaxed">
-                                    Top 2% of surveyed cards in the {card.category || 'General'} sector based on net yield and usability.
-                                </p>
-                            </div>
+                            {(() => {
+                                const r = (card.elite_rating && card.elite_rating > 0 ? card.elite_rating : null) ?? (card.rating && card.rating > 0 ? card.rating : null) ?? 4.5;
+                                return (
+                                    <div className="space-y-4">
+                                        <div className="h-2 bg-white/5 rounded-full overflow-hidden">
+                                            <div className="h-full bg-clay rounded-full" style={{ width: `${(r / 5) * 100}%` }} />
+                                        </div>
+                                        <p className="text-[11px] text-white/70 font-serif italic leading-relaxed">
+                                            Top 2% of surveyed cards in the {card.category || 'General'} sector based on net yield and usability.
+                                        </p>
+                                    </div>
+                                );
+                            })()}
                         </div>
                     </div>
 
                     {/* Data Specs */}
                     <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {[
-                            { label: 'Annual Fee', value: card.annual_fee ? `₹${String(card.annual_fee).replace(/[^0-9]/g, '')} + GST` : '₹0 + GST', icon: <Landmark size={20} /> },
-                            { label: 'Joining Fee', value: card.joining_fee ? `₹${String(card.joining_fee).replace(/[^0-9]/g, '')} + GST` : '₹0 + GST', icon: <CreditCard size={20} /> },
-                            { label: 'Rewards Rate', value: card.rewards_rate || 'Accelerated', icon: <Zap size={20} /> },
-                            { label: 'Best For', value: card.best_for || 'Lifestyle', icon: <Trophy size={20} /> },
-                            { label: 'Projected Savings', value: card.projected_savings || '₹12,000+', icon: <TrendingUp size={20} /> },
-                            { label: 'Card Type', value: card.type || 'Premium', icon: <Globe size={20} /> },
+                            { label: 'Annual Fee', value: formatFee(card.annual_fee), icon: <Landmark size={20} /> },
+                            { label: 'Joining Fee', value: formatFee(card.joining_fee), icon: <CreditCard size={20} /> },
+                            { label: 'Rewards Rate', value: formatRate(card.rewards_rate), icon: <Zap size={20} /> },
+                            { label: 'Best For', value: card.best_for || 'General Lifestyle', icon: <Trophy size={20} /> },
+                            { label: 'Projected Savings', value: formatSavings(card.projected_savings), icon: <TrendingUp size={20} /> },
+                            { label: 'Card Type', value: card.type || 'Standard', icon: <Globe size={20} /> },
                         ].map((spec, i) => (
                             <div key={i} className="bg-white/5 border border-white/5 rounded-[2rem] p-8 flex flex-col justify-between hover:bg-white/[0.07] transition-all">
                                 <div className="w-10 h-10 rounded-2xl bg-white/5 flex items-center justify-center text-clay mb-6">
