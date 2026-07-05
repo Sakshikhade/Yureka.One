@@ -27,6 +27,7 @@ COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile --prod --config.allow-build=esbuild
 COPY --from=build /app/dist ./dist
 COPY server.ts tsconfig.json ./
+COPY lib/ ./lib/
 COPY scripts/ ./scripts/
 EXPOSE 3000
 ENV NODE_ENV=production
