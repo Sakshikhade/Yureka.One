@@ -86,13 +86,6 @@ const D2C_BRANDS = [
   { src: '/assets/brand-logos/zepto-logo.png', alt: 'Zepto' },
   { src: '/assets/brand-logos/bookmyshow-logo.png', alt: 'BookMyShow' },
   { src: '/assets/brand-logos/starbucks-logo.png', alt: 'Starbucks' },
-  { src: '/assets/brand-logos/snitch-logo.png', alt: 'Snitch' },
-  { src: '/assets/brand-logos/westside-logo.png', alt: 'Westside' },
-  { src: '/assets/brand-logos/manyavar-logo.jpeg', alt: 'Manyavar' },
-  { src: '/assets/brand-logos-2/caratlane-logo.jpeg', alt: 'CaratLane' },
-  { src: '/assets/brand-logos-2/cult-fit-logo.jpeg', alt: 'Cult.fit' },
-  { src: '/assets/brand-logos-2/cleartrip-logo.png', alt: 'Cleartrip' },
-  { src: '/assets/brand-logos/croma-logo.jpeg', alt: 'Croma' },
 ];
 
 const CARD_LOGOS = [
