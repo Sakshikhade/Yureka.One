@@ -583,11 +583,11 @@ const ForBrands: React.FC = () => {
                       {D2C_BRANDS.map((b, i) => (
                         <motion.div
                           key={i}
-                          whileHover={{ scale: 1.06, y: -2 }}
-                          className="bg-white/[0.07] border border-white/[0.09] rounded-xl p-3 flex items-center justify-center"
+                          whileHover={{ scale: 1.04 }}
+                          className="border border-white/[0.1] rounded-xl overflow-hidden"
+                          style={{ height: 64 }}
                         >
-                          <img src={b.src} alt={b.alt} className="h-6 w-auto object-contain max-w-[70px]"
-                            style={{ filter: 'grayscale(1) contrast(0.8)', opacity: 0.6 }} />
+                          <img src={b.src} alt={b.alt} className="w-full h-full object-cover block" />
                         </motion.div>
                       ))}
                     </div>
