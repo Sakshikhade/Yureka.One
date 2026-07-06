@@ -410,7 +410,7 @@ const ForBrands: React.FC = () => {
         <section className="py-10 border-y border-white/[0.05] overflow-hidden">
           {/* Row 1 — forward */}
           <div className="flex overflow-hidden mb-3">
-            <div className="fwd-marquee items-center gap-3 px-3">
+            <div className="fwd-marquee items-center px-3" style={{ gap: 5 }}>
               {[...BRAND_ROW1, ...BRAND_ROW1].map((b, i) => (
                 <div key={i} className="logo-pill">
                   <img src={b.src} alt={b.alt} className="logo-img" />
@@ -420,7 +420,7 @@ const ForBrands: React.FC = () => {
           </div>
           {/* Row 2 — reverse */}
           <div className="flex overflow-hidden">
-            <div className="rev-marquee items-center gap-3 px-3">
+            <div className="rev-marquee items-center px-3" style={{ gap: 5 }}>
               {[...BRAND_ROW2, ...BRAND_ROW2].map((b, i) => (
                 <div key={i} className="logo-pill">
                   <img src={b.src} alt={b.alt} className="logo-img" />
@@ -589,7 +589,7 @@ const ForBrands: React.FC = () => {
                     </p>
 
                     {/* Brand logo grid */}
-                    <div className="flex flex-wrap gap-2 mb-8">
+                    <div className="flex flex-wrap mb-8" style={{ gap: 5 }}>
                       {D2C_BRANDS.map((b, i) => (
                         <motion.div
                           key={i}
