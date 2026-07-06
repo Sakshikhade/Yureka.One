@@ -71,6 +71,9 @@ const Navbar: React.FC = () => {
                       <Link to="/yureka-ai" className="text-white/40 hover:text-white font-bold text-[10px] transition-colors whitespace-nowrap uppercase tracking-[0.2em]">
                         YurekaAi
                       </Link>
+                      <Link to="/for-brands" className="text-white/40 hover:text-white font-bold text-[10px] transition-colors whitespace-nowrap uppercase tracking-[0.2em]">
+                        For Brands
+                      </Link>
                 </div>
 
                 <nav className="flex items-center gap-6 lg:gap-8">
@@ -214,7 +217,8 @@ const Navbar: React.FC = () => {
                         { name: 'Compare', path: '/compare', desc: 'Side-by-side strategic comparison' },
                         { name: 'Explore', path: '/manifesto', desc: 'The decentralization of yield' },
                         { name: 'Free Tools', path: '/free-tools', desc: 'Institutional grade calculators' },
-                        { name: 'Yureka AI', path: '/yureka-ai', desc: 'Access the intelligence hub' }
+                        { name: 'Yureka AI', path: '/yureka-ai', desc: 'Access the intelligence hub' },
+                        { name: 'For Brands', path: '/for-brands', desc: 'Partner, smart checkout & credit data' }
                     ].map((item, idx) => (
                         <motion.div
                           initial={{ opacity: 0, x: 20 }}

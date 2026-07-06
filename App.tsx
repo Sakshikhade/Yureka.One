@@ -61,6 +61,7 @@ const WaitlistPage = lazyWithRetry(() => import('./components/WaitlistPage'));
 const WaitingPage = lazyWithRetry(() => import('./components/WaitingPage'));
 const DashboardLayout = lazyWithRetry(() => import('./components/Dashboard/DashboardLayout'));
 const ByEveryone = lazyWithRetry(() => import('./components/ByEveryone'));
+const ForBrands = lazyWithRetry(() => import('./components/ForBrands'));
 const NotFoundPage = lazyWithRetry(() => import('./components/NotFoundPage'));
 
 // Optimized Scroll Management
@@ -165,6 +166,8 @@ const AppContent: React.FC<{ showSplash: boolean }> = ({ showSplash }) => {
                   <BrandExplorer />
                 </>
               } />
+
+              <Route path="/for-brands" element={<ForBrands />} />
 
               <Route path="/blogs" element={
                 <>
