@@ -373,7 +373,7 @@ const ForBrands: React.FC = () => {
                 {/* Floating offer card */}
                 <div className="absolute -top-8 -right-4 md:-right-12 bg-[#0f0f0f] border border-white/[0.1] rounded-2xl p-5 w-48 shadow-[0_20px_60px_rgba(0,0,0,0.8)] hidden md:block float-a" style={{ transform: 'translateZ(30px)' }}>
                   <div className="text-[7px] font-black text-white/20 uppercase tracking-[0.35em] mb-3">Live Offers</div>
-                  {['Snapmint · BNPL', 'Swiggy · ₹200 OFF', 'Goldback · 16% ROI', 'Yureka AI · Intent'].map((item, i) => (
+                  {['Goldback · 16% ROI', 'Yureka AI · Intent', 'Smart Checkout · Live', 'Credit Data · LSP'].map((item, i) => (
                     <div key={i} className="flex items-center gap-2.5 py-2 border-b border-white/[0.05] last:border-0">
                       <div className="w-1.5 h-1.5 rounded-full bg-clay shrink-0" />
                       <span className="text-[9px] text-white/45">{item}</span>
