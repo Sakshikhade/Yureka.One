@@ -579,15 +579,15 @@ const ForBrands: React.FC = () => {
                     </p>
 
                     {/* Brand logo grid */}
-                    <div className="grid grid-cols-3 gap-2.5 mb-8">
+                    <div className="flex flex-wrap gap-2 mb-8">
                       {D2C_BRANDS.map((b, i) => (
                         <motion.div
                           key={i}
-                          whileHover={{ scale: 1.04 }}
-                          className="bg-white/[0.07] border border-white/[0.1] rounded-xl flex items-center justify-center p-3"
-                          style={{ height: 64 }}
+                          whileHover={{ scale: 1.08 }}
+                          className="border border-white/[0.1] rounded-lg overflow-hidden shrink-0"
+                          style={{ width: 36, height: 36 }}
                         >
-                          <img src={b.src} alt={b.alt} className="max-w-full max-h-full object-contain block" style={{ maxHeight: 40, opacity: 0.95 }} />
+                          <img src={b.src} alt={b.alt} className="w-full h-full object-cover block" />
                         </motion.div>
                       ))}
                     </div>
