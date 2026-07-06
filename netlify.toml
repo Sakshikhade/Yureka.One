@@ -1,3 +1,7 @@
+[build]
+  command = "pnpm build"
+  publish = "dist"
+
 # Proxy all API requests to the Render backend
 [[redirects]]
   from = "/api/*"
