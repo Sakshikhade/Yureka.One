@@ -19,8 +19,10 @@ const GLOBAL_CSS = `
   .float-a      { animation: float-a 7s ease-in-out infinite; }
   .float-b      { animation: float-b 9s ease-in-out infinite; }
   .cta-glow     { animation: pulse-glow 3s ease-in-out infinite; }
-  .logo-img     { filter: grayscale(1) contrast(0.8); opacity: 0.45; transition: opacity 0.3s; }
-  .logo-img:hover { opacity: 0.85; }
+  .logo-pill    { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.12); border-radius: 14px; width: 120px; height: 56px; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition: background 0.3s; }
+  .logo-pill:hover { background: rgba(255,255,255,0.18); }
+  .logo-img     { filter: grayscale(1) brightness(1.15); opacity: 0.75; transition: opacity 0.3s; object-fit: contain; max-width: 84px; height: 30px; }
+  .logo-img:hover { opacity: 1; }
   .shimmer-text {
     background: linear-gradient(90deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,1) 40%, rgba(52,211,153,1) 55%, rgba(255,255,255,1) 70%, rgba(255,255,255,0.5) 100%);
     background-size: 200% auto;
@@ -395,13 +397,13 @@ const ForBrands: React.FC = () => {
         {/* ═══════════════════════════════════════════════════════════
             BRAND LOGO MARQUEE — TWO ROWS
         ═══════════════════════════════════════════════════════════ */}
-        <section className="py-10 border-y border-white/[0.05] overflow-hidden bg-white/[0.01]">
+        <section className="py-10 border-y border-white/[0.05] overflow-hidden">
           {/* Row 1 — forward */}
-          <div className="flex overflow-hidden mb-4">
+          <div className="flex overflow-hidden mb-3">
             <div className="fwd-marquee items-center gap-3 px-3">
               {[...BRAND_ROW1, ...BRAND_ROW1].map((b, i) => (
-                <div key={i} className="shrink-0 bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.07] rounded-xl px-5 py-3 flex items-center justify-center transition-colors duration-300" style={{ minWidth: 110 }}>
-                  <img src={b.src} alt={b.alt} className="logo-img h-6 w-auto object-contain max-w-[90px]" />
+                <div key={i} className="logo-pill">
+                  <img src={b.src} alt={b.alt} className="logo-img" />
                 </div>
               ))}
             </div>
@@ -410,8 +412,8 @@ const ForBrands: React.FC = () => {
           <div className="flex overflow-hidden">
             <div className="rev-marquee items-center gap-3 px-3">
               {[...BRAND_ROW2, ...BRAND_ROW2].map((b, i) => (
-                <div key={i} className="shrink-0 bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.07] rounded-xl px-5 py-3 flex items-center justify-center transition-colors duration-300" style={{ minWidth: 110 }}>
-                  <img src={b.src} alt={b.alt} className="logo-img h-6 w-auto object-contain max-w-[90px]" />
+                <div key={i} className="logo-pill">
+                  <img src={b.src} alt={b.alt} className="logo-img" />
                 </div>
               ))}
             </div>
