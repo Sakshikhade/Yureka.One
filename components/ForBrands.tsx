@@ -19,9 +19,10 @@ const GLOBAL_CSS = `
   .float-a      { animation: float-a 7s ease-in-out infinite; }
   .float-b      { animation: float-b 9s ease-in-out infinite; }
   .cta-glow     { animation: pulse-glow 3s ease-in-out infinite; }
-  .logo-pill    { border: 1px solid rgba(255,255,255,0.11); border-radius: 12px; width: 96px; height: 56px; overflow: hidden; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; transition: opacity 0.3s; }
-  .logo-pill:hover { opacity: 0.85; }
-  .logo-img     { width: 100%; height: 100%; object-fit: cover; display:block; }
+  .logo-pill    { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.11); border-radius: 12px; height: 52px; padding: 8px 14px; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; transition: background 0.3s; }
+  .logo-pill:hover { background: rgba(255,255,255,0.14); }
+  .logo-img     { height: 36px; width: auto; max-width: 110px; object-fit: contain; display:block; opacity:0.95; transition: opacity 0.3s; }
+  .logo-img:hover { opacity: 1; }
 
   .shimmer-text {
     background: linear-gradient(90deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,1) 40%, rgba(52,211,153,1) 55%, rgba(255,255,255,1) 70%, rgba(255,255,255,0.5) 100%);
@@ -584,10 +585,10 @@ const ForBrands: React.FC = () => {
                         <motion.div
                           key={i}
                           whileHover={{ scale: 1.04 }}
-                          className="border border-white/[0.1] rounded-xl overflow-hidden"
+                          className="bg-white/[0.07] border border-white/[0.1] rounded-xl flex items-center justify-center p-3"
                           style={{ height: 64 }}
                         >
-                          <img src={b.src} alt={b.alt} className="w-full h-full object-cover block" />
+                          <img src={b.src} alt={b.alt} className="max-w-full max-h-full object-contain block" style={{ maxHeight: 40, opacity: 0.95 }} />
                         </motion.div>
                       ))}
                     </div>
