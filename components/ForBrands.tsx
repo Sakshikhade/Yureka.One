@@ -19,10 +19,9 @@ const GLOBAL_CSS = `
   .float-a      { animation: float-a 7s ease-in-out infinite; }
   .float-b      { animation: float-b 9s ease-in-out infinite; }
   .cta-glow     { animation: pulse-glow 3s ease-in-out infinite; }
-  .logo-pill    { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.11); border-radius: 12px; height: 52px; padding: 8px 14px; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; transition: background 0.3s; }
-  .logo-pill:hover { background: rgba(255,255,255,0.14); }
-  .logo-img     { height: 36px; width: auto; max-width: 110px; object-fit: contain; display:block; opacity:0.95; transition: opacity 0.3s; }
-  .logo-img:hover { opacity: 1; }
+  .logo-pill    { border: 1px solid rgba(255,255,255,0.11); border-radius: 8px; width: 36px; height: 36px; overflow:hidden; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; transition: opacity 0.3s; }
+  .logo-pill:hover { opacity: 0.85; }
+  .logo-img     { width: 36px; height: 36px; object-fit: cover; display:block; }
 
   .shimmer-text {
     background: linear-gradient(90deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,1) 40%, rgba(52,211,153,1) 55%, rgba(255,255,255,1) 70%, rgba(255,255,255,0.5) 100%);
