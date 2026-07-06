@@ -19,8 +19,8 @@ const GLOBAL_CSS = `
   .float-a      { animation: float-a 7s ease-in-out infinite; }
   .float-b      { animation: float-b 9s ease-in-out infinite; }
   .cta-glow     { animation: pulse-glow 3s ease-in-out infinite; }
-  .logo-img     { filter: brightness(0) invert(1); opacity: 0.25; transition: opacity 0.3s; }
-  .logo-img:hover { opacity: 0.6; }
+  .logo-img     { filter: grayscale(1) contrast(0.8); opacity: 0.45; transition: opacity 0.3s; }
+  .logo-img:hover { opacity: 0.85; }
   .shimmer-text {
     background: linear-gradient(90deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,1) 40%, rgba(52,211,153,1) 55%, rgba(255,255,255,1) 70%, rgba(255,255,255,0.5) 100%);
     background-size: 200% auto;
@@ -397,23 +397,21 @@ const ForBrands: React.FC = () => {
         ═══════════════════════════════════════════════════════════ */}
         <section className="py-10 border-y border-white/[0.05] overflow-hidden bg-white/[0.01]">
           {/* Row 1 — forward */}
-          <div className="flex overflow-hidden mb-6">
-            <div className="fwd-marquee items-center gap-10 px-5">
+          <div className="flex overflow-hidden mb-4">
+            <div className="fwd-marquee items-center gap-3 px-3">
               {[...BRAND_ROW1, ...BRAND_ROW1].map((b, i) => (
-                <div key={i} className="flex items-center gap-10 shrink-0">
-                  <img src={b.src} alt={b.alt} className="logo-img h-7 w-auto object-contain max-w-[100px]" />
-                  <span className="text-white/[0.06] text-xl">·</span>
+                <div key={i} className="shrink-0 bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.07] rounded-xl px-5 py-3 flex items-center justify-center transition-colors duration-300" style={{ minWidth: 110 }}>
+                  <img src={b.src} alt={b.alt} className="logo-img h-6 w-auto object-contain max-w-[90px]" />
                 </div>
               ))}
             </div>
           </div>
           {/* Row 2 — reverse */}
           <div className="flex overflow-hidden">
-            <div className="rev-marquee items-center gap-10 px-5">
+            <div className="rev-marquee items-center gap-3 px-3">
               {[...BRAND_ROW2, ...BRAND_ROW2].map((b, i) => (
-                <div key={i} className="flex items-center gap-10 shrink-0">
+                <div key={i} className="shrink-0 bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.07] rounded-xl px-5 py-3 flex items-center justify-center transition-colors duration-300" style={{ minWidth: 110 }}>
                   <img src={b.src} alt={b.alt} className="logo-img h-6 w-auto object-contain max-w-[90px]" />
-                  <span className="text-white/[0.06] text-xl">·</span>
                 </div>
               ))}
             </div>
@@ -470,7 +468,7 @@ const ForBrands: React.FC = () => {
                       whileHover={{ scale: 1.15, y: -4 }}
                       className="aspect-square bg-white/[0.04] border border-white/[0.08] rounded-xl flex items-center justify-center p-2"
                     >
-                      <img src={src} alt="bank" className="w-full h-full object-contain" style={{ filter: 'brightness(0) invert(1)', opacity: 0.5 }} />
+                      <img src={src} alt="bank" className="w-full h-full object-contain" style={{ filter: 'grayscale(1) contrast(0.75)', opacity: 0.55 }} />
                     </motion.div>
                   ))}
                 </div>
@@ -583,11 +581,11 @@ const ForBrands: React.FC = () => {
                       {D2C_BRANDS.map((b, i) => (
                         <motion.div
                           key={i}
-                          whileHover={{ scale: 1.08, y: -2 }}
-                          className="bg-white/[0.04] border border-white/[0.07] rounded-xl p-3 flex items-center justify-center"
+                          whileHover={{ scale: 1.06, y: -2 }}
+                          className="bg-white/[0.07] border border-white/[0.09] rounded-xl p-3 flex items-center justify-center"
                         >
-                          <img src={b.src} alt={b.alt} className="h-5 w-auto object-contain max-w-[60px]"
-                            style={{ filter: 'brightness(0) invert(1)', opacity: 0.45 }} />
+                          <img src={b.src} alt={b.alt} className="h-6 w-auto object-contain max-w-[70px]"
+                            style={{ filter: 'grayscale(1) contrast(0.8)', opacity: 0.6 }} />
                         </motion.div>
                       ))}
                     </div>
