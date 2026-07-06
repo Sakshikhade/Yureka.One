@@ -265,7 +265,7 @@ const ForBrands: React.FC = () => {
                 <span className="text-[9px] font-black uppercase tracking-[0.45em] text-clay">Open Rewards Network · India</span>
               </div>
 
-              <h1 className="text-5xl sm:text-7xl md:text-[90px] font-sans font-extrabold leading-[0.86] tracking-tighter mb-8">
+              <h1 className="text-5xl sm:text-7xl md:text-[90px] font-sans font-extrabold leading-[0.9] tracking-normal mb-8">
                 <span className="shimmer-text">ROAS you can<br />count on.</span>
               </h1>
 
@@ -427,7 +427,7 @@ const ForBrands: React.FC = () => {
           <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <motion.div initial={{ opacity: 0, x: -32 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}>
               <p className="text-[9px] font-black uppercase tracking-[0.5em] text-clay mb-5">The Opportunity</p>
-              <h2 className="text-4xl md:text-5xl lg:text-[58px] font-sans font-extrabold tracking-tighter text-white leading-[1.0] mb-8">
+              <h2 className="text-4xl md:text-5xl lg:text-[58px] font-sans font-extrabold tracking-tight text-white leading-[1.0] mb-8">
                 Reach India's power shoppers with less spend and more precision.
               </h2>
               <div className="flex flex-col gap-5">
@@ -490,7 +490,7 @@ const ForBrands: React.FC = () => {
           <div className="max-w-5xl mx-auto">
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-14">
               <p className="text-[9px] font-black uppercase tracking-[0.5em] text-clay mb-4">Why Yureka</p>
-              <h2 className="text-4xl md:text-5xl font-sans font-extrabold tracking-tighter text-white">Three unfair advantages.</h2>
+              <h2 className="text-4xl md:text-5xl font-sans font-extrabold tracking-tight text-white">Three unfair advantages.</h2>
             </motion.div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {ADVANTAGES.map((a, i) => (
@@ -511,7 +511,7 @@ const ForBrands: React.FC = () => {
                         <a.icon size={20} className={a.iconColor} />
                       </div>
                       <div>
-                        <div className="text-[28px] font-sans font-extrabold tracking-tighter leading-none mb-1" style={{ color: a.iconColor.replace('text-', '') === 'clay' ? '#34d399' : undefined }}>
+                        <div className="text-[28px] font-sans font-extrabold tracking-tight leading-none mb-1" style={{ color: a.iconColor.replace('text-', '') === 'clay' ? '#34d399' : undefined }}>
                           <span className={a.iconColor}>{a.stat}</span>
                         </div>
                         <div className="text-[8px] font-black uppercase tracking-[0.3em] text-white/25">{a.statLabel}</div>
@@ -534,7 +534,7 @@ const ForBrands: React.FC = () => {
           <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 text-center relative z-10">
             {STATS.map((s, i) => (
               <motion.div key={s.label} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.12 }}>
-                <div className={`text-5xl md:text-6xl font-sans font-extrabold tracking-tighter leading-none mb-3`}>
+                <div className={`text-5xl md:text-6xl font-sans font-extrabold tracking-tight leading-none mb-3`}>
                   <StatCounter value={s.value} prefix={s.prefix} suffix={s.suffix} color={s.color} />
                 </div>
                 <div className="text-[8px] font-black uppercase tracking-[0.35em] text-white/25 leading-relaxed">{s.label}</div>
@@ -571,7 +571,7 @@ const ForBrands: React.FC = () => {
                   <div className="absolute top-0 right-0 w-56 h-56 rounded-full bg-clay/[0.06] blur-[60px] pointer-events-none" />
                   <div className="relative z-10 flex flex-col h-full">
                     <p className="text-[8px] font-black uppercase tracking-[0.4em] text-white/25 mb-4">D2C & E-Commerce</p>
-                    <h3 className="text-3xl md:text-4xl font-sans font-extrabold tracking-tighter text-white leading-tight mb-4">
+                    <h3 className="text-3xl md:text-4xl font-sans font-extrabold tracking-tight text-white leading-tight mb-4">
                       Yureka for<br />D2C Brands
                     </h3>
                     <p className="text-white/40 font-serif italic text-sm mb-8 leading-relaxed">
@@ -622,7 +622,7 @@ const ForBrands: React.FC = () => {
                   <div className="absolute top-0 left-0 w-48 h-48 rounded-full bg-blue-500/[0.05] blur-[60px] pointer-events-none" />
                   <div className="relative z-10 flex flex-col h-full">
                     <p className="text-[8px] font-black uppercase tracking-[0.4em] text-white/25 mb-4">Lenders & NBFCs</p>
-                    <h3 className="text-3xl md:text-4xl font-sans font-extrabold tracking-tighter text-white leading-tight mb-4">
+                    <h3 className="text-3xl md:text-4xl font-sans font-extrabold tracking-tight text-white leading-tight mb-4">
                       Yureka for<br />Lenders
                     </h3>
                     <p className="text-white/40 font-serif italic text-sm mb-8 leading-relaxed">
@@ -699,7 +699,7 @@ const ForBrands: React.FC = () => {
           <div className="max-w-4xl mx-auto relative z-10">
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-20">
               <p className="text-[9px] font-black uppercase tracking-[0.5em] text-clay mb-4">The Partnership Loop</p>
-              <h2 className="text-4xl md:text-5xl font-sans font-extrabold tracking-tighter text-white">How it works.</h2>
+              <h2 className="text-4xl md:text-5xl font-sans font-extrabold tracking-tight text-white">How it works.</h2>
             </motion.div>
 
             <div className="relative">
@@ -764,7 +764,7 @@ const ForBrands: React.FC = () => {
                 <span className="text-[9px] font-black uppercase tracking-[0.4em] text-clay">Limited Partner Slots — 2026 Cohort</span>
               </div>
 
-              <h2 className="text-5xl md:text-7xl font-sans font-extrabold tracking-tighter text-white leading-[0.9] mb-8">
+              <h2 className="text-5xl md:text-7xl font-sans font-extrabold tracking-normal text-white leading-[0.92] mb-8">
                 Ready to reach<br />
                 <span className="text-clay">India's power<br />shoppers?</span>
               </h2>
