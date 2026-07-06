@@ -130,7 +130,7 @@ const STATS = [
 ];
 
 const STEPS = [
-  { n: '01', title: 'Integrate', desc: "Connect via Yureka's API in days. Razorpay and Snapmint are already live.", icon: Package },
+  { n: '01', title: 'Integrate', desc: "Connect via Yureka's API in days — onboarding takes less than a week.", icon: Package },
   { n: '02', title: 'Activate', desc: "Your brand appears inside Yureka AI's recommendation layer at the exact decision moment.", icon: Zap },
   { n: '03', title: 'Convert', desc: 'Smart checkout routes orders — COD risk drops, prepaid and BNPL uptake rises.', icon: TrendingUp },
   { n: '04', title: 'Compound', desc: 'Every purchase builds Goldback for users and richer intelligence for you.', icon: Users },
@@ -372,7 +372,7 @@ const ForBrands: React.FC = () => {
                 {/* Floating offer card */}
                 <div className="absolute -top-8 -right-4 md:-right-12 bg-[#0f0f0f] border border-white/[0.1] rounded-2xl p-5 w-48 shadow-[0_20px_60px_rgba(0,0,0,0.8)] hidden md:block float-a" style={{ transform: 'translateZ(30px)' }}>
                   <div className="text-[7px] font-black text-white/20 uppercase tracking-[0.35em] mb-3">Live Offers</div>
-                  {['Razorpay · 3% CB', 'Snapmint · BNPL', 'FlexyPe · 0% EMI', 'Swiggy · ₹200 OFF'].map((item, i) => (
+                  {['Snapmint · BNPL', 'Swiggy · ₹200 OFF', 'Goldback · 16% ROI', 'Yureka AI · Intent'].map((item, i) => (
                     <div key={i} className="flex items-center gap-2.5 py-2 border-b border-white/[0.05] last:border-0">
                       <div className="w-1.5 h-1.5 rounded-full bg-clay shrink-0" />
                       <span className="text-[9px] text-white/45">{item}</span>
