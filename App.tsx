@@ -141,11 +141,17 @@ const AppContent: React.FC<{ showSplash: boolean }> = ({ showSplash }) => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
   const isDashboardRoute = location.pathname.startsWith('/dashboard');
+  const isHomeRoute = location.pathname === '/';
   const isSpecialRoute = isAdminRoute || isDashboardRoute;
   // Home page implements its own editorial 5-column grid (incl. its own Footer) — every
   // other non-special route is wrapped in the same grid here so content stays within
   // columns 2-4 (the 60%-width "Intelligence Core") with empty margin columns 1 & 5.
-  const applyEditorialGrid = !isSpecialRoute && location.pathname !== '/';
+  const applyEditorialGrid = !isSpecialRoute && !isHomeRoute;
+  // Home also brings its own fixed Navbar (glassy, overlaid on a full-bleed
+  // cinematic hero) and footer, so it opts out of the global chrome the same
+  // way admin/dashboard do — otherwise it'd render twice and the sitewide
+  // pt-24 offset would leave a gap above the hero video.
+  const noGlobalChrome = isSpecialRoute || isHomeRoute;
 
   const appRoutes = (
               <Routes>
@@ -244,12 +250,12 @@ const AppContent: React.FC<{ showSplash: boolean }> = ({ showSplash }) => {
   );
 
   return (
-    <div className={`min-h-screen bg-cream font-sans text-white relative ${isSpecialRoute ? 'pt-0' : 'pt-24 md:pt-28'}`}>
+    <div className={`min-h-screen bg-cream font-sans text-white relative ${noGlobalChrome ? 'pt-0' : 'pt-24 md:pt-28'}`}>
 
       <ScrollToTop />
-      {!isSpecialRoute && <Navbar />}
+      {!noGlobalChrome && <Navbar />}
 
-      <main className={`relative z-10 ${isSpecialRoute ? 'pt-0' : ''}`}>
+      <main className={`relative z-10 ${noGlobalChrome ? 'pt-0' : ''}`}>
         {/* While the splash is up it already covers the screen at z-200, so skip
             mounting a second <video> here — it would silently re-fetch loading.mp4. */}
         <Suspense fallback={showSplash ? <div className="fixed inset-0 bg-cream" style={{ zIndex: 100 }} /> : <LoaderScreen zIndex={100} />}>
@@ -275,8 +281,8 @@ const AppContent: React.FC<{ showSplash: boolean }> = ({ showSplash }) => {
         </Suspense>
       </main>
 
-      {!isAdminRoute && (
-        <Link 
+      {!isAdminRoute && !isHomeRoute && (
+        <Link
           to="/contribute"
           className="fixed bottom-14 right-6 z-[100] bg-clay text-black p-4 rounded-full shadow-2xl hover:scale-110 transition-transform cursor-pointer border border-clay/20"
           aria-label="Submit a Contribution"

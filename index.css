@@ -2,6 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── "Yureka One" homepage (ported design) ──
+   The sitewide heading rules below force Cirka, uppercase, and brand-green
+   on every h1-h6 via `!important` — necessary for the rest of the site's
+   type system, but it would stomp this page's own Space Mono / white
+   headings. Scoped to `.yureka-one-home` (wraps the whole route) and beats
+   the global rules with a higher-specificity `!important` of its own.
+   FAQSection's heading is the one h2 in this design with its own direct
+   (non-white) color, so it gets its own more-specific override below. */
+.yureka-one-home,
+.yureka-one-home * {
+  font-family: 'Space Mono', monospace;
+}
+.yureka-one-home h1,
+.yureka-one-home h2,
+.yureka-one-home h3,
+.yureka-one-home h4,
+.yureka-one-home h5,
+.yureka-one-home h6 {
+  font-family: 'Space Mono', monospace !important;
+  text-transform: none !important;
+  color: #fff !important;
+}
+.yureka-one-home h2[class*="text-[#5fae52]"] {
+  color: #5fae52 !important;
+}
+
+@keyframes home-v2-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes home-v2-marquee-reverse {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
 /* ── Cirka (heading) — loaded via cdnfonts CDN ── */
 @font-face {
   font-family: 'Cirka';
