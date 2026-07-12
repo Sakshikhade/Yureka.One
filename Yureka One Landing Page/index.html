@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Warm up connections for cross-origin assets before they're requested,
+         so the eager hero video and web fonts don't pay DNS/TLS latency on
+         top of the download itself. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="preconnect" href="https://d8j0ntlcm91z4.cloudfront.net" />
+
+    <!-- Discovered and fetched in parallel with HTML parsing. A CSS @import
+         for the same stylesheet would force the browser to wait for
+         index.css to load before it even learns this URL exists. -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Anton+SC&family=Playfair+Display:ital,wght@1,500;1,700&family=Inter:wght@400;600;700;800&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+
+    <!-- The vault video is the very first thing painted (pinned hero opens
+         on it), so it gets a head start over every other asset. -->
+    <link rel="preload" href="/vault.mp4" as="video" type="video/mp4" />
+
+    <title>Yureka &mdash; Neural-AI Interface</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
