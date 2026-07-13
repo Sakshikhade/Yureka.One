@@ -578,8 +578,8 @@ const WaitlistPage: React.FC = () => {
     };
 
     // ─── SHARE LOGIC ───
-    const shareLink = `https://yureka.money/join-waitlist?ref=${successData?.referralCode}`;
-    const shareText = "I just joined the Yureka.Money waitlist! Use my referral code to get priority access.";
+    const shareLink = `https://yureka.one/join-waitlist?ref=${successData?.referralCode}`;
+    const shareText = "I just joined the Yureka.One waitlist! Use my referral code to get priority access.";
 
     const shareOnSocial = (platform: string) => {
         const urls: any = {

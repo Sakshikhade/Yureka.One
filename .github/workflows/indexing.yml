@@ -17,5 +17,5 @@ jobs:
         if: ${{ env.GCP_SA_KEY != '' }}
         uses: robingenz/action-google-indexing@v1.0.2
         with:
-          siteUrl: 'https://yureka.money'
+          siteUrl: 'https://yureka.one'
           gcpServiceAccountKey: ${{ secrets.GCP_SA_KEY }}

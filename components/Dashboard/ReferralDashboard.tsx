@@ -45,7 +45,7 @@ const ReferralDashboard: React.FC = () => {
         }
     };
 
-    const shareLink = `https://yureka.money/join-waitlist?ref=${personalCode}`;
+    const shareLink = `https://yureka.one/join-waitlist?ref=${personalCode}`;
 
     const copyToClipboard = () => {
         navigator.clipboard.writeText(shareLink);

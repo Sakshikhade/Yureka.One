@@ -124,7 +124,7 @@ const CareersPage: React.FC = () => {
                 
                 <div className="mt-12 text-center p-12 border border-dashed border-white/10 rounded-3xl bg-white/5 backdrop-blur-sm">
                     <p className="text-white/40 mb-4 uppercase tracking-[0.3em] text-[10px] font-bold">Don't see your role?</p>
-                    <a href="mailto:careers@yureka.money" className="text-clay font-serif italic text-2xl underline hover:text-white transition-colors decoration-1 underline-offset-8">Email the Editor</a>
+                    <a href="mailto:careers@yureka.one" className="text-clay font-serif italic text-2xl underline hover:text-white transition-colors decoration-1 underline-offset-8">Email the Editor</a>
                 </div>
             </div>
 

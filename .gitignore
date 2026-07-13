@@ -33,3 +33,6 @@ credentials.json
 
 # Local financial cache
 data/
+
+# Archived SQL / Supabase setup artifacts & retired hosting config (hidden from repo)
+archive/

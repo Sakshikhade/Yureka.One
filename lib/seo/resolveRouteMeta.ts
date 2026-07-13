@@ -28,7 +28,7 @@ export interface ResolvedRoute {
 }
 
 const NOT_FOUND_META: PageMeta = {
-  title: formatTitle('Page Not Found | Yureka Money'),
+  title: formatTitle('Page Not Found | Yureka One'),
   description: 'The page you are looking for does not exist or may have moved.',
   robots: 'noindex, follow',
 };
@@ -68,7 +68,7 @@ export async function resolveRouteMeta(pathname: string, supabase: SupabaseClien
   if (path.startsWith('/dashboard')) {
     return {
       status: 200,
-      meta: { title: formatTitle('Dashboard | Yureka Money'), description: 'Your personal Yureka Money dashboard.', robots: 'noindex, follow' },
+      meta: { title: formatTitle('Dashboard | Yureka One'), description: 'Your personal Yureka One dashboard.', robots: 'noindex, follow' },
     };
   }
 
@@ -77,7 +77,7 @@ export async function resolveRouteMeta(pathname: string, supabase: SupabaseClien
       const homeSchema = {
         '@context': 'https://schema.org',
         '@type': 'WebSite',
-        name: 'Yureka Money',
+        name: 'Yureka One',
         alternateName: 'Yureka',
         url: SITE_URL,
         potentialAction: {
@@ -117,8 +117,8 @@ const CARD_FETCH_TIMEOUT_MS = 2000;
 const CARD_TIMEOUT_FALLBACK: ResolvedRoute = {
   status: 200,
   meta: {
-    title: formatTitle('Credit Card Review | Yureka Money'),
-    description: 'Comprehensive reward analysis, fees, and eligibility data on Yureka Money.',
+    title: formatTitle('Credit Card Review | Yureka One'),
+    description: 'Comprehensive reward analysis, fees, and eligibility data on Yureka One.',
   },
 };
 const BLOG_TIMEOUT_FALLBACK: ResolvedRoute = {
@@ -145,7 +145,7 @@ async function resolveCard(slug: string, supabase: SupabaseClient): Promise<Reso
     result = {
       status: 404,
       meta: {
-        title: formatTitle('Credit Card Not Found | Yureka Money'),
+        title: formatTitle('Credit Card Not Found | Yureka One'),
         description: 'The credit card you are looking for may have been delisted or archived.',
         robots: 'noindex, follow',
       },

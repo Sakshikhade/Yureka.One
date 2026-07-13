@@ -41,21 +41,21 @@ const PrivacyPolicy: React.FC = () => {
                 
                 <section>
                     <p className="first-letter:text-6xl first-letter:font-bold first-letter:text-clay first-letter:mr-2 first-letter:float-left first-letter:leading-none">
-                        At Yureka.Money, we understand the importance of safeguarding your privacy and protecting your personal information. Throughout this Privacy Policy, when we mention "the Company," "Yureka.Money," "We," "Us," or "Our," we are referring to Yureka.Money and its affiliates.
+                        At Yureka.One, we understand the importance of safeguarding your privacy and protecting your personal information. Throughout this Privacy Policy, when we mention "the Company," "Yureka.One," "We," "Us," or "Our," we are referring to Yureka.One and its affiliates.
                     </p>
                 </section>
 
                 <section className="space-y-6">
                     <h2 className="text-3xl font-heading font-extrabold uppercase tracking-tight text-white border-b-2 border-white/10 pb-4">Collection of Information</h2>
-                    <p>Yureka.Money collects various types of information to provide you with our services effectively. This information includes:</p>
+                    <p>Yureka.One collects various types of information to provide you with our services effectively. This information includes:</p>
                     <ul className="space-y-4 list-none pl-0">
                         <li className="pl-6 relative">
                             <span className="absolute left-0 top-1 text-clay font-bold">&bull;</span>
-                            <strong className="text-white tracking-tight uppercase text-sm mr-2">User Provided Information:</strong> When you register or use Yureka.Money, it is necessary to provide personal details such as your name, email address, contact number, and other relevant information.
+                            <strong className="text-white tracking-tight uppercase text-sm mr-2">User Provided Information:</strong> When you register or use Yureka.One, it is necessary to provide personal details such as your name, email address, contact number, and other relevant information.
                         </li>
                         <li className="pl-6 relative">
                             <span className="absolute left-0 top-1 text-clay font-bold">&bull;</span>
-                            <strong className="text-white tracking-tight uppercase text-sm mr-2">Information Generated Through Use:</strong> We gather data about the services you use on Yureka.Money, your interactions with our platform, transaction details, and other usage metrics to enhance your experience.
+                            <strong className="text-white tracking-tight uppercase text-sm mr-2">Information Generated Through Use:</strong> We gather data about the services you use on Yureka.One, your interactions with our platform, transaction details, and other usage metrics to enhance your experience.
                         </li>
                         <li className="pl-6 relative">
                             <span className="absolute left-0 top-1 text-clay font-bold">&bull;</span>
@@ -69,7 +69,7 @@ const PrivacyPolicy: React.FC = () => {
 
                 <section className="space-y-6">
                     <h2 className="text-3xl font-heading font-extrabold uppercase tracking-tight text-white border-b-2 border-white/10 pb-4">Use of Information</h2>
-                    <p>Yureka.Money utilises the collected information for various purposes, including but not limited to:</p>
+                    <p>Yureka.One utilises the collected information for various purposes, including but not limited to:</p>
                     <ul className="list-disc pl-8 space-y-4 text-white/70">
                         <li>Providing, personalising, and improving our services to meet your needs.</li>
                         <li>Processing transactions and delivering requested services efficiently.</li>
@@ -87,7 +87,7 @@ const PrivacyPolicy: React.FC = () => {
 
                 <section className="space-y-6">
                     <h2 className="text-3xl font-heading font-extrabold uppercase tracking-tight text-white border-b-2 border-white/10 pb-4">Disclosure of Information</h2>
-                    <p>Yureka.Money may disclose your information to:</p>
+                    <p>Yureka.One may disclose your information to:</p>
                     <ul className="list-disc pl-8 space-y-4 text-white/70">
                         <li>Third-party service providers who assist us in delivering services, maintaining our platform, or analysing user data.</li>
                         <li>Partners or affiliates for the provision of specific services, promotions, or joint ventures.</li>
@@ -100,7 +100,7 @@ const PrivacyPolicy: React.FC = () => {
                     <section className="space-y-4">
                         <h2 className="text-3xl font-heading font-extrabold uppercase tracking-tight text-white border-b-2 border-white/10 pb-4">Cookies</h2>
                         <p className="text-base text-white/60 leading-relaxed">
-                            Yureka.Money uses cookies and similar tracking technologies to enhance your browsing experience, analyse site usage, and personalise content. You can manage your cookie preferences through your browser settings.
+                            Yureka.One uses cookies and similar tracking technologies to enhance your browsing experience, analyse site usage, and personalise content. You can manage your cookie preferences through your browser settings.
                         </p>
                     </section>
                     <section className="space-y-4">
@@ -114,7 +114,7 @@ const PrivacyPolicy: React.FC = () => {
                 <section className="space-y-8">
                     <h2 className="text-3xl font-heading font-extrabold uppercase tracking-tight text-white border-b-2 border-white/10 pb-4">Data Retention</h2>
                     <p>
-                        Yureka.Money deletes personal data upon a user’s request or in accordance with the retention timelines specified below. However, certain data may be retained by the company for legal or compliance purposes.
+                        Yureka.One deletes personal data upon a user’s request or in accordance with the retention timelines specified below. However, certain data may be retained by the company for legal or compliance purposes.
                     </p>
                     
                     <div className="overflow-x-auto border border-white/10 rounded-2xl bg-white/5 backdrop-blur-sm shadow-2xl">
@@ -159,7 +159,7 @@ const PrivacyPolicy: React.FC = () => {
 
                 <section className="space-y-6">
                     <h2 className="text-3xl font-heading font-extrabold uppercase tracking-tight text-white border-b-2 border-white/10 pb-4">Consent Notice <span className="text-[10px] font-mono tracking-[0.2em] text-clay ml-4 uppercase">Per DPDP Rule 3</span></h2>
-                    <p>Yureka.Money processes your personal data (name, email, phone, transaction details, credit card usage) solely for:</p>
+                    <p>Yureka.One processes your personal data (name, email, phone, transaction details, credit card usage) solely for:</p>
                     <ul className="list-disc pl-8 space-y-3 text-white/70">
                         <li>Reward optimization and bill payments (necessary for service delivery)</li>
                         <li>Fraud detection (legitimate use under DPDP)</li>
@@ -173,7 +173,7 @@ const PrivacyPolicy: React.FC = () => {
                         <ul className="space-y-6 text-base">
                             <li className="flex items-start gap-4">
                                 <span className="text-clay font-bold text-xl leading-none">01.</span>
-                                <span className="text-white/70">Email <a href="mailto:contact@Yureka.Money" className="text-clay underline font-bold decoration-1 underline-offset-4">contact@Yureka.Money</a> with <br /><span className="text-white italic">"Withdraw Consent - [Your Registered Email]"</span></span>
+                                <span className="text-white/70">Email <a href="mailto:contact@Yureka.One" className="text-clay underline font-bold decoration-1 underline-offset-4">contact@Yureka.One</a> with <br /><span className="text-white italic">"Withdraw Consent - [Your Registered Email]"</span></span>
                             </li>
                             <li className="flex items-start gap-4">
                                 <span className="text-clay font-bold text-xl leading-none">02.</span>
@@ -189,13 +189,13 @@ const PrivacyPolicy: React.FC = () => {
                 
                 <section className="border-t-4 border-white pt-16 mt-16 text-center space-y-10">
                      <p className="text-[10px] md:text-xs font-mono uppercase tracking-[0.3em] text-white/30 leading-relaxed max-w-3xl mx-auto">
-                         Governing Law: This Privacy Policy is governed by the Digital Personal Data Protection Act, 2023 ("DPDP Act"), Digital Personal Data Protection Rules, 2025 ("DPDP Rules"), and applicable provisions of the Information Technology Act, 2000. Yureka.Money, as a Data Fiduciary, complies with all obligations under Rule 3 (consent), Rule 6 (security safeguards), and Rule 13 (SDF requirements if applicable).
+                         Governing Law: This Privacy Policy is governed by the Digital Personal Data Protection Act, 2023 ("DPDP Act"), Digital Personal Data Protection Rules, 2025 ("DPDP Rules"), and applicable provisions of the Information Technology Act, 2000. Yureka.One, as a Data Fiduciary, complies with all obligations under Rule 3 (consent), Rule 6 (security safeguards), and Rule 13 (SDF requirements if applicable).
                      </p>
                      
                      <div className="pt-8">
                          <h3 className="text-2xl font-heading font-extrabold uppercase tracking-tight text-white mb-6 italic">Questions or Concerns?</h3>
                          <p className="text-white/40 italic mb-10 max-w-xl mx-auto text-base">If you have any questions, concerns, or requests regarding this Privacy Policy or your personal information, please contact us.</p>
-                         <a href="mailto:contact@yureka.money" className="inline-flex items-center gap-3 bg-white text-cream px-10 py-5 rounded-full uppercase font-bold tracking-[0.2em] text-[10px] hover:bg-clay hover:scale-105 transition-all shadow-2xl">
+                         <a href="mailto:contact@yureka.one" className="inline-flex items-center gap-3 bg-white text-cream px-10 py-5 rounded-full uppercase font-bold tracking-[0.2em] text-[10px] hover:bg-clay hover:scale-105 transition-all shadow-2xl">
                              Contact Privacy Officer <ChevronRight size={14} />
                          </a>
                      </div>
@@ -203,7 +203,7 @@ const PrivacyPolicy: React.FC = () => {
             </div>
             
             <div className="max-w-4xl mx-auto px-6 mt-24 flex items-center justify-center gap-4 text-[9px] font-mono uppercase tracking-[0.4em] text-white/20">
-                <span>Yureka.Money</span>
+                <span>Yureka.One</span>
                 <span className="w-1 h-1 bg-white/20 rounded-full"></span>
                 <span>Jupyter Network Technologies Pvt Ltd</span>
             </div>

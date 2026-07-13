@@ -470,7 +470,7 @@ const ForBrands: React.FC = () => {
                   <ArrowRight size={14} className="relative z-10 group-hover:translate-x-1 transition-transform" />
                   <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500 skew-x-12" />
                 </Link>
-                <a href="mailto:partnerships@yureka.money"
+                <a href="mailto:partnerships@yureka.one"
                   className="inline-flex items-center gap-2 text-white/35 hover:text-white font-black uppercase tracking-[0.15em] text-[10px] transition-colors">
                   Schedule a Demo <ChevronRight size={12} />
                 </a>
@@ -833,7 +833,7 @@ const ForBrands: React.FC = () => {
                   shopper behavior and purchase frequency to wallet share. Measure true
                   incremental lift using first-party transaction data.
                 </p>
-                <a href="mailto:partnerships@yureka.money"
+                <a href="mailto:partnerships@yureka.one"
                   className="inline-flex items-center gap-2.5 text-clay font-black uppercase tracking-[0.2em] text-[10px] hover:gap-4 transition-all duration-300 w-fit mt-2">
                   Talk to partnerships <ArrowRight size={12} />
                 </a>
@@ -1393,9 +1393,9 @@ const ForBrands: React.FC = () => {
                   <ArrowRight size={14} className="relative z-10 group-hover:translate-x-1 transition-transform" />
                   <div className="absolute inset-0 bg-white/25 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500 skew-x-12" />
                 </Link>
-                <a href="mailto:partnerships@yureka.money"
+                <a href="mailto:partnerships@yureka.one"
                   className="text-white/25 hover:text-white font-black uppercase tracking-[0.2em] text-[10px] transition-colors">
-                  partnerships@yureka.money
+                  partnerships@yureka.one
                 </a>
               </div>
             </motion.div>

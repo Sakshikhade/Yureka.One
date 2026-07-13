@@ -39,7 +39,7 @@ const CommunityGuidelines: React.FC = () => {
                 
                 <section>
                     <p className="first-letter:text-6xl first-letter:font-bold first-letter:text-clay first-letter:mr-2 first-letter:float-left first-letter:mt-1">
-                        Yureka.Money is more than a platform; it is an exclusive club of financial strategists, reward optimizers, and high-net-worth analysts. We demand a high standard of discourse. Our community is built on a foundation of mutual respect, tactical intelligence, and strict adherence to truth.
+                        Yureka.One is more than a platform; it is an exclusive club of financial strategists, reward optimizers, and high-net-worth analysts. We demand a high standard of discourse. Our community is built on a foundation of mutual respect, tactical intelligence, and strict adherence to truth.
                     </p>
                     <p className="mt-6">
                         By participating on the Yureka platform, whether in waitlist forums, user reviews, or interactions with the Yureka AI, you agree unequivocally to the following tenets of behavior.
@@ -70,7 +70,7 @@ const CommunityGuidelines: React.FC = () => {
                 <section className="space-y-6">
                     <h2 className="text-3xl font-heading font-extrabold uppercase tracking-tight text-white border-b-2 border-white/10 pb-4">2. Zero Tolerance for Scams & Solicitation</h2>
                     <p>
-                        Yureka.Money is a sanctuary from the noise of predatory financial products and unauthorized financial advisors.
+                        Yureka.One is a sanctuary from the noise of predatory financial products and unauthorized financial advisors.
                     </p>
                     <div className="bg-white/[0.03] text-white/80 p-8 mt-6 shadow-2xl relative overflow-hidden border border-white/5 backdrop-blur-md rounded-2xl">
                         <span className="absolute top-0 left-0 w-1 h-full bg-clay"></span>
@@ -117,7 +117,7 @@ const CommunityGuidelines: React.FC = () => {
                      <div className="pt-8">
                          <h3 className="text-2xl font-heading font-extrabold uppercase tracking-tight text-white mb-4">See a Violation?</h3>
                          <p className="italic text-white/40 mb-10 max-w-md mx-auto">If you witness behavior that violates these principles, please report it immediately to our security desk.</p>
-                         <a href="mailto:contact@yureka.money" className="inline-flex items-center gap-4 bg-clay text-cream px-10 py-5 rounded-2xl font-bold uppercase tracking-widest text-[10px] hover:bg-white transition-all shadow-2xl shadow-clay/10">
+                         <a href="mailto:contact@yureka.one" className="inline-flex items-center gap-4 bg-clay text-cream px-10 py-5 rounded-2xl font-bold uppercase tracking-widest text-[10px] hover:bg-white transition-all shadow-2xl shadow-clay/10">
                              Report Violation <ChevronRight size={14} />
                          </a>
                      </div>
@@ -126,7 +126,7 @@ const CommunityGuidelines: React.FC = () => {
             </div>
             
             <div className="max-w-4xl mx-auto px-6 mt-24 flex items-center justify-center gap-4 text-[10px] font-bold uppercase tracking-[0.4em] text-white/10">
-                <span>Brand Name: Yureka.Money</span>
+                <span>Brand Name: Yureka.One</span>
                 <span className="opacity-20">•</span>
                 <span>Club Regulations</span>
             </div>

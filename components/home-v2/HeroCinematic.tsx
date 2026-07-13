@@ -204,6 +204,13 @@ export default function HeroCinematic({ entranceComplete }: HeroCinematicProps) 
     video.addEventListener('seeked', onSeeked);
     video.addEventListener('loadedmetadata', onLoadedMetadata);
 
+    // On fast/local serving the video's metadata frequently loads *before*
+    // this effect attaches its listener, so 'loadedmetadata' never fires and
+    // the vault sits on its black frame 0 instead of the intended
+    // VAULT_START_TIME frame -- which reads as a blank first screen. If
+    // metadata is already available, run the seek right now.
+    if (video.readyState >= 1 /* HAVE_METADATA */) onLoadedMetadata();
+
     const unsubscribe = scrollYProgress.on('change', (progress) => {
       if (!video.duration || !isHeroNearRef.current) return;
       const clamped = Math.max(0, Math.min(1, progress));

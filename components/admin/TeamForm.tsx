@@ -41,7 +41,7 @@ export const TeamForm: React.FC<TeamFormProps> = ({
           <label className="block text-[10px] font-black uppercase tracking-widest text-white/30 mb-2 ml-1">Transmission Endpoint (Email)</label>
           <input 
             type="email" required
-            placeholder="identity@yureka.money"
+            placeholder="identity@yureka.one"
             value={form.email}
             onChange={e => setForm({...form, email: e.target.value})}
             className="w-full bg-white/5 border border-white/10 rounded-2xl p-4 focus:ring-2 focus:ring-clay outline-none transition-all text-white placeholder:text-white/10 font-bold"

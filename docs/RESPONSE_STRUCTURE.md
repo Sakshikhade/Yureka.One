@@ -1,4 +1,4 @@
-# Yureka Money — API Response Structure
+# Yureka One — API Response Structure
 
 Every endpoint returns the same `YurekaResponse<T>` envelope.
 This document is the single source of truth for how the frontend should parse, type, and handle all API responses.

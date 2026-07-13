@@ -63,7 +63,7 @@ export function financialProductSchema(card: {
     provider: { '@type': 'BankOrCreditUnion', name: card.bank },
     url: card.slug ? `${SITE_URL}/cards/${card.slug}` : undefined,
     image: card.image,
-    description: card.description || `${card.name} by ${card.bank} — fees, rewards, and eligibility on Yureka.Money.`,
+    description: card.description || `${card.name} by ${card.bank} — fees, rewards, and eligibility on Yureka.One.`,
     feesAndCommissionsSpecification: fees.length ? fees.join('; ') : undefined,
   };
 }
@@ -98,14 +98,14 @@ export function organizationSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'Yureka.Money',
-    alternateName: ['Yureka Money', 'Yureka'],
+    name: 'Yureka.One',
+    alternateName: ['Yureka One', 'Yureka'],
     url: SITE_URL,
     logo: `${SITE_URL}/logos/yureka-logo.png`,
     foundingDate: '2026',
     founder: { '@type': 'Person', name: 'Anwesh Biswas' },
     description:
-      "Yureka.Money is India's first AI-native Wealth Operating System, converting everyday transactions into 24K digital gold rewards (Yureka Goldback) and RBI-compliant alternative credit profiles.",
+      "Yureka.One is India's first AI-native Wealth Operating System, converting everyday transactions into 24K digital gold rewards (Yureka Goldback) and RBI-compliant alternative credit profiles.",
     areaServed: 'IN',
     sameAs: [
       'https://twitter.com/yurekamoney',
@@ -123,7 +123,7 @@ export function organizationSchema() {
     ],
     hasOfferCatalog: {
       '@type': 'OfferCatalog',
-      name: 'Yureka.Money Products',
+      name: 'Yureka.One Products',
       itemListElement: [
         {
           '@type': 'Offer',
@@ -199,6 +199,6 @@ export function softwareApplicationSchema() {
       'Automatic Yureka Goldback earning',
       'Alternative credit profile building',
     ],
-    publisher: { '@type': 'Organization', name: 'Yureka.Money', url: SITE_URL },
+    publisher: { '@type': 'Organization', name: 'Yureka.One', url: SITE_URL },
   };
 }

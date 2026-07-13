@@ -14,11 +14,7 @@ interface NavbarProps {
 }
 
 const NAV_LINKS = [
-  { name: 'Card Explorer', path: '/cards', desc: 'Expert audited credit selection' },
-  { name: 'Categories', path: '/categories', desc: 'Browse by lifestyle & perks' },
   { name: 'Brands', path: '/brands', desc: 'Top reward partner brands' },
-  { name: 'Compare', path: '/compare', desc: 'Side-by-side strategic comparison' },
-  { name: 'Free Tools', path: '/free-tools', desc: 'Institutional grade calculators' },
   { name: 'Yureka AI', path: '/yureka-ai', desc: 'Access the intelligence hub' },
   { name: 'For Brands', path: '/for-brands', desc: 'Partner, smart checkout & credit data' },
 ];

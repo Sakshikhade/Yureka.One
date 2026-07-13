@@ -9,8 +9,8 @@ export interface FaqItem {
 
 export const faqQuestions: FaqItem[] = [
   {
-    q: 'What is Yureka.Money?',
-    a: "Yureka.Money is India's first AI-native Wealth Operating System. It automatically converts rewards from your everyday spending into 24K digital gold (Yureka Goldback), uses an AI concierge to place and optimize your food, grocery, and shopping orders, and builds an alternative credit profile from your consented transaction data.",
+    q: 'What is Yureka.One?',
+    a: "Yureka.One is India's first AI-native Wealth Operating System. It automatically converts rewards from your everyday spending into 24K digital gold (Yureka Goldback), uses an AI concierge to place and optimize your food, grocery, and shopping orders, and builds an alternative credit profile from your consented transaction data.",
   },
   {
     q: 'What is Yureka Goldback?',
@@ -46,6 +46,6 @@ export const faqQuestions: FaqItem[] = [
   },
   {
     q: 'What is a Wealth Operating System?',
-    a: "A Wealth Operating System (Wealth OS) is a platform that turns routine financial activity — spending, ordering, paying — into automated wealth-building. Yureka.Money pioneered this category in India by converting transaction rewards into digital gold and transaction data into credit access.",
+    a: "A Wealth Operating System (Wealth OS) is a platform that turns routine financial activity — spending, ordering, paying — into automated wealth-building. Yureka.One pioneered this category in India by converting transaction rewards into digital gold and transaction data into credit access.",
   },
 ];

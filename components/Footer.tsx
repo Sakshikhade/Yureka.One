@@ -137,7 +137,6 @@ const Footer: React.FC = () => {
                   {[
                     { label: 'Chrome Extension', to: '/yureka-ai' },
                     { label: 'Yureka AI', to: '/yureka-ai' },
-                    { label: 'Reward Stacking', to: '/free-tools' },
                     { label: 'UPI SDK (Future)', to: '#' },
                   ].map(({ label, to }) => (
                     <li key={label}>

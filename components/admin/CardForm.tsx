@@ -514,7 +514,7 @@ export const CardForm: React.FC<CardFormProps> = ({
                     if (btn) btn.classList.add('animate-pulse');
                     try {
                       const benefitsText = form.benefit_items.map((b: any) => `${b.heading}: ${b.subheading}`).join('\n');
-                      const prompt = `Act as a senior financial analyst at Yureka Money. Summarize this credit card into a sharp, 3-sentence elite editorial verdict. 
+                      const prompt = `Act as a senior financial analyst at Yureka One. Summarize this credit card into a sharp, 3-sentence elite editorial verdict. 
                       Card Name: ${form.name}
                       Bank: ${form.bank}
                       Category: ${form.category}

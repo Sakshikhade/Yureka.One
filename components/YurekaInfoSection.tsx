@@ -26,7 +26,7 @@ const YurekaInfoSection: React.FC = () => {
         </div>
 
         <p className="font-overpass-mono text-white/70 text-2xl md:text-3xl leading-relaxed w-full">
-          Yureka Money transforms how you handle personal finance. We provide a reward-earning, AI-driven framework that optimizes your existing credit card + daily spends, ensuring you never leave money on the table.
+          Yureka One transforms how you handle personal finance. We provide a reward-earning, AI-driven framework that optimizes your existing credit card + daily spends, ensuring you never leave money on the table.
         </p>
       </div>
 

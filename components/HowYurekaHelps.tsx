@@ -671,9 +671,9 @@ const ProjectsSection: React.FC = () => {
 // ============================================================================
 
 const HowYurekaHelps: React.FC = () => {
-  // Dynamically set the title to "Yureka Money"
+  // Dynamically set the title to "Yureka One"
   useEffect(() => {
-    document.title = "Yureka Money";
+    document.title = "Yureka One";
   }, []);
 
   return (

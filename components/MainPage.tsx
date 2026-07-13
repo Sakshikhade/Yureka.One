@@ -11,14 +11,13 @@ import Architecture from './home-v2/Architecture';
 import FAQSection from './home-v2/FAQSection';
 import YurekaCallout from './home-v2/YurekaCallout';
 import Footer from './home-v2/Footer';
-import Loader from './home-v2/Loader';
 
 const MainPage: React.FC = () => {
   // JSON-LD Structured Data for the Homepage
   const homeSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "Yureka Money",
+    "name": "Yureka One",
     "alternateName": "Yureka",
     "url": SITE_URL,
     "potentialAction": {
@@ -62,7 +61,6 @@ const MainPage: React.FC = () => {
       <SEO {...staticPageMeta['/']} schema={[homeSchema, faqPageSchema(faqQuestions)]} />
 
       <div className="yureka-one-home bg-black min-h-screen">
-        <Loader show={!entranceComplete} />
         <HeroCinematic entranceComplete={entranceComplete} />
         <BrandsSection />
         <MetricsTechnology />

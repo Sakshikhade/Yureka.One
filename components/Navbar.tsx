@@ -57,7 +57,7 @@ const Navbar: React.FC = () => {
             <div className="flex items-center relative z-10 group cursor-pointer shrink-0">
                 <Link to="/" className="flex items-center gap-3 group">
                     <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white flex items-center justify-center shrink-0 overflow-hidden">
-                        <img src="/assets/ym-logo.jpeg" alt="Yureka.Money" className="w-[115%] h-[115%] object-contain" />
+                        <img src="/assets/ym-logo.jpeg" alt="Yureka.One" className="w-[115%] h-[115%] object-contain" />
                     </div>
                     <div className="font-heading font-black tracking-tighter text-lg md:text-xl text-white leading-none hover:opacity-80 transition-opacity flex items-baseline uppercase">
                         YUREKA<span className="text-clay">.</span>MONEY

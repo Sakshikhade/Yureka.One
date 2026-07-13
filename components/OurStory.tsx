@@ -48,7 +48,7 @@ const Manifesto: React.FC = () => (
           </p>
           <p className="text-white/80">We are here to rewrite the narrative.</p>
           <p>
-            Yureka.Money is not merely a platform; it is a financial operating system built for those who understand that every transaction is an opportunity to build wealth.
+            Yureka.One is not merely a platform; it is a financial operating system built for those who understand that every transaction is an opportunity to build wealth.
           </p>
         </div>
       </div>

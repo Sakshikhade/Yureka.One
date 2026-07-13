@@ -1,7 +1,7 @@
-# Yureka Money — API Reference
+# Yureka One — API Reference
 
 > **Base URL (local):** `http://localhost:8080`  
-> **Base URL (prod):** `https://api.yureka.money`  
+> **Base URL (prod):** `https://api.yureka.one`  
 > **Interactive docs:** `{baseUrl}/swagger-ui`  
 > **OpenAPI JSON:** `{baseUrl}/api-docs`
 
@@ -645,7 +645,7 @@ All notifications regardless of status.
   "message": "You can now scan your Gmail to auto-detect transactions.",
   "type": "info",
   "image_url": "https://...",
-  "created_by": "admin@yureka.money"
+  "created_by": "admin@yureka.one"
 }
 ```
 
@@ -765,7 +765,7 @@ Invite a new team member.
 
 **Request body:**
 ```json
-{ "email": "editor@yureka.money", "role": "editor" }
+{ "email": "editor@yureka.one", "role": "editor" }
 ```
 
 `role`: `admin` · `editor` · `writer`
@@ -839,22 +839,22 @@ The 100 most recent audit log entries, ordered newest first.
 
 ### `POST /api/v1/admin/notify`
 
-Sends the Yureka Money Admin Dashboard welcome email.
+Sends the Yureka One Admin Dashboard welcome email.
 
 **Request body:**
 ```json
 {
-  "email": "neweditor@yureka.money",
+  "email": "neweditor@yureka.one",
   "role": "editor",
   "firstName": "Priya"
 }
 ```
 
 **Email content:**
-- Subject: `Welcome to Yureka Money Admin Dashboard`
+- Subject: `Welcome to Yureka One Admin Dashboard`
 - Greets by `firstName`; uses "there" if null
 - States their role
-- Link to `https://yurekamoney.netlify.app/admin`
+- Link to `https://yureka.one/admin`
 - Security note: auto-logout after 15 min of inactivity
 
 **FE workflow:** Call immediately after `POST /api/v1/admin/team`.

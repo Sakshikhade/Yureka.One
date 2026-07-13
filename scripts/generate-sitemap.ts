@@ -11,7 +11,7 @@ dotenv.config();
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
 const SUPABASE_ANON_KEY = process.env.VITE_SUPABASE_ANON_KEY;
 
-const BASE_URL = 'https://yureka.money';
+const BASE_URL = 'https://yureka.one';
 
 async function generateSitemap() {
   if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {

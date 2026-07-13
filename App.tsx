@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect, useState } from 'react';
+import React, { Suspense, lazy, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation, Navigate, Link } from 'react-router-dom';
 import { Loader2, Sparkles } from 'lucide-react';
 
@@ -118,26 +118,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
   return <>{children}</>;
 };
 
-// Full-bleed branded loader — used for both the initial app splash and the
-// route-transition Suspense fallback so every loading state looks the same.
-const LoaderScreen: React.FC<{ zIndex: number }> = ({ zIndex }) => (
-  <div
-    className="fixed inset-0 bg-cream flex items-center justify-center overflow-hidden"
-    style={{ zIndex }}
-  >
-    <video
-      src="/assets/loading.mp4"
-      autoPlay
-      loop
-      muted
-      playsInline
-      preload="auto"
-      className="w-full h-full object-cover"
-    />
-  </div>
-);
-
-const AppContent: React.FC<{ showSplash: boolean }> = ({ showSplash }) => {
+const AppContent: React.FC = () => {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
   const isDashboardRoute = location.pathname.startsWith('/dashboard');
@@ -158,14 +139,9 @@ const AppContent: React.FC<{ showSplash: boolean }> = ({ showSplash }) => {
               <Routes>
               <Route path="/" element={<MainPage />} />
 
-              <Route path="/cards" element={
-                <>
-                  <SEO {...staticPageMeta['/cards']} />
-                  <CardExplorer />
-                </>
-              } />
-
-              <Route path="/cards/:slug" element={<CardDetail />} />
+              {/* Hidden — redirected to home. Restore the original elements to re-enable. */}
+              <Route path="/cards" element={<Navigate to="/" replace />} />
+              <Route path="/cards/:slug" element={<Navigate to="/" replace />} />
 
               <Route path="/brands" element={
                 <>
@@ -209,7 +185,8 @@ const AppContent: React.FC<{ showSplash: boolean }> = ({ showSplash }) => {
                   <WaitingPage />
                 </>
               } />
-              <Route path="/by-everyone-for-everyone" element={<ByEveryone />} />
+              {/* Hidden — redirected to home */}
+              <Route path="/by-everyone-for-everyone" element={<Navigate to="/" replace />} />
 
               <Route path="/dashboard/*" element={
                 <ProtectedRoute>
@@ -217,15 +194,17 @@ const AppContent: React.FC<{ showSplash: boolean }> = ({ showSplash }) => {
                 </ProtectedRoute>
               } />
 
-              <Route path="/contribute" element={<ContributePage />} />
-              <Route path="/coming-soon" element={<Navigate to="/contribute" replace />} />
+              {/* Hidden — redirected to home */}
+              <Route path="/contribute" element={<Navigate to="/" replace />} />
+              <Route path="/coming-soon" element={<Navigate to="/" replace />} />
 
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/terms-of-service" element={<TermsOfService />} />
               <Route path="/security-protocol" element={<SecurityProtocolPage />} />
               <Route path="/community-guidelines" element={<CommunityGuidelines />} />
-              <Route path="/free-tools" element={<YurekaOsPage />} />
-              <Route path="/yureka-os" element={<Navigate to="/free-tools" replace />} />
+              {/* Hidden — redirected to home */}
+              <Route path="/free-tools" element={<Navigate to="/" replace />} />
+              <Route path="/yureka-os" element={<Navigate to="/" replace />} />
               <Route path="/manifesto" element={<OurStory />} />
               <Route path="/jobs" element={<CareersPage />} />
 
@@ -235,16 +214,17 @@ const AppContent: React.FC<{ showSplash: boolean }> = ({ showSplash }) => {
                   <YurekaAIPage />
                 </>
               } />
-              <Route path="/explorer" element={<Navigate to="/cards" replace />} />
+              <Route path="/explorer" element={<Navigate to="/" replace />} />
               <Route path="/ai-magic" element={<Navigate to="/yureka-ai" replace />} />
               <Route path="/ai" element={<Navigate to="/yureka-ai" replace />} />
-              <Route path="/matrix" element={<Navigate to="/rewards-calculator" replace />} />
+              <Route path="/matrix" element={<Navigate to="/" replace />} />
               <Route path="/journal" element={<Navigate to="/blogs" replace />} />
-              <Route path="/rewards-calculator" element={<RewardsTransferCalculator />} />
-              <Route path="/categories" element={<CategoriesPage />} />
-              <Route path="/categories/:slug" element={<CategoryDetailPage />} />
-              <Route path="/compare" element={<ComparePage />} />
-              <Route path="/compare/:slug" element={<ComparisonDetail />} />
+              {/* Hidden — redirected to home */}
+              <Route path="/rewards-calculator" element={<Navigate to="/" replace />} />
+              <Route path="/categories" element={<Navigate to="/" replace />} />
+              <Route path="/categories/:slug" element={<Navigate to="/" replace />} />
+              <Route path="/compare" element={<Navigate to="/" replace />} />
+              <Route path="/compare/:slug" element={<Navigate to="/" replace />} />
 
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
@@ -257,9 +237,7 @@ const AppContent: React.FC<{ showSplash: boolean }> = ({ showSplash }) => {
       {!isSpecialRoute && <Navbar />}
 
       <main className={`relative z-10 ${noTopPadding ? 'pt-0' : ''}`}>
-        {/* While the splash is up it already covers the screen at z-200, so skip
-            mounting a second <video> here — it would silently re-fetch loading.mp4. */}
-        <Suspense fallback={showSplash ? <div className="fixed inset-0 bg-cream" style={{ zIndex: 100 }} /> : <LoaderScreen zIndex={100} />}>
+        <Suspense fallback={<div className="fixed inset-0 bg-cream" style={{ zIndex: 100 }} />}>
           <ErrorBoundary>
             {applyEditorialGrid ? (
               <div className="grid grid-cols-1 lg:grid-cols-5 w-full relative">
@@ -299,24 +277,12 @@ const AppContent: React.FC<{ showSplash: boolean }> = ({ showSplash }) => {
 };
 
 const App: React.FC = () => {
-  // Initial branded splash — shows for a fixed window on first load while the
-  // real app mounts behind it, then reveals it. Not shown again on in-app route changes.
-  const [showSplash, setShowSplash] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setShowSplash(false), 1800);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
-    <>
-      {showSplash && <LoaderScreen zIndex={200} />}
-      <BrowserRouter>
-        <SupabaseProvider>
-          <AppContent showSplash={showSplash} />
-        </SupabaseProvider>
-      </BrowserRouter>
-    </>
+    <BrowserRouter>
+      <SupabaseProvider>
+        <AppContent />
+      </SupabaseProvider>
+    </BrowserRouter>
   );
 };
 

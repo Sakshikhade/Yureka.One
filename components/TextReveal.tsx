@@ -260,7 +260,7 @@ const TextReveal: React.FC = () => {
               containerClassName="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl max-w-4xl mx-auto leading-snug text-center"
               segments={[
                 {
-                  text: 'Yureka.Money is India’s first AI-native wealth operating system, turning every transaction into a wealth-building event. We move beyond hollow cashbacks and expiring "dead coins." ',
+                  text: 'Yureka.One is India’s first AI-native wealth operating system, turning every transaction into a wealth-building event. We move beyond hollow cashbacks and expiring "dead coins." ',
                   className: 'font-normal text-[#E1E0CC]',
                 },
                 {

@@ -299,7 +299,7 @@ const AdminDashboard: React.FC = () => {
     setError(null);
     
     try {
-      const userEmail = user?.email || 'admin@yureka.money';
+      const userEmail = user?.email || 'admin@yureka.one';
 
       console.log(`🗑️ Deleting from ${collection} (ID: ${id})`);
 
@@ -351,7 +351,7 @@ const AdminDashboard: React.FC = () => {
     setError(null);
 
     try {
-      const userEmail = user?.email || 'admin@yureka.money';
+      const userEmail = user?.email || 'admin@yureka.one';
       let payload: any = {};
       let collection = '';
 

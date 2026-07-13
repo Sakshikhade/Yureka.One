@@ -10,7 +10,7 @@ const YurekaUseCasesSection: React.FC = () => {
         {/* Left column — text */}
         <div className="md:pr-12 md:pt-2">
           <p className="font-overpass-mono text-white/60 text-sm mb-2 font-medium tracking-widest uppercase">
-            Yureka Money in Practice
+            Yureka One in Practice
           </p>
           <h2
             className="text-5xl md:text-6xl font-medium leading-none mb-6"

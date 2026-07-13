@@ -48,7 +48,7 @@ const SecurityProtocolPage: React.FC = () => {
                     {/* Intro */}
                     <section>
                         <p className="text-2xl md:text-3xl font-serif italic text-white/80 leading-relaxed">
-                            At Yureka.Money, we recognize that financial data is your most sensitive asset. Our architecture is built upon a simple, unwavering philosophy: <span className="text-white font-bold not-italic">Your financial data is none of our business.</span>
+                            At Yureka.One, we recognize that financial data is your most sensitive asset. Our architecture is built upon a simple, unwavering philosophy: <span className="text-white font-bold not-italic">Your financial data is none of our business.</span>
                         </p>
                         <p className="mt-8 text-white/40 leading-relaxed font-medium">
                             This document details the cryptographic standards, network architecture, and compliance frameworks utilized to ensure the absolute isolation and integrity of your data within the Yureka Neural Engine.
@@ -108,7 +108,7 @@ const SecurityProtocolPage: React.FC = () => {
                             <h2 className="text-2xl font-heading font-extrabold uppercase tracking-tight text-white">03. DPDP Compliance</h2>
                         </div>
                         <div className="space-y-6">
-                            <p className="text-white/40 leading-relaxed font-medium">Pursuant to the Digital Personal Data Protection (DPDP) Rules, Yureka.Money implements rigorous security safeguards:</p>
+                            <p className="text-white/40 leading-relaxed font-medium">Pursuant to the Digital Personal Data Protection (DPDP) Rules, Yureka.One implements rigorous security safeguards:</p>
                             <div className="grid gap-4">
                                 {[
                                     { title: 'Access Control', desc: 'Database clusters reside in private VPC subnets with MFA-only VPN tunnels.' },
@@ -134,7 +134,7 @@ const SecurityProtocolPage: React.FC = () => {
                         <p className="text-white/40 font-serif italic mb-10 max-w-md mx-auto">
                             If you believe you have discovered a vulnerability or suspect your account has been compromised, contact our InfoSec team immediately.
                         </p>
-                        <a href="mailto:security@yureka.money" className="inline-flex items-center gap-4 bg-clay text-cream px-12 py-5 rounded-2xl font-bold uppercase tracking-widest text-[10px] hover:bg-white transition-all shadow-2xl shadow-clay/10">
+                        <a href="mailto:security@yureka.one" className="inline-flex items-center gap-4 bg-clay text-cream px-12 py-5 rounded-2xl font-bold uppercase tracking-widest text-[10px] hover:bg-white transition-all shadow-2xl shadow-clay/10">
                             Contact InfoSec <ChevronRight size={14} />
                         </a>
                     </section>
@@ -144,7 +144,7 @@ const SecurityProtocolPage: React.FC = () => {
 
             {/* Footer Tag */}
             <div className="max-w-[1200px] mx-auto px-6 mt-32 pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-bold uppercase tracking-[0.4em] text-white/10">
-                <span>Yureka.Money Security Command</span>
+                <span>Yureka.One Security Command</span>
                 <span className="hidden md:block opacity-20">•</span>
                 <span>Audit Level: High-Assurance</span>
             </div>

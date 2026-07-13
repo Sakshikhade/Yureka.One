@@ -156,7 +156,7 @@ const ByEveryone: React.FC = () => {
                Stop fighting <span className="bg-gradient-to-r from-clay to-[#00933b] bg-clip-text text-transparent font-extrabold italic uppercase tracking-tighter">the system</span> alone.
             </h4>
             <p className="text-white/80 font-sans text-sm md:text-base leading-relaxed tracking-normal">
-              Yureka.Money is the infrastructure for a more transparent financial world. We use community data to negotiate better, spend smarter, and win together.
+              Yureka.One is the infrastructure for a more transparent financial world. We use community data to negotiate better, spend smarter, and win together.
             </p>
           </div>
         </div>

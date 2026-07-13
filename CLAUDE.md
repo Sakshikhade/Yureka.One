@@ -28,7 +28,7 @@ The app runs as a single Express server:
 - **Dev**: Express serves API routes; Vite runs as middleware (`middlewareMode: true`)
 - **Prod**: Express serves the pre-built `dist/` folder as static files + SPA fallback
 
-In production (Netlify), `netlify.toml` proxies all `/api/*` calls to `https://yureka-api.onrender.com` — the Render deployment runs `server.ts` directly with `tsx`.
+In production the built `dist/` is deployed as **static files on Hostinger (Apache) behind Cloudflare** (DNS/CDN) — the site lives at `https://yureka.one`. `public/.htaccess` (copied to `dist/.htaccess` at build) handles React-Router SPA fallback and proxies `/api/*` to the backend, which still runs `server.ts` on Render (`https://yureka-api.onrender.com`). The old `netlify.toml` is retired to `archive/`.
 
 ### Java Backend Migration (in progress)
 

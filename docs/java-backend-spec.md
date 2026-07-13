@@ -1,4 +1,4 @@
-# Yureka Money — Java Backend Specification
+# Yureka One — Java Backend Specification
 
 Full backend to replace the current Node.js/Express server and all direct Supabase SDK calls
 from the React frontend. This is a greenfield Spring Boot application in its own repository.
@@ -20,7 +20,7 @@ No feature should be missing — every behaviour documented here is currently li
 | Google People API | `google-api-services-people` |
 | Scheduling | Spring `@Scheduled` |
 | API style | REST, JSON, versioned under `/api/v1/` |
-| CORS | Allow `https://yureka.money`, `https://yurekamoney.netlify.app`, `http://localhost:3000` |
+| CORS | Allow `https://yureka.one`, `https://yureka.one`, `http://localhost:3000` |
 
 ---
 
@@ -780,12 +780,12 @@ POST /api/v1/admin/notify
 
 **Email content:**
 - To: `email`
-- From: `"Yureka Money" <GMAIL_USER>`
-- Subject: `"Welcome to Yureka Money Admin Dashboard"`
+- From: `"Yureka One" <GMAIL_USER>`
+- Subject: `"Welcome to Yureka One Admin Dashboard"`
 - Body: HTML + text
   - Greet by `firstName` (or "there" if null)
   - State they've been added as `role`
-  - Link to `https://yurekamoney.netlify.app/admin`
+  - Link to `https://yureka.one/admin`
   - Security note: auto-logout after 15 minutes of inactivity
 
 ---
@@ -892,8 +892,8 @@ Before any INSERT or UPDATE:
 
 ### CORS
 Allow:
-- `https://yureka.money`
-- `https://yurekamoney.netlify.app`
+- `https://yureka.one`
+- `https://yureka.one`
 - `http://localhost:3000`
 - `http://localhost:5173`
 
