@@ -2,7 +2,7 @@ import React, { Suspense, lazy, useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, useLocation, Navigate, Link } from 'react-router-dom';
 import { Loader2, Sparkles } from 'lucide-react';
 
-import Navbar from './components/Navbar';
+import Navbar from './components/home-v2/Navbar';
 import Footer from './components/Footer';
 import SEO from './components/SEO';
 import { SupabaseProvider, useSupabase } from './components/SupabaseProvider';
@@ -147,11 +147,12 @@ const AppContent: React.FC<{ showSplash: boolean }> = ({ showSplash }) => {
   // other non-special route is wrapped in the same grid here so content stays within
   // columns 2-4 (the 60%-width "Intelligence Core") with empty margin columns 1 & 5.
   const applyEditorialGrid = !isSpecialRoute && !isHomeRoute;
-  // Home also brings its own fixed Navbar (glassy, overlaid on a full-bleed
-  // cinematic hero) and footer, so it opts out of the global chrome the same
-  // way admin/dashboard do — otherwise it'd render twice and the sitewide
-  // pt-24 offset would leave a gap above the hero video.
-  const noGlobalChrome = isSpecialRoute || isHomeRoute;
+  // Home renders its own footer inside MainPage and its cinematic hero
+  // already reserves space for the fixed navbar internally, so it (like
+  // admin/dashboard) opts out of the sitewide pt-24 offset — otherwise
+  // it'd leave a gap above the hero video. The navbar itself still renders
+  // on home now that it's the shared site-wide navbar, not a homepage-only one.
+  const noTopPadding = isSpecialRoute || isHomeRoute;
 
   const appRoutes = (
               <Routes>
@@ -250,12 +251,12 @@ const AppContent: React.FC<{ showSplash: boolean }> = ({ showSplash }) => {
   );
 
   return (
-    <div className={`min-h-screen bg-cream font-sans text-white relative ${noGlobalChrome ? 'pt-0' : 'pt-24 md:pt-28'}`}>
+    <div className={`min-h-screen bg-cream font-sans text-white relative ${noTopPadding ? 'pt-0' : 'pt-24 md:pt-28'}`}>
 
       <ScrollToTop />
-      {!noGlobalChrome && <Navbar />}
+      {!isSpecialRoute && <Navbar />}
 
-      <main className={`relative z-10 ${noGlobalChrome ? 'pt-0' : ''}`}>
+      <main className={`relative z-10 ${noTopPadding ? 'pt-0' : ''}`}>
         {/* While the splash is up it already covers the screen at z-200, so skip
             mounting a second <video> here — it would silently re-fetch loading.mp4. */}
         <Suspense fallback={showSplash ? <div className="fixed inset-0 bg-cream" style={{ zIndex: 100 }} /> : <LoaderScreen zIndex={100} />}>

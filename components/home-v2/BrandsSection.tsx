@@ -1,64 +1,72 @@
-// Placeholder brand badges -- text-based stand-ins, not recreations of the
-// actual trademarked logos. Swap BrandBadge's contents for real logo
-// images/SVGs when available.
+// Real brand logos, pulled from the same /brand-logos asset set (and
+// per-logo bgColor pairing) used across the rest of the site in
+// brandsData.ts -- each logo was cut for that specific background color.
 
-const ROW_1 = [
-  'PVR Cinemas',
-  'Mango',
-  'Lenskart',
-  'Marriott',
-  'Westside',
-  'Taj',
-  'Caratlane',
-  'MyGlamm',
-  'Cordelia Cruises',
+interface BrandEntry {
+  name: string;
+  image: string;
+  bgColor: string;
+}
+
+// Randomly sampled from the full /brand-logos catalogue (deduped by brand,
+// spanning every category folder) rather than a hand-picked "greatest hits"
+// list, so the marquee is a fair cross-section of the 250+ logos on file.
+const ROW_1: BrandEntry[] = [
+  { name: 'Nykaa', image: '/brand-logos/beauty/nykaa.png', bgColor: '#e0136a' },
+  { name: 'NuAyurveda', image: '/brand-logos/pharmacy/nuayurveda.png', bgColor: '#28772c' },
+  { name: 'Machaan', image: '/brand-logos/food/machaan.png', bgColor: '#441c09' },
+  { name: 'Duroflex', image: '/brand-logos/furnishing/duroflex.png', bgColor: '#ec1e26' },
+  { name: 'Skinn by Titan', image: '/brand-logos/beauty/skinn-by-titan.png', bgColor: '#cdb8e8' },
+  { name: 'Dabba & Co', image: '/brand-logos/food/dabba-and-co.png', bgColor: '#fbf8b8' },
+  { name: 'Sterling Holidays', image: '/brand-logos/hotels/sterling.png', bgColor: '#faf6ec' },
+  { name: "Nature's Basket", image: '/brand-logos/grocery/natures-basket.png', bgColor: '#749735' },
+  { name: 'VR OTT', image: '/brand-logos/entertainment/vr-ott.png', bgColor: '#1a0f2e' },
 ];
 
-const ROW_2 = [
-  'Amazon',
-  'BookMyShow',
-  'Puma',
-  'Ajio',
-  'boAt',
-  'Skullcandy',
-  'Starbucks',
-  'Superdry',
-  'MakeMyTrip',
+const ROW_2: BrandEntry[] = [
+  { name: 'Helios', image: '/brand-logos/luxury/helios.png', bgColor: '#010101' },
+  { name: 'Lunchbox', image: '/brand-logos/food/lunchbox.png', bgColor: '#480074' },
+  { name: 'Versace', image: '/brand-logos/luxury/versace.png', bgColor: '#7bbfbc' },
+  { name: 'Pottery Barn', image: '/brand-logos/luxury/pottery-barn.png', bgColor: '#f4eee4' },
+  { name: 'CGH Earth Experience Hotels', image: '/brand-logos/hotels/cgh-earth.png', bgColor: '#f3ece0' },
+  { name: 'G-Star RAW', image: '/brand-logos/luxury/g-star-raw.png', bgColor: '#e4d5b6' },
+  { name: 'Paul Smith', image: '/brand-logos/luxury/paul-smith.png', bgColor: '#e3d4b5' },
+  { name: 'Veridicus Health Care', image: '/brand-logos/pharmacy/veridicus.png', bgColor: '#c5c4e9' },
+  { name: 'Kate Spade', image: '/brand-logos/handbags/kate-spade.png', bgColor: '#e8d9c1' },
 ];
 
-const ROW_3 = [
-  'Blinkit',
-  'Snitch',
-  'ITC Hotels',
-  'Cinepolis',
-  'Philips',
-  'Allen Solly',
-  'Hamleys',
-  'Daily Objects',
-  'Hush Puppies',
+const ROW_3: BrandEntry[] = [
+  { name: 'Joyalukkas', image: '/brand-logos/jewellery/joyalukkas.png', bgColor: '#8a1a2e' },
+  { name: 'Rowan', image: '/brand-logos/luxury/rowan.png', bgColor: '#040404' },
+  { name: 'GIVA', image: '/brand-logos/jewellery/giva.png', bgColor: '#f6dcc8' },
+  { name: 'Absolute Barbecues', image: '/brand-logos/food/absolute-barbecues.png', bgColor: '#a1292b' },
+  { name: 'Street Foods by Punjab Grill', image: '/brand-logos/food/street-foods-punjab-grill.png', bgColor: '#212224' },
+  { name: "Spencer's", image: '/brand-logos/grocery/spencers.png', bgColor: '#f4b15b' },
+  { name: 'Bodycraft', image: '/brand-logos/beauty/bodycraft.png', bgColor: '#ec1561' },
+  { name: 'Abraham & Thakore', image: '/brand-logos/luxury/abraham-thakore.png', bgColor: '#030303' },
+  { name: 'Swiss Beauty', image: '/brand-logos/beauty/swiss-beauty.png', bgColor: '#0d0d0d' },
 ];
 
-const ROW_4 = [
-  'Air India',
-  'Woodland',
-  'Nykaa',
-  'Aldo',
-  'Michael Kors',
-  'District',
-  'Miraggio',
-  'Chumbak',
-  'Crossword',
+const ROW_4: BrandEntry[] = [
+  { name: 'Hush Puppies', image: '/brand-logos/footwear/hush-puppies.png', bgColor: '#f2e7db' },
+  { name: 'Tira', image: '/brand-logos/beauty/tira.png', bgColor: '#f9cdd2' },
+  { name: 'Adidas Kids', image: '/brand-logos/luxury/adidas-kids.png', bgColor: '#0e1d40' },
+  { name: 'Baskin Robbins', image: '/brand-logos/food/baskin-robbins.png', bgColor: '#da5991' },
+  { name: 'Hunkemoller', image: '/brand-logos/luxury/hunkemoller.png', bgColor: '#e4d5b6' },
+  { name: 'Bottega Veneta', image: '/brand-logos/handbags/bottega-veneta.png', bgColor: '#e6dac1' },
+  { name: 'ITC Hotels', image: '/brand-logos/hotels/itc-hotels.png', bgColor: '#d9c19f' },
+  { name: 'Reliance Smart Bazaar', image: '/brand-logos/grocery/smart-bazaar.png', bgColor: '#ed2b2f' },
+  { name: 'Siri Nature Roosts', image: '/brand-logos/hotels/siri-nature-roosts.png', bgColor: '#f0e8d0' },
 ];
 
-function BrandBadge({ name }: { name: string }) {
+function BrandBadge({ name, image, bgColor }: BrandEntry) {
   return (
-    <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 px-2 text-center sm:h-24 sm:w-24">
-      <span
-        style={{ fontFamily: 'Inter, sans-serif' }}
-        className="text-[10px] font-semibold leading-tight text-white/80 sm:text-[11px]"
-      >
-        {name}
-      </span>
+    <div
+      className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/10 p-4 sm:h-24 sm:w-24 sm:p-5"
+      style={{ backgroundColor: bgColor }}
+      title={name}
+    >
+      <img src={image} alt={name} loading="lazy" className="h-full w-full object-contain" />
     </div>
   );
 }
@@ -68,7 +76,7 @@ function MarqueeRow({
   duration,
   reverse,
 }: {
-  items: string[];
+  items: BrandEntry[];
   duration: number;
   reverse?: boolean;
 }) {
@@ -81,8 +89,8 @@ function MarqueeRow({
           animation: `${reverse ? 'home-v2-marquee-reverse' : 'home-v2-marquee'} ${duration}s linear infinite`,
         }}
       >
-        {doubled.map((name, i) => (
-          <BrandBadge key={`${name}-${i}`} name={name} />
+        {doubled.map((brand, i) => (
+          <BrandBadge key={`${brand.name}-${i}`} {...brand} />
         ))}
       </div>
     </div>

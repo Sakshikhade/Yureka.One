@@ -4,7 +4,6 @@ import { SITE_URL, staticPageMeta } from '../lib/seo/pageMeta';
 import { faqPageSchema } from '../lib/seo/structuredData';
 import { faqQuestions } from '../lib/faq';
 
-import Navbar from './home-v2/Navbar';
 import HeroCinematic from './home-v2/HeroCinematic';
 import BrandsSection from './home-v2/BrandsSection';
 import MetricsTechnology from './home-v2/MetricsTechnology';
@@ -64,7 +63,6 @@ const MainPage: React.FC = () => {
 
       <div className="yureka-one-home bg-black min-h-screen">
         <Loader show={!entranceComplete} />
-        <Navbar entranceComplete={entranceComplete} />
         <HeroCinematic entranceComplete={entranceComplete} />
         <BrandsSection />
         <MetricsTechnology />
