@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import JoinWaitlistButton from './JoinWaitlistButton';
 
 const LAYERS = [
   { label: 'Layer 1', value: 'Capture' },
@@ -26,6 +27,7 @@ export default function Architecture() {
             Sensor layer captures raw bioelectric signals. Processing layer isolates intent.
             Interface layer delivers structured output to any connected system.
           </p>
+          <JoinWaitlistButton className="mt-10" />
         </motion.div>
 
         <motion.div

@@ -1,72 +1,92 @@
-// Real brand logos, pulled from the same /brand-logos asset set (and
-// per-logo bgColor pairing) used across the rest of the site in
-// brandsData.ts -- each logo was cut for that specific background color.
+// Brand logos randomly sampled from the two flat asset folders
+// (public/assets/brand-logos and public/assets/brand-logos-2). These logos
+// ship on white or their own branded backgrounds rather than being pre-cut
+// for a specific bubble color, so every badge sits on a clean white circle.
 
 interface BrandEntry {
   name: string;
   image: string;
   bgColor: string;
+  // Most logos use the default 'contain' (whole logo always inside the bubble).
+  // Some source images bake a colored tile onto a white background, or place a
+  // small logo in a large field of solid color — for those we 'cover' + scale
+  // to crop the surrounding margin so the tile/logo fills the bubble.
+  fit?: 'cover' | 'contain';
+  scale?: number;
 }
 
-// Randomly sampled from the full /brand-logos catalogue (deduped by brand,
-// spanning every category folder) rather than a hand-picked "greatest hits"
-// list, so the marquee is a fair cross-section of the 250+ logos on file.
+// bgColor is sampled from each logo's own background so full-bleed tiles
+// blend into the bubble (no white patch) while the logo stays fully inside
+// via object-contain (no cropping / leaking).
 const ROW_1: BrandEntry[] = [
-  { name: 'Nykaa', image: '/brand-logos/beauty/nykaa.png', bgColor: '#e0136a' },
-  { name: 'NuAyurveda', image: '/brand-logos/pharmacy/nuayurveda.png', bgColor: '#28772c' },
-  { name: 'Machaan', image: '/brand-logos/food/machaan.png', bgColor: '#441c09' },
-  { name: 'Duroflex', image: '/brand-logos/furnishing/duroflex.png', bgColor: '#ec1e26' },
-  { name: 'Skinn by Titan', image: '/brand-logos/beauty/skinn-by-titan.png', bgColor: '#cdb8e8' },
-  { name: 'Dabba & Co', image: '/brand-logos/food/dabba-and-co.png', bgColor: '#fbf8b8' },
-  { name: 'Sterling Holidays', image: '/brand-logos/hotels/sterling.png', bgColor: '#faf6ec' },
-  { name: "Nature's Basket", image: '/brand-logos/grocery/natures-basket.png', bgColor: '#749735' },
-  { name: 'VR OTT', image: '/brand-logos/entertainment/vr-ott.png', bgColor: '#1a0f2e' },
+  { name: 'Crossword', image: '/assets/brand-logos-2/crossword-logo.png', bgColor: '#000000' },
+  { name: 'Starbucks', image: '/assets/brand-logos/starbucks-logo.png', bgColor: '#ffffff' },
+  { name: 'Himalaya', image: '/assets/brand-logos-2/himalaya-logo.png', bgColor: '#ffffff' },
+  { name: 'Ixigo', image: '/assets/brand-logos-2/ixigo-logo.jpeg', bgColor: '#f0592a', fit: 'cover', scale: 1.15 },
+  { name: 'Allen Solly', image: '/assets/brand-logos-2/allen-solly-logo.jpeg', bgColor: '#000000', fit: 'cover', scale: 1.5 },
+  { name: 'Uber', image: '/assets/brand-logos-2/uber-logo.png', bgColor: '#000000', fit: 'cover', scale: 1.6 },
+  { name: 'Salty', image: '/assets/brand-logos-2/salty-logo.jpeg', bgColor: '#7d46ac' },
+  { name: 'Versace', image: '/assets/brand-logos/versace-logo.jpeg', bgColor: '#000000', fit: 'cover', scale: 1.2 },
+  { name: 'Snitch', image: '/assets/brand-logos/snitch-logo.png', bgColor: '#000000' },
 ];
 
 const ROW_2: BrandEntry[] = [
-  { name: 'Helios', image: '/brand-logos/luxury/helios.png', bgColor: '#010101' },
-  { name: 'Lunchbox', image: '/brand-logos/food/lunchbox.png', bgColor: '#480074' },
-  { name: 'Versace', image: '/brand-logos/luxury/versace.png', bgColor: '#7bbfbc' },
-  { name: 'Pottery Barn', image: '/brand-logos/luxury/pottery-barn.png', bgColor: '#f4eee4' },
-  { name: 'CGH Earth Experience Hotels', image: '/brand-logos/hotels/cgh-earth.png', bgColor: '#f3ece0' },
-  { name: 'G-Star RAW', image: '/brand-logos/luxury/g-star-raw.png', bgColor: '#e4d5b6' },
-  { name: 'Paul Smith', image: '/brand-logos/luxury/paul-smith.png', bgColor: '#e3d4b5' },
-  { name: 'Veridicus Health Care', image: '/brand-logos/pharmacy/veridicus.png', bgColor: '#c5c4e9' },
-  { name: 'Kate Spade', image: '/brand-logos/handbags/kate-spade.png', bgColor: '#e8d9c1' },
+  { name: 'Ray-Ban', image: '/assets/brand-logos-2/ray-ban-logo.jpeg', bgColor: '#e41e2d' },
+  { name: "McDonald's", image: '/assets/brand-logos/mcdonalds-logo.png', bgColor: '#e50103' },
+  { name: 'The Man Company', image: '/assets/brand-logos-2/the-man-company-logo.png', bgColor: '#050807' },
+  { name: 'PVR Cinemas', image: '/assets/brand-logos-2/pvr-cinemas-logo.png', bgColor: '#000000' },
+  { name: 'Blinkit', image: '/assets/brand-logos-2/blinkit-logo.png', bgColor: '#f8cb46' },
+  { name: 'Barbeque Nation', image: '/assets/brand-logos/barbeque-nation-logo.png', bgColor: '#f15922' },
+  { name: 'Biba', image: '/assets/brand-logos-2/biba-logo.png', bgColor: '#b31b27' },
+  { name: 'Croma', image: '/assets/brand-logos/croma-logo.jpeg', bgColor: '#4ca7a2' },
+  { name: 'Philips', image: '/assets/brand-logos-2/philips-logo.png', bgColor: '#0b5ed8' },
 ];
 
 const ROW_3: BrandEntry[] = [
-  { name: 'Joyalukkas', image: '/brand-logos/jewellery/joyalukkas.png', bgColor: '#8a1a2e' },
-  { name: 'Rowan', image: '/brand-logos/luxury/rowan.png', bgColor: '#040404' },
-  { name: 'GIVA', image: '/brand-logos/jewellery/giva.png', bgColor: '#f6dcc8' },
-  { name: 'Absolute Barbecues', image: '/brand-logos/food/absolute-barbecues.png', bgColor: '#a1292b' },
-  { name: 'Street Foods by Punjab Grill', image: '/brand-logos/food/street-foods-punjab-grill.png', bgColor: '#212224' },
-  { name: "Spencer's", image: '/brand-logos/grocery/spencers.png', bgColor: '#f4b15b' },
-  { name: 'Bodycraft', image: '/brand-logos/beauty/bodycraft.png', bgColor: '#ec1561' },
-  { name: 'Abraham & Thakore', image: '/brand-logos/luxury/abraham-thakore.png', bgColor: '#030303' },
-  { name: 'Swiss Beauty', image: '/brand-logos/beauty/swiss-beauty.png', bgColor: '#0d0d0d' },
+  { name: 'Wow! Momo', image: '/assets/brand-logos-2/wow-momo-logo.jpeg', bgColor: '#f9d411', fit: 'cover', scale: 1.15 },
+  { name: 'Fastrack', image: '/assets/brand-logos-2/fastrack-logo.jpeg', bgColor: '#f26426', fit: 'cover', scale: 1.18 },
+  { name: 'Cleartrip', image: '/assets/brand-logos-2/cleartrip-logo.png', bgColor: '#ffffff' },
+  { name: 'Chumbak', image: '/assets/brand-logos-2/chumbak-logo.jpeg', bgColor: '#8dada8' },
+  { name: 'Milton', image: '/assets/brand-logos-2/milton-logo.jpeg', bgColor: '#ec2126', fit: 'cover', scale: 1.18 },
+  { name: 'Tira', image: '/assets/brand-logos-2/tira-logo.jpeg', bgColor: '#f5d0c7' },
+  { name: 'Lifestyle', image: '/assets/brand-logos-2/lifestyle-logo.jpg', bgColor: '#ffffff' },
+  { name: 'boAt', image: '/assets/brand-logos-2/boat-logo.jpeg', bgColor: '#1d1d1b' },
+  { name: 'Behrouz Biryani', image: '/assets/brand-logos-2/behrouz-biryani-logo.jpeg', bgColor: '#353336' },
 ];
 
 const ROW_4: BrandEntry[] = [
-  { name: 'Hush Puppies', image: '/brand-logos/footwear/hush-puppies.png', bgColor: '#f2e7db' },
-  { name: 'Tira', image: '/brand-logos/beauty/tira.png', bgColor: '#f9cdd2' },
-  { name: 'Adidas Kids', image: '/brand-logos/luxury/adidas-kids.png', bgColor: '#0e1d40' },
-  { name: 'Baskin Robbins', image: '/brand-logos/food/baskin-robbins.png', bgColor: '#da5991' },
-  { name: 'Hunkemoller', image: '/brand-logos/luxury/hunkemoller.png', bgColor: '#e4d5b6' },
-  { name: 'Bottega Veneta', image: '/brand-logos/handbags/bottega-veneta.png', bgColor: '#e6dac1' },
-  { name: 'ITC Hotels', image: '/brand-logos/hotels/itc-hotels.png', bgColor: '#d9c19f' },
-  { name: 'Reliance Smart Bazaar', image: '/brand-logos/grocery/smart-bazaar.png', bgColor: '#ed2b2f' },
-  { name: 'Siri Nature Roosts', image: '/brand-logos/hotels/siri-nature-roosts.png', bgColor: '#f0e8d0' },
+  { name: 'Kalyan Jewellers', image: '/assets/brand-logos-2/kalyan-jewellers-logo.jpeg', bgColor: '#870a37' },
+  { name: 'The Bear House', image: '/assets/brand-logos-2/the-bear-house-logo.png', bgColor: '#d95c47', fit: 'cover', scale: 1.2 },
+  { name: 'Xbox', image: '/assets/brand-logos/xbox-logo.jpg', bgColor: '#0b0d09', fit: 'cover', scale: 1.4 },
+  { name: 'Woodland', image: '/assets/brand-logos-2/woodland-logo.jpeg', bgColor: '#ffffff' },
+  { name: 'Myntra', image: '/assets/brand-logos/myntra-logo.jpeg', bgColor: '#ffffff' },
+  { name: 'Marriott', image: '/assets/brand-logos/marriott-logo.png', bgColor: '#ffffff' },
+  { name: 'Manyavar', image: '/assets/brand-logos/manyavar-logo.jpeg', bgColor: '#e2792b' },
+  { name: 'Ajio', image: '/assets/brand-logos/ajio-logo.jpeg', bgColor: '#243545' },
+  { name: 'Westside', image: '/assets/brand-logos/westside-logo.png', bgColor: '#ffffff' },
 ];
 
-function BrandBadge({ name, image, bgColor }: BrandEntry) {
+function BrandBadge({ name, image, bgColor, fit = 'contain', scale = 1 }: BrandEntry) {
+  const isCover = fit === 'cover';
   return (
     <div
-      className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/10 p-4 sm:h-24 sm:w-24 sm:p-5"
+      className={`flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/10 sm:h-24 sm:w-24 ${
+        isCover ? '' : 'p-2 sm:p-2.5'
+      }`}
       style={{ backgroundColor: bgColor }}
       title={name}
     >
-      <img src={image} alt={name} loading="lazy" className="h-full w-full object-contain" />
+      {/* Default 'contain' keeps the whole logo inside the bubble (never cropped
+          or "leaking"), and the per-logo bgColor blends the logo's own
+          background into the bubble so there's no white patch. 'cover' + scale
+          is used for the few tiles whose art sits inside a margin we crop away. */}
+      <img
+        src={image}
+        alt={name}
+        loading="lazy"
+        className={`h-full w-full ${isCover ? 'object-cover' : 'object-contain'}`}
+        style={scale !== 1 ? { transform: `scale(${scale})` } : undefined}
+      />
     </div>
   );
 }

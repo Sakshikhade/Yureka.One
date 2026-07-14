@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import JoinWaitlistButton from './JoinWaitlistButton';
 
 // Placeholder answer copy -- on-brand but not sourced from a real FAQ doc.
 // Swap in real answers when available. The Lincoln-with-headphones
@@ -129,6 +130,8 @@ export default function FAQSection() {
             />
             <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/25" />
           </div>
+
+          <JoinWaitlistButton className="mt-8" />
         </div>
 
         <div>

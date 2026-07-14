@@ -422,335 +422,145 @@ const ForBrands: React.FC = () => {
       <div className="min-h-screen bg-cream text-white overflow-x-hidden">
 
         {/* ═══════════════════════════════════════════════════════════
-            HERO
+            HERO  (HeyMax-style)
         ═══════════════════════════════════════════════════════════ */}
-        <section
-          className="relative pt-40 pb-16 px-6 overflow-hidden noise grid-bg"
-          onMouseMove={e => {
-            const r = e.currentTarget.getBoundingClientRect();
-            setSpot({ x: ((e.clientX - r.left) / r.width) * 100, y: ((e.clientY - r.top) / r.height) * 100 });
-          }}
-        >
-          {/* Spotlight follow */}
-          <div
-            className="absolute inset-0 pointer-events-none transition-opacity duration-300"
-            style={{ background: `radial-gradient(700px circle at ${spot.x}% ${spot.y}%, rgba(52,211,153,0.05), transparent 55%)` }}
-          />
-          {/* Floating orbs */}
-          <motion.div animate={{ y: [0, -24, 0], x: [0, 12, 0] }} transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
-            className="absolute top-32 left-[10%] w-72 h-72 rounded-full bg-clay/[0.07] blur-[90px] pointer-events-none" />
-          <motion.div animate={{ y: [0, 20, 0], x: [0, -10, 0] }} transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
-            className="absolute top-64 right-[8%] w-80 h-80 rounded-full bg-blue-500/[0.05] blur-[110px] pointer-events-none" />
-          <motion.div animate={{ y: [0, -16, 0] }} transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
-            className="absolute bottom-0 left-1/2 w-96 h-48 rounded-full bg-purple-500/[0.04] blur-[100px] pointer-events-none" />
-
-          <div className="max-w-5xl mx-auto relative z-10">
-            <motion.div initial={{ opacity: 0, y: 32 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="text-center">
-              <div className="inline-flex items-center gap-2.5 bg-white/[0.04] border border-white/[0.1] rounded-full px-5 py-2.5 mb-12 backdrop-blur-sm">
-                <div className="w-1.5 h-1.5 rounded-full bg-clay animate-pulse" />
-                <span className="text-[9px] font-black uppercase tracking-[0.45em] text-clay">Open Rewards Network · India</span>
-              </div>
-
-              <h1 className="text-5xl sm:text-7xl md:text-[90px] font-sans font-extrabold leading-[0.9] tracking-normal mb-8">
-                <span className="shimmer-text">ROAS you can<br />count on.</span>
-              </h1>
-
-              <p className="text-white/40 text-base md:text-xl font-serif italic max-w-2xl mx-auto leading-relaxed mb-12">
-                Our network of credit-active Indian consumers is the most financially engaged
-                audience in the country. Get in front of the right customers and boost their
-                LTV without spending a fortune.
-              </p>
-
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-5 mb-24">
-                <Link
-                  to="/join-waitlist"
-                  className="group relative inline-flex items-center gap-3 bg-clay text-black font-black uppercase tracking-[0.2em] text-[11px] px-12 py-5 rounded-full cta-glow hover:scale-105 transition-transform duration-300 overflow-hidden"
-                >
-                  <span className="relative z-10">Get Started</span>
-                  <ArrowRight size={14} className="relative z-10 group-hover:translate-x-1 transition-transform" />
-                  <div className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500 skew-x-12" />
-                </Link>
-                <a href="mailto:partnerships@yureka.one"
-                  className="inline-flex items-center gap-2 text-white/35 hover:text-white font-black uppercase tracking-[0.15em] text-[10px] transition-colors">
-                  Schedule a Demo <ChevronRight size={12} />
-                </a>
-              </div>
-            </motion.div>
-
-            {/* 3-D Interactive Dashboard Mockup */}
-            <motion.div
-              initial={{ opacity: 0, y: 60 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.35, duration: 1, ease: [0.16, 1, 0.3, 1] }}
-              style={{ perspective: '1400px' }}
-            >
-              <motion.div
-                style={{ rotateX: dashRotX, rotateY: dashRotY, transformStyle: 'preserve-3d' }}
-                className="relative mx-auto max-w-5xl"
+        <section className="relative overflow-hidden rounded-b-[44px] bg-[#2a1a6b] px-6 pt-40 pb-14">
+          <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-14 md:grid-cols-2">
+            {/* ── Left copy ── */}
+            <div>
+              <div
+                role="heading"
+                aria-level={1}
+                style={{ fontFamily: 'Almarai, -apple-system, system-ui, sans-serif', color: '#ffffff' }}
+                className="text-[44px] font-extrabold leading-[1.03] tracking-tight sm:text-6xl md:text-[68px]"
               >
-                {/* Single unified card — no floaters escaping bounds */}
-                <div className="bg-[#0c0c0c] border border-white/[0.08] rounded-[24px] overflow-hidden shadow-[0_60px_140px_-20px_rgba(0,0,0,0.95),inset_0_1px_0_rgba(255,255,255,0.05)]">
-                  <div className="absolute inset-0 bg-gradient-to-br from-clay/[0.03] via-transparent to-blue-500/[0.02] pointer-events-none" />
+                Power up your
+                <br />
+                business with
+                <br />
+                <span style={{ color: '#9d8bff' }}>Yureka</span>
+              </div>
+              <p className="mt-7 max-w-md text-[17px] leading-relaxed text-white/70">
+                Explore our suite of tools that help you drive business outcomes
+              </p>
+              <Link
+                to="/join-waitlist"
+                className="mt-10 inline-flex items-center justify-center rounded-full bg-[#6c5ce7] px-11 py-4 text-[15px] font-semibold text-white transition-colors hover:bg-[#5a4bd4]"
+              >
+                Talk to us
+              </Link>
+            </div>
 
-                  {/* ── Header ── */}
-                  <div className="flex items-center justify-between px-5 py-3 border-b border-white/[0.05] bg-black/20">
-                    <div className="flex items-center gap-3">
-                      <div className="w-7 h-7 rounded-lg bg-clay flex items-center justify-center shadow-[0_2px_10px_rgba(52,211,153,0.45)]">
-                        <span className="text-black text-[10px] font-black">Y</span>
-                      </div>
-                      <div>
-                        <div className="text-[9px] font-black text-white uppercase tracking-[0.2em] leading-none">Merchant Dashboard</div>
-                        <div className="flex items-center gap-1.5 mt-0.5">
-                          <div className="w-1 h-1 rounded-full bg-clay animate-pulse" />
-                          <span className="text-[6px] text-white/20 uppercase tracking-[0.25em]">Live · Real-time</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-0.5 bg-white/[0.03] border border-white/[0.06] rounded-lg p-0.5">
-                      {(['7D', '1M', '3M', '6M'] as const).map(r => (
-                        <button
-                          key={r}
-                          onClick={() => { setActiveRange(r); setHoveredBar(null); }}
-                          className={`px-2.5 py-1 rounded-md text-[7px] font-black uppercase tracking-wider transition-all duration-200 ${
-                            activeRange === r ? 'bg-clay text-black shadow-sm' : 'text-white/25 hover:text-white/55'
-                          }`}
-                        >
-                          {r}
-                        </button>
-                      ))}
-                    </div>
+            {/* ── Right: phone mockup ── */}
+            <div className="relative mx-auto w-full max-w-[430px]">
+              {/* decorative spark */}
+              <div className="absolute -top-4 right-2 text-[26px] text-[#f5c518]">✳</div>
+
+              {/* curved pointer arrow */}
+              <svg
+                className="absolute -left-6 top-[38%] hidden h-28 w-16 text-white md:block"
+                viewBox="0 0 60 110"
+                fill="none"
+                aria-hidden
+              >
+                <path d="M52 8 C6 26, 8 74, 42 82" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+                <path d="M42 82 l-13 -2 M42 82 l-3 -13" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+              </svg>
+
+              {/* phone frame */}
+              <div className="relative mx-auto w-[300px] rounded-[42px] border-[10px] border-black bg-black shadow-2xl">
+                {/* notch */}
+                <div className="absolute left-1/2 top-2.5 z-30 h-4 w-24 -translate-x-1/2 rounded-full bg-black" />
+
+                {/* screen */}
+                <div className="relative h-[560px] overflow-hidden rounded-[32px] bg-[#f4f4f6] pt-9 text-black">
+                  {/* search bar */}
+                  <div className="mx-4 flex items-center gap-2 rounded-xl bg-white px-3 py-2.5 shadow-sm">
+                    <svg className="h-4 w-4 text-gray-400" viewBox="0 0 24 24" fill="none">
+                      <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
+                      <path d="M20 20l-3-3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
+                    <span className="text-[13px] text-gray-400">Search vouchers</span>
                   </div>
 
-                  {/* ── Two-column body ── */}
-                  <div className="flex min-h-0">
+                  {/* spacer for the overlapping card */}
+                  <div className="h-[86px]" />
 
-                    {/* Left: main analytics (flex-1) */}
-                    <div className="flex-1 p-4 min-w-0">
-
-                      {/* KPI cards with sparklines */}
-                      <AnimatePresence mode="wait">
-                        <motion.div
-                          key={`kpi-${activeRange}`}
-                          initial={{ opacity: 0, y: 6 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -6 }}
-                          transition={{ duration: 0.2 }}
-                          className="grid grid-cols-4 gap-2 mb-3"
-                        >
-                          {currentData.stats.map((s, i) => {
-                            const sparkVals = currentData.charts[Math.min(i, 2)].vals;
-                            const sparkColors = ['#34d399', '#60a5fa', '#a78bfa', '#f59e0b'];
-                            return (
-                              <motion.div
-                                key={i}
-                                whileHover={{ scale: 1.02, borderColor: 'rgba(52,211,153,0.2)' }}
-                                className="bg-[#111] border border-white/[0.05] rounded-2xl p-3 cursor-default"
-                              >
-                                <div className="text-[6px] text-white/20 uppercase tracking-[0.3em] mb-1.5">{s.label}</div>
-                                <div className="text-[13px] font-black text-white tracking-tight mb-1.5">{s.value}</div>
-                                <div className="flex items-center justify-between gap-2">
-                                  <span className={`text-[7px] font-black shrink-0 ${s.up ? 'text-clay' : 'text-red-400'}`}>
-                                    {s.up ? '↑' : '↓'} {s.delta}
-                                  </span>
-                                  <Sparkline vals={sparkVals} color={sparkColors[i]} />
-                                </div>
-                              </motion.div>
-                            );
-                          })}
-                        </motion.div>
-                      </AnimatePresence>
-
-                      {/* Interactive bar charts */}
-                      <AnimatePresence mode="wait">
-                        <motion.div
-                          key={`charts-${activeRange}`}
-                          initial={{ opacity: 0, y: 6 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -6 }}
-                          transition={{ duration: 0.2, delay: 0.05 }}
-                          className="grid grid-cols-3 gap-2 mb-3"
-                        >
-                          {currentData.charts.map((chart, ci) => {
-                            const norm = normalizeBars(chart.vals);
-                            return (
-                              <div key={chart.title} className="bg-[#111] border border-white/[0.05] rounded-2xl p-3 relative">
-                                <div className="text-[6px] font-black text-white/25 uppercase tracking-[0.3em] mb-2">{chart.title}</div>
-                                <AnimatePresence>
-                                  {hoveredBar?.ci === ci && (
-                                    <motion.div
-                                      initial={{ opacity: 0, scale: 0.85 }}
-                                      animate={{ opacity: 1, scale: 1 }}
-                                      exit={{ opacity: 0, scale: 0.85 }}
-                                      className="absolute top-2.5 right-2.5 bg-[#0a0a0a] border border-white/10 rounded-lg px-2 py-1 z-20 pointer-events-none"
-                                    >
-                                      <div className="text-[5px] text-white/30 uppercase tracking-wider">{currentData.labels[hoveredBar.bi]}</div>
-                                      <div className="text-[9px] font-black text-white">{hoveredBar.value}</div>
-                                    </motion.div>
-                                  )}
-                                </AnimatePresence>
-                                <div className="flex items-end gap-0.5 h-12">
-                                  {norm.map((pct, bi) => {
-                                    const isHov = hoveredBar?.ci === ci && hoveredBar?.bi === bi;
-                                    return (
-                                      <div
-                                        key={bi}
-                                        className="flex-1 cursor-crosshair"
-                                        style={{ height: `${pct}%` }}
-                                        onMouseEnter={() => setHoveredBar({ ci, bi, value: chart.fmt(chart.vals[bi]) })}
-                                        onMouseLeave={() => setHoveredBar(null)}
-                                      >
-                                        <motion.div
-                                          key={`${activeRange}-${ci}-${bi}`}
-                                          initial={{ scaleY: 0 }}
-                                          animate={{ scaleY: 1 }}
-                                          transition={{ delay: 0.1 + ci * 0.06 + bi * 0.04, duration: 0.4, ease: 'easeOut' }}
-                                          style={{
-                                            transformOrigin: 'bottom',
-                                            background: isHov
-                                              ? `linear-gradient(to top, ${chart.color}0.9), ${chart.color}0.5))`
-                                              : `linear-gradient(to top, ${chart.color}0.55), ${chart.color}0.12))`,
-                                            borderRadius: '2px 2px 0 0',
-                                          }}
-                                          className="w-full h-full transition-[background] duration-100"
-                                        />
-                                      </div>
-                                    );
-                                  })}
-                                </div>
-                                <div className="flex justify-between mt-1">
-                                  {currentData.labels.map((l, i) => (
-                                    <span key={i} className={`text-[5px] transition-colors ${hoveredBar?.ci === ci && hoveredBar?.bi === i ? 'text-white/50' : 'text-white/12'}`}>
-                                      {l.slice(0, 3)}
-                                    </span>
-                                  ))}
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </motion.div>
-                      </AnimatePresence>
-
-                      {/* Campaign table with ROAS progress bars */}
-                      <AnimatePresence mode="wait">
-                        <motion.div
-                          key={`camp-${activeRange}`}
-                          initial={{ opacity: 0, y: 6 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -6 }}
-                          transition={{ duration: 0.2, delay: 0.1 }}
-                          className="bg-[#111] border border-white/[0.05] rounded-2xl p-3"
-                        >
-                          <div className="text-[6px] font-black text-white/25 uppercase tracking-[0.3em] mb-2">Top Campaigns</div>
-                          <div className="grid grid-cols-[1fr_52px_52px_100px] gap-3 mb-1.5 px-1">
-                            {['Campaign', 'Budget', 'Revenue', 'ROAS'].map(h => (
-                              <div key={h} className="text-[5.5px] text-white/15 uppercase tracking-wider font-black">{h}</div>
-                            ))}
-                          </div>
-                          {currentData.campaigns.map((c, i) => {
-                            const roasPct = Math.min((parseFloat(c.roas) / 20) * 100, 100);
-                            return (
-                              <motion.div
-                                key={i}
-                                whileHover={{ backgroundColor: 'rgba(255,255,255,0.025)' }}
-                                className="grid grid-cols-[1fr_52px_52px_100px] gap-3 items-center py-2 px-1 rounded-xl border-t border-white/[0.04] first:border-0"
-                              >
-                                <div className="text-[8px] font-black text-white/65 truncate">{c.name}</div>
-                                <div className="text-[8px] font-black text-white/35">{c.budget}</div>
-                                <div className="text-[8px] font-black text-white">{c.revenue}</div>
-                                <div className="flex items-center gap-1.5">
-                                  <div className="flex-1 h-0.5 bg-white/[0.07] rounded-full overflow-hidden">
-                                    <motion.div
-                                      initial={{ width: 0 }}
-                                      animate={{ width: `${roasPct}%` }}
-                                      transition={{ delay: 0.3 + i * 0.1, duration: 0.7, ease: 'easeOut' }}
-                                      className="h-full bg-clay rounded-full"
-                                    />
-                                  </div>
-                                  <span className="text-[7px] font-black text-clay shrink-0">{c.roas}</span>
-                                </div>
-                              </motion.div>
-                            );
-                          })}
-                        </motion.div>
-                      </AnimatePresence>
+                  {/* double-your-rewards block */}
+                  <div className="mx-4">
+                    <div className="mb-2 flex items-center gap-1.5 text-[13px] font-semibold text-[#2a1a6b]">
+                      <span className="text-[#6c5ce7]">⚡</span> Double your rewards
+                    </div>
+                    <div className="rounded-2xl bg-white p-3.5 shadow-sm">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[12px] text-gray-600">Earn Yureka Gold</span>
+                        <span className="text-[12px] font-semibold text-[#6c5ce7]">Up to +3%</span>
+                      </div>
+                      <div className="mt-2 flex items-center justify-between border-t border-gray-100 pt-2">
+                        <span className="text-[12px] text-gray-600">Total rewards</span>
+                        <span className="text-[12px] font-bold text-black">5% back</span>
+                      </div>
+                      <button className="mt-3 w-full rounded-lg bg-[#6c5ce7] py-2.5 text-[13px] font-semibold text-white">
+                        Shop with Yureka
+                      </button>
+                      <div className="mt-2 text-center text-[11px] font-medium text-[#6c5ce7]">
+                        Don&apos;t miss out on Gold rewards &rsaquo;
+                      </div>
                     </div>
 
-                    {/* Right: fixed sidebar — no floating */}
-                    <div className="w-[168px] shrink-0 border-l border-white/[0.05] p-3.5 flex flex-col gap-4 bg-black/10">
-
-                      {/* Live Activity */}
-                      <div>
-                        <div className="flex items-center gap-1.5 mb-2.5">
-                          <div className="w-1 h-1 rounded-full bg-clay animate-pulse" />
-                          <div className="text-[6px] font-black text-white/20 uppercase tracking-[0.3em]">Live Activity</div>
+                    {/* gift cards */}
+                    <div className="mt-3 rounded-2xl bg-white p-3.5 shadow-sm">
+                      <div className="flex items-center gap-2.5">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-[#efeaff] text-[#6c5ce7]">
+                          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none">
+                            <rect x="3" y="8" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="2" />
+                            <path d="M3 12h18M12 8v12" stroke="currentColor" strokeWidth="2" />
+                          </svg>
                         </div>
-                        <AnimatePresence mode="wait">
-                          <motion.div
-                            key={liveIdx}
-                            initial={{ opacity: 0, x: 6 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -6 }}
-                            transition={{ duration: 0.22 }}
-                            className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-2.5 mb-2.5"
-                          >
-                            <div className="flex items-start justify-between mb-0.5">
-                              <div className="text-[9px] font-black text-white">{LIVE_EVENTS[liveIdx].brand}</div>
-                              <div className="text-[6px] text-white/15 shrink-0">{LIVE_EVENTS[liveIdx].time}</div>
-                            </div>
-                            <div className="text-[6px] text-white/25 mb-1.5">{LIVE_EVENTS[liveIdx].action}</div>
-                            <div className="text-[12px] font-black text-clay">{LIVE_EVENTS[liveIdx].amount}</div>
-                          </motion.div>
-                        </AnimatePresence>
-                        <div className="space-y-1">
-                          {['Goldback · 16% ROI', 'Smart Checkout', 'Credit Data · LSP'].map((item, i) => (
-                            <div key={i} className="flex items-center gap-2 py-1 border-b border-white/[0.04] last:border-0">
-                              <div className="w-1 h-1 rounded-full bg-clay/50 shrink-0" />
-                              <span className="text-[7px] text-white/28">{item}</span>
-                            </div>
-                          ))}
+                        <div className="flex-1">
+                          <div className="text-[12px] font-semibold text-black">Nykaa Gift Cards</div>
+                          <div className="text-[11px] text-gray-500">Earn Instant Gold</div>
                         </div>
+                        <span className="text-[12px] font-semibold text-[#6c5ce7]">+1.25%</span>
                       </div>
+                      <button className="mt-3 w-full rounded-lg bg-[#efeaff] py-2.5 text-[13px] font-semibold text-[#6c5ce7]">
+                        Buy Gift Cards
+                      </button>
+                    </div>
 
-                      <div className="h-px bg-white/[0.05]" />
+                    <div className="mt-4 text-[12px] font-semibold text-black">You might also like</div>
+                  </div>
+                </div>
 
-                      {/* Brand Share */}
-                      <div>
-                        <div className="text-[6px] font-black text-white/20 uppercase tracking-[0.3em] mb-2.5">Brand Share</div>
-                        <div className="space-y-2.5">
-                          {[
-                            { label: 'Amazon', pct: 78, color: '#34d399' },
-                            { label: 'Nykaa', pct: 52, color: '#60a5fa' },
-                            { label: 'Zepto', pct: 38, color: '#a78bfa' },
-                            { label: 'Myntra', pct: 24, color: '#f59e0b' },
-                          ].map((b, i) => (
-                            <div key={i}>
-                              <div className="flex justify-between items-center mb-1">
-                                <span className="text-[7px] text-white/40 font-bold">{b.label}</span>
-                                <span className="text-[7px] text-white/20">{b.pct}%</span>
-                              </div>
-                              <div className="h-0.5 bg-white/[0.06] rounded-full overflow-hidden">
-                                <motion.div
-                                  initial={{ width: 0 }}
-                                  animate={{ width: `${b.pct}%` }}
-                                  transition={{ delay: 1.2 + i * 0.12, duration: 0.75, ease: 'easeOut' }}
-                                  className="h-full rounded-full"
-                                  style={{ background: b.color }}
-                                />
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                        <div className="mt-3 pt-2.5 border-t border-white/[0.05]">
-                          <div className="text-[7px] font-black text-clay">₹4.2L total driven</div>
-                          <div className="text-[6px] text-white/15 mt-0.5">This {activeRange}</div>
-                        </div>
-                      </div>
+                {/* overlapping best-card popup */}
+                <div className="absolute left-1/2 top-[92px] z-20 w-[116%] -translate-x-1/2 rounded-2xl bg-white p-4 text-black shadow-[0_24px_60px_rgba(0,0,0,0.35)]">
+                  <div className="flex items-center gap-2.5">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#fde2ec] text-[13px] font-black text-[#e0136a]">
+                      N
+                    </div>
+                    <span className="text-[16px] font-extrabold text-black">Nykaa</span>
+                  </div>
+                  <div className="mt-1 text-[12px] text-gray-500">Beauty &amp; Personal Care (4722)</div>
+
+                  <div className="mt-3 flex items-center gap-3 rounded-xl bg-[#f6f5ff] p-3">
+                    <div className="h-9 w-12 shrink-0 rounded-md bg-gradient-to-br from-[#3a3a5c] to-[#6c5ce7]" />
+                    <div className="flex-1">
+                      <div className="text-[11px] text-gray-500">Best card</div>
+                      <div className="text-[13px] font-bold text-black">HDFC Millennia</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-[11px] text-gray-500">Up to</div>
+                      <div className="text-[15px] font-extrabold text-[#6c5ce7]">5% Gold</div>
                     </div>
                   </div>
                 </div>
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
           </div>
+
+          <p className="mt-16 text-center text-[15px] font-medium text-white/55">
+            Join 500+ other brands
+          </p>
         </section>
 
         {/* ═══════════════════════════════════════════════════════════
@@ -814,65 +624,88 @@ const ForBrands: React.FC = () => {
         </section>
 
         {/* ═══════════════════════════════════════════════════════════
-            SPLIT VALUE PROP
+            USE-CASE BENTO GRID  (HeyMax-style)
         ═══════════════════════════════════════════════════════════ */}
-        <section className="py-36 px-6">
-          <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-            <motion.div initial={{ opacity: 0, x: -32 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }}>
-              <p className="text-[9px] font-black uppercase tracking-[0.5em] text-clay mb-5">The Opportunity</p>
-              <h2 className="text-4xl md:text-5xl lg:text-[58px] font-sans font-extrabold tracking-tight text-white leading-[1.0] mb-8">
-                Reach India's power shoppers with less spend and more precision.
-              </h2>
-              <div className="flex flex-col gap-5">
-                <p className="text-white/45 font-serif italic text-base md:text-lg leading-relaxed">
-                  Showcase your brand across Yureka's AI concierge and credit card network
-                  to attract a new, loyal population of customers you can't reach anywhere else.
+        <section className="px-6 py-28">
+          <div className="mx-auto grid max-w-6xl grid-cols-1 gap-5 md:h-[840px] md:grid-cols-2 md:grid-rows-5">
+            {/* FOR BRANDS — navy, tall left */}
+            <div className="flex flex-col overflow-hidden rounded-[28px] bg-[#221c52] p-9 md:col-start-1 md:row-start-1 md:row-span-3">
+              <div className="text-5xl">🫶</div>
+              <div className="mt-auto pt-10">
+                <span className="inline-block rounded-md bg-[#3b82f6]/20 px-2.5 py-1 text-[12px] font-bold uppercase tracking-wide text-[#8fb4ff]">
+                  For Brands
+                </span>
+                <div
+                  style={{ fontFamily: 'Almarai, sans-serif', color: '#ffffff', textTransform: 'none' }}
+                  className="mt-4 text-[30px] font-extrabold leading-[1.1]"
+                >
+                  Activate and retain your customers
+                </div>
+                <p className="mt-4 text-[16px] leading-relaxed text-white/70">
+                  Delight your customers with Yureka Gold, a loyalty currency loved by all
                 </p>
-                <p className="text-white/30 font-serif text-sm leading-relaxed">
-                  Fine-tune your campaigns with Yureka's exclusive consumer insights — from
-                  shopper behavior and purchase frequency to wallet share. Measure true
-                  incremental lift using first-party transaction data.
-                </p>
-                <a href="mailto:partnerships@yureka.one"
-                  className="inline-flex items-center gap-2.5 text-clay font-black uppercase tracking-[0.2em] text-[10px] hover:gap-4 transition-all duration-300 w-fit mt-2">
-                  Talk to partnerships <ArrowRight size={12} />
-                </a>
               </div>
-            </motion.div>
+            </div>
 
-            {/* Credit card catalogue visual */}
-            <motion.div
-              initial={{ opacity: 0, x: 32 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.15 }}
-              className="relative h-72"
-              style={{ perspective: '800px' }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-clay/[0.06] to-transparent rounded-3xl border border-white/[0.07]" />
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-8">
-                <p className="text-[8px] font-black uppercase tracking-[0.4em] text-white/25 mb-2">200+ Credit Cards Catalogued</p>
-                <div className="grid grid-cols-5 gap-2 w-full max-w-xs">
-                  {CARD_LOGOS.map((src, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.06, duration: 0.4 }}
-                      whileHover={{ scale: 1.15, y: -4 }}
-                      className="aspect-square bg-white/[0.04] border border-white/[0.08] rounded-xl flex items-center justify-center p-2"
-                    >
-                      <img src={src} alt="bank" className="w-full h-full object-contain" style={{ filter: 'grayscale(1) contrast(0.75)', opacity: 0.55 }} />
-                    </motion.div>
-                  ))}
+            {/* FOR CONSUMER BUSINESSES — purple, top right */}
+            <div className="relative flex flex-col overflow-hidden rounded-[28px] bg-[#5b4bd6] p-9 md:col-start-2 md:row-start-1 md:row-span-2">
+              <div className="text-5xl">🏪</div>
+              <ArrowRight className="absolute right-8 top-1/2 -translate-y-1/2 text-white/90" size={30} />
+              <div className="mt-auto max-w-[85%] pt-8">
+                <span className="inline-block rounded-md bg-white/20 px-2.5 py-1 text-[12px] font-bold uppercase tracking-wide text-[#c7d0ff]">
+                  For Consumer Businesses
+                </span>
+                <div
+                  style={{ fontFamily: 'Almarai, sans-serif', color: '#ffffff', textTransform: 'none' }}
+                  className="mt-4 text-[30px] font-extrabold leading-[1.1]"
+                >
+                  Acquire new customers through Yureka
                 </div>
-                <div className="flex items-center gap-2 mt-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-clay animate-pulse" />
-                  <span className="text-[8px] font-black text-white/25 uppercase tracking-[0.3em]">Fully audited · Expert reviewed</span>
-                </div>
+                <p className="mt-4 text-[16px] leading-relaxed text-white/80">
+                  Through Yureka&apos;s rewards network, you acquire high-spending customers for the
+                  lowest CAC
+                </p>
               </div>
-            </motion.div>
+            </div>
+
+            {/* FOR AIRLINES & HOTELS — teal, tall right */}
+            <div className="flex flex-col overflow-hidden rounded-[28px] bg-[#0f9b93] p-9 md:col-start-2 md:row-start-3 md:row-span-3">
+              <div className="text-5xl">🧳</div>
+              <div className="mt-auto pt-10">
+                <span className="inline-block rounded-md bg-[#facc15]/25 px-2.5 py-1 text-[12px] font-bold uppercase tracking-wide text-[#ffe27a]">
+                  For Airlines &amp; Hotels
+                </span>
+                <div
+                  style={{ fontFamily: 'Almarai, sans-serif', color: '#ffffff', textTransform: 'none' }}
+                  className="mt-4 text-[30px] font-extrabold leading-[1.1]"
+                >
+                  Boost your miles sales
+                </div>
+                <p className="mt-4 text-[16px] leading-relaxed text-white/80">
+                  Join top airlines and hotels unlocking new revenue from high-spending customers
+                </p>
+              </div>
+            </div>
+
+            {/* FOR EMPLOYERS & HR TEAMS — pink, bottom left */}
+            <div className="flex flex-col overflow-hidden rounded-[28px] bg-[#dd3363] p-9 md:col-start-1 md:row-start-4 md:row-span-2">
+              <div className="text-5xl">🎁</div>
+              <div className="mt-auto pt-8">
+                <span className="inline-block rounded-md bg-[#facc15]/25 px-2.5 py-1 text-[12px] font-bold uppercase tracking-wide text-[#ffe27a]">
+                  For Employers &amp; HR Teams
+                </span>
+                <div
+                  style={{ fontFamily: 'Almarai, sans-serif', color: '#ffffff', textTransform: 'none' }}
+                  className="mt-4 text-[30px] font-extrabold leading-[1.1]"
+                >
+                  Drive employee benefits
+                </div>
+                <p className="mt-4 text-[16px] leading-relaxed text-white/80">
+                  Transform your employee perks with Yureka Gold, redeemable for exciting trips and
+                  gift cards
+                </p>
+              </div>
+            </div>
           </div>
         </section>
 

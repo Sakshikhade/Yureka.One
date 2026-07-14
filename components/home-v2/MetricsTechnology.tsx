@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { motion, useMotionTemplate, useScroll, useSpring, useTransform } from 'framer-motion';
 import ScrambleIn from './ScrambleIn';
 import { useInView } from './useInView';
+import JoinWaitlistButton from './JoinWaitlistButton';
 
 const METRICS_VIDEO_URL = '/cta_fold.mp4';
 
@@ -292,17 +293,20 @@ export default function MetricsTechnology() {
               </div>
 
               <div className="mt-8 flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
-                <motion.h2
-                  className="text-[clamp(32px,7vw,64px)] font-light leading-[0.95] tracking-[-0.03em] text-white"
-                  initial={{ y: 40, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  viewport={{ once: true, amount: 0.3 }}
-                  transition={{ duration: 1.0 }}
-                >
-                  Yureka
-                  <br />
-                  Ai
-                </motion.h2>
+                <div className="flex flex-col items-start gap-6">
+                  <motion.h2
+                    className="text-[clamp(32px,7vw,64px)] font-light leading-[0.95] tracking-[-0.03em] text-white"
+                    initial={{ y: 40, opacity: 0 }}
+                    whileInView={{ y: 0, opacity: 1 }}
+                    viewport={{ once: true, amount: 0.3 }}
+                    transition={{ duration: 1.0 }}
+                  >
+                    Yureka
+                    <br />
+                    Ai
+                  </motion.h2>
+                  <JoinWaitlistButton />
+                </div>
 
                 <motion.p
                   className="max-w-xs text-[13px] leading-relaxed text-white/50 sm:text-[15px] md:pt-2 md:text-right"

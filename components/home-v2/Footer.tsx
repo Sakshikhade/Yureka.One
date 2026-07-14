@@ -1,4 +1,5 @@
 import YurekaLogo from './YurekaLogo';
+import JoinWaitlistButton from './JoinWaitlistButton';
 
 const HERO_BG_URL = '/hero-bg.jpg';
 
@@ -41,6 +42,8 @@ export default function Footer() {
               The next evolution of human-machine interaction. Built for those who refuse to be
               limited by biology alone.
             </p>
+
+            <JoinWaitlistButton className="mt-8" />
           </div>
 
           <p className="mt-12 text-[12px] text-white/25">

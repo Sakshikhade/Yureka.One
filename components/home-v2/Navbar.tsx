@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSupabase } from '../SupabaseProvider';
@@ -19,11 +19,70 @@ const NAV_LINKS = [
   { name: 'For Brands', path: '/for-brands', desc: 'Partner, smart checkout & credit data' },
 ];
 
+// A single link in the desktop expanding-pill menu, with the same
+// scramble-on-hover text effect as the "Join Waitlist" CTA.
+function ScrambleNavLink({
+  to,
+  label,
+  onClick,
+}: {
+  to: string;
+  label: string;
+  onClick: () => void;
+}) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <Link
+      to={to}
+      onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="text-[15px] tracking-tight text-white/75 transition-colors hover:text-white"
+    >
+      <ScrambleText text={label} isHovered={hovered} />
+    </Link>
+  );
+}
+
+// Logout entry (logged-in users) with the same scramble-on-hover effect.
+function ScrambleLogout({ onClick }: { onClick: () => void }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <button
+      onClick={onClick}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="text-[15px] tracking-tight text-white/75 transition-colors hover:text-white"
+    >
+      <ScrambleText text="Logout" isHovered={hovered} />
+    </button>
+  );
+}
+
 export default function Navbar({ entranceComplete = true }: NavbarProps) {
   const navigate = useNavigate();
   const { user, currentUserStatus, supabase } = useSupabase();
   const [menuOpen, setMenuOpen] = useState(false);
   const [hoveredCta, setHoveredCta] = useState(false);
+
+  // Desktop menu is an inline expanding pill (see below); close it when the
+  // user clicks anywhere outside it or presses Escape.
+  const desktopMenuRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onDown = (e: MouseEvent) => {
+      if (desktopMenuRef.current && !desktopMenuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setMenuOpen(false);
+    document.addEventListener('mousedown', onDown);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onDown);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [menuOpen]);
 
   const closeMenu = () => setMenuOpen(false);
 
@@ -63,12 +122,50 @@ export default function Navbar({ entranceComplete = true }: NavbarProps) {
               </motion.div>
             </Link>
 
-            <button
-              onClick={() => setMenuOpen(true)}
-              className="flex h-12 w-12 items-center justify-center shrink-0 rounded-[14px] bg-white/15 backdrop-blur-md transition-colors hover:bg-white/20"
+            {/* Inline expanding menu pill: collapsed it's just the toggle
+                button; open it grows to the right and reveals the nav links,
+                while the hamburger morphs into an X. */}
+            <motion.div
+              ref={desktopMenuRef}
+              className="flex items-center h-12 overflow-hidden rounded-[14px] bg-white/15 backdrop-blur-md"
             >
-              <SquashHamburger isOpen={menuOpen} variant="desktop" />
-            </button>
+              <button
+                onClick={() => setMenuOpen((v) => !v)}
+                aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+                aria-expanded={menuOpen}
+                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[14px] transition-colors hover:bg-white/10"
+              >
+                <SquashHamburger isOpen={menuOpen} variant="desktop" />
+              </button>
+
+              <AnimatePresence initial={false}>
+                {menuOpen && (
+                  <motion.div
+                    key="desktop-links"
+                    initial={{ width: 0, opacity: 0 }}
+                    animate={{ width: 'auto', opacity: 1 }}
+                    exit={{ width: 0, opacity: 0 }}
+                    transition={{
+                      width: { type: 'spring', damping: 30, stiffness: 300 },
+                      opacity: { duration: 0.18 },
+                    }}
+                    className="overflow-hidden"
+                  >
+                    <div className="flex items-center gap-7 whitespace-nowrap pl-1 pr-6">
+                      {NAV_LINKS.map((item) => (
+                        <ScrambleNavLink
+                          key={item.name}
+                          to={item.path}
+                          label={item.name}
+                          onClick={closeMenu}
+                        />
+                      ))}
+                      {user && <ScrambleLogout onClick={handleLogout} />}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
           </div>
 
           <motion.button
@@ -79,7 +176,6 @@ export default function Navbar({ entranceComplete = true }: NavbarProps) {
             whileHover={{ scale: 1.03, backgroundColor: '#e2e2e6' }}
             whileTap={{ scale: 0.97 }}
           >
-            {!user && <i className="bi bi-apple text-[16px]" />}
             <ScrambleText text={cta.label} isHovered={hoveredCta} className="text-[16px]" />
           </motion.button>
         </div>
@@ -108,7 +204,6 @@ export default function Navbar({ entranceComplete = true }: NavbarProps) {
             whileHover={{ scale: 1.03, backgroundColor: '#e2e2e6' }}
             whileTap={{ scale: 0.97 }}
           >
-            {!user && <i className="bi bi-apple text-[13px]" />}
             <span className="text-[13px]">{cta.label}</span>
           </motion.button>
         </div>
@@ -118,9 +213,11 @@ export default function Navbar({ entranceComplete = true }: NavbarProps) {
           full nav (more entries than the compact pill can hold) lives in
           one place instead of duplicating a desktop dropdown and a
           separate mobile drawer. */}
+      {/* Full-screen drawer is mobile-only now; desktop uses the inline
+          expanding pill above. */}
       <AnimatePresence>
         {menuOpen && (
-          <div className="yureka-one-home fixed inset-0 z-[110]">
+          <div className="yureka-one-home fixed inset-0 z-[110] md:hidden">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -189,7 +286,6 @@ export default function Navbar({ entranceComplete = true }: NavbarProps) {
                   }}
                   className="w-full h-14 bg-white text-black rounded-full flex items-center justify-center gap-2 text-[14px] font-medium"
                 >
-                  {!user && <i className="bi bi-apple text-[14px]" />}
                   {cta.label}
                 </button>
 

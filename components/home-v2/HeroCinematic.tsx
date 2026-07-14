@@ -8,6 +8,25 @@ import {
 } from 'framer-motion';
 import ScrambleIn from './ScrambleIn';
 import { PhoneBubbleMockup, PhoneVaultMockup } from './YurekaMockups';
+import HeroMobile from './HeroMobile';
+import GlassLayer from './GlassLayer';
+import JoinWaitlistButton from './JoinWaitlistButton';
+
+// Desktop (>= md / 768px) gets the pinned scroll-scrubbed cinematic below;
+// anything narrower gets the plain stacked HeroMobile instead. Initialised
+// synchronously from matchMedia (client-only SPA, so no hydration flash).
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(() =>
+    typeof window === 'undefined' ? true : window.matchMedia('(min-width: 768px)').matches,
+  );
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 768px)');
+    const onChange = () => setIsDesktop(mq.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+  return isDesktop;
+}
 
 const VAULT_VIDEO_URL = '/vault.mp4';
 const VAULT_START_TIME = 2;
@@ -63,6 +82,7 @@ interface HeroCinematicProps {
 }
 
 export default function HeroCinematic({ entranceComplete }: HeroCinematicProps) {
+  const isDesktop = useIsDesktop();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const vaultVideoRef = useRef<HTMLVideoElement>(null);
   const vaultTargetTimeRef = useRef(VAULT_START_TIME);
@@ -227,6 +247,13 @@ export default function HeroCinematic({ entranceComplete }: HeroCinematicProps) 
     };
   }, [scrollYProgress]);
 
+  // Mobile: skip the entire pinned/scrubbed cinematic (all hooks above still
+  // run, harmlessly, since their refs simply never attach) and render the
+  // stacked layout instead. Desktop JSX below is untouched.
+  if (!isDesktop) {
+    return <HeroMobile />;
+  }
+
   return (
     <div
       ref={wrapperRef}
@@ -347,16 +374,7 @@ export default function HeroCinematic({ entranceComplete }: HeroCinematicProps) 
                 </span>
               </div>
 
-              <button
-                type="button"
-                style={{ fontFamily: 'Inter, sans-serif' }}
-                className="flex w-fit items-center gap-3 rounded-full bg-white py-2.5 pl-5 pr-2.5 text-[14px] font-medium text-black"
-              >
-                Join Waitlist Now
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-black text-white">
-                  <i className="bi bi-arrow-right text-[14px]" />
-                </span>
-              </button>
+              <JoinWaitlistButton />
 
               <p
                 style={{ fontFamily: 'Inter, sans-serif' }}
@@ -380,13 +398,14 @@ export default function HeroCinematic({ entranceComplete }: HeroCinematicProps) 
                   <h3 className="h-12 shrink-0 overflow-hidden text-[16px] font-extrabold uppercase leading-tight text-white sm:h-14 sm:text-[18px]">
                     Shop Across <span className="text-[#5fae52]">700+</span> Brands
                   </h3>
-                  <div className="mt-4 min-h-0 w-full flex-1 overflow-hidden rounded-2xl bg-[#141414]">
+                  <div className="relative mt-4 min-h-0 w-full flex-1 overflow-hidden rounded-2xl bg-[#141414]">
                     <img
                       src="/feat-card-gift.png"
                       alt=""
                       loading="lazy"
                       className="h-full w-full object-cover"
                     />
+                    <GlassLayer />
                   </div>
                   <ul className="h-[135px] shrink-0 list-inside list-disc space-y-1 overflow-hidden text-[12px] leading-relaxed text-white/60 sm:h-[150px] sm:text-[13px]">
                     <li>Quick Commerce</li>
@@ -417,13 +436,14 @@ export default function HeroCinematic({ entranceComplete }: HeroCinematicProps) 
                   >
                     Not Just One Time Saving Or Cashback Or Reward Points
                   </h3>
-                  <div className="mt-4 min-h-0 w-full flex-1 overflow-hidden rounded-2xl bg-[#141414]">
+                  <div className="relative mt-4 min-h-0 w-full flex-1 overflow-hidden rounded-2xl bg-[#141414]">
                     <img
                       src="/card-calendar.png"
                       alt=""
                       loading="lazy"
                       className="h-full w-full object-cover"
                     />
+                    <GlassLayer />
                   </div>
                   <ul className="h-[135px] shrink-0 list-inside list-disc space-y-1 overflow-hidden text-[12px] leading-relaxed text-white/60 sm:h-[150px] sm:text-[13px]">
                     <li>24 Hours a Day</li>
@@ -470,6 +490,7 @@ export default function HeroCinematic({ entranceComplete }: HeroCinematicProps) 
                   <br />
                   If you are a #Power Shopper then Yureka is for you
                 </p>
+                <JoinWaitlistButton className="mt-8" />
               </div>
 
               <div className="hidden h-[60%] flex-1 md:block">
@@ -549,7 +570,7 @@ export default function HeroCinematic({ entranceComplete }: HeroCinematicProps) 
             The video plays at 1:1 (no crop) through the whole scrub, then
             only zooms in afterward, into its own known last frame. */}
         <motion.div
-          className="absolute inset-0 z-30 flex items-center justify-center bg-black px-4"
+          className="pointer-events-none absolute inset-0 z-30 flex items-center justify-center bg-black px-4"
           style={{ opacity: vaultOverlayOpacity }}
         >
           <div className="relative mx-auto aspect-[16/10] w-full overflow-hidden rounded-3xl md:max-w-[60vw]">
