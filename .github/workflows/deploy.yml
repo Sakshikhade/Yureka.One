@@ -39,7 +39,8 @@ jobs:
       - name: Set image metadata
         id: meta
         run: |
-          IMAGE="ghcr.io/yureks-money/yureka-money"
+          REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          IMAGE="ghcr.io/${REPO_LOWER}"
           echo "image=${IMAGE}" >> "$GITHUB_OUTPUT"
           echo "sha_tag=${IMAGE}:${{ github.sha }}" >> "$GITHUB_OUTPUT"
           echo "latest_tag=${IMAGE}:latest" >> "$GITHUB_OUTPUT"
@@ -83,13 +84,14 @@ jobs:
         env:
           IMAGE: ${{ needs.build-push.outputs.image }}:${{ github.sha }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_OWNER: ${{ github.repository_owner }}
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          envs: IMAGE,GH_TOKEN
+          envs: IMAGE,GH_TOKEN,GH_OWNER
           script: |
-            echo "$GH_TOKEN" | docker login ghcr.io -u yureks-money --password-stdin
+            echo "$GH_TOKEN" | docker login ghcr.io -u "$GH_OWNER" --password-stdin
             docker pull "$IMAGE"
             cd /opt/yureka-money
             IMAGE="$IMAGE" docker compose up -d --no-build

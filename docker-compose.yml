@@ -1,6 +1,6 @@
 services:
   app:
-    image: ${IMAGE:-ghcr.io/yureks-money/yureka-money:latest}
+    image: ${IMAGE:-ghcr.io/toanweshbiswas/yureka.one:latest}
     ports:
       - "3000:3000"
     env_file:
