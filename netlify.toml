@@ -1,0 +1,24 @@
+# Netlify build + serve config for the Yureka.One static SPA.
+# Without this, Netlify's auto-detection can pick the wrong build command /
+# publish dir, producing a blank page (index.html served, but /assets/*.js
+# never built/published).
+
+[build]
+  command = "pnpm build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Proxy API calls to the backend (same target as public/.htaccess).
+[[redirects]]
+  from = "/api/*"
+  to = "https://yureka-api.onrender.com/api/:splat"
+  status = 200
+  force = true
+
+# React Router SPA fallback — every non-asset path serves index.html.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
