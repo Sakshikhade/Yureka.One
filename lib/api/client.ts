@@ -3,7 +3,18 @@ export { isApiError, isValidationError } from './types'
 
 // Empty string → relative URLs, which Netlify/Express proxy to the backend.
 // Set VITE_API_BASE_URL=http://localhost:8080 in .env for local Java dev.
-const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? ''
+const RAW_BASE = import.meta.env.VITE_API_BASE_URL ?? ''
+
+// Guard: a deployed (non-local) site must never call a localhost/private API —
+// browsers block that as a "Private Network Access" request and pop up a
+// "wants to access other apps and services on this device" permission prompt.
+// If a localhost base URL was baked into a production build, ignore it here and
+// fall back to relative /api/* paths (proxied to the real backend).
+const onLocalhost =
+  typeof window !== 'undefined' &&
+  /^(localhost|127\.|0\.0\.0\.0|\[?::1\]?)/.test(window.location.hostname)
+const pointsAtLocalhost = /^https?:\/\/(localhost|127\.|0\.0\.0\.0|\[?::1\]?)/i.test(RAW_BASE)
+const BASE_URL = !onLocalhost && pointsAtLocalhost ? '' : RAW_BASE
 
 function errorResponse<T>(status: number, error: string): YurekaResponse<T> {
   return { data: null, status, error, timestamp: new Date().toISOString() }
