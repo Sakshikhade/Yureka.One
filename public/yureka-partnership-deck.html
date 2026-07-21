@@ -830,27 +830,17 @@
   }
   function next(){go(i+1)} function prev(){go(i-1)}
 
-  // Scroll to navigate — one slide per wheel gesture, unless the current slide
-  // has internally-scrollable content that hasn't reached its edge yet.
+  // Vertical scrolling is disabled — any wheel/trackpad gesture (vertical OR
+  // horizontal) moves the deck horizontally, one slide per gesture. The only
+  // exception is the interactive ROAS dashboard embed, which scrolls natively.
   let wheelLock=false;
-  function scrollableAncestor(node,dy){
-    let el=node;
-    while(el && el.nodeType===1 && el!==document.body){
-      const cs=getComputedStyle(el);
-      if(/(auto|scroll)/.test(cs.overflowY) && el.scrollHeight>el.clientHeight+1){
-        if(dy>0 && el.scrollTop+el.clientHeight < el.scrollHeight-1) return true;
-        if(dy<0 && el.scrollTop > 1) return true;
-      }
-      el=el.parentElement;
-    }
-    return false;
-  }
   window.addEventListener('wheel',e=>{
-    if(scrollableAncestor(e.target,e.deltaY)) return; // let inner content scroll first
+    if(e.target && e.target.closest && e.target.closest('.embed')) return; // dashboard scrolls natively
     e.preventDefault();
-    if(wheelLock || Math.abs(e.deltaY)<6) return;
+    const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+    if(wheelLock || Math.abs(delta)<6) return;
     wheelLock=true; setTimeout(()=>wheelLock=false,750);
-    e.deltaY>0 ? next() : prev();
+    delta>0 ? next() : prev();
   },{passive:false});
 
   window.addEventListener('keydown',e=>{
