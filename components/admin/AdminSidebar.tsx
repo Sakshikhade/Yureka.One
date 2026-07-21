@@ -35,7 +35,6 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
     { id: 'blogs', label: 'Blogs', icon: FileText, roles: ['admin', 'editor', 'writer'] },
     { id: 'reviews', label: 'Reviews', icon: Users, roles: ['admin', 'editor'] },
     { id: 'cards', label: 'Cards', icon: CreditCard, roles: ['admin', 'editor'] },
-    { id: 'updates', label: 'Updates', icon: Bell, roles: ['admin', 'editor'] },
     { id: 'notifications', label: 'Notifications', icon: Megaphone, roles: ['admin'] },
     { id: 'waitlist', label: 'Waitlist', icon: Users, roles: ['admin'] },
     { id: 'settings', label: 'Admin Controls', icon: Settings, roles: ['admin'] },

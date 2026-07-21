@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-    CreditCard, Mail, Receipt, Wallet, Store, 
-    Gift, Zap, Sparkles, Users, User, 
-    LogOut, ChevronLeft, Menu, Bell, ChevronDown,
-    LayoutGrid, Calculator, ArrowRightLeft, Compass
+import {
+    CreditCard, Mail, Receipt, Wallet, Store,
+    Gift, Zap, Sparkles, Users, User,
+    LogOut, ChevronLeft, Menu, Bell
 } from 'lucide-react';
 import { useNavigate, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { useSupabase } from '../SupabaseProvider';
@@ -15,29 +14,14 @@ import ReferralDashboard from './ReferralDashboard';
 import AccountSettings from './AccountSettings';
 import Expenses from './Expenses';
 import Bills from './Bills';
-import CategoriesPage from '../CategoriesPage';
-import CategoryDetailPage from '../CategoryDetailPage';
 import YurekaOsPage from '../YurekaOsPage';
-import ComparePage from '../ComparePage';
-import ComparisonDetail from '../ComparisonDetail';
-import RewardsTransferCalculator from '../RewardsTransferCalculator';
-import CardDetail from '../CardDetail';
-import CardExplorer from '../CardExplorer';
 import YurekaAIPage from '../YurekaAIPage';
 import WaitlistPage from '../WaitlistPage';
 
 import { api, isApiError } from '../../lib/api/client';
 
-const EXPLORE_ITEMS = [
-    { id: 'categories', label: 'Categories', icon: LayoutGrid, path: '/dashboard/categories' },
-    { id: 'tools', label: 'Free Tools', icon: Calculator, path: '/dashboard/rewards-calculator' },
-    { id: 'compare', label: 'Compare', icon: ArrowRightLeft, path: '/dashboard/compare' },
-    { id: 'card-explorer', label: 'Card Explorer', icon: Compass, path: '/dashboard/card-explorer' },
-];
-
 const NAV_ITEMS = [
     { id: 'cards', label: 'Saved Cards', icon: CreditCard, path: '/dashboard/cards' },
-    { id: 'explore', label: 'Explore', icon: Sparkles, subItems: EXPLORE_ITEMS },
     { id: 'expenses', label: 'Expenses', icon: Receipt, path: '/dashboard/expenses' },
     { id: 'bills', label: 'Bills', icon: Wallet, path: '/dashboard/bills' },
     { id: 'extension', label: 'Extension', icon: Zap, comingSoon: true, path: '/dashboard/extension' },
@@ -212,10 +196,8 @@ const DashboardLayout: React.FC = () => {
     const location = useLocation();
     
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-    const [isExploreExpanded, setIsExploreExpanded] = useState(false);
 
-    const activeTab = NAV_ITEMS.find(i => i.path && (location.pathname === i.path || location.pathname.startsWith(i.path + '/')))?.id || 
-                      EXPLORE_ITEMS.find(i => i.path && (location.pathname === i.path || location.pathname.startsWith(i.path + '/')))?.id || 'cards';
+    const activeTab = NAV_ITEMS.find(i => i.path && (location.pathname === i.path || location.pathname.startsWith(i.path + '/')))?.id || 'cards';
 
     const handleLogout = async () => {
         await supabase.auth.signOut();
@@ -264,75 +246,25 @@ const DashboardLayout: React.FC = () => {
                     <nav className="flex-1 space-y-3 dashboard-scroll overflow-y-auto pr-2">
                         {NAV_ITEMS.map((item, idx) => (
                             <div key={item.id}>
-                                {item.subItems ? (
-                                    <motion.button 
+                                <Link to={item.path!}>
+                                    <motion.div
                                         initial={{ opacity: 0, x: -20 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ delay: idx * 0.05 }}
-                                        onClick={() => setIsExploreExpanded(!isExploreExpanded)}
                                         className={`w-full flex items-center gap-5 px-5 py-5 rounded-[1.5rem] transition-all group relative overflow-hidden ${activeTab === item.id ? 'bg-white text-black shadow-2xl shadow-white/5' : 'text-white/30 hover:bg-white/5 hover:text-white'}`}
                                     >
                                         <item.icon size={22} className={`${activeTab === item.id ? 'text-black' : 'group-hover:scale-110 transition-transform duration-500'}`} />
                                         {isSidebarOpen && (
-                                            <div className="flex flex-1 items-center justify-between">
-                                                <div className="flex flex-col items-start text-left">
-                                                    <span className="text-[11px] font-black uppercase tracking-[0.2em]">{item.label}</span>
-                                                    {item.comingSoon && <span className="text-[7px] opacity-40 uppercase tracking-[0.3em] mt-0.5">Development</span>}
-                                                </div>
-                                                <ChevronDown 
-                                                    size={14} 
-                                                    className={`transition-transform duration-500 ${isExploreExpanded ? 'rotate-180' : ''}`} 
-                                                />
+                                            <div className="flex flex-col items-start text-left">
+                                                <span className="text-[11px] font-black uppercase tracking-[0.2em]">{item.label}</span>
+                                                {item.comingSoon && <span className="text-[7px] opacity-40 uppercase tracking-[0.3em] mt-0.5">Development</span>}
                                             </div>
                                         )}
                                         {activeTab === item.id && (
                                             <motion.div layoutId="nav-glow" className="absolute inset-0 bg-gradient-to-r from-transparent via-black/5 to-transparent animate-glass-shine" />
                                         )}
-                                    </motion.button>
-                                ) : (
-                                    <Link to={item.path!}>
-                                        <motion.div 
-                                            initial={{ opacity: 0, x: -20 }}
-                                            animate={{ opacity: 1, x: 0 }}
-                                            transition={{ delay: idx * 0.05 }}
-                                            className={`w-full flex items-center gap-5 px-5 py-5 rounded-[1.5rem] transition-all group relative overflow-hidden ${activeTab === item.id ? 'bg-white text-black shadow-2xl shadow-white/5' : 'text-white/30 hover:bg-white/5 hover:text-white'}`}
-                                        >
-                                            <item.icon size={22} className={`${activeTab === item.id ? 'text-black' : 'group-hover:scale-110 transition-transform duration-500'}`} />
-                                            {isSidebarOpen && (
-                                                <div className="flex flex-col items-start text-left">
-                                                    <span className="text-[11px] font-black uppercase tracking-[0.2em]">{item.label}</span>
-                                                    {item.comingSoon && <span className="text-[7px] opacity-40 uppercase tracking-[0.3em] mt-0.5">Development</span>}
-                                                </div>
-                                            )}
-                                            {activeTab === item.id && (
-                                                <motion.div layoutId="nav-glow" className="absolute inset-0 bg-gradient-to-r from-transparent via-black/5 to-transparent animate-glass-shine" />
-                                            )}
-                                        </motion.div>
-                                    </Link>
-                                )}
-
-                                {/* Sub Items */}
-                                <AnimatePresence>
-                                    {item.subItems && isExploreExpanded && isSidebarOpen && (
-                                        <motion.div 
-                                            initial={{ height: 0, opacity: 0 }}
-                                            animate={{ height: 'auto', opacity: 1 }}
-                                            exit={{ height: 0, opacity: 0 }}
-                                            className="overflow-hidden mt-2 ml-6 space-y-1"
-                                        >
-                                            {item.subItems.map((sub) => (
-                                                <Link
-                                                    key={sub.id}
-                                                    to={sub.path}
-                                                    className="w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-white/30 hover:bg-white/5 hover:text-clay transition-all group/sub"
-                                                >
-                                                    <sub.icon size={16} className="group-hover/sub:scale-110 transition-transform" />
-                                                    <span className="text-[10px] font-black uppercase tracking-[0.2em]">{sub.label}</span>
-                                                </Link>
-                                            ))}
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
+                                    </motion.div>
+                                </Link>
                             </div>
                         ))}
                     </nav>
@@ -372,8 +304,7 @@ const DashboardLayout: React.FC = () => {
                                 <p className="text-[10px] font-black uppercase tracking-[0.6em] text-white/30">System Status: Optimal</p>
                             </div>
                             <h1 className="text-6xl italic tracking-tighter text-white font-black leading-none uppercase">
-                                {NAV_ITEMS.find(i => i.id === activeTab)?.label || 
-                                 EXPLORE_ITEMS.find(i => i.id === activeTab)?.label}
+                                {NAV_ITEMS.find(i => i.id === activeTab)?.label}
                             </h1>
                         </motion.div>
                         
@@ -399,14 +330,6 @@ const DashboardLayout: React.FC = () => {
                             <Routes>
                                 <Route index element={<MyCards />} />
                                 <Route path="cards" element={<MyCards />} />
-                                <Route path="categories" element={<CategoriesPage />} />
-                                <Route path="categories/:slug" element={<CategoryDetailPage />} />
-                                <Route path="tools" element={<RewardsTransferCalculator />} />
-                                <Route path="rewards-calculator" element={<RewardsTransferCalculator />} />
-                                <Route path="compare" element={<ComparePage />} />
-                                <Route path="compare/:slug" element={<ComparisonDetail />} />
-                                <Route path="card-explorer" element={<CardExplorer />} />
-                                <Route path="cards/:slug" element={<CardDetail />} />
                                 <Route path="yureka-ai" element={<YurekaAIPage />} />
                                 <Route path="join-waitlist" element={<WaitlistPage />} />
                                 <Route path="referrals" element={<ReferralDashboard />} />

@@ -152,13 +152,3 @@ export interface NewsletterEntry {
   subscribed_at?: string;
   created_at?: string;
 }
-
-export interface CardContribution {
-  id?: string;
-  type: 'add' | 'update' | 'remove';
-  status: 'pending' | 'approved' | 'rejected' | 'resolved';
-  card_name: string;
-  email?: string;
-  payload: any;
-  created_at?: string;
-}

@@ -137,7 +137,7 @@ const Footer: React.FC = () => {
                   {[
                     { label: 'Chrome Extension', to: '/yureka-ai' },
                     { label: 'Yureka AI', to: '/yureka-ai' },
-                    { label: 'UPI SDK (Future)', to: '#' },
+                    { label: 'Yureka One Telegram', to: '#' },
                   ].map(({ label, to }) => (
                     <li key={label}>
                       <Link
@@ -160,8 +160,6 @@ const Footer: React.FC = () => {
                   {[
                     { label: 'Manifesto', to: '/manifesto' },
                     { label: 'Careers', to: '/jobs' },
-                    { label: 'Design Lab', to: '#' },
-                    { label: 'Press Kit', to: '#' },
                   ].map(({ label, to }) => (
                     <li key={label}>
                       <Link
@@ -183,7 +181,6 @@ const Footer: React.FC = () => {
                 <ul className="space-y-3.5">
                   {[
                     { label: 'Waitlist Status', to: '/yureka-ai' },
-                    { label: 'Blogs', to: '/blogs' },
                     { label: 'Privacy Policy', to: '/privacy-policy' },
                     { label: 'Terms of Service', to: '/terms-of-service' },
                   ].map(({ label, to }) => (

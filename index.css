@@ -28,6 +28,29 @@
   color: #5fae52 !important;
 }
 
+/* ── "Yureka AI" page ──
+   Follows the homepage's cinematic heading treatment (white, mixed-case,
+   Space Mono) instead of the sitewide green-uppercase content-page rules,
+   so its designed white headings and gradient accents read correctly. */
+.yureka-ai-page h1,
+.yureka-ai-page h2,
+.yureka-ai-page h3,
+.yureka-ai-page h4,
+.yureka-ai-page h5,
+.yureka-ai-page h6 {
+  font-family: 'Space Mono', monospace !important;
+  color: #fff !important;
+  text-transform: none !important;
+}
+
+/* Entrance animations here can be interrupted by app-level re-renders (data
+   refetch), freezing framer-motion mid-fade and leaving content invisible.
+   Force the animated wrappers to their visible end-state (opacity 1, no
+   offset) so the page always renders. Decorative low-opacity layers use
+   Tailwind classes (not inline styles), so they're unaffected. */
+.yureka-ai-page [style*="opacity"] { opacity: 1 !important; }
+.yureka-ai-page [style*="transform"] { transform: none !important; }
+
 @keyframes home-v2-marquee {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
@@ -55,7 +78,7 @@
 
 /* ── Home-page font utility classes ── */
 .font-cirka {
-  font-family: 'Cirka', 'Instrument Serif', Georgia, serif !important;
+  font-family: 'Space Mono', monospace !important;
   font-feature-settings: 'kern' 1, 'liga' 1;
 }
 
@@ -88,9 +111,19 @@
         text-rendering: optimizeSpeed; /* Performance: Faster text rendering */
       }
 
-      /* Heading modular scale and hierarchy — Cirka is the one heading font sitewide */
-      h1, h2, h3, h4, h5, h6, .font-heading, .font-blackletter {
-        font-family: 'Cirka', 'Instrument Serif', Georgia, serif !important;
+      /* Heading modular scale and hierarchy — Space Mono is the primary heading
+         font sitewide; Playfair Display italic is the heading accent (below). */
+      h1, h2, h3, h4, h5, h6, .font-heading {
+        font-family: 'Space Mono', monospace !important;
+      }
+
+      /* Heading accent — Playfair Display italic (the .font-blackletter token
+         and any emphasized text nested inside a heading). */
+      .font-blackletter,
+      h1 em, h2 em, h3 em, h4 em, h5 em, h6 em,
+      h1 i, h2 i, h3 i, h4 i, h5 i, h6 i {
+        font-family: 'Playfair Display', serif !important;
+        font-style: italic;
       }
 
       h1, .font-heading {

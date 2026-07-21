@@ -6,7 +6,7 @@ import { useState } from 'react';
 // for the real custom artwork.
 const FAQS = [
   {
-    q: 'What is Yureka.Money?',
+    q: 'What is Yureka.One?',
     a: 'Yureka Money is an AI-driven rewards copilot that automatically finds the best card, offer, and cashback path for every purchase you make -- online or offline.',
   },
   {

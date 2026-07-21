@@ -1,6 +1,6 @@
 import React, { Suspense, lazy, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, useLocation, Navigate, Link } from 'react-router-dom';
-import { Loader2, Sparkles } from 'lucide-react';
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { Loader2 } from 'lucide-react';
 
 import Navbar from './components/home-v2/Navbar';
 import Footer from './components/Footer';
@@ -37,9 +37,7 @@ const lazyWithRetry = (componentImport: () => Promise<any>) =>
 
 // Lazy Loaded Pages
 const MainPage = lazyWithRetry(() => import('./components/MainPage'));
-const CardExplorer = lazyWithRetry(() => import('./components/CardExplorer'));
 const BrandExplorer = lazyWithRetry(() => import('./components/BrandExplorer'));
-const CardDetail = lazyWithRetry(() => import('./components/CardDetail'));
 const OurStory = lazyWithRetry(() => import('./components/OurStory'));
 const JournalPage = lazyWithRetry(() => import('./components/JournalPage'));
 const BlogDetail = lazyWithRetry(() => import('./components/BlogDetail'));
@@ -51,16 +49,9 @@ const YurekaOsPage = lazyWithRetry(() => import('./components/YurekaOsPage'));
 const AdminDashboard = lazyWithRetry(() => import('./components/AdminDashboard'));
 const YurekaAIPage = lazyWithRetry(() => import('./components/YurekaAIPage'));
 const CareersPage = lazyWithRetry(() => import('./components/CareersPage'));
-const RewardsTransferCalculator = lazyWithRetry(() => import('./components/RewardsTransferCalculator'));
-const CategoriesPage = lazyWithRetry(() => import('./components/CategoriesPage'));
-const CategoryDetailPage = lazyWithRetry(() => import('./components/CategoryDetailPage'));
-const ComparePage = lazyWithRetry(() => import('./components/ComparePage'));
-const ComparisonDetail = lazyWithRetry(() => import('./components/ComparisonDetail'));
-const ContributePage = lazyWithRetry(() => import('./components/ContributePage'));
 const WaitlistPage = lazyWithRetry(() => import('./components/WaitlistPage'));
 const WaitingPage = lazyWithRetry(() => import('./components/WaitingPage'));
 const DashboardLayout = lazyWithRetry(() => import('./components/Dashboard/DashboardLayout'));
-const ByEveryone = lazyWithRetry(() => import('./components/ByEveryone'));
 const ForBrands = lazyWithRetry(() => import('./components/ForBrands'));
 const NotFoundPage = lazyWithRetry(() => import('./components/NotFoundPage'));
 
@@ -123,7 +114,11 @@ const AppContent: React.FC = () => {
   const isAdminRoute = location.pathname.startsWith('/admin');
   const isDashboardRoute = location.pathname.startsWith('/dashboard');
   const isHomeRoute = location.pathname === '/';
-  const isSpecialRoute = isAdminRoute || isDashboardRoute;
+  // /for-brands is the standalone full-screen Partnership Deck (rendered as an
+  // isolated iframe in ForBrands) — it owns the whole viewport, so it opts out
+  // of the sitewide navbar, footer, editorial grid, and top padding.
+  const isForBrandsRoute = location.pathname === '/for-brands';
+  const isSpecialRoute = isAdminRoute || isDashboardRoute || isForBrandsRoute;
   // Home page implements its own editorial 5-column grid (incl. its own Footer) — every
   // other non-special route is wrapped in the same grid here so content stays within
   // columns 2-4 (the 60%-width "Intelligence Core") with empty margin columns 1 & 5.
@@ -138,10 +133,6 @@ const AppContent: React.FC = () => {
   const appRoutes = (
               <Routes>
               <Route path="/" element={<MainPage />} />
-
-              {/* Hidden — redirected to home. Restore the original elements to re-enable. */}
-              <Route path="/cards" element={<Navigate to="/" replace />} />
-              <Route path="/cards/:slug" element={<Navigate to="/" replace />} />
 
               <Route path="/brands" element={
                 <>
@@ -185,25 +176,16 @@ const AppContent: React.FC = () => {
                   <WaitingPage />
                 </>
               } />
-              {/* Hidden — redirected to home */}
-              <Route path="/by-everyone-for-everyone" element={<Navigate to="/" replace />} />
-
               <Route path="/dashboard/*" element={
                 <ProtectedRoute>
                   <DashboardLayout />
                 </ProtectedRoute>
               } />
 
-              {/* Hidden — redirected to home */}
-              <Route path="/contribute" element={<Navigate to="/" replace />} />
-              <Route path="/coming-soon" element={<Navigate to="/" replace />} />
-
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/terms-of-service" element={<TermsOfService />} />
               <Route path="/security-protocol" element={<SecurityProtocolPage />} />
               <Route path="/community-guidelines" element={<CommunityGuidelines />} />
-              {/* Hidden — redirected to home */}
-              <Route path="/free-tools" element={<Navigate to="/" replace />} />
               <Route path="/yureka-os" element={<Navigate to="/" replace />} />
               <Route path="/manifesto" element={<OurStory />} />
               <Route path="/jobs" element={<CareersPage />} />
@@ -214,17 +196,8 @@ const AppContent: React.FC = () => {
                   <YurekaAIPage />
                 </>
               } />
-              <Route path="/explorer" element={<Navigate to="/" replace />} />
               <Route path="/ai-magic" element={<Navigate to="/yureka-ai" replace />} />
               <Route path="/ai" element={<Navigate to="/yureka-ai" replace />} />
-              <Route path="/matrix" element={<Navigate to="/" replace />} />
-              <Route path="/journal" element={<Navigate to="/blogs" replace />} />
-              {/* Hidden — redirected to home */}
-              <Route path="/rewards-calculator" element={<Navigate to="/" replace />} />
-              <Route path="/categories" element={<Navigate to="/" replace />} />
-              <Route path="/categories/:slug" element={<Navigate to="/" replace />} />
-              <Route path="/compare" element={<Navigate to="/" replace />} />
-              <Route path="/compare/:slug" element={<Navigate to="/" replace />} />
 
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
@@ -234,7 +207,7 @@ const AppContent: React.FC = () => {
     <div className={`min-h-screen bg-cream font-sans text-white relative ${noTopPadding ? 'pt-0' : 'pt-24 md:pt-28'}`}>
 
       <ScrollToTop />
-      {!isSpecialRoute && <Navbar />}
+      {(!isSpecialRoute || isForBrandsRoute) && <Navbar />}
 
       <main className={`relative z-10 ${noTopPadding ? 'pt-0' : ''}`}>
         <Suspense fallback={<div className="fixed inset-0 bg-cream" style={{ zIndex: 100 }} />}>
@@ -259,18 +232,6 @@ const AppContent: React.FC = () => {
           </ErrorBoundary>
         </Suspense>
       </main>
-
-      {!isAdminRoute && !isHomeRoute && (
-        <Link
-          to="/contribute"
-          className="fixed bottom-14 right-6 z-[100] bg-clay text-black p-4 rounded-full shadow-2xl hover:scale-110 transition-transform cursor-pointer border border-clay/20"
-          aria-label="Submit a Contribution"
-        >
-          <button className="cursor-pointer" aria-hidden="true" tabIndex={-1}>
-            <Sparkles size={28} />
-          </button>
-        </Link>
-      )}
 
     </div>
   );

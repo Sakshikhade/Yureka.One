@@ -61,7 +61,7 @@ function ScrambleLogout({ onClick }: { onClick: () => void }) {
 
 export default function Navbar({ entranceComplete = true }: NavbarProps) {
   const navigate = useNavigate();
-  const { user, currentUserStatus, supabase } = useSupabase();
+  const { user, supabase } = useSupabase();
   const [menuOpen, setMenuOpen] = useState(false);
   const [hoveredCta, setHoveredCta] = useState(false);
 
@@ -92,13 +92,8 @@ export default function Navbar({ entranceComplete = true }: NavbarProps) {
     navigate('/');
   };
 
-  const cta = !user
-    ? { label: 'Join Waitlist', onClick: () => navigate('/join-waitlist') }
-    : currentUserStatus === 'admin'
-      ? { label: 'Admin Panel', onClick: () => navigate('/admin') }
-      : currentUserStatus === 'accepted'
-        ? { label: 'Dashboard', onClick: () => navigate('/dashboard') }
-        : { label: 'My Status', onClick: () => navigate('/waiting') };
+  // Always route the navbar CTA to the waitlist, regardless of auth/status.
+  const cta = { label: 'Join Waitlist', onClick: () => navigate('/join-waitlist') };
 
   return (
     <>

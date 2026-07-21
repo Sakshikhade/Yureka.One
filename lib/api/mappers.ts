@@ -10,10 +10,9 @@ import type {
   Blog as ApiBlog,
   Review as ApiReview,
   Waitlist as ApiWaitlist,
-  CardContribution as ApiContribution,
 } from './types'
 
-import type { Card, Blog, Review, WaitlistEntry, CardContribution } from '../../types'
+import type { Card, Blog, Review, WaitlistEntry } from '../../types'
 
 function safeJsonParse<T>(str: string | undefined | null, fallback: T): T {
   if (!str) return fallback
@@ -21,17 +20,6 @@ function safeJsonParse<T>(str: string | undefined | null, fallback: T): T {
   catch { return fallback }
 }
 
-export function fromApiContribution(c: ApiContribution): CardContribution {
-  return {
-    id: c.id,
-    type: c.type,
-    status: c.status ?? 'pending',
-    card_name: c.cardName ?? '',
-    email: c.email,
-    payload: safeJsonParse(c.payload, {}),
-    created_at: c.createdAt,
-  }
-}
 
 export function fromApiCard(c: ApiCard): Card {
   return {

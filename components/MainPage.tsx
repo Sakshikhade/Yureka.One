@@ -5,6 +5,7 @@ import { faqPageSchema } from '../lib/seo/structuredData';
 import { faqQuestions } from '../lib/faq';
 
 import HeroCinematic from './home-v2/HeroCinematic';
+import ScrollDownCue from './home-v2/ScrollDownCue';
 import BrandsSection from './home-v2/BrandsSection';
 import MetricsTechnology from './home-v2/MetricsTechnology';
 import Architecture from './home-v2/Architecture';
@@ -19,12 +20,7 @@ const MainPage: React.FC = () => {
     "@type": "WebSite",
     "name": "Yureka One",
     "alternateName": "Yureka",
-    "url": SITE_URL,
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": `${SITE_URL}/cards?q={search_term_string}`,
-      "query-input": "required name=search_term_string"
-    }
+    "url": SITE_URL
   };
 
   const [entranceComplete, setEntranceComplete] = useState(false);
@@ -61,6 +57,7 @@ const MainPage: React.FC = () => {
       <SEO {...staticPageMeta['/']} schema={[homeSchema, faqPageSchema(faqQuestions)]} />
 
       <div className="yureka-one-home bg-black min-h-screen">
+        <ScrollDownCue />
         <HeroCinematic entranceComplete={entranceComplete} />
         <BrandsSection />
         <MetricsTechnology />

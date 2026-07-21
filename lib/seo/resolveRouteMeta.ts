@@ -6,18 +6,14 @@
 // slow or the row doesn't exist.
 
 import type { SupabaseClient } from '@supabase/supabase-js';
-import { DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE, formatTitle, getCategoryPageMeta, SITE_URL, staticPageMeta, type PageMeta } from './pageMeta';
-import { blogPostingSchema, breadcrumbSchema, faqPageSchema, financialProductSchema } from './structuredData';
+import { DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE, formatTitle, SITE_URL, staticPageMeta, type PageMeta } from './pageMeta';
+import { blogPostingSchema, breadcrumbSchema, faqPageSchema } from './structuredData';
 import { faqQuestions } from '../faq';
 
 export const REDIRECTS: Record<string, string> = {
-  '/explorer': '/cards',
   '/ai-magic': '/yureka-ai',
   '/ai': '/yureka-ai',
-  '/matrix': '/rewards-calculator',
-  '/journal': '/blogs',
-  '/yureka-os': '/free-tools',
-  '/coming-soon': '/contribute',
+  '/yureka-os': '/',
 };
 
 export interface ResolvedRoute {
@@ -80,93 +76,23 @@ export async function resolveRouteMeta(pathname: string, supabase: SupabaseClien
         name: 'Yureka One',
         alternateName: 'Yureka',
         url: SITE_URL,
-        potentialAction: {
-          '@type': 'SearchAction',
-          target: `${SITE_URL}/cards?q={search_term_string}`,
-          'query-input': 'required name=search_term_string',
-        },
       };
       return { status: 200, meta: staticPageMeta['/'], schemas: [homeSchema, faqPageSchema(faqQuestions)] };
     }
     return { status: 200, meta: staticPageMeta[path] };
   }
 
-  let m = path.match(/^\/cards\/([^/]+)$/);
-  if (m) return resolveCard(m[1], supabase);
-
-  m = path.match(/^\/blogs\/([^/]+)$/);
+  const m = path.match(/^\/blogs\/([^/]+)$/);
   if (m) return resolveBlog(m[1], supabase);
-
-  m = path.match(/^\/categories\/([^/]+)$/);
-  if (m) {
-    const meta = getCategoryPageMeta(m[1]);
-    return {
-      status: 200,
-      meta,
-      schemas: [breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Categories', path: '/categories' }, { name: meta.title.split('|')[0].trim(), path: `/categories/${m[1]}` }])],
-    };
-  }
-
-  m = path.match(/^\/compare\/([^/]+)$/);
-  if (m) return resolveCompare(m[1], supabase);
 
   return { status: 404, meta: NOT_FOUND_META };
 }
 
 const CARD_FETCH_TIMEOUT_MS = 2000;
-const CARD_TIMEOUT_FALLBACK: ResolvedRoute = {
-  status: 200,
-  meta: {
-    title: formatTitle('Credit Card Review | Yureka One'),
-    description: 'Comprehensive reward analysis, fees, and eligibility data on Yureka One.',
-  },
-};
 const BLOG_TIMEOUT_FALLBACK: ResolvedRoute = {
   status: 200,
   meta: { title: formatTitle('Pulse | Yureka Journal'), description: DEFAULT_DESCRIPTION },
 };
-
-async function resolveCard(slug: string, supabase: SupabaseClient): Promise<ResolvedRoute> {
-  const cacheKey = `card:${slug}`;
-  const cached = getCached(cacheKey);
-  if (cached) return cached;
-
-  const { timedOut, value: row } = await withTimeout(
-    supabase.from('cards').select('name, bank, image, description, slug, annual_fee, joining_fee').eq('slug', slug).maybeSingle().then((r) => r.data),
-    CARD_FETCH_TIMEOUT_MS
-  );
-
-  // Inconclusive (DB slow/unreachable) — never claim 404 on a guess. Don't cache it either,
-  // so the next request gets a fresh chance once the DB responds normally.
-  if (timedOut) return CARD_TIMEOUT_FALLBACK;
-
-  let result: ResolvedRoute;
-  if (!row) {
-    result = {
-      status: 404,
-      meta: {
-        title: formatTitle('Credit Card Not Found | Yureka One'),
-        description: 'The credit card you are looking for may have been delisted or archived.',
-        robots: 'noindex, follow',
-      },
-    };
-  } else {
-    result = {
-      status: 200,
-      meta: {
-        title: formatTitle(`${row.name} | Detailed Review & Strategic Analysis`),
-        description: row.description || `Comprehensive reward analysis of ${row.name} by ${row.bank}. Rewards, fees, and eligibility data.`,
-        image: row.image || DEFAULT_OG_IMAGE,
-      },
-      schemas: [
-        breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Cards', path: '/cards' }, { name: row.name, path: `/cards/${slug}` }]),
-        financialProductSchema({ name: row.name, bank: row.bank, slug: row.slug, image: row.image, description: row.description, annualFee: row.annual_fee, joiningFee: row.joining_fee }),
-      ],
-    };
-  }
-  setCached(cacheKey, result);
-  return result;
-}
 
 async function resolveBlog(slug: string, supabase: SupabaseClient): Promise<ResolvedRoute> {
   const cacheKey = `blog:${slug}`;
@@ -204,36 +130,6 @@ async function resolveBlog(slug: string, supabase: SupabaseClient): Promise<Reso
       ],
     };
   }
-  setCached(cacheKey, result);
-  return result;
-}
-
-async function resolveCompare(slug: string, supabase: SupabaseClient): Promise<ResolvedRoute> {
-  const fallback: ResolvedRoute = { status: 200, meta: staticPageMeta['/compare'] };
-  const slugs = slug.split('-vs-').filter(Boolean);
-  if (slugs.length < 2) return fallback;
-
-  const cacheKey = `compare:${slug}`;
-  const cached = getCached(cacheKey);
-  if (cached) return cached;
-
-  const { value: rows } = await withTimeout(
-    supabase.from('cards').select('name, slug').in('slug', slugs).then((r) => r.data),
-    CARD_FETCH_TIMEOUT_MS
-  );
-  if (!rows || rows.length === 0) return fallback;
-
-  const names = slugs.map((s) => rows.find((r: { slug: string; name: string }) => r.slug === s)?.name).filter(Boolean) as string[];
-  if (names.length === 0) return fallback;
-
-  const result: ResolvedRoute = {
-    status: 200,
-    meta: {
-      title: formatTitle(`${names.join(' vs ')} | Credit Card Comparison`),
-      description: `Side-by-side comparison of ${names.join(' vs ')} — fees, rewards, eligibility, and benefits.`,
-    },
-    schemas: [breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Compare', path: '/compare' }, { name: names.join(' vs '), path: `/compare/${slug}` }])],
-  };
   setCached(cacheKey, result);
   return result;
 }

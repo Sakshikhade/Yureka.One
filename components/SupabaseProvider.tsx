@@ -1,11 +1,11 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { supabase } from '../supabase';
-import { Card, Blog, Review, WaitlistEntry, CardContribution } from '../types';
+import { Card, Blog, Review, WaitlistEntry } from '../types';
 import { featuredCards } from '../data';
 import { api, isApiError } from '../lib/api/client';
-import { fromApiCard, fromApiBlog, fromApiReview, fromApiWaitlist, fromApiContribution } from '../lib/api/mappers';
-import type { Card as ApiCard, Blog as ApiBlog, Review as ApiReview, Waitlist as ApiWaitlist, CardContribution as ApiContribution } from '../lib/api/types';
+import { fromApiCard, fromApiBlog, fromApiReview, fromApiWaitlist } from '../lib/api/mappers';
+import type { Card as ApiCard, Blog as ApiBlog, Review as ApiReview, Waitlist as ApiWaitlist } from '../lib/api/types';
 import { SupabaseClient } from '@supabase/supabase-js';
 
 export interface ParsedTransaction {
@@ -25,7 +25,6 @@ interface SupabaseContextType {
   waitlist: WaitlistEntry[];
   team: any[];
   logs: any[];
-  cardContributions: CardContribution[];
   user: any | null;
   session: any | null;
   currentUserStatus: 'none' | 'pending' | 'accepted' | 'admin' | 'loading' | 'rejected' | 'on-hold';
@@ -38,8 +37,7 @@ interface SupabaseContextType {
   setReviews: React.Dispatch<React.SetStateAction<Review[]>>;
   setWaitlist: React.Dispatch<React.SetStateAction<WaitlistEntry[]>>;
   setTeam: React.Dispatch<React.SetStateAction<any[]>>;
-  setCardContributions: React.Dispatch<React.SetStateAction<CardContribution[]>>;
-  
+
   // Ledger Integration
   ledgerTransactions: ParsedTransaction[];
   ledgerLoading: boolean;
@@ -54,16 +52,14 @@ const SupabaseContext = createContext<SupabaseContextType | undefined>(undefined
 async function loadAdminData(setters: {
   setCards: (v: any) => void; setBlogs: (v: any) => void; setReviews: (v: any) => void;
   setWaitlist: (v: any) => void; setTeam: (v: any) => void; setLogs: (v: any) => void;
-  setCardContributions: (v: any) => void;
 }) {
-  const [cRes, bRes, rRes, wRes, tRes, lRes, ccRes] = await Promise.all([
+  const [cRes, bRes, rRes, wRes, tRes, lRes] = await Promise.all([
     api.get<ApiCard[]>('/api/v1/admin/cards'),
     api.get<ApiBlog[]>('/api/v1/admin/blogs'),
     api.get<ApiReview[]>('/api/v1/admin/reviews'),
     api.get<ApiWaitlist[]>('/api/v1/admin/waitlist'),
     api.get<any[]>('/api/v1/admin/team'),
     api.get<any[]>('/api/v1/admin/audit-logs'),
-    api.get<ApiContribution[]>('/api/v1/admin/contributions'),
   ]);
   if (!isApiError(cRes))  setters.setCards((cRes.data ?? []).map(fromApiCard));
   if (!isApiError(bRes))  setters.setBlogs((bRes.data ?? []).map(fromApiBlog));
@@ -71,7 +67,6 @@ async function loadAdminData(setters: {
   if (!isApiError(wRes))  setters.setWaitlist((wRes.data ?? []).map(fromApiWaitlist));
   if (!isApiError(tRes))  setters.setTeam(tRes.data ?? []);
   if (!isApiError(lRes))  setters.setLogs(lRes.data ?? []);
-  if (!isApiError(ccRes)) setters.setCardContributions((ccRes.data ?? []).map(fromApiContribution));
 }
 
 // Resolves currentUserStatus for a given email using the Java API.
@@ -106,8 +101,7 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [waitlist, setWaitlist] = useState<WaitlistEntry[]>([]);
   const [team, setTeam] = useState<any[]>([]);
   const [logs, setLogs] = useState<any[]>([]);
-  const [cardContributions, setCardContributions] = useState<CardContribution[]>([]);
-  
+
   const [user, setUser] = useState<any | null>(null);
   const [session, setSession] = useState<any | null>(null);
   const [currentUserStatus, setCurrentUserStatus] = useState<'none' | 'pending' | 'accepted' | 'admin' | 'loading' | 'rejected' | 'on-hold'>('loading');
@@ -200,7 +194,7 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const refreshAll = useCallback(async () => {
     try {
       if (isAdminRoute) {
-        await loadAdminData({ setCards, setBlogs, setReviews, setWaitlist, setTeam, setLogs, setCardContributions });
+        await loadAdminData({ setCards, setBlogs, setReviews, setWaitlist, setTeam, setLogs });
       } else {
         const [cRes, bRes, rRes] = await Promise.all([
           api.get<ApiCard[]>('/api/v1/cms/cards', { skipAuth: true }),
@@ -227,7 +221,6 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           setReviews((sbReviews ?? []) as unknown as Review[]);
         }
       }
-      console.log('⚡️ Manual Cloud Resync Complete.');
     } catch (err) {
       console.error('Manual resync failed:', err);
       setSyncStatus('error');
@@ -244,23 +237,17 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }, 12000);
 
     const setup = async () => {
-      console.log('⚡️ SupabaseProvider setup initiated');
       // Only set loading if this is the absolute first mount and we have no data
       if (isInitialLoad.current && cards.length === 0) {
         setIsLoading(true);
       }
       try {
         if (isAdminRoute) {
-          console.log('⚡️ Admin route detected. Fetching session...');
           // Check for session before attempting admin fetches
           const { data: { session } } = await supabase.auth.getSession();
           if (session) {
-            console.log('⚡️ Admin session found. Fetching from Java API...');
-            await loadAdminData({ setCards, setBlogs, setReviews, setWaitlist, setTeam, setLogs, setCardContributions });
+            await loadAdminData({ setCards, setBlogs, setReviews, setWaitlist, setTeam, setLogs });
             setIsAdminDataLoaded(true);
-            console.log('⚡️ Admin fetches complete.');
-          } else {
-            console.log('⚡️ No admin session found.');
           }
         } else if (!publicDataLoaded.current) {
           const [cRes, bRes, rRes] = await Promise.all([
@@ -272,7 +259,6 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           // Cards — fall back to Supabase direct, then static hardcoded set
           if (!isApiError(cRes)) {
             const mapped = (cRes.data ?? []).map(fromApiCard);
-            console.log('⚡️ Public cards loaded from Java API', mapped.length);
             setCards(mapped.length > 0 ? mapped : featuredCards);
           } else {
             console.warn('⚡️ Java API unavailable for cards, falling back to Supabase direct');
@@ -282,7 +268,6 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
                 .select('*')
                 .eq('status', 'published');
               const fallback = sbCards && sbCards.length > 0 ? sbCards as unknown as Card[] : featuredCards;
-              console.log('⚡️ Supabase fallback cards', fallback.length);
               setCards(fallback);
             } catch {
               setCards(featuredCards);
@@ -292,7 +277,6 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           // Blogs — fall back to Supabase direct
           if (!isApiError(bRes)) {
             const mapped = (bRes.data ?? []).map(fromApiBlog).filter(b => b.id && b.title && b.title !== 'Untitled Journal');
-            console.log('⚡️ Public blogs loaded from Java API', mapped.length);
             setBlogs(mapped);
           } else {
             console.warn('⚡️ Java API unavailable for blogs, falling back to Supabase direct');
@@ -311,7 +295,6 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           // Reviews — fall back to Supabase direct
           if (!isApiError(rRes)) {
             const mapped = (rRes.data ?? []).map(fromApiReview);
-            console.log('⚡️ Public reviews loaded from Java API', mapped.length);
             setReviews(mapped);
           } else {
             console.warn('⚡️ Java API unavailable for reviews, falling back to Supabase direct');
@@ -379,15 +362,15 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     user,
     session,
     currentUserStatus,
-    cards, blogs, reviews, waitlist, team, logs, cardContributions,
+    cards, blogs, reviews, waitlist, team, logs,
     syncStatus, isLoading, isAdminDataLoaded, refreshAll,
-    setCards, setBlogs, setReviews, setWaitlist, setTeam, setCardContributions,
+    setCards, setBlogs, setReviews, setWaitlist, setTeam,
     ledgerTransactions, ledgerLoading, ledgerError, scanProgress, syncLedger,
   }), [
     user, session, currentUserStatus,
-    cards, blogs, reviews, waitlist, team, logs, cardContributions,
+    cards, blogs, reviews, waitlist, team, logs,
     syncStatus, isLoading, isAdminDataLoaded, refreshAll,
-    setCards, setBlogs, setReviews, setWaitlist, setTeam, setCardContributions,
+    setCards, setBlogs, setReviews, setWaitlist, setTeam,
     ledgerTransactions, ledgerLoading, ledgerError, scanProgress, syncLedger,
   ]);
 

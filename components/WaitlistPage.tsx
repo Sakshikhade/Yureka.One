@@ -217,7 +217,7 @@ function parseTransactionData(combinedText: string, sender: string, subject: str
 }
 
 const WaitlistPage: React.FC = () => {
-    const { supabase, user, session, cards: allCards, currentUserStatus } = useSupabase();
+    const { supabase, user, session, currentUserStatus } = useSupabase();
     const navigate = useNavigate();
     const location = useLocation();
     const isDashboard = location.pathname.startsWith('/dashboard');
@@ -238,8 +238,6 @@ const WaitlistPage: React.FC = () => {
         mobileNumber: '',
         dateOfBirth: '',
         gender: '',
-        creditCardsCount: 1,
-        creditCards: [{ bank: '', card: '' }],
         mostUsedFor: [] as string[],
         monthlySpend: 50000,
         referralCode: '',
@@ -346,7 +344,7 @@ const WaitlistPage: React.FC = () => {
                 firstName: extractedFirstName || prev.firstName,
                 lastName: extractedLastName || prev.lastName,
                 email: email || user.email || prev.email,
-                mobileNumber: phone || prev.mobileNumber,
+                mobileNumber: (phone || prev.mobileNumber || '').replace(/\D/g, '').slice(-10),
                 dateOfBirth: dob || prev.dateOfBirth,
                 gender: gender || prev.gender
             }));
@@ -463,34 +461,6 @@ const WaitlistPage: React.FC = () => {
     }, [scannedTransactions]);
 
     // ─── HELPERS ───
-    const handleCardCountChange = (count: number) => {
-        const currentCards = [...formData.creditCards];
-        if (count > currentCards.length) {
-            const diff = count - currentCards.length;
-            for (let i = 0; i < diff; i++) currentCards.push({ bank: '', card: '' });
-        } else {
-            currentCards.length = count;
-        }
-        setFormData({ ...formData, creditCardsCount: count, creditCards: currentCards });
-    };
-
-    const updateCardDetail = (index: number, field: 'bank' | 'card', value: string) => {
-        const newCards = [...formData.creditCards];
-        newCards[index][field] = value;
-        if (field === 'bank') newCards[index].card = ''; 
-        setFormData({ ...formData, creditCards: newCards });
-    };
-
-    const filteredCardsForBank = (bank: string) => {
-        if (!bank) return [];
-        const searchBank = bank.toLowerCase().replace(' bank', '').trim();
-        return allCards.filter(c => {
-            const issuer = (c.issuer || '').toLowerCase();
-            const cardBank = (c.bank || '').toLowerCase();
-            return issuer.includes(searchBank) || cardBank.includes(searchBank) || searchBank.includes(issuer) || searchBank.includes(cardBank);
-        });
-    };
-
     const toggleUsageCategory = (cat: string) => {
         setFormData(prev => {
             const current = prev.mostUsedFor;
@@ -510,17 +480,9 @@ const WaitlistPage: React.FC = () => {
         if (!formData.firstName.trim()) errors.firstName = 'First name is required';
         if (!formData.lastName.trim()) errors.lastName = 'Last name is required';
         if (!formData.mobileNumber.trim()) errors.mobileNumber = 'Mobile number is required';
+        else if (formData.mobileNumber.length !== 10) errors.mobileNumber = 'Enter a valid 10-digit mobile number';
         if (!formData.dateOfBirth) errors.dateOfBirth = 'Date of birth is required';
         if (!formData.gender) errors.gender = 'Gender is required';
-        setStepErrors(errors);
-        return Object.keys(errors).length === 0;
-    };
-
-    const validateStep3 = () => {
-        const errors: Record<string, string> = {};
-        formData.creditCards.forEach((card, idx) => {
-            if (!card.bank) errors[`card_${idx}`] = `Card ${idx + 1}: please select a bank`;
-        });
         setStepErrors(errors);
         return Object.keys(errors).length === 0;
     };
@@ -546,11 +508,9 @@ const WaitlistPage: React.FC = () => {
                 last_name: formData.lastName,
                 name: `${formData.firstName} ${formData.lastName}`.trim(),
                 email: canonicalEmail,
-                mobile_number: formData.mobileNumber,
+                mobile_number: formData.mobileNumber ? `+91${formData.mobileNumber}` : '',
                 date_of_birth: formData.dateOfBirth,
                 gender: formData.gender,
-                credit_cards_count: formData.creditCardsCount,
-                credit_cards_details: formData.creditCards,
                 most_used_for: formData.mostUsedFor.join(', '),
                 monthly_spend: `₹${formData.monthlySpend.toLocaleString()}`,
                 referral_code: formData.referralCode,
@@ -678,12 +638,14 @@ const WaitlistPage: React.FC = () => {
 
                 <div className="space-y-2">
                     <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/30">Mobile Number <span className="text-red-400">*</span></label>
-                    <div className="relative">
-                        <Phone className="absolute left-5 top-1/2 -translate-y-1/2 text-white/25" size={16} />
+                    <div className={`flex items-center bg-black/30 border rounded-xl transition-all focus-within:border-clay/60 focus-within:bg-white/5 ${stepErrors.mobileNumber ? 'border-red-500/60' : 'border-white/10'}`}>
+                        <Phone className="ml-5 shrink-0 text-white/25" size={16} />
+                        <span className="ml-3 select-none text-sm text-white/50">+91</span>
                         <input
-                            type="tel" value={formData.mobileNumber} placeholder="+91 XXXXX XXXXX"
-                            onChange={e => { setFormData({...formData, mobileNumber: e.target.value}); setStepErrors(p => ({...p, mobileNumber: ''})); }}
-                            className={`w-full bg-black/30 border rounded-xl pl-14 pr-5 py-3.5 text-white text-sm outline-none focus:border-clay/60 focus:bg-white/5 transition-all ${stepErrors.mobileNumber ? 'border-red-500/60' : 'border-white/10'}`}
+                            type="tel" inputMode="numeric" maxLength={10}
+                            value={formData.mobileNumber} placeholder="XXXXX XXXXX"
+                            onChange={e => { const digits = e.target.value.replace(/\D/g, '').slice(0, 10); setFormData({...formData, mobileNumber: digits}); setStepErrors(p => ({...p, mobileNumber: ''})); }}
+                            className="min-w-0 flex-1 border-0 bg-transparent pl-2 pr-5 py-3.5 text-white text-sm outline-none placeholder:text-white/25"
                         />
                     </div>
                     {stepErrors.mobileNumber && <p className="text-red-400 text-[10px]">{stepErrors.mobileNumber}</p>}
@@ -720,135 +682,12 @@ const WaitlistPage: React.FC = () => {
             </div>
 
             <button
-                onClick={() => { if (validateStep2()) { setStep(3); setStepErrors({}); } }}
+                onClick={() => { if (validateStep2()) { setStep(4); setStepErrors({}); } }}
                 className="w-full bg-clay text-black py-4 rounded-2xl flex items-center justify-center gap-3 font-black text-[11px] uppercase tracking-[0.25em] shadow-xl active:scale-[0.98] transition-all group"
             >
                 Continue
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
             </button>
-        </motion.div>
-    );
-
-    const renderStep3 = () => (
-        <motion.div key="step3" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} className="space-y-6">
-            <div className="text-center">
-                <h3 className="text-3xl font-heading font-black text-white uppercase tracking-tighter mb-2">Your Cards</h3>
-                <p className="text-white/40 text-sm">Tell us about the credit cards you currently hold.</p>
-            </div>
-
-            <div className="bg-white/[0.02] border border-white/8 rounded-[2rem] p-8 space-y-5">
-                <div className="flex justify-between items-center">
-                    <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/30">Number of credit cards</label>
-                    <span className="text-clay font-black text-2xl tabular-nums">{formData.creditCardsCount}</span>
-                </div>
-                <input
-                    type="range" min="1" max="10" step="1"
-                    value={formData.creditCardsCount}
-                    onChange={e => handleCardCountChange(parseInt(e.target.value))}
-                    className="w-full h-1 bg-white/5 rounded-full appearance-none cursor-pointer accent-clay"
-                />
-                <div className="flex justify-between text-[8px] font-black text-white/15 uppercase tracking-widest">
-                    <span>1 card</span><span>10 cards</span>
-                </div>
-            </div>
-
-            <div className="space-y-4">
-                {formData.creditCards.map((card, idx) => (
-                    <div key={idx} className="p-6 bg-white/[0.02] rounded-[2rem] border border-white/8 space-y-5">
-                        <div className="flex items-center gap-3">
-                            <div className="w-7 h-7 bg-clay/15 border border-clay/20 text-clay rounded-lg flex items-center justify-center text-[10px] font-black shrink-0">
-                                {String(idx + 1).padStart(2, '0')}
-                            </div>
-                            <span className="text-[9px] font-black uppercase tracking-[0.3em] text-white/30">Card {idx + 1}</span>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="space-y-2 relative">
-                                <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/25">Bank</label>
-                                <button
-                                    onClick={() => setOpenBankDropdown(openBankDropdown === idx ? null : idx)}
-                                    className="w-full bg-black/30 border border-white/10 hover:border-white/20 rounded-xl px-4 py-3 text-white text-sm flex items-center justify-between transition-all"
-                                >
-                                    <div className="flex items-center gap-3">
-                                        {card.bank && BANK_LOGOS[card.bank] ? (
-                                            <div className="w-5 h-5 bg-white rounded-full p-0.5 flex items-center justify-center overflow-hidden shrink-0">
-                                                <img src={BANK_LOGOS[card.bank]} alt="" className="w-full h-full object-contain" />
-                                            </div>
-                                        ) : (
-                                            <Landmark size={14} className="text-white/25" />
-                                        )}
-                                        <span className={card.bank ? 'text-white' : 'text-white/30 text-sm'}>{card.bank || 'Select bank'}</span>
-                                    </div>
-                                    <ChevronDown size={14} className={`text-white/25 transition-transform duration-200 ${openBankDropdown === idx ? 'rotate-180' : ''}`} />
-                                </button>
-
-                                <AnimatePresence>
-                                    {openBankDropdown === idx && (
-                                        <>
-                                            <div className="fixed inset-0 z-40" onClick={() => setOpenBankDropdown(null)} />
-                                            <motion.div
-                                                initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }}
-                                                className="absolute top-full left-0 right-0 mt-2 bg-[#0f0f0f] border border-white/10 rounded-2xl shadow-2xl z-50 overflow-hidden"
-                                            >
-                                                <div className="p-2 border-b border-white/5">
-                                                    <input
-                                                        autoFocus type="text" placeholder="Search bank…"
-                                                        value={formData.bankSearch}
-                                                        onChange={e => setFormData({...formData, bankSearch: e.target.value})}
-                                                        className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2 text-sm text-white outline-none focus:border-clay/50 placeholder:text-white/25"
-                                                    />
-                                                </div>
-                                                <div className="max-h-56 overflow-y-auto">
-                                                    {ALL_BANKS.filter(b => b.toLowerCase().includes(formData.bankSearch.toLowerCase())).map(bank => (
-                                                        <button
-                                                            key={bank}
-                                                            onClick={() => { updateCardDetail(idx, 'bank', bank); setOpenBankDropdown(null); setFormData(p => ({...p, bankSearch: ''})); }}
-                                                            className="w-full flex items-center gap-3 px-4 py-3 hover:bg-white/5 text-white text-sm transition-colors text-left"
-                                                        >
-                                                            <div className="w-6 h-6 bg-white rounded-full p-1 flex items-center justify-center overflow-hidden shrink-0">
-                                                                <img src={BANK_LOGOS[bank]} alt="" className="w-full h-full object-contain" />
-                                                            </div>
-                                                            {bank}
-                                                        </button>
-                                                    ))}
-                                                    {ALL_BANKS.filter(b => b.toLowerCase().includes(formData.bankSearch.toLowerCase())).length === 0 && (
-                                                        <div className="p-4 text-center text-white/25 text-xs">No banks found</div>
-                                                    )}
-                                                </div>
-                                            </motion.div>
-                                        </>
-                                    )}
-                                </AnimatePresence>
-                            </div>
-                            <div className="space-y-2">
-                                <label className="text-[9px] font-black uppercase tracking-[0.3em] text-white/25">Card Name</label>
-                                <select
-                                    disabled={!card.bank}
-                                    value={card.card}
-                                    onChange={e => updateCardDetail(idx, 'card', e.target.value)}
-                                    className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-white text-sm outline-none focus:border-clay/60 transition-all appearance-none disabled:opacity-30 disabled:cursor-not-allowed"
-                                >
-                                    <option value="" className="bg-black">Select card</option>
-                                    {filteredCardsForBank(card.bank).map(c => <option key={c.id} value={c.name} className="bg-black">{c.name}</option>)}
-                                    <option value="Other" className="bg-black">Other / Not listed</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </div>
-
-            {Object.keys(stepErrors).some(k => k.startsWith('card_')) && (
-                <p className="text-red-400 text-[10px] text-center">{Object.values(stepErrors).find(Boolean)}</p>
-            )}
-
-            <div className="flex gap-3">
-                <button onClick={() => setStep(2)} className="flex-1 border border-white/10 text-white/40 py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.25em] hover:bg-white/5 transition-all">Back</button>
-                <button onClick={() => { if (validateStep3()) { setStep(4); setStepErrors({}); } }} className="flex-[2] bg-clay text-black py-4 rounded-2xl flex items-center justify-center gap-3 font-black text-[11px] uppercase tracking-[0.25em] shadow-xl active:scale-[0.98] transition-all group">
-                    Continue
-                    <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                </button>
-            </div>
         </motion.div>
     );
 
@@ -947,7 +786,7 @@ const WaitlistPage: React.FC = () => {
             )}
 
             <div className="flex gap-3">
-                <button onClick={() => setStep(3)} className="flex-1 border border-white/10 text-white/40 py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.25em] hover:bg-white/5 transition-all">Back</button>
+                <button onClick={() => setStep(2)} className="flex-1 border border-white/10 text-white/40 py-4 rounded-2xl text-[10px] font-black uppercase tracking-[0.25em] hover:bg-white/5 transition-all">Back</button>
                 <button
                     onClick={handleSubmit}
                     disabled={isSubmitting}
@@ -1232,12 +1071,15 @@ const WaitlistPage: React.FC = () => {
                             <motion.div
                                 className="absolute left-0 top-[14px] h-[1px] bg-clay -z-0 origin-left"
                                 initial={{ scaleX: 0 }}
-                                animate={{ scaleX: Math.max(0, (step - 1) / 3) }}
+                                animate={{ scaleX: Math.max(0, [1, 2, 4].reduce((acc, st, i) => (step >= st ? i : acc), 0) / 2) }}
                                 transition={{ duration: 0.4, ease: 'easeOut' }}
                                 style={{ right: 0 }}
                             />
-                            {(['Account', 'Profile', 'Cards', 'Preferences'] as const).map((label, i) => {
-                                const s = i + 1;
+                            {([
+                                { label: 'Account', step: 1 },
+                                { label: 'Profile', step: 2 },
+                                { label: 'Preferences', step: 4 },
+                            ] as const).map(({ label, step: s }, i) => {
                                 const done = step > s;
                                 const active = step === s;
                                 return (
@@ -1249,7 +1091,7 @@ const WaitlistPage: React.FC = () => {
                                         }`}>
                                             {done
                                                 ? <Check size={12} className="text-black" strokeWidth={3} />
-                                                : <span className={`text-[10px] font-black ${active ? 'text-clay' : 'text-white/20'}`}>{s}</span>
+                                                : <span className={`text-[10px] font-black ${active ? 'text-clay' : 'text-white/20'}`}>{i + 1}</span>
                                             }
                                         </div>
                                         <span className={`text-[9px] font-black uppercase tracking-[0.15em] transition-colors duration-300 ${active || done ? 'text-white/50' : 'text-white/15'}`}>{label}</span>
@@ -1263,7 +1105,6 @@ const WaitlistPage: React.FC = () => {
                 <AnimatePresence mode="wait">
                     {step === 1 && renderStep1()}
                     {step === 2 && renderStep2()}
-                    {step === 3 && renderStep3()}
                     {step === 4 && renderStep4()}
                     {step === 5 && renderStep5()}
                     {step === 6 && renderStep6()}

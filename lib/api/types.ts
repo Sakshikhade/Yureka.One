@@ -183,17 +183,6 @@ export interface Newsletter {
   createdAt?: string
 }
 
-export interface CardContribution {
-  id?: string
-  type: 'add' | 'update' | 'remove'
-  status?: 'pending' | 'approved' | 'rejected' | 'resolved'
-  cardName?: string
-  email?: string
-  /** JSON string — parse to get the raw payload object */
-  payload?: string
-  createdAt?: string
-}
-
 export interface AppUser {
   id?: string
   email: string

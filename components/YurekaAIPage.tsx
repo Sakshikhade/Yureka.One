@@ -18,13 +18,18 @@ const DEMO_CHAT: { role: 'user' | 'ai'; text: string; delay: number }[] = [
   { role: 'ai', text: 'Yes! Buy a ₹2,000 Amazon gift card via **RewardX** for ₹1,820 (9% off), then pay with your ICICI Amazon card for 5% cashback. Total effective discount: **14%** on this order.', delay: 1000 },
 ];
 
+// On-brand two-tone system: emerald-green (clay) as primary, gold as the accent —
+// mirroring the homepage's green + gold palette. Legacy color keys are remapped
+// so existing markup doesn't need touching.
+const CLAY_TONE = { bg: 'bg-clay/10', text: 'text-clay', glow: 'shadow-clay/20', border: 'border-clay/20' };
+const GOLD_TONE = { bg: 'bg-[#E8C468]/10', text: 'text-[#E8C468]', glow: 'shadow-[#E8C468]/20', border: 'border-[#E8C468]/20' };
 const COLOR_MAP: Record<string, { bg: string; text: string; glow: string; border: string }> = {
-  clay:   { bg: 'bg-clay/10',   text: 'text-clay',   glow: 'shadow-clay/20',   border: 'border-clay/20' },
-  teal:   { bg: 'bg-clay/10',   text: 'text-clay',   glow: 'shadow-clay/20',   border: 'border-clay/20' },
-  purple: { bg: 'bg-purple-500/10', text: 'text-purple-500', glow: 'shadow-purple-500/20', border: 'border-purple-500/20' },
-  emerald: { bg: 'bg-[#00933b]/10', text: 'text-[#00933b]', glow: 'shadow-[#00933b]/20', border: 'border-[#00933b]/20' },
-  blue:   { bg: 'bg-blue-500/10',   text: 'text-blue-500',   glow: 'shadow-blue-500/20',   border: 'border-blue-500/20' },
-  rose:   { bg: 'bg-rose-500/10',   text: 'text-rose-500',   glow: 'shadow-rose-500/20',   border: 'border-rose-500/20' },
+  clay: CLAY_TONE,
+  teal: CLAY_TONE,
+  blue: CLAY_TONE,
+  emerald: CLAY_TONE,
+  purple: GOLD_TONE,
+  rose: GOLD_TONE,
 };
 
 const CAPABILITIES = [
@@ -229,7 +234,7 @@ const YurekaAIPage: React.FC = () => {
   const basePath = isDashboard ? '/dashboard' : '';
 
   return (
-    <div className="relative min-h-screen bg-cream overflow-x-hidden selection:bg-clay selection:text-cream">
+    <div className="yureka-ai-page relative min-h-screen bg-cream overflow-x-hidden selection:bg-clay selection:text-cream">
       {/* Background Glows */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-[-15%] left-[-10%] w-[50%] h-[50%] bg-clay/5 rounded-full blur-[140px]" />
@@ -247,7 +252,8 @@ const YurekaAIPage: React.FC = () => {
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ duration: 0.7 }}
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 mb-8 bg-clay/10 border border-clay/20 rounded-full">
@@ -280,19 +286,20 @@ const YurekaAIPage: React.FC = () => {
                 Get Early Access
                 <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </Link>
-              <Link
-                to={`${basePath}/rewards-calculator`}
+              <a
+                href="#ai-demo"
                 className="px-10 py-5 rounded-2xl font-bold uppercase tracking-widest text-xs border border-white/10 text-white/70 hover:text-white hover:border-clay/40 transition-all flex items-center justify-center gap-2 backdrop-blur-sm"
               >
-                Try Rewards Calculator
-              </Link>
+                See It In Action
+              </a>
             </div>
           </motion.div>
 
           {/* Stats Row */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.3 }}
             className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-20 max-w-3xl mx-auto"
           >
@@ -395,7 +402,7 @@ const YurekaAIPage: React.FC = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-purple-400 mb-6">Profile-to-Profile Intelligence</p>
+              <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-clay mb-6">Profile-to-Profile Intelligence</p>
               <h2 className="text-3xl sm:text-5xl font-sans font-extrabold text-white tracking-tighter leading-tight mb-8">
                 Not generic.<br /><span className="text-white/20 italic font-light">Yours specifically.</span>
               </h2>
@@ -468,7 +475,7 @@ const YurekaAIPage: React.FC = () => {
                   { msg: 'Transfer 50,000 Amex MR → Marriott Bonvoy before Jan 31 for best value', type: 'purple' },
                 ].map((alert, i) => (
                   <div key={i} className="flex items-start gap-3 p-3 bg-white/[0.02] border border-white/5 rounded-xl">
-                    <div className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${alert.type === 'emerald' ? 'bg-[#00933b]' : alert.type === 'clay' ? 'bg-clay' : 'bg-purple-400'}`} />
+                    <div className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${alert.type === 'emerald' ? 'bg-[#00933b]' : alert.type === 'clay' ? 'bg-clay' : 'bg-[#E8C468]'}`} />
                     <span className="text-white/50 text-xs leading-relaxed">{alert.msg}</span>
                   </div>
                 ))}
@@ -593,10 +600,10 @@ const YurekaAIPage: React.FC = () => {
                   <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <Link
-                  to={`${basePath}/rewards-calculator`}
+                  to={`${basePath}/brands`}
                   className="border border-white/10 text-white/50 hover:text-white hover:border-clay/40 px-12 py-5 rounded-2xl font-bold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-2 backdrop-blur-sm"
                 >
-                  Try the Rewards Calculator
+                  Explore Partner Brands
                 </Link>
               </div>
               <p className="mt-8 text-white/10 text-[10px] font-bold uppercase tracking-[0.5em]">

@@ -41,15 +41,16 @@ export default {
         ring: 'hsl(var(--ring))',
       },
       fontFamily: {
-        // Sitewide type system: Cirka for headings, Almarai for everything else
-        // (subheadings, body, context). Legacy class names are kept so existing
-        // markup doesn't need touching, but they all resolve to one of these two.
+        // Sitewide type system: Space Mono for headings (primary) + Playfair
+        // Display italic for heading accents. Almarai for body/subheadings/context.
+        // Legacy class names are kept so existing markup doesn't need touching —
+        // they resolve to one of these fonts.
         sans: ['Almarai', 'sans-serif'],
-        heading: ['Cirka', '"Instrument Serif"', 'Georgia', 'serif'],
+        heading: ['"Space Mono"', 'monospace'],
         serif: ['Almarai', 'sans-serif'],
-        blackletter: ['Cirka', '"Instrument Serif"', 'Georgia', 'serif'],
+        blackletter: ['"Playfair Display"', 'serif'],
         kanit: ['Almarai', 'sans-serif'],
-        cirka: ['Cirka', '"Instrument Serif"', 'Georgia', 'serif'],
+        cirka: ['"Space Mono"', 'monospace'],
         'overpass-mono': ['Almarai', 'sans-serif'],
       },
       lineHeight: {

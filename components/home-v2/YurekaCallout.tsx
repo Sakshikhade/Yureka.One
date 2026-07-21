@@ -1,6 +1,6 @@
-const PRODUCT_LINKS = ['Chrome Extension', 'Yureka AI', 'Reward Stacking', 'UPI SDK (Future)'];
-const COMPANY_LINKS = ['Manifesto', 'Careers', 'Design Lab', 'Press Kit'];
-const RESOURCE_LINKS = ['Waitlist Status', 'Blogs', 'Privacy Policy', 'Terms of Service'];
+const PRODUCT_LINKS = ['Chrome Extension', 'Yureka AI', 'Yureka One Telegram'];
+const COMPANY_LINKS = ['Manifesto', 'Careers'];
+const RESOURCE_LINKS = ['Waitlist Status', 'Privacy Policy', 'Terms of Service'];
 const SOCIAL_ICONS = ['bi-instagram', 'bi-twitter-x', 'bi-chat', 'bi-link-45deg'];
 
 function LinkColumn({ title, links }: { title: string; links: string[] }) {

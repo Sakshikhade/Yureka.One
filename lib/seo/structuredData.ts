@@ -39,35 +39,6 @@ export function faqPageSchema(faqs: { q: string; a: string }[]) {
   };
 }
 
-/** FinancialProduct (not generic Product) is the correct schema.org type for
- *  a credit card. Deliberately omits AggregateRating/Review — Google's
- *  structured-data guidelines require genuine review counts. */
-export function financialProductSchema(card: {
-  name: string;
-  bank: string;
-  slug?: string;
-  image?: string;
-  description?: string;
-  annualFee?: string;
-  joiningFee?: string;
-}) {
-  const fees: string[] = [];
-  if (card.joiningFee) fees.push(`Joining Fee: ${card.joiningFee}`);
-  if (card.annualFee) fees.push(`Annual Fee: ${card.annualFee}`);
-
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'FinancialProduct',
-    name: card.name,
-    category: 'Credit Card',
-    provider: { '@type': 'BankOrCreditUnion', name: card.bank },
-    url: card.slug ? `${SITE_URL}/cards/${card.slug}` : undefined,
-    image: card.image,
-    description: card.description || `${card.name} by ${card.bank} — fees, rewards, and eligibility on Yureka.One.`,
-    feesAndCommissionsSpecification: fees.length ? fees.join('; ') : undefined,
-  };
-}
-
 export function blogPostingSchema(blog: {
   title: string;
   image?: string;
