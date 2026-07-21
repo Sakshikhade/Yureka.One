@@ -506,48 +506,7 @@ export const CardForm: React.FC<CardFormProps> = ({
       <div className="space-y-8 pt-10 border-t border-white/5">
           <div>
             <div className="flex items-center justify-between mb-4 ml-1">
-                <label className="block text-[10px] font-black uppercase tracking-widest text-white/30">Editorial Verdict (Neural Core)</label>
-                <button 
-                  type="button"
-                  onClick={async () => {
-                    const btn = document.getElementById('ai-verdict-btn');
-                    if (btn) btn.classList.add('animate-pulse');
-                    try {
-                      const benefitsText = form.benefit_items.map((b: any) => `${b.heading}: ${b.subheading}`).join('\n');
-                      const prompt = `Act as a senior financial analyst at Yureka One. Summarize this credit card into a sharp, 3-sentence elite editorial verdict. 
-                      Card Name: ${form.name}
-                      Bank: ${form.bank}
-                      Category: ${form.category}
-                      Fees: ${form.annual_fee} (Annual), ${form.joining_fee} (Joining)
-                      Intro Offer: ${form.intro_offer}
-                      Benefits:
-                      ${benefitsText}
-                      
-                      Focus on absolute value proposition and which persona should deploy this card. Keep it premium, direct, and elite.`;
-
-                      // Gemini API call logic
-                      const API_KEY = (import.meta as any).env.VITE_GEMINI_API_KEY;
-                      if (!API_KEY) throw new Error("VITE_GEMINI_API_KEY missing");
-                      
-                      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
-                        method: 'POST',
-                        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-                      });
-                      const result = await response.json();
-                      const summary = result.candidates[0].content.parts[0].text;
-                      setForm({...form, verdict: summary.trim(), final_verdict_text: summary.trim()});
-                    } catch (err: any) {
-                      alert(`Neural Link Error: ${err.message}. Please verify VITE_GEMINI_API_KEY.`);
-                    } finally {
-                      if (btn) btn.classList.remove('animate-pulse');
-                    }
-                  }}
-                  id="ai-verdict-btn"
-                  className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-clay bg-clay/10 px-5 py-2 rounded-full hover:bg-clay hover:text-white transition-all border border-clay/20"
-                >
-                  <Zap size={12} fill="currentColor" />
-                  Compute Synthesis
-                </button>
+                <label className="block text-[10px] font-black uppercase tracking-widest text-white/30">Editorial Verdict</label>
             </div>
             <textarea 
               value={form.verdict || ''}

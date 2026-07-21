@@ -66,24 +66,8 @@ export const AdminNotificationsTab: React.FC = () => {
     loadData();
   }, []);
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setUploading(true);
-    try {
-      // We need supabaseAdmin. Dynamically importing it to avoid cyclic dependencies if any, 
-      // or just using regular supabase. Admin tab has RLS bypass if needed.
-      const { supabaseAdmin } = await import('../../supabase');
-      const path = `notifications/${Date.now()}_${file.name}`;
-      const { data, error } = await supabaseAdmin.storage.from('media').upload(path, file);
-      if (error) throw error;
-      const { data: publicUrlData } = supabaseAdmin.storage.from('media').getPublicUrl(data.path);
-      setForm(prev => ({ ...prev, image_url: publicUrlData.publicUrl }));
-    } catch (err: any) {
-      alert(`Image upload failed: ${err.message}`);
-    } finally {
-      setUploading(false);
-    }
+  const handleFileUpload = (_e: React.ChangeEvent<HTMLInputElement>) => {
+    alert('Image upload is disabled');
   };
 
   const handleSend = async (e: React.FormEvent) => {

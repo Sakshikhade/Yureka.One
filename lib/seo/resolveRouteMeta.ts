@@ -5,9 +5,8 @@
 // a generic (and, for genuinely missing slugs, 404) response if the DB is
 // slow or the row doesn't exist.
 
-import type { SupabaseClient } from '@supabase/supabase-js';
-import { DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE, formatTitle, SITE_URL, staticPageMeta, type PageMeta } from './pageMeta';
-import { blogPostingSchema, breadcrumbSchema, faqPageSchema } from './structuredData';
+import { DEFAULT_DESCRIPTION, formatTitle, SITE_URL, staticPageMeta, type PageMeta } from './pageMeta';
+import { faqPageSchema } from './structuredData';
 import { faqQuestions } from '../faq';
 
 export const REDIRECTS: Record<string, string> = {
@@ -54,7 +53,7 @@ function withTimeout<T>(promise: PromiseLike<T>, ms: number): Promise<{ timedOut
   });
 }
 
-export async function resolveRouteMeta(pathname: string, supabase: SupabaseClient): Promise<ResolvedRoute> {
+export async function resolveRouteMeta(pathname: string): Promise<ResolvedRoute> {
   const path = pathname.length > 1 && pathname.endsWith('/') ? pathname.slice(0, -1) : pathname;
 
   if (REDIRECTS[path]) {
@@ -83,7 +82,7 @@ export async function resolveRouteMeta(pathname: string, supabase: SupabaseClien
   }
 
   const m = path.match(/^\/blogs\/([^/]+)$/);
-  if (m) return resolveBlog(m[1], supabase);
+  if (m) return resolveBlog(m[1]);
 
   return { status: 404, meta: NOT_FOUND_META };
 }
@@ -94,42 +93,8 @@ const BLOG_TIMEOUT_FALLBACK: ResolvedRoute = {
   meta: { title: formatTitle('Pulse | Yureka Journal'), description: DEFAULT_DESCRIPTION },
 };
 
-async function resolveBlog(slug: string, supabase: SupabaseClient): Promise<ResolvedRoute> {
-  const cacheKey = `blog:${slug}`;
-  const cached = getCached(cacheKey);
-  if (cached) return cached;
-
-  const { timedOut, value: row } = await withTimeout(
-    supabase.from('blogs').select('title, excerpt, image, author, category, created_at, updated_at, slug').eq('slug', slug).maybeSingle().then((r) => r.data),
-    CARD_FETCH_TIMEOUT_MS
-  );
-
-  if (timedOut) return BLOG_TIMEOUT_FALLBACK;
-
-  let result: ResolvedRoute;
-  if (!row) {
-    result = {
-      status: 404,
-      meta: {
-        title: formatTitle('Story Not Found | Yureka Journal'),
-        description: 'The story you are looking for may have been archived or moved.',
-        robots: 'noindex, follow',
-      },
-    };
-  } else {
-    result = {
-      status: 200,
-      meta: {
-        title: formatTitle(`${row.title} | Yureka Journal`),
-        description: row.excerpt || `Read the latest insights on ${row.category} from ${row.author}.`,
-        image: row.image || DEFAULT_OG_IMAGE,
-      },
-      schemas: [
-        breadcrumbSchema([{ name: 'Home', path: '/' }, { name: 'Pulse', path: '/blogs' }, { name: row.title, path: `/blogs/${slug}` }]),
-        blogPostingSchema({ title: row.title, image: row.image, createdAt: row.created_at, updatedAt: row.updated_at, author: row.author, slug: row.slug }),
-      ],
-    };
-  }
-  setCached(cacheKey, result);
-  return result;
+async function resolveBlog(_slug: string): Promise<ResolvedRoute> {
+  // Dynamic blog SEO previously read from Supabase; with it removed, crawlers
+  // get the generic Journal meta (blog pages still render client-side).
+  return BLOG_TIMEOUT_FALLBACK;
 }

@@ -191,7 +191,7 @@ const NotificationBell = () => {
 };
 
 const DashboardLayout: React.FC = () => {
-    const { user, supabase } = useSupabase();
+    const { user } = useSupabase();
     const navigate = useNavigate();
     const location = useLocation();
     
@@ -199,8 +199,7 @@ const DashboardLayout: React.FC = () => {
 
     const activeTab = NAV_ITEMS.find(i => i.path && (location.pathname === i.path || location.pathname.startsWith(i.path + '/')))?.id || 'cards';
 
-    const handleLogout = async () => {
-        await supabase.auth.signOut();
+    const handleLogout = () => {
         navigate('/');
     };
 

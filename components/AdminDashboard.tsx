@@ -1,14 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { supabase, supabaseAdmin } from '../supabase';
-import { 
+import {
   Zap,
   Loader2,
   Trash2,
   Check,
   X,
-  AlertCircle,
-  LayoutDashboard
+  AlertCircle
 } from 'lucide-react';
 
 import { api, isApiError } from '../lib/api/client';
@@ -146,10 +144,11 @@ const AdminDashboard: React.FC = () => {
   } = useSupabase();
 
   // --- Auth & Role State ---
-  const [user, setUser] = useState<any>(null);
-  const [userRole, setUserRole] = useState<string>('user');
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [loading, setLoading] = useState(true);
+  // Auth removed: the app runs logged-out and /admin is open (no session).
+  const [user, setUser] = useState<any>({ email: 'admin@yureka.one' });
+  const [userRole, setUserRole] = useState<string>('admin');
+  const [isAdmin, setIsAdmin] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'blogs' | 'cards' | 'waitlist' | 'settings' | 'logs' | 'reviews' | 'notifications' | 'trash'>(
     (localStorage.getItem('yureka_admin_tab') as any) || 'blogs'
   );
@@ -206,62 +205,7 @@ const AdminDashboard: React.FC = () => {
       return `${name}-${bank}`.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
   };
 
-  // --- Core Auth Logic ---
-  useEffect(() => {
-    const initAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        handleAuth(session);
-      } else {
-        setLoading(false);
-      }
-    };
-
-    const handleAuth = async (session: any) => {
-      const currentUser = session?.user || null;
-      setUser(currentUser);
-      
-      if (currentUser) {
-        try {
-          // Use the consolidated service helper for both check and role
-          const roleRes = await api.get<{ role: string }>(`/api/v1/auth/role?email=${encodeURIComponent(currentUser.email)}`, { skipAuth: true });
-          const role = !isApiError(roleRes) ? (roleRes.data?.role ?? 'user') : 'user';
-          const isUserAdmin = ['admin', 'editor', 'writer'].includes(role);
-          
-          setUserRole(role);
-          setIsAdmin(isUserAdmin);
-        } catch (err) {
-          console.error("Critical Auth Verification Error:", err);
-          setIsAdmin(false);
-        }
-      } else {
-        setIsAdmin(false);
-      }
-      setLoading(false);
-    };
-
-    initAuth();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      handleAuth(session);
-    });
-    return () => subscription.unsubscribe();
-  }, []);
-
-  const handleLogout = async () => { await supabase.auth.signOut(); };
-  const handleLogin = async () => {
-    const isLocal = window.location.hostname === 'localhost';
-    const redirectTo = isLocal
-      ? window.location.origin + '/admin'
-      : `${import.meta.env.VITE_ADMIN_PORTAL_URL ?? window.location.origin}/admin`;
-
-    await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: { redirectTo }
-    });
-  };
-
-
+  const handleLogout = () => { window.location.href = '/'; };
 
   // --- CRUD Handlers ---
   const handleEdit = (item: any) => {
@@ -323,25 +267,9 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setUploading(true);
-    try {
-      const type = activeTab === 'blogs' ? 'blogs' : activeTab === 'cards' ? 'cards' : 'reviews';
-      const path = `${type}/${Date.now()}_${file.name}`;
-      const { data, error } = await supabaseAdmin.storage.from('media').upload(path, file);
-      if (error) throw error;
-      const { data: publicUrlData } = supabaseAdmin.storage.from('media').getPublicUrl(data.path);
-      const url = publicUrlData.publicUrl;
-      if (activeTab === 'blogs') setBlogForm(prev => ({ ...prev, image: url }));
-      else if (activeTab === 'cards') setCardForm(prev => ({ ...prev, image: url }));
-      else if (activeTab === 'reviews') setReviewForm(prev => ({ ...prev, image: url }));
-    } catch (err: any) {
-      setError(`Image upload failed: ${err.message}`);
-    } finally {
-      setUploading(false);
-    }
+  const handleFileUpload = async (_e: React.ChangeEvent<HTMLInputElement>) => {
+    // Image upload has been disabled (storage backend removed).
+    alert('Image upload is disabled. Please paste an image URL instead.');
   };
 
   const handleSave = async (e: React.FormEvent) => {
@@ -456,7 +384,7 @@ const AdminDashboard: React.FC = () => {
             };
       }
 
-      // Final Sanitization: Remove metadata that Supabase rejects on inserts/updates
+      // Final Sanitization: Remove metadata that the API rejects on inserts/updates
       const finalPayload = { ...payload };
       delete finalPayload.id;
       delete finalPayload.created_at;
@@ -554,20 +482,6 @@ const AdminDashboard: React.FC = () => {
 
   if (loading) {
     return <div className="min-h-screen bg-cream flex items-center justify-center"><Loader2 className="animate-spin text-teal" size={48} /></div>;
-  }
-
-  if (!user || !isAdmin) {
-    return (
-      <div className="min-h-screen bg-cream flex flex-col items-center justify-center p-4">
-        <div className="w-full max-w-md bg-cream p-12 rounded-3xl shadow-xl border border-black/5 text-center">
-          <LayoutDashboard className="mx-auto mb-6 text-[#00933b]" size={64} />
-          <h1 className="text-3xl font-heading font-black mb-4 uppercase">Admin Access Required</h1>
-          <p className="text-black/60 mb-8 text-sm font-sans font-medium">Please sign in with an authorized account to access the Yureka control plane.</p>
-
-          <button onClick={handleLogin} className="w-full bg-[#00933b] text-cream py-4 rounded-xl font-bold hover:bg-[#00933b]/90 transition-all flex items-center justify-center gap-2">Sign in with Google</button>
-        </div>
-      </div>
-    );
   }
 
   return (

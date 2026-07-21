@@ -14,9 +14,8 @@ View your app in AI Studio: https://ai.studio/apps/9b44dd1d-b84a-4f12-95d8-6973b
 
 
 1. Install dependencies:
-   `npm install`
-2. Set the following variables in [.env](.env):
-   `VITE_SUPABASE_URL=your_supabase_url`
-   `VITE_SUPABASE_ANON_KEY=your_supabase_anon_key`
+   `pnpm install`
+2. (Optional) Configure the backend API base URL in [.env](.env):
+   `VITE_API_BASE_URL=` (leave empty for relative `/api/*`, or set the Java backend origin)
 3. Run the app:
-   `npm run dev`
+   `pnpm dev`

@@ -1,28 +1,9 @@
-import { createClient } from '@supabase/supabase-js';
 import fs from 'fs';
 import path from 'path';
-import dotenv from 'dotenv';
-
-// Load environment variables from .env file
-dotenv.config();
-
-// Note: These should match your production env
-const SUPABASE_URL = process.env.VITE_SUPABASE_URL;
-const SUPABASE_ANON_KEY = process.env.VITE_SUPABASE_ANON_KEY;
 
 const BASE_URL = 'https://yureka.one';
 
-async function generateSitemap() {
-  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-    console.error('Missing Supabase credentials for sitemap generation.');
-    return;
-  }
-
-  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-  // Fetch Blogs
-  const { data: blogs } = await supabase.from('blogs').select('slug, created_at, updated_at');
-
+function generateSitemap() {
   const today = new Date().toISOString().split('T')[0];
 
   // Indexable static marketing/content routes — keep in sync with
@@ -45,7 +26,6 @@ async function generateSitemap() {
   let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
   xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
 
-  // Add Static Routes
   staticRoutes.forEach(route => {
     xml += `  <url>\n`;
     xml += `    <loc>${BASE_URL}${route}</loc>\n`;
@@ -55,23 +35,11 @@ async function generateSitemap() {
     xml += `  </url>\n`;
   });
 
-  // Add Blogs — lastmod prefers updated_at (falls back to created_at) so
-  // edited posts correctly signal freshness to crawlers.
-  blogs?.forEach(blog => {
-    if (!blog.slug) return;
-    xml += `  <url>\n`;
-    xml += `    <loc>${BASE_URL}/blogs/${blog.slug}</loc>\n`;
-    xml += `    <lastmod>${new Date(blog.updated_at || blog.created_at || Date.now()).toISOString().split('T')[0]}</lastmod>\n`;
-    xml += `    <changefreq>monthly</changefreq>\n`;
-    xml += `    <priority>0.7</priority>\n`;
-    xml += `  </url>\n`;
-  });
-
   xml += '</urlset>';
 
   const outputPath = path.resolve(process.cwd(), 'public/sitemap.xml');
   fs.writeFileSync(outputPath, xml);
-  console.log(`Sitemap generated successfully at public/sitemap.xml (${staticRoutes.length} static + ${blogs?.length ?? 0} blog URLs)`);
+  console.log(`Sitemap generated successfully at public/sitemap.xml (${staticRoutes.length} static URLs)`);
 }
 
 generateSitemap();

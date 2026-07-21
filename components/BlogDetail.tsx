@@ -11,7 +11,6 @@ import { api, isApiError } from '../lib/api/client';
 import { fromApiBlog } from '../lib/api/mappers';
 import type { Blog as ApiBlog } from '../lib/api/types';
 import { Blog } from '../types';
-import { supabase } from '../supabase';
 import ImageWithLoader from './ImageWithLoader';
 import { motion, AnimatePresence } from 'motion/react';
 import SEO from './SEO';
@@ -46,49 +45,16 @@ const BlogDetail: React.FC = () => {
         const fetchBlog = async () => {
             // Try Java API first
             const res = await api.get<ApiBlog>(`/api/v1/cms/blogs/${slug}`, { skipAuth: true });
-            let data: Blog | null = !isApiError(res) && res.data ? fromApiBlog(res.data) : null;
-
-            // Supabase fallback
-            if (!data) {
-                try {
-                    const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(slug ?? '');
-                    const slugRes = await supabase
-                        .from('blogs')
-                        .select('*')
-                        .eq('slug', slug)
-                        .eq('status', 'published')
-                        .maybeSingle();
-                    let sb = slugRes.data;
-                    if (!sb && isUuid) {
-                        const idRes = await supabase
-                            .from('blogs')
-                            .select('*')
-                            .eq('id', slug)
-                            .eq('status', 'published')
-                            .maybeSingle();
-                        sb = idRes.data;
-                    }
-                    if (sb) data = sb as unknown as Blog;
-                } catch { /* stays null */ }
-            }
+            const data: Blog | null = !isApiError(res) && res.data ? fromApiBlog(res.data) : null;
 
             setBlog(data);
             setIsLoading(false);
 
             if (data) {
-                // Related blogs — try Java API then Supabase
+                // Related blogs — Java API only; stays [] on API error
                 const allRes = await api.get<ApiBlog[]>('/api/v1/cms/blogs', { skipAuth: true });
                 if (!isApiError(allRes)) {
                     setRelated((allRes.data ?? []).map(fromApiBlog).filter(b => b.id !== data!.id && b.category === data!.category).slice(0, 3));
-                } else {
-                    const { data: sbRelated } = await supabase
-                        .from('blogs')
-                        .select('*')
-                        .eq('status', 'published')
-                        .eq('category', data.category || '')
-                        .neq('id', data.id)
-                        .limit(3);
-                    setRelated((sbRelated ?? []) as unknown as Blog[]);
                 }
                 
                 // Try to fetch and extract content for seamless reading

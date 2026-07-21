@@ -1,16 +1,9 @@
-import { supabase } from '../../supabase'
 import type { YurekaResponse } from './types'
 export { isApiError, isValidationError } from './types'
 
 // Empty string → relative URLs, which Netlify/Express proxy to the backend.
 // Set VITE_API_BASE_URL=http://localhost:8080 in .env for local Java dev.
 const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? ''
-
-// Auto-fetch the active Supabase session token
-async function getToken(): Promise<string | undefined> {
-  const { data: { session } } = await supabase.auth.getSession()
-  return session?.access_token ?? undefined
-}
 
 function errorResponse<T>(status: number, error: string): YurekaResponse<T> {
   return { data: null, status, error, timestamp: new Date().toISOString() }
@@ -22,7 +15,7 @@ async function apiFetch<T>(
 ): Promise<YurekaResponse<T>> {
   const { token: explicitToken, skipAuth, timeoutMs = 5000, ...init } = options ?? {}
 
-  const token = skipAuth ? undefined : (explicitToken ?? await getToken())
+  const token = skipAuth ? undefined : explicitToken
 
   const headers: HeadersInit = {
     'Content-Type': 'application/json',

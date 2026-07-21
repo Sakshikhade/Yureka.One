@@ -17,10 +17,9 @@ interface ParsedTransaction {
 }
 
 const Bills: React.FC = () => {
-    const { 
-        session, 
-        supabase, 
-        ledgerTransactions, 
+    const {
+        session,
+        ledgerTransactions,
         ledgerLoading: loading, 
         ledgerError: error, 
         scanProgress, 
@@ -38,16 +37,6 @@ const Bills: React.FC = () => {
 
     const triggerSync = () => {
         syncLedger(true);
-    };
-
-    const connectGoogle = async () => {
-        await supabase.auth.signInWithOAuth({
-            provider: 'google',
-            options: {
-                scopes: 'https://www.googleapis.com/auth/user.phonenumbers.read https://www.googleapis.com/auth/user.birthday.read https://www.googleapis.com/auth/user.gender.read https://www.googleapis.com/auth/gmail.readonly',
-                redirectTo: window.location.origin + '/dashboard/bills'
-            }
-        });
     };
 
     // Computes bills metrics
@@ -136,14 +125,6 @@ const Bills: React.FC = () => {
                                 </p>
                             </div>
                         </div>
-                        {error === "AUTH_EXPIRED" && (
-                            <button
-                                onClick={connectGoogle}
-                                className="w-full sm:w-auto px-6 py-4 bg-clay text-black font-black uppercase tracking-[0.2em] rounded-2xl text-xs hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer whitespace-nowrap"
-                            >
-                                Re-Link Gmail Ledger
-                            </button>
-                        )}
                     </motion.div>
                 )}
             </AnimatePresence>

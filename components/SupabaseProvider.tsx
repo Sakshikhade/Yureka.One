@@ -1,12 +1,10 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
-import { supabase } from '../supabase';
 import { Card, Blog, Review, WaitlistEntry } from '../types';
 import { featuredCards } from '../data';
 import { api, isApiError } from '../lib/api/client';
 import { fromApiCard, fromApiBlog, fromApiReview, fromApiWaitlist } from '../lib/api/mappers';
 import type { Card as ApiCard, Blog as ApiBlog, Review as ApiReview, Waitlist as ApiWaitlist } from '../lib/api/types';
-import { SupabaseClient } from '@supabase/supabase-js';
 
 export interface ParsedTransaction {
   brandName: string;
@@ -18,7 +16,6 @@ export interface ParsedTransaction {
 }
 
 interface SupabaseContextType {
-  supabase: SupabaseClient;
   cards: Card[];
   blogs: Blog[];
   reviews: Review[];
@@ -205,20 +202,17 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           const c = (cRes.data ?? []).map(fromApiCard);
           setCards(c.length > 0 ? c : featuredCards);
         } else {
-          const { data: sbCards } = await supabase.from('cards').select('*').eq('status', 'published');
-          setCards(sbCards && sbCards.length > 0 ? sbCards as unknown as Card[] : featuredCards);
+          setCards(featuredCards);
         }
         if (!isApiError(bRes)) {
           setBlogs((bRes.data ?? []).map(fromApiBlog));
         } else {
-          const { data: sbBlogs } = await supabase.from('blogs').select('*').eq('status', 'published');
-          setBlogs((sbBlogs ?? []) as unknown as Blog[]);
+          setBlogs([]);
         }
         if (!isApiError(rRes)) {
           setReviews((rRes.data ?? []).map(fromApiReview));
         } else {
-          const { data: sbReviews } = await supabase.from('reviews').select('*');
-          setReviews((sbReviews ?? []) as unknown as Review[]);
+          setReviews([]);
         }
       }
     } catch (err) {
@@ -243,12 +237,8 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       }
       try {
         if (isAdminRoute) {
-          // Check for session before attempting admin fetches
-          const { data: { session } } = await supabase.auth.getSession();
-          if (session) {
-            await loadAdminData({ setCards, setBlogs, setReviews, setWaitlist, setTeam, setLogs });
-            setIsAdminDataLoaded(true);
-          }
+          await loadAdminData({ setCards, setBlogs, setReviews, setWaitlist, setTeam, setLogs });
+          setIsAdminDataLoaded(true);
         } else if (!publicDataLoaded.current) {
           const [cRes, bRes, rRes] = await Promise.all([
             api.get<ApiCard[]>('/api/v1/cms/cards', { skipAuth: true }),
@@ -256,56 +246,28 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             api.get<ApiReview[]>('/api/v1/cms/reviews', { skipAuth: true }),
           ]);
 
-          // Cards — fall back to Supabase direct, then static hardcoded set
+          // Cards — fall back to the static hardcoded set if the API is unavailable
           if (!isApiError(cRes)) {
             const mapped = (cRes.data ?? []).map(fromApiCard);
             setCards(mapped.length > 0 ? mapped : featuredCards);
           } else {
-            console.warn('⚡️ Java API unavailable for cards, falling back to Supabase direct');
-            try {
-              const { data: sbCards } = await supabase
-                .from('cards')
-                .select('*')
-                .eq('status', 'published');
-              const fallback = sbCards && sbCards.length > 0 ? sbCards as unknown as Card[] : featuredCards;
-              setCards(fallback);
-            } catch {
-              setCards(featuredCards);
-            }
+            setCards(featuredCards);
           }
 
-          // Blogs — fall back to Supabase direct
+          // Blogs
           if (!isApiError(bRes)) {
             const mapped = (bRes.data ?? []).map(fromApiBlog).filter(b => b.id && b.title && b.title !== 'Untitled Journal');
             setBlogs(mapped);
           } else {
-            console.warn('⚡️ Java API unavailable for blogs, falling back to Supabase direct');
-            try {
-              const { data: sbBlogs } = await supabase
-                .from('blogs')
-                .select('*')
-                .eq('status', 'published')
-                .order('created_at', { ascending: false });
-              setBlogs((sbBlogs ?? []) as unknown as Blog[]);
-            } catch {
-              setBlogs([]);
-            }
+            setBlogs([]);
           }
 
-          // Reviews — fall back to Supabase direct
+          // Reviews
           if (!isApiError(rRes)) {
             const mapped = (rRes.data ?? []).map(fromApiReview);
             setReviews(mapped);
           } else {
-            console.warn('⚡️ Java API unavailable for reviews, falling back to Supabase direct');
-            try {
-              const { data: sbReviews } = await supabase
-                .from('reviews')
-                .select('*');
-              setReviews((sbReviews ?? []) as unknown as Review[]);
-            } catch {
-              setReviews([]);
-            }
+            setReviews([]);
           }
         }
       } catch (err) {
@@ -329,36 +291,12 @@ export const SupabaseProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     };
   }, [isAdminRoute]);
 
+  // Auth removed — the app runs unauthenticated (no Supabase session).
   useEffect(() => {
-    const { data: { subscription: authSub } } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      setSession(session);
-      const currentUser = session?.user || null;
-      setUser(currentUser);
-      
-      if (currentUser) {
-        resolveUserStatus(currentUser.email || '').then(setCurrentUserStatus);
-      } else {
-        setCurrentUserStatus('none');
-      }
-    });
-
-    // Get initial session
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      setSession(session);
-      const currentUser = session?.user || null;
-      setUser(currentUser);
-      if (currentUser) {
-        resolveUserStatus(currentUser.email || '').then(setCurrentUserStatus);
-      } else {
-        setCurrentUserStatus('none');
-      }
-    });
-
-    return () => authSub.unsubscribe();
+    setCurrentUserStatus('none');
   }, []);
 
   const contextValue = useMemo(() => ({
-    supabase,
     user,
     session,
     currentUserStatus,
