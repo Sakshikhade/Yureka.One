@@ -18,7 +18,8 @@ SCOPES = [
     'https://www.googleapis.com/auth/gmail.readonly',
     'https://www.googleapis.com/auth/user.phonenumbers.read',
     'https://www.googleapis.com/auth/user.birthday.read',
-    'https://www.googleapis.com/auth/user.gender.read'
+    'https://www.googleapis.com/auth/user.gender.read',
+    'https://www.googleapis.com/auth/user.addresses.read'
 ]
 
 def calculate_age(birthday_dict):
@@ -37,11 +38,11 @@ def calculate_age(birthday_dict):
     except Exception:
         return "N/A"
 
-def fetch_user_profile(people_service, first_name_fallback, last_name_fallback, dob_fallback, gender_fallback, phone_fallback):
+def fetch_user_profile(people_service, first_name_fallback, last_name_fallback, dob_fallback, gender_fallback, phone_fallback, location_fallback=''):
     try:
         profile = people_service.people().get(
             resourceName='people/me',
-            personFields='names,phoneNumbers,birthdays,genders,emailAddresses'
+            personFields='names,phoneNumbers,birthdays,genders,emailAddresses,addresses'
         ).execute()
     except Exception as e:
         sys.stderr.write(f"People API warning: {str(e)}\n")
@@ -118,14 +119,23 @@ def fetch_user_profile(people_service, first_name_fallback, last_name_fallback, 
         pass
 
     mobile_number = " | ".join(found_numbers) if found_numbers else phone_fallback
-        
+
+    location = location_fallback
+    addresses = profile.get('addresses', [])
+    if addresses:
+        addr = addresses[0]
+        location = addr.get('formattedValue') or ", ".join(
+            filter(None, [addr.get('city'), addr.get('region'), addr.get('country')])
+        ) or location_fallback
+
     return {
         'name': f"{first_name} {last_name}".strip(),
         'email': email,
         'dob': dob_string,
         'age': age,
         'gender': gender,
-        'phone': mobile_number
+        'phone': mobile_number,
+        'location': location
     }
 
 def get_local_gmail_service():
@@ -550,6 +560,100 @@ def execute_financial_scanner(gmail_service):
     sys.stderr.write(f"=== Total unique financial records: {len(combined)} (expenses: {len(expense_data)}, bills: {len(bill_data)}) ===\n")
     return combined
 
+def _parse_amount_value(amount_str):
+    """'₹ 1,234.50' -> (1234.5, 'INR'); '$ 12.00' -> (12.0, 'USD')."""
+    if not amount_str or amount_str == "N/A":
+        return None, None
+    currency = 'USD' if '$' in amount_str else 'INR'
+    digits = re.sub(r'[^\d.]', '', amount_str)
+    try:
+        return float(digits), currency
+    except Exception:
+        return None, None
+
+
+def _parse_date_iso(date_str):
+    if not date_str:
+        return ""
+    try:
+        return pd.to_datetime(date_str, errors='coerce', utc=True).date().isoformat()
+    except Exception:
+        return ""
+
+
+def compute_yureka_score(transactions):
+    """
+    Ports credit_score.py's spend-tier scoring model to run directly off the
+    transactions/bills this scanner already extracted, instead of the offline
+    Yureka Mail JSON ledger files. Flags (failed payments / missed bills)
+    aren't detected here, so reliability is scored as clean (no penalty).
+    """
+    from datetime import datetime
+    from collections import Counter
+
+    purchases = []
+    bills = []
+    for t in transactions:
+        value, currency = _parse_amount_value(t.get('amount'))
+        if value is None:
+            continue
+        date_iso = _parse_date_iso(t.get('date'))
+        row = {
+            'Brand': t.get('brandName', ''),
+            'Value': value,
+            'Currency': currency,
+            'DateISO': date_iso,
+            'Direction': 'Debit',
+            'Method': 'Card' if currency == 'USD' else ('UPI' if 'upi' in (t.get('description', '') + t.get('sender', '')).lower() else 'Other'),
+        }
+        if t.get('type') == 'Transaction':
+            purchases.append(row)
+        else:
+            bills.append({**row, 'DueISO': date_iso, 'Status': 'Paid'})
+
+    inr_debits = [r for r in purchases if r['Currency'] == 'INR']
+    spend_total = sum(r['Value'] for r in inr_debits)
+    txn_count = len(inr_debits)
+    merchants = len({r['Brand'] for r in inr_debits})
+    active_months = len({r['DateISO'][:7] for r in inr_debits if r['DateISO']})
+    denom = max(1, active_months)
+    avg_monthly_spend = spend_total / denom
+    avg_monthly_txns = txn_count / denom
+
+    methods = Counter(r['Method'] for r in inr_debits)
+    has_card = bool(bills) or methods.get('Card', 0) > 0
+
+    def spend_tier_score(avg):
+        if avg > 100000: return 100
+        if avg > 90000:  return 90
+        if avg > 80000:  return 80
+        if avg > 70000:  return 70
+        if avg > 60000:  return 60
+        if avg > 50000:  return 50
+        if avg > 40000:  return 40
+        if avg > 30000:  return 30
+        if avg >= 20000: return 20
+        return max(0, round(20 * avg / 20000))
+
+    total = spend_tier_score(avg_monthly_spend)
+    decision = "Approved" if total >= 20 else "Rejected"
+
+    return {
+        "score": total,
+        "decision": decision,
+        "metrics": {
+            "spend_total_inr": round(spend_total, 2),
+            "avg_monthly_spend_inr": round(avg_monthly_spend, 2),
+            "active_months": denom,
+            "transactions": txn_count,
+            "distinct_merchants": merchants,
+            "avg_monthly_txns": round(avg_monthly_txns, 2),
+            "has_credit_card": has_card,
+            "payment_methods": dict(methods),
+        }
+    }
+
+
 def main():
     fallback_data = {}
     if len(sys.argv) > 2:
@@ -616,7 +720,8 @@ def main():
             fallback_data.get('lastName', ''),
             fallback_data.get('dateOfBirth', ''),
             fallback_data.get('gender', ''),
-            fallback_data.get('mobileNumber', '')
+            fallback_data.get('mobileNumber', ''),
+            fallback_data.get('location', '')
         )
         
         # Try getting email from gmail service if not found
@@ -630,13 +735,20 @@ def main():
         # If still not found, fall back to fallback_data email
         if not profile.get('email'):
             profile['email'] = fallback_data.get('email', '')
-            
+
     except Exception as e:
         err_msg = str(e)
         if "refresh" in err_msg.lower() or "invalid_grant" in err_msg.lower() or "credentials" in err_msg.lower() or "401" in err_msg:
             print(json.dumps({"error": "AUTH_EXPIRED", "details": err_msg}))
         else:
             print(json.dumps({"error": f"Failed to fetch profile: {err_msg}"}))
+        return
+
+    # Fast path: basic profile fields only (name/phone/dob/age/gender/location),
+    # skips the slow Gmail inbox scan + score computation entirely.
+    mode = sys.argv[3] if len(sys.argv) > 3 else ""
+    if mode == "profile_only":
+        print(json.dumps({"profile": profile}))
         return
 
     try:
@@ -649,9 +761,16 @@ def main():
             print(json.dumps({"error": f"Failed to scan emails: {err_msg}"}))
         return
     
+    try:
+        score = compute_yureka_score(transactions)
+    except Exception as e:
+        sys.stderr.write(f"Score computation failed: {str(e)}\n")
+        score = None
+
     output = {
         "profile": profile,
-        "transactions": transactions
+        "transactions": transactions,
+        "score": score
     }
     
     print(json.dumps(output))

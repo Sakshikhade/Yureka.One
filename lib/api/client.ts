@@ -63,7 +63,7 @@ async function apiFetch<T>(
   }
 }
 
-type ApiOptions = { token?: string; skipAuth?: boolean; timeoutMs?: number }
+type ApiOptions = { token?: string; skipAuth?: boolean; timeoutMs?: number; headers?: HeadersInit }
 
 export const api = {
   get: <T>(path: string, options?: ApiOptions) =>

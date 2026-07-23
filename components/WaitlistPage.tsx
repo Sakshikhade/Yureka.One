@@ -1,16 +1,15 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
     ArrowLeft, User, Building, Check, ArrowRight, Plus, Minus, 
     LayoutGrid, Rocket, ShieldCheck, Gift, Sparkles, HelpCircle, 
     Loader2, CreditCard, Landmark, Share2, Twitter, Instagram, 
-    Send, MessageCircle, Copy, Globe, ChevronDown, Calendar, 
+    Send, MessageCircle, Copy, ChevronDown, Calendar,
     Mail, Phone, Trash2, Activity, TrendingUp, DollarSign, Award,
     Percent, Database, Search, RefreshCw, Smartphone, LogIn
 } from 'lucide-react';
-import { Link, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
+import { Link, useSearchParams, useLocation } from 'react-router-dom';
 import { api, isApiError } from '../lib/api/client';
 import type { Waitlist as ApiWaitlist, WaitlistJoinResult } from '../lib/api/types';
-import { useSupabase } from './SupabaseProvider';
 import { motion, AnimatePresence } from 'motion/react';
 
 // ─── MASTER DATA ───
@@ -216,16 +215,31 @@ function parseTransactionData(combinedText: string, sender: string, subject: str
     return { brand: brandName, amount, description };
 }
 
+// scanner.py returns dob as "DD/MM/YYYY" — <input type="date"> needs "YYYY-MM-DD"
+function parseDobToInputDate(dob?: string): string {
+    if (!dob) return '';
+    const parts = dob.split('/');
+    if (parts.length !== 3) return '';
+    const [day, month, year] = parts;
+    if (!year || year.length !== 4) return '';
+    return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+}
+
+function normalizeGender(gender?: string): string {
+    if (!gender) return '';
+    const g = gender.toLowerCase();
+    if (g.startsWith('male')) return 'Male';
+    if (g.startsWith('female')) return 'Female';
+    return 'Other';
+}
+
 const WaitlistPage: React.FC = () => {
-    const { user, session, currentUserStatus } = useSupabase();
-    const navigate = useNavigate();
     const location = useLocation();
     const isDashboard = location.pathname.startsWith('/dashboard');
     const basePath = isDashboard ? '/dashboard' : '';
     const [searchParams] = useSearchParams();
 
     const [step, setStep] = useState(1);
-    const [isLoadingData, setIsLoadingData] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [successData, setSuccessData] = useState<{ rank: number; referralCode: string } | null>(null);
@@ -246,20 +260,17 @@ const WaitlistPage: React.FC = () => {
         bankSearch: ''
     });
 
+    // Gmail sign-up scan (Step 1 replaces manual email entry)
+    const [isScanning, setIsScanning] = useState(false);
+    const [scanError, setScanError] = useState<string | null>(null);
+    const [yurekaScore, setYurekaScore] = useState<{ score: number; decision: string } | null>(null);
+
     const [openBankDropdown, setOpenBankDropdown] = useState<number | null>(null);
     const [stepErrors, setStepErrors] = useState<Record<string, string>>({});
 
     // Scanned Intelligence Dashboard State variables
     const [scannedProfile, setScannedProfile] = useState<any>(null);
     const [scannedTransactions, setScannedTransactions] = useState<ParsedTransaction[]>([]);
-    const [scanState, setScanState] = useState({
-        session: 'pending',
-        profile: 'pending',
-        inbox: 'pending',
-        ledger: 'pending'
-    });
-    const [scanProgress, setScanProgress] = useState(0);
-    const [ledgerSearch, setLedgerSearch] = useState('');
 
     // ─── REFERRAL PREFILLING ───
     useEffect(() => {
@@ -269,193 +280,106 @@ const WaitlistPage: React.FC = () => {
         }
     }, [searchParams]);
 
-    // ─── STEP 1: EMAIL CAPTURE (auth removed) ───
-    const handleContinue = () => {
-        const email = formData.email.trim();
-        if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
-            setError('Please enter a valid email address.');
+    // ─── STEP 1: GMAIL SIGN-UP → runs the deep scanner, prefills Step 2 ───
+    const GMAIL_SCAN_SCOPES = [
+        'https://www.googleapis.com/auth/userinfo.email',
+        'https://www.googleapis.com/auth/userinfo.profile',
+        'https://www.googleapis.com/auth/gmail.readonly',
+        'https://www.googleapis.com/auth/user.phonenumbers.read',
+        'https://www.googleapis.com/auth/user.birthday.read',
+        'https://www.googleapis.com/auth/user.gender.read',
+        'https://www.googleapis.com/auth/user.addresses.read'
+    ].join(' ');
+
+    const startGoogleSignup = () => {
+        setError(null);
+        setScanError(null);
+        const google = (window as any).google;
+        if (!google?.accounts?.oauth2) {
+            setScanError('Google sign-in failed to load. Please refresh the page and try again.');
             return;
         }
-        setError(null);
-        setStep(2);
+        const clientId = (import.meta as any).env.VITE_GOOGLE_CLIENT_ID;
+        const tokenClient = google.accounts.oauth2.initTokenClient({
+            client_id: clientId,
+            scope: GMAIL_SCAN_SCOPES,
+            callback: (tokenResponse: any) => {
+                if (tokenResponse?.error || !tokenResponse?.access_token) {
+                    setScanError('Google sign-in was cancelled or denied. Please try again.');
+                    return;
+                }
+                runQuickProfileFetch(tokenResponse.access_token);
+            },
+        });
+        tokenClient.requestAccessToken();
     };
 
-    // ─── DATA EXTRACTION (skip for existing accounts — route them to where they belong) ───
-    useEffect(() => {
-        if (!user || step !== 1 || currentUserStatus === 'loading') return;
-
-        if (currentUserStatus === 'admin') { navigate('/admin'); return; }
-        if (currentUserStatus === 'accepted') { navigate('/dashboard'); return; }
-        if (currentUserStatus === 'pending' || currentUserStatus === 'on-hold' || currentUserStatus === 'rejected') {
-            navigate('/waiting');
-            return;
-        }
-
-        extractUserData();
-    }, [user, currentUserStatus]);
-
-    const extractUserData = async () => {
-        setIsLoadingData(true);
+    // Fast path: only fetches name/phone/dob/age/gender/location (People API),
+    // no inbox scan — so the user isn't stuck waiting on Step 1.
+    const runQuickProfileFetch = async (accessToken: string) => {
+        setIsScanning(true);
+        setScanError(null);
         try {
-            const { full_name, name, email } = user.user_metadata || {};
-            const displayName = full_name || name || '';
-            const nameParts = displayName.split(' ');
-            const extractedFirstName = nameParts[0] || '';
-            const extractedLastName = nameParts.slice(1).join(' ') || '';
+            const res = await fetch('/api/scan-profile', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ accessToken, fallbackData: {} }),
+            });
+            const result = await res.json();
 
-            let phone = '';
-            let dob = '';
-            let gender = '';
-
-            if (session?.provider_token) {
-                try {
-                    const response = await fetch('https://people.googleapis.com/v1/people/me?personFields=phoneNumbers,birthdays,genders', {
-                        headers: {
-                            Authorization: `Bearer ${session.provider_token}`
-                        }
-                    });
-                    const data = await response.json();
-                    
-                    if (data.phoneNumbers && data.phoneNumbers.length > 0) {
-                        phone = data.phoneNumbers[0].value || '';
-                    }
-                    if (data.birthdays && data.birthdays.length > 0) {
-                        const date = data.birthdays[0].date;
-                        if (date && date.year && date.month && date.day) {
-                            dob = `${date.year}-${String(date.month).padStart(2, '0')}-${String(date.day).padStart(2, '0')}`;
-                        }
-                    }
-                    if (data.genders && data.genders.length > 0) {
-                        const g = data.genders[0].value;
-                        if (g === 'male') gender = 'Male';
-                        else if (g === 'female') gender = 'Female';
-                        else gender = 'Other';
-                    }
-                } catch (e) {
-                    console.error("Failed to fetch Google People API:", e);
-                }
+            if (!res.ok || result.error) {
+                setScanError(typeof result.error === 'string' ? result.error : 'Could not read your Google profile. Please try again.');
+                return;
             }
+
+            const profile = result.profile || {};
+            const nameParts = (profile.name || '').trim().split(/\s+/);
+            const dob = parseDobToInputDate(profile.dob);
+            const genderNormalized = normalizeGender(profile.gender);
 
             setFormData(prev => ({
                 ...prev,
-                firstName: extractedFirstName || prev.firstName,
-                lastName: extractedLastName || prev.lastName,
-                email: email || user.email || prev.email,
-                mobileNumber: (phone || prev.mobileNumber || '').replace(/\D/g, '').slice(-10),
+                firstName: nameParts[0] || prev.firstName,
+                lastName: nameParts.slice(1).join(' ') || prev.lastName,
+                email: profile.email || prev.email,
+                mobileNumber: (profile.phone || '').replace(/\D/g, '').slice(-10) || prev.mobileNumber,
                 dateOfBirth: dob || prev.dateOfBirth,
-                gender: gender || prev.gender
+                gender: genderNormalized || prev.gender,
             }));
-            
-            if (user.email || email) setStep(2);
-        } catch (err) {
-            console.error("Profile extraction failed:", err);
-        } finally {
-            setIsLoadingData(false);
-        }
-    };
 
-    // ─── DEEP FINANCIAL Gmail & People API SCANNER ───
-    useEffect(() => {
-        if (step === 5) {
-            triggerFullSyncScan();
-        }
-    }, [step]);
+            setScannedProfile(profile);
+            setStep(2);
 
-    const triggerFullSyncScan = async () => {
-        setScanProgress(5);
-        setScanState({ session: 'loading', profile: 'pending', inbox: 'pending', ledger: 'pending' });
-
-        // Phase 1: Establish Secure Google API OAuth loops
-        await new Promise(r => setTimeout(r, 800));
-        if (!session?.provider_token) {
-            console.warn("OAuth provider token unavailable, advancing immediately to dashboard.");
-            setScanState({ session: 'failed', profile: 'failed', inbox: 'failed', ledger: 'failed' });
-            setStep(6);
-            return;
-        }
-        setScanState(prev => ({ ...prev, session: 'success', profile: 'loading' }));
-        setScanProgress(25);
-
-        try {
-            // Phase 2, 3 & 4: Run the Python Deep Scanner script via the Express backend!
-            const fallbackData = {
-                firstName: formData.firstName,
-                lastName: formData.lastName,
-                dateOfBirth: formData.dateOfBirth,
-                gender: formData.gender,
-                mobileNumber: formData.mobileNumber
-            };
-
-            const controller = new AbortController();
-            const timeout = setTimeout(() => controller.abort(), 60_000);
-
-            const scanRes = await api.post<{ profile: any; transactions: any[] }>(
-                '/api/v1/ledger/scan',
-                { accessToken: session.provider_token, email: session.user?.email, fallbackData }
-            );
-            clearTimeout(timeout);
-
-            // Make checklist progress transitions feel realistic, smooth, and premium!
-            setScanState(prev => ({ ...prev, profile: 'success', inbox: 'loading' }));
-            setScanProgress(55);
-            await new Promise(r => setTimeout(r, 600));
-
-            setScanState(prev => ({ ...prev, inbox: 'success', ledger: 'loading' }));
-            setScanProgress(75);
-            await new Promise(r => setTimeout(r, 600));
-
-            if (isApiError(scanRes)) {
-                console.error("Ledger scan returned error:", scanRes.error);
-                setScanState(prev => ({ ...prev, ledger: 'failed' }));
-            } else {
-                setScannedProfile(scanRes.data?.profile || null);
-                setScannedTransactions(scanRes.data?.transactions || []);
-                setScanState(prev => ({ ...prev, ledger: 'success' }));
-            }
+            const emailForScore = profile.email || formData.email;
+            if (emailForScore) triggerBackgroundScoreScan(accessToken, emailForScore);
         } catch (e) {
-            console.error("Failed to fetch backend email deep scanner:", e);
-            setScanState(prev => ({ ...prev, profile: 'failed', inbox: 'failed', ledger: 'failed' }));
+            console.error('Profile lookup failed:', e);
+            setScanError('Something went wrong reading your Google profile. Please try again.');
+        } finally {
+            setIsScanning(false);
         }
-
-        setScanProgress(100);
-        await new Promise(r => setTimeout(r, 750));
-        setStep(6);
     };
 
-    // Computes dynamic statistics values to display in the ledger summary widget
-    const spendStats = useMemo(() => {
-        if (scannedTransactions.length === 0) return { total: 0, count: 0, topMerchant: 'N/A' };
-        
-        let totalINR = 0;
-        let count = 0;
-        const merchantCount: Record<string, number> = {};
-        
-        scannedTransactions.forEach(t => {
-            if (t.amount.includes('₹') || t.amount.includes('INR')) {
-                const numeric = parseFloat(t.amount.replace(/[^0-9.]/g, ''));
-                if (!isNaN(numeric)) {
-                    totalINR += numeric;
-                    count++;
-                }
-            }
-            merchantCount[t.brandName] = (merchantCount[t.brandName] || 0) + 1;
-        });
-        
-        let topMerchant = 'N/A';
-        let maxCount = 0;
-        Object.entries(merchantCount).forEach(([m, c]) => {
-            if (c > maxCount) {
-                maxCount = c;
-                topMerchant = m;
-            }
-        });
-        
-        return {
-            total: Math.round(totalINR),
-            count: scannedTransactions.length,
-            topMerchant
-        };
-    }, [scannedTransactions]);
+    // Slow path: full inbox scan + Yureka Score. Fired in the background (not
+    // awaited by the UI) once we have an email to deliver the result to —
+    // the server emails the score to the user when this finishes.
+    const triggerBackgroundScoreScan = (accessToken: string, email: string) => {
+        fetch('/api/scan-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ accessToken, email, fallbackData: {} }),
+        })
+            .then(res => res.json())
+            .then(result => {
+                if (result.error) return;
+                setScannedTransactions((result.transactions || []).map((t: any) => ({
+                    brandName: t.brandName, amount: t.amount, description: t.description, date: t.date, sender: t.sender,
+                })));
+                if (result.score) setYurekaScore({ score: result.score.score, decision: result.score.decision });
+            })
+            .catch(e => console.error('Background score scan failed:', e));
+    };
+
 
     // ─── HELPERS ───
     const toggleUsageCategory = (cat: string) => {
@@ -499,15 +423,14 @@ const WaitlistPage: React.FC = () => {
         setIsSubmitting(true);
         setError(null);
         try {
-            const canonicalEmail = user?.email || formData.email;
+            const canonicalEmail = formData.email;
             const entry = {
-                first_name: formData.firstName,
-                last_name: formData.lastName,
                 name: `${formData.firstName} ${formData.lastName}`.trim(),
                 email: canonicalEmail,
                 mobile_number: formData.mobileNumber ? `+91${formData.mobileNumber}` : '',
                 date_of_birth: formData.dateOfBirth,
                 gender: formData.gender,
+                yureka_score: yurekaScore?.score,
                 most_used_for: formData.mostUsedFor.join(', '),
                 monthly_spend: `₹${formData.monthlySpend.toLocaleString()}`,
                 referral_code: formData.referralCode,
@@ -526,7 +449,7 @@ const WaitlistPage: React.FC = () => {
                 rank: joined.rank ?? 1000,
                 referralCode: joined.personalReferralCode ?? ''
             });
-            setStep(5);
+            setStep(6);
         } catch (err: any) {
             setError(err.message || 'Failed to join waitlist. Please try again.');
         } finally {
@@ -574,26 +497,34 @@ const WaitlistPage: React.FC = () => {
                     Get Early Access
                 </h2>
                 <p className="text-white/50 text-sm leading-relaxed mb-8 max-w-xs mx-auto">
-                    Enter your email to join the waitlist. We'll set up the rest in the next steps.
+                    Sign up with Gmail — we'll scan your inbox to compute your Yureka Score and auto-fill your profile.
                 </p>
 
-                <input
-                    type="email"
-                    inputMode="email"
-                    value={formData.email}
-                    onChange={e => { setFormData({ ...formData, email: e.target.value }); setError(null); }}
-                    onKeyDown={e => { if (e.key === 'Enter') handleContinue(); }}
-                    placeholder="you@email.com"
-                    className="w-full bg-black/30 border border-white/10 rounded-2xl px-5 py-4 text-white text-sm text-center outline-none focus:border-clay/60 focus:bg-white/5 transition-all mb-4"
-                />
+                {isScanning ? (
+                    <div className="space-y-4 py-2">
+                        <div className="relative w-12 h-12 mx-auto flex items-center justify-center">
+                            <div className="absolute inset-0 border-2 border-white/5 rounded-full" />
+                            <motion.div
+                                className="absolute inset-0 border-2 border-t-clay border-r-transparent border-b-transparent border-l-transparent rounded-full"
+                                animate={{ rotate: 360 }}
+                                transition={{ duration: 1.2, repeat: Infinity, ease: 'linear' }}
+                            />
+                        </div>
+                        <p className="text-white/40 text-xs uppercase tracking-[0.2em]">Scanning your Gmail…</p>
+                    </div>
+                ) : (
+                    <button
+                        onClick={startGoogleSignup}
+                        className="w-full bg-white text-black py-4 rounded-2xl flex items-center justify-center gap-3 hover:bg-clay transition-all duration-300 shadow-xl active:scale-[0.98]"
+                    >
+                        <LogIn size={16} />
+                        <span className="text-[11px] font-black uppercase tracking-[0.2em]">Continue with Gmail</span>
+                    </button>
+                )}
 
-                <button
-                    onClick={handleContinue}
-                    className="w-full bg-white text-black py-4 rounded-2xl flex items-center justify-center gap-3 hover:bg-clay transition-all duration-300 shadow-xl active:scale-[0.98]"
-                >
-                    <span className="text-[11px] font-black uppercase tracking-[0.2em]">Continue</span>
-                    <ArrowRight size={16} />
-                </button>
+                {scanError && (
+                    <p className="mt-4 text-red-400 text-[10px] font-bold uppercase tracking-widest">{scanError}</p>
+                )}
 
                 <p className="mt-6 text-[9px] font-bold uppercase tracking-widest text-white/25">
                     No spam · Unsubscribe anytime
@@ -608,6 +539,13 @@ const WaitlistPage: React.FC = () => {
                 <h3 className="text-3xl font-heading font-black text-white uppercase tracking-tighter mb-2">Your Profile</h3>
                 <p className="text-white/40 text-sm">We've auto-filled what we could from your Google account.</p>
             </div>
+
+            {yurekaScore && (
+                <div className="max-w-xs mx-auto flex items-center justify-center gap-2 bg-clay/10 border border-clay/25 rounded-2xl px-5 py-3">
+                    <Award size={14} className="text-clay shrink-0" />
+                    <span className="text-xs font-bold text-white/70">Yureka Score: <span className="text-clay font-black">{yurekaScore.score}/100</span> · {yurekaScore.decision}</span>
+                </div>
+            )}
 
             <div className="bg-white/[0.02] border border-white/8 rounded-[2rem] p-8 space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -793,78 +731,7 @@ const WaitlistPage: React.FC = () => {
         </motion.div>
     );
 
-    const renderStep5 = () => (
-        <motion.div key="step5" initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} className="max-w-md mx-auto text-center space-y-10">
-            <div className="space-y-4">
-                <div className="relative w-20 h-20 mx-auto flex items-center justify-center">
-                    <div className="absolute inset-0 border-2 border-white/5 rounded-full" />
-                    <motion.div
-                        className="absolute inset-0 border-2 border-t-clay border-r-transparent border-b-transparent border-l-transparent rounded-full"
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
-                    />
-                    <Sparkles size={26} className="text-clay" />
-                </div>
-                <h3 className="text-2xl font-heading font-black text-white uppercase tracking-tighter">Setting things up…</h3>
-                <p className="text-white/40 text-xs uppercase tracking-[0.2em]">Hang tight, this only takes a moment</p>
-            </div>
-
-            <div className="bg-white/[0.02] border border-white/10 rounded-[2rem] p-8 text-left space-y-5">
-                {[
-                    { id: 'session', label: 'Verifying your Google account' },
-                    { id: 'profile', label: 'Reading your profile information' },
-                    { id: 'inbox',   label: 'Scanning your inbox' },
-                    { id: 'ledger',  label: 'Identifying spending patterns' }
-                ].map(item => {
-                    const state = (scanState as any)[item.id];
-                    return (
-                        <div key={item.id} className="flex items-center gap-4">
-                            <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 border transition-all duration-300 ${
-                                state === 'success' ? 'bg-clay/10 border-clay/30' :
-                                state === 'failed'  ? 'bg-red-500/10 border-red-500/20' :
-                                state === 'loading' ? 'bg-white/5 border-clay/20' :
-                                'bg-white/[0.02] border-white/8'
-                            }`}>
-                                {state === 'loading' && <Loader2 size={14} className="animate-spin text-clay" />}
-                                {state === 'success' && <Check size={14} className="text-clay" strokeWidth={3} />}
-                                {state === 'failed'  && <span className="text-red-400 text-xs font-black">✕</span>}
-                                {state === 'pending' && <div className="w-2 h-2 bg-white/15 rounded-full" />}
-                            </div>
-                            <span className={`text-sm transition-colors duration-300 ${
-                                state === 'loading' ? 'text-white font-medium' :
-                                state === 'success' ? 'text-white/55' :
-                                state === 'failed'  ? 'text-red-400/60 line-through' :
-                                'text-white/25'
-                            }`}>
-                                {item.label}
-                            </span>
-                        </div>
-                    );
-                })}
-
-                <div className="pt-5 border-t border-white/5 space-y-2">
-                    <div className="flex justify-between text-[9px] font-black text-white/25 uppercase tracking-[0.2em]">
-                        <span>Progress</span>
-                        <span>{scanProgress}%</span>
-                    </div>
-                    <div className="h-1 bg-white/5 rounded-full overflow-hidden">
-                        <motion.div
-                            className="h-full bg-clay rounded-full"
-                            animate={{ width: `${scanProgress}%` }}
-                            transition={{ duration: 0.4, ease: 'easeOut' }}
-                        />
-                    </div>
-                </div>
-            </div>
-        </motion.div>
-    );
-
     const renderStep6 = () => {
-        const filteredTxns = scannedTransactions.filter(t =>
-            t.brandName.toLowerCase().includes(ledgerSearch.toLowerCase()) ||
-            t.description.toLowerCase().includes(ledgerSearch.toLowerCase())
-        );
-
         return (
             <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="space-y-12">
 
@@ -928,8 +795,8 @@ const WaitlistPage: React.FC = () => {
                                     { label: 'Age', value: scannedProfile?.age !== 'N/A' ? `${scannedProfile?.age} yrs` : 'N/A' },
                                     { label: 'Gender', value: scannedProfile?.gender || 'N/A' },
                                     { label: 'Phone', value: scannedProfile?.phone || formData.mobileNumber || 'N/A' },
-                                    { label: 'Email', value: user?.email || formData.email || 'N/A' },
-                                    { label: 'Auth Method', value: 'Email' }
+                                    { label: 'Email', value: formData.email || 'N/A' },
+                                    { label: 'Auth Method', value: 'Gmail' }
                                 ].map((item, i) => (
                                     <div key={i} className="space-y-1">
                                         <p className="text-[8px] font-black uppercase tracking-widest text-white/20">{item.label}</p>
@@ -941,85 +808,25 @@ const WaitlistPage: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Stats row */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {[
-                        { label: 'Emails Scanned', value: `${spendStats.count}`, desc: 'Receipts and transaction alerts found', icon: Database },
-                        { label: 'Total Spending Found', value: spendStats.total > 0 ? `₹${spendStats.total.toLocaleString()}` : 'N/A', desc: 'Across all scanned emails', icon: DollarSign },
-                        { label: 'Top Merchant', value: spendStats.topMerchant !== 'N/A' ? spendStats.topMerchant : 'N/A', desc: 'Where you spend the most', icon: TrendingUp }
-                    ].map((card, i) => (
-                        <div key={i} className="bg-white/[0.015] border border-white/8 rounded-2xl p-5 flex items-start gap-4">
-                            <div className="w-9 h-9 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-clay shrink-0">
-                                <card.icon size={16} />
-                            </div>
-                            <div className="space-y-0.5 min-w-0">
-                                <p className="text-[8px] font-black uppercase tracking-widest text-white/20">{card.label}</p>
-                                <p className="text-base font-bold text-white truncate">{card.value}</p>
-                                <p className="text-[10px] text-white/35">{card.desc}</p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-
-                {/* Transactions table */}
-                <div className="bg-white/[0.02] border border-white/10 rounded-[2rem] p-6 md:p-8 shadow-xl space-y-5">
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                        <div>
-                            <h4 className="text-lg font-bold text-white">Your Spending Summary</h4>
-                            <p className="text-xs text-white/35 mt-0.5">Transactions pulled from your Gmail inbox</p>
-                        </div>
-                        <div className="relative max-w-xs w-full">
-                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" size={13} />
-                            <input
-                                type="text" placeholder="Search transactions…"
-                                value={ledgerSearch}
-                                onChange={e => setLedgerSearch(e.target.value)}
-                                className="w-full bg-black/40 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white outline-none focus:border-clay/50 placeholder:text-white/20"
-                            />
-                        </div>
+                {/* Score status */}
+                <div className="max-w-2xl mx-auto bg-white/[0.02] border border-white/10 rounded-[2rem] p-8 flex items-center gap-5 text-left">
+                    <div className="w-11 h-11 bg-clay/10 border border-clay/20 rounded-2xl flex items-center justify-center shrink-0">
+                        {yurekaScore
+                            ? <Award size={18} className="text-clay" />
+                            : <Loader2 size={18} className="text-clay animate-spin" />}
                     </div>
-
-                    <div className="overflow-x-auto rounded-2xl border border-white/5 bg-black/20">
-                        <table className="w-full text-left border-collapse text-xs">
-                            <thead>
-                                <tr className="border-b border-white/5 text-[9px] font-black uppercase tracking-[0.2em] text-white/25 bg-white/[0.01]">
-                                    <th className="px-5 py-3.5">Brand</th>
-                                    <th className="px-5 py-3.5">Amount</th>
-                                    <th className="px-5 py-3.5">Description</th>
-                                    <th className="px-5 py-3.5">Date</th>
-                                    <th className="px-5 py-3.5 text-right">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {filteredTxns.map((t, idx) => (
-                                    <tr key={idx} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors group">
-                                        <td className="px-5 py-3.5 font-bold text-white">
-                                            <div className="flex items-center gap-2.5">
-                                                <div className="w-5 h-5 bg-white/5 border border-white/10 rounded-md flex items-center justify-center text-[9px] font-black text-clay shrink-0">
-                                                    {t.brandName.substring(0,2)}
-                                                </div>
-                                                <span className="group-hover:text-clay transition-colors">{t.brandName}</span>
-                                            </div>
-                                        </td>
-                                        <td className="px-5 py-3.5 font-mono font-bold text-clay">{t.amount}</td>
-                                        <td className="px-5 py-3.5 text-white/50 max-w-xs truncate">{t.description}</td>
-                                        <td className="px-5 py-3.5 text-white/35">{t.date}</td>
-                                        <td className="px-5 py-3.5 text-right">
-                                            <span className="inline-flex items-center gap-1 bg-clay/10 border border-clay/20 px-2 py-0.5 rounded-md text-[8px] font-black uppercase tracking-widest text-clay">
-                                                Verified
-                                            </span>
-                                        </td>
-                                    </tr>
-                                ))}
-                                {filteredTxns.length === 0 && (
-                                    <tr>
-                                        <td colSpan={5} className="px-5 py-10 text-center text-white/20 text-[9px] font-black uppercase tracking-widest">
-                                            {scannedTransactions.length === 0 ? 'No transactions found' : 'No matching transactions'}
-                                        </td>
-                                    </tr>
-                                )}
-                            </tbody>
-                        </table>
+                    <div>
+                        {yurekaScore ? (
+                            <>
+                                <p className="text-sm font-bold text-white">Your Yureka Score: <span className="text-clay font-black">{yurekaScore.score}/100</span> · {yurekaScore.decision}</p>
+                                <p className="text-xs text-white/40 mt-1">We've also emailed a copy to {formData.email || 'your inbox'}.</p>
+                            </>
+                        ) : (
+                            <>
+                                <p className="text-sm font-bold text-white">We're calculating your Yureka Score…</p>
+                                <p className="text-xs text-white/40 mt-1">You'll receive your score and full spending breakdown on {formData.email || 'your registered email'}{formData.mobileNumber ? ` and +91${formData.mobileNumber}` : ''} shortly.</p>
+                            </>
+                        )}
                     </div>
                 </div>
 
@@ -1082,11 +889,10 @@ const WaitlistPage: React.FC = () => {
                     {step === 1 && renderStep1()}
                     {step === 2 && renderStep2()}
                     {step === 4 && renderStep4()}
-                    {step === 5 && renderStep5()}
                     {step === 6 && renderStep6()}
                 </AnimatePresence>
 
-                {error && step < 5 && (
+                {error && step < 6 && (
                     <motion.div 
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}

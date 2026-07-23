@@ -1,610 +1,638 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
-  Zap,
-  Loader2,
-  Trash2,
-  Check,
-  X,
-  AlertCircle
+    LogIn, LogOut, Loader2, Search, CheckCircle, XCircle, PauseCircle,
+    Clock, RefreshCw, Filter, ShieldCheck, Users, UserCog, Plus, Trash2
 } from 'lucide-react';
-
 import { api, isApiError } from '../lib/api/client';
-import { fromApiCard, fromApiBlog, fromApiReview } from '../lib/api/mappers';
-import type { Card as ApiCard, Blog as ApiBlog, Review as ApiReview, Waitlist as ApiWaitlist } from '../lib/api/types';
-import { Blog, Card, WaitlistEntry, Review } from '../types';
-import { useSupabase } from './SupabaseProvider';
 
-// Admin Sub-components
-import { AdminHeader } from './admin/AdminHeader';
-import { AdminSidebar } from './admin/AdminSidebar';
-import { AdminBlogsTab } from './admin/AdminBlogsTab';
-import { AdminCardsTab } from './admin/AdminCardsTab';
-import { AdminReviewsTab } from './admin/AdminReviewsTab';
-import { AdminWaitlistTab } from './admin/AdminWaitlistTab';
-import { AdminSettingsTab } from './admin/AdminSettingsTab';
-import { AdminLogsTab } from './admin/AdminLogsTab';
-import { AdminNotificationsTab } from './admin/AdminNotificationsTab';
-import { AdminTrashTab } from './admin/AdminTrashTab';
-import { AdminModals } from './admin/AdminModals';
-
-const cleanData = (obj: any) => {
-  const cleaned = { ...obj };
-  Object.keys(cleaned).forEach(key => {
-    if (cleaned[key] === undefined) delete cleaned[key];
-    if (key === 'scheduled_at' && cleaned[key] === '') cleaned[key] = null;
-    if (key === 'benefits' && Array.isArray(cleaned[key])) {
-      cleaned[key] = cleaned[key].filter((b: string) => b && typeof b === 'string' && b.trim() !== '');
-    }
-    if (key === 'benefit_items' && Array.isArray(cleaned[key])) {
-      cleaned[key] = cleaned[key].filter((b: any) => b && b.heading?.trim() !== '');
-    }
-  });
-  return cleaned;
-};
-
-const ADMIN_BANKS = [
-  'HDFC', 'SBI', 'ICICI', 'Axis', 'Kotak', 'Yes Bank', 'RBL', 'Amex',
-  'IndusInd', 'BOB', 'SC', 'IDFC', 'AU', 'Federal', 'SBM', 'IDBI'
-];
-
-const ADMIN_CATEGORIES = [
-  'Travel', 'Hotels', 'Cashback', 'Brand Voucher', 'Fuel',
-  'Shopping', 'Dining', 'Lounge Access', 'Lifetime Free', 'Business', 'UPI',
-  'Travel Bookings', 'Catalogue Products', 'Experience'
-];
-// Converts the admin form's snake_case card payload to the Java API's camelCase + JSON-stringified JSONB fields.
-function toApiCardPayload(c: any) {
-  return {
-    name: c.name, bank: c.bank, issuer: c.issuer, type: c.type,
-    image: c.image, slug: c.slug, status: c.status, color: c.color,
-    applyLink: c.apply_link, bestFor: c.best_for, category: c.category,
-    categories: c.categories, rating: c.rating, eliteRating: c.elite_rating,
-    rewardsRate: c.rewards_rate, projectedSavings: c.projected_savings,
-    annualFee: c.annual_fee, joiningFee: c.joining_fee, introOffer: c.intro_offer,
-    benefits: c.benefits, benefitItems: JSON.stringify(c.benefit_items ?? []),
-    verdict: c.verdict, description: c.description, author: c.author,
-    rewardType: c.reward_type, welcomeBenefits: c.welcome_benefits,
-    productDetails: c.product_details, pros: c.pros, cons: c.cons,
-    cashbackDetails: c.cashback_details, exclusions: c.exclusions,
-    comparisonCards: c.comparison_cards, latestNews: c.latest_news,
-    detailedFeatures: JSON.stringify(c.detailed_features ?? []),
-    redemptionTable: JSON.stringify(c.redemption_table ?? []),
-    eligibilityCriteria: JSON.stringify(c.eligibility_criteria ?? []),
-    gridBenefits: JSON.stringify(c.grid_benefits ?? []),
-    gridFees: JSON.stringify(c.grid_fees ?? []),
-    finalVerdictText: c.final_verdict_text, finalReviewImage: c.final_review_image,
-  };
+interface WaitlistEntry {
+    id: string;
+    fullName: string | null;
+    email: string;
+    mobileNumber: string | null;
+    dateOfBirth: string | null;
+    gender: string | null;
+    monthlySpend: string | null;
+    topCategory: string | null;
+    yurekaScore: number | null;
+    role: string;
+    referralCode: string | null;
+    personalReferralCode: string | null;
+    rank: number;
+    status: string;
+    joinedAt: string | null;
+    createdAt: string;
 }
 
-const DEFAULT_BLOG_FORM = {
-  title: '', slug: '', excerpt: '', content: '', author: '', category: 'Credit Cards',
-  image: 'https://picsum.photos/seed/blog/800/600', read_time: '5 min read',
-  featured: false, status: 'published', publishMode: 'now', scheduled_at: '',
-  external_link: ''
-};
+interface AdminUser {
+    id: string;
+    email: string;
+    fullName: string | null;
+    role: 'viewer' | 'admin' | 'superadmin';
+    createdAt: string;
+}
 
-const DEFAULT_CARD_FORM = {
-  name: '', bank: '', issuer: '', type: 'Rewards', image: 'https://picsum.photos/seed/card/400/250',
-  rating: 4.5, elite_rating: 4.5, benefits: [''], benefit_items: [{ heading: '', subheading: '' }],
-  verdict: '', slug: '', apply_link: '', annual_fee: '₹0', joining_fee: '₹0', intro_offer: '',
-  best_for: 'Shopping', category: 'Shopping', categories: [] as string[],
-  color: 'from-blue-600 to-indigo-700', rewards_rate: '5%', projected_savings: '₹12,000/yr', status: 'published',
-  
-  // Review fields
-  description: '', author: 'Yureka Research Team', 
-  reward_type: 'Cashback', welcome_benefits: '',
-  product_details: [''], pros: [''], cons: [''],
-  detailed_features: [{ title: '', content: '' }],
-  cashback_details: [''],
-  redemption_table: [
-    { category: 'Product Catalog', value: '₹0.25' },
-    { category: 'Flights/Hotels', value: '₹0.30' },
-    { category: 'Cashback', value: '₹1.00' },
-    { category: 'Airmiles', value: '0.30 Miles' }
-  ],
-  exclusions: [''],
-  eligibility_criteria: [
-    { criteria: 'Age', salaried: '21 – 60 Years', self_employed: '21 – 65 Years' },
-    { criteria: 'Income', salaried: '₹25,000 / Month', self_employed: '₹6,00,000 / Annum' }
-  ],
-  comparison_cards: [] as string[],
-  latest_news: [''],
-  final_review_image: '',
-  final_verdict_text: '',
-  grid_benefits: [
-    { title: 'Movie & Dining', value: '' },
-    { title: 'Rewards Rate', value: '' },
-    { title: 'Reward Redemption', value: '' },
-    { title: 'Travel', value: '' },
-    { title: 'Lounge Access', value: '' },
-    { title: 'Insurance Benefits', value: '' }
-  ],
-  grid_fees: [
-    { title: 'Spend-Based Waiver', value: '' },
-    { title: 'Rewards Redemption Fee', value: '' },
-    { title: 'Foreign Currency Markup', value: '' },
-    { title: 'Fuel Surcharge Waiver', value: '' },
-    { title: 'Cash Advance Charges', value: '' },
-    { title: 'Interest Rates', value: '' }
-  ]
-};
+type AdminRole = 'viewer' | 'admin' | 'superadmin';
 
-const DEFAULT_REVIEW_FORM: Partial<Review> = {
-  author: '', role: '', company: '', company_logo: '', image: 'https://picsum.photos/seed/review/300/400',
-  quote: '', rating: 5, source: 'Direct', featured: false, status: 'published'
-};
+const ADMIN_TOKEN_KEY = 'yureka_admin_token';
+const ADMIN_ROLE_KEY = 'yureka_admin_role';
 
-const DEFAULT_TEAM_FORM = { email: '', role: 'writer' };
+const STATUS_TABS = [
+    { id: 'all', label: 'All', icon: Filter },
+    { id: 'pending', label: 'Pending', icon: Clock },
+    { id: 'accepted', label: 'Accepted', icon: CheckCircle },
+    { id: 'on_hold', label: 'On Hold', icon: PauseCircle },
+    { id: 'rejected', label: 'Rejected', icon: XCircle },
+] as const;
 
 const AdminDashboard: React.FC = () => {
-  const { 
-    syncStatus, isLoading, refreshAll, 
-    setCards, setBlogs, setReviews, setWaitlist, setTeam 
-  } = useSupabase();
+    // ─── Auth state ───
+    const [adminToken, setAdminToken] = useState<string | null>(() => localStorage.getItem(ADMIN_TOKEN_KEY));
+    const [adminRole, setAdminRole] = useState<AdminRole | null>(() => localStorage.getItem(ADMIN_ROLE_KEY) as AdminRole | null);
+    const [isSigningIn, setIsSigningIn] = useState(false);
+    const [authError, setAuthError] = useState<string | null>(null);
+    const [view, setView] = useState<'waitlist' | 'admins'>('waitlist');
+    const canApprove = adminRole === 'admin' || adminRole === 'superadmin';
+    const isSuperAdmin = adminRole === 'superadmin';
 
-  // --- Auth & Role State ---
-  // Auth removed: the app runs logged-out and /admin is open (no session).
-  const [user, setUser] = useState<any>({ email: 'admin@yureka.one' });
-  const [userRole, setUserRole] = useState<string>('admin');
-  const [isAdmin, setIsAdmin] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState<'blogs' | 'cards' | 'waitlist' | 'settings' | 'logs' | 'reviews' | 'notifications' | 'trash'>(
-    (localStorage.getItem('yureka_admin_tab') as any) || 'blogs'
-  );
-  const [waitlistFilter, setWaitlistFilter] = useState<'pending' | 'accepted' | 'rejected' | 'on_hold' | 'all'>('pending');
+    // ─── Waitlist state ───
+    const [entries, setEntries] = useState<WaitlistEntry[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [loadError, setLoadError] = useState<string | null>(null);
+    const [selected, setSelected] = useState<Set<string>>(new Set());
+    const [bulkActionLoading, setBulkActionLoading] = useState(false);
 
-  // Critical Loading Timeout to prevent permanent spinner
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (loading) {
-        console.warn("⚠️ Admin Auth timed out. Forcing UI state.");
-        setLoading(false);
-      }
-    }, 6000);
-    return () => clearTimeout(timer);
-  }, [loading]);
+    // ─── Filters ───
+    const [statusFilter, setStatusFilter] = useState<string>('all');
+    const [search, setSearch] = useState('');
+    const [debouncedSearch, setDebouncedSearch] = useState('');
+    const [minScore, setMinScore] = useState('');
+    const [maxScore, setMaxScore] = useState('');
 
-  useEffect(() => {
-    localStorage.setItem('yureka_admin_tab', activeTab);
-    setError(null);
-  }, [activeTab]);
+    useEffect(() => {
+        const t = setTimeout(() => setDebouncedSearch(search), 300);
+        return () => clearTimeout(t);
+    }, [search]);
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  // --- Form States ---
-  const [blogForm, setBlogForm] = useState(JSON.parse(JSON.stringify(DEFAULT_BLOG_FORM)));
-  const [cardForm, setCardForm] = useState(JSON.parse(JSON.stringify(DEFAULT_CARD_FORM)));
-  const [reviewForm, setReviewForm] = useState<Review>(JSON.parse(JSON.stringify(DEFAULT_REVIEW_FORM)) as Review);
-  const [teamForm, setTeamForm] = useState(JSON.parse(JSON.stringify(DEFAULT_TEAM_FORM)));
-
-  // --- Modal States ---
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState<{collection: string, id: string} | null>(null);
-  const [editingItem, setEditingItem] = useState<any>(null);
-  const [uploading, setUploading] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [notification, setNotification] = useState<{ message: string, type: 'success' | 'error' } | null>(null);
-
-  const showNotification = (message: string, type: 'success' | 'error' = 'success') => {
-    setNotification({ message, type });
-    setTimeout(() => setNotification(null), 3000);
-  };
-
-  // --- Helpers ---
-  const formatDateForInput = (isoString?: string | null) => {
-    if (!isoString) return '';
-    const date = new Date(isoString);
-    const tzOffset = date.getTimezoneOffset() * 60000;
-    return (new Date(date.getTime() - tzOffset)).toISOString().slice(0, 16);
-  };
-
-  const generateSlug = (name: string, bank: string) => {
-      return `${name}-${bank}`.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-  };
-
-  const handleLogout = () => { window.location.href = '/'; };
-
-  // --- CRUD Handlers ---
-  const handleEdit = (item: any) => {
-    setEditingItem(item);
-    if (activeTab === 'blogs') {
-      setBlogForm({
-        ...item,
-        publishMode: (item.scheduled_at && new Date(item.scheduled_at) > new Date()) ? 'later' : 'now',
-        scheduled_at: formatDateForInput(item.scheduled_at)
-      });
-    } else if (activeTab === 'cards') {
-      setCardForm({ 
-        ...JSON.parse(JSON.stringify(DEFAULT_CARD_FORM)), 
-        ...item,
-        benefit_items: item.benefit_items || [{ heading: '', subheading: '' }]
-      });
-    } else if (activeTab === 'reviews') {
-      setReviewForm({ ...JSON.parse(JSON.stringify(DEFAULT_REVIEW_FORM)), ...item });
-    } else if (activeTab === 'settings') {
-      setTeamForm({ email: item.email, role: item.role });
-    }
-    setIsModalOpen(true);
-    setError(null);
-  };
-
-  const confirmDelete = (collection: string, id: string) => {
-    setItemToDelete({ collection, id });
-    setIsDeleteModalOpen(true);
-  };
-
-  const handleDeleteConfirm = async () => {
-    if (!itemToDelete) return;
-    const { collection, id } = itemToDelete;
-    setError(null);
-    
-    try {
-      const userEmail = user?.email || 'admin@yureka.one';
-
-      console.log(`🗑️ Deleting from ${collection} (ID: ${id})`);
-
-      const deleteRoutes: Record<string, string> = {
-        blogs:    `/api/v1/admin/blogs/${id}`,
-        cards:    `/api/v1/admin/cards/${id}`,
-        reviews:  `/api/v1/admin/reviews/${id}`,
-        waitlist: `/api/v1/admin/waitlist/${id}`,
-        users:    `/api/v1/admin/team/${id}`,
-      };
-      const route = deleteRoutes[collection];
-      if (!route) throw new Error(`Unknown collection: ${collection}`);
-      const delRes = await api.delete(route);
-      if (isApiError(delRes)) throw new Error(delRes.error);
-
-    } catch (err: any) {
-      console.error("💥 CRITICAL DELETE FAILURE:", err);
-      showNotification(`Failed to delete: ${err.message || "Database error"}`, 'error');
-    } finally {
-      setIsDeleteModalOpen(false);
-      setItemToDelete(null);
-    }
-  };
-
-  const handleFileUpload = async (_e: React.ChangeEvent<HTMLInputElement>) => {
-    // Image upload has been disabled (storage backend removed).
-    alert('Image upload is disabled. Please paste an image URL instead.');
-  };
-
-  const handleSave = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSaving(true);
-    setError(null);
-
-    try {
-      const userEmail = user?.email || 'admin@yureka.one';
-      let payload: any = {};
-      let collection = '';
-
-      if (activeTab === 'blogs') {
-        collection = 'blogs';
-        // Generate a valid slug if missing
-        const rawSlug = (blogForm.slug || blogForm.title || 'untitled').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-        const finalSlug = editingItem ? blogForm.slug : (rawSlug || `journal-${Date.now()}`);
-        
-        // Construct a clean payload matching the DB schema exactly
-        payload = {
-          title: blogForm.title || 'Untitled Journal',
-          excerpt: blogForm.excerpt || '',
-          content: blogForm.content || '',
-          author: blogForm.author || 'Yureka Editorial',
-          category: blogForm.category || 'Credit Cards',
-          image: blogForm.image || 'https://picsum.photos/seed/blog/800/600',
-          external_link: blogForm.external_link || '',
-          slug: finalSlug,
-          status: 'published',
-          read_time: blogForm.read_time || '5 min read'
-        };
-
-        // Handle scheduling safely
-        if (blogForm.publishMode === 'later' && blogForm.scheduled_at) {
-          try {
-            payload.scheduled_at = new Date(blogForm.scheduled_at).toISOString();
-          } catch (e) {
-            payload.scheduled_at = null;
-          }
-        } else {
-          payload.scheduled_at = null;
+    // ─── Google sign-in ───
+    const startAdminSignIn = () => {
+        setAuthError(null);
+        setIsSigningIn(true);
+        const google = (window as any).google;
+        if (!google?.accounts?.oauth2) {
+            setAuthError('Google sign-in failed to load. Please refresh the page and try again.');
+            setIsSigningIn(false);
+            return;
         }
-
-        payload = cleanData(payload);
-      } 
-      else if (activeTab === 'cards') {
-        collection = 'cards';
-        const c = cardForm;
-        if (!c.slug) c.slug = generateSlug(c.name, c.bank) || `card-${Date.now()}`;
-        // Explicitly map only columns that exist in the DB schema
-        payload = {
-          name: c.name || '',
-          bank: c.bank || '',
-          issuer: c.issuer || '',
-          type: c.type || 'Rewards',
-          image: c.image || '',
-          slug: c.slug || '',
-          status: c.status || 'published',
-          color: c.color || '',
-          apply_link: c.apply_link || '',
-          best_for: c.best_for || '',
-          category: c.category || '',
-          categories: c.categories || [],
-          rating: Number(c.rating) || 0,
-          elite_rating: Number(c.elite_rating) || 0,
-          rewards_rate: c.rewards_rate || '',
-          projected_savings: c.projected_savings || '',
-          annual_fee: c.annual_fee || '',
-          joining_fee: c.joining_fee || '',
-          intro_offer: c.intro_offer || '',
-          benefits: Array.isArray(c.benefits) ? c.benefits.filter((b: string) => b?.trim()) : [],
-          benefit_items: Array.isArray(c.benefit_items) ? c.benefit_items.filter((b: any) => b?.heading?.trim()) : [],
-          verdict: c.verdict || '',
-          description: c.description || '',
-          author: c.author || '',
-          reward_type: c.reward_type || '',
-          product_details: Array.isArray(c.product_details) ? c.product_details.filter((x: string) => x?.trim()) : [],
-          pros: Array.isArray(c.pros) ? c.pros.filter((x: string) => x?.trim()) : [],
-          cons: Array.isArray(c.cons) ? c.cons.filter((x: string) => x?.trim()) : [],
-          redemption_table: Array.isArray(c.redemption_table) ? c.redemption_table : [],
-          latest_news: Array.isArray(c.latest_news) ? c.latest_news.filter((x: string) => x?.trim()) : [],
-          grid_benefits: Array.isArray(c.grid_benefits) ? c.grid_benefits : [],
-          grid_fees: Array.isArray(c.grid_fees) ? c.grid_fees : [],
-          final_verdict_text: c.final_verdict_text || '',
-        };
-      }
-      else if (activeTab === 'reviews') {
-        collection = 'reviews';
-        // Explicit allowlist — only columns confirmed in the reviews table schema
-        payload = {
-          author: reviewForm.author || '',
-          role: reviewForm.role || '',
-          company: reviewForm.company || '',
-          company_logo: reviewForm.company_logo || '',
-          image: reviewForm.image || reviewForm.avatar || '',
-          quote: reviewForm.quote || '',
-          rating: Number(reviewForm.rating) || 5,
-          source: reviewForm.source || 'Direct',
-          featured: reviewForm.featured ?? false,
-          status: reviewForm.status || 'published',
-        };
-      }
-      else if (activeTab === 'settings') {
-        collection = 'users';
-        payload = editingItem 
-          ? { role: teamForm.role } 
-          : { 
-              email: teamForm.email.toLowerCase().trim(), 
-              role: teamForm.role, 
-              full_name: teamForm.email.split('@')[0],
-              created_at: new Date().toISOString()
-            };
-      }
-
-      // Final Sanitization: Remove metadata that the API rejects on inserts/updates
-      const finalPayload = { ...payload };
-      delete finalPayload.id;
-      delete finalPayload.created_at;
-      delete finalPayload.updated_at;
-      delete finalPayload.updated_on;
-      delete finalPayload.avatar; // not a cards column
-
-      console.log(`📤 Saving to ${collection}:`, finalPayload);
-
-      const isUpdate = !!editingItem;
-
-      let savedItem: any = null;
-
-      if (collection === 'blogs') {
-        const res = isUpdate
-          ? await api.put<ApiBlog>(`/api/v1/admin/blogs/${editingItem.id}`, finalPayload)
-          : await api.post<ApiBlog>('/api/v1/admin/blogs', finalPayload);
-        if (isApiError(res)) throw new Error(res.error);
-        savedItem = fromApiBlog(res.data!);
-        if (isUpdate) setBlogs(prev => prev.map(i => i.id === editingItem.id ? savedItem : i));
-        else setBlogs(prev => [savedItem, ...prev]);
-      } else if (collection === 'cards') {
-        const apiPayload = toApiCardPayload(finalPayload);
-        const res = isUpdate
-          ? await api.put<ApiCard>(`/api/v1/admin/cards/${editingItem.id}`, apiPayload)
-          : await api.post<ApiCard>('/api/v1/admin/cards', apiPayload);
-        if (isApiError(res)) throw new Error(res.error);
-        savedItem = fromApiCard(res.data!);
-        if (isUpdate) setCards(prev => prev.map(i => i.id === editingItem.id ? savedItem : i));
-        else setCards(prev => [savedItem, ...prev]);
-      } else if (collection === 'reviews') {
-        const reviewPayload = { ...finalPayload, companyLogo: finalPayload.company_logo };
-        delete reviewPayload.company_logo;
-        const res = isUpdate
-          ? await api.put<ApiReview>(`/api/v1/admin/reviews/${editingItem.id}`, reviewPayload)
-          : await api.post<ApiReview>('/api/v1/admin/reviews', reviewPayload);
-        if (isApiError(res)) throw new Error(res.error);
-        savedItem = fromApiReview(res.data!);
-        if (isUpdate) setReviews(prev => prev.map(i => i.id === editingItem.id ? savedItem : i));
-        else setReviews(prev => [savedItem, ...prev]);
-      } else if (collection === 'users') {
-        if (isUpdate) {
-          const res = await api.patch(`/api/v1/admin/team/${editingItem.id}/role`, { role: finalPayload.role });
-          if (isApiError(res)) throw new Error(res.error);
-          savedItem = res.data;
-          setTeam(prev => prev.map(i => i.id === editingItem.id ? savedItem : i));
-        } else {
-          const res = await api.post(`/api/v1/admin/team`, { email: finalPayload.email, role: finalPayload.role });
-          if (isApiError(res)) throw new Error(res.error);
-          savedItem = res.data;
-          setTeam(prev => [savedItem, ...prev]);
-        }
-      }
-
-      showNotification(`${isUpdate ? 'Updated' : 'Created'} successfully!`);
-      setIsModalOpen(false);
-      setEditingItem(null);
-
-      // Send welcome email for new team members
-      if (!isUpdate && activeTab === 'settings') {
-        api.post('/api/v1/admin/notify', {
-          email: teamForm.email,
-          role: teamForm.role,
-          firstName: teamForm.email.split('@')[0],
-        }).catch(e => console.error("Notification failed:", e));
-      }
-
-    } catch (err: any) {
-      console.error("💥 CRITICAL SAVE FAILURE:", err);
-      setError(err.message || "An unexpected error occurred while saving.");
-    } finally {
-      setSaving(false);
-    }
-  };
-
-
-  const getAddAction = () => {
-    if (!['blogs', 'cards', 'reviews', 'settings'].includes(activeTab)) return undefined;
-    
-    return () => {
-       setEditingItem(null);
-      if (activeTab === 'blogs') setBlogForm(JSON.parse(JSON.stringify(DEFAULT_BLOG_FORM)));
-      else if (activeTab === 'cards') setCardForm(JSON.parse(JSON.stringify(DEFAULT_CARD_FORM)));
-      else if (activeTab === 'reviews') setReviewForm(JSON.parse(JSON.stringify(DEFAULT_REVIEW_FORM)) as Review);
-      else if (activeTab === 'settings') setTeamForm(JSON.parse(JSON.stringify(DEFAULT_TEAM_FORM)));
-      setError(null);
-      setIsModalOpen(true);
+        const clientId = (import.meta as any).env.VITE_GOOGLE_CLIENT_ID;
+        const tokenClient = google.accounts.oauth2.initTokenClient({
+            client_id: clientId,
+            scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
+            callback: async (tokenResponse: any) => {
+                if (tokenResponse?.error || !tokenResponse?.access_token) {
+                    setAuthError('Google sign-in was cancelled or denied.');
+                    setIsSigningIn(false);
+                    return;
+                }
+                try {
+                    const res = await api.post<{ token: string; role: AdminRole }>(
+                        '/api/v1/auth/admin-login',
+                        { accessToken: tokenResponse.access_token },
+                        { skipAuth: true }
+                    );
+                    if (isApiError(res)) {
+                        setAuthError(res.error || 'This Google account is not authorized for admin access.');
+                        return;
+                    }
+                    const { token, role } = res.data!;
+                    localStorage.setItem(ADMIN_TOKEN_KEY, token);
+                    localStorage.setItem(ADMIN_ROLE_KEY, role);
+                    setAdminToken(token);
+                    setAdminRole(role);
+                } catch (e) {
+                    console.error('Admin login failed:', e);
+                    setAuthError('Something went wrong signing in. Please try again.');
+                } finally {
+                    setIsSigningIn(false);
+                }
+            },
+        });
+        tokenClient.requestAccessToken();
     };
-  };
 
-  const getAddLabel = () => {
-    if (activeTab === 'settings') return 'Invite Member';
-    return `Add ${activeTab.slice(0, -1)}`;
-  };
+    const logout = () => {
+        localStorage.removeItem(ADMIN_TOKEN_KEY);
+        localStorage.removeItem(ADMIN_ROLE_KEY);
+        setAdminToken(null);
+        setAdminRole(null);
+        setEntries([]);
+        setSelected(new Set());
+    };
 
-  if (loading) {
-    return <div className="min-h-screen bg-cream flex items-center justify-center"><Loader2 className="animate-spin text-teal" size={48} /></div>;
-  }
+    // ─── Fetch waitlist ───
+    const fetchWaitlist = useCallback(async () => {
+        if (!adminToken) return;
+        setIsLoading(true);
+        setLoadError(null);
+        try {
+            const params = new URLSearchParams();
+            if (statusFilter !== 'all') params.set('status', statusFilter);
+            if (debouncedSearch.trim()) params.set('search', debouncedSearch.trim());
+            if (minScore !== '') params.set('minScore', minScore);
+            if (maxScore !== '') params.set('maxScore', maxScore);
 
-  return (
-    <div className="flex min-h-screen bg-cream selection:bg-clay/20 relative overflow-hidden">
-      {/* CONTINUOUS AMBIENT ANIMATION NODES */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <motion.div 
-          animate={{ 
-            scale: [1, 1.2, 1],
-            opacity: [0.1, 0.15, 0.1],
-            x: [-20, 20, -20],
-            y: [-20, 20, -20]
-          }}
-          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-          className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-clay/20 blur-[120px] rounded-full"
-        />
-        <motion.div 
-          animate={{ 
-            scale: [1.2, 1, 1.2],
-            opacity: [0.05, 0.1, 0.05],
-            x: [20, -20, 20],
-            y: [20, -20, 20]
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute -bottom-[10%] -right-[10%] w-[50%] h-[50%] bg-clay/10 blur-[150px] rounded-full"
-        />
-      </div>
+            const res = await api.get<WaitlistEntry[]>(
+                `/api/v1/admin/waitlist?${params.toString()}`,
+                { headers: { 'X-Admin-Session': adminToken! } }
+            );
+            if (isApiError(res)) {
+                if (res.status === 401) {
+                    logout();
+                    setAuthError('Your admin session expired. Please sign in again.');
+                    return;
+                }
+                setLoadError(res.error || 'Failed to load waitlist.');
+                return;
+            }
+            setEntries(res.data! || []);
+            setSelected(new Set());
+        } catch (e) {
+            console.error('Failed to fetch waitlist:', e);
+            setLoadError('Failed to load waitlist.');
+        } finally {
+            setIsLoading(false);
+        }
+    }, [adminToken, statusFilter, debouncedSearch, minScore, maxScore]);
 
-      <div className="relative z-10 flex w-full min-h-screen">
-        <AdminSidebar 
-          user={user} userRole={userRole} activeTab={activeTab} isSidebarOpen={isSidebarOpen}
-          onTabChange={setActiveTab} onLogout={handleLogout} onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
-        />
+    useEffect(() => { fetchWaitlist(); }, [fetchWaitlist]);
 
-        <div className="flex-1 flex flex-col min-w-0">
-        <AdminHeader 
-          user={user} activeTab={activeTab} 
-          onLogout={handleLogout} onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} 
-          onAdd={getAddAction()}
-          addLabel={getAddLabel()}
-        />
+    // ─── Solo status update ───
+    const updateStatus = async (id: string, status: string) => {
+        if (!adminToken) return;
+        try {
+            const res = await api.patch(`/api/v1/admin/waitlist/${id}/status`, { status }, { headers: { 'X-Admin-Session': adminToken! } });
+            if (isApiError(res)) {
+                setLoadError(res.error || 'Failed to update status.');
+                return;
+            }
+            setEntries(prev => prev.map(e => e.id === id ? { ...e, status } : e));
+        } catch (e) {
+            console.error('Failed to update status:', e);
+        }
+    };
 
-        <main className="flex-1 p-4 md:p-10 bg-cream">
-            <div className="max-w-7xl mx-auto">
-              <AnimatePresence mode="wait">
-                <motion.div 
-                  key={activeTab}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2 }}
-                  className="bg-white/5 rounded-[2.5rem] border border-white/5 shadow-2xl shadow-black overflow-hidden min-h-[70vh] flex flex-col"
+    // ─── Bulk status update ───
+    const bulkUpdateStatus = async (status: string) => {
+        if (!adminToken || selected.size === 0) return;
+        setBulkActionLoading(true);
+        try {
+            const ids = Array.from(selected);
+            const res = await api.post('/api/v1/admin/waitlist/bulk-status', { ids, status }, { headers: { 'X-Admin-Session': adminToken! } });
+            if (isApiError(res)) {
+                setLoadError(res.error || 'Bulk update failed.');
+                return;
+            }
+            setEntries(prev => prev.map(e => selected.has(e.id) ? { ...e, status } : e));
+            setSelected(new Set());
+        } catch (e) {
+            console.error('Bulk update failed:', e);
+        } finally {
+            setBulkActionLoading(false);
+        }
+    };
+
+    const toggleSelected = (id: string) => {
+        setSelected(prev => {
+            const next = new Set(prev);
+            if (next.has(id)) next.delete(id); else next.add(id);
+            return next;
+        });
+    };
+
+    const toggleSelectAll = () => {
+        setSelected(prev => prev.size === entries.length ? new Set() : new Set(entries.map(e => e.id)));
+    };
+
+    // ─── Manage admins (superadmin only) ───
+    const [adminUsers, setAdminUsers] = useState<AdminUser[]>([]);
+    const [isLoadingAdmins, setIsLoadingAdmins] = useState(false);
+    const [adminError, setAdminError] = useState<string | null>(null);
+    const [inviteEmail, setInviteEmail] = useState('');
+    const [inviteRole, setInviteRole] = useState<AdminRole>('viewer');
+    const [isInviting, setIsInviting] = useState(false);
+
+    const fetchAdmins = useCallback(async () => {
+        if (!adminToken || !isSuperAdmin) return;
+        setIsLoadingAdmins(true);
+        setAdminError(null);
+        try {
+            const res = await api.get<AdminUser[]>('/api/v1/admin/team', { headers: { 'X-Admin-Session': adminToken! } });
+            if (isApiError(res)) {
+                setAdminError(res.error || 'Failed to load admin users.');
+                return;
+            }
+            setAdminUsers(res.data! || []);
+        } catch (e) {
+            console.error('Failed to fetch admins:', e);
+            setAdminError('Failed to load admin users.');
+        } finally {
+            setIsLoadingAdmins(false);
+        }
+    }, [adminToken, isSuperAdmin]);
+
+    useEffect(() => { if (view === 'admins') fetchAdmins(); }, [view, fetchAdmins]);
+
+    const addAdmin = async () => {
+        if (!adminToken || !inviteEmail.trim()) return;
+        setIsInviting(true);
+        setAdminError(null);
+        try {
+            const res = await api.post<AdminUser>(
+                '/api/v1/admin/team',
+                { email: inviteEmail.trim(), role: inviteRole },
+                { headers: { 'X-Admin-Session': adminToken! } }
+            );
+            if (isApiError(res)) {
+                setAdminError(res.error || 'Failed to add admin.');
+                return;
+            }
+            setInviteEmail('');
+            setInviteRole('viewer');
+            fetchAdmins();
+            // Best-effort welcome email — don't block on failure
+            api.post('/api/v1/admin/notify', {
+                email: res.data!.email, role: res.data!.role, firstName: res.data!.fullName,
+            }, { headers: { 'X-Admin-Session': adminToken! } }).catch(() => {});
+        } catch (e) {
+            console.error('Failed to add admin:', e);
+            setAdminError('Failed to add admin.');
+        } finally {
+            setIsInviting(false);
+        }
+    };
+
+    const updateAdminRole = async (id: string, role: AdminRole) => {
+        if (!adminToken) return;
+        try {
+            const res = await api.patch(`/api/v1/admin/team/${id}/role`, { role }, { headers: { 'X-Admin-Session': adminToken! } });
+            if (isApiError(res)) {
+                setAdminError(res.error || 'Failed to update role.');
+                return;
+            }
+            setAdminUsers(prev => prev.map(u => u.id === id ? { ...u, role } : u));
+        } catch (e) {
+            console.error('Failed to update admin role:', e);
+        }
+    };
+
+    const removeAdmin = async (id: string) => {
+        if (!adminToken) return;
+        try {
+            const res = await api.delete(`/api/v1/admin/team/${id}`, { headers: { 'X-Admin-Session': adminToken! } });
+            if (isApiError(res)) {
+                setAdminError(res.error || 'Failed to remove admin.');
+                return;
+            }
+            setAdminUsers(prev => prev.filter(u => u.id !== id));
+        } catch (e) {
+            console.error('Failed to remove admin:', e);
+        }
+    };
+
+    // ─── Sign-in gate ───
+    if (!adminToken) {
+        return (
+            <div className="min-h-screen bg-[#050505] flex items-center justify-center px-6">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="max-w-sm w-full text-center bg-white/[0.03] border border-white/10 rounded-[2.5rem] p-10 shadow-2xl"
                 >
-                  {activeTab === 'blogs' && <AdminBlogsTab onEdit={handleEdit} onDelete={confirmDelete} formatDateForInput={formatDateForInput} />}
-                  {activeTab === 'cards' && <AdminCardsTab onEdit={handleEdit} onDelete={confirmDelete} />}
-                  {activeTab === 'reviews' && <AdminReviewsTab onEdit={handleEdit} onDelete={confirmDelete} />}
-                  {activeTab === 'waitlist' && <AdminWaitlistTab filter={waitlistFilter} onFilterChange={setWaitlistFilter} onUpdateStatus={async (id: string, status: string) => {
-                    const res = await api.patch(`/api/v1/admin/waitlist/${id}/status`, { status });
-                    if (isApiError(res)) throw new Error(res.error);
-                    setWaitlist(prev => prev.map((w: any) => w.id === id ? { ...w, status } : w));
-                  }} onDelete={confirmDelete} />}
-                  {activeTab === 'settings' && (
-                    <AdminSettingsTab 
-                      onAddMember={getAddAction()!} 
-                      onEditMember={handleEdit} 
-                      onDeleteMember={confirmDelete} 
-                    />
-                  )}
-                  {activeTab === 'logs' && <AdminLogsTab />}
-                  {activeTab === 'notifications' && <AdminNotificationsTab />}
-                  {activeTab === 'trash' && <AdminTrashTab />}
+                    <div className="w-14 h-14 bg-clay/10 rounded-2xl flex items-center justify-center mx-auto mb-8 border border-clay/20">
+                        <ShieldCheck size={22} className="text-clay" />
+                    </div>
+                    <h2 className="text-2xl font-heading font-black text-white uppercase tracking-tighter mb-3">Admin Access</h2>
+                    <p className="text-white/50 text-sm leading-relaxed mb-8">
+                        Sign in with your registered Google account to manage the waitlist.
+                    </p>
+
+                    <button
+                        onClick={startAdminSignIn}
+                        disabled={isSigningIn}
+                        className="w-full bg-white text-black py-4 rounded-2xl flex items-center justify-center gap-3 hover:bg-clay transition-all duration-300 shadow-xl active:scale-[0.98] disabled:opacity-50"
+                    >
+                        {isSigningIn ? <Loader2 size={16} className="animate-spin" /> : <LogIn size={16} />}
+                        <span className="text-[11px] font-black uppercase tracking-[0.2em]">
+                            {isSigningIn ? 'Signing in…' : 'Continue with Google'}
+                        </span>
+                    </button>
+
+                    {authError && (
+                        <p className="mt-4 text-red-400 text-[10px] font-bold uppercase tracking-widest">{authError}</p>
+                    )}
                 </motion.div>
-              </AnimatePresence>
             </div>
-        </main>
-      </div>
+        );
+    }
 
-      <AdminModals 
-        isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} activeTab={activeTab} editingItem={editingItem}
-        isDeleteModalOpen={isDeleteModalOpen} setIsDeleteModalOpen={setIsDeleteModalOpen} onDeleteConfirm={handleDeleteConfirm}
-        onSave={handleSave} onFileUpload={handleFileUpload}
-        forms={{ blog: blogForm, card: cardForm, review: reviewForm, team: teamForm }}
-        setForms={{ setBlog: setBlogForm, setCard: setCardForm, setReview: setReviewForm, setTeam: setTeamForm }}
-        helpers={{ banks: ADMIN_BANKS, categories: ADMIN_CATEGORIES, generateSlug, uploading, saving, error }}
-      />
+    // ─── Waitlist admin table ───
+    return (
+        <div className="min-h-screen bg-[#050505] px-6 py-10">
+            <div className="max-w-7xl mx-auto space-y-6">
+                {/* Header */}
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <h1 className="text-3xl font-heading font-black text-white uppercase tracking-tighter flex items-center gap-3">
+                            <Users size={26} className="text-clay" /> {view === 'waitlist' ? 'Waitlist Admin' : 'Manage Admins'}
+                        </h1>
+                        <p className="text-white/40 text-xs mt-1">
+                            {view === 'waitlist' ? `${entries.length} entries matching current filters` : `Signed in as ${adminRole}`}
+                        </p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                        {isSuperAdmin && (
+                            <div className="flex items-center gap-1 bg-white/[0.03] border border-white/10 rounded-xl p-1">
+                                <button
+                                    onClick={() => setView('waitlist')}
+                                    className={`px-3 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${view === 'waitlist' ? 'bg-clay text-black' : 'text-white/40 hover:text-white'}`}
+                                >
+                                    Waitlist
+                                </button>
+                                <button
+                                    onClick={() => setView('admins')}
+                                    className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${view === 'admins' ? 'bg-clay text-black' : 'text-white/40 hover:text-white'}`}
+                                >
+                                    <UserCog size={12} /> Admins
+                                </button>
+                            </div>
+                        )}
+                        {view === 'waitlist' && (
+                            <button
+                                onClick={() => fetchWaitlist()}
+                                className="p-2.5 rounded-xl border border-white/10 hover:bg-white/5 transition-all"
+                                title="Refresh"
+                            >
+                                <RefreshCw size={16} className={`text-white/50 ${isLoading ? 'animate-spin' : ''}`} />
+                            </button>
+                        )}
+                        <button
+                            onClick={logout}
+                            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-all border border-red-500/10 text-[10px] font-black uppercase tracking-widest"
+                        >
+                            <LogOut size={14} /> Logout
+                        </button>
+                    </div>
+                </div>
 
-      {/* PREMIUM TOAST NOTIFICATION */}
-      <AnimatePresence>
-        {notification && (
-          <motion.div
-            initial={{ opacity: 0, y: 30, scale: 0.9, filter: 'blur(10px)' }}
-            animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
-            exit={{ opacity: 0, scale: 0.8, filter: 'blur(10px)' }}
-            className={`fixed bottom-10 left-1/2 -translate-x-1/2 z-[100] px-6 py-4 rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-3xl border flex items-center gap-5 w-[90vw] sm:w-auto sm:min-w-[340px] max-w-[90vw] ${
-              notification.type === 'success' 
-                ? 'bg-white/5/90 border-clay/20 text-white' 
-                : 'bg-red-950/90 border-red-500/20 text-white'
-            }`}
-          >
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center relative ${
-              notification.type === 'success' ? 'bg-clay/20 text-clay' : 'bg-red-500/20 text-red-500'
-            }`}>
-              {notification.type === 'success' && <div className="absolute inset-0 rounded-full border border-clay/40 animate-ping" />}
-              {notification.type === 'success' ? '✓' : '!'}
+                {view === 'admins' && isSuperAdmin && (
+                    <div className="space-y-6">
+                        <div className="bg-white/[0.02] border border-white/8 rounded-2xl p-5">
+                            <p className="text-[9px] font-black uppercase tracking-[0.3em] text-white/30 mb-3">Add Admin</p>
+                            <div className="flex flex-wrap gap-3">
+                                <input
+                                    type="email" placeholder="email@example.com"
+                                    value={inviteEmail}
+                                    onChange={e => setInviteEmail(e.target.value)}
+                                    className="flex-1 min-w-[220px] bg-black/30 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-clay/50 placeholder:text-white/20"
+                                />
+                                <select
+                                    value={inviteRole}
+                                    onChange={e => setInviteRole(e.target.value as AdminRole)}
+                                    className="bg-black/30 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white outline-none focus:border-clay/50"
+                                >
+                                    <option value="viewer" className="bg-black">Viewer</option>
+                                    <option value="admin" className="bg-black">Admin</option>
+                                    <option value="superadmin" className="bg-black">Superadmin</option>
+                                </select>
+                                <button
+                                    onClick={addAdmin}
+                                    disabled={isInviting || !inviteEmail.trim()}
+                                    className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-clay text-black text-[10px] font-black uppercase tracking-widest disabled:opacity-50"
+                                >
+                                    {isInviting ? <Loader2 size={13} className="animate-spin" /> : <Plus size={13} />} Add
+                                </button>
+                            </div>
+                            {adminError && <p className="mt-3 text-red-400 text-[10px] font-bold uppercase tracking-widest">{adminError}</p>}
+                        </div>
+
+                        <div className="bg-white/[0.02] border border-white/10 rounded-2xl overflow-x-auto">
+                            <table className="w-full text-left border-collapse min-w-[600px]">
+                                <thead>
+                                    <tr className="border-b border-white/5 text-[9px] font-black uppercase tracking-[0.2em] text-white/30 bg-white/[0.02]">
+                                        <th className="px-4 py-4">Email</th>
+                                        <th className="px-4 py-4">Tier</th>
+                                        <th className="px-4 py-4">Added</th>
+                                        <th className="px-4 py-4 text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-white/5">
+                                    {adminUsers.map(u => (
+                                        <tr key={u.id} className="hover:bg-white/[0.02] transition-colors">
+                                            <td className="px-4 py-4">
+                                                <div className="font-bold text-white text-sm">{u.fullName || '—'}</div>
+                                                <div className="text-[11px] text-white/40 lowercase">{u.email}</div>
+                                            </td>
+                                            <td className="px-4 py-4">
+                                                <select
+                                                    value={u.role}
+                                                    onChange={e => updateAdminRole(u.id, e.target.value as AdminRole)}
+                                                    className="bg-black/30 border border-white/10 rounded-lg px-3 py-1.5 text-xs text-white outline-none focus:border-clay/50"
+                                                >
+                                                    <option value="viewer" className="bg-black">Viewer</option>
+                                                    <option value="admin" className="bg-black">Admin</option>
+                                                    <option value="superadmin" className="bg-black">Superadmin</option>
+                                                </select>
+                                            </td>
+                                            <td className="px-4 py-4 text-xs text-white/40">
+                                                {new Date(u.createdAt).toLocaleDateString()}
+                                            </td>
+                                            <td className="px-4 py-4 text-right">
+                                                <button onClick={() => removeAdmin(u.id)}
+                                                    className="p-2 rounded-lg text-white/30 hover:text-red-400 hover:bg-red-500/10 transition-all" title="Remove">
+                                                    <Trash2 size={16} />
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                    {!isLoadingAdmins && adminUsers.length === 0 && (
+                                        <tr>
+                                            <td colSpan={4} className="px-4 py-16 text-center text-white/20 text-[10px] font-black uppercase tracking-widest">
+                                                No admins added yet
+                                            </td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                )}
+
+                {view === 'waitlist' && (
+                <>
+                {/* Filters */}
+                <div className="bg-white/[0.02] border border-white/8 rounded-2xl p-5 space-y-4">
+                    <div className="flex flex-wrap gap-2">
+                        {STATUS_TABS.map(tab => {
+                            const Icon = tab.icon;
+                            return (
+                                <button
+                                    key={tab.id}
+                                    onClick={() => setStatusFilter(tab.id)}
+                                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
+                                        statusFilter === tab.id
+                                            ? 'bg-clay text-black'
+                                            : 'bg-white/[0.03] text-white/40 hover:text-white hover:bg-white/5 border border-white/10'
+                                    }`}
+                                >
+                                    <Icon size={13} /> {tab.label}
+                                </button>
+                            );
+                        })}
+                    </div>
+
+                    <div className="flex flex-wrap gap-3">
+                        <div className="relative flex-1 min-w-[220px]">
+                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" size={14} />
+                            <input
+                                type="text" placeholder="Search name, email, mobile…"
+                                value={search}
+                                onChange={e => setSearch(e.target.value)}
+                                className="w-full bg-black/30 border border-white/10 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white outline-none focus:border-clay/50 placeholder:text-white/20"
+                            />
+                        </div>
+                        <input
+                            type="number" placeholder="Min score"
+                            value={minScore}
+                            onChange={e => setMinScore(e.target.value)}
+                            className="w-28 bg-black/30 border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white outline-none focus:border-clay/50 placeholder:text-white/20"
+                        />
+                        <input
+                            type="number" placeholder="Max score"
+                            value={maxScore}
+                            onChange={e => setMaxScore(e.target.value)}
+                            className="w-28 bg-black/30 border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white outline-none focus:border-clay/50 placeholder:text-white/20"
+                        />
+                    </div>
+                </div>
+
+                {/* Bulk actions */}
+                {canApprove && selected.size > 0 && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
+                        className="flex items-center justify-between bg-clay/10 border border-clay/25 rounded-2xl px-5 py-3"
+                    >
+                        <span className="text-xs font-bold text-white">{selected.size} selected</span>
+                        <div className="flex gap-2">
+                            <button disabled={bulkActionLoading} onClick={() => bulkUpdateStatus('accepted')}
+                                className="px-4 py-2 rounded-lg bg-clay text-black text-[10px] font-black uppercase tracking-widest disabled:opacity-50">Approve</button>
+                            <button disabled={bulkActionLoading} onClick={() => bulkUpdateStatus('on_hold')}
+                                className="px-4 py-2 rounded-lg bg-blue-500/20 text-blue-300 text-[10px] font-black uppercase tracking-widest disabled:opacity-50">Hold</button>
+                            <button disabled={bulkActionLoading} onClick={() => bulkUpdateStatus('rejected')}
+                                className="px-4 py-2 rounded-lg bg-red-500/20 text-red-300 text-[10px] font-black uppercase tracking-widest disabled:opacity-50">Reject</button>
+                        </div>
+                    </motion.div>
+                )}
+
+                {loadError && (
+                    <p className="text-red-400 text-xs font-bold text-center">{loadError}</p>
+                )}
+
+                {/* Table */}
+                <div className="bg-white/[0.02] border border-white/10 rounded-2xl overflow-x-auto">
+                    <table className="w-full text-left border-collapse min-w-[1100px]">
+                        <thead>
+                            <tr className="border-b border-white/5 text-[9px] font-black uppercase tracking-[0.2em] text-white/30 bg-white/[0.02]">
+                                {canApprove && (
+                                    <th className="px-4 py-4">
+                                        <input type="checkbox"
+                                            checked={entries.length > 0 && selected.size === entries.length}
+                                            onChange={toggleSelectAll} />
+                                    </th>
+                                )}
+                                <th className="px-4 py-4">Name / Email</th>
+                                <th className="px-4 py-4">Mobile</th>
+                                <th className="px-4 py-4">DOB / Gender</th>
+                                <th className="px-4 py-4">Monthly Spend</th>
+                                <th className="px-4 py-4">Top Category</th>
+                                <th className="px-4 py-4">Score</th>
+                                <th className="px-4 py-4">Rank</th>
+                                <th className="px-4 py-4">Status</th>
+                                {canApprove && <th className="px-4 py-4 text-right">Actions</th>}
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-white/5">
+                            <AnimatePresence mode="popLayout">
+                                {entries.map(entry => (
+                                    <motion.tr key={entry.id} layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                                        className="hover:bg-white/[0.02] transition-colors">
+                                        {canApprove && (
+                                            <td className="px-4 py-4">
+                                                <input type="checkbox" checked={selected.has(entry.id)} onChange={() => toggleSelected(entry.id)} />
+                                            </td>
+                                        )}
+                                        <td className="px-4 py-4">
+                                            <div className="font-bold text-white text-sm">{entry.fullName || '—'}</div>
+                                            <div className="text-[11px] text-white/40 lowercase">{entry.email}</div>
+                                        </td>
+                                        <td className="px-4 py-4 text-xs text-white/60">{entry.mobileNumber || '—'}</td>
+                                        <td className="px-4 py-4 text-xs text-white/60">
+                                            {entry.dateOfBirth || '—'}{entry.gender ? ` · ${entry.gender}` : ''}
+                                        </td>
+                                        <td className="px-4 py-4 text-xs text-white/60">{entry.monthlySpend || '—'}</td>
+                                        <td className="px-4 py-4 text-xs text-white/60">{entry.topCategory || '—'}</td>
+                                        <td className="px-4 py-4">
+                                            {entry.yurekaScore != null
+                                                ? <span className="text-clay font-black text-sm">{entry.yurekaScore}</span>
+                                                : <span className="text-white/20 text-xs">—</span>}
+                                        </td>
+                                        <td className="px-4 py-4 text-xs text-white/40">#{entry.rank}</td>
+                                        <td className="px-4 py-4">
+                                            <span className={`inline-flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded-md ${
+                                                entry.status === 'accepted' ? 'bg-clay/10 text-clay' :
+                                                entry.status === 'on_hold' ? 'bg-blue-500/10 text-blue-400' :
+                                                entry.status === 'rejected' ? 'bg-red-500/10 text-red-400' :
+                                                'bg-amber-500/10 text-amber-400'
+                                            }`}>
+                                                {entry.status}
+                                            </span>
+                                        </td>
+                                        {canApprove && (
+                                            <td className="px-4 py-4">
+                                                <div className="flex items-center justify-end gap-1">
+                                                    <button onClick={() => updateStatus(entry.id, 'accepted')} disabled={entry.status === 'accepted'}
+                                                        className="p-2 rounded-lg text-white/30 hover:text-clay hover:bg-clay/10 disabled:opacity-30 transition-all" title="Approve">
+                                                        <CheckCircle size={16} />
+                                                    </button>
+                                                    <button onClick={() => updateStatus(entry.id, 'on_hold')} disabled={entry.status === 'on_hold'}
+                                                        className="p-2 rounded-lg text-white/30 hover:text-blue-400 hover:bg-blue-500/10 disabled:opacity-30 transition-all" title="Hold">
+                                                        <PauseCircle size={16} />
+                                                    </button>
+                                                    <button onClick={() => updateStatus(entry.id, 'rejected')} disabled={entry.status === 'rejected'}
+                                                        className="p-2 rounded-lg text-white/30 hover:text-red-400 hover:bg-red-500/10 disabled:opacity-30 transition-all" title="Reject">
+                                                        <XCircle size={16} />
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        )}
+                                    </motion.tr>
+                                ))}
+                            </AnimatePresence>
+                            {!isLoading && entries.length === 0 && (
+                                <tr>
+                                    <td colSpan={canApprove ? 10 : 8} className="px-4 py-16 text-center text-white/20 text-[10px] font-black uppercase tracking-widest">
+                                        No entries match these filters
+                                    </td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+                </>
+                )}
             </div>
-            <div className="flex flex-col flex-1">
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] opacity-40 leading-none mb-1">
-                {notification.type === 'success' ? 'System Optimized' : 'Security Alert'}
-              </span>
-              <span className="text-sm font-bold tracking-tight leading-tight">{notification.message}</span>
-            </div>
-            <button 
-              onClick={() => setNotification(null)}
-              className="text-white/20 hover:text-white transition-colors"
-            >
-              ✕
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
-      </div>
-    </div>
-  );
+        </div>
+    );
 };
 
 export default AdminDashboard;
