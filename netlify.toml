@@ -9,6 +9,10 @@
 
 [build.environment]
   NODE_VERSION = "20"
+  # These Netlify env vars are public URLs / non-secret config that also appear
+  # in source (defaults, docs, sitemap). Omit so secrets scanning doesn't fail.
+  SECRETS_SCAN_OMIT_KEYS = "VITE_SUPABASE_URL,SUPABASE_URL,VITE_ADMIN_PORTAL_URL,VITE_API_BASE_URL,HUBBLE_API_BASE,CUELINKS_API_BASE,CUELINKS_OFFERS_PATH,ADMIN_EMAILS,ADMIN_PASSWORD,GMAIL_USER"
+  SECRETS_SCAN_OMIT_PATHS = ".env.example,docs/**,CLAUDE.md,public/sitemap.xml,public/robots.txt,public/llms.txt,backend/supabase/migrations/**"
 
 # Proxy API calls to the backend (same target as public/.htaccess).
 [[redirects]]

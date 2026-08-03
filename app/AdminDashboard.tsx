@@ -50,7 +50,7 @@ const AdminDashboard: React.FC = () => {
   const [role, setRole] = useState<AdminRole | null>(() => localStorage.getItem(ADMIN_ROLE_KEY) as AdminRole | null)
   const [email, setEmail] = useState(() => localStorage.getItem(ADMIN_EMAIL_KEY) || '')
   const [password, setPassword] = useState('')
-  const [loginEmail, setLoginEmail] = useState('admin@yureka.one')
+  const [loginEmail, setLoginEmail] = useState('')
   const [authError, setAuthError] = useState<string | null>(null)
   const [signingIn, setSigningIn] = useState(false)
   const [tab, setTab] = useState<Tab>('waitlist')
@@ -280,7 +280,7 @@ const AdminDashboard: React.FC = () => {
             <span className="text-[10px] font-black uppercase tracking-[0.25em] text-white/35">Email</span>
             <input
               className="w-full rounded-2xl bg-black/50 border border-white/10 px-4 py-3.5 text-sm focus:outline-none focus:border-clay/40 transition"
-              placeholder="admin@yureka.one"
+              placeholder="Email"
               value={loginEmail}
               onChange={(e) => setLoginEmail(e.target.value)}
               autoComplete="username"
@@ -309,7 +309,7 @@ const AdminDashboard: React.FC = () => {
             Enter console
           </button>
           <p className="text-[10px] text-white/25 text-center pt-1">
-            Local: admin@yureka.one / yureka-admin
+            Use the admin credentials from your server env.
           </p>
         </form>
       </div>
