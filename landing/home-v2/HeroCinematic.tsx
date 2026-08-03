@@ -570,13 +570,23 @@ export default function HeroCinematic({ entranceComplete }: HeroCinematicProps) 
             The video plays at 1:1 (no crop) through the whole scrub, then
             only zooms in afterward, into its own known last frame. */}
         <motion.div
-          className="pointer-events-none absolute inset-0 z-30 flex items-center justify-center bg-black px-4"
+          className="pointer-events-none absolute inset-0 z-30 flex items-center justify-center bg-black px-3 sm:px-4"
           style={{ opacity: vaultOverlayOpacity }}
         >
-          <div className="relative mx-auto aspect-[16/10] w-full overflow-hidden rounded-3xl md:max-w-[60vw]">
+          {/* Fill most of the viewport — letterboxing was reading as a broken blank page.
+              Size from height so tall windows don't leave a huge black band under the card. */}
+          <div
+            className="relative overflow-hidden rounded-3xl"
+            style={{
+              width: 'min(92vw, calc((100dvh - 5.5rem) * 1.6))',
+              aspectRatio: '16 / 10',
+              maxHeight: 'calc(100dvh - 5.5rem)',
+            }}
+          >
             <motion.video
               ref={vaultVideoRef}
               src={VAULT_VIDEO_URL}
+              poster="/vault-poster.jpg"
               className="absolute inset-0 h-full w-full object-cover"
               style={{ scale: vaultVideoScale, transformOrigin: VAULT_ZOOM_ORIGIN, willChange: 'transform' }}
               muted

@@ -1,2 +1,9 @@
+packages:
+  - '.'
+  - 'landing'
+  - 'app'
+  - 'backend'
+  - 'shared'
+
 allowBuilds:
   esbuild: true
