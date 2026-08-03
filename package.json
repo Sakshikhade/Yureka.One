@@ -4,13 +4,14 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "tsx server.ts",
-    "build": "tsx scripts/generate-sitemap.ts && vite build",
-    "start": "tsx server.ts",
+    "dev": "tsx backend/server.ts",
+    "build": "tsx backend/scripts/generate-sitemap.ts && vite build",
+    "start": "tsx backend/server.ts",
     "lint": "tsc --noEmit",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.111.0",
     "@types/compression": "^1.8.1",
     "compression": "^1.8.1",
     "cors": "^2.8.6",

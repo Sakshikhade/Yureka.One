@@ -2,6 +2,8 @@ import path from 'path';
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 
+const root = __dirname;
+
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, '.', '');
     return {
@@ -12,7 +14,11 @@ export default defineConfig(({ mode }) => {
       plugins: [react()],
       resolve: {
         alias: {
-          '@': path.resolve(__dirname, '.'),
+          '@': root,
+          '@landing': path.resolve(root, 'landing'),
+          '@app': path.resolve(root, 'app'),
+          '@shared': path.resolve(root, 'shared'),
+          '@backend': path.resolve(root, 'backend'),
         }
       },
       build: {
@@ -25,7 +31,6 @@ export default defineConfig(({ mode }) => {
             }
           }
         },
-        // Strip all console.log / debugger calls from production builds
         minify: 'esbuild',
       },
       esbuild: {

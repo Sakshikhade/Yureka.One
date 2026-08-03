@@ -2,13 +2,13 @@ import React, { Suspense, lazy, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 
-import Navbar from './components/home-v2/Navbar';
-import Footer from './components/Footer';
-import SEO from './components/SEO';
-import { SupabaseProvider, useSupabase } from './components/SupabaseProvider';
-import { SkeletonCard } from './components/SkeletonLoaders';
-import { ErrorBoundary } from './components/ErrorBoundary';
-import { staticPageMeta } from './lib/seo/pageMeta';
+import Navbar from '@landing/home-v2/Navbar';
+import Footer from '@shared/Footer';
+import SEO from '@shared/SEO';
+import { SupabaseProvider, useSupabase } from '@shared/SupabaseProvider';
+import { SkeletonCard } from '@shared/SkeletonLoaders';
+import { ErrorBoundary } from '@shared/ErrorBoundary';
+import { staticPageMeta } from '@backend/lib/seo/pageMeta';
 
 // Robust Lazy Loader to handle chunk loading failures (common during new deploys)
 const lazyWithRetry = (componentImport: () => Promise<any>) =>
@@ -23,37 +23,35 @@ const lazyWithRetry = (componentImport: () => Promise<any>) =>
       return component;
     } catch (error) {
       if (!pageHasAlreadyBeenForceRefreshed) {
-        // Logging for visibility
         console.warn('Chunk loading failed. Forcing refresh to sync hashes.', error);
         window.sessionStorage.setItem('page-has-been-force-refreshed', 'true');
         window.location.reload();
-        return { default: () => null }; // Return empty component while reloading
+        return { default: () => null };
       }
-
-      // If it still fails after a refresh, throw the error to be caught by ErrorBoundary
       throw error;
     }
   });
 
-// Lazy Loaded Pages
-const MainPage = lazyWithRetry(() => import('./components/MainPage'));
-const BrandExplorer = lazyWithRetry(() => import('./components/BrandExplorer'));
-const OurStory = lazyWithRetry(() => import('./components/OurStory'));
-const JournalPage = lazyWithRetry(() => import('./components/JournalPage'));
-const BlogDetail = lazyWithRetry(() => import('./components/BlogDetail'));
-const PrivacyPolicy = lazyWithRetry(() => import('./components/PrivacyPolicy'));
-const TermsOfService = lazyWithRetry(() => import('./components/TermsOfService'));
-const SecurityProtocolPage = lazyWithRetry(() => import('./components/SecurityProtocolPage'));
-const CommunityGuidelines = lazyWithRetry(() => import('./components/CommunityGuidelines'));
-const YurekaOsPage = lazyWithRetry(() => import('./components/YurekaOsPage'));
-const AdminDashboard = lazyWithRetry(() => import('./components/AdminDashboard'));
-const YurekaAIPage = lazyWithRetry(() => import('./components/YurekaAIPage'));
-const CareersPage = lazyWithRetry(() => import('./components/CareersPage'));
-const WaitlistPage = lazyWithRetry(() => import('./components/WaitlistPage'));
-const WaitingPage = lazyWithRetry(() => import('./components/WaitingPage'));
-const DashboardLayout = lazyWithRetry(() => import('./components/Dashboard/DashboardLayout'));
-const ForBrands = lazyWithRetry(() => import('./components/ForBrands'));
-const NotFoundPage = lazyWithRetry(() => import('./components/NotFoundPage'));
+// Landing
+const MainPage = lazyWithRetry(() => import('@landing/MainPage'));
+const BrandExplorer = lazyWithRetry(() => import('@landing/BrandExplorer'));
+const OurStory = lazyWithRetry(() => import('@landing/OurStory'));
+const JournalPage = lazyWithRetry(() => import('@landing/JournalPage'));
+const BlogDetail = lazyWithRetry(() => import('@landing/BlogDetail'));
+const PrivacyPolicy = lazyWithRetry(() => import('@landing/PrivacyPolicy'));
+const TermsOfService = lazyWithRetry(() => import('@landing/TermsOfService'));
+const SecurityProtocolPage = lazyWithRetry(() => import('@landing/SecurityProtocolPage'));
+const CommunityGuidelines = lazyWithRetry(() => import('@landing/CommunityGuidelines'));
+const YurekaAIPage = lazyWithRetry(() => import('@landing/YurekaAIPage'));
+const CareersPage = lazyWithRetry(() => import('@landing/CareersPage'));
+const ForBrands = lazyWithRetry(() => import('@landing/ForBrands'));
+const NotFoundPage = lazyWithRetry(() => import('@landing/NotFoundPage'));
+
+// App (product)
+const AdminDashboard = lazyWithRetry(() => import('@app/AdminDashboard'));
+const WaitlistPage = lazyWithRetry(() => import('@app/WaitlistPage'));
+const WaitingPage = lazyWithRetry(() => import('@app/WaitingPage'));
+const DashboardLayout = lazyWithRetry(() => import('@app/Dashboard/DashboardLayout'));
 
 // Optimized Scroll Management
 const ScrollToTop = () => {
