@@ -501,4 +501,21 @@
         color: #00933b !important;
       }
 
+@media (prefers-reduced-motion: reduce) {
+  .yureka-one-home * {
+    scroll-behavior: auto !important;
+  }
+  .yureka-one-home video {
+    display: none !important;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .yureka-one-home .backdrop-blur-md,
+  .yureka-one-home [class*="backdrop-blur"] {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background-color: rgba(20, 20, 20, 0.92) !important;
+  }
+}
 

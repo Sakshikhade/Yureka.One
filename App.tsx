@@ -117,16 +117,10 @@ const AppContent: React.FC = () => {
   // of the sitewide navbar, footer, editorial grid, and top padding.
   const isForBrandsRoute = location.pathname === '/for-brands';
   const isSpecialRoute = isAdminRoute || isDashboardRoute || isForBrandsRoute;
-  // Home page implements its own editorial 5-column grid (incl. its own Footer) — every
-  // other non-special route is wrapped in the same grid here so content stays within
-  // columns 2-4 (the 60%-width "Intelligence Core") with empty margin columns 1 & 5.
+  // Home owns its own Loader + Navbar + black canvas (see landing/MainPage).
   const applyEditorialGrid = !isSpecialRoute && !isHomeRoute;
-  // Home renders its own footer inside MainPage and its cinematic hero
-  // already reserves space for the fixed navbar internally, so it (like
-  // admin/dashboard) opts out of the sitewide pt-24 offset — otherwise
-  // it'd leave a gap above the hero video. The navbar itself still renders
-  // on home now that it's the shared site-wide navbar, not a homepage-only one.
   const noTopPadding = isSpecialRoute || isHomeRoute;
+  const showSiteNavbar = !isHomeRoute && (!isSpecialRoute || isForBrandsRoute);
 
   const appRoutes = (
               <Routes>
@@ -202,13 +196,13 @@ const AppContent: React.FC = () => {
   );
 
   return (
-    <div className={`min-h-screen bg-cream font-sans text-white relative ${noTopPadding ? 'pt-0' : 'pt-24 md:pt-28'}`}>
+    <div className={`min-h-screen font-sans text-white relative ${isHomeRoute ? 'bg-black' : 'bg-cream'} ${noTopPadding ? 'pt-0' : 'pt-24 md:pt-28'}`}>
 
       <ScrollToTop />
-      {(!isSpecialRoute || isForBrandsRoute) && <Navbar />}
+      {showSiteNavbar && <Navbar />}
 
       <main className={`relative z-10 ${noTopPadding ? 'pt-0' : ''}`}>
-        <Suspense fallback={<div className="fixed inset-0 bg-cream" style={{ zIndex: 100 }} />}>
+        <Suspense fallback={<div className={`fixed inset-0 ${isHomeRoute ? 'bg-black' : 'bg-cream'}`} style={{ zIndex: 100 }} />}>
           <ErrorBoundary>
             {applyEditorialGrid ? (
               <div className="grid grid-cols-1 lg:grid-cols-5 w-full relative">

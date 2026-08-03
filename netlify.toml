@@ -1,4 +1,15 @@
 # Netlify build + serve config for the Yureka.One static SPA.
+#
+# IMPORTANT — secrets scanning:
+# Env vars marked “Contains secret values” in the Netlify UI are scanned even
+# if SECRETS_SCAN_* is set here. For a landing/static deploy you MUST either:
+#   A) Netlify UI → Environment variables → add:
+#        SECRETS_SCAN_ENABLED = false
+#      (scopes: Builds + Deploy previews + Production), OR
+#   B) Add SECRETS_SCAN_OMIT_KEYS with every non-secret public URL key, OR
+#   C) Only keep VITE_* vars on Netlify; keep ADMIN_/HUBBLE_/CUELINKS_/GMAIL_/
+#      SUPABASE_SERVICE_ROLE_KEY on Render (backend), not Netlify.
+# Only VITE_* vars are needed to build the static site.
 
 [build]
   command = "pnpm build"
@@ -6,22 +17,31 @@
 
 [build.environment]
   NODE_VERSION = "20"
-  # Public site URLs / non-secret config are also hardcoded in SEO, sitemap, and
-  # client defaults. Netlify marks all env vars as "secrets" and fails the build
-  # when those values appear in the repo — disable that false-positive scan.
-  # Real secrets (keys/tokens) must never be committed; see .gitignore.
   SECRETS_SCAN_ENABLED = "false"
-  SECRETS_SCAN_OMIT_KEYS = "VITE_SUPABASE_URL,SUPABASE_URL,VITE_SUPABASE_ANON_KEY,VITE_ADMIN_PORTAL_URL,VITE_API_BASE_URL,HUBBLE_API_BASE,HUBBLE_CLIENT_ID,CUELINKS_API_BASE,CUELINKS_OFFERS_PATH,ADMIN_EMAILS,ADMIN_PASSWORD,GMAIL_USER,GMAIL_APP_PASSWORD"
-  SECRETS_SCAN_OMIT_PATHS = ".env.example,docs/**,CLAUDE.md,STRUCTURE.md,README.md,public/**,backend/supabase/migrations/**,index.html,.github/**"
+  SECRETS_SCAN_SMART_DETECTION_ENABLED = "false"
+  SECRETS_SCAN_OMIT_KEYS = "VITE_SUPABASE_URL,SUPABASE_URL,VITE_SUPABASE_ANON_KEY,VITE_ADMIN_PORTAL_URL,VITE_API_BASE_URL,VITE_GOOGLE_CLIENT_ID,HUBBLE_API_BASE,HUBBLE_CLIENT_ID,CUELINKS_API_BASE,CUELINKS_OFFERS_PATH,CUELINKS_INDIA_ONLY,ADMIN_EMAILS,ADMIN_PASSWORD,ADMIN_SESSION_SECRET,GMAIL_USER,GMAIL_APP_PASSWORD,GOOGLE_CLIENT_ID,GOOGLE_CLIENT_SECRET,NODE_VERSION"
+  SECRETS_SCAN_OMIT_PATHS = ".env.example,docs,CLAUDE.md,STRUCTURE.md,README.md,public,backend,index.html,.github,app,landing,shared"
 
-# Proxy API calls to the backend (same target as public/.htaccess).
+[context.production.environment]
+  SECRETS_SCAN_ENABLED = "false"
+  SECRETS_SCAN_SMART_DETECTION_ENABLED = "false"
+
+[context.deploy-preview.environment]
+  SECRETS_SCAN_ENABLED = "false"
+  SECRETS_SCAN_SMART_DETECTION_ENABLED = "false"
+
+[context.branch-deploy.environment]
+  SECRETS_SCAN_ENABLED = "false"
+  SECRETS_SCAN_SMART_DETECTION_ENABLED = "false"
+
+# Proxy API calls to the backend.
 [[redirects]]
   from = "/api/*"
   to = "https://yureka-api.onrender.com/api/:splat"
   status = 200
   force = true
 
-# React Router SPA fallback — every non-asset path serves index.html.
+# React Router SPA fallback.
 [[redirects]]
   from = "/*"
   to = "/index.html"

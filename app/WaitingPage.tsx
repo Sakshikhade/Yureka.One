@@ -164,7 +164,7 @@ const WaitingPage: React.FC = () => {
         }
     }, [user]);
 
-    const shareLink = `https://yureka.one/join-waitlist?ref=${entry?.personal_referral_code || 'YRKMNY'}`;
+    const shareLink = `${typeof window !== 'undefined' ? window.location.origin : ''}/join-waitlist?ref=${entry?.personal_referral_code || 'YRKMNY'}`;
     const shareText = "I'm moving up the Yureka.One waitlist! Join using my link and we both climb faster.";
 
     const copyToClipboard = () => {

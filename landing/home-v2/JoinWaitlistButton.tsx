@@ -14,11 +14,13 @@ export default function JoinWaitlistButton({ className = '' }: { className?: str
     <motion.button
       type="button"
       onClick={() => navigate('/join-waitlist')}
+      onPointerDown={() => setHovered(true)}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       whileHover={{ scale: 1.03, backgroundColor: '#e2e2e6' }}
       whileTap={{ scale: 0.97 }}
-      className={`inline-flex h-12 w-fit items-center rounded-full bg-white px-6 font-overpass-mono text-black ${className}`}
+      transition={{ type: 'spring', bounce: 0, duration: 0.35 }}
+      className={`inline-flex h-12 w-fit items-center rounded-full bg-white px-6 font-overpass-mono text-black touch-manipulation ${className}`}
     >
       <ScrambleText text="Join Waitlist" isHovered={hovered} className="text-[16px]" />
     </motion.button>

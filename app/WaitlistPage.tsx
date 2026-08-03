@@ -458,7 +458,7 @@ const WaitlistPage: React.FC = () => {
     };
 
     // ─── SHARE LOGIC ───
-    const shareLink = `https://yureka.one/join-waitlist?ref=${successData?.referralCode}`;
+    const shareLink = `${typeof window !== 'undefined' ? window.location.origin : ''}/join-waitlist?ref=${successData?.referralCode}`;
     const shareText = "I just joined the Yureka.One waitlist! Use my referral code to get priority access.";
 
     const shareOnSocial = (platform: string) => {

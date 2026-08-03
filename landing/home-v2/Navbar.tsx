@@ -95,9 +95,9 @@ export default function Navbar({ entranceComplete = true }: NavbarProps) {
     <>
       <motion.nav
         className="yureka-one-home fixed top-0 left-0 right-0 z-50 h-20 w-full"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: entranceComplete ? 1 : 0 }}
-        transition={{ duration: 0.8 }}
+        initial={{ opacity: 0, y: -8 }}
+        animate={{ opacity: entranceComplete ? 1 : 0, y: entranceComplete ? 0 : -8 }}
+        transition={{ type: 'spring', bounce: 0, duration: 0.45 }}
       >
         {/* Desktop */}
         <div className="hidden md:flex items-center justify-between h-full px-6 md:mx-auto md:max-w-[60vw] md:px-0">
@@ -124,7 +124,7 @@ export default function Navbar({ entranceComplete = true }: NavbarProps) {
                 onClick={() => setMenuOpen((v) => !v)}
                 aria-label={menuOpen ? 'Close menu' : 'Open menu'}
                 aria-expanded={menuOpen}
-                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[14px] transition-colors hover:bg-white/10"
+                className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[14px] transition-colors hover:bg-white/10 active:scale-[0.97] active:bg-white/15"
               >
                 <SquashHamburger isOpen={menuOpen} variant="desktop" />
               </button>
