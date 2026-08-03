@@ -1,7 +1,6 @@
 import { randomUUID } from 'crypto'
 import type { GiftCard, HubbleProductRaw } from './types.js'
 
-const DEFAULT_BASE = 'https://api.dev.myhubble.money'
 const CACHE_TTL_MS = 10 * 60 * 1000
 const TOKEN_SKEW_MS = 60_000
 
@@ -12,15 +11,15 @@ let tokenCache: TokenCache | null = null
 let productCache: ProductCache | null = null
 
 function config() {
-  const baseUrl = (process.env.HUBBLE_API_BASE || DEFAULT_BASE).replace(/\/$/, '')
+  const baseUrl = (process.env.HUBBLE_API_BASE || '').replace(/\/$/, '')
   const clientId = process.env.HUBBLE_CLIENT_ID || ''
   const clientSecret = process.env.HUBBLE_CLIENT_SECRET || ''
   return { baseUrl, clientId, clientSecret }
 }
 
 export function hubbleConfigured(): boolean {
-  const { clientId, clientSecret } = config()
-  return Boolean(clientId && clientSecret)
+  const { baseUrl, clientId, clientSecret } = config()
+  return Boolean(baseUrl && clientId && clientSecret)
 }
 
 function normalizeCategories(raw: HubbleProductRaw['category']): string[] {

@@ -47,11 +47,16 @@ function getSupabase(): SupabaseClient | null {
 
 function seedStore(): AdminFileStore {
   const now = new Date().toISOString()
+  const bootstrapEmail =
+    (process.env.ADMIN_EMAILS || '')
+      .split(',')
+      .map((e) => e.trim().toLowerCase())
+      .find(Boolean) || 'admin@localhost'
   return {
     admins: [
       {
         id: randomUUID(),
-        email: 'admin@yureka.one',
+        email: bootstrapEmail,
         fullName: 'Yureka Admin',
         role: 'superadmin',
         createdAt: now,
@@ -143,7 +148,7 @@ export function adminBackendMode(): 'supabase' | 'file' {
 
 export async function findAdminByEmail(email: string): Promise<AdminUserRow | null> {
   const normalized = email.toLowerCase().trim()
-  const bootstrap = (process.env.ADMIN_EMAILS || 'admin@yureka.one')
+  const bootstrap = (process.env.ADMIN_EMAILS || '')
     .split(',')
     .map((e) => e.trim().toLowerCase())
     .filter(Boolean)

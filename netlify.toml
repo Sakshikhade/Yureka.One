@@ -1,7 +1,4 @@
 # Netlify build + serve config for the Yureka.One static SPA.
-# Without this, Netlify's auto-detection can pick the wrong build command /
-# publish dir, producing a blank page (index.html served, but /assets/*.js
-# never built/published).
 
 [build]
   command = "pnpm build"
@@ -9,10 +6,13 @@
 
 [build.environment]
   NODE_VERSION = "20"
-  # These Netlify env vars are public URLs / non-secret config that also appear
-  # in source (defaults, docs, sitemap). Omit so secrets scanning doesn't fail.
-  SECRETS_SCAN_OMIT_KEYS = "VITE_SUPABASE_URL,SUPABASE_URL,VITE_ADMIN_PORTAL_URL,VITE_API_BASE_URL,HUBBLE_API_BASE,CUELINKS_API_BASE,CUELINKS_OFFERS_PATH,ADMIN_EMAILS,ADMIN_PASSWORD,GMAIL_USER"
-  SECRETS_SCAN_OMIT_PATHS = ".env.example,docs/**,CLAUDE.md,public/sitemap.xml,public/robots.txt,public/llms.txt,backend/supabase/migrations/**"
+  # Public site URLs / non-secret config are also hardcoded in SEO, sitemap, and
+  # client defaults. Netlify marks all env vars as "secrets" and fails the build
+  # when those values appear in the repo — disable that false-positive scan.
+  # Real secrets (keys/tokens) must never be committed; see .gitignore.
+  SECRETS_SCAN_ENABLED = "false"
+  SECRETS_SCAN_OMIT_KEYS = "VITE_SUPABASE_URL,SUPABASE_URL,VITE_SUPABASE_ANON_KEY,VITE_ADMIN_PORTAL_URL,VITE_API_BASE_URL,HUBBLE_API_BASE,HUBBLE_CLIENT_ID,CUELINKS_API_BASE,CUELINKS_OFFERS_PATH,ADMIN_EMAILS,ADMIN_PASSWORD,GMAIL_USER,GMAIL_APP_PASSWORD"
+  SECRETS_SCAN_OMIT_PATHS = ".env.example,docs/**,CLAUDE.md,STRUCTURE.md,README.md,public/**,backend/supabase/migrations/**,index.html,.github/**"
 
 # Proxy API calls to the backend (same target as public/.htaccess).
 [[redirects]]

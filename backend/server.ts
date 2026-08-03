@@ -160,7 +160,7 @@ async function startServer() {
   // which owns the Supabase Postgres connection, so the waitlist row gets the
   // score without re-scanning Gmail.
   async function persistToSupabase(email: string, profile: any, score: any) {
-    const apiBase = process.env.VITE_API_BASE_URL || "http://localhost:8080";
+    const apiBase = process.env.VITE_API_BASE_URL || "";
     const res = await fetch(`${apiBase}/api/v1/ledger/ingest`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },

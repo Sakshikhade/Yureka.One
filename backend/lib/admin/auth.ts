@@ -9,7 +9,10 @@ export interface AdminSession {
 }
 
 function secret() {
-  return process.env.ADMIN_SESSION_SECRET || process.env.GOOGLE_CLIENT_SECRET || 'yureka-local-admin-secret'
+  const s = process.env.ADMIN_SESSION_SECRET || process.env.GOOGLE_CLIENT_SECRET
+  if (s) return s
+  if (process.env.NODE_ENV !== 'production') return 'dev-only-admin-session'
+  throw new Error('ADMIN_SESSION_SECRET must be set in production')
 }
 
 export function createAdminToken(email: string, role: AdminRole, ttlHours = 24): string {
@@ -43,6 +46,7 @@ export function verifyAdminToken(token: string | undefined | null): AdminSession
 }
 
 export function adminPasswordOk(password: string): boolean {
-  const expected = process.env.ADMIN_PASSWORD || 'yureka-admin'
+  const expected = process.env.ADMIN_PASSWORD
+  if (!expected) return false
   return password === expected
 }

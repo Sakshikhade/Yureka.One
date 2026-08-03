@@ -28,7 +28,7 @@ export function registerGiftcardRoutes(app: Express) {
   app.get('/api/giftcards/health', (_req, res) => {
     ok(res, {
       configured: hubbleConfigured(),
-      base: process.env.HUBBLE_API_BASE || 'https://api.dev.myhubble.money',
+      base: process.env.HUBBLE_API_BASE || null,
     })
   })
 

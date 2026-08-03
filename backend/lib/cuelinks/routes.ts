@@ -27,7 +27,7 @@ export function registerCuelinksRoutes(app: Express) {
   app.get('/api/cuelinks/health', (_req, res) => {
     ok(res, {
       configured: cuelinksConfigured(),
-      base: process.env.CUELINKS_API_BASE || 'https://www.cuelinks.com/api/v2',
+      base: process.env.CUELINKS_API_BASE || null,
       indiaOnly: (process.env.CUELINKS_INDIA_ONLY || 'true').toLowerCase() !== 'false',
     })
   })

@@ -2,7 +2,6 @@ import type { YurekaResponse } from './types'
 export { isApiError, isValidationError } from './types'
 
 // Empty string → relative URLs, which Netlify/Express proxy to the backend.
-// Set VITE_API_BASE_URL=http://localhost:8080 in .env for local Java dev.
 const RAW_BASE = import.meta.env.VITE_API_BASE_URL ?? ''
 
 // Guard: a deployed (non-local) site must never call a localhost/private API —

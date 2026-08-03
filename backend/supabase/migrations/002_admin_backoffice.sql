@@ -32,5 +32,5 @@ alter table public.admin_users enable row level security;
 
 -- Seed a bootstrap superadmin if empty (change email in dashboard after login)
 insert into public.admin_users (email, full_name, role)
-select 'admin@yureka.one', 'Yureka Admin', 'superadmin'
+select 'admin@localhost', 'Yureka Admin', 'superadmin'
 where not exists (select 1 from public.admin_users limit 1);

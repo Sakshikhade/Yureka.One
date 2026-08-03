@@ -34,7 +34,7 @@ In production the built `dist/` is deployed as **static files on Hostinger (Apac
 
 The app is mid-migration from "Supabase as the entire backend" to a separate **Java/Spring Boot backend** (spec in `docs/java-backend-spec.md`, endpoint reference in `docs/API.md` and `docs/RESPONSE_STRUCTURE.md`). The new backend owns the same Postgres (Supabase-managed) DB and is reachable via `lib/api/client.ts`.
 
-- `lib/api/client.ts` — thin fetch wrapper (`api.get/post/put/patch/delete`). Base URL from `VITE_API_BASE_URL` (defaults to `http://localhost:8080`). Auto-attaches the Supabase session JWT as `Authorization: Bearer <token>` unless `skipAuth: true`. All responses are a `YurekaResponse<T>` envelope (`{ data, status, error?, details? }`) — check with `isApiError(res)` / `isValidationError(res)`.
+- `lib/api/client.ts` — thin fetch wrapper (`api.get/post/put/patch/delete`). Base URL from `VITE_API_BASE_URL` (empty = relative `/api/*`). Auto-attaches the Supabase session JWT as `Authorization: Bearer <token>` unless `skipAuth: true`. All responses are a `YurekaResponse<T>` envelope (`{ data, status, error?, details? }`) — check with `isApiError(res)` / `isValidationError(res)`.
 - `lib/api/types.ts` — camelCase entity types matching the Java/JPA schema (`Card`, `Blog`, `Review`, `Waitlist`, `UserOwnedCard`, `PlatformNotification`, etc.), plus JSON-string fields (e.g. `benefitItems`, `gridBenefits`) that need `JSON.parse()`.
 - `lib/api/mappers.ts` — `fromApiXxx()` functions convert the Java camelCase shapes (with JSON-string fields parsed via `safeJsonParse`) back to the legacy snake_case types in `types.ts`, so existing components don't need to change.
 
@@ -142,7 +142,7 @@ Required in `.env` (Vite prefix for client-side access):
 VITE_SUPABASE_URL
 VITE_SUPABASE_ANON_KEY
 VITE_SUPABASE_SERVICE_ROLE_KEY   # Admin-only operations; optional (falls back to anon)
-VITE_API_BASE_URL                # Java backend base URL (default http://localhost:8080)
+VITE_API_BASE_URL                # API origin (empty = same-origin /api/*)
 VITE_GOOGLE_CLIENT_ID            # Gmail OAuth
 VITE_GEMINI_API_KEY              # YurekaAI page
 GOOGLE_CLIENT_ID                 # Server-side OAuth

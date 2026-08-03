@@ -1,7 +1,5 @@
 import type { CueLinksOffer, CueLinksRawOffer } from './types.js'
 
-const DEFAULT_BASE = 'https://www.cuelinks.com/api/v2'
-const DEFAULT_PATH = '/offers.json'
 const CACHE_TTL_MS = 10 * 60 * 1000
 const FOREIGN_CURRENCY_RE = /[$€£]|USD|EUR|GBP|CAD|AUD|AED|SGD|MYR/i
 
@@ -13,14 +11,15 @@ const foreignCampaigns = new Set<number>()
 function config() {
   return {
     token: process.env.CUELINKS_API_TOKEN || '',
-    base: (process.env.CUELINKS_API_BASE || DEFAULT_BASE).replace(/\/$/, ''),
-    path: process.env.CUELINKS_OFFERS_PATH || DEFAULT_PATH,
+    base: (process.env.CUELINKS_API_BASE || '').replace(/\/$/, ''),
+    path: process.env.CUELINKS_OFFERS_PATH || '',
     indiaOnly: (process.env.CUELINKS_INDIA_ONLY || 'true').toLowerCase() !== 'false',
   }
 }
 
 export function cuelinksConfigured(): boolean {
-  return Boolean(config().token)
+  const { token, base, path } = config()
+  return Boolean(token && base && path)
 }
 
 function stripHtml(html: string): string {
