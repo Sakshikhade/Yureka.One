@@ -15,7 +15,7 @@ const About: React.FC = () => {
       <div className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
       
       {/* Background Detail: Center-positioned absolute blurred purple circle */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-500/5 blur-[120px] rounded-full pointer-events-none z-0" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-green-500/5 blur-[120px] rounded-full pointer-events-none z-0" />
       
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
@@ -56,7 +56,7 @@ const About: React.FC = () => {
             <div className="grid grid-cols-2 gap-4 border-t border-white/10 pt-10">
               {stats.map((stat, idx) => (
                 <div key={idx} className="flex flex-col p-4 rounded-2xl backdrop-blur-md bg-white/[0.04] border border-white/10 ring-1 ring-white/5">
-                  <span className="text-3xl sm:text-4xl font-black tracking-tighter text-[#b026ff] mb-1">
+                  <span className="text-3xl sm:text-4xl font-black tracking-tighter text-[#5fae52] mb-1">
                     {stat.value}
                   </span>
                   <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400">
