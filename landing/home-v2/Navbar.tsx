@@ -45,20 +45,7 @@ function ScrambleNavLink({
   );
 }
 
-// Logout entry (logged-in users) with the same scramble-on-hover effect.
-function ScrambleLogout({ onClick }: { onClick: () => void }) {
-  const [hovered, setHovered] = useState(false);
-  return (
-    <button
-      onClick={onClick}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      className="text-[15px] tracking-tight text-white/75 transition-colors hover:text-white"
-    >
-      <ScrambleText text="Logout" isHovered={hovered} />
-    </button>
-  );
-}
+
 
 export default function Navbar({ entranceComplete = true }: NavbarProps) {
   const navigate = useNavigate();
@@ -86,8 +73,6 @@ export default function Navbar({ entranceComplete = true }: NavbarProps) {
   }, [menuOpen]);
 
   const closeMenu = () => setMenuOpen(false);
-
-  const handleLogout = () => navigate('/');
 
   // Always route the navbar CTA to the waitlist, regardless of auth/status.
   const cta = { label: 'Join Waitlist', onClick: () => navigate('/join-waitlist') };
@@ -152,7 +137,6 @@ export default function Navbar({ entranceComplete = true }: NavbarProps) {
                           onClick={closeMenu}
                         />
                       ))}
-                      {user && <ScrambleLogout onClick={handleLogout} />}
                     </div>
                   </motion.div>
                 )}
@@ -280,15 +264,6 @@ export default function Navbar({ entranceComplete = true }: NavbarProps) {
                 >
                   {cta.label}
                 </button>
-
-                {user && (
-                  <button
-                    onClick={handleLogout}
-                    className="w-full h-14 bg-white/5 border border-white/10 text-white rounded-full text-[14px] font-medium"
-                  >
-                    Logout
-                  </button>
-                )}
               </motion.div>
 
               <div className="shrink-0 mt-6 pt-8 sm:pt-10 border-t border-white/5">
