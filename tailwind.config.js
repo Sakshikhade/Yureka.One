@@ -15,9 +15,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        cream: '#0a0a0a', 
+        cream: '#0d4428', 
         ink: 'rgba(255, 255, 255, 0.9)',   
-        clay: '#00933b',
+        clay: '#def46e',
         surface: '#111111',
         'surface-hi': '#1a1a1a',
         primary: {

@@ -133,7 +133,7 @@ export default function BrandsSection() {
           Partnered with Over{' '}
           <span
             style={{ fontFamily: '"Playfair Display", serif' }}
-            className="italic font-semibold text-[#5fae52]"
+            className="italic font-semibold text-[#def46e]"
           >
             700+ Brands
           </span>

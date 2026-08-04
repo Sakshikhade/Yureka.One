@@ -97,7 +97,7 @@ export default function FAQSection() {
         <div>
           <h2
             style={{ fontFamily: '"Playfair Display", serif' }}
-            className="text-[34px] italic font-semibold uppercase leading-[1.1] text-[#5fae52] sm:text-[44px]"
+            className="text-[34px] italic font-semibold uppercase leading-[1.1] text-[#def46e] sm:text-[44px]"
           >
             Your Questions,
             <br />

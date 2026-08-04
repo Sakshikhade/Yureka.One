@@ -228,7 +228,7 @@ export default function MetricsTechnology() {
       <div className="w-full bg-black px-5 py-16 flex flex-col gap-20">
         {/* ---------- 1. Metrics ---------- */}
         <section className="flex flex-col gap-6">
-          <p className="text-center text-[13px] uppercase tracking-[0.2em] text-[#5fae52]">
+          <p className="text-center text-[13px] uppercase tracking-[0.2em] text-[#def46e]">
             What do you get from Yureka?
           </p>
           
@@ -253,7 +253,7 @@ export default function MetricsTechnology() {
                 <div className="text-[36px] font-light leading-none tracking-[-0.04em] text-white">
                   {metric.value}
                 </div>
-                <div className="mt-2 text-[13px] font-bold tracking-wide text-[#5fae52]">
+                <div className="mt-2 text-[13px] font-bold tracking-wide text-[#def46e]">
                   {metric.label}
                 </div>
               </div>
@@ -339,7 +339,7 @@ export default function MetricsTechnology() {
 
               <div className="mt-8 flex flex-col items-center">
                 <motion.p
-                  className="mb-6 text-center text-[13px] uppercase tracking-[0.2em] text-[#5fae52] sm:text-[14px]"
+                  className="mb-6 text-center text-[13px] uppercase tracking-[0.2em] text-[#def46e] sm:text-[14px]"
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: true, amount: 0.3 }}
@@ -361,7 +361,7 @@ export default function MetricsTechnology() {
                       <div className="text-[clamp(32px,6.4vw,58px)] font-light leading-none tracking-[-0.04em] text-white">
                         <ScrambleIn text={metric.value} delay={i * 200} triggered={statsInView} />
                       </div>
-                      <div className="mt-3 text-[13px] font-bold tracking-wide text-[#5fae52] sm:text-[15px]">
+                      <div className="mt-3 text-[13px] font-bold tracking-wide text-[#def46e] sm:text-[15px]">
                         {metric.label}
                       </div>
                     </motion.div>

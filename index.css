@@ -23,8 +23,9 @@
   text-transform: none !important;
   color: #fff !important;
 }
+.yureka-one-home h2[class*="text-[#def46e]"],
 .yureka-one-home h2[class*="text-[#5fae52]"] {
-  color: #5fae52 !important;
+  color: #def46e !important;
 }
 
 /* ── "Yureka AI" page ──
@@ -104,7 +105,7 @@
       html {
         font-size: 15px; /* Boost global text sizing for premium readability */
         scroll-behavior: smooth;
-        background-color: #0a0a0a;
+        background-color: #0d4428;
         -webkit-tap-highlight-color: transparent;
         /* clip (not hidden) — overflow-x:hidden on body breaks position:sticky
            and turns the pinned hero into hundreds of vh of blank black scroll. */
@@ -114,7 +115,7 @@
         font-family: 'Almarai', sans-serif;
         font-size: 16px;
         line-height: 1.6;
-        background-color: #0a0a0a;
+        background-color: #0d4428;
         color: rgba(255, 255, 255, 0.95);
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
@@ -163,7 +164,7 @@
 
       /* All heading fonts — brand green */
       h1, h2, h3, h4, h5, h6, .font-heading {
-        color: #00933b !important;
+        color: #def46e !important;
       }
 
       /* Global Heading Sizes — tightened for premium density */
@@ -511,8 +512,8 @@
         background: none;
         -webkit-background-clip: initial;
         background-clip: initial;
-        -webkit-text-fill-color: #00933b !important;
-        color: #00933b !important;
+        -webkit-text-fill-color: #def46e !important;
+        color: #def46e !important;
       }
 
 @media (prefers-reduced-motion: reduce) {
@@ -532,4 +533,26 @@
     background-color: rgba(20, 20, 20, 0.92) !important;
   }
 }
+
+/* ── Global Theme Overrides ── */
+html, body, .yureka-one-home, .yureka-ai-page,
+.bg-black, .bg-\[\#0a0a0a\], .bg-\[\#000000\], .bg-cream {
+  background-color: #0d4428 !important;
+}
+
+/* Force override on gradient/background helpers */
+[style*="background-color: rgb(10, 10, 10)"],
+[style*="background-color: #0a0a0a"],
+[style*="background-color: black"],
+[style*="background: rgb(10, 10, 10)"],
+[style*="background: #0a0a0a"] {
+  background-color: #0d4428 !important;
+  background: #0d4428 !important;
+}
+
+/* Dynamic text accent color replacements */
+.text-clay, .text-\[\#def46e\], .text-\[\#5fae52\], .text-green-500, .text-emerald-500 {
+  color: #def46e !important;
+}
+
 
