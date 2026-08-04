@@ -478,7 +478,6 @@ const WaitlistPage: React.FC = () => {
 
     // ─── RENDERERS ───
 
-    const renderStep1 = () => (
         <motion.div
             key="step1"
             initial={{ opacity: 0, y: 20 }}
@@ -486,17 +485,17 @@ const WaitlistPage: React.FC = () => {
             exit={{ opacity: 0, y: -20 }}
             className="max-w-sm mx-auto"
         >
-            <div id="join-waitlist-card" className="text-center bg-white/[0.03] border border-white/10 rounded-[2.5rem] p-10 md:p-14 shadow-2xl relative backdrop-blur-xl overflow-hidden">
-                <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-clay/50 to-transparent" />
+            <div id="join-waitlist-card" className="text-center bg-white/[0.06] border border-white/15 rounded-[2.5rem] p-8 sm:p-10 md:p-14 shadow-2xl relative backdrop-blur-xl overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-clay/60 to-transparent" />
 
-                <div className="w-14 h-14 bg-clay/10 rounded-2xl flex items-center justify-center mx-auto mb-8 border border-clay/20">
+                <div className="w-14 h-14 bg-clay/15 rounded-2xl flex items-center justify-center mx-auto mb-6 sm:mb-8 border border-clay/25">
                     <Sparkles size={22} className="text-clay" />
                 </div>
 
-                <h2 className="text-3xl font-heading font-black text-white uppercase tracking-tighter mb-3 leading-tight">
+                <h2 className="text-2xl sm:text-3xl font-heading font-black text-white uppercase tracking-tighter mb-3 leading-tight">
                     Get Early Access
                 </h2>
-                <p className="text-white/50 text-sm leading-relaxed mb-8 max-w-xs mx-auto">
+                <p className="text-white/60 text-sm leading-relaxed mb-6 sm:mb-8 max-w-xs mx-auto">
                     Sign up with Gmail — we'll scan your inbox to compute your Yureka Score and auto-fill your profile.
                 </p>
 
@@ -838,11 +837,11 @@ const WaitlistPage: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-[#050505] pt-24 md:pt-32 pb-40 px-6 relative overflow-hidden font-sans selection:bg-clay/20">
+        <div className="min-h-screen bg-[#080808] pt-20 sm:pt-24 md:pt-32 pb-32 px-4 sm:px-6 relative overflow-hidden font-sans selection:bg-clay/20">
             {/* Ambient background styling */}
-            <div className="fixed inset-0 pointer-events-none opacity-[0.05]" style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
-            <div className="fixed top-1/4 -left-1/4 w-[60%] h-[60%] bg-clay/5 blur-[120px] rounded-full pointer-events-none" />
-            <div className="fixed bottom-1/4 -right-1/4 w-[60%] h-[60%] bg-clay/5 blur-[120px] rounded-full pointer-events-none" />
+            <div className="fixed inset-0 pointer-events-none opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+            <div className="fixed top-1/4 -left-1/4 w-[60%] h-[60%] bg-clay/8 blur-[100px] rounded-full pointer-events-none" />
+            <div className="fixed bottom-1/4 -right-1/4 w-[60%] h-[60%] bg-clay/8 blur-[100px] rounded-full pointer-events-none" />
 
             <div className="max-w-4xl mx-auto relative z-10">
                 {/* Step indicator */}

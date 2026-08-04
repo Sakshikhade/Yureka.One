@@ -9,17 +9,16 @@
    headings. Scoped to `.yureka-one-home` (wraps the whole route) and beats
    the global rules with a higher-specificity `!important` of its own.
    FAQSection's heading is the one h2 in this design with its own direct
-   (non-white) color, so it gets its own more-specific override below. */
-.yureka-one-home,
-.yureka-one-home * {
-  font-family: 'Space Mono', monospace;
-}
+   (non-white) color, so it gets its own more-specific override below.
+   NOTE: Only headings inherit Space Mono here — body text (p, span, etc)
+   deliberately keeps Almarai for readability on mobile. */
 .yureka-one-home h1,
 .yureka-one-home h2,
 .yureka-one-home h3,
 .yureka-one-home h4,
 .yureka-one-home h5,
-.yureka-one-home h6 {
+.yureka-one-home h6,
+.yureka-one-home .font-heading {
   font-family: 'Space Mono', monospace !important;
   text-transform: none !important;
   color: #fff !important;
@@ -31,7 +30,8 @@
 /* ── "Yureka AI" page ──
    Follows the homepage's cinematic heading treatment (white, mixed-case,
    Space Mono) instead of the sitewide green-uppercase content-page rules,
-   so its designed white headings and gradient accents read correctly. */
+   so its designed white headings and gradient accents read correctly.
+   Only headings get Space Mono — body text stays Almarai for mobile readability. */
 .yureka-ai-page h1,
 .yureka-ai-page h2,
 .yureka-ai-page h3,
@@ -50,6 +50,13 @@
    Tailwind classes (not inline styles), so they're unaffected. */
 .yureka-ai-page [style*="opacity"] { opacity: 1 !important; }
 .yureka-ai-page [style*="transform"] { transform: none !important; }
+
+/* ── Mobile heading size overrides — prevent oversized text on small screens ── */
+@media (max-width: 480px) {
+  h1 { font-size: clamp(22px, 8vw, 40px) !important; }
+  h2 { font-size: clamp(18px, 6vw, 28px) !important; }
+  h3 { font-size: clamp(15px, 5vw, 22px) !important; }
+}
 
 @keyframes home-v2-marquee {
   from { transform: translateX(0); }

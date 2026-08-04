@@ -238,7 +238,7 @@ export default function Navbar({ entranceComplete = true }: NavbarProps) {
                 </button>
               </div>
 
-              <nav className="flex-1 min-h-0 flex flex-col gap-8 sm:gap-10 overflow-y-auto">
+              <nav className="flex-none flex flex-col gap-6 sm:gap-8 overflow-y-auto max-h-[50vh]">
                 {NAV_LINKS.map((item, idx) => (
                   <motion.div
                     initial={{ opacity: 0, x: 20 }}

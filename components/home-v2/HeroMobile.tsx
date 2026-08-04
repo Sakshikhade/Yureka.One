@@ -1,6 +1,7 @@
 import { useInView } from './useInView';
 import GlassLayer from './GlassLayer';
 import JoinWaitlistButton from './JoinWaitlistButton';
+import { useState } from 'react';
 
 // Mobile-only stacked version of the hero cinematic. The desktop experience
 // (components/home-v2/HeroCinematic.tsx) is a pinned, scroll-scrubbed,
@@ -19,8 +20,8 @@ const REWARDS_VIDEO_URL = '/rewards.mp4';
 
 // Lazily mount each video only once it nears the viewport, then autoplay it
 // inline+muted (the combination iOS/Android require for unattended playback).
-// The explicit play() on canplay nudges browsers that ignore the autoPlay
-// attribute for programmatically-inserted elements.
+// Shows a branded dark gradient placeholder until video data is loaded —
+// prevents blank/black boxes if the browser hasn't buffered any frames yet.
 function LazyVideo({
   src,
   fit = 'cover',
@@ -32,16 +33,38 @@ function LazyVideo({
   className?: string;
   eager?: boolean;
 }) {
-  // The hero video is always in view on load, so it mounts eagerly rather than
-  // waiting on an intersection callback (which can be a beat late). Everything
-  // below the fold stays lazy.
   const { ref, inView } = useInView<HTMLDivElement>('500px');
   const show = eager || inView;
+  const [loaded, setLoaded] = useState(false);
   return (
     <div
       ref={ref}
-      className={`relative overflow-hidden bg-[#0a0a0a] shadow-2xl shadow-black/40 backdrop-blur-xl ${className}`}
+      className={`relative overflow-hidden shadow-2xl shadow-black/40 backdrop-blur-xl ${className}`}
+      style={{
+        // Branded gradient placeholder shown until video has frames.
+        // Prevents the pure-black empty box on iOS/Android.
+        background: loaded
+          ? '#0a0a0a'
+          : 'linear-gradient(135deg, #0d1a0f 0%, #0a0a0a 50%, #0d1209 100%)',
+      }}
     >
+      {/* Green accent glow shown while loading */}
+      {!loaded && (
+        <div
+          className="absolute inset-0 flex items-center justify-center"
+          style={{ opacity: 0.18 }}
+        >
+          <div
+            style={{
+              width: '60%',
+              height: '60%',
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, #5fae52 0%, transparent 70%)',
+              filter: 'blur(32px)',
+            }}
+          />
+        </div>
+      )}
       {show && (
         <video
           src={src}
@@ -49,12 +72,15 @@ function LazyVideo({
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="auto"
           onCanPlay={(e) => {
             const p = e.currentTarget.play();
             if (p) p.catch(() => {});
           }}
-          className={`absolute inset-0 h-full w-full ${fit === 'cover' ? 'object-cover' : 'object-contain'}`}
+          onLoadedData={() => setLoaded(true)}
+          className={`absolute inset-0 h-full w-full transition-opacity duration-500 ${
+            fit === 'cover' ? 'object-cover' : 'object-contain'
+          } ${loaded ? 'opacity-100' : 'opacity-0'}`}
         />
       )}
       <GlassLayer />
