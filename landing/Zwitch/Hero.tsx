@@ -32,7 +32,7 @@ const Hero: React.FC = () => {
           />
           {/* Base Layer Text */}
           <div className="absolute inset-0 flex flex-col items-center justify-center z-20 text-center px-4">
-            <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#00f0ff] mb-4">
+            <span className="text-xs font-bold uppercase tracking-[0.3em] text-white mb-4">
               Everything Instant So Why Wait for
             </span>
             <h1 className="text-4xl md:text-7xl font-black tracking-tighter leading-[1.1] text-white max-w-4xl">
