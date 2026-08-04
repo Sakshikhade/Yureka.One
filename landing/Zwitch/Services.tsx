@@ -7,35 +7,35 @@ const services = [
     title: 'UI/UX Design',
     description: 'We craft immersive digital experiences that blend aesthetic elegance with intuitive functionality. Our research-driven design process ensures user engagement and loyalty.',
     icon: Layout,
-    color: 'from-blue-500/20 to-cyan-500/20',
-    accent: '#00f0ff',
+    color: 'from-[#def46e]/10 to-[#def46e]/5',
+    accent: '#def46e',
   },
   {
     title: 'Visual Graphic',
     description: 'Stunning brand identities and creative digital art that tells your stories. We combine typography, color, and illustration to define your unique market presence.',
     icon: Paintbrush,
-    color: 'from-purple-500/20 to-pink-500/20',
-    accent: '#b026ff',
+    color: 'from-[#def46e]/10 to-[#def46e]/5',
+    accent: '#def46e',
   },
   {
     title: 'Brand Strategy',
     description: 'Strategic planning, market positioning, and voice definition to align your product with audience desires. Build a future-proof foundation for long-term growth.',
     icon: Target,
-    color: 'from-emerald-500/20 to-teal-500/20',
-    accent: '#10b981',
+    color: 'from-[#def46e]/10 to-[#def46e]/5',
+    accent: '#def46e',
   },
   {
     title: 'Business Growth',
     description: 'Scale your user base and revenue through data-backed funnel optimizations, performance marketing strategies, and conversion-focused customer journeys.',
     icon: TrendingUp,
-    color: 'from-orange-500/20 to-red-500/20',
-    accent: '#f97316',
+    color: 'from-[#def46e]/10 to-[#def46e]/5',
+    accent: '#def46e',
   },
 ];
 
 const Services: React.FC = () => {
   return (
-    <section id="services" className="bg-[#000000] py-32 relative overflow-hidden w-full">
+    <section id="services" className="bg-[#0d4428] py-32 relative overflow-hidden w-full">
       
       {/* Background Decorative Blur */}
       <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] bg-blue-500/5 blur-[150px] rounded-full pointer-events-none" />
@@ -50,7 +50,7 @@ const Services: React.FC = () => {
           transition={{ duration: 0.8 }}
           className="text-center md:text-left mb-20 max-w-2xl"
         >
-          <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#00f0ff] mb-4 inline-block">
+          <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#def46e] mb-4 inline-block">
             Our Offerings
           </span>
           <h2 className="text-4xl md:text-6xl font-black tracking-tighter leading-[1.1] text-white">
