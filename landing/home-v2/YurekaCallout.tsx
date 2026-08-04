@@ -36,7 +36,7 @@ export default function YurekaCallout() {
         <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02] p-8 sm:p-12">
           <div
             className="pointer-events-none absolute inset-x-0 top-0 h-px"
-            style={{ background: 'linear-gradient(90deg, transparent, #def46e, transparent)' }}
+            style={{ background: 'linear-gradient(90deg, transparent, #5fae52, transparent)' }}
           />
 
           <div className="flex flex-col gap-12 md:flex-row md:justify-between">

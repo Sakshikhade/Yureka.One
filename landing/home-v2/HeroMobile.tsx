@@ -59,7 +59,7 @@ function LazyVideo({
               width: '60%',
               height: '60%',
               borderRadius: '50%',
-              background: 'radial-gradient(circle, #def46e 0%, transparent 70%)',
+              background: 'radial-gradient(circle, #5fae52 0%, transparent 70%)',
               filter: 'blur(32px)',
             }}
           />
@@ -132,12 +132,12 @@ export default function HeroMobile() {
         <div className="flex items-baseline gap-2">
           <span
             style={{ fontFamily: '"Playfair Display", serif' }}
-            className="text-[28px] italic font-semibold text-[#def46e]"
+            className="text-[28px] italic font-semibold text-[#5fae52]"
           >
             Meet
           </span>
           <span className="text-[28px] font-extrabold text-white">
-            Yureka<span className="text-[#def46e]">.</span>
+            Yureka<span className="text-[#5fae52]">.</span>
           </span>
         </div>
 
@@ -160,7 +160,7 @@ export default function HeroMobile() {
           {/* Shop Across 700+ Brands */}
           <div className="relative flex flex-col overflow-hidden rounded-2xl border border-white/20 bg-[#0a0a0a]/80 p-5">
             <h3 className="text-[18px] font-extrabold uppercase leading-tight text-white">
-              Shop Across <span className="text-[#def46e]">700+</span> Brands
+              Shop Across <span className="text-[#5fae52]">700+</span> Brands
             </h3>
             <div className="relative mt-4 h-44 w-full overflow-hidden rounded-2xl bg-[#141414]">
               <img
@@ -185,7 +185,7 @@ export default function HeroMobile() {
           <div className="relative flex flex-col overflow-hidden rounded-2xl border border-white/20 bg-[#0a0a0a]/80 p-5">
             <h3
               style={{ fontFamily: '"Playfair Display", serif' }}
-              className="text-[18px] italic font-semibold leading-tight text-[#def46e]"
+              className="text-[18px] italic font-semibold leading-tight text-[#5fae52]"
             >
               Not Just One Time Saving Or Cashback Or Reward Points
             </h3>
@@ -217,7 +217,7 @@ export default function HeroMobile() {
           <br />
           <span
             style={{ fontFamily: '"Playfair Display", serif' }}
-            className="italic font-semibold text-[#def46e]"
+            className="italic font-semibold text-[#5fae52]"
           >
             Gatekeeping
           </span>

@@ -296,7 +296,7 @@ export default function HeroCinematic({ entranceComplete }: HeroCinematicProps) 
                 // instead of fading to solid white by the end, the way a
                 // single edge-to-edge gradient would on text this long.
                 backgroundImage:
-                  'repeating-linear-gradient(90deg, #def46e 0px, #ffffff 300px, #def46e 600px)',
+                  'repeating-linear-gradient(90deg, #5fae52 0px, #ffffff 300px, #5fae52 600px)',
                 WebkitBackgroundClip: 'text',
                 backgroundClip: 'text',
                 color: 'transparent',
@@ -362,7 +362,7 @@ export default function HeroCinematic({ entranceComplete }: HeroCinematicProps) 
               <div className="flex items-baseline gap-2">
                 <span
                   style={{ fontFamily: '"Playfair Display", serif' }}
-                  className="text-[28px] italic font-semibold text-[#def46e] sm:text-[36px]"
+                  className="text-[28px] italic font-semibold text-[#5fae52] sm:text-[36px]"
                 >
                   Meet
                 </span>
@@ -370,7 +370,7 @@ export default function HeroCinematic({ entranceComplete }: HeroCinematicProps) 
                   style={{ fontFamily: 'Inter, sans-serif' }}
                   className="text-[28px] font-extrabold text-white sm:text-[36px]"
                 >
-                  Yureka<span className="text-[#def46e]">.</span>
+                  Yureka<span className="text-[#5fae52]">.</span>
                 </span>
               </div>
 
@@ -396,7 +396,7 @@ export default function HeroCinematic({ entranceComplete }: HeroCinematicProps) 
 
                 <div className="relative flex flex-col overflow-hidden rounded-2xl border border-white/20 bg-[#0a0a0a]/80 p-5 shadow-2xl shadow-black/40 backdrop-blur-xl">
                   <h3 className="h-12 shrink-0 overflow-hidden text-[16px] font-extrabold uppercase leading-tight text-white sm:h-14 sm:text-[18px]">
-                    Shop Across <span className="text-[#def46e]">700+</span> Brands
+                    Shop Across <span className="text-[#5fae52]">700+</span> Brands
                   </h3>
                   <div className="relative mt-4 min-h-0 w-full flex-1 overflow-hidden rounded-2xl bg-[#141414]">
                     <img
@@ -432,7 +432,7 @@ export default function HeroCinematic({ entranceComplete }: HeroCinematicProps) 
                 <div className="relative flex flex-col overflow-hidden rounded-2xl border border-white/20 bg-[#0a0a0a]/80 p-5 shadow-2xl shadow-black/40 backdrop-blur-xl">
                   <h3
                     style={{ fontFamily: '"Playfair Display", serif' }}
-                    className="h-12 shrink-0 overflow-hidden text-[16px] italic font-semibold leading-tight text-[#def46e] sm:h-14 sm:text-[18px]"
+                    className="h-12 shrink-0 overflow-hidden text-[16px] italic font-semibold leading-tight text-[#5fae52] sm:h-14 sm:text-[18px]"
                   >
                     Not Just One Time Saving Or Cashback Or Reward Points
                   </h3>
@@ -479,7 +479,7 @@ export default function HeroCinematic({ entranceComplete }: HeroCinematicProps) 
                   <br />
                   <span
                     style={{ fontFamily: '"Playfair Display", serif' }}
-                    className="italic font-semibold text-[#def46e]"
+                    className="italic font-semibold text-[#5fae52]"
                   >
                     Gatekeeping
                   </span>

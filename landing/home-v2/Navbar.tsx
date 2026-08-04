@@ -231,7 +231,7 @@ export default function Navbar({ entranceComplete = true }: NavbarProps) {
                     key={item.name}
                   >
                     <Link to={item.path} onClick={closeMenu} className="group block">
-                      <div className="text-[20px] sm:text-[22px] font-normal text-white group-hover:text-[#def46e] transition-colors">
+                      <div className="text-[20px] sm:text-[22px] font-normal text-white group-hover:text-[#5fae52] transition-colors">
                         {item.name}
                       </div>
                       <div
@@ -272,7 +272,7 @@ export default function Navbar({ entranceComplete = true }: NavbarProps) {
                   className="flex justify-between items-center text-white/25 text-[10px] uppercase tracking-[0.2em]"
                 >
                   <div className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 bg-[#def46e] rounded-full animate-pulse" />
+                    <div className="w-1.5 h-1.5 bg-[#5fae52] rounded-full animate-pulse" />
                     <span>System Online</span>
                   </div>
                   <span>&copy; 2026 YUREKA</span>
