@@ -18,10 +18,13 @@
     "moduleDetection": "force",
     "allowJs": true,
     "jsx": "react-jsx",
+    "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"],
+      "@landing/*": ["landing/*"],
+      "@app/*": ["app/*"],
+      "@shared/*": ["shared/*"],
+      "@backend/*": ["backend/*"]
     },
     "allowImportingTsExtensions": true,
     "noEmit": true

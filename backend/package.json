@@ -1,0 +1,23 @@
+{
+  "name": "@yureka/backend",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Express API, SEO lib, migrations, scripts",
+  "type": "module",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.111.0",
+    "compression": "^1.8.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "nodemailer": "^8.0.4",
+    "tsx": "^4.21.0"
+  },
+  "devDependencies": {
+    "@types/compression": "^1.8.1",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.14.0",
+    "@types/nodemailer": "^7.0.11"
+  }
+}

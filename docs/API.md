@@ -645,7 +645,7 @@ All notifications regardless of status.
   "message": "You can now scan your Gmail to auto-detect transactions.",
   "type": "info",
   "image_url": "https://...",
-  "created_by": "admin@yureka.one"
+  "created_by": "admin@example.com"
 }
 ```
 

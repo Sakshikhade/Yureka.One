@@ -2,9 +2,15 @@
 export default {
   content: [
     "./index.html",
-    "./components/**/*.{js,ts,jsx,tsx}",
-    "./*.{js,ts,jsx,tsx}",
-    "./lib/**/*.{ts,tsx}",
+    "./App.tsx",
+    "./index.tsx",
+    "./landing/**/*.{js,ts,jsx,tsx}",
+    "./app/**/*.{js,ts,jsx,tsx}",
+    "./shared/**/*.{js,ts,jsx,tsx}",
+    "./backend/**/*.{js,ts,jsx,tsx}",
+    "!**/node_modules/**",
+    "!**/design-reference/**",
+    "!**/dist/**",
   ],
   theme: {
     extend: {

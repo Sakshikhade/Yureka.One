@@ -296,11 +296,8 @@ super_admin > admin > editor > writer > user
 
 **Super admin emails** (always return `admin` role regardless of `users` table):
 ```
-toanweshbiswas@gmail.com
-buildwithjupyter.network@gmail.com
-work.anweshbiswas@gmail.com
-info.sachisiva@gmail.com
-tiwari.sansrite@gmail.com
+admin@example.com
+ops@example.com
 ```
 These should be stored in `application.yml` as a list, not hardcoded in Java source.
 
@@ -981,11 +978,8 @@ src/main/java/money/yureka/
    ```yaml
    app:
      super-admins:
-       - toanweshbiswas@gmail.com
-       - buildwithjupyter.network@gmail.com
-       - work.anweshbiswas@gmail.com
-       - info.sachisiva@gmail.com
-       - tiwari.sansrite@gmail.com
+       - admin@example.com
+       - ops@example.com
    ```
 
 9. **Rank constants** — expose as config too:

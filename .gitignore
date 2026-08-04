@@ -1,5 +1,40 @@
-# Logs
-logs
+# --- Dependencies & build ---
+node_modules/
+dist/
+dist-ssr/
+.turbo/
+.cache/
+*.local
+
+# --- Env / secrets (never commit) ---
+.env
+.env.*
+!.env.example
+!.env*.example
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+credentials.*.json
+*-credentials.json
+service-account*.json
+firebase-service-account.json
+.secret*
+secrets/
+
+# --- OAuth / tokens ---
+*.pickle
+token.json
+tokens/
+
+# --- Runtime / local data ---
+data/
+*.db
+*.sqlite
+
+# --- Logs ---
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -7,16 +42,10 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
-.env
-
-# Editor directories and files
+# --- Editor / OS ---
 .vscode/*
 !.vscode/extensions.json
-.idea
+.idea/
 .DS_Store
 *.suo
 *.ntvs*
@@ -24,15 +53,17 @@ dist-ssr
 *.sln
 *.sw?
 
-# Firebase
-firebase-service-account.json
+# --- Hosting / tooling ---
+.netlify/
+.vercel/
+.wrangler/
 
-# Google OAuth Secrets & Tokens
-*.pickle
-credentials.json
-
-# Local financial cache
-data/
-
-# Archived SQL / Supabase setup artifacts & retired hosting config (hidden from repo)
+# --- Archived / local scratch ---
 archive/
+scratch/
+venv/
+__pycache__/
+*.pyc
+
+# --- Design dump (optional large assets; keep if you want it in git) ---
+# landing/design-reference/node_modules/
