@@ -67,7 +67,21 @@ function GlassVideoCard({ children }: { children: ReactNode }) {
   );
 }
 
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(() =>
+    typeof window === 'undefined' ? true : window.matchMedia('(min-width: 768px)').matches,
+  );
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 768px)');
+    const onChange = () => setIsDesktop(mq.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+  return isDesktop;
+}
+
 export default function MetricsTechnology() {
+  const isDesktop = useIsDesktop();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const metricsVideoRef = useRef<HTMLVideoElement>(null);
   const techVideoRef = useRef<HTMLVideoElement>(null);
@@ -208,6 +222,91 @@ export default function MetricsTechnology() {
       unsubscribe();
     };
   }, [scrollYProgress, videosEnabled]);
+
+  if (!isDesktop) {
+    return (
+      <div className="w-full bg-black px-5 py-16 flex flex-col gap-20">
+        {/* ---------- 1. Metrics ---------- */}
+        <section className="flex flex-col gap-6">
+          <p className="text-center text-[13px] uppercase tracking-[0.2em] text-[#5fae52]">
+            What do you get from Yureka?
+          </p>
+          
+          <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-white/10 bg-[#0a0a0a]">
+            {videosEnabled && (
+              <video
+                src={METRICS_VIDEO_URL}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="auto"
+                className="h-full w-full object-cover"
+              />
+            )}
+            <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/25" />
+          </div>
+
+          <div className="grid grid-cols-1 gap-8 mt-4">
+            {METRICS.map((metric, i) => (
+              <div key={metric.label} className="text-center bg-white/[0.02] border border-white/5 p-5 rounded-2xl">
+                <div className="text-[36px] font-light leading-none tracking-[-0.04em] text-white">
+                  {metric.value}
+                </div>
+                <div className="mt-2 text-[13px] font-bold tracking-wide text-[#5fae52]">
+                  {metric.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ---------- 2. Technology ---------- */}
+        <section className="flex flex-col gap-6">
+          <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-white/10 bg-[#0a0a0a]">
+            {videosEnabled && (
+              <video
+                src={TECH_VIDEO_URL}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="auto"
+                className="h-full w-full object-cover"
+              />
+            )}
+            <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/25" />
+          </div>
+
+          <div className="flex flex-col gap-4">
+            <h2 className="text-[36px] font-light leading-[0.95] tracking-[-0.03em] text-white">
+              Yureka AI
+            </h2>
+            <p className="text-[14px] leading-relaxed text-white/60">
+              Our proprietary Ai model learns your daily shopping patterns within 72 hours.
+              From there, recognises every search, need and desire, ever cognitive state is
+              mapped, predicted across the web and optimized in real time. Our Ai gets you
+              the best deal, savings and rewards personally curated for you everytime
+            </p>
+            <JoinWaitlistButton className="w-full mt-2" />
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 mt-4">
+            {FEATURES.map((feature, i) => (
+              <div key={feature.title} className="border-t border-white/10 pt-4">
+                <div className="mb-1 text-[15px] font-normal text-white">
+                  {feature.title}
+                </div>
+                <div className="text-[13px] leading-relaxed text-white/40">
+                  {feature.desc}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
+    );
+  }
 
   return (
     <div
