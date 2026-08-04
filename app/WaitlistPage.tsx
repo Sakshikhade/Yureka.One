@@ -478,6 +478,7 @@ const WaitlistPage: React.FC = () => {
 
     // ─── RENDERERS ───
 
+    const renderStep1 = () => (
         <motion.div
             key="step1"
             initial={{ opacity: 0, y: 20 }}

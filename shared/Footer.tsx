@@ -2,7 +2,7 @@ import React from 'react';
 import { Instagram, Twitter, MessageSquare, Link as LinkIcon, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import HomeFooter from './home-v2/Footer';
+import HomeFooter from '@landing/home-v2/Footer';
 
 const Footer: React.FC = () => {
   return (
