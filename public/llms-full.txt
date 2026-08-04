@@ -1,0 +1,84 @@
+# Yureka One — Complete Technical & Product Specification
+
+> Yureka One is an AI-native consumer Wealth Operating System (Wealth OS) designed for affluent Indian shoppers. It automates receipt capture, calculates shopper creditworthiness, optimizes checkouts, and yields 24K digital gold rewards.
+
+---
+
+## 1. System Architecture & The 3-Step Loop
+
+### Capture (Consented Transaction Intelligence)
+* Aggregates merchant transactional receipts through consented, client-side browser extensions, email parsers, and UPI SMS push notifications.
+* Employs local zero-knowledge (ZK) filters to strip personally identifiable information (PII) before syncing purchase lines.
+
+### Score (Power Shopper Score)
+* Calculates a dynamic financial indicator (0 to 100) based on spending consistency, card selection efficiency, optimization habits, and merchant loyalty.
+* Acts as an alternative underwriting signal for thin-file consumers lacking traditional credit bureau histories.
+
+### Optimise (Goldback Rewards Engine)
+* Automatically matches purchases with the highest yielding reward card, applies verified coupons, and routes checkouts.
+* Converts standard cashback rewards into yield-bearing 24K digital gold (up to 16% effective ROI).
+
+---
+
+## 2. The Product Ecosystem
+
+### Yureka Consumer App & UPI Integration
+* Automatically sweeps UPI and debit card cashback fractions into a digital gold SIP.
+* Gold rewards are liquid, asset-backed, and stored in secure digital vaults.
+
+### Yureka AI: The Agentic Concierge
+* Leverages Swiggy and Zomato Model Context Protocol (MCP) agents to search, compare prices, order food, buy groceries, and process checkout flows on behalf of the user.
+* Operates autonomously inside safe, sandbox-consent parameters.
+
+### Zwitch: Hyperlocal Quick Commerce
+* Inside the app, users access Zwitch to order from top partner brands across:
+  * **Fashion**: Streetwear, apparel, and footwear.
+  * **Beauty**: Cosmetics and skincare.
+  * **Luxury**: Handbags, watches, and premium accessories.
+  * **Jewellery**: Premium ornaments and precious gemstones.
+  * **Food**: Fast delivery of curated meals and snacks.
+* Hyperlocal delivery within 20 minutes, 60 minutes, or same-day.
+* Enables 1:1 liquid point redemptions and instant digital goldback rewards on checkouts.
+
+### Yureka Credit (Alternative Underwriting)
+* Synthesizes transaction data into an RBI-compliant credit assessment profile.
+* Partners with registered Lending Service Providers (LSPs) to offer credit lines and thin-file loans based on shopping transaction records.
+
+### Yureka Business (B2B Merchant Stack)
+* **Smart Checkout API**: A fast, low-friction checkout wrapper that analyzes user history to reduce Return-To-Origin (RTO) rates and Cash on Delivery (COD) fraud.
+* **Intent Campaigns**: Allows merchants to run targeted promotions triggered directly by Yureka AI shopping agents.
+
+---
+
+## 3. Security, Consent, and Trust
+* **AES-256 Encryption**: All data is encrypted in transit and at rest.
+* **Account Aggregator integration**: Secure, consent-first financial data fetches adhering to RBI policies.
+* **Non-Custodial Transparency**: Rewards are backed 1:1 by real, physical gold held in regulated vaults (secured by independent trustees).
+
+---
+
+## 4. Membership Model
+* **Premium Subscription**: ₹99 per month or ₹1,199 per year.
+* **100% Gold Reimbursement**: 100% of the membership fee is credited back directly as 24K digital gold, ensuring membership costs are entirely recovered in asset value.
+
+---
+
+## 5. Map of Services & URLs
+* **Homepage**: `https://yureka.one/`
+* **Brand Explorer**: `https://yureka.one/brands`
+* **Zwitch Hyperlocal**: `https://yureka.one/zwitch`
+* **Yureka AI Concierge**: `https://yureka.one/yureka-ai`
+* **Goldback Details**: `https://yureka.one/goldback`
+* **Yureka Credit Info**: `https://yureka.one/credit`
+* **B2B Merchant Portal**: `https://yureka.one/business`
+* **Premium Subscription Info**: `https://yureka.one/pricing`
+* **Company Manifesto**: `https://yureka.one/manifesto`
+* **Careers / Open Jobs**: `https://yureka.one/jobs`
+* **Security & Infrastructure Protocol**: `https://yureka.one/security-protocol`
+* **Data Privacy Policy**: `https://yureka.one/privacy-policy`
+* **Terms of Service**: `https://yureka.one/terms-of-service`
+* **Community Guidelines**: `https://yureka.one/community-guidelines`
+* **Developer LLM Metadata**: `https://yureka.one/llms.txt`
+* **Developer LLM Full Spec**: `https://yureka.one/llms-full.txt`
+* **Sitemap XML Index**: `https://yureka.one/sitemap.xml`
+* **Support Email**: `mailto:founder@yureka.one`

@@ -17,6 +17,7 @@ const NAV_LINKS = [
   { name: 'Brands', path: '/brands', desc: 'Top reward partner brands' },
   { name: 'Yureka AI', path: '/yureka-ai', desc: 'Access the intelligence hub' },
   { name: 'For Brands', path: '/for-brands', desc: 'Partner, smart checkout & credit data' },
+  { name: 'Zwitch', path: '/zwitch', desc: 'Premium digital agency experience' },
 ];
 
 // A single link in the desktop expanding-pill menu, with the same

@@ -53,6 +53,7 @@ const WaitlistPage = lazyWithRetry(() => import('./components/WaitlistPage'));
 const WaitingPage = lazyWithRetry(() => import('./components/WaitingPage'));
 const DashboardLayout = lazyWithRetry(() => import('./components/Dashboard/DashboardLayout'));
 const ForBrands = lazyWithRetry(() => import('./components/ForBrands'));
+const ZwitchPage = lazyWithRetry(() => import('./components/Zwitch/ZwitchPage'));
 const NotFoundPage = lazyWithRetry(() => import('./components/NotFoundPage'));
 
 // Optimized Scroll Management
@@ -128,11 +129,19 @@ const AppContent: React.FC = () => {
   // admin/dashboard) opts out of the sitewide pt-24 offset — otherwise
   // it'd leave a gap above the hero video. The navbar itself still renders
   // on home now that it's the shared site-wide navbar, not a homepage-only one.
-  const noTopPadding = isSpecialRoute || isHomeRoute;
+  const isZwitchRoute = location.pathname === '/zwitch';
+  const noTopPadding = isSpecialRoute || isHomeRoute || isZwitchRoute;
 
   const appRoutes = (
               <Routes>
               <Route path="/" element={<MainPage />} />
+
+              <Route path="/zwitch" element={
+                <>
+                  <SEO {...staticPageMeta['/zwitch']} />
+                  <ZwitchPage />
+                </>
+              } />
 
               <Route path="/brands" element={
                 <>

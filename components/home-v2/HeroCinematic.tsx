@@ -250,9 +250,6 @@ export default function HeroCinematic({ entranceComplete }: HeroCinematicProps) 
   // Mobile: skip the entire pinned/scrubbed cinematic (all hooks above still
   // run, harmlessly, since their refs simply never attach) and render the
   // stacked layout instead. Desktop JSX below is untouched.
-  if (!isDesktop) {
-    return <HeroMobile />;
-  }
 
   return (
     <div

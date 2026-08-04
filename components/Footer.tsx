@@ -2,6 +2,7 @@ import React from 'react';
 import { Instagram, Twitter, MessageSquare, Link as LinkIcon, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
+import HomeFooter from './home-v2/Footer';
 
 const Footer: React.FC = () => {
   return (
@@ -138,6 +139,7 @@ const Footer: React.FC = () => {
                     { label: 'Chrome Extension', to: '/yureka-ai' },
                     { label: 'Yureka AI', to: '/yureka-ai' },
                     { label: 'Yureka One Telegram', to: '#' },
+                    { label: 'Zwitch', to: '/zwitch' },
                   ].map(({ label, to }) => (
                     <li key={label}>
                       <Link
@@ -228,6 +230,11 @@ const Footer: React.FC = () => {
             </div>
           </div>
         </motion.div>
+      </div>
+
+      {/* ── Benjamin Franklin Card Footer (same as homepage) ── */}
+      <div className="relative z-10 w-full mb-6">
+        <HomeFooter />
       </div>
     </footer>
   );

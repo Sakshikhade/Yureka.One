@@ -175,4 +175,9 @@ export const staticPageMeta: Record<string, PageMeta> = {
       'wealth app subscription india',
     ],
   },
+  '/zwitch': {
+    title: 'Zwitch | Premium Digital Agency',
+    description: 'A premium, highly interactive, and visually stunning digital agency. Recreating future digital realities through design-led innovations.',
+    keywords: ['digital agency', 'zwitch', 'interactive design', 'web development', 'creative agency'],
+  },
 };
