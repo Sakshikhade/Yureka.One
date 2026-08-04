@@ -18,13 +18,13 @@ const Hero: React.FC = () => {
   const clipPathValue = useTransform(clipRadius, (radius) => `circle(${radius} at 50% 50%)`);
 
   return (
-    <section ref={containerRef} className="relative h-[120vh] w-full bg-[#0d4428]">
+    <section ref={containerRef} className="relative h-[120vh] w-full bg-black">
       {/* Sticky container that keeps view active during the 120vh scroll */}
       <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
         
         {/* Layer 1: Sketch City Outline (Base Layer) */}
-        <div className="absolute inset-0 w-full h-full bg-[#0d4428]">
-          <div className="absolute inset-0 bg-[#0d4428]/40 z-10" />
+        <div className="absolute inset-0 w-full h-full bg-[#000000]">
+          <div className="absolute inset-0 bg-black/40 z-10" />
           <motion.img
             src="https://strvid.nyc3.cdn.digitaloceanspaces.com/cloudinary/hero_city_outline_fzg37d.jpg"
             alt="City Outline Sketch"
@@ -44,9 +44,9 @@ const Hero: React.FC = () => {
         {/* Layer 2: Realistic City Skyline (Top Reveal Layer) */}
         <motion.div
           style={{ clipPath: clipPathValue }}
-          className="absolute inset-0 w-full h-full bg-[#0d4428] z-30 overflow-hidden"
+          className="absolute inset-0 w-full h-full bg-[#000000] z-30 overflow-hidden"
         >
-          <div className="absolute inset-0 bg-[#0d4428]/50 z-10" />
+          <div className="absolute inset-0 bg-black/50 z-10" />
           <motion.img
             style={{ scale }}
             src="https://strvid.nyc3.cdn.digitaloceanspaces.com/cloudinary/hero_city_iglhwn.jpg"
@@ -55,7 +55,7 @@ const Hero: React.FC = () => {
           />
           {/* Reveal Layer Text */}
           <div className="absolute inset-0 flex flex-col items-center justify-center z-20 text-center px-4">
-            <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#def46e] mb-4">
+            <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#b026ff] mb-4">
               Yureka Moment
             </span>
             <h2 className="text-4xl md:text-7xl font-black tracking-tighter leading-[1.1] text-white max-w-4xl">
@@ -79,7 +79,7 @@ const Hero: React.FC = () => {
         </div>
 
         {/* Bottom glass-fade edge — blends into the card gap */}
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#0d4428]/80 to-transparent z-50 pointer-events-none" />
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/80 to-transparent z-50 pointer-events-none" />
 
       </div>
     </section>

@@ -97,7 +97,7 @@ const Work: React.FC = () => {
                 <div className="absolute inset-0 backdrop-blur-[1px] bg-white/5 z-10 transition-all duration-300 group-hover:backdrop-blur-0 group-hover:bg-transparent" />
 
                 {/* Strong dark gradient at bottom for text legibility */}
-                <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-[#0d4428]/90 via-[#0d4428]/50 to-transparent z-10" />
+                <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/90 via-black/50 to-transparent z-10" />
 
                 {/* Content Overlay */}
                 <div className="absolute inset-0 flex flex-col justify-end p-6 z-20">
@@ -111,8 +111,8 @@ const Work: React.FC = () => {
                         className="flex flex-col items-start"
                       >
                         {/* Glassmorphic label pill */}
-                        <div className="mb-3 px-3 py-1.5 rounded-full backdrop-blur-md bg-[#0d4428]/50 border border-white/10">
-                          <span className="text-[10px] font-bold uppercase tracking-widest text-[#def46e]">
+                        <div className="mb-3 px-3 py-1.5 rounded-full backdrop-blur-md bg-black/50 border border-white/10">
+                          <span className="text-[10px] font-bold uppercase tracking-widest text-[#00f0ff]">
                             {project.category}
                           </span>
                         </div>
@@ -120,7 +120,7 @@ const Work: React.FC = () => {
                           {project.name}
                         </h3>
                         {/* Glassmorphic CTA chip */}
-                        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full backdrop-blur-md bg-[#0d4428]/50 border border-[#def46e]/30 text-xs font-bold text-[#def46e] uppercase tracking-wider">
+                        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full backdrop-blur-md bg-black/50 border border-[#00f0ff]/30 text-xs font-bold text-[#00f0ff] uppercase tracking-wider">
                           View Category
                           <ArrowUpRight size={14} />
                         </div>
@@ -178,7 +178,7 @@ const Work: React.FC = () => {
                 <div className="absolute inset-0 backdrop-blur-[1px] bg-white/5 z-10" />
 
                 {/* Strong dark gradient at bottom */}
-                <div className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-[#0d4428]/95 via-[#0d4428]/60 to-transparent z-10" />
+                <div className="absolute inset-x-0 bottom-0 h-3/4 bg-gradient-to-t from-black/95 via-black/60 to-transparent z-10" />
 
                 {/* Content Overlay */}
                 <div className="absolute inset-0 flex flex-col justify-end p-6 z-20">
@@ -189,15 +189,15 @@ const Work: React.FC = () => {
                       transition={{ duration: 0.3 }}
                       className="flex flex-col items-start"
                     >
-                      <div className="mb-2 px-2.5 py-1 rounded-full backdrop-blur-md bg-[#0d4428]/50 border border-white/10">
-                        <span className="text-[9px] font-bold uppercase tracking-widest text-[#def46e]">
+                      <div className="mb-2 px-2.5 py-1 rounded-full backdrop-blur-md bg-black/50 border border-white/10">
+                        <span className="text-[9px] font-bold uppercase tracking-widest text-[#00f0ff]">
                           {project.category}
                         </span>
                       </div>
                       <h3 className="text-2xl font-black text-white tracking-tight mb-3 drop-shadow-[0_2px_12px_rgba(0,0,0,1)]">
                         {project.name}
                       </h3>
-                      <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full backdrop-blur-md bg-[#0d4428]/50 border border-[#def46e]/30 text-[9px] font-bold text-[#def46e] uppercase tracking-wider">
+                      <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full backdrop-blur-md bg-black/50 border border-[#00f0ff]/30 text-[9px] font-bold text-[#00f0ff] uppercase tracking-wider">
                         Tap to view
                         <ArrowUpRight size={12} />
                       </div>
@@ -207,7 +207,7 @@ const Work: React.FC = () => {
                       <span className="text-lg font-black text-white uppercase">
                         {project.name}
                       </span>
-                      <span className="text-[10px] font-bold text-[#def46e] uppercase tracking-wider">
+                      <span className="text-[10px] font-bold text-[#00f0ff] uppercase tracking-wider">
                         Tap to view
                       </span>
                     </div>

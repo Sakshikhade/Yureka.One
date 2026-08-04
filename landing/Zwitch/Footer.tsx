@@ -11,7 +11,7 @@ const Footer: React.FC = () => {
   };
 
   return (
-    <footer id="contact" className="bg-[#0d4428] pt-32 pb-16 relative overflow-hidden w-full border-t border-white/5">
+    <footer id="contact" className="bg-[#000000] pt-32 pb-16 relative overflow-hidden w-full border-t border-white/5">
       
       {/* Background Decorative glow */}
       <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-blue-500/5 blur-[100px] rounded-full pointer-events-none z-0" />
@@ -27,7 +27,7 @@ const Footer: React.FC = () => {
             transition={{ duration: 0.8 }}
             className="max-w-3xl"
           >
-            <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#def46e] mb-6 inline-block">
+            <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#00f0ff] mb-6 inline-block">
               Let's Talk
             </span>
             <h2 className="text-5xl md:text-8xl font-black tracking-tighter leading-[1.05] text-white mb-10">
@@ -40,10 +40,10 @@ const Footer: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(222, 244, 110, 0.4)' }}
+            whileHover={{ scale: 1.05, boxShadow: '0 0 30px rgba(0, 240, 255, 0.4)' }}
             whileTap={{ scale: 0.95 }}
             onClick={handleStartProject}
-            className="flex items-center gap-2 bg-[#def46e] text-black font-black text-base md:text-lg px-8 md:px-10 py-4 md:py-5 rounded-full select-none cursor-pointer border-none"
+            className="flex items-center gap-2 bg-[#00f0ff] text-black font-black text-base md:text-lg px-8 md:px-10 py-4 md:py-5 rounded-full select-none cursor-pointer border-none"
           >
             Start a Project
             <ArrowUpRight size={20} />
@@ -56,7 +56,7 @@ const Footer: React.FC = () => {
           {/* Brand Info */}
           <div className="flex flex-col items-start gap-4">
             <div className="text-2xl font-black tracking-tighter text-white select-none">
-              ZWITCH<span className="w-1.5 h-1.5 rounded-full bg-[#def46e] inline-block ml-1" />
+              ZWITCH<span className="w-1.5 h-1.5 rounded-full bg-[#b026ff] inline-block ml-1" />
             </div>
             <p className="text-sm font-light text-gray-400 leading-relaxed">
               We design and develop premium digital experiences that define the future.

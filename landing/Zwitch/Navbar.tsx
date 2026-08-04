@@ -38,14 +38,14 @@ const Navbar: React.FC = () => {
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             className="text-2xl font-black tracking-tighter cursor-pointer flex items-center gap-2 select-none"
           >
-            <span className="bg-gradient-to-r from-[#def46e] to-[#def46e] bg-clip-text text-transparent">ZWITCH</span>
-            <span className="w-2 h-2 rounded-full bg-[#def46e]" />
+            <span className="bg-gradient-to-r from-[#00f0ff] to-[#b026ff] bg-clip-text text-transparent">ZWITCH</span>
+            <span className="w-2 h-2 rounded-full bg-[#00f0ff]" />
           </div>
 
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-white hover:text-[#def46e] transition-colors p-1"
+            className="md:hidden text-white hover:text-[#00f0ff] transition-colors p-1"
             aria-label={isOpen ? "Close menu" : "Open menu"}
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -61,7 +61,7 @@ const Navbar: React.FC = () => {
               className="relative text-sm font-medium tracking-wide text-gray-300 hover:text-white transition-colors py-2 group cursor-pointer border-none bg-transparent"
             >
               {item}
-              <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#def46e] transition-all duration-300 group-hover:w-full" />
+              <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-[#00f0ff] transition-all duration-300 group-hover:w-full" />
             </button>
           ))}
         </div>

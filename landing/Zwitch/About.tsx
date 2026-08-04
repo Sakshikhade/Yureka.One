@@ -30,7 +30,7 @@ const About: React.FC = () => {
             transition={{ duration: 0.8 }}
             className="flex flex-col items-start"
           >
-            <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#def46e] mb-6">
+            <span className="text-xs font-bold uppercase tracking-[0.3em] text-[#00f0ff] mb-6">
               OUR PHILOSOPHY
             </span>
             <blockquote className="text-4xl md:text-5xl font-black tracking-tighter leading-tight text-white">
@@ -56,7 +56,7 @@ const About: React.FC = () => {
             <div className="grid grid-cols-2 gap-4 border-t border-white/10 pt-10">
               {stats.map((stat, idx) => (
                 <div key={idx} className="flex flex-col p-4 rounded-2xl backdrop-blur-md bg-white/[0.04] border border-white/10 ring-1 ring-white/5">
-                  <span className="text-3xl sm:text-4xl font-black tracking-tighter text-[#def46e] mb-1">
+                  <span className="text-3xl sm:text-4xl font-black tracking-tighter text-[#5fae52] mb-1">
                     {stat.value}
                   </span>
                   <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400">

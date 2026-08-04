@@ -18,11 +18,11 @@ const ZwitchPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-full min-h-screen bg-[#0d4428] text-white selection:bg-[#def46e]/30 font-['Outfit',sans-serif]">
+    <div className="w-full min-h-screen bg-black text-white selection:bg-blue-500/30 font-['Outfit',sans-serif]">
       {/* Global glassmorphism ambient glow background */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[#def46e]/5 blur-[160px] rounded-full" />
-        <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] bg-[#def46e]/5 blur-[140px] rounded-full" />
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[#00f0ff]/5 blur-[160px] rounded-full" />
+        <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] bg-[#b026ff]/5 blur-[140px] rounded-full" />
         <div className="absolute top-2/3 left-1/3 w-[300px] h-[300px] bg-white/3 blur-[120px] rounded-full" />
       </div>
 
