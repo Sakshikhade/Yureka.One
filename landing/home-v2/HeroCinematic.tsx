@@ -45,8 +45,8 @@ const CINEMATIC_VIDEO_URL = '/rewards-desktop-final.mp4';
 // scroll) so Brands isn't so many screens away, while keeping each phase's
 // relative weight so the pacing still reads the same, just tighter.
 const VAULT_SCRUB_VH = 130; // phase 0: scrub the vault video to its end
-const VAULT_ZOOM_VH = 90; // phase 1: zoom into the vault's black screen
-const HERO_ZOOM_OUT_VH = 70; // phase 2: vault overlay fades away, revealing the Hero panel
+const VAULT_ZOOM_VH = 50; // phase 1: zoom into the vault (kept short — long holds read as a dead black screen)
+const HERO_ZOOM_OUT_VH = 55; // phase 2: vault overlay fades away, revealing the Hero panel
 const SLIDE_VH = 140; // phase 3: Hero exits left, Yureka panels, Cinematic Text enters
 const CRAWL_VH = 90; // phase 4: Cinematic Text's tilted 3D crawl
 const TOTAL_EXTRA_VH =
@@ -59,6 +59,11 @@ const HERO_ZOOM_OUT_END =
 const SLIDE_END =
   (VAULT_SCRUB_VH + VAULT_ZOOM_VH + HERO_ZOOM_OUT_VH + SLIDE_VH) / TOTAL_EXTRA_VH;
 const CRAWL_END = 0.96;
+
+// Begin dissolving the vault overlay mid-zoom so we never park on a solid
+// black frame between zoom-complete and hero-reveal.
+const VAULT_FADE_START =
+  (VAULT_SCRUB_VH + VAULT_ZOOM_VH * 0.35) / TOTAL_EXTRA_VH;
 
 // Position of the vault's dark screen within its frame at the moment the
 // scrub finishes (its last frame), measured by sampling that exact frame
@@ -151,32 +156,26 @@ export default function HeroCinematic({ entranceComplete }: HeroCinematicProps) 
   });
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 140, damping: 26, mass: 1 });
 
-  // Phase 1: zoom into the vault's black screen, only once the scrub is
-  // done. Raw (unsmoothed) progress so the zoom tracks the scroll 1:1 --
-  // clamped to 0 for all of phase 0, so the video holds at scale 1 (full
-  // frame, no crop) for the entire scrub, then ramps up only here.
+  // Phase 1: zoom into the vault, only once the scrub is done. Raw
+  // (unsmoothed) progress so the zoom tracks the scroll 1:1 -- clamped to
+  // 0 for all of phase 0, so the video holds at scale 1 (full frame, no
+  // crop) for the entire scrub, then ramps up only here.
   const vaultZoomProgress = useTransform(scrollYProgress, [VAULT_SCRUB_END, VAULT_ZOOM_END], [0, 1]);
-  const vaultVideoScale = useTransform(vaultZoomProgress, [0, 1], [1, 20]);
+  // Cap the zoom so the last frames still carry image detail — scale 20
+  // overshoots into pure black and creates a dead patch before the fade.
+  const vaultVideoScale = useTransform(vaultZoomProgress, [0, 1], [1, 8]);
 
-  // Phase 2: drives the vault overlay's fade-out below, right after the
-  // zoom finishes. Sprung for a weightier, more cinematic feel.
-  const heroZoomOutProgress = useTransform(smoothProgress, [VAULT_ZOOM_END, HERO_ZOOM_OUT_END], [0, 1]);
+  // Phase 2: vault overlay dissolves into Hero. Driven off RAW scroll
+  // (not the spring) so spring lag can't leave a solid black hold after
+  // the zoom finishes. Fade starts mid-zoom and finishes at HERO_ZOOM_OUT_END.
+  const vaultOverlayOpacity = useTransform(
+    scrollYProgress,
+    [VAULT_FADE_START, HERO_ZOOM_OUT_END],
+    [1, 0],
+  );
 
-  // The vault overlay is a solid black mask + inset video card sitting on
-  // top of Hero's row. It holds fully opaque through the scrub+zoom, then
-  // fades away as the zoomed-in black screen gives way to Hero underneath
-  // -- this fade IS the "zoom out from black" reveal, no separate crossfade
-  // needed on Hero's side. Driven off heroZoomOutProgress (not raw scroll)
-  // so the fade and the zoom share one spring: if they were sprung
-  // separately, the overlay's transparency and the video's actual zoom
-  // level would drift out of sync while scrolling, and the mismatch reads
-  // as the frame's brightness pulsing instead of a clean, monotonic
-  // zoom-out from black.
-  const vaultOverlayOpacity = useTransform(heroZoomOutProgress, [0, 1], [1, 0]);
-
-  // The "TRANSCENDENCE" watermark ramps brighter in sync with that same
-  // reveal, rather than just sitting at a static opacity -- it grows in
-  // as the vault overlay fades away, giving the reveal a bit more impact.
+  // Watermark can stay sprung — it's decorative and benefits from weight.
+  const heroZoomOutProgress = useTransform(smoothProgress, [VAULT_FADE_START, HERO_ZOOM_OUT_END], [0, 1]);
   const watermarkOpacity = useTransform(heroZoomOutProgress, [0, 1], [0, 0.4]);
 
   // Phase 3: Hero slides left, past the blank black panel, and Cinematic
