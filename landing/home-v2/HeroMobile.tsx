@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import { useInView } from './useInView';
 import GlassLayer from './GlassLayer';
 import JoinWaitlistButton from './JoinWaitlistButton';
@@ -22,6 +23,8 @@ const REWARDS_VIDEO_URL = '/rewards.mp4';
 // inline+muted (the combination iOS/Android require for unattended playback).
 // Shows a branded dark gradient placeholder until video data is loaded —
 // prevents blank/black boxes if the browser hasn't buffered any frames yet.
+// rootMargin bumped to 1000px so videos start loading well before they enter
+// the viewport — reducing the chance of a black box on slow connections.
 function LazyVideo({
   src,
   fit = 'cover',
@@ -33,7 +36,7 @@ function LazyVideo({
   className?: string;
   eager?: boolean;
 }) {
-  const { ref, inView } = useInView<HTMLDivElement>('500px');
+  const { ref, inView } = useInView<HTMLDivElement>('1000px');
   const show = eager || inView;
   const [loaded, setLoaded] = useState(false);
   return (
@@ -91,8 +94,74 @@ function LazyVideo({
 export default function HeroMobile() {
   return (
     <div className="w-full bg-black px-5 pb-16 pt-24">
+
+      {/* ---------- 0. Cinematic First Screen ---------- */}
+      {/* Breaks out of px-5 and pt-24 padding to be truly full-screen */}
+      <section className="relative -mx-5 -mt-24 flex h-[100dvh] w-screen flex-col items-center justify-center overflow-hidden">
+        {/* Dot grid — same pattern as the desktop vault overlay */}
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)',
+            backgroundSize: '22px 22px',
+            opacity: 0.05,
+          }}
+        />
+
+        {/* Ambient green glow behind the text */}
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+          <div
+            style={{
+              width: '80%',
+              height: '50%',
+              borderRadius: '50%',
+              background: 'radial-gradient(ellipse, rgba(95,174,82,0.08) 0%, transparent 70%)',
+              filter: 'blur(60px)',
+            }}
+          />
+        </div>
+
+        {/* Cinematic headline — matches the vault video's green crawl text */}
+        <motion.p
+          className="relative z-10 px-8 text-center font-bold uppercase leading-[1.9] tracking-[0.2em]"
+          style={{
+            fontSize: 'clamp(15px, 4.8vw, 22px)',
+            color: '#5fae52',
+            fontFamily: '"Space Mono", monospace',
+            textShadow: '0 0 60px rgba(95, 174, 82, 0.4), 0 0 20px rgba(95, 174, 82, 0.2)',
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 2.2, ease: 'easeOut', delay: 0.5 }}
+        >
+          The Wealthiest Few Know
+          <br />
+          Secrets That Most
+          <br />
+          Never Will_
+        </motion.p>
+
+        {/* Scroll-down cue — bottom center */}
+        <div className="absolute bottom-10 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2">
+          <motion.div
+            className="h-10 w-px origin-top bg-white/30"
+            initial={{ scaleY: 0, opacity: 0 }}
+            animate={{ scaleY: [0, 1, 1, 0], opacity: [0, 1, 1, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+          />
+          <motion.span
+            className="text-[10px] uppercase tracking-[0.3em] text-white/35"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 2.5 }}
+          >
+            Keep Scrolling
+          </motion.span>
+        </div>
+      </section>
+
       {/* ---------- 1. Hero ---------- */}
-      <section className="relative">
+      <section className="relative mt-4">
         <div
           className="pointer-events-none absolute inset-0 -z-0"
           style={{

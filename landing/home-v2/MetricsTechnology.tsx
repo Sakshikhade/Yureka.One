@@ -90,13 +90,18 @@ export default function MetricsTechnology() {
   const techTargetTimeRef = useRef(0);
   const techIsSeekingRef = useRef(false);
 
+  // Loaded state for mobile video placeholders.
+  const [metricsVideoLoaded, setMetricsVideoLoaded] = useState(false);
+  const [techVideoLoaded, setTechVideoLoaded] = useState(false);
+
   // Same scramble-in-then-loop effect used on the Hero headline, applied
   // to the three stat values once they scroll into view.
   const { ref: statsRef, inView: statsInView } = useInView<HTMLDivElement>('0px');
 
   // This section sits well below the fold -- its two videos shouldn't
   // compete with the hero's for bandwidth on initial load. Enabled once,
-  // with enough lookahead to be buffered by the time the user scrolls in.
+  // with a generous 1500px lookahead so the videos have time to buffer
+  // before the user scrolls in on slower mobile connections.
   const [videosEnabled, setVideosEnabled] = useState(false);
   useEffect(() => {
     const el = wrapperRef.current;
@@ -108,7 +113,7 @@ export default function MetricsTechnology() {
           observer.disconnect();
         }
       },
-      { rootMargin: '600px' },
+      { rootMargin: '1500px' },
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -231,8 +236,29 @@ export default function MetricsTechnology() {
           <p className="text-center text-[13px] uppercase tracking-[0.2em] text-[#5fae52]">
             What do you get from Yureka?
           </p>
-          
-          <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-white/10 bg-[#0a0a0a]">
+
+          {/* Video container with branded loading placeholder */}
+          <div
+            className="relative aspect-video w-full overflow-hidden rounded-2xl border border-white/10"
+            style={{
+              background: metricsVideoLoaded
+                ? '#0a0a0a'
+                : 'linear-gradient(135deg, #0d1a0f 0%, #0a0a0a 50%, #0d1209 100%)',
+            }}
+          >
+            {!metricsVideoLoaded && (
+              <div className="absolute inset-0 flex items-center justify-center" style={{ opacity: 0.18 }}>
+                <div
+                  style={{
+                    width: '60%',
+                    height: '60%',
+                    borderRadius: '50%',
+                    background: 'radial-gradient(circle, #5fae52 0%, transparent 70%)',
+                    filter: 'blur(32px)',
+                  }}
+                />
+              </div>
+            )}
             {videosEnabled && (
               <video
                 src={METRICS_VIDEO_URL}
@@ -241,7 +267,11 @@ export default function MetricsTechnology() {
                 loop
                 playsInline
                 preload="auto"
-                className="h-full w-full object-cover"
+                onLoadedData={() => setMetricsVideoLoaded(true)}
+                onCanPlay={(e) => { const p = e.currentTarget.play(); if (p) p.catch(() => {}); }}
+                className={`h-full w-full object-cover transition-opacity duration-500 ${
+                  metricsVideoLoaded ? 'opacity-100' : 'opacity-0'
+                }`}
               />
             )}
             <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/25" />
@@ -263,7 +293,28 @@ export default function MetricsTechnology() {
 
         {/* ---------- 2. Technology ---------- */}
         <section className="flex flex-col gap-6">
-          <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-white/10 bg-[#0a0a0a]">
+          {/* Video container with branded loading placeholder */}
+          <div
+            className="relative aspect-video w-full overflow-hidden rounded-2xl border border-white/10"
+            style={{
+              background: techVideoLoaded
+                ? '#0a0a0a'
+                : 'linear-gradient(135deg, #0d1a0f 0%, #0a0a0a 50%, #0d1209 100%)',
+            }}
+          >
+            {!techVideoLoaded && (
+              <div className="absolute inset-0 flex items-center justify-center" style={{ opacity: 0.18 }}>
+                <div
+                  style={{
+                    width: '60%',
+                    height: '60%',
+                    borderRadius: '50%',
+                    background: 'radial-gradient(circle, #5fae52 0%, transparent 70%)',
+                    filter: 'blur(32px)',
+                  }}
+                />
+              </div>
+            )}
             {videosEnabled && (
               <video
                 src={TECH_VIDEO_URL}
@@ -272,7 +323,11 @@ export default function MetricsTechnology() {
                 loop
                 playsInline
                 preload="auto"
-                className="h-full w-full object-cover"
+                onLoadedData={() => setTechVideoLoaded(true)}
+                onCanPlay={(e) => { const p = e.currentTarget.play(); if (p) p.catch(() => {}); }}
+                className={`h-full w-full object-cover transition-opacity duration-500 ${
+                  techVideoLoaded ? 'opacity-100' : 'opacity-0'
+                }`}
               />
             )}
             <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/25" />
