@@ -177,59 +177,50 @@ export default function HeroCinematic({ entranceComplete }: HeroCinematicProps) 
   const crawlOpacity = useTransform(crawlProgress, [0.15, 0.35], [0, 1]);
   const crawlTransform = useMotionTemplate`rotateX(24deg) translateY(${crawlY}px) translateZ(15px)`;
 
-  // Vault video scroll-scrub (currentTime), independent of the visual
-  // transforms above.
+  // Vault video scroll-scrub (currentTime), smooth 60fps requestAnimationFrame
+  // loop that syncs currentTime to scroll position without dropping frames or
+  // locking out scroll events.
   useEffect(() => {
     const video = vaultVideoRef.current;
     if (!video) return;
 
-    let seekTimeout: ReturnType<typeof setTimeout> | undefined;
-
-    const trySeek = () => {
-      if (vaultIsSeekingRef.current || !video.duration) return;
-      vaultIsSeekingRef.current = true;
-      video.currentTime = vaultTargetTimeRef.current;
-      clearTimeout(seekTimeout);
-      seekTimeout = setTimeout(() => {
-        vaultIsSeekingRef.current = false;
-      }, 200);
+    // Ensure the video initializes at VAULT_START_TIME (2.0s - terminal text)
+    const initVideo = () => {
+      if (video.duration && Math.abs(video.currentTime - VAULT_START_TIME) > 0.1 && scrollYProgress.get() === 0) {
+        video.currentTime = VAULT_START_TIME;
+      }
     };
 
-    const onSeeked = () => {
-      clearTimeout(seekTimeout);
-      vaultIsSeekingRef.current = false;
-      trySeek();
+    video.addEventListener('loadedmetadata', initVideo);
+    video.addEventListener('canplay', initVideo);
+    if (video.readyState >= 1) initVideo();
+
+    let animationFrameId: number;
+    let lastTime = -1;
+
+    const renderLoop = () => {
+      if (video.duration && isHeroNearRef.current) {
+        const progress = scrollYProgress.get();
+        const clamped = Math.max(0, Math.min(1, progress));
+        const scrubProgress = Math.min(1, clamped / VAULT_SCRUB_END);
+        const targetTime = VAULT_START_TIME + scrubProgress * (video.duration - VAULT_START_TIME);
+
+        if (Math.abs(lastTime - targetTime) > 0.01) {
+          try {
+            video.currentTime = targetTime;
+            lastTime = targetTime;
+          } catch (_) {}
+        }
+      }
+      animationFrameId = requestAnimationFrame(renderLoop);
     };
 
-    const onLoadedMetadata = () => {
-      video.pause();
-      video.currentTime = VAULT_START_TIME;
-      vaultTargetTimeRef.current = VAULT_START_TIME;
-    };
-
-    video.addEventListener('seeked', onSeeked);
-    video.addEventListener('loadedmetadata', onLoadedMetadata);
-
-    // On fast/local serving the video's metadata frequently loads *before*
-    // this effect attaches its listener, so 'loadedmetadata' never fires and
-    // the vault sits on its black frame 0 instead of the intended
-    // VAULT_START_TIME frame -- which reads as a blank first screen. If
-    // metadata is already available, run the seek right now.
-    if (video.readyState >= 1 /* HAVE_METADATA */) onLoadedMetadata();
-
-    const unsubscribe = scrollYProgress.on('change', (progress) => {
-      if (!video.duration || !isHeroNearRef.current) return;
-      const clamped = Math.max(0, Math.min(1, progress));
-      const scrubProgress = Math.min(1, clamped / VAULT_SCRUB_END);
-      vaultTargetTimeRef.current = VAULT_START_TIME + scrubProgress * (video.duration - VAULT_START_TIME);
-      trySeek();
-    });
+    animationFrameId = requestAnimationFrame(renderLoop);
 
     return () => {
-      clearTimeout(seekTimeout);
-      video.removeEventListener('seeked', onSeeked);
-      video.removeEventListener('loadedmetadata', onLoadedMetadata);
-      unsubscribe();
+      cancelAnimationFrame(animationFrameId);
+      video.removeEventListener('loadedmetadata', initVideo);
+      video.removeEventListener('canplay', initVideo);
     };
   }, [scrollYProgress]);
 
@@ -542,35 +533,17 @@ export default function HeroCinematic({ entranceComplete }: HeroCinematicProps) 
         {/* Vault overlay: solid black mask + vault video, sitting on top of
             everything. Opaque through the vault scrub+zoom, then fades away
             over the Hero zoom-out phase to reveal Hero underneath.
-            Mobile: video fills the full screen (object-cover, no card frame).
-            Desktop: bounded card with 16:10 aspect ratio. */}
+            Single unified video ref tag ensures vaultVideoRef is ALWAYS
+            attached to the visible video element on both mobile and desktop. */}
         <motion.div
-          className="pointer-events-none absolute inset-0 z-30 flex items-center justify-center bg-black sm:px-4"
+          className="pointer-events-none absolute inset-0 z-30 flex items-center justify-center bg-black px-0 sm:px-4"
           style={{ opacity: vaultOverlayOpacity }}
         >
-          {/* Mobile (< sm): full-bleed video — no letterbox card */}
-          <div className="block sm:hidden absolute inset-0 overflow-hidden">
-            <motion.video
-              ref={vaultVideoRef}
-              src={VAULT_VIDEO_URL}
-              poster="/vault-poster.jpg"
-              className="absolute inset-0 h-full w-full object-cover"
-              style={{ scale: vaultVideoScale, transformOrigin: VAULT_ZOOM_ORIGIN, willChange: 'transform' }}
-              muted
-              playsInline
-              preload="auto"
-            />
-          </div>
-          {/* Desktop (sm+): rounded card with calculated aspect-ratio */}
           <div
-            className="relative hidden sm:block overflow-hidden rounded-3xl"
-            style={{
-              width: 'min(92vw, calc((100dvh - 5.5rem) * 1.6))',
-              aspectRatio: '16 / 10',
-              maxHeight: 'calc(100dvh - 5.5rem)',
-            }}
+            className="relative overflow-hidden w-full h-full sm:w-[min(92vw,calc((100dvh-5.5rem)*1.6))] sm:h-auto sm:aspect-[16/10] sm:max-h-[calc(100dvh-5.5rem)] sm:rounded-3xl"
           >
             <motion.video
+              ref={vaultVideoRef}
               src={VAULT_VIDEO_URL}
               poster="/vault-poster.jpg"
               className="absolute inset-0 h-full w-full object-cover"

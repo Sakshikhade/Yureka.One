@@ -5,8 +5,7 @@ import { useInView } from './useInView';
 import JoinWaitlistButton from './JoinWaitlistButton';
 
 const METRICS_VIDEO_URL = '/cta_fold.mp4';
-
-const TECH_VIDEO_URL = '/vault%204.mp4';
+const TECH_VIDEO_URL = '/vault4.mp4';
 
 const METRICS = [
   { value: 'Upto 5%', label: 'Yureka pays for your Purchase' },
@@ -106,100 +105,62 @@ export default function MetricsTechnology() {
   const rowX = useTransform(smoothProgress, [METRICS_SCRUB_END, SLIDE_END], [0, -100]);
   const rowTransform = useMotionTemplate`translateX(${rowX}vw)`;
 
+  // Smooth 60fps requestAnimationFrame scrub for metrics video
   useEffect(() => {
     const video = metricsVideoRef.current;
     if (!video) return;
 
-    let seekTimeout: ReturnType<typeof setTimeout> | undefined;
+    let animationFrameId: number;
+    let lastTime = -1;
 
-    const trySeek = () => {
-      if (metricsIsSeekingRef.current || !video.duration) return;
-      metricsIsSeekingRef.current = true;
-      video.currentTime = metricsTargetTimeRef.current;
-      clearTimeout(seekTimeout);
-      seekTimeout = setTimeout(() => {
-        metricsIsSeekingRef.current = false;
-      }, 200);
+    const renderLoop = () => {
+      if (video.duration) {
+        const progress = scrollYProgress.get();
+        const clamped = Math.max(0, Math.min(1, progress));
+        const scrubProgress = Math.min(1, clamped / METRICS_SCRUB_END);
+        const targetTime = scrubProgress * video.duration;
+
+        if (Math.abs(lastTime - targetTime) > 0.01) {
+          try {
+            video.currentTime = targetTime;
+            lastTime = targetTime;
+          } catch (_) {}
+        }
+      }
+      animationFrameId = requestAnimationFrame(renderLoop);
     };
 
-    const onSeeked = () => {
-      clearTimeout(seekTimeout);
-      metricsIsSeekingRef.current = false;
-      trySeek();
-    };
-
-    const onLoadedMetadata = () => {
-      video.pause();
-      video.currentTime = 0;
-    };
-
-    video.addEventListener('seeked', onSeeked);
-    video.addEventListener('loadedmetadata', onLoadedMetadata);
-
-    if (video.readyState >= 1) onLoadedMetadata();
-
-    const unsubscribe = scrollYProgress.on('change', (progress) => {
-      if (!video.duration) return;
-      const clamped = Math.max(0, Math.min(1, progress));
-      const scrubProgress = Math.min(1, clamped / METRICS_SCRUB_END);
-      metricsTargetTimeRef.current = scrubProgress * video.duration;
-      trySeek();
-    });
-
-    return () => {
-      clearTimeout(seekTimeout);
-      video.removeEventListener('seeked', onSeeked);
-      video.removeEventListener('loadedmetadata', onLoadedMetadata);
-      unsubscribe();
-    };
+    animationFrameId = requestAnimationFrame(renderLoop);
+    return () => cancelAnimationFrame(animationFrameId);
   }, [scrollYProgress, videosEnabled]);
 
+  // Smooth 60fps requestAnimationFrame scrub for technology video
   useEffect(() => {
     const video = techVideoRef.current;
     if (!video) return;
 
-    let seekTimeout: ReturnType<typeof setTimeout> | undefined;
+    let animationFrameId: number;
+    let lastTime = -1;
 
-    const trySeek = () => {
-      if (techIsSeekingRef.current || !video.duration) return;
-      techIsSeekingRef.current = true;
-      video.currentTime = techTargetTimeRef.current;
-      clearTimeout(seekTimeout);
-      seekTimeout = setTimeout(() => {
-        techIsSeekingRef.current = false;
-      }, 200);
+    const renderLoop = () => {
+      if (video.duration) {
+        const progress = scrollYProgress.get();
+        const clamped = Math.max(0, Math.min(1, progress));
+        const scrubProgress = Math.max(0, Math.min(1, (clamped - SLIDE_END) / (1 - SLIDE_END)));
+        const targetTime = scrubProgress * video.duration;
+
+        if (Math.abs(lastTime - targetTime) > 0.01) {
+          try {
+            video.currentTime = targetTime;
+            lastTime = targetTime;
+          } catch (_) {}
+        }
+      }
+      animationFrameId = requestAnimationFrame(renderLoop);
     };
 
-    const onSeeked = () => {
-      clearTimeout(seekTimeout);
-      techIsSeekingRef.current = false;
-      trySeek();
-    };
-
-    const onLoadedMetadata = () => {
-      video.pause();
-      video.currentTime = 0;
-    };
-
-    video.addEventListener('seeked', onSeeked);
-    video.addEventListener('loadedmetadata', onLoadedMetadata);
-
-    if (video.readyState >= 1) onLoadedMetadata();
-
-    const unsubscribe = scrollYProgress.on('change', (progress) => {
-      if (!video.duration) return;
-      const clamped = Math.max(0, Math.min(1, progress));
-      const scrubProgress = Math.max(0, Math.min(1, (clamped - SLIDE_END) / (1 - SLIDE_END)));
-      techTargetTimeRef.current = scrubProgress * video.duration;
-      trySeek();
-    });
-
-    return () => {
-      clearTimeout(seekTimeout);
-      video.removeEventListener('seeked', onSeeked);
-      video.removeEventListener('loadedmetadata', onLoadedMetadata);
-      unsubscribe();
-    };
+    animationFrameId = requestAnimationFrame(renderLoop);
+    return () => cancelAnimationFrame(animationFrameId);
   }, [scrollYProgress, videosEnabled]);
 
   return (
