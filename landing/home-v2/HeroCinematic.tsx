@@ -8,25 +8,13 @@ import {
 } from 'framer-motion';
 import ScrambleIn from './ScrambleIn';
 import { PhoneBubbleMockup, PhoneVaultMockup } from './YurekaMockups';
-import HeroMobile from './HeroMobile';
 import GlassLayer from './GlassLayer';
 import JoinWaitlistButton from './JoinWaitlistButton';
 
-// Desktop (>= md / 768px) gets the pinned scroll-scrubbed cinematic below;
-// anything narrower gets the plain stacked HeroMobile instead. Initialised
-// synchronously from matchMedia (client-only SPA, so no hydration flash).
-function useIsDesktop() {
-  const [isDesktop, setIsDesktop] = useState(() =>
-    typeof window === 'undefined' ? true : window.matchMedia('(min-width: 768px)').matches,
-  );
-  useEffect(() => {
-    const mq = window.matchMedia('(min-width: 768px)');
-    const onChange = () => setIsDesktop(mq.matches);
-    mq.addEventListener('change', onChange);
-    return () => mq.removeEventListener('change', onChange);
-  }, []);
-  return isDesktop;
-}
+// The full cinematic (vault scrub → hero → panels → crawl) runs on ALL
+// screen sizes. Mobile gets the same scroll-driven horizontal sequence and
+// the same vault video as desktop -- the only difference is responsive
+// sizing inside each panel handled via Tailwind breakpoint prefixes.
 
 const VAULT_VIDEO_URL = '/vault.mp4';
 const VAULT_START_TIME = 2;
@@ -87,7 +75,6 @@ interface HeroCinematicProps {
 }
 
 export default function HeroCinematic({ entranceComplete }: HeroCinematicProps) {
-  const isDesktop = useIsDesktop();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const vaultVideoRef = useRef<HTMLVideoElement>(null);
   const vaultTargetTimeRef = useRef(VAULT_START_TIME);
@@ -246,12 +233,7 @@ export default function HeroCinematic({ entranceComplete }: HeroCinematicProps) 
     };
   }, [scrollYProgress]);
 
-  // Mobile: skip the entire pinned/scrubbed cinematic (all hooks above still
-  // run, harmlessly, since their refs simply never attach) and render the
-  // stacked layout instead. Desktop JSX below is untouched.
-  if (!isDesktop) {
-    return <HeroMobile />;
-  }
+  // All devices render the cinematic below.
 
   return (
     <div
@@ -393,7 +375,9 @@ export default function HeroCinematic({ entranceComplete }: HeroCinematicProps) 
               >
                 <PhoneBubbleMockup />
 
-                <div className="relative flex flex-col overflow-hidden rounded-2xl border border-white/20 bg-[#0a0a0a]/80 p-5 shadow-2xl shadow-black/40 backdrop-blur-xl">
+                {/* Hide extra cards on mobile — PhoneBubbleMockup fills
+                    the flex-1 space; cards would overflow the 100dvh panel. */}
+                <div className="hidden md:flex relative flex-col overflow-hidden rounded-2xl border border-white/20 bg-[#0a0a0a]/80 p-5 shadow-2xl shadow-black/40 backdrop-blur-xl">
                   <h3 className="h-12 shrink-0 overflow-hidden text-[16px] font-extrabold uppercase leading-tight text-white sm:h-14 sm:text-[18px]">
                     Shop Across <span className="text-[#5fae52]">700+</span> Brands
                   </h3>
@@ -414,9 +398,6 @@ export default function HeroCinematic({ entranceComplete }: HeroCinematicProps) 
                     <li>Medicines &amp; Treatments</li>
                     <li>Everything that you need in your day to day life</li>
                   </ul>
-
-                  {/* Glass sheen: a soft diagonal highlight band, like light
-                      catching a curved glass surface. */}
                   <div
                     className="pointer-events-none absolute inset-0"
                     style={{
@@ -428,7 +409,7 @@ export default function HeroCinematic({ entranceComplete }: HeroCinematicProps) 
                   <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/25" />
                 </div>
 
-                <div className="relative flex flex-col overflow-hidden rounded-2xl border border-white/20 bg-[#0a0a0a]/80 p-5 shadow-2xl shadow-black/40 backdrop-blur-xl">
+                <div className="hidden md:flex relative flex-col overflow-hidden rounded-2xl border border-white/20 bg-[#0a0a0a]/80 p-5 shadow-2xl shadow-black/40 backdrop-blur-xl">
                   <h3
                     style={{ fontFamily: '"Playfair Display", serif' }}
                     className="h-12 shrink-0 overflow-hidden text-[16px] italic font-semibold leading-tight text-[#5fae52] sm:h-14 sm:text-[18px]"
@@ -449,9 +430,6 @@ export default function HeroCinematic({ entranceComplete }: HeroCinematicProps) 
                     <li>7 Days a Week</li>
                     <li>365 Days a Year</li>
                   </ul>
-
-                  {/* Glass sheen: a soft diagonal highlight band, like light
-                      catching a curved glass surface. */}
                   <div
                     className="pointer-events-none absolute inset-0"
                     style={{
@@ -556,26 +534,36 @@ export default function HeroCinematic({ entranceComplete }: HeroCinematicProps) 
           </div>
         </motion.div>
 
-        {/* Fixed blank-column mask, matching the rest of the site's 5-column
-            layout (columns 1 & 5 blank), decoupled from the sliding row so
-            the seam between videos stays flush underneath. */}
+        {/* Fixed blank-column mask — desktop only (hidden on mobile where
+            content fills the full viewport width). */}
         <div className="pointer-events-none absolute inset-y-0 left-0 z-20 hidden w-[20vw] bg-black md:block" />
         <div className="pointer-events-none absolute inset-y-0 right-0 z-20 hidden w-[20vw] bg-black md:block" />
 
-        {/* Vault overlay: solid black mask + inset video card, sitting on
-            top of everything above. Opaque through the vault's scrub+zoom,
-            then fades away over the Hero zoom-out phase to reveal Hero
-            underneath -- this fade IS the zoom-out-from-black transition.
-            The video plays at 1:1 (no crop) through the whole scrub, then
-            only zooms in afterward, into its own known last frame. */}
+        {/* Vault overlay: solid black mask + vault video, sitting on top of
+            everything. Opaque through the vault scrub+zoom, then fades away
+            over the Hero zoom-out phase to reveal Hero underneath.
+            Mobile: video fills the full screen (object-cover, no card frame).
+            Desktop: bounded card with 16:10 aspect ratio. */}
         <motion.div
-          className="pointer-events-none absolute inset-0 z-30 flex items-center justify-center bg-black px-3 sm:px-4"
+          className="pointer-events-none absolute inset-0 z-30 flex items-center justify-center bg-black sm:px-4"
           style={{ opacity: vaultOverlayOpacity }}
         >
-          {/* Fill most of the viewport — letterboxing was reading as a broken blank page.
-              Size from height so tall windows don't leave a huge black band under the card. */}
+          {/* Mobile (< sm): full-bleed video — no letterbox card */}
+          <div className="block sm:hidden absolute inset-0 overflow-hidden">
+            <motion.video
+              ref={vaultVideoRef}
+              src={VAULT_VIDEO_URL}
+              poster="/vault-poster.jpg"
+              className="absolute inset-0 h-full w-full object-cover"
+              style={{ scale: vaultVideoScale, transformOrigin: VAULT_ZOOM_ORIGIN, willChange: 'transform' }}
+              muted
+              playsInline
+              preload="auto"
+            />
+          </div>
+          {/* Desktop (sm+): rounded card with calculated aspect-ratio */}
           <div
-            className="relative overflow-hidden rounded-3xl"
+            className="relative hidden sm:block overflow-hidden rounded-3xl"
             style={{
               width: 'min(92vw, calc((100dvh - 5.5rem) * 1.6))',
               aspectRatio: '16 / 10',
@@ -583,7 +571,6 @@ export default function HeroCinematic({ entranceComplete }: HeroCinematicProps) 
             }}
           >
             <motion.video
-              ref={vaultVideoRef}
               src={VAULT_VIDEO_URL}
               poster="/vault-poster.jpg"
               className="absolute inset-0 h-full w-full object-cover"

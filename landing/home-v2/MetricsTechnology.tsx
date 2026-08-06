@@ -67,21 +67,7 @@ function GlassVideoCard({ children }: { children: ReactNode }) {
   );
 }
 
-function useIsDesktop() {
-  const [isDesktop, setIsDesktop] = useState(() =>
-    typeof window === 'undefined' ? true : window.matchMedia('(min-width: 768px)').matches,
-  );
-  useEffect(() => {
-    const mq = window.matchMedia('(min-width: 768px)');
-    const onChange = () => setIsDesktop(mq.matches);
-    mq.addEventListener('change', onChange);
-    return () => mq.removeEventListener('change', onChange);
-  }, []);
-  return isDesktop;
-}
-
 export default function MetricsTechnology() {
-  const isDesktop = useIsDesktop();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const metricsVideoRef = useRef<HTMLVideoElement>(null);
   const techVideoRef = useRef<HTMLVideoElement>(null);
@@ -90,18 +76,10 @@ export default function MetricsTechnology() {
   const techTargetTimeRef = useRef(0);
   const techIsSeekingRef = useRef(false);
 
-  // Loaded state for mobile video placeholders.
-  const [metricsVideoLoaded, setMetricsVideoLoaded] = useState(false);
-  const [techVideoLoaded, setTechVideoLoaded] = useState(false);
-
   // Same scramble-in-then-loop effect used on the Hero headline, applied
   // to the three stat values once they scroll into view.
   const { ref: statsRef, inView: statsInView } = useInView<HTMLDivElement>('0px');
 
-  // This section sits well below the fold -- its two videos shouldn't
-  // compete with the hero's for bandwidth on initial load. Enabled once,
-  // with a generous 1500px lookahead so the videos have time to buffer
-  // before the user scrolls in on slower mobile connections.
   const [videosEnabled, setVideosEnabled] = useState(false);
   useEffect(() => {
     const el = wrapperRef.current;
@@ -119,21 +97,15 @@ export default function MetricsTechnology() {
     return () => observer.disconnect();
   }, []);
 
-  // Same pin technique used throughout: "start start" -> "end end" spans
-  // exactly the pinned window (progress 0 at pin-begin, 1 at release).
   const { scrollYProgress } = useScroll({
     target: wrapperRef,
     offset: ['start start', 'end end'],
   });
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 140, damping: 26, mass: 1 });
 
-  // Metrics slides left, Technology slides in from the right to center,
-  // between the two scrub phases.
   const rowX = useTransform(smoothProgress, [METRICS_SCRUB_END, SLIDE_END], [0, -100]);
   const rowTransform = useMotionTemplate`translateX(${rowX}vw)`;
 
-  // Metrics video scroll-scrub (currentTime), phase 0. Raw (unsmoothed)
-  // progress for frame-precise scrubbing.
   useEffect(() => {
     const video = metricsVideoRef.current;
     if (!video) return;
@@ -164,6 +136,8 @@ export default function MetricsTechnology() {
     video.addEventListener('seeked', onSeeked);
     video.addEventListener('loadedmetadata', onLoadedMetadata);
 
+    if (video.readyState >= 1) onLoadedMetadata();
+
     const unsubscribe = scrollYProgress.on('change', (progress) => {
       if (!video.duration) return;
       const clamped = Math.max(0, Math.min(1, progress));
@@ -180,8 +154,6 @@ export default function MetricsTechnology() {
     };
   }, [scrollYProgress, videosEnabled]);
 
-  // Technology video scroll-scrub (currentTime), phase 2 -- re-keyed off
-  // the tail of the scroll, after the slide completes.
   useEffect(() => {
     const video = techVideoRef.current;
     if (!video) return;
@@ -212,6 +184,8 @@ export default function MetricsTechnology() {
     video.addEventListener('seeked', onSeeked);
     video.addEventListener('loadedmetadata', onLoadedMetadata);
 
+    if (video.readyState >= 1) onLoadedMetadata();
+
     const unsubscribe = scrollYProgress.on('change', (progress) => {
       if (!video.duration) return;
       const clamped = Math.max(0, Math.min(1, progress));
@@ -227,141 +201,6 @@ export default function MetricsTechnology() {
       unsubscribe();
     };
   }, [scrollYProgress, videosEnabled]);
-
-  if (!isDesktop) {
-    return (
-      <div className="w-full bg-black px-5 py-16 flex flex-col gap-20">
-        {/* ---------- 1. Metrics ---------- */}
-        <section className="flex flex-col gap-6">
-          <p className="text-center text-[13px] uppercase tracking-[0.2em] text-[#5fae52]">
-            What do you get from Yureka?
-          </p>
-
-          {/* Video container with branded loading placeholder */}
-          <div
-            className="relative aspect-video w-full overflow-hidden rounded-2xl border border-white/10"
-            style={{
-              background: metricsVideoLoaded
-                ? '#0a0a0a'
-                : 'linear-gradient(135deg, #0d1a0f 0%, #0a0a0a 50%, #0d1209 100%)',
-            }}
-          >
-            {!metricsVideoLoaded && (
-              <div className="absolute inset-0 flex items-center justify-center" style={{ opacity: 0.18 }}>
-                <div
-                  style={{
-                    width: '60%',
-                    height: '60%',
-                    borderRadius: '50%',
-                    background: 'radial-gradient(circle, #5fae52 0%, transparent 70%)',
-                    filter: 'blur(32px)',
-                  }}
-                />
-              </div>
-            )}
-            {videosEnabled && (
-              <video
-                src={METRICS_VIDEO_URL}
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="auto"
-                onLoadedData={() => setMetricsVideoLoaded(true)}
-                onCanPlay={(e) => { const p = e.currentTarget.play(); if (p) p.catch(() => {}); }}
-                className={`h-full w-full object-cover transition-opacity duration-500 ${
-                  metricsVideoLoaded ? 'opacity-100' : 'opacity-0'
-                }`}
-              />
-            )}
-            <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/25" />
-          </div>
-
-          <div className="grid grid-cols-1 gap-8 mt-4">
-            {METRICS.map((metric, i) => (
-              <div key={metric.label} className="text-center bg-white/[0.02] border border-white/5 p-5 rounded-2xl">
-                <div className="text-[36px] font-light leading-none tracking-[-0.04em] text-white">
-                  {metric.value}
-                </div>
-                <div className="mt-2 text-[13px] font-bold tracking-wide text-[#5fae52]">
-                  {metric.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ---------- 2. Technology ---------- */}
-        <section className="flex flex-col gap-6">
-          {/* Video container with branded loading placeholder */}
-          <div
-            className="relative aspect-video w-full overflow-hidden rounded-2xl border border-white/10"
-            style={{
-              background: techVideoLoaded
-                ? '#0a0a0a'
-                : 'linear-gradient(135deg, #0d1a0f 0%, #0a0a0a 50%, #0d1209 100%)',
-            }}
-          >
-            {!techVideoLoaded && (
-              <div className="absolute inset-0 flex items-center justify-center" style={{ opacity: 0.18 }}>
-                <div
-                  style={{
-                    width: '60%',
-                    height: '60%',
-                    borderRadius: '50%',
-                    background: 'radial-gradient(circle, #5fae52 0%, transparent 70%)',
-                    filter: 'blur(32px)',
-                  }}
-                />
-              </div>
-            )}
-            {videosEnabled && (
-              <video
-                src={TECH_VIDEO_URL}
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="auto"
-                onLoadedData={() => setTechVideoLoaded(true)}
-                onCanPlay={(e) => { const p = e.currentTarget.play(); if (p) p.catch(() => {}); }}
-                className={`h-full w-full object-cover transition-opacity duration-500 ${
-                  techVideoLoaded ? 'opacity-100' : 'opacity-0'
-                }`}
-              />
-            )}
-            <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-inset ring-white/25" />
-          </div>
-
-          <div className="flex flex-col gap-4">
-            <h2 className="text-[36px] font-light leading-[0.95] tracking-[-0.03em] text-white">
-              Yureka AI
-            </h2>
-            <p className="text-[14px] leading-relaxed text-white/60">
-              Our proprietary Ai model learns your daily shopping patterns within 72 hours.
-              From there, recognises every search, need and desire, ever cognitive state is
-              mapped, predicted across the web and optimized in real time. Our Ai gets you
-              the best deal, savings and rewards personally curated for you everytime
-            </p>
-            <JoinWaitlistButton className="w-full mt-2" />
-          </div>
-
-          <div className="grid grid-cols-1 gap-6 mt-4">
-            {FEATURES.map((feature, i) => (
-              <div key={feature.title} className="border-t border-white/10 pt-4">
-                <div className="mb-1 text-[15px] font-normal text-white">
-                  {feature.title}
-                </div>
-                <div className="text-[13px] leading-relaxed text-white/40">
-                  {feature.desc}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      </div>
-    );
-  }
 
   return (
     <div
