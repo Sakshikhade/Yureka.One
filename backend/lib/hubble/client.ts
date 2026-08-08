@@ -1,5 +1,10 @@
 import { randomUUID } from 'crypto'
-import type { GiftCard, HubbleProductRaw } from './types.js'
+import type {
+  GiftCard,
+  HubbleOrderRaw,
+  HubbleProductRaw,
+  PlaceOrderInput,
+} from './types.js'
 
 const CACHE_TTL_MS = 10 * 60 * 1000
 const TOKEN_SKEW_MS = 60_000
@@ -95,22 +100,28 @@ async function getAccessToken(): Promise<string> {
   return body.token
 }
 
-async function hubbleGet<T>(path: string, query?: Record<string, string>): Promise<T> {
+async function hubbleRequest<T>(
+  method: 'GET' | 'POST',
+  path: string,
+  opts?: { query?: Record<string, string>; body?: unknown },
+): Promise<T> {
   const { baseUrl } = config()
   const token = await getAccessToken()
   const url = new URL(`${baseUrl}${path}`)
-  if (query) {
-    for (const [k, v] of Object.entries(query)) {
+  if (opts?.query) {
+    for (const [k, v] of Object.entries(opts.query)) {
       if (v) url.searchParams.set(k, v)
     }
   }
 
   const res = await fetch(url, {
+    method,
     headers: {
       Authorization: `Bearer ${token}`,
       'X-REQUEST-ID': randomUUID(),
       'Content-Type': 'application/json',
     },
+    body: opts?.body != null ? JSON.stringify(opts.body) : undefined,
   })
 
   const body = await res.json().catch(() => ({}))
@@ -120,6 +131,10 @@ async function hubbleGet<T>(path: string, query?: Record<string, string>): Promi
     throw new Error(typeof msg === 'string' ? msg : JSON.stringify(msg))
   }
   return body as T
+}
+
+async function hubbleGet<T>(path: string, query?: Record<string, string>): Promise<T> {
+  return hubbleRequest<T>('GET', path, { query })
 }
 
 /** Fetch full catalog from Hubble (paginated). Cached in-memory. */
@@ -139,7 +154,7 @@ export async function fetchAllGiftCards(opts?: { force?: boolean }): Promise<Gif
 
     const page = await hubbleGet<{ data?: HubbleProductRaw[]; nextCursor?: string | null }>(
       '/v1/partners/products',
-      query
+      query,
     )
 
     const batch = (page.data || []).map(mapProduct)
@@ -195,7 +210,26 @@ export async function getGiftCard(id: string): Promise<GiftCard | null> {
   return all.find((p) => p.id === id) || null
 }
 
+/** Place an order — Hubble debits the partner wallet and issues vouchers. */
+export async function placeHubbleOrder(input: PlaceOrderInput): Promise<HubbleOrderRaw> {
+  return hubbleRequest<HubbleOrderRaw>('POST', '/v1/partners/orders', { body: input })
+}
+
+export async function getHubbleOrder(orderId: string): Promise<HubbleOrderRaw> {
+  return hubbleGet<HubbleOrderRaw>(`/v1/partners/orders/${encodeURIComponent(orderId)}`)
+}
+
+export async function getHubbleOrderByReference(referenceId: string): Promise<HubbleOrderRaw> {
+  return hubbleGet<HubbleOrderRaw>(
+    `/v1/partners/orders/by-reference/${encodeURIComponent(referenceId)}`,
+  )
+}
+
 export function clearHubbleCaches() {
   tokenCache = null
+  productCache = null
+}
+
+export function clearHubbleProductCache() {
   productCache = null
 }

@@ -19,6 +19,7 @@ import WaitlistPage from '@app/WaitlistPage';
 import GoldbackHome from './GoldbackHome';
 import OffersPage from './OffersPage';
 import GiftCardsPage from './GiftCardsPage';
+import GiftCardOrderPage from './GiftCardOrderPage';
 
 import { api, isApiError } from '@backend/lib/api/client';
 
@@ -391,6 +392,7 @@ const DashboardLayout: React.FC = () => {
                                 <Route index element={<Navigate to="home" replace />} />
                                 <Route path="home" element={<GoldbackHome />} />
                                 <Route path="offers" element={<OffersPage />} />
+                                <Route path="giftcards/orders/:orderId" element={<GiftCardOrderPage />} />
                                 <Route path="giftcards" element={<GiftCardsPage />} />
                                 <Route path="cards" element={<MyCards />} />
                                 <Route path="yureka-ai" element={<YurekaAIPage />} />

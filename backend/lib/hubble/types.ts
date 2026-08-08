@@ -60,3 +60,70 @@ export interface GiftCard {
   howToUse: string[]
   voucherExpiryInMonths: number | null
 }
+
+export type HubbleOrderStatus =
+  | 'PENDING'
+  | 'PROCESSING'
+  | 'SUCCESS'
+  | 'FAILED'
+  | 'CANCELLED'
+  | 'REVERSED'
+
+export interface HubbleVoucherRaw {
+  id?: string
+  cardType?: string | null
+  cardPin?: string | null
+  cardNumber?: string | null
+  validTill?: string | null
+  amount?: number | string | null
+}
+
+export interface HubbleOrderRaw {
+  id: string
+  referenceId?: string
+  status: HubbleOrderStatus | string
+  vouchers?: HubbleVoucherRaw[] | null
+  failureReason?: string | null
+}
+
+export interface PlaceOrderInput {
+  productId: string
+  referenceId: string
+  amount: number
+  denominationDetails: Array<{ denomination: number; quantity: number }>
+  customerDetails?: {
+    name: string
+    phoneNumber: string
+    email: string
+  } | null
+}
+
+export interface StoredVoucher {
+  id: string
+  hubbleVoucherId: string | null
+  cardType: string | null
+  cardNumber: string | null
+  cardPin: string | null
+  amount: number | null
+  validTill: string | null
+}
+
+export interface StoredOrder {
+  id: string
+  userId: string
+  referenceId: string
+  hubbleOrderId: string | null
+  productId: string
+  productTitle: string
+  amountInr: number
+  denomination: number
+  quantity: number
+  status: HubbleOrderStatus
+  failureReason: string | null
+  customerName: string | null
+  customerEmail: string | null
+  customerPhone: string | null
+  vouchers: StoredVoucher[]
+  createdAt: string
+  updatedAt: string
+}

@@ -24,7 +24,14 @@ async function startServer() {
   app.use(cors());
   const PORT = Number(process.env.PORT) || 3000;
 
-  app.use(express.json());
+  // Keep raw body for Hubble webhook HMAC (X-Verify) verification.
+  app.use(
+    express.json({
+      verify: (req, _res, buf) => {
+        ;(req as any).rawBody = buf.toString('utf8')
+      },
+    }),
+  );
 
   // --- API Routes ---
 

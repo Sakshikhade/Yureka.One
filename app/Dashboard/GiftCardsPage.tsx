@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { Gift, Loader2, Search, X, RefreshCw, ExternalLink } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { useSupabase } from '@shared/SupabaseProvider'
 import type { GiftCard } from '@backend/lib/hubble/types'
 
 const formatInr = (n: number) =>
@@ -14,6 +16,8 @@ const prettyCategory = (c: string) =>
     .join(' ')
 
 const GiftCardsPage: React.FC = () => {
+  const navigate = useNavigate()
+  const { user } = useSupabase()
   const [items, setItems] = useState<GiftCard[]>([])
   const [categories, setCategories] = useState<string[]>([])
   const [total, setTotal] = useState(0)
@@ -23,6 +27,11 @@ const GiftCardsPage: React.FC = () => {
   const [category, setCategory] = useState('all')
   const [selected, setSelected] = useState<GiftCard | null>(null)
   const [refreshing, setRefreshing] = useState(false)
+  const [amount, setAmount] = useState<number | null>(null)
+  const [buying, setBuying] = useState(false)
+  const [buyError, setBuyError] = useState<string | null>(null)
+
+  const userId = user?.id || user?.email || 'demo-user'
 
   const load = useCallback(async (opts?: { refresh?: boolean }) => {
     if (opts?.refresh) setRefreshing(true)
@@ -55,7 +64,68 @@ const GiftCardsPage: React.FC = () => {
     return () => clearTimeout(t)
   }, [load, query])
 
+  useEffect(() => {
+    if (!selected) {
+      setAmount(null)
+      setBuyError(null)
+      return
+    }
+    if (selected.denominations.length) {
+      setAmount(selected.denominations[0])
+    } else if (selected.minAmount != null) {
+      setAmount(selected.minAmount)
+    } else {
+      setAmount(null)
+    }
+    setBuyError(null)
+  }, [selected])
+
   const chips = useMemo(() => ['all', ...categories], [categories])
+
+  const openVariableOk =
+    selected &&
+    !selected.denominations.length &&
+    amount != null &&
+    (selected.minAmount == null || amount >= selected.minAmount) &&
+    (selected.maxAmount == null || amount <= selected.maxAmount)
+
+  const canBuy =
+    !!selected &&
+    amount != null &&
+    amount > 0 &&
+    (selected.denominations.length ? selected.denominations.includes(amount) : openVariableOk) &&
+    !buying
+
+  const placeOrder = async () => {
+    if (!selected || amount == null || !canBuy) return
+    setBuying(true)
+    setBuyError(null)
+    try {
+      const res = await fetch('/api/giftcards/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-user-id': userId,
+        },
+        body: JSON.stringify({
+          productId: selected.id,
+          denomination: amount,
+          quantity: 1,
+          customerName: user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Yureka User',
+          customerEmail: user?.email || 'noreply@yureka.one',
+          customerPhone: user?.user_metadata?.phone || '',
+        }),
+      })
+      const json = await res.json()
+      if (!res.ok || json.error) throw new Error(json.error || 'Order failed')
+      const statusUrl = json.data?.statusUrl || `/dashboard/giftcards/orders/${json.data?.order?.id}`
+      navigate(statusUrl)
+    } catch (e: any) {
+      setBuyError(e?.message || 'Could not place order')
+    } finally {
+      setBuying(false)
+    }
+  }
 
   if (loading && !items.length) {
     return (
@@ -74,7 +144,7 @@ const GiftCardsPage: React.FC = () => {
         <div className="max-w-2xl">
           <h2 className="text-2xl font-black tracking-tight text-white mb-2">Gift cards</h2>
           <p className="text-white/45 text-[15px] leading-relaxed">
-            {total.toLocaleString('en-IN')} active brands from Hubble — browse now; purchase & Goldback redeem come next.
+            {total.toLocaleString('en-IN')} active brands via Hubble — pick an amount and buy. Payment settles on Hubble&apos;s partner wallet.
           </p>
         </div>
         <button
@@ -219,18 +289,39 @@ const GiftCardsPage: React.FC = () => {
                     </span>
                   ))}
                 </div>
-                {!!selected.denominations.length && (
-                  <div>
-                    <p className="text-[10px] font-black uppercase tracking-[0.25em] text-white/35 mb-2">Denominations</p>
+
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-[0.25em] text-white/35 mb-2">Amount</p>
+                  {!!selected.denominations.length ? (
                     <div className="flex flex-wrap gap-2">
                       {selected.denominations.map((d) => (
-                        <span key={d} className="rounded-xl bg-clay/15 border border-clay/25 text-clay px-3 py-2 text-xs font-bold tabular-nums">
+                        <button
+                          key={d}
+                          type="button"
+                          onClick={() => setAmount(d)}
+                          className={`rounded-xl px-3 py-2 text-xs font-bold tabular-nums border transition ${
+                            amount === d
+                              ? 'bg-clay/20 border-clay/40 text-clay'
+                              : 'bg-white/[0.03] border-white/10 text-white/55 hover:text-white'
+                          }`}
+                        >
                           {formatInr(d)}
-                        </span>
+                        </button>
                       ))}
                     </div>
-                  </div>
-                )}
+                  ) : (
+                    <input
+                      type="number"
+                      min={selected.minAmount ?? 1}
+                      max={selected.maxAmount ?? undefined}
+                      value={amount ?? ''}
+                      onChange={(e) => setAmount(Number(e.target.value) || null)}
+                      className="w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white focus:outline-none focus:border-clay/40"
+                      placeholder="Enter amount"
+                    />
+                  )}
+                </div>
+
                 {!!selected.howToUse.length && (
                   <div>
                     <p className="text-[10px] font-black uppercase tracking-[0.25em] text-white/35 mb-2">How to use</p>
@@ -251,9 +342,30 @@ const GiftCardsPage: React.FC = () => {
                     Terms & conditions <ExternalLink size={14} />
                   </a>
                 )}
-                <div className="rounded-2xl border border-white/10 bg-white/[0.02] px-4 py-3 text-xs text-white/40">
-                  Purchase with Goldback redeem is coming next. Catalog is live from Hubble staging.
-                </div>
+
+                {buyError && (
+                  <div className="rounded-xl border border-red-500/25 bg-red-500/10 px-3 py-2 text-xs text-red-200">
+                    {buyError}
+                  </div>
+                )}
+
+                <button
+                  type="button"
+                  disabled={!canBuy}
+                  onClick={placeOrder}
+                  className="w-full inline-flex items-center justify-center gap-2 rounded-2xl bg-clay text-black font-black uppercase tracking-[0.18em] text-[11px] py-3.5 disabled:opacity-40 hover:brightness-110 transition active:scale-[0.98]"
+                >
+                  {buying ? (
+                    <>
+                      <Loader2 size={14} className="animate-spin" /> Placing order…
+                    </>
+                  ) : (
+                    <>Buy {amount != null ? formatInr(amount) : ''} via Hubble</>
+                  )}
+                </button>
+                <p className="text-[11px] text-white/30 leading-relaxed">
+                  Hubble issues the voucher against Yureka&apos;s partner wallet. You&apos;ll see codes on the order page when ready.
+                </p>
               </div>
             </motion.aside>
           </>
