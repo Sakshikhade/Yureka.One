@@ -111,7 +111,7 @@ export function registerAdminRoutes(app: Express) {
       if (!['pending', 'accepted', 'rejected', 'on_hold'].includes(status)) {
         return fail(res, 400, 'Invalid status')
       }
-      const row = await updateWaitlistStatus(req.params.id, status)
+      const row = await updateWaitlistStatus(String(req.params.id), status)
       if (!row) return fail(res, 404, 'Not found')
       ok(res, row)
     } catch (e: any) {
@@ -171,7 +171,7 @@ export function registerAdminRoutes(app: Express) {
 
   app.delete('/api/admin/team/:id', requireAdmin, requireRole('superadmin'), async (req, res) => {
     try {
-      const okDel = await deleteAdmin(req.params.id)
+      const okDel = await deleteAdmin(String(req.params.id))
       if (!okDel) return fail(res, 404, 'Not found')
       ok(res, { deleted: true })
     } catch (e: any) {
@@ -213,7 +213,7 @@ export function registerAdminRoutes(app: Express) {
 
   app.delete('/api/admin/offers/:id', requireAdmin, requireRole('admin', 'superadmin'), async (req, res) => {
     try {
-      const deleted = await deleteOffer(req.params.id)
+      const deleted = await deleteOffer(String(req.params.id))
       if (!deleted) return fail(res, 404, 'Not found')
       ok(res, { deleted: true })
     } catch (e: any) {
