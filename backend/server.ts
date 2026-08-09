@@ -12,11 +12,24 @@ import { registerAdminRoutes } from './lib/admin/routes';
 import { registerGiftcardRoutes } from './lib/hubble/routes';
 import { registerCuelinksRoutes } from './lib/cuelinks/routes';
 import { registerWaitlistRoutes } from './lib/waitlist/routes';
+import { upsertWaitlistJoin } from './lib/admin/store';
 
 dotenv.config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '.env') });
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+function resolvePythonExecutable(): string {
+  const candidates = [
+    path.join(process.cwd(), 'venv', 'bin', 'python3'),
+    path.join(__dirname, '..', 'venv', 'bin', 'python3'),
+    path.join(process.cwd(), 'venv', 'bin', 'python'),
+  ];
+  for (const candidate of candidates) {
+    if (fs.existsSync(candidate)) return candidate;
+  }
+  return 'python3';
+}
 
 
 async function startServer() {
@@ -38,6 +51,30 @@ async function startServer() {
 
   app.get("/api/health", (req, res) => {
     res.json({ status: "ok", env: process.env.NODE_ENV });
+  });
+
+  app.get("/api/score/health", async (_req, res) => {
+    const { spawn } = await import("child_process");
+    const pythonExecutable = resolvePythonExecutable();
+    const pythonProcess = spawn(pythonExecutable, [
+      "-c",
+      "import googleapiclient, bs4, pypdf; print('ok')",
+    ]);
+    let out = "";
+    let err = "";
+    pythonProcess.stdout.on("data", (d) => { out += d.toString(); });
+    pythonProcess.stderr.on("data", (d) => { err += d.toString(); });
+    pythonProcess.on("close", (code) => {
+      if (code === 0 && out.includes("ok")) {
+        return res.json({ status: "ok", python: pythonExecutable, scoring: true });
+      }
+      res.status(503).json({
+        status: "unavailable",
+        python: pythonExecutable,
+        scoring: false,
+        error: err || out || `exit ${code}`,
+      });
+    });
   });
 
   registerGoldbackRoutes(app);
@@ -66,7 +103,7 @@ async function startServer() {
   app.post("/api/scan-profile", async (req, res) => {
     const { accessToken, fallbackData } = req.body;
     const { spawn } = await import("child_process");
-    const pythonExecutable = fs.existsSync('./venv/bin/python3') ? './venv/bin/python3' : 'python3';
+    const pythonExecutable = resolvePythonExecutable();
     const pythonProcess = spawn(pythonExecutable, [
       path.join(__dirname, "scripts", "scanner.py"),
       accessToken || "",
@@ -103,8 +140,11 @@ async function startServer() {
   // doesn't block on the response; once done, we email the user their score.
   app.post("/api/scan-email", async (req, res) => {
     const { accessToken, email, fallbackData } = req.body;
+    if (!accessToken) {
+      return res.status(400).json({ error: "accessToken is required for Gmail scoring" });
+    }
     const { spawn } = await import("child_process");
-    const pythonExecutable = fs.existsSync('./venv/bin/python3') ? './venv/bin/python3' : 'python3';
+    const pythonExecutable = resolvePythonExecutable();
     const pythonProcess = spawn(pythonExecutable, [
       path.join(__dirname, "scripts", "scanner.py"),
       accessToken || "",
@@ -148,9 +188,9 @@ async function startServer() {
         res.json(result);
 
         const recipient = email || result.profile?.email;
-        if (recipient) {
-          persistToSupabase(recipient, result.profile, result.score).catch(err =>
-            console.error("Failed to persist scan result to Supabase:", err)
+        if (recipient && result.score?.score != null) {
+          persistScoreToWaitlist(recipient, result.profile, result.score).catch(err =>
+            console.error("Failed to persist score to waitlist:", err)
           );
         }
         if (recipient && result.score) {
@@ -165,20 +205,21 @@ async function startServer() {
     });
   });
 
-  // Forwards the already-scanned profile/score to the Java backend (yureka-be),
-  // which owns the Supabase Postgres connection, so the waitlist row gets the
-  // score without re-scanning Gmail.
-  async function persistToSupabase(email: string, profile: any, score: any) {
-    const apiBase = process.env.VITE_API_BASE_URL || "";
-    const res = await fetch(`${apiBase}/api/v1/ledger/ingest`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, profile, score }),
+  /** Persist computed score onto waitlist row (create/update). */
+  async function persistScoreToWaitlist(email: string, profile: any, score: any) {
+    const scoreNum = Number(score?.score);
+    if (!email || !Number.isFinite(scoreNum)) return;
+    await upsertWaitlistJoin({
+      email,
+      fullName: profile?.name || null,
+      yurekaScore: scoreNum,
+      meta: {
+        scoreDecision: score?.decision,
+        scoreMetrics: score?.metrics || null,
+        scoredAt: new Date().toISOString(),
+      },
     });
-    if (!res.ok) {
-      throw new Error(`Ingest failed with status ${res.status}: ${await res.text()}`);
-    }
-    console.log(`Persisted scan result for ${email} to Supabase.`);
+    console.log(`Persisted Yureka Score ${scoreNum} for ${email}`);
   }
 
   async function sendScoreEmail(recipient: string, profile: any, score: any) {
@@ -320,7 +361,7 @@ async function startServer() {
   async function runDeepScannerBackground() {
     console.log("Auto-triggering background financial deep sync...");
     const { spawn } = await import("child_process");
-    const pythonExecutable = fs.existsSync('./venv/bin/python3') ? './venv/bin/python3' : 'python3';
+    const pythonExecutable = resolvePythonExecutable();
     const pythonProcess = spawn(pythonExecutable, [
       path.join(__dirname, "scripts", "scanner.py"),
       "",

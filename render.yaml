@@ -10,7 +10,7 @@ services:
     runtime: node
     plan: starter
     region: oregon
-    buildCommand: corepack enable && corepack prepare pnpm@9.15.0 --activate && pnpm install --frozen-lockfile && pnpm run build
+    buildCommand: corepack enable && corepack prepare pnpm@9.15.0 --activate && pnpm install --frozen-lockfile && pnpm run build && python3 -m venv venv && ./venv/bin/pip install --upgrade pip && ./venv/bin/pip install -r backend/python-requirements.txt
     startCommand: pnpm start
     healthCheckPath: /api/health
     envVars:
@@ -18,6 +18,8 @@ services:
         value: "20"
       - key: NODE_ENV
         value: production
+      - key: PYTHON_VERSION
+        value: "3.11"
       # Set these in the Render Dashboard (do not put secrets in this file):
       # SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY
       # HUBBLE_CLIENT_ID, HUBBLE_CLIENT_SECRET, HUBBLE_API_BASE, HUBBLE_WEBHOOK_SECRET

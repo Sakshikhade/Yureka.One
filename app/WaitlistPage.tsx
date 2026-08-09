@@ -393,8 +393,8 @@ const WaitlistPage: React.FC = () => {
         }
     };
 
-    // Ask for gmail.readonly only after login. Until Google verifies the app,
-    // this may fail for non-testers — signup still succeeds with email/profile.
+    // Ask for gmail.readonly after login, then score via Render directly
+    // (Netlify proxy times out on long inbox scans).
     const requestGmailScanThenScore = (email: string) => {
         const google = (window as any).google;
         const clientId = (import.meta as any).env.VITE_GOOGLE_CLIENT_ID;
@@ -412,26 +412,40 @@ const WaitlistPage: React.FC = () => {
             },
         });
         try {
-            tokenClient.requestAccessToken({ prompt: '' });
+            // Explicit consent so Gmail permission is requested after login scopes.
+            tokenClient.requestAccessToken({ prompt: 'consent' });
         } catch (e) {
             console.warn('Gmail scan request failed:', e);
         }
     };
 
-    // Slow path: full inbox scan + Yureka Score (background).
+    // Hit Render directly — inbox scoring can exceed Netlify's proxy timeout.
+    const SCORE_API_BASE =
+        (import.meta as any).env.VITE_SCORE_API_BASE ||
+        (typeof window !== 'undefined' && !/localhost|127\.0\.0\.1/.test(window.location.hostname)
+            ? 'https://yureka-one.onrender.com'
+            : '');
+
     const triggerBackgroundScoreScan = (accessToken: string, email: string) => {
-        fetch('/api/scan-email', {
+        const url = `${SCORE_API_BASE}/api/scan-email`;
+        fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ accessToken, email, fallbackData: {} }),
+            signal: AbortSignal.timeout(180_000),
         })
-            .then(res => res.json())
-            .then(result => {
-                if (result.error) return;
+            .then(async res => {
+                const result = await res.json().catch(() => ({}));
+                if (!res.ok || result.error) {
+                    console.warn('Score scan failed:', result.error || res.status);
+                    return;
+                }
                 setScannedTransactions((result.transactions || []).map((t: any) => ({
                     brandName: t.brandName, amount: t.amount, description: t.description, date: t.date, sender: t.sender,
                 })));
-                if (result.score) setYurekaScore({ score: result.score.score, decision: result.score.decision });
+                if (result.score) {
+                    setYurekaScore({ score: result.score.score, decision: result.score.decision });
+                }
             })
             .catch(e => console.error('Background score scan failed:', e));
     };

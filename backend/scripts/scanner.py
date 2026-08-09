@@ -6,7 +6,7 @@ import io
 import base64
 import pickle
 from datetime import datetime
-import pandas as pd
+from email.utils import parsedate_to_datetime
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
@@ -575,10 +575,29 @@ def _parse_amount_value(amount_str):
 def _parse_date_iso(date_str):
     if not date_str:
         return ""
+    raw = str(date_str).strip()
     try:
-        return pd.to_datetime(date_str, errors='coerce', utc=True).date().isoformat()
+        return parsedate_to_datetime(raw).date().isoformat()
     except Exception:
-        return ""
+        pass
+    try:
+        return datetime.fromisoformat(raw.replace("Z", "+00:00")).date().isoformat()
+    except Exception:
+        pass
+    for fmt in (
+        "%Y-%m-%d",
+        "%d/%m/%Y",
+        "%m/%d/%Y",
+        "%d-%m-%Y",
+        "%b %d, %Y",
+        "%d %b %Y",
+        "%Y/%m/%d",
+    ):
+        try:
+            return datetime.strptime(raw[:32], fmt).date().isoformat()
+        except Exception:
+            continue
+    return ""
 
 
 def compute_yureka_score(transactions):
