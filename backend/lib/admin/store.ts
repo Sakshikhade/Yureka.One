@@ -45,6 +45,20 @@ function getSupabase(): SupabaseClient | null {
   return createClient(url, key, { auth: { persistSession: false } })
 }
 
+async function withTimeout<T>(promise: PromiseLike<T>, ms: number, label: string): Promise<T> {
+  let timer: ReturnType<typeof setTimeout> | undefined
+  try {
+    return await Promise.race([
+      Promise.resolve(promise),
+      new Promise<T>((_, reject) => {
+        timer = setTimeout(() => reject(new Error(`${label} timed out after ${ms}ms`)), ms)
+      }),
+    ])
+  } finally {
+    if (timer) clearTimeout(timer)
+  }
+}
+
 function seedStore(): AdminFileStore {
   const now = new Date().toISOString()
   const bootstrapEmail =
@@ -357,8 +371,16 @@ export async function findWaitlistByEmail(email: string): Promise<WaitlistRow | 
   const normalized = email.toLowerCase().trim()
   const sb = getSupabase()
   if (sb) {
-    const { data, error } = await sb.from('waitlist').select('*').eq('email', normalized).maybeSingle()
-    if (!error && data) return mapWaitlist(data)
+    try {
+      const { data, error } = await withTimeout(
+        sb.from('waitlist').select('*').eq('email', normalized).maybeSingle(),
+        5000,
+        'supabase findWaitlist'
+      )
+      if (!error && data) return mapWaitlist(data)
+    } catch (e) {
+      console.warn('[waitlist] supabase find failed, using file store:', (e as Error)?.message || e)
+    }
   }
   return readFile().waitlist.find((w) => w.email.toLowerCase() === normalized) || null
 }
@@ -366,8 +388,16 @@ export async function findWaitlistByEmail(email: string): Promise<WaitlistRow | 
 export async function countWaitlist(): Promise<number> {
   const sb = getSupabase()
   if (sb) {
-    const { count, error } = await sb.from('waitlist').select('*', { count: 'exact', head: true })
-    if (!error && typeof count === 'number') return count
+    try {
+      const { count, error } = await withTimeout(
+        sb.from('waitlist').select('*', { count: 'exact', head: true }),
+        5000,
+        'supabase countWaitlist'
+      )
+      if (!error && typeof count === 'number') return count
+    } catch (e) {
+      console.warn('[waitlist] supabase count failed, using file store:', (e as Error)?.message || e)
+    }
   }
   return readFile().waitlist.length
 }
@@ -381,6 +411,58 @@ export type WaitlistJoinInput = {
   monthlySpend?: string | null
   topCategory?: string | null
   meta?: Record<string, unknown>
+}
+
+function writeJoinToFile(
+  existing: WaitlistRow | null,
+  payload: {
+    email: string
+    full_name: string | null
+    mobile_number: string | null
+    status: string
+    yureka_score: number | null
+    monthly_spend: string | null
+    top_category: string | null
+    notes: string
+  },
+  meta: Record<string, any>,
+  now: string
+): { row: WaitlistRow; meta: Record<string, any> } {
+  const store = readFile()
+  if (existing) {
+    const idx = store.waitlist.findIndex((w) => w.id === existing.id || w.email === existing.email)
+    if (idx >= 0) {
+      store.waitlist[idx] = {
+        ...store.waitlist[idx],
+        fullName: payload.full_name,
+        mobileNumber: payload.mobile_number,
+        status: payload.status as WaitlistRow['status'],
+        yurekaScore: payload.yureka_score,
+        monthlySpend: payload.monthly_spend,
+        topCategory: payload.top_category,
+        notes: payload.notes,
+        updatedAt: now,
+      }
+      writeFile(store)
+      return { row: store.waitlist[idx], meta }
+    }
+  }
+  const row: WaitlistRow = {
+    id: randomUUID(),
+    email: payload.email,
+    fullName: payload.full_name,
+    mobileNumber: payload.mobile_number,
+    status: payload.status as WaitlistRow['status'],
+    yurekaScore: payload.yureka_score,
+    monthlySpend: payload.monthly_spend,
+    topCategory: payload.top_category,
+    notes: payload.notes,
+    createdAt: now,
+    updatedAt: now,
+  }
+  store.waitlist.unshift(row)
+  writeFile(store)
+  return { row, meta }
 }
 
 export async function upsertWaitlistJoin(
@@ -413,72 +495,39 @@ export async function upsertWaitlistJoin(
 
   const sb = getSupabase()
   if (sb) {
-    if (existing) {
-      const { data, error } = await sb
-        .from('waitlist')
-        .update(payload)
-        .eq('id', existing.id)
-        .select('*')
-        .single()
-      if (!error && data) return { row: mapWaitlist(data), meta }
-    } else {
-      const { data, error } = await sb
-        .from('waitlist')
-        .insert({ ...payload, created_at: now })
-        .select('*')
-        .single()
-      if (!error && data) return { row: mapWaitlist(data), meta }
-      // Unique race: fetch and update
-      if (error) {
-        const again = await findWaitlistByEmail(email)
-        if (again) {
-          const { data: updated, error: upErr } = await sb
-            .from('waitlist')
-            .update(payload)
-            .eq('id', again.id)
-            .select('*')
-            .single()
-          if (!upErr && updated) return { row: mapWaitlist(updated), meta }
+    try {
+      if (existing) {
+        const { data, error } = await withTimeout(
+          sb.from('waitlist').update(payload).eq('id', existing.id).select('*').single(),
+          5000,
+          'supabase waitlist update'
+        )
+        if (!error && data) return { row: mapWaitlist(data), meta }
+        console.warn('[waitlist] supabase update failed:', error?.message)
+      } else {
+        const { data, error } = await withTimeout(
+          sb.from('waitlist').insert({ ...payload, created_at: now }).select('*').single(),
+          5000,
+          'supabase waitlist insert'
+        )
+        if (!error && data) return { row: mapWaitlist(data), meta }
+        if (error) {
+          console.warn('[waitlist] supabase insert failed:', error.message)
+          const again = await findWaitlistByEmail(email)
+          if (again) {
+            const { data: updated, error: upErr } = await withTimeout(
+              sb.from('waitlist').update(payload).eq('id', again.id).select('*').single(),
+              5000,
+              'supabase waitlist update-after-conflict'
+            )
+            if (!upErr && updated) return { row: mapWaitlist(updated), meta }
+          }
         }
-        throw new Error(error.message)
       }
+    } catch (e) {
+      console.warn('[waitlist] supabase upsert threw, using file store:', (e as Error)?.message || e)
     }
   }
 
-  const store = readFile()
-  if (existing) {
-    const idx = store.waitlist.findIndex((w) => w.id === existing.id)
-    if (idx >= 0) {
-      store.waitlist[idx] = {
-        ...store.waitlist[idx],
-        fullName: payload.full_name,
-        mobileNumber: payload.mobile_number,
-        status: payload.status as WaitlistRow['status'],
-        yurekaScore: payload.yureka_score,
-        monthlySpend: payload.monthly_spend,
-        topCategory: payload.top_category,
-        notes: payload.notes,
-        updatedAt: now,
-      }
-      writeFile(store)
-      return { row: store.waitlist[idx], meta }
-    }
-  }
-
-  const row: WaitlistRow = {
-    id: randomUUID(),
-    email,
-    fullName: payload.full_name,
-    mobileNumber: payload.mobile_number,
-    status: payload.status as WaitlistRow['status'],
-    yurekaScore: payload.yureka_score,
-    monthlySpend: payload.monthly_spend,
-    topCategory: payload.top_category,
-    notes: payload.notes,
-    createdAt: now,
-    updatedAt: now,
-  }
-  store.waitlist.unshift(row)
-  writeFile(store)
-  return { row, meta }
+  return writeJoinToFile(existing, payload, meta, now)
 }

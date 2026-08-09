@@ -56,9 +56,15 @@ async function apiFetch<T>(
   try {
     return JSON.parse(text) as YurekaResponse<T>
   } catch {
-    // Backend returned non-JSON (e.g. HTML "Service Suspended").
-    // Force 502 so isApiError() triggers fallback — never use res.status (could be 200).
-    return errorResponse<T>(502, 'Invalid response from server')
+    // Backend returned non-JSON (HTML 404, Netlify 504 empty body, Suspended page).
+    const snippet = text.replace(/\s+/g, ' ').trim().slice(0, 120)
+    const hint =
+      res.status === 504 || res.status === 502
+        ? 'API timed out — Render may be cold or unreachable'
+        : snippet
+          ? `Invalid response from server (${res.status}): ${snippet}`
+          : `Invalid response from server (${res.status})`
+    return errorResponse<T>(res.status >= 400 ? res.status : 502, hint)
   }
 }
 
