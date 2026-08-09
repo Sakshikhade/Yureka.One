@@ -495,7 +495,10 @@ const WaitlistPage: React.FC = () => {
                 status: 'pending'
             };
 
-            const res = await api.post<WaitlistJoinResult>('/api/v1/waitlist/join', entry, { skipAuth: true });
+            const res = await api.post<WaitlistJoinResult>('/api/v1/waitlist/join', entry, {
+                skipAuth: true,
+                timeoutMs: 30000,
+            });
             if (isApiError(res)) {
                 setError(res.error || 'Failed to join waitlist. Please try again.');
                 return;

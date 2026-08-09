@@ -11,6 +11,7 @@ import { registerGoldbackRoutes } from './lib/goldback/routes';
 import { registerAdminRoutes } from './lib/admin/routes';
 import { registerGiftcardRoutes } from './lib/hubble/routes';
 import { registerCuelinksRoutes } from './lib/cuelinks/routes';
+import { registerWaitlistRoutes } from './lib/waitlist/routes';
 
 dotenv.config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '.env') });
 
@@ -43,6 +44,7 @@ async function startServer() {
   registerAdminRoutes(app);
   registerGiftcardRoutes(app);
   registerCuelinksRoutes(app);
+  registerWaitlistRoutes(app);
 
 
 

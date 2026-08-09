@@ -352,3 +352,133 @@ export async function createWaitlistEntry(input: {
   writeFile(store)
   return row
 }
+
+export async function findWaitlistByEmail(email: string): Promise<WaitlistRow | null> {
+  const normalized = email.toLowerCase().trim()
+  const sb = getSupabase()
+  if (sb) {
+    const { data, error } = await sb.from('waitlist').select('*').eq('email', normalized).maybeSingle()
+    if (!error && data) return mapWaitlist(data)
+  }
+  return readFile().waitlist.find((w) => w.email.toLowerCase() === normalized) || null
+}
+
+export async function countWaitlist(): Promise<number> {
+  const sb = getSupabase()
+  if (sb) {
+    const { count, error } = await sb.from('waitlist').select('*', { count: 'exact', head: true })
+    if (!error && typeof count === 'number') return count
+  }
+  return readFile().waitlist.length
+}
+
+export type WaitlistJoinInput = {
+  email: string
+  fullName?: string | null
+  mobileNumber?: string | null
+  status?: WaitlistRow['status']
+  yurekaScore?: number | null
+  monthlySpend?: string | null
+  topCategory?: string | null
+  meta?: Record<string, unknown>
+}
+
+export async function upsertWaitlistJoin(
+  input: WaitlistJoinInput
+): Promise<{ row: WaitlistRow; meta: Record<string, any> }> {
+  const email = input.email.toLowerCase().trim()
+  const existing = await findWaitlistByEmail(email)
+  let prevMeta: Record<string, any> = {}
+  try {
+    prevMeta = existing?.notes ? JSON.parse(existing.notes) : {}
+  } catch {
+    prevMeta = {}
+  }
+  const meta = { ...prevMeta, ...(input.meta || {}) }
+  const now = new Date().toISOString()
+  const status =
+    existing?.status === 'accepted' ? 'accepted' : input.status || existing?.status || 'pending'
+
+  const payload = {
+    email,
+    full_name: input.fullName ?? existing?.fullName ?? null,
+    mobile_number: input.mobileNumber ?? existing?.mobileNumber ?? null,
+    status,
+    yureka_score: input.yurekaScore ?? existing?.yurekaScore ?? null,
+    monthly_spend: input.monthlySpend ?? existing?.monthlySpend ?? null,
+    top_category: input.topCategory ?? existing?.topCategory ?? null,
+    notes: JSON.stringify(meta),
+    updated_at: now,
+  }
+
+  const sb = getSupabase()
+  if (sb) {
+    if (existing) {
+      const { data, error } = await sb
+        .from('waitlist')
+        .update(payload)
+        .eq('id', existing.id)
+        .select('*')
+        .single()
+      if (!error && data) return { row: mapWaitlist(data), meta }
+    } else {
+      const { data, error } = await sb
+        .from('waitlist')
+        .insert({ ...payload, created_at: now })
+        .select('*')
+        .single()
+      if (!error && data) return { row: mapWaitlist(data), meta }
+      // Unique race: fetch and update
+      if (error) {
+        const again = await findWaitlistByEmail(email)
+        if (again) {
+          const { data: updated, error: upErr } = await sb
+            .from('waitlist')
+            .update(payload)
+            .eq('id', again.id)
+            .select('*')
+            .single()
+          if (!upErr && updated) return { row: mapWaitlist(updated), meta }
+        }
+        throw new Error(error.message)
+      }
+    }
+  }
+
+  const store = readFile()
+  if (existing) {
+    const idx = store.waitlist.findIndex((w) => w.id === existing.id)
+    if (idx >= 0) {
+      store.waitlist[idx] = {
+        ...store.waitlist[idx],
+        fullName: payload.full_name,
+        mobileNumber: payload.mobile_number,
+        status: payload.status as WaitlistRow['status'],
+        yurekaScore: payload.yureka_score,
+        monthlySpend: payload.monthly_spend,
+        topCategory: payload.top_category,
+        notes: payload.notes,
+        updatedAt: now,
+      }
+      writeFile(store)
+      return { row: store.waitlist[idx], meta }
+    }
+  }
+
+  const row: WaitlistRow = {
+    id: randomUUID(),
+    email,
+    fullName: payload.full_name,
+    mobileNumber: payload.mobile_number,
+    status: payload.status as WaitlistRow['status'],
+    yurekaScore: payload.yureka_score,
+    monthlySpend: payload.monthly_spend,
+    topCategory: payload.top_category,
+    notes: payload.notes,
+    createdAt: now,
+    updatedAt: now,
+  }
+  store.waitlist.unshift(row)
+  writeFile(store)
+  return { row, meta }
+}
