@@ -59,6 +59,19 @@ async function withTimeout<T>(promise: PromiseLike<T>, ms: number, label: string
   }
 }
 
+/** Skip Supabase briefly after failures so waitlist join stays fast under Netlify proxy limits. */
+let supabaseCircuitOpenUntil = 0
+const SUPABASE_WAITLIST_TIMEOUT_MS = 1500
+
+function supabaseWaitlistAllowed() {
+  return Date.now() >= supabaseCircuitOpenUntil
+}
+
+function tripSupabaseCircuit(reason: unknown) {
+  supabaseCircuitOpenUntil = Date.now() + 60_000
+  console.warn('[waitlist] supabase circuit open 60s:', (reason as Error)?.message || reason)
+}
+
 function seedStore(): AdminFileStore {
   const now = new Date().toISOString()
   const bootstrapEmail =
@@ -370,16 +383,16 @@ export async function createWaitlistEntry(input: {
 export async function findWaitlistByEmail(email: string): Promise<WaitlistRow | null> {
   const normalized = email.toLowerCase().trim()
   const sb = getSupabase()
-  if (sb) {
+  if (sb && supabaseWaitlistAllowed()) {
     try {
       const { data, error } = await withTimeout(
         sb.from('waitlist').select('*').eq('email', normalized).maybeSingle(),
-        5000,
+        SUPABASE_WAITLIST_TIMEOUT_MS,
         'supabase findWaitlist'
       )
       if (!error && data) return mapWaitlist(data)
     } catch (e) {
-      console.warn('[waitlist] supabase find failed, using file store:', (e as Error)?.message || e)
+      tripSupabaseCircuit(e)
     }
   }
   return readFile().waitlist.find((w) => w.email.toLowerCase() === normalized) || null
@@ -387,16 +400,16 @@ export async function findWaitlistByEmail(email: string): Promise<WaitlistRow | 
 
 export async function countWaitlist(): Promise<number> {
   const sb = getSupabase()
-  if (sb) {
+  if (sb && supabaseWaitlistAllowed()) {
     try {
       const { count, error } = await withTimeout(
         sb.from('waitlist').select('*', { count: 'exact', head: true }),
-        5000,
+        SUPABASE_WAITLIST_TIMEOUT_MS,
         'supabase countWaitlist'
       )
       if (!error && typeof count === 'number') return count
     } catch (e) {
-      console.warn('[waitlist] supabase count failed, using file store:', (e as Error)?.message || e)
+      tripSupabaseCircuit(e)
     }
   }
   return readFile().waitlist.length
@@ -494,12 +507,12 @@ export async function upsertWaitlistJoin(
   }
 
   const sb = getSupabase()
-  if (sb) {
+  if (sb && supabaseWaitlistAllowed()) {
     try {
       if (existing) {
         const { data, error } = await withTimeout(
           sb.from('waitlist').update(payload).eq('id', existing.id).select('*').single(),
-          5000,
+          SUPABASE_WAITLIST_TIMEOUT_MS,
           'supabase waitlist update'
         )
         if (!error && data) return { row: mapWaitlist(data), meta }
@@ -507,25 +520,14 @@ export async function upsertWaitlistJoin(
       } else {
         const { data, error } = await withTimeout(
           sb.from('waitlist').insert({ ...payload, created_at: now }).select('*').single(),
-          5000,
+          SUPABASE_WAITLIST_TIMEOUT_MS,
           'supabase waitlist insert'
         )
         if (!error && data) return { row: mapWaitlist(data), meta }
-        if (error) {
-          console.warn('[waitlist] supabase insert failed:', error.message)
-          const again = await findWaitlistByEmail(email)
-          if (again) {
-            const { data: updated, error: upErr } = await withTimeout(
-              sb.from('waitlist').update(payload).eq('id', again.id).select('*').single(),
-              5000,
-              'supabase waitlist update-after-conflict'
-            )
-            if (!upErr && updated) return { row: mapWaitlist(updated), meta }
-          }
-        }
+        if (error) console.warn('[waitlist] supabase insert failed:', error.message)
       }
     } catch (e) {
-      console.warn('[waitlist] supabase upsert threw, using file store:', (e as Error)?.message || e)
+      tripSupabaseCircuit(e)
     }
   }
 
