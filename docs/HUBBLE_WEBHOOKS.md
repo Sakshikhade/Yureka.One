@@ -17,3 +17,5 @@ Replace the host if your Render service URL differs.
 Signature: Hubble sends `X-Verify` = Base64(HMAC-SHA256(rawBody, secret)).
 
 Resume Render, then save the four URLs + signature in Hubble before placing live orders.
+
+Frontend for now: `https://yurekaone.netlify.app` (API still on Render; webhooks must not point at Netlify).
