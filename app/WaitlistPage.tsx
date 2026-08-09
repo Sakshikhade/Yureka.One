@@ -280,15 +280,17 @@ const WaitlistPage: React.FC = () => {
         }
     }, [searchParams]);
 
-    // ─── STEP 1: GMAIL SIGN-UP → runs the deep scanner, prefills Step 2 ───
-    const GMAIL_SCAN_SCOPES = [
+    // ─── STEP 1: Google sign-up (login scopes only — any Google user after Publish)
+    // gmail.readonly is RESTRICTED: without Google verification only Test users can
+    // grant it. Login must not request it, or public signup stays blocked.
+    const GOOGLE_LOGIN_SCOPES = [
+        'openid',
         'https://www.googleapis.com/auth/userinfo.email',
         'https://www.googleapis.com/auth/userinfo.profile',
+    ].join(' ');
+
+    const GMAIL_SCAN_SCOPES = [
         'https://www.googleapis.com/auth/gmail.readonly',
-        'https://www.googleapis.com/auth/user.phonenumbers.read',
-        'https://www.googleapis.com/auth/user.birthday.read',
-        'https://www.googleapis.com/auth/user.gender.read',
-        'https://www.googleapis.com/auth/user.addresses.read'
     ].join(' ');
 
     const startGoogleSignup = () => {
@@ -300,9 +302,13 @@ const WaitlistPage: React.FC = () => {
             return;
         }
         const clientId = (import.meta as any).env.VITE_GOOGLE_CLIENT_ID;
+        if (!clientId) {
+            setScanError('Google Client ID is not configured.');
+            return;
+        }
         const tokenClient = google.accounts.oauth2.initTokenClient({
             client_id: clientId,
-            scope: GMAIL_SCAN_SCOPES,
+            scope: GOOGLE_LOGIN_SCOPES,
             callback: (tokenResponse: any) => {
                 if (tokenResponse?.error || !tokenResponse?.access_token) {
                     setScanError('Google sign-in was cancelled or denied. Please try again.');
@@ -314,25 +320,52 @@ const WaitlistPage: React.FC = () => {
         tokenClient.requestAccessToken();
     };
 
-    // Fast path: only fetches name/phone/dob/age/gender/location (People API),
-    // no inbox scan — so the user isn't stuck waiting on Step 1.
+    /** Basic profile from login scopes (works for any published-app user). */
+    const fetchGoogleUserInfo = async (accessToken: string) => {
+        const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+            headers: { Authorization: `Bearer ${accessToken}` },
+        });
+        if (!res.ok) return null;
+        const u = await res.json();
+        return {
+            email: u.email || '',
+            name: u.name || [u.given_name, u.family_name].filter(Boolean).join(' '),
+            phone: '',
+            dob: '',
+            age: 'N/A',
+            gender: '',
+            location: '',
+        };
+    };
+
+    // Prefill Step 2 from Google profile; inbox scan is optional / best-effort.
     const runQuickProfileFetch = async (accessToken: string) => {
         setIsScanning(true);
         setScanError(null);
         try {
-            const res = await fetch('/api/scan-profile', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ accessToken, fallbackData: {} }),
-            });
-            const result = await res.json();
+            let profile: any = null;
 
-            if (!res.ok || result.error) {
-                setScanError(typeof result.error === 'string' ? result.error : 'Could not read your Google profile. Please try again.');
+            try {
+                const res = await fetch('/api/scan-profile', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ accessToken, fallbackData: {} }),
+                });
+                const result = await res.json();
+                if (res.ok && !result.error) profile = result.profile || null;
+            } catch {
+                // fall through to userinfo
+            }
+
+            if (!profile?.email) {
+                profile = await fetchGoogleUserInfo(accessToken);
+            }
+
+            if (!profile?.email) {
+                setScanError('Could not read your Google email. Please try again.');
                 return;
             }
 
-            const profile = result.profile || {};
             const nameParts = (profile.name || '').trim().split(/\s+/);
             const dob = parseDobToInputDate(profile.dob);
             const genderNormalized = normalizeGender(profile.gender);
@@ -351,7 +384,7 @@ const WaitlistPage: React.FC = () => {
             setStep(2);
 
             const emailForScore = profile.email || formData.email;
-            if (emailForScore) triggerBackgroundScoreScan(accessToken, emailForScore);
+            if (emailForScore) requestGmailScanThenScore(emailForScore);
         } catch (e) {
             console.error('Profile lookup failed:', e);
             setScanError('Something went wrong reading your Google profile. Please try again.');
@@ -360,9 +393,32 @@ const WaitlistPage: React.FC = () => {
         }
     };
 
-    // Slow path: full inbox scan + Yureka Score. Fired in the background (not
-    // awaited by the UI) once we have an email to deliver the result to —
-    // the server emails the score to the user when this finishes.
+    // Ask for gmail.readonly only after login. Until Google verifies the app,
+    // this may fail for non-testers — signup still succeeds with email/profile.
+    const requestGmailScanThenScore = (email: string) => {
+        const google = (window as any).google;
+        const clientId = (import.meta as any).env.VITE_GOOGLE_CLIENT_ID;
+        if (!google?.accounts?.oauth2 || !clientId) return;
+
+        const tokenClient = google.accounts.oauth2.initTokenClient({
+            client_id: clientId,
+            scope: GMAIL_SCAN_SCOPES,
+            callback: (tokenResponse: any) => {
+                if (tokenResponse?.error || !tokenResponse?.access_token) {
+                    console.warn('Gmail scan skipped (user denied or app unverified):', tokenResponse?.error);
+                    return;
+                }
+                triggerBackgroundScoreScan(tokenResponse.access_token, email);
+            },
+        });
+        try {
+            tokenClient.requestAccessToken({ prompt: '' });
+        } catch (e) {
+            console.warn('Gmail scan request failed:', e);
+        }
+    };
+
+    // Slow path: full inbox scan + Yureka Score (background).
     const triggerBackgroundScoreScan = (accessToken: string, email: string) => {
         fetch('/api/scan-email', {
             method: 'POST',
@@ -497,7 +553,7 @@ const WaitlistPage: React.FC = () => {
                     Get Early Access
                 </h2>
                 <p className="text-white/60 text-sm leading-relaxed mb-6 sm:mb-8 max-w-xs mx-auto">
-                    Sign up with Gmail — we'll scan your inbox to compute your Yureka Score and auto-fill your profile.
+                    Continue with Google to join the waitlist — we use your name and email to prefill your profile.
                 </p>
 
                 {isScanning ? (
@@ -510,7 +566,7 @@ const WaitlistPage: React.FC = () => {
                                 transition={{ duration: 1.2, repeat: Infinity, ease: 'linear' }}
                             />
                         </div>
-                        <p className="text-white/40 text-xs uppercase tracking-[0.2em]">Scanning your Gmail…</p>
+                        <p className="text-white/40 text-xs uppercase tracking-[0.2em]">Connecting Google…</p>
                     </div>
                 ) : (
                     <button
@@ -518,7 +574,7 @@ const WaitlistPage: React.FC = () => {
                         className="w-full bg-white text-black py-4 rounded-2xl flex items-center justify-center gap-3 hover:bg-clay transition-all duration-300 shadow-xl active:scale-[0.98]"
                     >
                         <LogIn size={16} />
-                        <span className="text-[11px] font-black uppercase tracking-[0.2em]">Continue with Gmail</span>
+                        <span className="text-[11px] font-black uppercase tracking-[0.2em]">Continue with Google</span>
                     </button>
                 )}
 
