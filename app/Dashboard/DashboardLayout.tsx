@@ -7,6 +7,8 @@ import {
 } from 'lucide-react';
 import { useNavigate, Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
 import { useSupabase } from '@shared/SupabaseProvider';
+import { signOutGmail } from '@shared/auth';
+import WelcomeBanner from './WelcomeBanner';
 
 // Sub-components (to be built)
 import MyCards from './MyCards';
@@ -222,7 +224,8 @@ const DashboardLayout: React.FC = () => {
     const activeTab = NAV_ITEMS.find(i => i.path && (location.pathname === i.path || location.pathname.startsWith(i.path + '/')))?.id
         || (location.pathname === '/dashboard' || location.pathname === '/dashboard/' ? 'home' : 'home');
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
+        await signOutGmail();
         navigate('/');
     };
 
@@ -387,6 +390,7 @@ const DashboardLayout: React.FC = () => {
                 </div>
 
                 <div className="p-5 md:p-10 max-w-6xl mx-auto">
+                    <WelcomeBanner />
                     <AnimatePresence mode="wait">
                             <Routes>
                                 <Route index element={<Navigate to="home" replace />} />

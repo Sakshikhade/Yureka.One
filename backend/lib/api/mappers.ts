@@ -93,6 +93,7 @@ export function fromApiBlog(b: ApiBlog): Blog {
 }
 
 export function fromApiWaitlist(w: ApiWaitlist): WaitlistEntry {
+  const statusRaw = w.status === 'on_hold' || w.status === 'on-hold' ? 'on-hold' : w.status
   return {
     id: w.id,
     name: w.name,
@@ -114,7 +115,7 @@ export function fromApiWaitlist(w: ApiWaitlist): WaitlistEntry {
     personal_referral_code: w.personalReferralCode,
     source_channel: w.sourceChannel,
     rank: w.rank,
-    status: (w.status as WaitlistEntry['status']) ?? 'pending',
+    status: (statusRaw as WaitlistEntry['status']) ?? 'pending',
     joined_at: w.joinedAt,
     created_at: w.createdAt,
   }

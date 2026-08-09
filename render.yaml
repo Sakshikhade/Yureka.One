@@ -10,8 +10,8 @@ services:
     runtime: node
     plan: starter
     region: oregon
-    buildCommand: corepack enable && corepack prepare pnpm@9.15.0 --activate && pnpm install --frozen-lockfile && pnpm run build && python3 -m venv venv && ./venv/bin/pip install --upgrade pip && ./venv/bin/pip install -r backend/python-requirements.txt
-    startCommand: pnpm start
+    buildCommand: corepack enable && corepack prepare pnpm@9.15.0 --activate && pnpm install --frozen-lockfile && pnpm run build && bash scripts/ensure-python-deps.sh
+    startCommand: bash scripts/ensure-python-deps.sh && pnpm start
     healthCheckPath: /api/health
     envVars:
       - key: NODE_VERSION

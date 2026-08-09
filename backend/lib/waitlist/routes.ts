@@ -3,9 +3,15 @@ import { randomInt } from 'crypto'
 import {
   countWaitlist,
   findWaitlistByEmail,
+  listWaitlist,
+  patchWaitlistMetadata,
   upsertWaitlistJoin,
   type WaitlistJoinInput,
+  type WaitlistRow,
 } from '../admin/store.js'
+
+const RANK_BOOST_PER_REFERRAL = 15
+const RANK_BOOST_PER_APPROVAL = 35
 
 function ok<T>(res: Response, data: T, status = 200) {
   res.status(status).json({ data, status, timestamp: new Date().toISOString() })
@@ -19,7 +25,15 @@ function makeReferralCode() {
   return `YRKMNY${String(randomInt(1000, 9999))}`
 }
 
-function toPublicEntry(row: Awaited<ReturnType<typeof upsertWaitlistJoin>>['row'], meta: Record<string, any>) {
+function parseMeta(row: WaitlistRow): Record<string, any> {
+  try {
+    return row.notes ? JSON.parse(row.notes) : {}
+  } catch {
+    return {}
+  }
+}
+
+function toPublicEntry(row: WaitlistRow, meta: Record<string, any>) {
   return {
     id: row.id,
     name: row.fullName || '',
@@ -34,10 +48,41 @@ function toPublicEntry(row: Awaited<ReturnType<typeof upsertWaitlistJoin>>['row'
     personalReferralCode: meta.personalReferralCode || undefined,
     sourceChannel: meta.sourceChannel || undefined,
     rank: typeof meta.rank === 'number' ? meta.rank : undefined,
-    status: row.status,
+    status: row.status === 'on_hold' ? 'on-hold' : row.status,
     yurekaScore: row.yurekaScore ?? undefined,
     joinedAt: row.createdAt,
     createdAt: row.createdAt,
+  }
+}
+
+function computeRankFor(row: WaitlistRow, all: WaitlistRow[]) {
+  const meta = parseMeta(row)
+  const code = String(meta.personalReferralCode || '').trim()
+  const baseRank = typeof meta.rank === 'number' ? meta.rank : 1000
+  let totalReferrals = 0
+  let approvedReferrals = 0
+
+  if (code) {
+    for (const other of all) {
+      const otherMeta = parseMeta(other)
+      if (String(otherMeta.referredBy || '').trim() === code) {
+        totalReferrals += 1
+        if (other.status === 'accepted') approvedReferrals += 1
+      }
+    }
+  }
+
+  const rankBoost =
+    totalReferrals * RANK_BOOST_PER_REFERRAL + approvedReferrals * RANK_BOOST_PER_APPROVAL
+  const effectiveRank = Math.max(1, baseRank - rankBoost)
+
+  return {
+    baseRank,
+    effectiveRank,
+    totalReferrals,
+    approvedReferrals,
+    rankBoost,
+    entry: toPublicEntry(row, { ...meta, rank: effectiveRank }),
   }
 }
 
@@ -60,12 +105,7 @@ export function registerWaitlistRoutes(app: Express) {
 
       if (existing) {
         alreadyExists = true
-        let meta: Record<string, any> = {}
-        try {
-          meta = existing.notes ? JSON.parse(existing.notes) : {}
-        } catch {
-          meta = {}
-        }
+        const meta = parseMeta(existing)
         personalReferralCode = meta.personalReferralCode || makeReferralCode()
         rank = typeof meta.rank === 'number' ? meta.rank : 1000
       } else {
@@ -113,15 +153,51 @@ export function registerWaitlistRoutes(app: Express) {
       if (!email) return fail(res, 400, 'email is required')
       const row = await findWaitlistByEmail(email)
       if (!row) return fail(res, 404, 'Waitlist entry not found')
-      let meta: Record<string, any> = {}
-      try {
-        meta = row.notes ? JSON.parse(row.notes) : {}
-      } catch {
-        meta = {}
-      }
-      ok(res, toPublicEntry(row, meta))
+      ok(res, toPublicEntry(row, parseMeta(row)))
     } catch (e: any) {
       fail(res, 500, e?.message || 'Failed to load waitlist entry')
+    }
+  })
+
+  app.post('/api/v1/waitlist/rank/compute', async (req: Request, res: Response) => {
+    try {
+      const email = String(req.body?.email || req.query.email || '').trim().toLowerCase()
+      if (!email) return fail(res, 400, 'email is required')
+      const row = await findWaitlistByEmail(email)
+      if (!row) return fail(res, 404, 'Waitlist entry not found')
+      const all = await listWaitlist({ status: 'all' })
+      const result = computeRankFor(row, all)
+      await patchWaitlistMetadata(row.id, { rank: result.effectiveRank })
+      ok(res, result)
+    } catch (e: any) {
+      fail(res, 500, e?.message || 'Failed to compute rank')
+    }
+  })
+
+  app.get('/api/v1/waitlist/referrals', async (req: Request, res: Response) => {
+    try {
+      const code = String(req.query.code || '').trim()
+      if (!code) return fail(res, 400, 'code is required')
+      const all = await listWaitlist({ status: 'all' })
+      const referrals = all
+        .filter((row) => String(parseMeta(row).referredBy || '').trim() === code)
+        .map((row) => toPublicEntry(row, parseMeta(row)))
+      ok(res, { code, count: referrals.length, referrals })
+    } catch (e: any) {
+      fail(res, 500, e?.message || 'Failed to load referrals')
+    }
+  })
+
+  app.patch('/api/v1/waitlist/:id/metadata', async (req: Request, res: Response) => {
+    try {
+      const id = String(req.params.id || '').trim()
+      if (!id) return fail(res, 400, 'id is required')
+      const patch = (req.body && typeof req.body === 'object' ? req.body : {}) as Record<string, unknown>
+      const updated = await patchWaitlistMetadata(id, patch)
+      if (!updated) return fail(res, 404, 'Waitlist entry not found')
+      ok(res, toPublicEntry(updated.row, updated.meta))
+    } catch (e: any) {
+      fail(res, 500, e?.message || 'Failed to update metadata')
     }
   })
 }

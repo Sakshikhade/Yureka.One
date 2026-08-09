@@ -12,6 +12,7 @@ import { registerAdminRoutes } from './lib/admin/routes';
 import { registerGiftcardRoutes } from './lib/hubble/routes';
 import { registerCuelinksRoutes } from './lib/cuelinks/routes';
 import { registerWaitlistRoutes } from './lib/waitlist/routes';
+import { registerAuthRoutes } from './lib/auth/routes';
 import { upsertWaitlistJoin } from './lib/admin/store';
 
 dotenv.config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '.env') });
@@ -24,11 +25,45 @@ function resolvePythonExecutable(): string {
     path.join(process.cwd(), 'venv', 'bin', 'python3'),
     path.join(__dirname, '..', 'venv', 'bin', 'python3'),
     path.join(process.cwd(), 'venv', 'bin', 'python'),
+    path.join(__dirname, '..', 'venv', 'bin', 'python'),
   ];
   for (const candidate of candidates) {
-    if (fs.existsSync(candidate)) return candidate;
+    if (fs.existsSync(candidate)) {
+      console.log('[python] using', candidate);
+      return candidate;
+    }
   }
+  console.warn('[python] venv not found — falling back to system python3 (scanner deps may be missing)');
   return 'python3';
+}
+
+/** Install scanner deps into ./venv if missing (covers stale Render Start Commands). */
+async function ensurePythonDeps(): Promise<void> {
+  const script = path.join(process.cwd(), 'scripts', 'ensure-python-deps.sh');
+  if (!fs.existsSync(script)) {
+    console.warn('[python] ensure-python-deps.sh missing — skip auto-install');
+    return;
+  }
+  const { spawn } = await import('child_process');
+  await new Promise<void>((resolve) => {
+    const child = spawn('bash', [script], { cwd: process.cwd(), stdio: ['ignore', 'pipe', 'pipe'] });
+    let err = '';
+    child.stdout.on('data', (d) => process.stdout.write(d));
+    child.stderr.on('data', (d) => {
+      err += d.toString();
+      process.stderr.write(d);
+    });
+    child.on('close', (code) => {
+      if (code !== 0) {
+        console.warn('[python] ensure-python-deps exited', code, err.slice(0, 300));
+      }
+      resolve();
+    });
+    child.on('error', (e) => {
+      console.warn('[python] ensure-python-deps failed to start:', e.message);
+      resolve();
+    });
+  });
 }
 
 
@@ -82,6 +117,7 @@ async function startServer() {
   registerGiftcardRoutes(app);
   registerCuelinksRoutes(app);
   registerWaitlistRoutes(app);
+  registerAuthRoutes(app);
 
 
 
@@ -411,6 +447,11 @@ async function startServer() {
   }
 
   scheduleDailySync();
+
+  // Do not block listen on pip install — run in background so health checks pass.
+  void ensurePythonDeps().then(() => {
+    console.log('[python] deps ready:', resolvePythonExecutable());
+  });
 
   app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server running on http://localhost:${PORT}`);

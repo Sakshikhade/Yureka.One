@@ -19,7 +19,7 @@ const CATEGORY_COLORS: Record<string, string> = {
 
 const OffersPage: React.FC = () => {
   const { user } = useSupabase()
-  const userId = user?.id || user?.email || 'demo-user'
+  const userId = user?.id || user?.email || ''
   const [tab, setTab] = useState<Tab>('marketplace')
 
   const [offers, setOffers] = useState<GoldbackOffer[]>([])

@@ -137,7 +137,7 @@ export interface Waitlist {
   personalReferralCode?: string
   sourceChannel?: string
   rank?: number
-  status: 'pending' | 'accepted' | 'rejected' | 'on_hold'
+  status: 'pending' | 'accepted' | 'rejected' | 'on_hold' | 'on-hold'
   joinedAt?: string
   createdAt?: string
 }

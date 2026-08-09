@@ -61,15 +61,36 @@ async function withTimeout<T>(promise: PromiseLike<T>, ms: number, label: string
 
 /** Skip Supabase briefly after failures so waitlist join stays fast under Netlify proxy limits. */
 let supabaseCircuitOpenUntil = 0
-const SUPABASE_WAITLIST_TIMEOUT_MS = 1500
+let supabaseFailStreak = 0
+const SUPABASE_WAITLIST_TIMEOUT_MS = Number(process.env.SUPABASE_WAITLIST_TIMEOUT_MS || 10000)
+const SUPABASE_CIRCUIT_MS = Number(process.env.SUPABASE_CIRCUIT_MS || 20000)
 
 function supabaseWaitlistAllowed() {
   return Date.now() >= supabaseCircuitOpenUntil
 }
 
 function tripSupabaseCircuit(reason: unknown) {
-  supabaseCircuitOpenUntil = Date.now() + 60_000
-  console.warn('[waitlist] supabase circuit open 60s:', (reason as Error)?.message || reason)
+  supabaseFailStreak += 1
+  // Don't open the circuit on a single cold-start timeout — join/auth would
+  // silently fall back to the empty local file store.
+  if (supabaseFailStreak < 2) {
+    console.warn(
+      '[waitlist] supabase soft-fail (streak',
+      supabaseFailStreak,
+      '):',
+      (reason as Error)?.message || reason
+    )
+    return
+  }
+  supabaseCircuitOpenUntil = Date.now() + SUPABASE_CIRCUIT_MS
+  console.warn(
+    `[waitlist] supabase circuit open ${Math.round(SUPABASE_CIRCUIT_MS / 1000)}s:`,
+    (reason as Error)?.message || reason
+  )
+}
+
+function clearSupabaseCircuit() {
+  supabaseFailStreak = 0
 }
 
 function seedStore(): AdminFileStore {
@@ -390,7 +411,11 @@ export async function findWaitlistByEmail(email: string): Promise<WaitlistRow | 
         SUPABASE_WAITLIST_TIMEOUT_MS,
         'supabase findWaitlist'
       )
-      if (!error && data) return mapWaitlist(data)
+      if (!error) {
+        clearSupabaseCircuit()
+        return data ? mapWaitlist(data) : null
+      }
+      console.warn('[waitlist] supabase find error:', error.message)
     } catch (e) {
       tripSupabaseCircuit(e)
     }
@@ -515,7 +540,10 @@ export async function upsertWaitlistJoin(
           SUPABASE_WAITLIST_TIMEOUT_MS,
           'supabase waitlist update'
         )
-        if (!error && data) return { row: mapWaitlist(data), meta }
+        if (!error && data) {
+          clearSupabaseCircuit()
+          return { row: mapWaitlist(data), meta }
+        }
         console.warn('[waitlist] supabase update failed:', error?.message)
       } else {
         const { data, error } = await withTimeout(
@@ -523,7 +551,10 @@ export async function upsertWaitlistJoin(
           SUPABASE_WAITLIST_TIMEOUT_MS,
           'supabase waitlist insert'
         )
-        if (!error && data) return { row: mapWaitlist(data), meta }
+        if (!error && data) {
+          clearSupabaseCircuit()
+          return { row: mapWaitlist(data), meta }
+        }
         if (error) console.warn('[waitlist] supabase insert failed:', error.message)
       }
     } catch (e) {
@@ -532,4 +563,60 @@ export async function upsertWaitlistJoin(
   }
 
   return writeJoinToFile(existing, payload, meta, now)
+}
+
+export async function findWaitlistById(id: string): Promise<WaitlistRow | null> {
+  const sb = getSupabase()
+  if (sb && supabaseWaitlistAllowed()) {
+    try {
+      const { data, error } = await withTimeout(
+        sb.from('waitlist').select('*').eq('id', id).maybeSingle(),
+        SUPABASE_WAITLIST_TIMEOUT_MS,
+        'supabase findWaitlistById'
+      )
+      if (!error && data) return mapWaitlist(data)
+    } catch (e) {
+      tripSupabaseCircuit(e)
+    }
+  }
+  return readFile().waitlist.find((w) => w.id === id) || null
+}
+
+export async function patchWaitlistMetadata(
+  id: string,
+  patch: Record<string, unknown>
+): Promise<{ row: WaitlistRow; meta: Record<string, any> } | null> {
+  const existing = await findWaitlistById(id)
+  if (!existing) return null
+
+  let prevMeta: Record<string, any> = {}
+  try {
+    prevMeta = existing.notes ? JSON.parse(existing.notes) : {}
+  } catch {
+    prevMeta = {}
+  }
+  const meta = { ...prevMeta, ...patch }
+  const now = new Date().toISOString()
+  const notes = JSON.stringify(meta)
+
+  const sb = getSupabase()
+  if (sb && supabaseWaitlistAllowed()) {
+    try {
+      const { data, error } = await withTimeout(
+        sb.from('waitlist').update({ notes, updated_at: now }).eq('id', id).select('*').single(),
+        SUPABASE_WAITLIST_TIMEOUT_MS,
+        'supabase patchWaitlistMetadata'
+      )
+      if (!error && data) return { row: mapWaitlist(data), meta }
+    } catch (e) {
+      tripSupabaseCircuit(e)
+    }
+  }
+
+  const store = readFile()
+  const idx = store.waitlist.findIndex((w) => w.id === id)
+  if (idx < 0) return null
+  store.waitlist[idx] = { ...store.waitlist[idx], notes, updatedAt: now }
+  writeFile(store)
+  return { row: store.waitlist[idx], meta }
 }

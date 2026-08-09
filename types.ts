@@ -90,7 +90,7 @@ export interface WaitlistEntry {
   personal_referral_code?: string;
   source_channel?: string;
   rank?: number;
-  status: 'pending' | 'accepted' | 'rejected' | 'on_hold';
+  status: 'pending' | 'accepted' | 'rejected' | 'on_hold' | 'on-hold';
   joined_at?: string;
   created_at?: string;
 }

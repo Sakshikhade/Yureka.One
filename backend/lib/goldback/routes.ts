@@ -7,15 +7,20 @@ import {
   listOffers,
   recordClick,
 } from './store.js'
+import { productUserIdOrFail } from '../auth/userId.js'
 
-function userIdFrom(req: Request): string {
-  const header = (req.header('x-user-id') || '').trim()
-  if (header) return header
-  const q = typeof req.query.userId === 'string' ? req.query.userId.trim() : ''
-  if (q) return q
-  const bodyId = typeof (req.body as any)?.userId === 'string' ? (req.body as any).userId.trim() : ''
-  if (bodyId) return bodyId
-  return 'demo-user'
+function requireUserId(req: Request, res: Response): string | null {
+  const result = productUserIdOrFail(req)
+  if ('error' in result) {
+    res.status(401).json({
+      data: null,
+      status: 401,
+      error: result.error,
+      timestamp: new Date().toISOString(),
+    })
+    return null
+  }
+  return result.userId
 }
 
 function ok<T>(res: Response, data: T, status = 200) {
@@ -51,7 +56,8 @@ export function registerGoldbackRoutes(app: Express) {
 
   app.get('/api/goldback/balance', async (req, res) => {
     try {
-      const userId = userIdFrom(req)
+      const userId = requireUserId(req, res)
+      if (!userId) return
       const balance = await getBalance(userId)
       ok(res, balance)
     } catch (e: any) {
@@ -61,7 +67,8 @@ export function registerGoldbackRoutes(app: Express) {
 
   app.get('/api/goldback/ledger', async (req, res) => {
     try {
-      const userId = userIdFrom(req)
+      const userId = requireUserId(req, res)
+      if (!userId) return
       const ledger = await listLedger(userId)
       ok(res, ledger)
     } catch (e: any) {
@@ -71,7 +78,8 @@ export function registerGoldbackRoutes(app: Express) {
 
   app.post('/api/goldback/click', async (req, res) => {
     try {
-      const userId = userIdFrom(req)
+      const userId = requireUserId(req, res)
+      if (!userId) return
       const offerId = String(req.body?.offerId || '')
       if (!offerId) return fail(res, 400, 'offerId is required')
       await recordClick(userId, offerId)
@@ -83,7 +91,8 @@ export function registerGoldbackRoutes(app: Express) {
 
   app.post('/api/goldback/earn', async (req, res) => {
     try {
-      const userId = userIdFrom(req)
+      const userId = requireUserId(req, res)
+      if (!userId) return
       const offerId = String(req.body?.offerId || '')
       const idempotencyKey = String(req.body?.idempotencyKey || `earn:${userId}:${offerId}:${Date.now()}`)
       if (!offerId) return fail(res, 400, 'offerId is required')

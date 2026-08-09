@@ -1,5 +1,7 @@
 import type { GoldbackBalance, GoldbackLedgerEntry, GoldbackOffer } from './types'
 
+import { getAuthAccessToken } from '@shared/auth'
+
 interface Envelope<T> {
   data: T | null
   status: number
@@ -13,11 +15,13 @@ async function goldbackFetch<T>(
   init?: RequestInit
 ): Promise<Envelope<T>> {
   try {
+    const token = getAuthAccessToken()
     const res = await fetch(path, {
       ...init,
       headers: {
         'Content-Type': 'application/json',
         'x-user-id': userId,
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
         ...(init?.headers || {}),
       },
     })

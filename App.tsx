@@ -52,6 +52,7 @@ const NotFoundPage = lazyWithRetry(() => import('@landing/NotFoundPage'));
 const AdminDashboard = lazyWithRetry(() => import('@app/AdminDashboard'));
 const WaitlistPage = lazyWithRetry(() => import('@app/WaitlistPage'));
 const WaitingPage = lazyWithRetry(() => import('@app/WaitingPage'));
+const LoginPage = lazyWithRetry(() => import('@app/LoginPage'));
 const DashboardLayout = lazyWithRetry(() => import('@app/Dashboard/DashboardLayout'));
 
 // Optimized Scroll Management
@@ -167,7 +168,7 @@ const AppContent: React.FC = () => {
               <Route path="/login" element={
                 <>
                   <SEO {...staticPageMeta['/login']} />
-                  <WaitlistPage />
+                  <LoginPage />
                 </>
               } />
               <Route path="/join-waitlist" element={

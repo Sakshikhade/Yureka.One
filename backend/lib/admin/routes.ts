@@ -16,6 +16,7 @@ import {
   updateWaitlistStatus,
   upsertAdmin,
 } from './store.js'
+import { sendApprovalEmail } from '../mail/approval.js'
 import {
   deleteOffer,
   goldbackBackendMode,
@@ -113,7 +114,16 @@ export function registerAdminRoutes(app: Express) {
       }
       const row = await updateWaitlistStatus(String(req.params.id), status)
       if (!row) return fail(res, 404, 'Not found')
-      ok(res, row)
+
+      let emailResult: { sent: boolean; skipped?: string; error?: string } | null = null
+      if (status === 'accepted' && row.email) {
+        emailResult = await sendApprovalEmail({ to: row.email, fullName: row.fullName })
+        if (!emailResult.sent) {
+          console.warn('[admin] approval email not sent:', emailResult.skipped || emailResult.error)
+        }
+      }
+
+      ok(res, { ...row, approvalEmail: emailResult })
     } catch (e: any) {
       fail(res, 500, e?.message || 'Failed to update status')
     }
@@ -128,7 +138,19 @@ export function registerAdminRoutes(app: Express) {
         return fail(res, 400, 'Invalid status')
       }
       await bulkUpdateWaitlistStatus(ids, status)
-      ok(res, { updated: ids.length })
+
+      let emailsSent = 0
+      if (status === 'accepted') {
+        const rows = await listWaitlist({ status: 'all' })
+        const idSet = new Set(ids)
+        for (const row of rows) {
+          if (!idSet.has(row.id) || !row.email) continue
+          const result = await sendApprovalEmail({ to: row.email, fullName: row.fullName })
+          if (result.sent) emailsSent += 1
+        }
+      }
+
+      ok(res, { updated: ids.length, emailsSent })
     } catch (e: any) {
       fail(res, 500, e?.message || 'Bulk update failed')
     }

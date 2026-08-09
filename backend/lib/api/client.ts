@@ -1,5 +1,6 @@
 import type { YurekaResponse } from './types'
 export { isApiError, isValidationError } from './types'
+import { getAuthAccessToken } from '@shared/auth'
 
 // Empty string → relative URLs, which Netlify/Express proxy to the backend.
 const RAW_BASE = import.meta.env.VITE_API_BASE_URL ?? ''
@@ -25,7 +26,7 @@ async function apiFetch<T>(
 ): Promise<YurekaResponse<T>> {
   const { token: explicitToken, skipAuth, timeoutMs = 5000, ...init } = options ?? {}
 
-  const token = skipAuth ? undefined : explicitToken
+  const token = skipAuth ? undefined : explicitToken ?? (typeof window !== 'undefined' ? getAuthAccessToken() : null)
 
   const headers: HeadersInit = {
     'Content-Type': 'application/json',

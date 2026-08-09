@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react'
 import { Gift, Loader2, Search, X, RefreshCw, ExternalLink } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useSupabase } from '@shared/SupabaseProvider'
+import { getAuthAccessToken } from '@shared/auth'
 import type { GiftCard } from '@backend/lib/hubble/types'
 
 const formatInr = (n: number) =>
@@ -31,7 +32,7 @@ const GiftCardsPage: React.FC = () => {
   const [buying, setBuying] = useState(false)
   const [buyError, setBuyError] = useState<string | null>(null)
 
-  const userId = user?.id || user?.email || 'demo-user'
+  const userId = user?.id || user?.email || ''
 
   const load = useCallback(async (opts?: { refresh?: boolean }) => {
     if (opts?.refresh) setRefreshing(true)
@@ -101,11 +102,13 @@ const GiftCardsPage: React.FC = () => {
     setBuying(true)
     setBuyError(null)
     try {
+      const token = getAuthAccessToken()
       const res = await fetch('/api/giftcards/orders', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'x-user-id': userId,
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
         body: JSON.stringify({
           productId: selected.id,

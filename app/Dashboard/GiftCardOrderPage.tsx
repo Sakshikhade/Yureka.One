@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { motion } from 'motion/react'
 import { ArrowLeft, CheckCircle2, Copy, Loader2, XCircle } from 'lucide-react'
 import { useSupabase } from '@shared/SupabaseProvider'
+import { getAuthAccessToken } from '@shared/auth'
 import type { StoredOrder } from '@backend/lib/hubble/types'
 
 const formatInr = (n: number) => `₹${n.toLocaleString('en-IN')}`
@@ -15,13 +16,17 @@ const GiftCardOrderPage: React.FC = () => {
   const [loading, setLoading] = useState(true)
   const [copied, setCopied] = useState<string | null>(null)
 
-  const userId = user?.id || user?.email || 'demo-user'
+  const userId = user?.id || user?.email || ''
 
   const load = useCallback(async () => {
     if (!orderId) return
     try {
+      const token = getAuthAccessToken()
       const res = await fetch(`/api/giftcards/orders/${orderId}`, {
-        headers: { 'x-user-id': userId },
+        headers: {
+          'x-user-id': userId,
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
       })
       const json = await res.json()
       if (!res.ok || json.error) throw new Error(json.error || 'Failed to load order')

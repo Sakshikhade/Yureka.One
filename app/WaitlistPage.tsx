@@ -7,10 +7,11 @@ import {
     Mail, Phone, Trash2, Activity, TrendingUp, DollarSign, Award,
     Percent, Database, Search, RefreshCw, Smartphone, LogIn
 } from 'lucide-react';
-import { Link, useSearchParams, useLocation } from 'react-router-dom';
+import { Link, useSearchParams, useLocation, useNavigate } from 'react-router-dom';
 import { api, isApiError } from '@backend/lib/api/client';
 import type { Waitlist as ApiWaitlist, WaitlistJoinResult } from '@backend/lib/api/types';
 import { motion, AnimatePresence } from 'motion/react';
+import { getSupabaseBrowser, signInWithGmail, supabaseConfigured } from '@shared/auth';
 
 // ─── MASTER DATA ───
 const BANK_LOGOS: Record<string, string> = {
@@ -235,9 +236,11 @@ function normalizeGender(gender?: string): string {
 
 const WaitlistPage: React.FC = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const isDashboard = location.pathname.startsWith('/dashboard');
     const basePath = isDashboard ? '/dashboard' : '';
     const [searchParams] = useSearchParams();
+    const [goingToWaiting, setGoingToWaiting] = useState(false);
 
     const [step, setStep] = useState(1);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -522,11 +525,41 @@ const WaitlistPage: React.FC = () => {
                 rank: joined.rank ?? 1000,
                 referralCode: joined.personalReferralCode ?? ''
             });
+            try {
+                sessionStorage.setItem('yureka_pending_waitlist_email', canonicalEmail);
+            } catch {
+                // ignore
+            }
             setStep(6);
         } catch (err: any) {
             setError(err.message || 'Failed to join waitlist. Please try again.');
         } finally {
             setIsSubmitting(false);
+        }
+    };
+
+    const goToWaitingRoom = async () => {
+        setGoingToWaiting(true);
+        setError(null);
+        try {
+            const sb = getSupabaseBrowser();
+            const { data } = sb ? await sb.auth.getSession() : { data: { session: null } };
+            if (data.session?.user) {
+                navigate('/waiting');
+                return;
+            }
+            if (!supabaseConfigured) {
+                navigate('/waiting');
+                return;
+            }
+            const result = await signInWithGmail(`${window.location.origin}/waiting`);
+            if (result.error) {
+                setError(result.error);
+                setGoingToWaiting(false);
+            }
+        } catch (e: any) {
+            setError(e?.message || 'Could not open waiting room');
+            setGoingToWaiting(false);
         }
     };
 
@@ -903,8 +936,18 @@ const WaitlistPage: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="text-center pt-4">
-                    <Link to={basePath || "/"} className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 hover:text-clay transition-all">Back to Home</Link>
+                <div className="text-center pt-4 space-y-4">
+                    <button
+                        type="button"
+                        onClick={goToWaitingRoom}
+                        disabled={goingToWaiting}
+                        className="inline-flex items-center justify-center gap-3 bg-clay text-black px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-[0.3em] hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-60"
+                    >
+                        {goingToWaiting ? <Loader2 size={16} className="animate-spin" /> : <>Enter waiting room <ArrowRight size={16} /></>}
+                    </button>
+                    <div>
+                        <Link to={basePath || "/"} className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 hover:text-clay transition-all">Back to Home</Link>
+                    </div>
                 </div>
             </motion.div>
         );

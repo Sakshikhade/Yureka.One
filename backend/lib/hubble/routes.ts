@@ -25,6 +25,7 @@ import {
   hubbleWebhookSecret,
   requireHubbleWebhookSignature,
 } from './webhooks.js'
+import { productUserIdOrFail } from '../auth/userId.js'
 
 function ok<T>(res: Response, data: T, status = 200) {
   res.status(status).json({
@@ -43,14 +44,13 @@ function fail(res: Response, status: number, error: string) {
   })
 }
 
-function userIdFrom(req: Request): string {
-  const header = (req.header('x-user-id') || '').trim()
-  if (header) return header
-  const q = typeof req.query.userId === 'string' ? req.query.userId.trim() : ''
-  if (q) return q
-  const bodyId = typeof (req.body as any)?.userId === 'string' ? (req.body as any).userId.trim() : ''
-  if (bodyId) return bodyId
-  return 'demo-user'
+function userIdFrom(req: Request, res: Response): string | null {
+  const result = productUserIdOrFail(req)
+  if ('error' in result) {
+    fail(res, 401, result.error)
+    return null
+  }
+  return result.userId
 }
 
 function makeReferenceId(): string {
@@ -114,7 +114,8 @@ export function registerGiftcardRoutes(app: Express) {
 
   app.get('/api/giftcards/orders', async (req, res) => {
     try {
-      const userId = userIdFrom(req)
+      const userId = userIdFrom(req, res)
+      if (!userId) return
       const orders = await listOrdersForUser(userId)
       ok(res, { items: orders })
     } catch (e: any) {
@@ -124,7 +125,8 @@ export function registerGiftcardRoutes(app: Express) {
 
   app.get('/api/giftcards/orders/:id', async (req, res) => {
     try {
-      const userId = userIdFrom(req)
+      const userId = userIdFrom(req, res)
+      if (!userId) return
       const id = String(req.params.id)
       const order = await getOrderById(id, userId)
       if (!order) return fail(res, 404, 'Order not found')
@@ -150,7 +152,8 @@ export function registerGiftcardRoutes(app: Express) {
       return fail(res, 503, 'Hubble credentials not configured')
     }
     try {
-      const userId = userIdFrom(req)
+      const userId = userIdFrom(req, res)
+      if (!userId) return
       const productId = String(req.body?.productId || '').trim()
       const denomination = Number(req.body?.denomination)
       const quantity = Math.max(1, Number(req.body?.quantity) || 1)

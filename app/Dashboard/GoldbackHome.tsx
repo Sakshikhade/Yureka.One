@@ -8,13 +8,18 @@ import type { GoldbackBalance, GoldbackLedgerEntry } from '@backend/lib/goldback
 
 const GoldbackHome: React.FC = () => {
   const { user } = useSupabase()
-  const userId = user?.id || user?.email || 'demo-user'
+  const userId = user?.id || user?.email || ''
   const [balance, setBalance] = useState<GoldbackBalance | null>(null)
   const [ledger, setLedger] = useState<GoldbackLedgerEntry[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   const load = useCallback(async () => {
+    if (!userId) {
+      setError('Sign in required')
+      setLoading(false)
+      return
+    }
     setLoading(true)
     setError(null)
     const [b, l] = await Promise.all([goldbackApi.balance(userId), goldbackApi.ledger(userId)])

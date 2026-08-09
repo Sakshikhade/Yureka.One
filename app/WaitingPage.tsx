@@ -114,7 +114,7 @@ const AnimatedRank: React.FC<{ rank: number | string; isHighlighted?: boolean }>
 
 // ── Main Component ────────────────────────────────────────────────────────────
 const WaitingPage: React.FC = () => {
-    const { user, currentUserStatus } = useSupabase();
+    const { user, currentUserStatus, refreshUserStatus } = useSupabase();
     const navigate = useNavigate();
     const [entry, setEntry] = useState<WaitlistEntry | null>(null);
     const [rankResult, setRankResult] = useState<RankResult | null>(null);
@@ -130,6 +130,12 @@ const WaitingPage: React.FC = () => {
         if (currentUserStatus === 'accepted' || currentUserStatus === 'admin') { navigate('/dashboard'); return; }
         fetchData();
     }, [user, currentUserStatus]);
+
+    useEffect(() => {
+        const onFocus = () => { void refreshUserStatus(); };
+        window.addEventListener('focus', onFocus);
+        return () => window.removeEventListener('focus', onFocus);
+    }, [refreshUserStatus]);
 
     const fetchData = async () => {
         if (!user?.email) return;
