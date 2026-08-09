@@ -1,11 +1,24 @@
+# Yureka-api on Render — Web Service for Express (`backend/server.ts`)
+# Frontend stays on Netlify; /api/* is proxied there (see netlify.toml).
+#
+# Repo uses pnpm workspaces — do not use npm install (no package-lock.json).
+
 services:
   - type: web
     name: yureka-api
-    env: node
-    buildCommand: npm install --include=dev && npm run build && python3 -m venv venv && ./venv/bin/pip install -r backend/requirements.txt && npm prune --production
-    startCommand: npm start
+    runtime: node
+    plan: starter
+    region: oregon
+    buildCommand: corepack enable && corepack prepare pnpm@9.15.0 --activate && pnpm install --frozen-lockfile && pnpm run build
+    startCommand: pnpm start
+    healthCheckPath: /api/health
     envVars:
       - key: NODE_VERSION
-        value: 20
+        value: "20"
       - key: NODE_ENV
         value: production
+      # Set these in the Render Dashboard (do not put secrets in this file):
+      # SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY
+      # HUBBLE_CLIENT_ID, HUBBLE_CLIENT_SECRET, HUBBLE_API_BASE, HUBBLE_WEBHOOK_SECRET
+      # ADMIN_PASSWORD, ADMIN_EMAILS, ADMIN_SESSION_SECRET
+      # CUELINKS_*, GMAIL_*, GOOGLE_CLIENT_* (optional)
