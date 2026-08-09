@@ -5,10 +5,10 @@ Replace the host if your Render service URL differs.
 
 | Hubble setting | URL |
 |---|---|
-| Order Terminal Status Webhook | `https://yureka-api.onrender.com/api/hubble/webhooks/order-terminal` |
-| Brand Updated Webhook | `https://yureka-api.onrender.com/api/hubble/webhooks/brand-updated` |
-| Brand Discount Update Webhook | `https://yureka-api.onrender.com/api/hubble/webhooks/brand-discount` |
-| Wallet Balance Low Webhook | `https://yureka-api.onrender.com/api/hubble/webhooks/wallet-low` |
+| Order Terminal Status Webhook | `https://yureka-one.onrender.com/api/hubble/webhooks/order-terminal` |
+| Brand Updated Webhook | `https://yureka-one.onrender.com/api/hubble/webhooks/brand-updated` |
+| Brand Discount Update Webhook | `https://yureka-one.onrender.com/api/hubble/webhooks/brand-discount` |
+| Wallet Balance Low Webhook | `https://yureka-one.onrender.com/api/hubble/webhooks/wallet-low` |
 
 1. Set **Webhook Signature** in Hubble to a long random secret.
 2. Set the same value on Render as `HUBBLE_WEBHOOK_SECRET`.

@@ -1,5 +1,5 @@
 # Proxy API to Render (must be BEFORE SPA catch-all; ! = force)
-/api/*  https://yureka-api.onrender.com/api/:splat  200!
+/api/*  https://yureka-one.onrender.com/api/:splat  200!
 
 # Allow search engine verification files
 /google432b4c0815ba33ee.html /google432b4c0815ba33ee.html 200

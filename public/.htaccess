@@ -12,9 +12,9 @@ RewriteEngine On
 #  proxy them to the existing backend. Requires mod_proxy +
 #  mod_proxy_http enabled on the hosting plan.
 #  If your Hostinger plan does NOT allow mod_proxy, delete this block
-#  and build with  VITE_API_BASE_URL=https://yureka-api.onrender.com
+#  and build with  VITE_API_BASE_URL=https://yureka-one.onrender.com
 #  so the browser hits the backend directly (it already sends CORS).
-RewriteRule ^api/(.*)$ https://yureka-api.onrender.com/api/$1 [P,L]
+RewriteRule ^api/(.*)$ https://yureka-one.onrender.com/api/$1 [P,L]
 
 # --- SPA fallback (React Router) -----------------------------
 #  Real files and directories are served as-is; every other path

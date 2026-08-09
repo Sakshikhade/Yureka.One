@@ -1,11 +1,12 @@
-# Yureka-api on Render — Web Service for Express (`backend/server.ts`)
+# Yureka API on Render — Web Service for Express (`backend/server.ts`)
+# Live URL: https://yureka-one.onrender.com
 # Frontend stays on Netlify; /api/* is proxied there (see netlify.toml).
 #
 # Repo uses pnpm workspaces — do not use npm install (no package-lock.json).
 
 services:
   - type: web
-    name: yureka-api
+    name: yureka-one
     runtime: node
     plan: starter
     region: oregon
