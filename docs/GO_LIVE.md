@@ -6,6 +6,12 @@ Netlify proxies `/api/*` → Render ([`netlify.toml`](../netlify.toml)).
 
 Custom domain `yureka.one` can be wired later; smoke-test the Netlify URL first.
 
+## Automate deploys (recommended)
+
+Use GitHub Actions so every push to `main` redeploys Netlify + Render:
+
+→ [`docs/GITHUB_ACTIONS_DEPLOY.md`](./GITHUB_ACTIONS_DEPLOY.md)
+
 ## Blockers
 
 1. If Render shows **Service Suspended**, every API call fails (gift cards, Hubble webhooks, admin). Resume it first.
