@@ -1,0 +1,21 @@
+[Unit]
+Description=Yureka.One Express (SPA + API)
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/opt/yureka-one
+EnvironmentFile=/opt/yureka-one/.env
+Environment=NODE_ENV=production
+Environment=PORT=3000
+ExecStartPre=/bin/bash /opt/yureka-one/scripts/ensure-python-deps.sh
+ExecStart=/usr/bin/env pnpm start
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=yureka
+
+[Install]
+WantedBy=multi-user.target
