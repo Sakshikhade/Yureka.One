@@ -25,8 +25,13 @@ const ReferralDashboard: React.FC = () => {
             const code = !isApiError(entryRes) ? entryRes.data?.personalReferralCode : undefined;
             if (code) {
                 setPersonalCode(code);
-                const refRes = await api.get<ApiWaitlist[]>(`/api/v1/waitlist/referrals?code=${encodeURIComponent(code)}`);
-                if (!isApiError(refRes)) setReferrals((refRes.data ?? []).map(fromApiWaitlist));
+                const refRes = await api.get<{ referrals?: ApiWaitlist[]; count?: number }>(
+                    `/api/v1/waitlist/referrals?code=${encodeURIComponent(code)}`
+                );
+                if (!isApiError(refRes)) {
+                    const list = refRes.data?.referrals ?? [];
+                    setReferrals(list.map(fromApiWaitlist));
+                }
             }
         } catch (err) {
             console.error("Failed to load referrals:", err);

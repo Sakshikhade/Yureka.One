@@ -9,6 +9,7 @@ import {
   type WaitlistJoinInput,
   type WaitlistRow,
 } from '../admin/store.js'
+import { parseWaitlistMeta, toPublicWaitlistEntry } from './public.js'
 
 const RANK_BOOST_PER_REFERRAL = 15
 const RANK_BOOST_PER_APPROVAL = 35
@@ -25,38 +26,8 @@ function makeReferralCode() {
   return `YRKMNY${String(randomInt(1000, 9999))}`
 }
 
-function parseMeta(row: WaitlistRow): Record<string, any> {
-  try {
-    return row.notes ? JSON.parse(row.notes) : {}
-  } catch {
-    return {}
-  }
-}
-
-function toPublicEntry(row: WaitlistRow, meta: Record<string, any>) {
-  return {
-    id: row.id,
-    name: row.fullName || '',
-    email: row.email,
-    mobileNumber: row.mobileNumber || undefined,
-    dateOfBirth: meta.dateOfBirth || undefined,
-    gender: meta.gender || undefined,
-    role: 'user' as const,
-    mostUsedFor: row.topCategory || meta.mostUsedFor || undefined,
-    monthlySpend: row.monthlySpend || undefined,
-    referralCode: meta.referredBy || undefined,
-    personalReferralCode: meta.personalReferralCode || undefined,
-    sourceChannel: meta.sourceChannel || undefined,
-    rank: typeof meta.rank === 'number' ? meta.rank : undefined,
-    status: row.status === 'on_hold' ? 'on-hold' : row.status,
-    yurekaScore: row.yurekaScore ?? undefined,
-    joinedAt: row.createdAt,
-    createdAt: row.createdAt,
-  }
-}
-
 function computeRankFor(row: WaitlistRow, all: WaitlistRow[]) {
-  const meta = parseMeta(row)
+  const meta = parseWaitlistMeta(row)
   const code = String(meta.personalReferralCode || '').trim()
   const baseRank = typeof meta.rank === 'number' ? meta.rank : 1000
   let totalReferrals = 0
@@ -64,7 +35,7 @@ function computeRankFor(row: WaitlistRow, all: WaitlistRow[]) {
 
   if (code) {
     for (const other of all) {
-      const otherMeta = parseMeta(other)
+      const otherMeta = parseWaitlistMeta(other)
       if (String(otherMeta.referredBy || '').trim() === code) {
         totalReferrals += 1
         if (other.status === 'accepted') approvedReferrals += 1
@@ -82,7 +53,7 @@ function computeRankFor(row: WaitlistRow, all: WaitlistRow[]) {
     totalReferrals,
     approvedReferrals,
     rankBoost,
-    entry: toPublicEntry(row, { ...meta, rank: effectiveRank }),
+    entry: toPublicWaitlistEntry(row, { ...meta, rank: effectiveRank }),
   }
 }
 
@@ -99,13 +70,21 @@ export function registerWaitlistRoutes(app: Express) {
       const mobile = String(body.mobile_number || body.phone || '').trim() || null
       const existing = await findWaitlistByEmail(email)
 
+      // Idempotent: accepted / rejected / on_hold — never re-run intake or wipe status.
+      if (existing && existing.status !== 'pending') {
+        return ok(res, {
+          data: toPublicWaitlistEntry(existing, parseWaitlistMeta(existing)),
+          alreadyExists: true,
+        })
+      }
+
       let personalReferralCode = ''
       let rank = 1000
       let alreadyExists = false
 
       if (existing) {
         alreadyExists = true
-        const meta = parseMeta(existing)
+        const meta = parseWaitlistMeta(existing)
         personalReferralCode = meta.personalReferralCode || makeReferralCode()
         rank = typeof meta.rank === 'number' ? meta.rank : 1000
       } else {
@@ -118,7 +97,8 @@ export function registerWaitlistRoutes(app: Express) {
         email,
         fullName: name || null,
         mobileNumber: mobile,
-        status: existing?.status === 'accepted' ? 'accepted' : 'pending',
+        // Never demote accepted; pending stays pending on re-submit.
+        status: existing?.status === 'accepted' ? 'accepted' : existing?.status || 'pending',
         yurekaScore:
           body.yureka_score != null && Number.isFinite(Number(body.yureka_score))
             ? Number(body.yureka_score)
@@ -138,7 +118,7 @@ export function registerWaitlistRoutes(app: Express) {
 
       const { row, meta } = await upsertWaitlistJoin(input)
       ok(res, {
-        data: toPublicEntry(row, meta),
+        data: toPublicWaitlistEntry(row, meta),
         alreadyExists,
       })
     } catch (e: any) {
@@ -153,7 +133,7 @@ export function registerWaitlistRoutes(app: Express) {
       if (!email) return fail(res, 400, 'email is required')
       const row = await findWaitlistByEmail(email)
       if (!row) return fail(res, 404, 'Waitlist entry not found')
-      ok(res, toPublicEntry(row, parseMeta(row)))
+      ok(res, toPublicWaitlistEntry(row, parseWaitlistMeta(row)))
     } catch (e: any) {
       fail(res, 500, e?.message || 'Failed to load waitlist entry')
     }
@@ -180,8 +160,8 @@ export function registerWaitlistRoutes(app: Express) {
       if (!code) return fail(res, 400, 'code is required')
       const all = await listWaitlist({ status: 'all' })
       const referrals = all
-        .filter((row) => String(parseMeta(row).referredBy || '').trim() === code)
-        .map((row) => toPublicEntry(row, parseMeta(row)))
+        .filter((row) => String(parseWaitlistMeta(row).referredBy || '').trim() === code)
+        .map((row) => toPublicWaitlistEntry(row, parseWaitlistMeta(row)))
       ok(res, { code, count: referrals.length, referrals })
     } catch (e: any) {
       fail(res, 500, e?.message || 'Failed to load referrals')
@@ -195,7 +175,7 @@ export function registerWaitlistRoutes(app: Express) {
       const patch = (req.body && typeof req.body === 'object' ? req.body : {}) as Record<string, unknown>
       const updated = await patchWaitlistMetadata(id, patch)
       if (!updated) return fail(res, 404, 'Waitlist entry not found')
-      ok(res, toPublicEntry(updated.row, updated.meta))
+      ok(res, toPublicWaitlistEntry(updated.row, updated.meta))
     } catch (e: any) {
       fail(res, 500, e?.message || 'Failed to update metadata')
     }

@@ -74,9 +74,29 @@ async function loadAdminData(setters: {
   if (!isApiError(lRes))  setters.setLogs(lRes.data ?? []);
 }
 
-async function resolveUserStatus(email: string): Promise<Exclude<AppUserStatus, 'loading'>> {
+async function resolveUserStatus(
+  email: string
+): Promise<'none' | 'pending' | 'accepted' | 'admin' | 'rejected' | 'on-hold'> {
   if (!email) return 'none';
   try {
+    const statusRes = await api.get<{
+      role?: string
+      status?: string
+      canAccessDashboard?: boolean
+    }>(`/api/v1/auth/status?email=${encodeURIComponent(email)}`, {
+      skipAuth: true,
+      timeoutMs: 15000,
+    })
+    if (!isApiError(statusRes) && statusRes.data?.status) {
+      const s = statusRes.data.status
+      if (s === 'admin' || s === 'accepted' || s === 'pending' || s === 'rejected' || s === 'on-hold') {
+        return s
+      }
+      if (s === 'on_hold') return 'on-hold'
+      if (s === 'none') return 'none'
+    }
+
+    // Fallback if older API without /auth/status
     const [roleRes, entryRes] = await Promise.all([
       api.get<{ role: string }>(`/api/v1/auth/role?email=${encodeURIComponent(email)}`, {
         skipAuth: true,

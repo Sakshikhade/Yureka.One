@@ -13,6 +13,7 @@ import { registerGiftcardRoutes } from './lib/hubble/routes';
 import { registerCuelinksRoutes } from './lib/cuelinks/routes';
 import { registerWaitlistRoutes } from './lib/waitlist/routes';
 import { registerAuthRoutes } from './lib/auth/routes';
+import { registerPublicApiRoutes } from './lib/publicApi/routes';
 import { upsertWaitlistJoin } from './lib/admin/store';
 
 dotenv.config({ path: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '.env') });
@@ -116,8 +117,9 @@ async function startServer() {
   registerAdminRoutes(app);
   registerGiftcardRoutes(app);
   registerCuelinksRoutes(app);
-  registerWaitlistRoutes(app);
   registerAuthRoutes(app);
+  registerWaitlistRoutes(app);
+  registerPublicApiRoutes(app);
 
 
 

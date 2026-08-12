@@ -516,8 +516,10 @@ export async function upsertWaitlistJoin(
   }
   const meta = { ...prevMeta, ...(input.meta || {}) }
   const now = new Date().toISOString()
-  const status =
-    existing?.status === 'accepted' ? 'accepted' : input.status || existing?.status || 'pending'
+  const status: WaitlistRow['status'] =
+    existing?.status && existing.status !== 'pending'
+      ? existing.status
+      : ((input.status || existing?.status || 'pending') as WaitlistRow['status'])
 
   const payload = {
     email,
