@@ -10,6 +10,7 @@ EnvironmentFile=/opt/yureka-one/.env
 Environment=NODE_ENV=production
 Environment=PORT=3000
 ExecStartPre=/bin/bash /opt/yureka-one/scripts/ensure-python-deps.sh
+ExecStartPre=/usr/bin/env bash -lc 'command -v pnpm >/dev/null'
 ExecStart=/usr/bin/env pnpm start
 Restart=always
 RestartSec=5
