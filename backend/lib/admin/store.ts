@@ -40,7 +40,8 @@ function getSupabase(): SupabaseClient | null {
   const key =
     process.env.SUPABASE_SERVICE_ROLE_KEY ||
     process.env.VITE_SUPABASE_SERVICE_ROLE_KEY ||
-    process.env.VITE_SUPABASE_ANON_KEY
+    process.env.VITE_SUPABASE_ANON_KEY ||
+    process.env.VITE_SUPABASE_PUBLISHABLE_KEY
   if (!url || !key) return null
   return createClient(url, key, { auth: { persistSession: false } })
 }

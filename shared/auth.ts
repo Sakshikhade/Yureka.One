@@ -1,7 +1,11 @@
 import { createClient, type SupabaseClient, type Session, type User } from '@supabase/supabase-js'
 
 const url = (import.meta.env.VITE_SUPABASE_URL || '').trim()
-const anon = (import.meta.env.VITE_SUPABASE_ANON_KEY || '').trim()
+const anon = (
+  import.meta.env.VITE_SUPABASE_ANON_KEY ||
+  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
+  ''
+).trim()
 
 export const supabaseConfigured = Boolean(url && anon)
 
@@ -45,7 +49,7 @@ export function normalizeWaitlistStatus(
 
 export async function signInWithGmail(redirectTo?: string): Promise<{ error?: string }> {
   const sb = getSupabaseBrowser()
-  if (!sb) return { error: 'Supabase is not configured (missing VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY).' }
+  if (!sb) return { error: 'Supabase is not configured (missing VITE_SUPABASE_URL and anon/publishable key).' }
   const redirect =
     redirectTo ||
     `${window.location.origin}/login`
