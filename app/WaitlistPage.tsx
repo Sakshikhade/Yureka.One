@@ -11,7 +11,10 @@ import { Link, useSearchParams, useLocation, useNavigate } from 'react-router-do
 import { api, isApiError } from '@backend/lib/api/client';
 import type { Waitlist as ApiWaitlist, WaitlistJoinResult } from '@backend/lib/api/types';
 import { motion, AnimatePresence } from 'motion/react';
-import { getSupabaseBrowser, signInWithGmail, supabaseConfigured } from '@shared/auth';
+import { getSupabaseBrowser, signInWithGmail, supabaseConfigured, normalizeWaitlistStatus } from '@shared/auth';
+import { useSupabase } from '@shared/SupabaseProvider';
+
+const WAITLIST_DRAFT_KEY = 'yureka_waitlist_draft';
 
 // ─── MASTER DATA ───
 const BANK_LOGOS: Record<string, string> = {
@@ -237,10 +240,13 @@ function normalizeGender(gender?: string): string {
 const WaitlistPage: React.FC = () => {
     const location = useLocation();
     const navigate = useNavigate();
+    const { user, currentUserStatus, isLoading: authLoading } = useSupabase();
     const isDashboard = location.pathname.startsWith('/dashboard');
     const basePath = isDashboard ? '/dashboard' : '';
     const [searchParams] = useSearchParams();
     const [goingToWaiting, setGoingToWaiting] = useState(false);
+    const [returningApplicant, setReturningApplicant] = useState(false);
+    const [existingStatus, setExistingStatus] = useState<string | null>(null);
 
     const [step, setStep] = useState(1);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -274,6 +280,127 @@ const WaitlistPage: React.FC = () => {
     // Scanned Intelligence Dashboard State variables
     const [scannedProfile, setScannedProfile] = useState<any>(null);
     const [scannedTransactions, setScannedTransactions] = useState<ParsedTransaction[]>([]);
+    const [draftReady, setDraftReady] = useState(false);
+
+    // Logged-in users: never re-run join — send them where they belong.
+    useEffect(() => {
+        if (isDashboard || authLoading || currentUserStatus === 'loading') return;
+        if (!user) return;
+        if (currentUserStatus === 'accepted' || currentUserStatus === 'admin') {
+            navigate('/dashboard', { replace: true });
+            return;
+        }
+        if (
+            currentUserStatus === 'pending' ||
+            currentUserStatus === 'on-hold' ||
+            currentUserStatus === 'rejected'
+        ) {
+            navigate('/waiting', { replace: true });
+        }
+    }, [user, currentUserStatus, authLoading, isDashboard, navigate]);
+
+    // Restore in-progress draft (steps 2/4) after refresh.
+    useEffect(() => {
+        if (isDashboard) {
+            setDraftReady(true);
+            return;
+        }
+        try {
+            const raw = sessionStorage.getItem(WAITLIST_DRAFT_KEY);
+            if (raw) {
+                const draft = JSON.parse(raw) as {
+                    step?: number;
+                    formData?: typeof formData;
+                    returningApplicant?: boolean;
+                    successData?: { rank: number; referralCode: string } | null;
+                };
+                if (draft.formData) setFormData((prev) => ({ ...prev, ...draft.formData }));
+                if (draft.successData) setSuccessData(draft.successData);
+                if (draft.returningApplicant) setReturningApplicant(true);
+                if (typeof draft.step === 'number' && [1, 2, 4, 6].includes(draft.step)) {
+                    setStep(draft.step);
+                }
+            }
+        } catch {
+            // ignore corrupt draft
+        }
+        setDraftReady(true);
+    }, [isDashboard]);
+
+    // Persist draft while filling the form.
+    useEffect(() => {
+        if (!draftReady || isDashboard) return;
+        try {
+            if (step === 1 && !formData.email) {
+                sessionStorage.removeItem(WAITLIST_DRAFT_KEY);
+                return;
+            }
+            sessionStorage.setItem(
+                WAITLIST_DRAFT_KEY,
+                JSON.stringify({ step, formData, returningApplicant, successData })
+            );
+        } catch {
+            // ignore
+        }
+    }, [step, formData, returningApplicant, successData, draftReady, isDashboard]);
+
+    const clearDraft = () => {
+        try {
+            sessionStorage.removeItem(WAITLIST_DRAFT_KEY);
+        } catch {
+            // ignore
+        }
+    };
+
+    const showExistingSuccess = (entry: ApiWaitlist, alreadyJoined: boolean) => {
+        setSuccessData({
+            rank: entry.rank ?? 1000,
+            referralCode: entry.personalReferralCode ?? '',
+        });
+        setReturningApplicant(alreadyJoined);
+        setExistingStatus(entry.status || 'pending');
+        const name = (entry.name || '').trim();
+        if (name) {
+            const parts = name.split(/\s+/);
+            setFormData((prev) => ({
+                ...prev,
+                email: entry.email || prev.email,
+                firstName: parts[0] || prev.firstName,
+                lastName: parts.slice(1).join(' ') || prev.lastName,
+                mobileNumber: (entry.mobileNumber || '').replace(/\D/g, '').slice(-10) || prev.mobileNumber,
+                dateOfBirth: entry.dateOfBirth || prev.dateOfBirth,
+                gender: entry.gender || prev.gender,
+            }));
+        } else if (entry.email) {
+            setFormData((prev) => ({ ...prev, email: entry.email }));
+        }
+        setStep(6);
+    };
+
+    /** If this Gmail already applied, skip the form and route by status. */
+    const resumeIfExistingApplicant = async (email: string, profile?: any): Promise<boolean> => {
+        const res = await api.get<ApiWaitlist>(
+            `/api/v1/waitlist/entry?email=${encodeURIComponent(email)}`,
+            { skipAuth: true, timeoutMs: 15000 }
+        );
+        if (isApiError(res) || !res.data) return false;
+
+        const entry = res.data;
+        const status = normalizeWaitlistStatus(entry.status) || entry.status;
+
+        if (status === 'accepted') {
+            clearDraft();
+            navigate(`/login?next=${encodeURIComponent('/dashboard')}`, { replace: true });
+            return true;
+        }
+
+        if (status === 'pending' || status === 'on-hold' || status === 'rejected' || status === 'on_hold') {
+            if (profile) setScannedProfile(profile);
+            showExistingSuccess(entry, true);
+            return true;
+        }
+        return false;
+    };
 
     // ─── REFERRAL PREFILLING ───
     useEffect(() => {
@@ -368,6 +495,10 @@ const WaitlistPage: React.FC = () => {
                 setScanError('Could not read your Google email. Please try again.');
                 return;
             }
+
+            // Already applied? Skip the form — approved → login/dashboard, else confirmation.
+            const resumed = await resumeIfExistingApplicant(profile.email, profile);
+            if (resumed) return;
 
             const nameParts = (profile.name || '').trim().split(/\s+/);
             const dob = parseDobToInputDate(profile.dob);
@@ -521,14 +652,22 @@ const WaitlistPage: React.FC = () => {
                 return;
             }
             const joined = res.data!.data;
+            const alreadyExists = Boolean(res.data!.alreadyExists);
             setSuccessData({
                 rank: joined.rank ?? 1000,
                 referralCode: joined.personalReferralCode ?? ''
             });
+            setReturningApplicant(alreadyExists);
+            setExistingStatus(joined.status || 'pending');
             try {
                 sessionStorage.setItem('yureka_pending_waitlist_email', canonicalEmail);
             } catch {
                 // ignore
+            }
+            if (normalizeWaitlistStatus(joined.status) === 'accepted' || joined.status === 'accepted') {
+                clearDraft();
+                navigate(`/login?next=${encodeURIComponent('/dashboard')}`, { replace: true });
+                return;
             }
             setStep(6);
         } catch (err: any) {
@@ -541,7 +680,13 @@ const WaitlistPage: React.FC = () => {
     const goToWaitingRoom = async () => {
         setGoingToWaiting(true);
         setError(null);
+        clearDraft();
         try {
+            const status = normalizeWaitlistStatus(existingStatus) || existingStatus;
+            if (status === 'accepted') {
+                navigate(`/login?next=${encodeURIComponent('/dashboard')}`);
+                return;
+            }
             const sb = getSupabaseBrowser();
             const { data } = sb ? await sb.auth.getSession() : { data: { session: null } };
             if (data.session?.user) {
@@ -561,6 +706,12 @@ const WaitlistPage: React.FC = () => {
             setError(e?.message || 'Could not open waiting room');
             setGoingToWaiting(false);
         }
+    };
+
+    const goToDashboardLogin = async () => {
+        setGoingToWaiting(true);
+        clearDraft();
+        navigate(`/login?next=${encodeURIComponent('/dashboard')}`);
     };
 
     // ─── SHARE LOGIC ───
@@ -628,6 +779,12 @@ const WaitlistPage: React.FC = () => {
                     </button>
                 )}
 
+                <p className="mt-6 text-[10px] font-black uppercase tracking-[0.3em] text-white/25">
+                    Already joined?{' '}
+                    <Link to="/login" className="text-clay hover:text-white transition-colors">
+                        Sign in
+                    </Link>
+                </p>
                 {scanError && (
                     <p className="mt-4 text-red-400 text-[10px] font-bold uppercase tracking-widest">{scanError}</p>
                 )}
@@ -846,8 +1003,14 @@ const WaitlistPage: React.FC = () => {
                     <div className="w-14 h-14 bg-clay/10 border border-clay/20 rounded-full flex items-center justify-center mx-auto">
                         <Check size={24} className="text-clay" strokeWidth={2.5} />
                     </div>
-                    <h2 className="text-4xl md:text-5xl font-heading font-black text-white uppercase tracking-tighter">You're on the list!</h2>
-                    <p className="text-sm text-white/40">Your spot is saved. Here's a summary of what we found.</p>
+                    <h2 className="text-4xl md:text-5xl font-heading font-black text-white uppercase tracking-tighter">
+                        {returningApplicant ? "You're already on the list!" : "You're on the list!"}
+                    </h2>
+                    <p className="text-sm text-white/40">
+                        {returningApplicant
+                            ? 'We found your application. Jump back to your waiting room — no need to re-apply.'
+                            : "Your spot is saved. Here's a summary of what we found."}
+                    </p>
                 </div>
 
                 {/* Rank + Profile */}
@@ -937,14 +1100,25 @@ const WaitlistPage: React.FC = () => {
                 </div>
 
                 <div className="text-center pt-4 space-y-4">
-                    <button
-                        type="button"
-                        onClick={goToWaitingRoom}
-                        disabled={goingToWaiting}
-                        className="inline-flex items-center justify-center gap-3 bg-clay text-black px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-[0.3em] hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-60"
-                    >
-                        {goingToWaiting ? <Loader2 size={16} className="animate-spin" /> : <>Enter waiting room <ArrowRight size={16} /></>}
-                    </button>
+                    {(normalizeWaitlistStatus(existingStatus) === 'accepted' || existingStatus === 'accepted') ? (
+                        <button
+                            type="button"
+                            onClick={goToDashboardLogin}
+                            disabled={goingToWaiting}
+                            className="inline-flex items-center justify-center gap-3 bg-clay text-black px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-[0.3em] hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-60"
+                        >
+                            {goingToWaiting ? <Loader2 size={16} className="animate-spin" /> : <>Open your dashboard <ArrowRight size={16} /></>}
+                        </button>
+                    ) : (
+                        <button
+                            type="button"
+                            onClick={goToWaitingRoom}
+                            disabled={goingToWaiting}
+                            className="inline-flex items-center justify-center gap-3 bg-clay text-black px-8 py-4 rounded-2xl font-black text-[11px] uppercase tracking-[0.3em] hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-60"
+                        >
+                            {goingToWaiting ? <Loader2 size={16} className="animate-spin" /> : <>Enter waiting room <ArrowRight size={16} /></>}
+                        </button>
+                    )}
                     <div>
                         <Link to={basePath || "/"} className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 hover:text-clay transition-all">Back to Home</Link>
                     </div>

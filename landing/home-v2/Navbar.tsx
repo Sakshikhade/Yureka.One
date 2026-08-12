@@ -49,7 +49,7 @@ function ScrambleNavLink({
 
 export default function Navbar({ entranceComplete = true }: NavbarProps) {
   const navigate = useNavigate();
-  const { user } = useSupabase();
+  const { user, currentUserStatus } = useSupabase();
   const [menuOpen, setMenuOpen] = useState(false);
   const [hoveredCta, setHoveredCta] = useState(false);
 
@@ -74,8 +74,15 @@ export default function Navbar({ entranceComplete = true }: NavbarProps) {
 
   const closeMenu = () => setMenuOpen(false);
 
-  // Always route the navbar CTA to the waitlist, regardless of auth/status.
-  const cta = { label: 'Join Waitlist', onClick: () => navigate('/join-waitlist') };
+  // Route CTA by membership status so returning users don't restart join.
+  const cta =
+    currentUserStatus === 'accepted' || currentUserStatus === 'admin'
+      ? { label: 'Open Dashboard', onClick: () => navigate('/dashboard') }
+      : currentUserStatus === 'pending' ||
+          currentUserStatus === 'on-hold' ||
+          currentUserStatus === 'rejected'
+        ? { label: 'Waiting Room', onClick: () => navigate(user ? '/waiting' : '/login') }
+        : { label: 'Join Waitlist', onClick: () => navigate('/join-waitlist') };
 
   return (
     <>
